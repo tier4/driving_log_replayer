@@ -1,0 +1,50 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "load_perception_result",
+      "type": "python",
+      "request": "launch",
+      "program": "driving_log_replayer/scripts/perception_load_scene_result.py",
+      "console": "integratedTerminal",
+      "args": [
+        "-p",
+        "$HOME/out/perception/latest/sample/f72e1065-7c38-40fe-a4e2-c5bbe6ff6443/result_archive/scene_result.pkl",
+        "-s",
+        "$HOME/data/perception/sample/scenario.yaml",
+        "-d",
+        "$HOME/data/perception/sample/t4_dataset/f72e1065-7c38-40fe-a4e2-c5bbe6ff6443",
+        "-l",
+        "$HOME/out/perception/latest/sample/f72e1065-7c38-40fe-a4e2-c5bbe6ff6443/perception_eval_log"
+      ]
+    },
+    {
+      "name": "load_obstacle_segmentation_result",
+      "type": "python",
+      "request": "launch",
+      "program": "driving_log_replayer/scripts/obstacle_segmentation_load_scene_result.py",
+      "console": "integratedTerminal",
+      "args": [
+        "-p",
+        "$HOME/out/obstacle_segmentation/latest/sample/63800729-18d2-4383-91e9-fea7bad384f4/frame.pkl",
+        "-s",
+        "$HOME/data/obstacle_segmentation/sample/scenario.yaml",
+        "-d",
+        "$HOME/data/obstacle_segmentation/sample/t4_dataset/63800729-18d2-4383-91e9-fea7bad384f4",
+        "-l",
+        "$HOME/out/obstacle_segmentation/latest/sample/63800729-18d2-4383-91e9-fea7bad384f4/perception_eval_log"
+      ]
+    }
+  ]
+}

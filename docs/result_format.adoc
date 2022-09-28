@@ -1,0 +1,52 @@
+[[sec-result-format]]
+== Driving Log Replayer結果ファイルフォーマット
+driving_log_replayerで出力される結果ファイルのフォーマットについて述べる。
+
+1行毎にjsonフォーマットの文字列が入っているjsonlファイル形式となっている。
+評価モジュール毎に評価内容が違うので、出力される内容は異なるが大枠を揃えることでみやすさや、スクリプトでの加工しやすくする。
+
+=== フォーマット
+各行以下の形式のフォーマットで出力される。
+実際には一行の文字列だがみやすさのためにフォーマットしている。
+
+```json
+{
+  "Result": {
+    "Success": "true or false",
+    "Summary": "評価した結果の要約"
+  },
+  "Stamp": {
+    "System": "コンピュータの時刻 UNIX_TIME",
+    "ROS": "シミュレーションの時刻"
+  },
+  "Frame": {
+    "Ego": {"TransformStamped": "mapからbase_linkへのtransform_stamped"},
+    "評価毎に構成が異なる": "..."
+  }
+}
+```
+
+* Result: 実行したシナリオの評価結果
+* Stamp: 評価した時刻
+* Frame: 受け取ったframe(topic)1回分の評価結果と、判定に使用した値などの付属情報
+
+Frameの中身の詳細については、各ユースケースの評価結果ファイルフォーマットを参照。
+
+=== jsonファイルの出力
+プログラムで結果ファイルを作る都合で、追記可能で扱いやすいファーマットとしてjsonlを採用している。
+しかし、人が目で見て結果を確認する場合は、json形式にしてvscode等でフォーマットして構造化したほうが理解しやすい。
+そのため、driving_log_replayer_cliを用いてシミュレーション実行した場合はデフォルトでjsonlファイルをjsonに変換したファイルも出力される。
+
+一方、ローカルでwasimで実行した場合や、クラウドで実行した場合はjsonlファイルしか作られない。
+jsonlファイルをjsonに出力したい場合は、以下のコマンドで変換することができる。
+
+```shell
+# 結果ファイルの変換、output_directory以下のresult.jsonlをresult.jsonに変換する
+driving_log_replayer simulation convert-result ${output_directory}
+```
+
+=== 結果ファイルの分析
+json出力の項目でも述べた通り、jsonファイルの出力はローカルでdriving_log_replayer_cliを用いた場合のみ出力される。
+なので、結果ファイルをグラフ化するなどの解析作業を行う場合は、jsonlのまま扱えるようにすると変換の手間が減らせる。
+
+pythonを用いる場合は、link:https://qiita.com/meshidenn/items/3ff72396fe85044bc74f[pandasを使用するとjsonlをのそのまま読み込むことができる。]

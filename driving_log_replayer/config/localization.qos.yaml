@@ -1,0 +1,10 @@
+/clock:
+  depth: 10
+  durability: volatile
+  history: keep_last
+  reliability: best_effort
+/localization/util/downsample/pointcloud:
+  depth: 10
+  durability: volatile
+  history: keep_last
+  reliability: best_effort

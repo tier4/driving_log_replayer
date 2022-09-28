@@ -1,0 +1,19 @@
+name: SyncReleaseNotes
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cupcakearmy/confluence-markdown-sync@v1.0.1
+        with:
+          from: ./ReleaseNotes.md
+          to: "2508456210"
+          cloud: tier4
+          user: hayato.mizushima@tier4.jp
+          token: ${{ secrets.CONFLUENCE_TOKEN }}

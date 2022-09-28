@@ -1,0 +1,20 @@
+name: pre-commit
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Run pre-commit
+        uses: autowarefoundation/autoware-github-actions/pre-commit@v1
+        with:
+          pre-commit-config: .pre-commit-config.yaml

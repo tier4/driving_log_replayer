@@ -1,0 +1,48 @@
+// 日本語ドキュメント
+:lang: ja
+// 文書タイプ
+:doctype: book
+// ドキュメントに関する説明
+:description:
+:source-highlighter: coderay
+
+// 自動で節番号を入れる
+:sectnums:
+// 参照設定。full, basic, shortから選択
+:xrefstyle: short
+
+// Asciidocでは章1となる。1章、1.1項と書くために、章、項の表記をなくす
+:section-refsig!:
+:chapter-refsig!:
+
+// htmlのスタイルシート
+:stylesdir: ./style
+:stylesheet: asciidoctor.css
+
+:chapter-label:
+//:sectids!:  // htmlでtocからのリンクが消されるのでコメントアウト
+// Table of Contents を挿入
+:toc-title: 目次
+:toclevels: 6
+:toc:
+
+//:icons: font
+// エンコーディング
+:encoding: utf-8
+// キャプション設定
+:table-caption: 表
+:figure-caption: 図
+:preface-title: はじめに
+:appendix-caption: 付録
+:caution-caption: 注意
+:example-caption: 例
+:important-caption: 重要
+:last-update-label: 最終更新
+:listing-caption: リスト
+:manname-title: 名前
+:note-caption: 注記
+:preface-title: まえがき
+:tip-caption: ヒント
+:untitled-label: 無題
+:version-label: バージョン
+:warning-caption: 警告

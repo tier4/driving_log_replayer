@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "driving_log_replayer_cli"
+version = "1.0.0"
+description = "command line tool for driving_log_replayer"
+authors = ["Hayato Mizushima <hayato.mizushima@tier4.jp>"]
+license = "Apache V2"
+
+[tool.poetry.scripts]
+driving_log_replayer = "driving_log_replayer_cli:main"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+termcolor = "^1.1.0"
+natsort = "^7.1.1"
+PyYAML = "^5.4.1"
+toml = "^0.10.2"
+click = "^8.0.3"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+flake8 = "^4.0.1"
+pep8-naming = "^0.12.1"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line_length = 100
