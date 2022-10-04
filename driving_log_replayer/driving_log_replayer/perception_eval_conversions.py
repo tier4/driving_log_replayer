@@ -103,11 +103,11 @@ def object_state_to_ros_box_and_uuid(
     uuid.action = Marker.ADD
     uuid.lifetime = Duration(seconds=0.2).to_msg()
     uuid_scale = Vector3()
-    uuid_scale.z = 1.0
+    uuid_scale.z = 0.8
     uuid.pose = pose
     uuid.scale = uuid_scale
     uuid.color = color
-    uuid.text = text
+    uuid.text = text[:8]
     return bbox, uuid
 
 
