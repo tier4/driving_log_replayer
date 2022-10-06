@@ -24,9 +24,7 @@ def generate_launch_description():
         "localization", python_node=True
     )
     evaluator_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(evaluator_node)
-    player = driving_log_replayer.launch_common.get_player(
-        additional_argument=["--remap", "/tf:=/driving_log_replayer/unused_tf"]
-    )
+    player = driving_log_replayer.launch_common.get_player()
     recorder = driving_log_replayer.launch_common.get_recorder(
         "localization.qos.yaml",
         [
