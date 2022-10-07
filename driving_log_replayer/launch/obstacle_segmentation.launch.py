@@ -40,7 +40,6 @@ def generate_launch_description():
         additional_argument=[
             "--remap",
             "/sensing/lidar/concatenated/pointcloud:=/driving_log_replayer/unused_concatenated_pointcloud",
-            "/tf_static:=/driving_log_replayer/unused_tf_static",
         ]
     )
 
