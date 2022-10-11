@@ -36,7 +36,12 @@ def generate_launch_description():
         name="obstacle_segmentation_sub",
         parameters=[{"use_sim_time": True, "scenario_path": LaunchConfiguration("scenario_path")}],
     )
-    player = driving_log_replayer.launch_common.get_player()
+    player = driving_log_replayer.launch_common.get_player(
+        additional_argument=[
+            "--remap",
+            "/sensing/lidar/concatenated/pointcloud:=/driving_log_replayer/unused_concatenated_pointcloud",
+        ]
+    )
 
     recorder = driving_log_replayer.launch_common.get_recorder(
         "obstacle_segmentation.qos.yaml",
