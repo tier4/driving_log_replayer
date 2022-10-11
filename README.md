@@ -33,7 +33,7 @@ Use pipx
 
 ```shell
 # install
-pipx install git+ssh://git@github.com/tier4/driving_log_replayer.git
+pipx install git+https://github.com/tier4/driving_log_replayer.git
 
 # upgrade
 pipx upgrade driving_log_replayer_cli
