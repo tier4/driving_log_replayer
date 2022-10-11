@@ -3,7 +3,17 @@ data_directory = "$HOME/driving_log_replayer_data/default"
 output_directory = "$HOME/driving_log_replayer_output/default"
 autoware_path = "$HOME/autoware"
 
-[xx1]
-data_directory = "$HOME/driving_log_replayer_data/xx1"
-output_directory = "$HOME/driving_log_replayer_output/xx1"
-autoware_path = "$HOME/xx1"
+[localization]
+data_directory = "$HOME/driving_log_replayer_data/localization"
+output_directory = "$HOME/driving_log_replayer_output/localization"
+autoware_path = "$HOME/autoware"
+
+[obstacle_segmentation]
+data_directory = "$HOME/driving_log_replayer_data/obstacle_segmentation"
+output_directory = "$HOME/driving_log_replayer_output/obstacle_segmentation"
+autoware_path = "$HOME/autoware"
+
+[perception]
+data_directory = "$HOME/driving_log_replayer_data/perception"
+output_directory = "$HOME/driving_log_replayer_output/perception"
+autoware_path = "$HOME/autoware"
