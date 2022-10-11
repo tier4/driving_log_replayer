@@ -1,30 +1,30 @@
 ScenarioFormatVersion: 2.2.0
-ScenarioName: ps1_n1
-ScenarioDescription: ps1_n1
-SensorModel: aip_x2
-VehicleModel: gsm8
-VehicleId: ps1
-LocalMapPath: $HOME/map/localization
+ScenarioName: sample_localization
+ScenarioDescription: sample_localization
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+VehicleId: default
+LocalMapPath: $HOME/autoware_map/sample-map-driving_log_replayer
 Evaluation:
   UseCaseName: localization
   UseCaseFormatVersion: 1.2.0
   Conditions:
-    Convergence: # 収束性評価
-      AllowableDistance: 0.2 # 直線距離でこの距離以内だったら収束とみなす
-      AllowableExeTimeMs: 100.0 # NDTの計算時間がこの値以下なら成功とみなす
-      AllowableIterationNum: 30 # NDTの計算回数がこの値以下なら成功とみなす
-      PassRate: 95.0 # 収束性の評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    Reliability: # 信頼度評価
-      Method: NVTL # NVTL or TPのどちらで評価を行うか
-      AllowableLikelihood: 3.0 # この値以上なら信頼度は正常とみなす
-      NGCount: 10 # 信頼度異常が連続でこの回数続いたら信頼度評価失敗とみなす
+    Convergence:
+      AllowableDistance: 0.2 # Lateral distance to be considered convergence
+      AllowableExeTimeMs: 100.0 # If the NDT computation time is less than or equal to this value, it is considered successful.
+      AllowableIterationNum: 30 # If the number of NDT calculations is less than or equal to this value, it is considered a success.
+      PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+    Reliability:
+      Method: NVTL # NVTL or TP which method to use for evaluation
+      AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
+      NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
   InitialPose:
     position:
-      x: 16876.271484375
-      y: 36087.9453125
+      x: 3836.5478515625
+      y: 73729.96875
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: 0.23490284404117467
-      w: 0.9720188546840887
+      z: -0.9689404241590215
+      w: 0.2472942668776119

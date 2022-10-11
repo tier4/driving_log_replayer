@@ -1,0 +1,9 @@
+[default]
+data_directory = "$HOME/driving_log_replayer_data/default"
+output_directory = "$HOME/driving_log_replayer_output/default"
+autoware_path = "$HOME/autoware"
+
+[xx1]
+data_directory = "$HOME/driving_log_replayer_data/xx1"
+output_directory = "$HOME/driving_log_replayer_output/xx1"
+autoware_path = "$HOME/xx1"

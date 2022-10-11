@@ -1,42 +1,42 @@
 ScenarioFormatVersion: 3.0.0
 ScenarioName: perception_use_bag_concat_data
 ScenarioDescription: sensing_module_off_and_use_pointcloud_in_the_rosbag
-SensorModel: aip_x2
-VehicleModel: gsm8
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
   UseCaseFormatVersion: 0.3.0
   Datasets:
-    - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
-        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
-        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
+    - sample:
+        VehicleId: default
+        LaunchSensing: false
+        LocalMapPath: $HOME/autoware_map/sample-map-driving_log_replayer
   Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
   PerceptionEvaluationConfig:
     evaluation_config_dict:
-      evaluation_task: detection # detection/tracking ここで指定したobjectsを評価する
-      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
-      max_x_position: 102.4 # 評価対象 object の最大 x 位置
-      max_y_position: 102.4 # 評価対象 object の最大 y 位置
-      max_distance: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-      min_distance: null # 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-      min_point_numbers: [0, 0, 0, 0] # ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価
-      confidence_threshold: null # 評価対象の estimated object の confidence の閾値
-      target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
-      center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # 中心間距離マッチング時の閾値
-      plane_distance_thresholds: [2.0, 30.0] # 平面距離マッチング時の閾値
-      iou_bev_thresholds: [0.5] # BEV IoU 　マッチング時の閾値
-      iou_3d_thresholds: [0.5] # 3D IoU マッチング時の閾値
+      evaluation_task: detection # detection or tracking. Evaluate the objects specified here
+      target_labels: [car, bicycle, pedestrian, motorbike] # evaluation label
+      max_x_position: 102.4 # Maximum x position of object to be evaluated
+      max_y_position: 102.4 # Maximum y position of object to be evaluated
+      max_distance: null # Maximum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.
+      min_distance: null # Minimum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.
+      min_point_numbers: [0, 0, 0, 0] # Minimum number of point clouds in bounding box for ground truth object. If min_point_numbers=0, all ground truth objects are evaluated
+      confidence_threshold: null # Threshold of confidence for the estimated object to be evaluated
+      target_uuids: null # If you want to evaluate only specific ground truths, specify the UUIDs of the ground truths to be evaluated. If null, use all
+      center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # Threshold for center-to-center distance matching
+      plane_distance_thresholds: [2.0, 30.0] # Threshold for planar distance matching
+      iou_bev_thresholds: [0.5] # Threshold for BEV IoU
+      iou_3d_thresholds: [0.5] # Threshold for 3D IoU
   CriticalObjectFilterConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike] # 評価対象ラベル名
-    max_x_position_list: [30.0, 30.0, 30.0, 30.0] # 評価対象 object の最大 x 位置
-    max_y_position_list: [30.0, 30.0, 30.0, 30.0] # 評価対象 object の最大 y 位置
-    max_distance_list: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-    min_distance_list: null # 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-    min_point_numbers: [0, 0, 0, 0] # ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価
-    confidence_threshold_list: null # 評価対象の estimated object の confidence の閾値
-    target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    max_x_position_list: [30.0, 30.0, 30.0, 30.0]
+    max_y_position_list: [30.0, 30.0, 30.0, 30.0]
+    max_distance_list: null
+    min_distance_list: null
+    min_point_numbers: [0, 0, 0, 0]
+    confidence_threshold_list: null
+    target_uuids: null
   PerceptionPassFailConfig:
     target_labels: [car, bicycle, pedestrian, motorbike]
-    plane_distance_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
+    plane_distance_threshold_list: [2.0, 2.0, 2.0, 2.0]
