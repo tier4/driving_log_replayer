@@ -1,37 +1,4 @@
-== はじめに
-Driving Log Replayerは、log(rosbag2)を用いてAutowareのopen loop simulationを実行し、その結果を評価するパッケージである。
-Sensing, Localization, Perceptionの性能確認と、ソフトウェアのリグレッションテストに使用する。
-
-<<img-architecture>>に示すように、Autowareの標準機能にDriving Log Replayer固有のシミュレーションの実行機能と評価機能を付加した構成となっている。
-
-[[img-architecture]]
-.Driving Log Replayer Architecture
-image::images/architecture.png[Driving Log Replayerアーキテクチャ]
-
-=== 関連ドキュメント
-. [[AutowareDocumentation]]link:https://autowarefoundation.github.io/autoware-documentation/main/[AutowareDocumentation]
-. [[WebAutoDocumentation]]link:https://docs.web.auto/[Web.Auto DOCS]
-
-=== 関連リポジトリ
-. [[ros2bag_extensions]] link:https://github.com/tier4/ros2bag_extensions[ros2bag_extensions]
-. [[perception_eval]] link:https://github.com/tier4/autoware_perception_evaluation[perception_eval]
-
-<<img-overview>>にシステムの概要を示す。
-[[img-overview]]
-.システム概要
-image::images/overview.drawio.svg[システム概要]
-
-=== 開発環境
-autoware.universeが動作する環境で以下の通りとする。
-
-* Ubuntu 20.04 / 22.04
-* ROS galactic / humble
-* Python 3.8 / 3.10
-
-=== 実行環境
-開発環境と同じ。driving_log_replayerは、ROSのパッケージとして提供され、autowareのリポジトリでvcs importすることで、src/simulator以下にインストールされる。
-
-=== セットアップ手順
+## セットアップ手順
 本パッケージはAutowareの機能を使用するので、Autowareと一緒にセットアップする。
 autowareのルートにあるautoware.reposにdriving_log_replayerとdriving_log_replayerが依存するperception_eval、ros2_numpyを追加することで、autowareと一緒にビルドされて使用することが出来る。
 
@@ -50,7 +17,8 @@ simulator/vendor/ros2_numpy:
   version: humble
 ```
 
-=== driving_log_replayer利用フロー
+## driving_log_replayer利用フロー
+
 . 評価用のbagを実車で取得する
 . 取得したbagを必要な時間、topicだけ残るようにフィルタする
 .. ROS2の場合はgalacticでも未だにfilterコマンドが実装されていないのでtier4で開発した<<ros2bag_extensions>>を使用する
@@ -63,17 +31,19 @@ simulator/vendor/ros2_numpy:
 .. t4_dataset変換ツールは公開準備中
 . 評価を実行する。
 
-=== フォルダ構成、ファイル命名規則
+## フォルダ構成、ファイル命名規則
+
 driving_log_replayerを実行するために必要なフォルダ構成、ファイル命名規則について解説する。
 
 ROS2版driving_log_replayerでは、フォルダ構成、ファイル名などを固定にすることで、シナリオに記述するパスや、コマンドに渡す引数を少なくしている。また、テストを連続で回せるようになっている。
 
-==== データフォルダ
+### データフォルダ
+
 シミュレーション実行時に使用するリソースを保存しておくフォルダ。
 
 各ユースケース毎に、シナリオと、bag、datasetを配置する。
 
-==== localization, performance_diagのデータフォルダ構成
+### localization, performance_diagのデータフォルダ構成
 
 ```
 driving_log_replayer_data                           // 複数個のシナリオを収めた親ディレクトリ 任意の名称をつけてよい
@@ -89,7 +59,7 @@ driving_log_replayer_data                           // 複数個のシナリオ�
 
 ```
 
-==== obstacle_segmentation, perceptionのデータフォルダ構成
+### obstacle_segmentation, perceptionのデータフォルダ構成
 
 ```
 driving_log_replayer_data                            // 複数個のシナリオを収めた親ディレクトリ 任意の名称をつけてよい
@@ -124,7 +94,7 @@ driving_log_replayer_data                            // 複数個のシナリオ
 ├── S002                            // シナリオディレクトリ S001と構成は同じ
 ```
 
-==== マップフォルダ
+### マップフォルダ
 シミュレーション実行時に使用する地図をまとめて保存しておくフォルダ。
 
 ```
@@ -136,7 +106,7 @@ map
 
 ```
 
-=== 実行コマンド
+=# 実行コマンド
 driving_log_replayerパッケージの実行コマンドについて解説する。
 
 driving_log_replayerのパッケージはros2コマンドを叩いて実行するのではなく、
@@ -167,7 +137,7 @@ driving_log_replayer subcommand subsubcommand --help
 driving_log_replayer_cliは、Autoware Evaluatorを使用しない場合のローカルテスト用のrunnerとして利用できる。
 wasimは、Autoware Evaluatorに登録済みのシナリオをダウンロードして実行するので、クラウド環境に登録済みのシナリオしか実行出来ないという違いがある。
 
-==== cli設定
+==# cli設定
 driving_log_replayer_cliでは、cliに渡す引数を少なくするために引数に指定するディレクトリを設定ファイルに記載し設定ファイルから読み込む形式を取る。
 
 よってcliを使う前に以下の形式で$HOME/.driving_log_replayer.config.tomlファイルを作成しておく。
@@ -205,13 +175,13 @@ output_directory = "$HOME/out/xx1"
 autoware_path = "$HOME/autoware.proj.xx1"
 ```
 
-==== cliサブコマンド
+==# cliサブコマンド
 サブコマンドとして以下が存在する
 
 * configure
 * simulation
 
-==== driving_log_replayer configure
+==# driving_log_replayer configure
 設定ファイル.driving_log_replayer.config.tomlを操作するコマンド。
 
 ```shell
@@ -219,7 +189,7 @@ autoware_path = "$HOME/autoware.proj.xx1"
 driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
 ```
 
-==== driving_log_replayer simulation
+==# driving_log_replayer simulation
 simulation実行に利用する。
 
 ```shell
@@ -236,6 +206,6 @@ driving_log_replayer simulation show-result ${output_directory}
 driving_log_replayer simulation convert-result ${output_directory}
 ```
 
-==== wasimによるdriving_log_replayer実行
+==# wasimによるdriving_log_replayer実行
 
 link:https://docs.web.auto/developers-guides/wasim/use-cases/run-simulations-locally/[ドキュメントサイト]を参照
