@@ -22,6 +22,6 @@ Minor Tweaks
 
 Major Changes
 
-| Module | Feature | Brief summary  | Pull request | JIRA | Contributor                                   |
-| ------ | ------- | -------------- | ------------ | ---- | --------------------------------------------- |
-| `all`  | oss     | publish as oss | -            | -    | [hayato-m126](https://github.com/hayato-m126) |
+| Module | Feature | Brief summary  | Pull request                                               | JIRA | Contributor                                   |
+| ------ | ------- | -------------- | ---------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | oss     | publish as oss | [#0](https://github.com/tier4/driving_log_replayer/pull/0) | -    | [hayato-m126](https://github.com/hayato-m126) |
