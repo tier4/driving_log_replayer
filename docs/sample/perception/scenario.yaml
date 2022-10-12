@@ -7,7 +7,7 @@ Evaluation:
   UseCaseName: perception
   UseCaseFormatVersion: 0.3.0
   Datasets:
-    - sample:
+    - sample_dataset:
         VehicleId: default
         LaunchSensing: false
         LocalMapPath: $HOME/autoware_map/sample-map-planning
