@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.0.2
+
+Minor Tweaks
+
+| Module | Feature       | Brief summary                     | Pull request                                               | JIRA       | Contributor                                   |
+| ------ | ------------- | --------------------------------- | ---------------------------------------------------------- | ---------- | --------------------------------------------- |
+| `all`  | documentation | update sample scenario and config | [#6](https://github.com/tier4/driving_log_replayer/pull/6) | T4PB-21729 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | documentation | update sample scenario            | [#7](https://github.com/tier4/driving_log_replayer/pull/7) | T4PB-21729 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.0.1
 
 Minor Tweaks
