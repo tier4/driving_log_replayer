@@ -4,7 +4,7 @@ ScenarioDescription: sample_localization
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-driving_log_replayer
+LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: localization
   UseCaseFormatVersion: 1.2.0

@@ -9,7 +9,7 @@ Evaluation:
   Datasets:
     - sample:
         VehicleId: default
-        LocalMapPath: $HOME/autoware_map/sample-map-driving_log_replayer
+        LocalMapPath: $HOME/autoware_map/sample-map-planning
   Conditions:
     ObstacleDetection:
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
