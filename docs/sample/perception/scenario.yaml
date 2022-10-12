@@ -7,10 +7,10 @@ Evaluation:
   UseCaseName: perception
   UseCaseFormatVersion: 0.3.0
   Datasets:
-    - sample:
+    - sample_dataset:
         VehicleId: default
         LaunchSensing: false
-        LocalMapPath: $HOME/autoware_map/sample-map-driving_log_replayer
+        LocalMapPath: $HOME/autoware_map/sample-map-planning
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
   PerceptionEvaluationConfig:
