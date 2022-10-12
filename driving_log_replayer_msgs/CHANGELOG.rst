@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.2 (2022-10-12)
+------------------
 * docs: update sample
 * Contributors: Hayato Mizushima
 
