@@ -1,5 +1,6 @@
 site_name: Driving Log Replayer Documentation
 site_url: https://tier4.github.io/driving_log_replayer
+edit_uri: edit/main/docs/
 repo_url: https://github.com/tier4/driving_log_replayer
 
 docs_dir: docs
