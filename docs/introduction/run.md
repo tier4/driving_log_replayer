@@ -1,14 +1,14 @@
 # 起動方法
 
-driving_log_replayerを起動するには、autowareのワークスペースのビルド、cliのインストール、及び、評価するデータの準備を事前に済ませている必要がある。
+driving_log_replayer を起動するには、autoware のワークスペースのビルド、cli のインストール、及び、評価するデータの準備を事前に済ませている必要がある。
 
 ## コマンド
 
-driving_log_replayer_cliのコマンドについて解説する。
+driving_log_replayer_cli のコマンドについて解説する。
 
-driving_log_replayer_cliをインストールすると、ターミナルでdriving_log_replayerというコマンドが実行できるようになる。
-driving_log_replayerコマンドは、サブコマンドを持っている。
-各コマンドに必要な引数は--helpオプションを指定すると表示できるようになっている。
+driving_log_replayer_cli をインストールすると、ターミナルで driving_log_replayer というコマンドが実行できるようになる。
+driving_log_replayer コマンドは、サブコマンドを持っている。
+各コマンドに必要な引数は--help オプションを指定すると表示できるようになっている。
 
 ```shell
 # driving_log_replayer top level help
@@ -24,16 +24,16 @@ driving_log_replayer subcommand --help
 driving_log_replayer subcommand subsubcommand --help
 ```
 
-## cliサブコマンド
+## cli サブコマンド
 
 サブコマンドとして以下が存在する
 
-* configure
-* simulation
+- configure
+- simulation
 
 ### driving_log_replayer configure
 
-設定ファイル.driving_log_replayer.config.tomlを操作するコマンド。
+設定ファイル.driving_log_replayer.config.toml を操作するコマンド。
 
 ```shell
 # -pで指定したprofile名デフォルト値defaultにdata_directory、output_directory、autoware_pathを設定する
@@ -42,7 +42,7 @@ driving_log_replayer configure register -d ${data_directory} -o ${output_directo
 
 ### driving_log_replayer simulation
 
-simulation実行に利用する。
+simulation 実行に利用する。
 
 ```shell
 # simulation 実行、jsonlとjsonの両方の結果ファイルが出力される
@@ -58,12 +58,12 @@ driving_log_replayer simulation show-result ${output_directory}
 driving_log_replayer simulation convert-result ${output_directory}
 ```
 
-## wasimによるdriving_log_replayer実行
+## wasim による driving_log_replayer 実行
 
-TIER IVが提供している[Autoware Evaluator](https://docs.web.auto/user-manuals/evaluator/introduction "Autoware Evaluator")へ
+TIER IV が提供している[Autoware Evaluator](https://docs.web.auto/user-manuals/evaluator/introduction "Autoware Evaluator")へ
 アクセス権がある場合は[wasim](https://docs.web.auto/developers-guides/wasim/introduction "wasim")を利用することもできる。
 
 使い方は[ドキュメントサイト](https://docs.web.auto/developers-guides/wasim/use-cases/run-simulations-locally/ "ドキュメントサイト")を参照。
 
-wasimはAutoware Evaluatorに登録済みのシナリオをダウンロードして実行するので、クラウド環境に登録済みのシナリオしか実行出来ない。
-クラウドに登録してないシナリオはdriving_log_replayer_cliを使用する。
+wasim は Autoware Evaluator に登録済みのシナリオをダウンロードして実行するので、クラウド環境に登録済みのシナリオしか実行出来ない。
+クラウドに登録してないシナリオは driving_log_replayer_cli を使用する。

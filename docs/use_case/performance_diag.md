@@ -1,112 +1,117 @@
-== ユースケース：診断機能の評価
+# 診断機能の評価
 
-Autowareの診断機能(diagnostics)が意図通りに機能しているかを評価する。
+Autoware の診断機能(diagnostics)が意図通りに機能しているかを評価する。
 
-現在は、lidarのvisibilityとblockageの評価に対応している。
+現在は、lidar の visibility と blockage の評価に対応している。
 
-* visibility: 霧や雨などで視界が悪くなっていないかを判定する機能
-* blockage: LiDARに葉っぱなどが付着して計測の妨げをしていないかを判定する機能
+- visibility: 霧や雨などで視界が悪くなっていないかを判定する機能
+- blockage: LiDAR に葉っぱなどが付着して計測の妨げをしていないかを判定する機能
 
-visibilityの評価では、雨天時や人工的に雨を降らせられる施設で取得したデータを用いてvisibilityのERRORが一定数以上出力されることを確認する。
-また、晴天時のデータを利用して、ERRORが一度も出ないことを確認する。
+visibility の評価では、雨天時や人工的に雨を降らせられる施設で取得したデータを用いて visibility の ERROR が一定数以上出力されることを確認する。
+また、晴天時のデータを利用して、ERROR が一度も出ないことを確認する。
 
-blockageの評価では、LiDARをビニール袋などでわざと覆った状態でデータを取得しblockageのERRORが一定数以上出力されることを確認する。
-また、覆ってないLiDARについてはERRORが一度も出ないことを確認する。
+blockage の評価では、LiDAR をビニール袋などでわざと覆った状態でデータを取得し blockage の ERROR が一定数以上出力されることを確認する。
+また、覆ってない LiDAR については ERROR が一度も出ないことを確認する。
 
-上記のように、評価したい内容によってERRORが出る場合を成功とするか失敗とするかが分かれるので、シナリオにタイプを記述することで変更できるようになっている。
+上記のように、評価したい内容によって ERROR が出る場合を成功とするか失敗とするかが分かれるので、シナリオにタイプを記述することで変更できるようになっている。
 
-* シナリオ種類がTPの場合はDiagが一定数以上ERRORになれば成功
-* シナリオ種類がFPの場合はDiagが一度もERRORにならなければ成功
-* シナリオ種類がnullの場合はテストを省略する
+- シナリオ種類が TP の場合は Diag が一定数以上 ERROR になれば成功
+- シナリオ種類が FP の場合は Diag が一度も ERROR にならなければ成功
+- シナリオ種類が null の場合はテストを省略する
 
-=== 評価方法
-driving_log_replayer/launch/performance_diag.launch.pyを用いて、評価用のノードをautoware_launchのlogging_simulator.launchと一緒に立ち上げる。
+## 評価方法
 
-=== 評価ノードが使用するTopicとデータ型
+driving_log_replayer/launch/performance_diag.launch.py を用いて、評価用のノードを autoware_launch の logging_simulator.launch と一緒に立ち上げる。
 
-* subscribe
+## 評価ノードが使用する Topic とデータ型
 
-|===
-|topic名|データ型
+- subscribe
 
-|/perception/obstacle_segmentation/pointcloud|sensor_msgs::msg::PointCloud2
-|/diagnostics_agg|diagnostic_msgs::msg::DiagnosticArray
-|/tf|tf2_msgs/msg/TFMessage
-|===
+| topic 名                                     | データ型                              |
+| -------------------------------------------- | ------------------------------------- |
+| /perception/obstacle_segmentation/pointcloud | sensor_msgs::msg::PointCloud2         |
+| /diagnostics_agg                             | diagnostic_msgs::msg::DiagnosticArray |
+| /tf                                          | tf2_msgs/msg/TFMessage                |
 
-* publish
+- publish
 
-|===
-|topic名|データ型
+| topic 名                                                 | データ型                                      |
+| -------------------------------------------------------- | --------------------------------------------- |
+| /driving_log_replayer/visibility/value                   | example_interfaces::msg::Float64              |
+| /driving_log_replayer/visibility/level                   | example_interfaces::msg::Byte                 |
+| /driving_log_replayer/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64              |
+| /driving_log_replayer/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64              |
+| /driving_log_replayer/blockage/{lidar_name}/level        | example_interfaces::msg::Byte                 |
+| /initialpose                                             | geometry_msgs::msg::PoseWithCovarianceStamped |
 
-|/driving_log_replayer/visibility/value|example_interfaces::msg::Float64
-|/driving_log_replayer/visibility/level|example_interfaces::msg::Byte
-|/driving_log_replayer/blockage/{lidar_name}/ground/ratio|example_interfaces::msg::Float64
-|/driving_log_replayer/blockage/{lidar_name}/sky/ratio|example_interfaces::msg::Float64
-|/driving_log_replayer/blockage/{lidar_name}/level|example_interfaces::msg::Byte
-|/initialpose|geometry_msgs::msg::PoseWithCovarianceStamped
-|===
+{lidar_name}には、搭載されている lidar の名前が入る。
 
-{lidar_name}には、搭載されているlidarの名前が入る。
+### logging_simulator.launch に渡す引数
 
-==== logging_simulator.launchに渡す引数
-autowareの処理を軽くするため、評価に関係のないモジュールはlaunchの引数にfalseを渡すことで無効化する。以下を設定している。
+autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
 
 - planning: false
 - control: false
-- localization: false / true (デフォルトfalse、シナリオで指定する)
+- localization: false / true (デフォルト false、シナリオで指定する)
 
-autowareから出力される診断情報(/diagnostics_agg)を評価する。
+autoware から出力される診断情報(/diagnostics_agg)を評価する。
 メッセージ毎に以下のいずれかとして評価される。
 
-対象となるstatusは、LiDARのvisibilityとblockageに対応していて、
+対象となる status は、LiDAR の visibility と blockage に対応していて、
 
-- visibility: /autoware/sensing/lidar/performance_monitoring/visibility/.*
-- blockage: /autoware/sensing/lidar/performance_monitoring/blockage/.*
+- visibility: /autoware/sensing/lidar/performance_monitoring/visibility/.\*
+- blockage: /autoware/sensing/lidar/performance_monitoring/blockage/.\*
 
-==== TP正常
-シナリオ種類がTPの場合で、診断情報(/diagnostics_agg)に含まれるvisibilityまたはblockageのlevelがERROR(=2)の場合
+### TP 正常
 
-==== TP異常
-シナリオ種類がTPの場合で、診断情報(/diagnostics_agg)に含まれるvisibilityまたはblockageのlevelがERRORでない(!=2)の場合
+シナリオ種類が TP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR(=2)の場合
 
-==== FP正常
-シナリオ種類がFPの場合で、診断情報(/diagnostics_agg)に含まれるvisibilityまたはblockageのlevelがERRORでない(!=2)の場合
+### TP 異常
 
-==== FP異常
-シナリオ種類がFPの場合で、診断情報(/diagnostics_agg)に含まれるvisibilityまたはblockageのlevelがERROR(=2)の場合
+シナリオ種類が TP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR でない(!=2)の場合
 
-==== 評価フロー
-1. launchで評価ノード(performance_diag_evaluator_node)とlogging_simulator.launch、ros2 bag playを立ち上げる
-2. bagから出力されたセンサーデータをautowareが受け取って、/diagnostics_aggを出力する
-3. 評価ノードが/diagnostics_aggをsubscribeして、コールバックで評価を行う
+### FP 正常
 
-=== simulation
+シナリオ種類が FP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR でない(!=2)の場合
+
+### FP 異常
+
+シナリオ種類が FP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR(=2)の場合
+
+### 評価フロー
+
+1. launch で評価ノード(performance_diag_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
+2. bag から出力されたセンサーデータを autoware が受け取って、/diagnostics_agg を出力する
+3. 評価ノードが/diagnostics_agg を subscribe して、コールバックで評価を行う
+
+## simulation
+
 シミュレーション実行に必要な情報を述べる。
 
-==== 入力rosbagに含まれるべきtopic
-車両のECUのCANと、使用しているsensorのtopicが必要
+### 入力 rosbag に含まれるべき topic
+
+車両の ECU の CAN と、使用している sensor の topic が必要
 以下は例であり、違うセンサーを使っている場合は適宜読み替える。
 
-LiDARが複数ついている場合は、搭載されているすべてのLiDARのpacketsを含める
+LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める
 
 - /sensing/gnss/ublox/fix_velocity
 - /sensing/gnss/ublox/nav_sat_fix
 - /sensing/gnss/ublox/navpvt
 - /sensing/imu/tamagawa/imu_raw
-- /sensing/lidar/*/velodyne_packets
+- /sensing/lidar/\*/velodyne_packets
 - /gsm8/from_can_bus
 - /tf
 
-==== 入力rosbagに含まれてはいけないtopic
+### 入力 rosbag に含まれてはいけない topic
+
 - /clock
 
-autowareのドキュメントサイトにあるbagはclockを含んでいて使用出来ないので注意。
+## evaluation
 
-=== evaluation
 評価に必要な情報を述べる。
 
-==== シナリオフォーマット
+### シナリオフォーマット
 
 ```yaml
 Evaluation:
@@ -154,14 +159,14 @@ Evaluation:
           PassFrameCount: 80
 ```
 
-==== 評価結果ファイルフォーマット
-performance_diagでは、visibilityとblockageの2つを評価している。
-1回の点群のcallbackで同時に評価しているが、それぞれ別にカウントしている。
-Resultはvisibilityとblockageの両方をパスしていればtrueでそれ以外はfalse失敗となる。
+### 評価結果ファイルフォーマット
+
+performance_diag では、visibility と blockage の 2 つを評価している。
+1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。
+Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。
 
 以下に、フォーマットを示す。
-ただし、<<result_format.adoc#sec-result-format>>で解説済みの共通部分については省略する。
-
+ただし、結果ファイルフォーマットで解説済みの共通部分については省略する。
 
 ```json
 {
@@ -190,7 +195,7 @@ Resultはvisibilityとblockageの両方をパスしていればtrueでそれ以�
             "SkyBlockageCount": "参考値"
           }
         ]
-      },
+      }
     ]
   }
 }

@@ -1,16 +1,16 @@
 # 準備
 
-driving_log_replayerを利用するには以下の作業が必要となる。
+driving_log_replayer を利用するには以下の作業が必要となる。
 
-1. driving_log_replayerをautowareと一緒にビルドする
-2. driving_log_replayer_cliをインストールする
-3. cliの設定ファイルを作成する
+1. driving_log_replayer を autoware と一緒にビルドする
+2. driving_log_replayer_cli をインストールする
+3. cli の設定ファイルを作成する
 4. 評価用のシナリオとデータセットを指定のディレクトリに配置する
 
-## driving_log_replayerパッケージビルド
+## driving_log_replayer パッケージビルド
 
-本パッケージはAutowareの機能を使用するので、Autowareと一緒にセットアップする。
-autowareのルートにあるsimulator.reposにdriving_log_replayerとdriving_log_replayerが依存するperception_eval、ros2_numpyを追加し、autowareと一緒にビルドする。
+本パッケージは Autoware の機能を使用するので、Autoware と一緒にセットアップする。
+autoware のルートにある simulator.repos に driving_log_replayer と driving_log_replayer が依存する perception_eval、ros2_numpy を追加し、autoware と一緒にビルドする。
 
 ```yaml
 simulator/driving_log_replayer:
@@ -27,27 +27,27 @@ simulator/vendor/ros2_numpy:
   version: humble
 ```
 
-## cliインストール
+## cli インストール
 
-driving_log_replayerは、シナリオに記述したパラメータをlaunchの引数に設定して起動する仕組みになっている。
-cliがシナリオをパースしてlaunchの引数をセットして実行してくれるのでcliをインストールしておく必要がある。
-実際に叩いてるros2 launchのコマンドはターミナルに表示され、また結果の出力先フォルダにrun.bashというファイル名で実行したコマンドがファイルで保存される。
+driving_log_replayer は、シナリオに記述したパラメータを launch の引数に設定して起動する仕組みになっている。
+cli がシナリオをパースして launch の引数をセットして実行してくれるので cli をインストールしておく必要がある。
+実際に叩いてる ros2 launch のコマンドはターミナルに表示され、また結果の出力先フォルダに run.bash というファイル名で実行したコマンドがファイルで保存される。
 
 ```shell
 pipx install git+https://github.com/tier4/driving_log_replayer.git
 ```
 
-### cli設定
+### cli 設定
 
-driving_log_replayer_cliでは、cliに渡す引数を少なくするために引数に指定するディレクトリを設定ファイルに記載し設定ファイルから読み込む形式を取る。
+driving_log_replayer_cli では、cli に渡す引数を少なくするために引数に指定するディレクトリを設定ファイルに記載し設定ファイルから読み込む形式を取る。
 
-よってcliを使う前に以下の形式で$HOME/.driving_log_replayer.config.tomlファイルを作成しておく。
-手動で作成、もしくはdriving_log_replayer configureコマンドで作成する。
+よって cli を使う前に以下の形式で$HOME/.driving_log_replayer.config.toml ファイルを作成しておく。
+手動で作成、もしくは driving_log_replayer configure コマンドで作成する。
 
-profileは最低1つ必要で、1つはdefaultという名前である必要がある。
+profile は最低 1 つ必要で、1 つは default という名前である必要がある。
 
-以降で説明するコマンドで-p ${profile}でprofile名を指定すると、プロファイルに指定した設定が読み込まれる。
-複数のautowareを切り替えて利用することが出来、プロファイルを何も指定しない場合はdefaultが使用される。
+以降で説明するコマンドで-p ${profile}で profile 名を指定すると、プロファイルに指定した設定が読み込まれる。
+複数の autoware を切り替えて利用することが出来、プロファイルを何も指定しない場合は default が使用される。
 
 ```toml
 [profile_name]
@@ -83,17 +83,17 @@ autoware_path = "$HOME/autoware"
 
 ## フォルダ構成、ファイル命名規則
 
-driving_log_replayerが期待するフォルダ構成、ファイル命名規則について解説する。
+driving_log_replayer が期待するフォルダ構成、ファイル命名規則について解説する。
 
-ROS2版driving_log_replayerでは、フォルダ構成、ファイル名などを固定にすることで、シナリオに記述するパスや、コマンドに渡す引数を少なくしている。また、テストを連続で回せるようになっている。
+ROS2 版 driving_log_replayer では、フォルダ構成、ファイル名などを固定にすることで、シナリオに記述するパスや、コマンドに渡す引数を少なくしている。また、テストを連続で回せるようになっている。
 
 ### データフォルダ
 
 シミュレーション実行時に使用するリソースを保存しておくフォルダ。
 
-各ユースケース毎に、シナリオと、bag、datasetを配置する。
+各ユースケース毎に、シナリオと、bag、dataset を配置する。
 
-### localization, performance_diagのデータフォルダ構成
+### localization, performance_diag のデータフォルダ構成
 
 ```shell
 driving_log_replayer_data                           // 複数個のシナリオを収めた親ディレクトリ 任意の名称をつけてよい
@@ -109,7 +109,7 @@ driving_log_replayer_data                           // 複数個のシナリオ�
 
 ```
 
-### obstacle_segmentation, perceptionのデータフォルダ構成
+### obstacle_segmentation, perception のデータフォルダ構成
 
 ```shell
 driving_log_replayer_data                            // 複数個のシナリオを収めた親ディレクトリ 任意の名称をつけてよい
