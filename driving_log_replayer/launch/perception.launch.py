@@ -16,7 +16,6 @@ import copy
 import os
 
 from ament_index_python.packages import get_package_prefix
-from ament_index_python.packages import get_package_share_directory
 import driving_log_replayer.launch_common
 import launch
 from launch.actions import DeclareLaunchArgument
@@ -29,36 +28,14 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     launch_arguments.append(DeclareLaunchArgument("sensing", default_value="false"))
-    # autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
-    #     sensing=LaunchConfiguration("sensing"), localization="false"
-    # )
+    autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
+        sensing=LaunchConfiguration("sensing"), localization="false"
+    )
     rviz_node = driving_log_replayer.launch_common.get_rviz("perception.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
         "perception", python_node=True
     )
     evaluator_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(evaluator_node)
-
-    autoware_launch_file = os.path.join(
-        get_package_share_directory("autoware_launch"), "launch", "logging_simulator.launch.xml"
-    )
-    autoware_launch = launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(autoware_launch_file),
-        launch_arguments={
-            "map_path": LaunchConfiguration("map_path"),
-            "vehicle_model": LaunchConfiguration("vehicle_model"),
-            "sensor_model": LaunchConfiguration("sensor_model"),
-            "vehicle_id": LaunchConfiguration("vehicle_id"),
-            "launch_vehicle_interface": "true",
-            "sensing": LaunchConfiguration("sensing"),
-            "localization": "false",
-            "perception": "true",
-            "planning": "false",
-            "control": "false",
-            "rviz": "false",
-            "use_pointcloud_container": "false",
-        }.items(),
-        condition=IfCondition(LaunchConfiguration("with_autoware")),
-    )
 
     play_cmd = [
         "ros2",
