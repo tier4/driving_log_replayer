@@ -1,2 +1,4 @@
 log/
 .cspell.json
+# MkDocs's dir
+site/

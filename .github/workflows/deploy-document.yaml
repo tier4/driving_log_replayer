@@ -1,4 +1,4 @@
-name: build-document
+name: deploy-document
 
 on:
   push:
@@ -7,23 +7,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  asciidoctor_job:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Build html using asciidoctor
-        id: documents
-        uses: Analog-inc/asciidoctor-action@master
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          shellcommand: asciidoctor ./docs/main.adoc -o ./docs/index.html -r asciidoctor-diagram -a allow-uri-read -a data-uri -a toc=left
+          python-version: 3.x
 
-      - name: Deploy html
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+      - run: pip install mkdocs-material
+      - run: pip install mkdocs-awesome-pages-plugin
+      - run: mkdocs gh-deploy --force
