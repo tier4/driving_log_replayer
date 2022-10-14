@@ -1,6 +1,6 @@
 # Driving Log Replayer シナリオフォーマット定義
 
-riving_log_replayer で用いるシナリオのフォーマットについて述べる。
+driving_log_replayer で用いるシナリオのフォーマットについて述べる。
 
 ## フォーマットに関する注意事項
 
