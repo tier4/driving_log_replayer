@@ -1,0 +1,33 @@
+site_name: Driving Log Replayer Documentation
+site_url: https://tier4.github.io/driving_log_replayer
+edit_uri: edit/main/docs/
+repo_url: https://github.com/tier4/driving_log_replayer
+
+docs_dir: docs
+copyright: Copyright &copy; 2022 TIER IV Inc.
+
+theme:
+  name: material
+  features:
+    - navigation.expand
+    - navigation.indexes
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+  palette:
+    - scheme: default
+      primary: white
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: grey
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+plugins:
+  - awesome-pages
+  - search

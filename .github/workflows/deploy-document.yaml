@@ -1,0 +1,25 @@
+name: deploy-document
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - run: pip install mkdocs-material
+      - run: pip install mkdocs-awesome-pages-plugin
+      - run: mkdocs gh-deploy --force

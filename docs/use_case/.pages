@@ -1,0 +1,6 @@
+nav:
+  - index.md
+  - localization.md
+  - obstacle_segmentation.md
+  - perception.md
+  - performance_diag.md
