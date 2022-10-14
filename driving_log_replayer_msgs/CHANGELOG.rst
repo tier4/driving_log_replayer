@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.4 (2022-10-14)
+------------------
+* docs: use MkDocs
+* Contributors: Hayato Mizushima
+
 1.0.3 (2022-10-13)
 ------------------
 * feat: delete use pointcloud container false (`#12 <https://github.com/tier4/driving_log_replayer/issues/12>`_)
