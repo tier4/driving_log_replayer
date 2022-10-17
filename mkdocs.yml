@@ -31,3 +31,12 @@ theme:
 plugins:
   - awesome-pages
   - search
+  - i18n:
+      default_language: en
+      languages:
+        en:
+          name: English
+          build: true
+        ja:
+          name: 日本語
+          build: true

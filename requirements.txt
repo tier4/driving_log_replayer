@@ -1,0 +1,5 @@
+# for documentation
+mkdocs
+mkdocs-material
+mkdocs-awesome-pages-plugin
+mkdocs-static-i18n
