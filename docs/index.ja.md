@@ -1,6 +1,6 @@
 # Driving Log Replayer Documentation
 
-Driving Log Replayer documentation for English and Japanese.
+Driving Log Replayer 日本語ドキュメント
 
 ## About Driving Log Replayer
 

@@ -1,5 +1,6 @@
 nav:
-  - index.md
+  - index.en.md
+  - index.ja.md
   - introduction
   - scenario_format
   - result_format

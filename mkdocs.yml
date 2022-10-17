@@ -29,7 +29,8 @@ theme:
         name: Switch to light mode
 
 plugins:
-  - awesome-pages
+  - awesome-pages:
+      strict: false
   - search
   - i18n:
       default_language: en
