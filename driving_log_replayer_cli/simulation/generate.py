@@ -251,7 +251,7 @@ class TestScriptGenerator:
                 "ros2 run driving_log_replayer perception_database_result_node.py --ros-args"
             )
             database_result_command += (
-                f" -p scenario_path:={scenario_path} -r result_root_path:={scenario_output_dir}\n"
+                f" -p scenario_path:={scenario_path} -p result_root_path:={scenario_output_dir}\n"
             )
             launch_command_for_all_dataset += database_result_command
         print("launch command generated! => " + launch_command_for_all_dataset)
