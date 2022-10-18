@@ -27,6 +27,7 @@ endif()
 ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   scripts/perception_evaluator_node.py
+  scripts/perception_database_result_node.py
   scripts/perception_starter.py
   scripts/obstacle_segmentation_evaluator_node.py
   scripts/performance_diag_evaluator_node.py
