@@ -34,7 +34,7 @@ class PerceptionDatabaseResult(Node):
             self.get_parameter("scenario_path").get_parameter_value().string_value
         )
         result_root_directory = os.path.expandvars(
-            self.get_parameter("result_root_path").get_parameter_value().string_value
+            self.get_parameter("result_root_directory").get_parameter_value().string_value
         )
         analyzer = PerceptionPerformanceAnalyzer.from_scenario(
             result_root_directory,
