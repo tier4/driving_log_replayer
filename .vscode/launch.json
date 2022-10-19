@@ -13,7 +13,7 @@
       "justMyCode": true
     },
     {
-      "name": "load_perception_result",
+      "name": "load_perception_scene_result",
       "type": "python",
       "request": "launch",
       "program": "driving_log_replayer/scripts/perception_load_scene_result.py",
@@ -30,7 +30,20 @@
       ]
     },
     {
-      "name": "load_obstacle_segmentation_result",
+      "name": "load_perception_database_result",
+      "type": "python",
+      "request": "launch",
+      "program": "driving_log_replayer/scripts/perception_load_database_result.py",
+      "console": "integratedTerminal",
+      "args": [
+        "-r",
+        "$HOME/out/perception/latest/sample",
+        "-s",
+        "$HOME/data/perception/sample/scenario.yaml",
+      ]
+    },
+    {
+      "name": "load_obstacle_segmentation_scene_result",
       "type": "python",
       "request": "launch",
       "program": "driving_log_replayer/scripts/obstacle_segmentation_load_scene_result.py",

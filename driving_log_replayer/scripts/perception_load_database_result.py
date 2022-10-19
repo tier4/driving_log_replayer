@@ -14,28 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import glob
 import json
 import os
 
 from perception_eval.tool import PerceptionPerformanceAnalyzer
-import rclpy
-from rclpy.executors import MultiThreadedExecutor
-from rclpy.node import Node
 
 
-class PerceptionDatabaseResult(Node):
-    def __init__(self):
-        super().__init__("perception_database_result")
-        self.declare_parameter("scenario_path", "")
-        self.declare_parameter("result_root_directory", "")
-
-        scenario_path = os.path.expandvars(
-            self.get_parameter("scenario_path").get_parameter_value().string_value
-        )
-        result_root_directory = os.path.expandvars(
-            self.get_parameter("result_root_directory").get_parameter_value().string_value
-        )
+class PerceptionLoadDatabaseResult:
+    def __init__(self, result_root_directory, scenario_path):
         analyzer = PerceptionPerformanceAnalyzer.from_scenario(
             result_root_directory,
             scenario_path,
@@ -56,14 +44,24 @@ class PerceptionDatabaseResult(Node):
             json.dump(database_metrics, f)
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    executor = MultiThreadedExecutor()
-    perception_database_result = PerceptionDatabaseResult()
-    executor.add_node(perception_database_result)
-    executor.spin()
-    perception_database_result.destroy_node()
-    rclpy.shutdown()
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-r",
+        "--result_root_directory",
+        required=True,
+        help="root directory of result",
+    )
+    parser.add_argument(
+        "-s",
+        "--scenario_path",
+        required=True,
+        help="path of the scenario to load evaluator settings",
+    )
+    args = parser.parse_args()
+    database_result = PerceptionLoadDatabaseResult(
+        os.path.expandvars(args.result_root_directory), os.path.expandvars(args.scenario_path)
+    )
 
 
 if __name__ == "__main__":
