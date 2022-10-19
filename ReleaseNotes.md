@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.0.5
+
+Major Changes
+
+| Module       | Feature             | Brief summary                    | Pull request                                                 | JIRA       | Contributor                                   |
+| ------------ | ------------------- | -------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `perception` | database evaluation | output database_result.json file | [#17](https://github.com/tier4/driving_log_replayer/pull/17) | T4PB-22358 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception` | database evaluation | fix exit with failure 1 file     | [#18](https://github.com/tier4/driving_log_replayer/pull/18) | T4PB-22358 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.0.4
 
 Minor Tweaks
