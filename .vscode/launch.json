@@ -39,7 +39,7 @@
         "-r",
         "$HOME/out/perception/latest/sample",
         "-s",
-        "$HOME/data/perception/sample/scenario.yaml",
+        "$HOME/data/perception/sample/scenario.yaml"
       ]
     },
     {
