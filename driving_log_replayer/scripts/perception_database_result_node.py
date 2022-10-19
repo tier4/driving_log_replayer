@@ -20,7 +20,6 @@ import os
 
 from perception_eval.tool import PerceptionPerformanceAnalyzer
 import rclpy
-from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 
 
@@ -55,13 +54,13 @@ class PerceptionDatabaseResult(Node):
         with open(result_file_path, "w") as f:
             json.dump(database_metrics, f)
 
+        rclpy.shutdown()
+
 
 def main(args=None):
     rclpy.init(args=args)
-    executor = MultiThreadedExecutor()
     perception_database_result = PerceptionDatabaseResult()
-    executor.add_node(perception_database_result)
-    executor.spin()
+    rclpy.spin(perception_database_result)
     perception_database_result.destroy_node()
     rclpy.shutdown()
 
