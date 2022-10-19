@@ -33,7 +33,7 @@
       "name": "load_perception_database_result",
       "type": "python",
       "request": "launch",
-      "program": "driving_log_replayer/scripts/perception_load_database_result.py",
+      "program": "driving_log_replayer/scripts/perception_database_result.py",
       "console": "integratedTerminal",
       "args": [
         "-r",

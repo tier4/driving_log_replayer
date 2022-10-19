@@ -247,10 +247,16 @@ class TestScriptGenerator:
             launch_command = launch_base_command + launch_args + "\n"
             launch_command_for_all_dataset += launch_command
         if is_database_evaluation:
-            database_result_command = (
-                "ros2 run driving_log_replayer perception_database_result_node.py --ros-args"
+            database_result_script_path = os.path.join(
+                self.__autoware_path,
+                "install",
+                "driving_log_replayer",
+                "lib",
+                "driving_log_replayer",
+                "perception_database_result.py",
             )
-            database_result_command += f" -p scenario_path:={scenario_path} -p result_root_directory:={scenario_output_dir}\n"
+            database_result_command = f"python3 {database_result_script_path}"
+            database_result_command += f" -s {scenario_path} -r {scenario_output_dir}\n"
             launch_command_for_all_dataset += database_result_command
         print("launch command generated! => " + launch_command_for_all_dataset)
         return launch_command_for_all_dataset
