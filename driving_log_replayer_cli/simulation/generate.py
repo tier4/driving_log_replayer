@@ -172,12 +172,14 @@ class TestScriptGenerator:
         self, scenario_root: str, scenario_output_dir: str, scenario_yaml_obj
     ) -> Optional[str]:
         launch_command_for_all_dataset = ""
+        scenario_path = os.path.join(scenario_root, "scenario.yaml")
         t4_dataset_base_path = os.path.join(scenario_root, "t4_dataset")
         t4_datasets = scenario_yaml_obj["Evaluation"]["Datasets"]
-        for i, dataset in enumerate(t4_datasets):
-            # 最初のキー(dataset_id)を取得する
+        is_database_evaluation = True if len(t4_datasets) > 1 else False
+        for dataset in t4_datasets:
+            # get dataset_id
             key = next(iter(dataset))
-            # データセットごとに出力先のサブフォルダを作る
+            # create sub directory for the dataset
             output_dir_per_dataset = os.path.join(scenario_output_dir, key)
             os.makedirs(output_dir_per_dataset)
             vehicle_id = dataset[key].get("VehicleId", "")
@@ -213,7 +215,8 @@ class TestScriptGenerator:
             use_case_name = scenario_yaml_obj["Evaluation"]["UseCaseName"]
             launch_base_command = f"ros2 launch driving_log_replayer {use_case_name}.launch.py"
             # evaluation component args
-            launch_args = " scenario_path:=" + os.path.join(scenario_root, "scenario.yaml")
+
+            launch_args = " scenario_path:=" + scenario_path
             launch_args += " result_json_path:=" + os.path.join(
                 output_dir_per_dataset, "result.json"
             )
@@ -243,5 +246,11 @@ class TestScriptGenerator:
                 launch_args += " sensing:=" + launch_sensing
             launch_command = launch_base_command + launch_args + "\n"
             launch_command_for_all_dataset += launch_command
+        if is_database_evaluation:
+            database_result_command = (
+                "ros2 run driving_log_replayer perception_database_result_node.py --ros-args"
+            )
+            database_result_command += f" -p scenario_path:={scenario_path} -p result_root_directory:={scenario_output_dir}\n"
+            launch_command_for_all_dataset += database_result_command
         print("launch command generated! => " + launch_command_for_all_dataset)
         return launch_command_for_all_dataset
