@@ -56,7 +56,7 @@ output_directory = "path of the folder to output the simulation results"
 autoware_path = "path of the autoware workspace folder"
 ```
 
-設定例
+example setting
 
 ```toml
 # default is required and selected when profile name is omitted

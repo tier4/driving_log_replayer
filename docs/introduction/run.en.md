@@ -43,7 +43,7 @@ driving_log_replayer configure register -d ${data_directory} -o ${output_directo
 
 ### driving_log_replayer simulation
 
-simulation 実行に利用する。
+Command to run simulation
 
 ```shell
 # simulation run, both jsonl and json result files are output
