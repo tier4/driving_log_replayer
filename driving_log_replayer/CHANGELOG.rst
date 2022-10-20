@@ -2,6 +2,23 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.5 (2022-10-19)
+------------------
+* Fix/`#16 <https://github.com/tier4/driving_log_replayer/issues/16>`_ database result node failure 1 (`#18 <https://github.com/tier4/driving_log_replayer/issues/18>`_)
+  * chore: git mv
+  * fix: change database result generation command
+* Feat/`#16 <https://github.com/tier4/driving_log_replayer/issues/16>`_ perception database evaluation result (`#17 <https://github.com/tier4/driving_log_replayer/issues/17>`_)
+  * feat: save database result as file
+  * fix: add command
+  * fix: parameter
+  * fix: arg name
+  * fix: typo
+  * fix: get pkl file and add debug program
+  * fix: shutdown
+  * fix: lint
+  * fix: lint
+* Contributors: Hayato Mizushima
+
 1.0.4 (2022-10-14)
 ------------------
 * docs: use MkDocs
