@@ -1,16 +1,16 @@
-# 準備
+# Preparation
 
-driving_log_replayer を利用するには以下の作業が必要となる。
+The following work is required to use driving_log_replayer.
 
-1. driving_log_replayer を autoware と一緒にビルドする
-2. driving_log_replayer_cli をインストールする
-3. cli の設定ファイルを作成する
-4. 評価用のシナリオとデータセットを指定のディレクトリに配置する
+1. Build driving_log_replayer with autoware
+2. install driving_log_replayer_cli
+3. create the cli configuration file
+4. Place the scenario and dataset for evaluation in the specified directory
 
-## driving_log_replayer パッケージビルド
+## build driving_log_replayer
 
-本パッケージは Autoware の機能を使用するので、Autoware と一緒にセットアップする。
-autoware のルートにある simulator.repos に driving_log_replayer と driving_log_replayer が依存する perception_eval、ros2_numpy を追加し、autoware と一緒にビルドする。
+This package uses Autoware functionality, so it should be set up with Autoware.
+Add driving_log_replayer and driving_log_replayer dependencies perception_eval and ros2_numpy to simulator.repos in the root of autoware and build it with autoware.
 
 ```yaml
 simulator/driving_log_replayer:
@@ -27,33 +27,33 @@ simulator/vendor/ros2_numpy:
   version: humble
 ```
 
-## cli インストール
+## install cli
 
-driving_log_replayer は、シナリオに記述したパラメータを launch の引数に設定して起動する仕組みになっている。
-cli がシナリオをパースして launch の引数をセットして実行してくれるので cli をインストールしておく必要がある。
-実際に叩いてる ros2 launch のコマンドはターミナルに表示され、また結果の出力先フォルダに run.bash というファイル名で実行したコマンドがファイルで保存される。
+The driving_log_replayer is invoked by setting the parameters described in the scenario as launch arguments.
+Since cli parses the scenario, sets the launch argument, and executes it, it is necessary to install cli.
+The actual ros2 launch command is displayed in the terminal, and the executed command is saved as a file named run.bash in the output folder.
 
 ```shell
 pipx install git+https://github.com/tier4/driving_log_replayer.git
 ```
 
-### cli 設定
+### set up cli
 
-driving_log_replayer_cli では、cli に渡す引数を少なくするために引数に指定するディレクトリを設定ファイルに記載し設定ファイルから読み込む形式を取る。
+In driving_log_replayer_cli, in order to reduce the number of arguments to be passed to cli, the directories specified as arguments are described in a configuration file, which is then read from the configuration file.
 
-よって cli を使う前に以下の形式で$HOME/.driving_log_replayer.config.toml ファイルを作成しておく。
-手動で作成、もしくは driving_log_replayer configure コマンドで作成する。
+Therefore, before using the cli, create a $HOME/.driving_log_replayer.config.toml file in the following format.
+You can create it manually or by using the driving_log_replayer configure command.
 
-profile は最低 1 つ必要で、1 つは default という名前である必要がある。
+At least one profile is required, and one must be named default.
 
-以降で説明するコマンドで-p ${profile}で profile 名を指定すると、プロファイルに指定した設定が読み込まれる。
-複数の autoware を切り替えて利用することが出来、プロファイルを何も指定しない場合は default が使用される。
+Specifying the profile name with -p ${profile} in the commands described below will load the settings specified in the profile.
+You can switch between multiple autoware profiles, and if no profile is specified, default is used.
 
 ```toml
 [profile_name]
-data_directory = "シミュレーションの入力に使うデータフォルダのパス"
-output_directory = "シミュレーションの結果を出力するフォルダのパス"
-autoware_path = "autowareのprojフォルダのパス"
+data_directory = "path of the data folder used as input for the simulation"
+output_directory = "path of the folder to output the simulation results"
+autoware_path = "path of the autoware proj folder"
 ```
 
 設定例
