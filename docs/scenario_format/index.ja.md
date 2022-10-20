@@ -22,17 +22,19 @@ driving_log_replayer で用いるシナリオのフォーマットについて�
 
 ## フォーマット
 
-基本構造は以下の通り。このフォーマットを元に、以下で説明する型を用いて、具体的なシナリオを記述していく。
+基本構造は以下の通り。各キーの詳細は以下で記述する。
+
+### 2.x.xフォーマット
+
+localizationとperformance_diagで使用する。
 
 ```yaml
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 2.x.x
 ScenarioName: String
 ScenarioDescription: String
-# vehicle setup
 SensorModel: String
 VehicleModel: String
 VehicleId: String
-# map
 LocalMapPath: String
 Evaluation:
   UseCaseName: String
@@ -40,10 +42,35 @@ Evaluation:
   Conditions: Dictionary # refer use case
 ```
 
+### 3.x.xフォーマット
+
+perceptionとobstacle_segmentationで使用する。
+VehicleIdとLocalMapPathがt4_datasetのid毎に設定するように変更されている。
+
+```yaml
+ScenarioFormatVersion: 3.x.x
+ScenarioName: String
+ScenarioDescription: String
+SensorModel: String
+VehicleModel: String
+Evaluation:
+  UseCaseName: String
+  UseCaseFormatVersion: String
+  Datasets:
+    - DatasetName:
+        VehicleId: String
+        LocalMapPath: String
+  Conditions: Dictionary # refer use case
+```
+
 ### ScenarioFormatVersion
 
 シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
-現バージョンは 2.2.0 で、フォーマットの更新の度にマイナーバージョンを更新する。
+
+localizationとperformance_diagは2.x.x系を使用し、最新バージョンは 2.2.0
+perceptionとobstacle_segmentationは3.x.x系を使用し、最新バージョンは3.0.0
+
+フォーマットの更新の度にマイナーバージョンを更新する。
 
 ### ScenarioName
 
@@ -67,7 +94,7 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を�
 
 車両 ID の指定がない場合は、default を指定する。
 
-### LocalMapPath(2.1.0 で導入)
+### LocalMapPath
 
 ローカル環境で使用する地図のフォルダのパスを記述する。
 
