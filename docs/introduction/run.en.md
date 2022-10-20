@@ -1,14 +1,14 @@
-# 起動方法
+# How to run
 
-driving_log_replayer を起動するには、autoware のワークスペースのビルド、cli のインストール、及び、評価するデータの準備を事前に済ませている必要がある。
+To run driving_log_replayer, the autoware workspace must have been built, the cli installed, and the data to be evaluated prepared in advance.
 
-## コマンド
+## Command
 
-driving_log_replayer_cli のコマンドについて解説する。
+The following is a description of the driving_log_replayer_cli commands.
 
-driving_log_replayer_cli をインストールすると、ターミナルで driving_log_replayer というコマンドが実行できるようになる。
-driving_log_replayer コマンドは、サブコマンドを持っている。
-各コマンドに必要な引数は--help オプションを指定すると表示できるようになっている。
+After installing driving_log_replayer_cli, the command driving_log_replayer can be executed in the terminal.
+The driving_log_replayer command has subcommands.
+The arguments required for each command can be displayed by specifying the --help option.
 
 ```shell
 # driving_log_replayer top level help
@@ -24,19 +24,20 @@ driving_log_replayer subcommand --help
 driving_log_replayer subcommand subsubcommand --help
 ```
 
-## cli サブコマンド
+## cli subcommand
 
-サブコマンドとして以下が存在する
+The following subcommands exist
 
 - configure
 - simulation
 
 ### driving_log_replayer configure
 
-設定ファイル.driving_log_replayer.config.toml を操作するコマンド。
+Command to manipulate the configuration file .driving_log_replayer.config.toml.
 
 ```shell
-# -pで指定したprofile名デフォルト値defaultにdata_directory、output_directory、autoware_pathを設定する
+# Set data_directory, output_directory, and autoware_path to the profile name specified by -p.
+# If -p is omitted, default is specified for the profile name.
 driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
 ```
 
@@ -45,25 +46,25 @@ driving_log_replayer configure register -d ${data_directory} -o ${output_directo
 simulation 実行に利用する。
 
 ```shell
-# simulation 実行、jsonlとjsonの両方の結果ファイルが出力される
+# simulation run, both jsonl and json result files are output
 driving_log_replayer simulation run -p ${profile}
 
-# simulation 実行、jsonlをjsonに変換しない
+# simulation run, do not convert jsonl to json
 driving_log_replayer simulation run -p ${profile} --no-json
 
-# 結果の確認、output_directory以下の結果ファイルのサマリーを表示する
+# Check results and display summary of result files under output_directory
 driving_log_replayer simulation show-result ${output_directory}
 
-# 結果ファイルをjson変換、クラウドで実行したjsonlやno-jsonで実行した結果ファイルを変換する
+# Convert result files to json
 driving_log_replayer simulation convert-result ${output_directory}
 ```
 
-## wasim による driving_log_replayer 実行
+## Run driving_log_replayer with wasim
 
-TIER IV が提供している[Autoware Evaluator](https://docs.web.auto/user-manuals/evaluator/introduction "Autoware Evaluator")へ
-アクセス権がある場合は[wasim](https://docs.web.auto/developers-guides/wasim/introduction "wasim")を利用することもできる。
+If you have access rights to [Autoware Evaluator](https://docs.web.auto/user-manuals/evaluator/introduction) provided by TIER IV,
+ you can also use [wasim](https://docs.web.auto/developers-guides/wasim/introduction).
 
-使い方は[ドキュメントサイト](https://docs.web.auto/developers-guides/wasim/use-cases/run-simulations-locally/ "ドキュメントサイト")を参照。
+See [documentation site](https://docs.web.auto/developers-guides/wasim/use-cases/run-simulations-locally/) for usage.
 
-wasim は Autoware Evaluator に登録済みのシナリオをダウンロードして実行するので、クラウド環境に登録済みのシナリオしか実行出来ない。
-クラウドに登録してないシナリオは driving_log_replayer_cli を使用する。
+Since wasim downloads and executes scenarios from Autoware Evaluator, it can only execute scenarios that are already registered in the cloud environment.
+For scenarios not registered in the cloud, use driving_log_replayer_cli.

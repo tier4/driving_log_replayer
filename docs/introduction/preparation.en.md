@@ -53,13 +53,13 @@ You can switch between multiple autoware profiles, and if no profile is specifie
 [profile_name]
 data_directory = "path of the data folder used as input for the simulation"
 output_directory = "path of the folder to output the simulation results"
-autoware_path = "path of the autoware proj folder"
+autoware_path = "path of the autoware workspace folder"
 ```
 
 設定例
 
 ```toml
-# defaultは必ず必要、profile名を省略したときに選択される
+# default is required and selected when profile name is omitted
 [default]
 data_directory = "$HOME/driving_log_replayer_data/default"
 output_directory = "$HOME/driving_log_replayer_output/default"
@@ -81,78 +81,72 @@ output_directory = "$HOME/driving_log_replayer_output/perception"
 autoware_path = "$HOME/autoware"
 ```
 
-## フォルダ構成、ファイル命名規則
+## Folder structure and file naming rules
 
-driving_log_replayer が期待するフォルダ構成、ファイル命名規則について解説する。
+This section describes the folder structure and file naming rules expected by driving_log_replayer.
 
-ROS2 版 driving_log_replayer では、フォルダ構成、ファイル名などを固定にすることで、シナリオに記述するパスや、コマンドに渡す引数を少なくしている。また、テストを連続で回せるようになっている。
+In driving_log_replayer, the folder structure and file names are fixed to reduce the number of paths to be described in the scenario and the arguments to be passed to the command.
+Also, by placing multiple folders in data_directory, multiple tests can be executed in succession.
 
-### データフォルダ
+### Data Folder
 
-シミュレーション実行時に使用するリソースを保存しておくフォルダ。
+A folder where resources used in the simulation are stored.
 
-各ユースケース毎に、シナリオと、bag、dataset を配置する。
+For each test case, a scenario, bag, and dataset are placed.
 
-### localization, performance_diag のデータフォルダ構成
+### Data Folder Structure for localization and performance_diag
 
 ```shell
-driving_log_replayer_data                           // 複数個のシナリオを収めた親ディレクトリ 任意の名称をつけてよい
+driving_log_replayer_data             // .driving_log_replayer.config の data_directory
 │
-├── S001                           // シナリオディレクトリ 任意の名称をつけてよい
-│   ├── scenario.yaml             // シナリオ
-│   └── input_bag                 // センサーデータが収録された入力用のbag
-│       ├── input_bag_0.db3       // bagの実態
-│       └── metadata.yaml         // bagのmetadata
+├── TC001                          // Test case directory. Directry name can be named arbitrarily
+│   ├── scenario.yaml             // Scenario
+│   └── input_bag                 // Bag for input containing sensor data
+│       ├── input_bag_0.db3       // Binary file of bag
+│       └── metadata.yaml         // Metadata file of bag
 │
-├── S002                           // シナリオディレクトリ S001と構成は同じ
+├── TC002                           // Test case directory. Same structure as TC001
 ...
 
 ```
 
-### obstacle_segmentation, perception のデータフォルダ構成
+### Data Folder Structure for obstacle_segmentation and perception
 
 ```shell
-driving_log_replayer_data                            // 複数個のシナリオを収めた親ディレクトリ 任意の名称をつけてよい
+driving_log_replayer_data              // .driving_log_replayer.config の data_directory
 │
-├── S001                            // シナリオディレクトリ 任意の名称をつけてよい
-│   ├── scenario.yaml                   // シナリオ
+├── TC001                           // Test case directory. Directry name can be named arbitrarily
+│   ├── scenario.yaml              // Scenario
 │   └── t4_dataset
-│       ├── T4D001                 // t4_datasetディレクトリ、sensingの場合は1個
+│       ├── T4D001                 // t4_dataset directory. If use case is sensing, t4_dataset is always one.
 │       │   ├── annotation
 │       │   ├── data
-│       │   │   ├── CAM_BACK
-│       │   │   ├── CAM_BACK_LEFT
-│       │   │   ├── CAM_BACK_RIGHT
-│       │   │   ├── CAM_FRONT
-│       │   │   ├── CAM_FRONT_LEFT
-│       │   │   ├── CAM_FRONT_RIGHT
 │       │   │   └── LIDAR_CONCAT
 │       │   └── input_bag
-│       └── T4D002                 // t4_datasetディレクトリ、perceptionの場合は複数個持てる
+│       └── T4D002                 // t4_dataset directory. If use case is peception, t4_dataset can be multiple.
 │           ├── annotation
 │           ├── data
-│           │   ├── CAM_BACK
-│           │   ├── CAM_BACK_LEFT
-│           │   ├── CAM_BACK_RIGHT
-│           │   ├── CAM_FRONT
-│           │   ├── CAM_FRONT_LEFT
-│           │   ├── CAM_FRONT_RIGHT
 │           │   └── LIDAR_CONCAT
 │           └── input_bag
 │          ...
 │
-├── S002                            // シナリオディレクトリ S001と構成は同じ
+├── TC002                           // Test case directory. Same structure as TC001
+...
+
 ```
 
-### マップフォルダ
+### Map Folder
 
-シミュレーション実行時に使用する地図をまとめて保存しておくフォルダ。
+A folder where all the maps used in the simulation are stored.
 
 ```shell
 autoware_map
 │
-├── LocalMapPathName         // ローカルでの任意のフォルダ名
-│   ├── lanelet2_map.osm    // laneletファイル
-│   └── pointcloud_map.pcd  // pcdファイル
+├── LocalMapPath1            // Path specified by LocalMapPath in the scenario
+│   ├── lanelet2_map.osm    // lanelet file
+│   └── pointcloud_map.pcd  // pcd file
+│
+├── LocalMapPath2            // Path specified by LocalMapPath in the scenario
+...
 
 ```

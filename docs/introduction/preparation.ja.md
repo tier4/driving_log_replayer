@@ -53,7 +53,7 @@ profile は最低 1 つ必要で、1 つは default という名前である必�
 [profile_name]
 data_directory = "シミュレーションの入力に使うデータフォルダのパス"
 output_directory = "シミュレーションの結果を出力するフォルダのパス"
-autoware_path = "autowareのprojフォルダのパス"
+autoware_path = "autowareのワークスペースのパス"
 ```
 
 設定例
@@ -85,26 +85,27 @@ autoware_path = "$HOME/autoware"
 
 driving_log_replayer が期待するフォルダ構成、ファイル命名規則について解説する。
 
-ROS2 版 driving_log_replayer では、フォルダ構成、ファイル名などを固定にすることで、シナリオに記述するパスや、コマンドに渡す引数を少なくしている。また、テストを連続で回せるようになっている。
+driving_log_replayer では、フォルダ構成、ファイル名などを固定にすることで、シナリオに記述するパスや、コマンドに渡す引数を少なくしている。
+また、data_directoryに複数のフォルダを置くことで、複数のテストを連続で実行できるようになっている。
 
 ### データフォルダ
 
-シミュレーション実行時に使用するリソースを保存しておくフォルダ。
+シミュレーションで使用するリソースを保存しておくフォルダ。
 
-各ユースケース毎に、シナリオと、bag、dataset を配置する。
+テストケース毎に、シナリオと、bag、dataset を配置する。
 
 ### localization, performance_diag のデータフォルダ構成
 
 ```shell
-driving_log_replayer_data                           // 複数個のシナリオを収めた親ディレクトリ 任意の名称をつけてよい
+driving_log_replayer_data             // .driving_log_replayer.config の data_directory
 │
-├── S001                           // シナリオディレクトリ 任意の名称をつけてよい
+├── TC001                          // テストケースディレクトリ 任意の名称をつけてよい
 │   ├── scenario.yaml             // シナリオ
 │   └── input_bag                 // センサーデータが収録された入力用のbag
-│       ├── input_bag_0.db3       // bagの実態
+│       ├── input_bag_0.db3       // bagのバイナリファイル
 │       └── metadata.yaml         // bagのmetadata
 │
-├── S002                           // シナリオディレクトリ S001と構成は同じ
+├── TC002                           // テストケースディレクトリ S001と構成は同じ
 ...
 
 ```
@@ -112,47 +113,40 @@ driving_log_replayer_data                           // 複数個のシナリオ�
 ### obstacle_segmentation, perception のデータフォルダ構成
 
 ```shell
-driving_log_replayer_data                            // 複数個のシナリオを収めた親ディレクトリ 任意の名称をつけてよい
+driving_log_replayer_data              // .driving_log_replayer.config の data_directory
 │
-├── S001                            // シナリオディレクトリ 任意の名称をつけてよい
-│   ├── scenario.yaml                   // シナリオ
+├── TC001                           // シナリオディレクトリ 任意の名称をつけてよい
+│   ├── scenario.yaml              // シナリオ
 │   └── t4_dataset
 │       ├── T4D001                 // t4_datasetディレクトリ、sensingの場合は1個
 │       │   ├── annotation
 │       │   ├── data
-│       │   │   ├── CAM_BACK
-│       │   │   ├── CAM_BACK_LEFT
-│       │   │   ├── CAM_BACK_RIGHT
-│       │   │   ├── CAM_FRONT
-│       │   │   ├── CAM_FRONT_LEFT
-│       │   │   ├── CAM_FRONT_RIGHT
 │       │   │   └── LIDAR_CONCAT
 │       │   └── input_bag
 │       └── T4D002                 // t4_datasetディレクトリ、perceptionの場合は複数個持てる
 │           ├── annotation
 │           ├── data
-│           │   ├── CAM_BACK
-│           │   ├── CAM_BACK_LEFT
-│           │   ├── CAM_BACK_RIGHT
-│           │   ├── CAM_FRONT
-│           │   ├── CAM_FRONT_LEFT
-│           │   ├── CAM_FRONT_RIGHT
 │           │   └── LIDAR_CONCAT
 │           └── input_bag
 │          ...
 │
-├── S002                            // シナリオディレクトリ S001と構成は同じ
+├── TC002                           // シナリオディレクトリ S001と構成は同じ
+...
+
 ```
 
 ### マップフォルダ
 
-シミュレーション実行時に使用する地図をまとめて保存しておくフォルダ。
+シミュレーションで使用する地図を保存しておくフォルダ。
 
 ```shell
 autoware_map
 │
-├── LocalMapPathName         // ローカルでの任意のフォルダ名
+├── LocalMapPath1            // シナリオのLocalMapPathで指定するパス
 │   ├── lanelet2_map.osm    // laneletファイル
 │   └── pointcloud_map.pcd  // pcdファイル
+│
+├── LocalMapPath2            // シナリオのLocalMapPathで指定するパス
+...
 
 ```
