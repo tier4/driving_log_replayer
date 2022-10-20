@@ -4,4 +4,4 @@
 
 ## Driving Log Replayer について
 
-Driving Log Replayer は Autoware.Universe の機能を評価する ROS2 のパッケージです。 
+Driving Log Replayer は Autoware.Universe の機能を評価する ROS2 のパッケージです。

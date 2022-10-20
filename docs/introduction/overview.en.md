@@ -1,32 +1,30 @@
-# パッケージ概要
+# Package Overview
 
-Driving Log Replayer は、評価の条件が記載されたシナリオをパッケージが読み取り、autoware を起動し、評価結果を jsonl ファイル形式で出力するという動作を行うパッケージになっている。
-概要を図に示す。
+Driving Log Replayer is the package that reads a scenario describing the conditions of evaluation, starts autoware, and outputs the evaluation results in jsonl file format.
+The overview is shown in the figure below.
 
 ![overview](images/overview.drawio.svg)
 
-## 開発環境
+## Operating Environment
 
-autoware.universe が動作する環境で以下の通りとする。
+The system shall be as follows.
 
+- CPU amd64
 - Ubuntu 20.04 / 22.04
 - ROS galactic / humble
 - Python 3.8 / 3.10
+- NVIDIA GPU (required if running perception)
 
-## 実行環境
+## Usage flow
 
-開発環境と同じ。
-
-## 利用フロー
-
-1. 評価用の bag を実車で取得する
-2. 取得した bag を必要な時間、topic だけ残るようにフィルタする
-   1. ROS2 の場合は galactic でも未だに filter コマンドが実装されていないので tier4 で開発した ros2bag_extensions を使用する
-   2. 収録時に autoware が出力したトピックを落としてセンサートピックだけを残す
-   3. 走行前や走行後の評価に不要な時間をカットする(ただし、初期位置位置合わせに車両が静止している時間が 3 秒以上必要なので走行開始前の 10 秒程度は残しておく)
-3. シナリオを作成する
-   1. sample フォルダ内にシナリオの例あり
-   2. 記述方法はフォーマット定義を参照
-4. ユースケースが obstacle_segmentation, perception の場合、t4_dataset への変換に対応したアノテーションツールでアノテーションを実施する。
-   1. t4_dataset 変換ツールは公開準備中
-5. 評価を実行する。
+1. acquire bags for evaluation using the actual vehicle.
+2. filter the acquired bags so that only the required time and topics remain
+   1. use ros2bag_extensions developed in TIER IV
+   2. drop the topics output by autoware at the time of recording and leave only the sensor topics
+   3. cut out time not needed for evaluation before and after driving (but leave 10 seconds before driving because the vehicle needs at least 3 seconds to be parked for initial positioning)
+3. create the scenario
+   1. there are some example scenarios in the sample folder.
+   2. refer to the format definition for description contents.
+4. If the use case is obstacle_segmentation or perception, annotate with an annotation tool that supports conversion to t4_dataset.
+   1. t4_dataset conversion tool is in preparation for release
+5. perform the evaluation.
