@@ -24,7 +24,7 @@ driving_log_replayer で用いるシナリオのフォーマットについて�
 
 基本構造は以下の通り。各キーの詳細は以下で記述する。
 
-### 2.x.xフォーマット
+### 2.x.x フォーマット
 
 localizationとperformance_diagで使用する。
 
@@ -42,7 +42,7 @@ Evaluation:
   Conditions: Dictionary # refer use case
 ```
 
-### 3.x.xフォーマット
+### 3.x.x フォーマット
 
 perceptionとobstacle_segmentationで使用する。
 VehicleIdとLocalMapPathがt4_datasetのid毎に設定するように変更されている。
@@ -67,8 +67,8 @@ Evaluation:
 
 シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
 
-localizationとperformance_diagは2.x.x系を使用し、最新バージョンは 2.2.0
-perceptionとobstacle_segmentationは3.x.x系を使用し、最新バージョンは3.0.0
+localizationとperformance_diagは2.x.x系を使用する。2.x.xの最新バージョンは 2.2.0
+perceptionとobstacle_segmentationは3.x.x系を使用する。3.x.xの最新バージョンは3.0.0
 
 フォーマットの更新の度にマイナーバージョンを更新する。
 
@@ -102,28 +102,19 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を�
 
 ### Evaluation
 
-シミュレーション結果を評価する条件を定義する。
+シミュレーションの評価条件を定義する。
 
 #### UseCaseName
 
 評価プログラムを指定する。
 
-- 診断機能： performance_diag
-- 自己位置： localization
-
-など評価したいユースケースを指定する。
-
-ここで指定された名前と同じ名前の評価用 launch を呼び出すことで評価が実行される。
+ここで指定された名前と同じ名前の launch ファイルを呼び出すことで評価が実行される。
 driving_log_replayer/launch に指定した名称と同じ名称の launch.py ファイルが存在している必要がある。
-
-評価用ノードを追加して、driving_log_replayer/launch に launch ファイルを追加することで、評価できるユースケース数を増やせる。
 
 #### UseCaseFormatVersion
 
 ユースケースのフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
 メジャーバージョンが 1 になるまでは、フォーマットの更新の度にマイナーバージョンを更新する。初期バージョンは 0.1.0。
-
-シナリオと評価プログラムの両方に format バージョンを埋め込み、評価プログラムとフォーマットのバージョンが一致しているかをチェックする。
 
 #### Conditions
 

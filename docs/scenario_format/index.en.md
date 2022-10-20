@@ -1,38 +1,40 @@
 # Driving Log Replayer Scenario Format Definition
 
-driving_log_replayer で用いるシナリオのフォーマットについて述べる。
+This section describes the scenario format used in driving_log_replayer.
 
-## フォーマットに関する注意事項
+## Notes on the format
 
-- キーは CamelCase にて定義する。
-- 座標系に関しては、特に指定なければ Lanelet2 と同じ座標系にて記述。マップ座標系。
-- 単位系に関しては、特に指定がなければ以下を使用する。
+- Keys are defined in CamelCase.
+- Unless otherwise specified, the coordinate system is the same as that of Lanelet2. Map coordinate system.
+- Unless otherwise specified, the following unit system is used.
 
 ```shell
-距離: m
-速度: m/s
-加速度: m/s^2
-時間: s
-時刻: UNIX TIME
+Distance: m
+Velocity: m/s
+acceleration: m/s^2
+Time: s
+Time: UNIX TIME
 ```
 
-## サンプル
+## Samples
 
-シナリオのサンプルを docs/sample フォルダに格納している。
+Sample scenarios are stored in the docs/sample folder.
 
-## フォーマット
+## Format
 
-基本構造は以下の通り。このフォーマットを元に、以下で説明する型を用いて、具体的なシナリオを記述していく。
+The basic structure is as follows. Details of each key are described below.
+
+### 2.x.x Format
+
+for localization and performance_diag
 
 ```yaml
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 2.x.x
 ScenarioName: String
 ScenarioDescription: String
-# vehicle setup
 SensorModel: String
 VehicleModel: String
 VehicleId: String
-# map
 LocalMapPath: String
 Evaluation:
   UseCaseName: String
@@ -40,66 +42,84 @@ Evaluation:
   Conditions: Dictionary # refer use case
 ```
 
+### 3.x.x Format
+
+for perception and obstacle_segmentation
+
+VehicleId and LocalMapPath have been changed to be set for each id of t4_dataset.
+
+```yaml
+ScenarioFormatVersion: 3.x.x
+ScenarioName: String
+ScenarioDescription: String
+SensorModel: String
+VehicleModel: String
+Evaluation:
+  UseCaseName: String
+  UseCaseFormatVersion: String
+  Datasets:
+    - DatasetName:
+        VehicleId: String
+        LocalMapPath: String
+  Conditions: Dictionary # refer use case
+```
+
 ### ScenarioFormatVersion
 
-シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
-現バージョンは 2.2.0 で、フォーマットの更新の度にマイナーバージョンを更新する。
+Describe the version information of the scenario format. Use the semantic version.
+
+localization and performance_diag use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
+Perception and obstacle_segmentation use 3.x.x series. The latest version of 3.x.x is 3.0.0
+
+Minor versions are updated each time the format is updated.
 
 ### ScenarioName
 
-シナリオの名前を記述する。Autoware Evaluator 上でシナリオの表示名として使用される。
+Describes the name of the scenario, used as the display name of the scenario on the Autoware Evaluator.
 
 ### ScenarioDescription
 
-シナリオの説明を記述する。Autoware Evaluator 上でシナリオの説明として使用される。
+Describes a scenario description, used as a scenario description on the Autoware Evaluator.
 
 ### SensorModel
 
-autoware_launch/launch/logging_simulator.launch.xml の引数の sensor_model を指定する
+Specify sensor_model as argument in autoware_launch/launch/logging_simulator.launch.xml
 
 ### VehicleModel
 
-autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_model を指定する
+Specify vehicle_model as argument in autoware_launch/launch/logging_simulator.launch.xml
 
 ### VehicleId
 
-autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。
+Specify vehicle_id as argument in autoware_launch/launch/logging_simulator.launch.xml
 
-車両 ID の指定がない場合は、default を指定する。
+If vehicle ID is not specified, use "default".
 
-### LocalMapPath(2.1.0 で導入)
+### LocalMapPath
 
-ローカル環境で使用する地図のフォルダのパスを記述する。
+Describes the path of the map folder to be used in the local environment.
 
-`$HOME`のような環境変数を使用することが出来る。
+Environment variables such as `$HOME` can be used.
 
 ### Evaluation
 
-シミュレーション結果を評価する条件を定義する。
+Define the evaluation conditions for the simulation.
 
 #### UseCaseName
 
-評価プログラムを指定する。
+Specify an evaluation program.
 
-- 診断機能： performance_diag
-- 自己位置： localization
-
-など評価したいユースケースを指定する。
-
-ここで指定された名前と同じ名前の評価用 launch を呼び出すことで評価が実行される。
-driving_log_replayer/launch に指定した名称と同じ名称の launch.py ファイルが存在している必要がある。
-
-評価用ノードを追加して、driving_log_replayer/launch に launch ファイルを追加することで、評価できるユースケース数を増やせる。
+The evaluation is executed by calling the launch file with the same name as the name specified here.
+The launch.py file with the same name as the specified name must exist in driving_log_replayer/launch.
 
 #### UseCaseFormatVersion
 
-ユースケースのフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
-メジャーバージョンが 1 になるまでは、フォーマットの更新の度にマイナーバージョンを更新する。初期バージョンは 0.1.0。
-
-シナリオと評価プログラムの両方に format バージョンを埋め込み、評価プログラムとフォーマットのバージョンが一致しているかをチェックする。
+Describe the version information of the use case format. The semantic version shall be used.
+Until the major version becomes 1, the minor version is updated every time the format is updated.
+The initial version is 0.1.0.
 
 #### Conditions
 
-ユースケース毎に設定できる条件を指定する。
+Specify conditions that can be set for each use case.
 
-指定可能な条件は各ユースケースを参照。
+Refer to each use case for the conditions that can be specified.
