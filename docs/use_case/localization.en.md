@@ -6,13 +6,17 @@ In the evaluation of self-location estimation, the reliability and convergence o
 
 ## Evaluation method
 
-The launch file "localization.launch.py" is used for evaluation.
+Use localization.launch.py to evaluate.
 When the launch file is launched, the following is executed and evaluated.
 
 1. launch evaluation node (localization_evaluator_node), logging_simulator.launch and ros2 bag play
 2. autoware receives sensor data output from bag and performs self-location estimation
 3. evaluation node subscribes topics, determines whether NDT reliability and convergence meet the criteria, and records the results in a file
 4. when the playback of the bag is finished, launch is automatically terminated and the evaluation is completed.
+
+## Evaluation Result
+
+For each subscription, the judgment result described below is output.
 
 ### Reliability of NDT
 
@@ -29,10 +33,6 @@ Evaluate using the following
 - /localization/pose_twist_fusion_filter/pose
 
 However, the convergence evaluation starts with /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
-
-## Evaluation Result
-
-For each subscription, the judgment result described below is output.
 
 ### Reliability Normal
 

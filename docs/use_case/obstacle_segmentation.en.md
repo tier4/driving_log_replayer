@@ -1,25 +1,62 @@
-# 点群生成の評価
+# Evaluate point cloud generation
 
-Autoware の点群処理のプロセス(sensing→perception)が動作して、/perception/obstacle_segmentation/pointcloud が意図通りに出力されるかどうかを評価する。
+Evaluate if the Autoware point cloud process (sensing -> perception) runs and /perception/obstacle_segmentation/pointcloud is output as intended.
 
-点群が意図通りに出力されているかの判定は、t4_dataset と点群を用いて行う。
+The judgment whether the point cloud is output as intended is made using t4_dataset and the point cloud.
+The following evaluations are performed simultaneously
 
-1. 事前にアノテーションしておいた車両や歩行者などが検知出来ているかの評価（detection: 検知）
-2. シナリオで定義した自車両周りとレーンとが重なるエリアに余分な点群が出ていないかの評価（non_detection: 非検知）
+1. evaluation of whether vehicles, pedestrians, etc. annotated in advance are detected (detection)
+2. evaluation of whether extra point clouds appear in the overlapping area between the lane and the polygons around the vehicle defined in the scenario (non_detection).
 
-の評価を同時に行う。
+The recommended annotation tool is [Deepen](https://www.deepen.ai/), but any tool that supports conversion to t4_dataset is available.
+Multiple annotation tools can be used as long as a conversion tool can be created.
 
-アノテーションツールは[Deepen](https://www.deepen.ai/)が推奨であるが、t4_dataset への変換がサポートされているツールであればよく、変換ツールさえ作成できれば複数のアノテーションツールを利用することが可能である。
+## Evaluation method
 
-## 評価方法
+Use obstacle_segmentation.launch.py to evaluate.
+When launch is launched, the following is executed and evaluated.
 
-driving_log_replayer/launch/obstacle_segmentation.launch.py を用いて、評価用のノードを autoware_launch の logging_simulator.launch と一緒に立ち上げる。
+1. launch C++ evaluation node, Python evaluation node, logging_simulator.launch, and ros2 bag play
+2. autoware receives sensor data output from bag and outputs /perception/obstacle_segmentation/pointcloud
+3. evaluation node of C++ subscribe /perception/obstacle_segmentation/pointcloud and calculate polygon of non-detection area at the time of header
+4. publish polygon of non-detected area and pointcloud to /driving_log_replayer/obstacle_segmentation/input
+5. Python evaluation node subscribe /driving_log_replayer/obstacle_segmentation/input and evaluate it using perception_eval in callback. Record the results in a file.
+6. when the playback of the bag is finished, launch is automatically terminated and the evaluation is completed.
 
-## 評価ノードが使用する Topic とデータ型
+## Evaluation Result
+
+For each subscription, the judgment result described below is output.
+
+### Detection Normal
+
+The bounding box with the UUID specified in the scenario must contain a point cloud (/perception/obstacle_segmentation/pointcloud) with the specified number of points or more.
+If multiple UUIDs are specified, the condition must be satisfied for all the specified bounding boxes.
+Also, the output rate of the point cloud must not be in error by the diagnostic function provided by autoware.
+The default value is 1.0Hz or less.
+
+### Detection Warning
+
+If the visibility of the bounding box with the UUID specified in the scenario is none (occlusion state) and cannot be evaluated.
+
+### Detection Error
+
+If neither detection warning nor detection normal
+
+### Non-Detection Normal
+
+There must be no single point cloud in the non-detection area.
+
+The non-detection area is the area calculated by the C++ node in step 3 of the evaluation method.
+
+### Non-Detection Error
+
+There are some point cloud in the non-detection area.
+
+## Topic name and data type used by evaluation node
 
 - subscribe
 
-| topic 名                                        | データ型                                     |
+| Topic name                                      | Data type                                    |
 | ----------------------------------------------- | -------------------------------------------- |
 | /perception/obstacle_segmentation/pointcloud    | sensor_msgs::msg::PointCloud2                |
 | /diagnostics_agg                                | diagnostic_msgs::msg::DiagnosticArray        |
@@ -30,7 +67,7 @@ driving_log_replayer/launch/obstacle_segmentation.launch.py を用いて、評�
 
 - publish
 
-| topic 名                                          | データ型                                                 |
+| Topic name                                        | Data type                                                |
 | ------------------------------------------------- | -------------------------------------------------------- |
 | /driving_log_replayer/obstacle_segmentation/input | driving_log_replayer_msgs::msg:ObstacleSegmentationInput |
 | /driving_log_replayer/marker/detection            | visualization_msgs::msg::MarkerArray                     |
@@ -39,97 +76,67 @@ driving_log_replayer/launch/obstacle_segmentation.launch.py を用いて、評�
 | /driving_log_replayer/pcd/non_detection           | sensor_msgs::msg::PointCloud2                            |
 | /planning/mission_planning/goal                   | geometry_msgs::msg::PoseStamped                          |
 
-### logging_simulator.launch に渡す引数
+## Arguments passed to logging_simulator.launch
 
-autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定する。
+To lighten autoware processing, modules that are not relevant to evaluation are disabled by passing false as a launch argument.
+The following is set.
 
 - localization: false
 - control: false
 
-autoware から出力される点群(/perception/obstacle_segmentation/pointcloud)を評価する。
-検知と非検知でそれぞれの評価される。
+## About simulation
 
-### 検知正常
+State the information required to run the simulation.
 
-シナリオで指定した UUID の bounding box 内に、指定した点数以上の点群(/perception/obstacle_segmentation/pointcloud)が入っていること。複数の UUID(bounding box)を指定した場合は指定した全ての箱に対して正常であること。
-かつ、autoware が提供する診断機能で点群の出力レートがエラーではない。デフォルトでは 1.0Hz 以下でエラー
+### Topic to be included in the input rosbag
 
-### 検知警告
+Must contain the required topics in t4_dataset
 
-シナリオで指定した UUID の bounding box に visibility が none(occlusion 状態)にあるものが含まれていて評価出来ない場合。
+## About Evaluation
 
-### 検知異常
+State the information necessary for the evaluation.
 
-検知警告でも、検知正常でもない場合
-
-### 非検知正常
-
-点群(/perception/obstacle_segmentation/pointcloud)がシナリオの`["NonDetection"]["ProposedArea"]`で設定した base_link 基準の polygon と lane の重なりの polygon 内に点群が 1 点もないこと。
-
-### 非検知異常
-
-点群(/perception/obstacle_segmentation/pointcloud)がシナリオの`["NonDetection"]["ProposedArea"]`で設定した base_link 基準の polygon と lane の重なりの polygon 内に点群が出ていること。
-
-### 評価フロー
-
-1. launch で C++の評価ノード(obstacle_segmentation_evaluator_node)と、Python の評価ノード(obstacle_segmentation_evaluator_node.py)と logging_simulator.launch、ros2 bag play を立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、/perception/obstacle_segmentation/pointcloud を出力する
-3. C++の評価ノードが/perception/obstacle_segmentation/pointcloud を subscribe して、header の時刻で非検知エリアの polygon を計算し、/driving_log_replayer/obstacle_segmentation/input に pointcloud とともにデータを詰めて publish する
-4. Python の評価ノードが/driving_log_replayer/obstacle_segmentation/input を subscribe して、callback で perception_eval を使って評価を実行する。
-
-## simulation
-
-シミュレーション実行に必要な情報を述べる。
-
-### 入力 rosbag に含まれるべき topic
-
-t4_dataset で必要なトピックが含まれていること
-
-## evaluation
-
-評価に必要な情報を述べる。
-
-### シナリオフォーマット
+### Scenario Format
 
 ```yaml
 Evaluation:
   UseCaseName: obstacle_segmentation
   UseCaseFormatVersion: 0.1.0
   Datasets:
-    - 63800729-18d2-4383-91e9-fea7bad384f4:
-        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
-        LocalMapPath: $HOME/map/obstacle_segmentation # データセット毎にLocalMapPathを指定する
+    - sample_dataset:
+        VehicleId: default
+        LocalMapPath: $HOME/autoware_map/sample-map-planning
   Conditions:
     ObstacleDetection:
-      PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+      PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
     NonDetection:
-      PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-      ProposedArea: # base_linkを中心に非検知のエリアを一筆描きのpolygonで記述する。時計周りに記述する
-        polygon_2d: # xy平面でpolygonを時計回りで記述する
+      PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
+      ProposedArea: # Non-detection area centered on the base_link with a single stroke polygon.
+        polygon_2d: # Describe polygon in xy-plane in clockwise direction
           - [10.0, 1.5]
           - [10.0, -1.5]
           - [0.0, -1.5]
           - [0.0, 1.5]
-        z_min: 0.0 # 3Dにするときのz下限値
-        z_max: 1.5 # 3Dにするときのz上限値
+        z_min: 0.0 # Lower z for 3D polygon
+        z_max: 1.5 # Upper z for 3D polygon
   SensingEvaluationConfig:
     evaluation_config_dict:
-      evaluation_task: sensing # 固定値
-      target_uuids: # detectionで対象とするバウンディングボックスのID
-        - 1b40c0876c746f96ac679a534e1037a2
-      box_scale_0m: 1.0 # バウンディングボックスを距離に応じて拡大縮小する倍率0m地点
-      box_scale_100m: 1.0 # 100m地点の倍率、0から100mまで距離に応じて線形補完で倍率が決定する
-      min_points_threshold: 1 # バウンディングボックスに最低何個の点が入っていればDetectionを成功とするかのしきい値
+      evaluation_task: sensing # fixed value
+      target_uuids: # UUIDs of bounding box to be detected
+        - dcb2b352232fff50c4fad23718f31611
+      box_scale_0m: 1.0 # Scaling factor to scale the bounding box according to distance. Value at 0m
+      box_scale_100m: 1.0 # Scaling factor at 100m. Magnification is determined by linear completion according to distance from 0 to 100m
+      min_points_threshold: 1 # Threshold of how many points must be in the bounding box to be successful.
 ```
 
-### 評価結果ファイルフォーマット
+### Result Format
 
-obstacle_segmentation では、検知(Detection)と非検知(NonDetection)の 2 つを評価している。
-1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。
-Result は検知と非検知両方のパスしていれば true でそれ以外は false 失敗となる。
+In obstacle_segmentation, two types of detection (Detection) and non-detection (NonDetection) are evaluated.
+Although they are evaluated simultaneously in one point cloud callback, they are counted separately.
+The Result is true if both detection and non-detection have passed, and false otherwise.
 
-以下に、フォーマットを示す。
-ただし、結果ファイルフォーマットで解説済みの共通部分については省略する。
+The format is shown below.
+However, common parts that have already been explained in the result file format are omitted.
 
 ```json
 {
