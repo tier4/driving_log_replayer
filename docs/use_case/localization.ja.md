@@ -2,12 +2,59 @@
 
 Autoware の自己位置推定(localization)が安定して動作しているかを評価する。
 
-Autoware では自己位置推定の確からしさを示す以下の指標が publish されており、これらの値がシナリオで指定した値より大きかどうかで自己位置推定が安定しているかを判断する。
-また、NDT Scan Matching が収束しているかを判定するため、NDT と EKF で計算された pose の横方向の距離誤差が一定以内に収まっているかを判定する。
+自己位置推定の評価ではNDTの信頼度と収束性を評価する。
 
 ## 評価方法
 
-driving_log_replayer/launch/localization.launch.py を用いて、評価用のノードを autoware_launch の logging_simulator.launch と一緒に立ち上げる。
+localization.launch.pyを使用して評価する。
+launchを立ち上げると以下のことが実行され、評価される。
+
+1. launch で評価ノード(localization_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
+2. bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う
+3. 評価ノードがtopicをsubscribeして、NDTの信頼度、収束性が基準を満たしているかを判定して結果をファイルに記録する
+4. bagの再生が終了すると自動でlaunchが終了して評価が終了する
+
+### NDT の信頼度
+
+以下の 2 つの topic のうち、シナリオで設定した方式で評価する。
+
+- /localization/pose_estimator/transform_probability
+- /localization/pose_estimator/nearest_voxel_transformation_likelihood
+
+### NDT の収束性
+
+以下を用いて評価する
+
+- /localization/pose_estimator/pose
+- /localization/pose_twist_fusion_filter/pose
+
+ただし収束性の評価開始は、/localization/pose_estimator/transform_probability > 0 もしくは /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0 になった時点からとする。
+
+## 評価結果
+
+topicのsubscribe 1回につき、以下に記述する判定結果が出力される。
+
+### 信頼度正常
+
+/localization/pose_estimator/transform_probability、または/localization/pose_estimator/nearest_voxel_transformation_likelihood の data がシナリオに記述した AllowableLikelihood 以上の場合
+
+### 信頼度異常
+
+/localization/pose_estimator/transform_probability、または/localization/pose_estimator/nearest_voxel_transformation_likelihood の data がシナリオに記述した AllowableLikelihood 未満の場合
+
+### 収束正常
+
+以下の 3 つの条件を全て満たす場合
+
+1. /localization/pose_estimator/pose と /localization/pose_twist_fusion_filter/pose から横方向の距離を計算して、シナリオに記述した AllowableDistance 以下
+2. /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
+3. /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
+
+1で計算した横方向の距離が/driving_log_replayer/localization/lateral_distanceとしてpublishされる。
+
+### 収束異常
+
+収束正常の条件を満たさない場合
 
 ## 評価ノードが使用する Topic とデータ型
 
@@ -32,53 +79,14 @@ driving_log_replayer/launch/localization.launch.py を用いて、評価用の�
 | /driving_log_replayer/localization/lateral_distance | example_interfaces::msg::Float64              |
 | /initialpose                                        | geometry_msgs::msg::PoseWithCovarianceStamped |
 
-### logging_simulator.launch に渡す引数
+## logging_simulator.launch に渡す引数
 
 autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
 
 - planning: false
 - control: false
 
-NDT の信頼度を以下の 2 つの topic のうち、シナリオで設定した方式で評価する。
-
-- /localization/pose_estimator/transform_probability
-- /localization/pose_estimator/nearest_voxel_transformation_likelihood
-
-NDT の収束性を以下から評価する
-
-- /localization/pose_estimator/pose
-
-上記のトピックを処理して、以下のいずれかとして評価される。
-
-ただし評価開始は、/localization/pose_estimator/transform_probability > 0 もしくは /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0 になった時点からとする。
-
-### 信頼度正常
-
-/localization/pose_estimator/transform_probability、または/localization/pose_estimator/nearest_voxel_transformation_likelihood の data がシナリオに記述した AllowableLikelihood 以上の場合
-
-### 信頼度異常
-
-/localization/pose_estimator/transform_probability、または/localization/pose_estimator/nearest_voxel_transformation_likelihood の data がシナリオに記述した AllowableLikelihood 未満の場合
-
-### 収束正常
-
-以下の 3 つの条件を全て満たす場合
-
-- /localization/pose_estimator/pose と /localization/pose_twist_fusion_filter/pose から横方向の距離を計算して、シナリオに記述した AllowableDistance 以下
-- /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
-- /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
-
-### 収束異常
-
-収束正常の条件を満たさない場合
-
-### 評価フロー
-
-1. launch で評価ノード(localization_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う
-3. 評価ノードが/localization/pose_estimator/transform_probability、または/localization/pose_estimator/nearest_voxel_transformation_likelihood、及び/localization/pose_estimator/pose を subscribe して、コールバックで評価を行う
-
-### simulation
+## simulation
 
 シミュレーション実行に必要な情報を述べる。
 

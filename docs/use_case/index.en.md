@@ -1,10 +1,10 @@
-# 評価ユースケース
+# Evaluation Use Cases
 
-driving_log_replayer を用いてどのような評価を行えるか述べる。
+This section describes how driving_log_replayer can be used for evaluation.
 
-## Driving Log Replayer ユースケース一覧
+## List of Driving Log Replayer use cases
 
-- [Localization](localization.md)
-- [Obstacle Segmentation](obstacle_segmentation.md)
-- [Perception](percepiton.md)
-- [Performance Diag](use_case)
+- [Localization](localization.en.md)
+- [Obstacle Segmentation](obstacle_segmentation.en.md)
+- [Perception](percepiton.en.md)
+- [Performance Diag](performance_diag.en.md)
