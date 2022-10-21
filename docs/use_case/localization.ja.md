@@ -16,7 +16,7 @@ launchを立ち上げると以下のことが実行され、評価される。
 
 ### NDT の信頼度
 
-以下の 2 つの topic のうち、シナリオで設定した方式で評価する。
+以下の 2 つの topic のうち、シナリオで指定した方を用いて評価する。
 
 - /localization/pose_estimator/transform_probability
 - /localization/pose_estimator/nearest_voxel_transformation_likelihood
@@ -50,13 +50,13 @@ topicのsubscribe 1回につき、以下に記述する判定結果が出力さ�
 2. /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
 3. /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
 
-1で計算した横方向の距離が/driving_log_replayer/localization/lateral_distanceとしてpublishされる。
+ステップ1で計算した横方向の距離が/driving_log_replayer/localization/lateral_distanceとしてpublishされる。
 
 ### 収束異常
 
 収束正常の条件を満たさない場合
 
-## 評価ノードが使用する Topic とデータ型
+## 評価ノードが使用する Topic 名とデータ型
 
 - subscribe
 
@@ -157,10 +157,10 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
       "Result": "Success or Fail",
       "Info": [
         {
-          "LateralDistance": "評価に使用したndtとekfの横方向の距離差",
+          "LateralDistance": "ndtとekfのposeの横方距離",
           "HorizontalDistance": "ndtとekfの水平距離。参考値",
-          "ExeTimeMs": "評価に使用したndtの計算にかかった時間",
-          "IterationNum": "評価に使用したndtの再計算回数"
+          "ExeTimeMs": "ndtの計算にかかった時間",
+          "IterationNum": "ndtの再計算回数"
         }
       ]
     }
@@ -177,7 +177,7 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
       "Result": "Success or Fail",
       "Info": [
         {
-          "Value": "評価に使用したNVTL or TPの値",
+          "Value": "NVTL or TPの値",
           "Reference": "評価に使用しなかった尤度。参考値。ValueがNVTLならTPが入る"
         }
       ]

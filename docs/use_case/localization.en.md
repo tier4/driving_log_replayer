@@ -1,19 +1,66 @@
-# 自己位置推定の評価
+# Evaluate self-localization estimation
 
-Autoware の自己位置推定(localization)が安定して動作しているかを評価する。
+Evaluate whether Autoware's self-location estimation (localization) is working stably.
 
-Autoware では自己位置推定の確からしさを示す以下の指標が publish されており、これらの値がシナリオで指定した値より大きかどうかで自己位置推定が安定しているかを判断する。
-また、NDT Scan Matching が収束しているかを判定するため、NDT と EKF で計算された pose の横方向の距離誤差が一定以内に収まっているかを判定する。
+In the evaluation of self-location estimation, the reliability and convergence of NDT are evaluated.
 
-## 評価方法
+## Evaluation method
 
-driving_log_replayer/launch/localization.launch.py を用いて、評価用のノードを autoware_launch の logging_simulator.launch と一緒に立ち上げる。
+The launch file "localization.launch.py" is used for evaluation.
+When the launch file is launched, the following is executed and evaluated.
 
-## 評価ノードが使用する Topic とデータ型
+1. launch evaluation node (localization_evaluator_node), logging_simulator.launch and ros2 bag play
+2. autoware receives sensor data output from bag and performs self-location estimation
+3. evaluation node subscribes topics, determines whether NDT reliability and convergence meet the criteria, and records the results in a file
+4. when the playback of the bag is finished, launch is automatically terminated and the evaluation is completed.
+
+### Reliability of NDT
+
+Of the following two topics, the one specified in the scenario will be used for evaluation.
+
+- /localization/pose_estimator/transform_probability
+- /localization/pose_estimator/nearest_voxel_transformation_likelihood
+
+### Convergence of NDT
+
+Evaluate using the following
+
+- /localization/pose_estimator/pose
+- /localization/pose_twist_fusion_filter/pose
+
+However, the convergence evaluation starts with /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
+
+## Evaluation Result
+
+For each subscription, the judgment result described below is output.
+
+### Reliability Normal
+
+If the data in /localization/pose_estimator/transform_probability or /localization/pose_estimator/nearest_voxel_transformation_likelihood is greater than or equal the AllowableLikelihood described in the scenario.
+
+### Reliability Error
+
+If the data in /localization/pose_estimator/transform_probability or /localization/pose_estimator/nearest_voxel_transformation_likelihood is less than the AllowableLikelihood described in the scenario.
+
+### Convergence Normal
+
+If all of the following three conditions are met
+
+1. Calculate the lateral distance from /localization/pose_estimator/pose and /localization/pose_twist_fusion_filter/pose, and if the lateral distance is less than or equal to AllowableDistance described in the scenario
+2. /localization/pose_estimator/exe_time_ms is less than or equal to AllowableExeTimeMs described in the scenario
+3. /localization/pose_estimator/iteration_num is less than or equal to AllowableIterationNum described in the scenario
+
+The lateral distance calculated in the step 1 is published as /driving_log_replayer/localization/lateral_distance.
+
+### Convergence Error
+
+When conditions for Convergence Normal are not met
+
+## Topic name and data type used by evaluation node
 
 - subscribe
 
-| topic 名                                                             | データ型                              |
+| Topic name                                                           | Data type                             |
 | -------------------------------------------------------------------- | ------------------------------------- |
 | /localization/pose_estimator/transform_probability                   | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | tier4_debug_msgs::msg::Float32Stamped |
@@ -27,67 +74,29 @@ driving_log_replayer/launch/localization.launch.py を用いて、評価用の�
 
 - publish
 
-| topic 名                                            | データ型                                      |
+| Topic name                                          | Data type                                     |
 | --------------------------------------------------- | --------------------------------------------- |
 | /driving_log_replayer/localization/lateral_distance | example_interfaces::msg::Float64              |
 | /initialpose                                        | geometry_msgs::msg::PoseWithCovarianceStamped |
 
-### logging_simulator.launch に渡す引数
+## Arguments passed to logging_simulator.launch
 
-autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
+To lighten autoware processing, modules that are not relevant to evaluation are disabled by passing false as a launch argument.
+The following is set.
 
 - planning: false
 - control: false
 
-NDT の信頼度を以下の 2 つの topic のうち、シナリオで設定した方式で評価する。
+## About simulation
 
-- /localization/pose_estimator/transform_probability
-- /localization/pose_estimator/nearest_voxel_transformation_likelihood
+State the information required to run the simulation.
 
-NDT の収束性を以下から評価する
+### Topic to be included in the input rosbag
 
-- /localization/pose_estimator/pose
+The CAN of the vehicle's ECU and the topic of the sensor being used are required.
+The following is an example, and may be changed if different sensors are used.
 
-上記のトピックを処理して、以下のいずれかとして評価される。
-
-ただし評価開始は、/localization/pose_estimator/transform_probability > 0 もしくは /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0 になった時点からとする。
-
-### 信頼度正常
-
-/localization/pose_estimator/transform_probability、または/localization/pose_estimator/nearest_voxel_transformation_likelihood の data がシナリオに記述した AllowableLikelihood 以上の場合
-
-### 信頼度異常
-
-/localization/pose_estimator/transform_probability、または/localization/pose_estimator/nearest_voxel_transformation_likelihood の data がシナリオに記述した AllowableLikelihood 未満の場合
-
-### 収束正常
-
-以下の 3 つの条件を全て満たす場合
-
-- /localization/pose_estimator/pose と /localization/pose_twist_fusion_filter/pose から横方向の距離を計算して、シナリオに記述した AllowableDistance 以下
-- /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
-- /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
-
-### 収束異常
-
-収束正常の条件を満たさない場合
-
-### 評価フロー
-
-1. launch で評価ノード(localization_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う
-3. 評価ノードが/localization/pose_estimator/transform_probability、または/localization/pose_estimator/nearest_voxel_transformation_likelihood、及び/localization/pose_estimator/pose を subscribe して、コールバックで評価を行う
-
-### simulation
-
-シミュレーション実行に必要な情報を述べる。
-
-### 入力 rosbag に含まれるべき topic
-
-車両の ECU の CAN と、使用している sensor の topic が必要
-以下は例であり、違うセンサーを使っている場合は適宜読み替える。
-
-LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める
+If multiple LiDARs are installed, include packets for all LiDARs installed.
 
 - /sensing/gnss/ublox/fix_velocity
 - /sensing/gnss/ublox/nav_sat_fix
@@ -96,51 +105,51 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 - /sensing/lidar/\*/velodyne_packets
 - /gsm8/from_can_bus
 
-### 入力 rosbag に含まれてはいけない topic
+### Topics that must not be included in the input rosbag
 
 - /clock
 
-## evaluation
+## About Evaluation
 
-評価に必要な情報を述べる。
+State the information necessary for the evaluation.
 
-### シナリオフォーマット
+### Scenario Format
 
 ```yaml
 Evaluation:
   UseCaseName: localization
   UseCaseFormatVersion: 1.2.0
   Conditions:
-    Convergence: # 収束性評価
-      AllowableDistance: 0.2 # 直線距離でこの距離以内だったら収束とみなす
-      AllowableExeTimeMs: 100.0 # NDTの計算時間がこの値以下なら成功とみなす
-      AllowableIterationNum: 30 # NDTの計算回数がこの値以下なら成功とみなす
-      PassRate: 95.0 # 収束性の評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    Reliability: # 信頼度評価
-      Method: NVTL # NVTL or TPのどちらで評価を行うか
-      AllowableLikelihood: 3.0 # この値以上なら信頼度は正常とみなす
-      NGCount: 10 # 信頼度異常が連続でこの回数続いたら信頼度評価失敗とみなす
+    Convergence:
+      AllowableDistance: 0.2 # Lateral distance to be considered convergence
+      AllowableExeTimeMs: 100.0 # If the NDT computation time is less than or equal to this value, it is considered successful.
+      AllowableIterationNum: 30 # If the number of NDT calculations is less than or equal to this value, it is considered a success.
+      PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+    Reliability:
+      Method: NVTL # NVTL or TP which method to use for evaluation
+      AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
+      NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
   InitialPose:
     position:
-      x: 16876.271484375
-      y: 36087.9453125
+      x: 3836.5478515625
+      y: 73729.96875
       z: 0.0
     orientation:
       x: 0.0
       y: 0.0
-      z: 0.23490284404117467
-      w: 0.9720188546840887
+      z: -0.9689404241590215
+      w: 0.2472942668776119
 ```
 
-### 評価結果ファイルフォーマット
+### Result Format
 
-localization では、収束性と信頼度の 2 つを評価しているので、行毎に収束性または信頼度のどちらかの結果が入っている。
-Result は収束性と信頼度両方のパスしていれば true でそれ以外は false 失敗となる。
+Since localization evaluates both convergence and confidence, each line contains the result of either convergence or confidence.
+The Result is true if both convergence and confidence pass, and false otherwise.
 
-以下に、それぞれの評価の例を記述する。
-ただし、結果ファイルフォーマットで解説済みの共通部分については省略する。
+Examples of each evaluation are described below.
+However, common parts that have already been explained in the result file format are omitted.
 
-収束性の結果(Frame の中に Convergence 項目がある場合)
+Convergence Result (when there is a Convergence item in the Frame)
 
 ```json
 {
@@ -149,10 +158,10 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
       "Result": "Success or Fail",
       "Info": [
         {
-          "LateralDistance": "評価に使用したndtとekfの横方向の距離差",
-          "HorizontalDistance": "ndtとekfの水平距離。参考値",
-          "ExeTimeMs": "評価に使用したndtの計算にかかった時間",
-          "IterationNum": "評価に使用したndtの再計算回数"
+          "LateralDistance": "Lateral distance between ndt and ekf pose",
+          "HorizontalDistance": "Horizontal distance between ndt and ekf. Reference value",
+          "ExeTimeMs": "Time taken to calculate ndt",
+          "IterationNum": "Number of recalculations of ndt"
         }
       ]
     }
@@ -160,7 +169,7 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
 }
 ```
 
-信頼度の結果(Frame に Reliability の項目がある場合)
+Reliability Result (when there is a Reliability item in the Frame)
 
 ```json
 {
@@ -169,8 +178,8 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
       "Result": "Success or Fail",
       "Info": [
         {
-          "Value": "評価に使用したNVTL or TPの値",
-          "Reference": "評価に使用しなかった尤度。参考値。ValueがNVTLならTPが入る"
+          "Value": "Value of NVTL or TP",
+          "Reference": "Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered."
         }
       ]
     }
