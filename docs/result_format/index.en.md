@@ -1,55 +1,53 @@
-# Driving Log Replayer 結果ファイルフォーマット
+# Driving Log Replayer Result File Format
 
-driving_log_replayer で出力される結果ファイルのフォーマットについて述べる。
+This section describes the format of the result file output by driving_log_replayer.
 
-1 行毎に json フォーマットの文字列が入っている jsonl ファイル形式となっている。
-評価モジュール毎に評価内容が違うので、出力される内容は異なるが大枠を揃えることでみやすさや、スクリプトでの加工しやすくする。
+It is in jsonl format, with each line containing a string in json format.
 
-## フォーマット
+## Format
 
-各行以下の形式のフォーマットで出力される。
-実際には一行の文字列だがみやすさのためにフォーマットしている。
+Each line is output in the following format.
+The actual output is a single line of text, but it is formatted for ease of reading.
 
 ```json
 {
   "Result": {
     "Success": "true or false",
-    "Summary": "評価した結果の要約"
+    "Summary": "summary of result"
   },
   "Stamp": {
-    "System": "コンピュータの時刻 UNIX_TIME",
-    "ROS": "シミュレーションの時刻"
+    "System": "system time",
+    "ROS": "simulation time"
   },
   "Frame": {
-    "Ego": { "TransformStamped": "mapからbase_linkへのtransform_stamped" },
-    "評価毎に構成が異なる": "..."
+    "Ego": { "TransformStamped": "transform_stamped from map to base_link" },
+    "Different configurations for each use case": "..."
   }
 }
 ```
 
-- Result: 実行したシナリオの評価結果
-- Stamp: 評価した時刻
-- Frame: 受け取った frame(topic)1 回分の評価結果と、判定に使用した値などの付属情報
+- Result: Result of the evaluation of the executed scenario
+- Stamp: The time of the evaluation
+- Frame: Evaluation results for one received frame (topic) and attached information such as values used for judgment.
+  - For more information on Frame, see the evaluation results file format for each use case.
 
-Frame の中身の詳細については、各ユースケースの評価結果ファイルフォーマットを参照。
+## Output json file
 
-## json ファイルの出力
+jsonl is used because it can append lines and is easy to handle programmatically.
+However, when a person visually checks the result, it is easier to understand if it is indented in json format.
+Therefore, when simulations are run using driving_log_replayer_cli, the json file is also output by default.
 
-プログラムで結果ファイルを作る都合で、追記可能で扱いやすいファーマットとして jsonl を採用している。
-しかし、人が目で見て結果を確認する場合は、json 形式にして vscode 等でフォーマットして構造化したほうが理解しやすい。
-そのため、driving_log_replayer_cli を用いてシミュレーション実行した場合はデフォルトで jsonl ファイルを json に変換したファイルも出力される。
-
-一方、ローカルで wasim で実行した場合や、クラウドで実行した場合は jsonl ファイルしか作られない。
-jsonl ファイルを json に出力したい場合は、以下のコマンドで変換することができる。
+On the other hand, if the simulation is run locally with wasim or in the cloud, only a jsonl file is created.
+If you want to convert a jsonl file to json, you can do so with the following command.
 
 ```shell
-# 結果ファイルの変換、output_directory以下のresult.jsonlをresult.jsonに変換する
+# Conversion of result files, converting result.jsonl under output_directory to result.json
 driving_log_replayer simulation convert-result ${output_directory}
 ```
 
-## 結果ファイルの分析
+## Analyze the result files
 
-json 出力の項目でも述べた通り、json ファイルの出力はローカルで driving_log_replayer_cli を用いた場合のみ出力される。
-なので、結果ファイルをグラフ化するなどの解析作業を行う場合は、jsonl のまま扱えるようにすると変換の手間が減らせる。
+As mentioned in the json output section, json files are output only when driving_log_replayer_cli is used locally.
+Therefore, when analyzing the result files, such as graphing, jsonl should be used as the analysis target.
 
-python を用いる場合は、[pandas を使用すると jsonl をのそのまま読み込むことができる](https://qiita.com/meshidenn/items/3ff72396fe85044bc74f "pandas")
+If you use python, [you can use pandas to read jsonl](https://qiita.com/meshidenn/items/3ff72396fe85044bc74f).
