@@ -29,7 +29,8 @@ driving_log_replayer で出力される結果ファイルのフォーマット�
 - Result: 実行したシナリオの評価結果
 - Stamp: 評価した時刻
 - Frame: 受け取った frame(topic) 1 回分の評価結果と、判定に使用した値などの付属情報
-  - Frame の詳細については、各ユースケースの評価結果ファイルフォーマットを参照。
+
+Frame の詳細については、各ユースケースの評価結果ファイルフォーマットを参照。
 
 ## json ファイルの出力
 
@@ -50,4 +51,4 @@ driving_log_replayer simulation convert-result ${output_directory}
 json 出力の項目でも述べた通り、json ファイルの出力はローカルで driving_log_replayer_cli を用いた場合のみ出力される。
 なので、結果ファイルをグラフ化するなどの解析作業を行う場合は、jsonl を解析対象とすること。
 
-python を用いる場合は、[pandas を使用すると jsonl を読み込むことができる](https://qiita.com/meshidenn/items/3ff72396fe85044bc74f)
+python を用いる場合は、[pandas.read_jsonでlines=Trueとするとjsonl を読み込むことができる](https://pandas.pydata.org/docs/reference/api/pandas.read_json.html)

@@ -29,7 +29,8 @@ The actual output is a single line of text, but it is formatted for ease of read
 - Result: Result of the evaluation of the executed scenario
 - Stamp: The time of the evaluation
 - Frame: Evaluation results for one received frame (topic) and attached information such as values used for judgment.
-  - For more information on Frame, see the evaluation results file format for each use case.
+
+For more information on Frame, see the evaluation results file format for each use case.
 
 ## Output json file
 
@@ -50,4 +51,4 @@ driving_log_replayer simulation convert-result ${output_directory}
 As mentioned in the json output section, json files are output only when driving_log_replayer_cli is used locally.
 Therefore, when analyzing the result files, such as graphing, jsonl should be used as the analysis target.
 
-If you use python, [you can use pandas to read jsonl](https://qiita.com/meshidenn/items/3ff72396fe85044bc74f).
+If you use python, you can read jsonl [by setting lines=True in pandas.read_json](https://pandas.pydata.org/docs/reference/api/pandas.read_json.html).
