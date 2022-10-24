@@ -13,7 +13,7 @@ Driving Log Replayer は、評価の条件が記載されたシナリオをパ�
 - Ubuntu 20.04 / 22.04
 - ROS galactic / humble
 - Python 3.8 / 3.10
-- NVIDIA GPU (perceptionを動かす場合は必須)
+- NVIDIA GPU (perception を動かす場合は必須)
 
 ## 利用フロー
 

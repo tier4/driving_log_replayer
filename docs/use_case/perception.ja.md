@@ -6,24 +6,24 @@ perception モジュールを起動して出力される perception の topic �
 
 ## 評価方法
 
-perception.launch.pyを使用して評価する。
-launchを立ち上げると以下のことが実行され、評価される。
+perception.launch.py を使用して評価する。
+launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(perception_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
 3. 評価ノードが/perception/object_recognition/{detection, tracking}/objects を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
-4. bagの再生が終了すると自動でlaunchが終了して評価が終了する
+4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 ### 注意事項
 
-評価方法ステップ1のlaunch起動時にbag playが始まらずに止まったように見えることがある。
-これはautoware をワークスペースをセットアップして perception のモジュールを初回起動した場合には、lidar_centerpoint の onnx ファイルの変換処理の待ちが入るためである。
+評価方法ステップ 1 の launch 起動時に bag play が始まらずに止まったように見えることがある。
+これは autoware をワークスペースをセットアップして perception のモジュールを初回起動した場合には、lidar_centerpoint の onnx ファイルの変換処理の待ちが入るためである。
 
 lidar_centerpoint engine files are generated.という文字列が表示されるまでは、そのまま待つこと。
 
 ## 評価結果
 
-topicのsubscribe 1回につき、以下に記述する判定結果が出力される。
+topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
 
 ### 正常
 
@@ -65,13 +65,13 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 ### 依存ライブラリとの driving_log_replayer の役割分担
 
-driving_log_replayerがROS との接続部分を担当し、perception_eval がデータセットを扱う部分がを担当するという分担になっている。
+driving_log_replayer が ROS との接続部分を担当し、perception_eval がデータセットを扱う部分がを担当するという分担になっている。
 perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトを受け取ることができない。
 また、timestamp が ROS ではナノ秒、データセットは ミリ秒が使用されている。
-t4_datasetはnuScenesをベースとしており、nuScenesがミリ秒を採用しているのでt4_datasetもミリ秒となっている。
+t4_dataset は nuScenes をベースとしており、nuScenes がミリ秒を採用しているので t4_dataset もミリ秒となっている。
 
-driving_log_replayerは、autoware の perception モジュールから出力された topic を subscribe し、perception_eval が期待するデータ形式に変換して渡す。
-また、perception_eval から返ってくる評価結果のROS の topic でpublish し可視化する部分も担当する。
+driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval が期待するデータ形式に変換して渡す。
+また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。
 
 perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。
 
@@ -187,15 +187,15 @@ perception では、シナリオに指定した条件で perception_eval が評�
 
 ### pickle ファイル
 
-データベース評価では、複数のbagを再生する必要があるが、ROS の仕様上、1 回の launch で、複数のbagを利用することは出来ない。
-1つのbag、すなわち1つのt4_datasetに対して launch を 1 回叩くことなるので、データベース評価では、含まれるデータセットの数だけ launch を実行する必要がある。
+データベース評価では、複数の bag を再生する必要があるが、ROS の仕様上、1 回の launch で、複数の bag を利用することは出来ない。
+1 つの bag、すなわち 1 つの t4_dataset に対して launch を 1 回叩くことなるので、データベース評価では、含まれるデータセットの数だけ launch を実行する必要がある。
 
-データベース評価は1回のlaunchで評価できないため、perception では、result.jsonl の他に scene_result.pkl というファイルを出力する。
+データベース評価は 1 回の launch で評価できないため、perception では、result.jsonl の他に scene_result.pkl というファイルを出力する。
 pickle ファイルは python のオブジェクトをファイルとして保存したものであり、perception_eval の PerceptionEvaluationManager.frame_results を保存している。
-pickleファイルに記録したobjectをすべて読み込み、datasetの平均の指標を出力することでデータセット評価が行える。
+pickle ファイルに記録した object をすべて読み込み、dataset の平均の指標を出力することでデータセット評価が行える。
 
 ### データベース評価の結果ファイル
 
-シナリオに複数のdatasetを記述したデータベース評価の場合には、結果出力先ディレクトリにdatabase_result.jsonというファイルが出力される。
+シナリオに複数の dataset を記述したデータベース評価の場合には、結果出力先ディレクトリに database_result.json というファイルが出力される。
 
 形式はメトリクスのフォーマットと同じ

@@ -5,7 +5,7 @@ Sensing, Localization, Perception の性能確認と、ソフトウェアのリ�
 
 ## アーキテクチャ
 
-Driving Log Replayer は、Autowareの評価ノードをAutowareの標準機能に付加した構成となっている。
+Driving Log Replayer は、Autoware の評価ノードを Autoware の標準機能に付加した構成となっている。
 アーキテクチャ図を以下に示す。
 
 ![architecture](images/architecture.png)

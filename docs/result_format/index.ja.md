@@ -51,4 +51,4 @@ driving_log_replayer simulation convert-result ${output_directory}
 json 出力の項目でも述べた通り、json ファイルの出力はローカルで driving_log_replayer_cli を用いた場合のみ出力される。
 なので、結果ファイルをグラフ化するなどの解析作業を行う場合は、jsonl を解析対象とすること。
 
-python を用いる場合は、[pandas.read_jsonでlines=Trueとするとjsonl を読み込むことができる](https://pandas.pydata.org/docs/reference/api/pandas.read_json.html)
+python を用いる場合は、[pandas.read_json で lines=True とすると jsonl を読み込むことができる](https://pandas.pydata.org/docs/reference/api/pandas.read_json.html)

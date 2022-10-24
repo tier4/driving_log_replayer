@@ -9,13 +9,13 @@ Autoware の診断機能(diagnostics)が意図通りに機能しているかを�
 
 ## 評価方法
 
-performance_diag.launch.pyを使用して評価する。
-launchを立ち上げると以下のことが実行され、評価される。
+performance_diag.launch.py を使用して評価する。
+launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(performance_diag_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、/diagnostics_agg を出力する
 3. 評価ノードが/diagnostics_agg を subscribe して、コールバックで評価を行い結果をファイルに記録する。
-4. bagの再生が終了すると自動でlaunchが終了して評価が終了する
+4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 ### visibility 評価
 
@@ -29,7 +29,7 @@ blockage の評価では、LiDAR をビニール袋などでわざと覆った�
 
 ## 評価結果
 
-LiDARの診断結果のsubscribe 1回につき、以下に記述する判定結果が出力される。
+LiDAR の診断結果の subscribe 1 回につき、以下に記述する判定結果が出力される。
 
 - visibility: /autoware/sensing/lidar/performance_monitoring/visibility/.\*
 - blockage: /autoware/sensing/lidar/performance_monitoring/blockage/.\*

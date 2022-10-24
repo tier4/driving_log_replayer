@@ -62,7 +62,7 @@ driving_log_replayer simulation convert-result ${output_directory}
 ## Run driving_log_replayer with wasim
 
 If you have access rights to [Autoware Evaluator](https://docs.web.auto/user-manuals/evaluator/introduction) provided by TIER IV,
- you can also use [wasim](https://docs.web.auto/developers-guides/wasim/introduction).
+you can also use [wasim](https://docs.web.auto/developers-guides/wasim/introduction).
 
 See [documentation site](https://docs.web.auto/developers-guides/wasim/use-cases/run-simulations-locally/) for usage.
 

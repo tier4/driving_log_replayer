@@ -2,17 +2,17 @@
 
 Autoware の自己位置推定(localization)が安定して動作しているかを評価する。
 
-自己位置推定の評価ではNDTの信頼度と収束性を評価する。
+自己位置推定の評価では NDT の信頼度と収束性を評価する。
 
 ## 評価方法
 
-localization.launch.pyを使用して評価する。
-launchを立ち上げると以下のことが実行され、評価される。
+localization.launch.py を使用して評価する。
+launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(localization_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う
-3. 評価ノードがtopicをsubscribeして、NDTの信頼度、収束性が基準を満たしているかを判定して結果をファイルに記録する
-4. bagの再生が終了すると自動でlaunchが終了して評価が終了する
+3. 評価ノードが topic を subscribe して、NDT の信頼度、収束性が基準を満たしているかを判定して結果をファイルに記録する
+4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 ### NDT の信頼度
 
@@ -32,7 +32,7 @@ launchを立ち上げると以下のことが実行され、評価される。
 
 ## 評価結果
 
-topicのsubscribe 1回につき、以下に記述する判定結果が出力される。
+topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
 
 ### 信頼度正常
 
@@ -50,7 +50,7 @@ topicのsubscribe 1回につき、以下に記述する判定結果が出力さ�
 2. /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
 3. /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
 
-ステップ1で計算した横方向の距離が/driving_log_replayer/localization/lateral_distanceとしてpublishされる。
+ステップ 1 で計算した横方向の距離が/driving_log_replayer/localization/lateral_distance として publish される。
 
 ### 収束異常
 
