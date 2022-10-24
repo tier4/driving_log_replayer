@@ -2,7 +2,7 @@
 
 English documentation
 
-Switching to Japanese is available from the button at the top.
+Switching to Japanese is available from the icon "文A" at the top of the page.
 
 ## About Driving Log Replayer
 
