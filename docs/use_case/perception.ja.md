@@ -33,7 +33,7 @@ perception_eval の関数を使って評価失敗のオブジェクトが 0 個�
 
 perception_eval の関数を使って評価失敗のオブジェクトが存在する場合、frame_result.pass_fail_result.get_fail_object_num() > 0
 
-## 評価ノードが使用する Topic とデータ型
+## 評価ノードが使用する Topic 名とデータ型
 
 - subscribe
 
