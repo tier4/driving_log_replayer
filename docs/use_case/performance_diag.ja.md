@@ -159,7 +159,7 @@ Evaluation:
           PassFrameCount: 80
 ```
 
-### 評価結果ファイルフォーマット
+### 評価結果フォーマット
 
 performance_diag では、visibility と blockage の 2 つを評価している。
 1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。

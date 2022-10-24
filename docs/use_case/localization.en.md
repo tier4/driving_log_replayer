@@ -141,7 +141,7 @@ Evaluation:
       w: 0.2472942668776119
 ```
 
-### Result Format
+### Evaluation Result Format
 
 Since localization evaluates both convergence and confidence, each line contains the result of either convergence or confidence.
 The Result is true if both convergence and confidence pass, and false otherwise.

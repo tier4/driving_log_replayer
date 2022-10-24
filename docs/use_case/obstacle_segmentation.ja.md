@@ -126,7 +126,7 @@ Evaluation:
       min_points_threshold: 1 # バウンディングボックスに最低何個の点が入っていればDetectionを成功とするかのしきい値
 ```
 
-### 評価結果ファイルフォーマット
+### 評価結果フォーマット
 
 obstacle_segmentation では、検知(Detection)と非検知(NonDetection)の 2 つを評価している。
 1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。

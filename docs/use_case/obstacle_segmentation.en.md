@@ -129,7 +129,7 @@ Evaluation:
       min_points_threshold: 1 # Threshold of how many points must be in the bounding box to be successful.
 ```
 
-### Result Format
+### Evaluation Result Format
 
 In obstacle_segmentation, two types of detection (Detection) and non-detection (NonDetection) are evaluated.
 Although they are evaluated simultaneously in one point cloud callback, they are counted separately.
