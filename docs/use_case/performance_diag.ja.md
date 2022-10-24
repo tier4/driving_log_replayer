@@ -120,18 +120,18 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 Evaluation:
   UseCaseName: performance_diag
   UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # falseのときはbagの中に/tfが入っている必要がある。
-  InitialPose: null # LaunchLocalizationが有効のときだけ機能する
+  LaunchLocalization: false # falseのときはbagの中に入っている/tfを出力する。trueのときはbagの中のtfはリマップされ無効化される。
+  InitialPose: null # 初期位置を指定する。LaunchLocalizationが有効のときだけ機能する
   Conditions:
     LiDAR:
       Visibility:
-        PassFrameCount: 100 # ScenarioTypeがTPのときにこの値以上ERRORが出ればVisibilityの試験は成功とする。FPの場合はERRORが一切出ないことが条件なので無視される
+        PassFrameCount: 100 # ScenarioTypeがTPのときにこの回数以上ERRORが出ればVisibilityの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される
         ScenarioType: FP # TP/FP/null
       Blockage:
-        front_lower: # 搭載されているLidar毎に設定する
+        front_lower: # 搭載されているLiDAR毎に設定する
           ScenarioType: TP # TP/FP/null
-          BlockageType: both # sky/ground/both 空側、地面側、またはその両方、どこでblockageが発生しているか
-          PassFrameCount: 100 # ScenarioTypeがTPで、かつ、Blockageのタイプが一致するERRORがこの値以上出ればBlockageの試験は成功とする。FPの場合はERRORが一切出ないことが条件なので無視される
+          BlockageType: both # sky/ground/both どこでblockageが発生しているか
+          PassFrameCount: 100 # ScenarioTypeがTP、Blockageのタイプが一致、かつERRORがこの回数以上出ればBlockageの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される
         front_upper:
           ScenarioType: TP
           BlockageType: both
@@ -165,7 +165,6 @@ Evaluation:
 ### 評価結果フォーマット
 
 performance_diag では、visibility と blockage の 2 つを評価している。
-1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。
 Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。
 
 以下に、フォーマットを示す。
@@ -190,7 +189,7 @@ Result は visibility と blockage の両方をパスしていれば true でそ
         "Result": "Success or Fail or Skipped",
         "Info": [
           {
-            "Name": "lidarの名前",
+            "Name": "LiDARの名前",
             "Level": "diagのレベル",
             "GroundBlockageRatio": "地上側のblockage比率",
             "GroundBlockageCount": "参考値",

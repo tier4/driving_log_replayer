@@ -58,7 +58,7 @@ The tf in the bag is used for the purpose of aligning the self-location during a
 - localization: false
 - planning: false
 - control: false
-- sensing: false / true (default value is false, Specify in scenario)
+- sensing: false / true (default value is false. Specify in scenario)
 
 ## Dependent libraries
 
