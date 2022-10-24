@@ -141,14 +141,14 @@ However, common parts that have already been explained in the result file format
 ```json
 {
   "Frame": {
-    "FrameName": "評価に使用したt4_datasetのフレーム番号",
-    "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
+    "FrameName": "Frame number of t4_dataset used for evaluation",
+    "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
     "Detection": {
       "Result": "Success or Warn or Fail",
       "Info": [
         {
-          "Annotation": "アノテーションされたバンディングボックスの情報、位置姿勢、ID",
-          "PointCloud": "評価した点群の情報、バウンディングボックス内の点の数と、base_linkからの最近傍の点の位置"
+          "Annotation": "Annotated banding box information, position pose, and ID",
+          "PointCloud": "Information on the evaluated point cloud, number of points in the bounding box and position of the nearest point from the base_link."
         }
       ]
     },
@@ -156,12 +156,12 @@ However, common parts that have already been explained in the result file format
       "Result": "Success or Fail",
       "Info": [
         {
-          "PointCloud": "非検知エリアに出ている点の数と、base_linkからの距離毎の分布"
+          "PointCloud": "Number of points out in the non-detection area and distribution by distance from the base_link."
         }
       ]
     },
-    "StopReasons": "Planning moduleが出力する停止理由。参考値",
-    "TopicRate": "点群の出力レートが正常かどうかを示すdiagの結果"
+    "StopReasons": "Reasons for stopping output by the Planning module. Reference value",
+    "TopicRate": "Result of diag indicating whether the output rate of the point cloud is normal or not."
   }
 }
 ```
