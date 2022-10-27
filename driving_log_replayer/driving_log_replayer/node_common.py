@@ -67,13 +67,13 @@ def set_initial_pose(initial_pose: Optional[Dict]) -> Optional[PoseWithCovarianc
     if initial_pose is not None:
         ros_init_pose = PoseWithCovarianceStamped()
         ros_init_pose.header.frame_id = "map"
-        ros_init_pose.pose.pose.position.x = initial_pose["position"]["x"]
-        ros_init_pose.pose.pose.position.y = initial_pose["position"]["y"]
-        ros_init_pose.pose.pose.position.z = initial_pose["position"]["z"]
-        ros_init_pose.pose.pose.orientation.x = initial_pose["orientation"]["x"]
-        ros_init_pose.pose.pose.orientation.y = initial_pose["orientation"]["y"]
-        ros_init_pose.pose.pose.orientation.z = initial_pose["orientation"]["z"]
-        ros_init_pose.pose.pose.orientation.w = initial_pose["orientation"]["w"]
+        ros_init_pose.pose.pose.position.x = float(initial_pose["position"]["x"])
+        ros_init_pose.pose.pose.position.y = float(initial_pose["position"]["y"])
+        ros_init_pose.pose.pose.position.z = float(initial_pose["position"]["z"])
+        ros_init_pose.pose.pose.orientation.x = float(initial_pose["orientation"]["x"])
+        ros_init_pose.pose.pose.orientation.y = float(initial_pose["orientation"]["y"])
+        ros_init_pose.pose.pose.orientation.z = float(initial_pose["orientation"]["z"])
+        ros_init_pose.pose.pose.orientation.w = float(initial_pose["orientation"]["w"])
         ros_init_pose.pose.covariance = np.array(
             [
                 0.25,
