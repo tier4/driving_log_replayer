@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.6 (2022-10-27)
+------------------
+* fix: cast number from yaml file (`#22 <https://github.com/tier4/driving_log_replayer/issues/22>`_)
+  closes: `#21 <https://github.com/tier4/driving_log_replayer/issues/21>`_
+* Contributors: Hayato Mizushima
+
 1.0.5 (2022-10-19)
 ------------------
 * Fix/`#16 <https://github.com/tier4/driving_log_replayer/issues/16>`_ database result node failure 1 (`#18 <https://github.com/tier4/driving_log_replayer/issues/18>`_)
@@ -18,7 +24,6 @@ Changelog for package driving_log_replayer_msgs
   * fix: lint
   * fix: lint
 * Contributors: Hayato Mizushima
-
 
 1.0.4 (2022-10-14)
 ------------------
