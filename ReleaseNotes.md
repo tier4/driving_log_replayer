@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.0.6
+
+Bug Fix
+
+| Module   | Feature              | Brief summary                                                               | Pull request                                                 | JIRA       | Contributor                                   |
+| -------- | -------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `common` | publish initial pose | Cast the value of the initial position described in the scenario to a float | [#22](https://github.com/tier4/driving_log_replayer/pull/22) | T4PB-22700 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.0.5
 
 Major Changes
