@@ -12,15 +12,15 @@ Multiple annotation tools can be used as long as a conversion tool can be create
 
 ## Evaluation method
 
-Use obstacle_segmentation.launch.py to evaluate.
-When launch is launched, the following is executed and evaluated.
+The obstacle segmentation evaluation is executed by launching the `obstacle_segmentation.launch.py` file.
+Launching the file executes the following steps:
 
-1. launch C++ evaluation node, Python evaluation node, logging_simulator.launch, and ros2 bag play
-2. autoware receives sensor data output from bag and outputs /perception/obstacle_segmentation/pointcloud
-3. evaluation node of C++ subscribe /perception/obstacle_segmentation/pointcloud and calculate polygon of non-detection area at the time of header
-4. publish polygon of non-detected area and pointcloud to /driving_log_replayer/obstacle_segmentation/input
-5. Python evaluation node subscribe /driving_log_replayer/obstacle_segmentation/input and evaluate it using perception_eval in callback. Record the results in a file.
-6. when the playback of the bag is finished, launch is automatically terminated and the evaluation is completed.
+1. Launch C++ evaluation node, Python evaluation node, launch `logging_simulator.launch` file, and execute `ros2 bag play` command.
+2. Autoware receives sensor data output from input rosbag and outputs `/perception/obstacle_segmentation/pointcloud` topic.
+3. The C++ evaluation node subscribes `/perception/obstacle_segmentation/pointcloud` topic and calculates the polygon of the non-detection area at the time specified in the header.
+4. The non-detection area polygon along with a pointcloud is published to `/driving_log_replayer/obstacle_segmentation/input` topic.
+5. Python evaluation node subscribes `/driving_log_replayer/obstacle_segmentation/input` and evaluates data. The result is dumped into a file.
+6. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ## Evaluation Result
 
@@ -28,14 +28,15 @@ The results are calculated for each subscription. The format and available state
 
 ### Detection Normal
 
-The bounding box with the UUID specified in the scenario must contain a point cloud (/perception/obstacle_segmentation/pointcloud) with the specified number of points or more.
-If multiple UUIDs are specified, the condition must be satisfied for all the specified bounding boxes.
-Also, the output rate of the point cloud must not be in error by the diagnostic function provided by autoware.
-The default value is 1.0Hz or less.
+If all of the following conditions are met, the evaluation is reported as normal:
+
+1. A bounding box with the UUID specified in the scenario must contain a point cloud (topic `/perception/obstacle_segmentation/pointcloud`) with at least a number of points equal to the specified number.
+   - If multiple UUIDs are specified, the condition must be satisfied for all the specified bounding boxes.
+2. The output rate of the point cloud cannot be in error state (this data is provided by Autoware's diagnostic function). The default frequency value is 1.0Hz or less.
 
 ### Detection Warning
 
-If the visibility of the bounding box with the UUID specified in the scenario is none (occlusion state) and cannot be evaluated.
+The state is achieved when the visibility of the bounding box with the UUID specified in the scenario is none (bounding box is occluded) and cannot be evaluated.
 
 ### Detection Error
 
@@ -128,12 +129,12 @@ Evaluation:
 
 ### Evaluation Result Format
 
-In obstacle_segmentation, two types of detection (Detection) and non-detection (NonDetection) are evaluated.
-Although they are evaluated simultaneously in one point cloud callback, they are counted separately.
-The Result is true if both detection and non-detection have passed, and false otherwise.
+In `obstacle_segmentation` evaluation scenario, two types of checks, detection (Detection) and non-detection (NonDetection), are evaluated.
+Although they are evaluated simultaneously, in one callback function, they are counted separately.
+The `Result` is `true` if both detection and non-detection evaluation steps have passed. Otherwise the `Result` is `false`.
 
-The format is shown below.
-However, common parts that have already been explained in the result file format are omitted.
+An example of evaluation is described below.
+*NOTE: common part of the result file format, which has already been explained, is omitted.*
 
 ```json
 {

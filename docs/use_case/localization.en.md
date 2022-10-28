@@ -6,13 +6,13 @@ In the evaluation of localization, the reliability and convergence of NDT are ev
 
 ## Evaluation method
 
-Use localization.launch.py to evaluate.
-When the launch file is launched, the following is executed and evaluated.
+The localization's evaluation is executed by launching the `localization.launch.py` file.
+Launching the file executes the following steps:
 
-1. launch evaluation node (localization_evaluator_node), logging_simulator.launch and ros2 bag play
-2. autoware receives sensor data output from bag and performs self-location estimation
-3. evaluation node subscribes topics, determines whether NDT reliability and convergence meet the criteria, and records the results in a file
-4. when the playback of the bag is finished, launch is automatically terminated and the evaluation is completed.
+1. Execute launch of evaluation node (`localization_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command 
+2. Autoware receives sensor data  input from previously prepared rosbag and performs localization estimation
+3. Evaluation node subscribes to Autoware's output topics, determines whether NDT reliability and convergence meet the criteria, and dumps the results to a file
+4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ## Evaluation Result
 

@@ -6,13 +6,13 @@ Run the perception module and pass the output perception topic to the evaluation
 
 ## Evaluation method
 
-Use perception.launch.py to evaluate.
-When launch is launched, the following is executed and evaluated.
+The perception evaluation is executed by launching the `perception.launch.py` file.
+Launching the file executes the following steps:
 
-1. launch evaluation node (perception_evaluator_node), logging_simulator.launch and ros2 bag play
-2. autoware receives sensor data output from bag, outputs point cloud data, and the perception module performs recognition
-3. the evaluation node subscribe to /perception/object_recognition/{detection, tracking}/objects, evaluates it using the function perception_eval in the callback and records the result in a file
-4. when the playback of the bag is finished, launch is automatically terminated and the evaluation is finished.
+1. Execute launch of evaluation node (`perception_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
+2. Autoware receives sensor data output from input rosbag and outputs point cloud data, and the perception module performs recognition.
+3. The evaluation node subscribes to `/perception/object_recognition/{detection, tracking}/objects` and evaluates data. The result is dumped into a file.
+4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ### Notes
 
@@ -22,15 +22,15 @@ Wait until the string "lidar_centerpoint engine files" are generated.
 
 ## Evaluation results
 
-For each subscription, the judgment result described below is output.
+The results are calculated for each subscription. The format and available states are described below.
 
-### Normal
+### Perception Normal
 
 If there are 0 objects with evaluation failure using the function perception_eval, frame_result.pass_fail_result.get_fail_object_num() == 0
 
-### Error
+### Perception Error
 
-If there are objects with evaluation failure using the function of perception_eval, frame_result.pass_fail_result.get_fail_object_num() > 0
+The perception evaluation output is marked as `Error` when condition for ` Normal` is not met.
 
 ## Topic name and data type used by evaluation node
 
@@ -50,8 +50,8 @@ Published topics:
 
 ## Arguments passed to logging_simulator.launch
 
-To lighten autoware processing, modules that are not relevant to evaluation are disabled by passing false as a launch argument.
-The following is set.
+To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
+The following parameters are set to `false` when launching the `perception` evaluation scenario:
 
 The tf in the bag is used for the purpose of aligning the self-location during annotation and simulation. Therefore, localization is invalid.
 
@@ -62,19 +62,17 @@ The tf in the bag is used for the purpose of aligning the self-location during a
 
 ## Dependent libraries
 
-[perception_eval](https://github.com/tier4/autoware_perception_evaluation)
+The perception evaluation step bases on the [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
 
-### division of roles of driving_log_replayer with dependent libraries
+### Division of roles of driving_log_replayer with dependent libraries
 
-Driving_log_replayer is in charge of the connection with ROS, and perception_eval is in charge of handling the data set.
-Since perception_eval is a ROS-independent library, it cannot receive ROS objects.
-Also, timestamp is in nanoseconds in ROS, while milliseconds are used for datasets.
-Since t4_dataset is based on nuScenes and nuScenes uses milliseconds, t4_dataset also uses milliseconds.
+`driving_log_replayer` package is in charge of the connection with ROS. The actual perception evaluation is conducted in  [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
+The [perception_eval](https://github.com/tier4/autoware_perception_evaluation) is a ROS-independent library, it cannot receive ROS objects. Also, ROS timestamps use nanoseconds while the `t4_dataset` format is based on milliseconds (because it uses `nuScenes`), so the values must be properly converted before using the library's functions.
 
-Driving_log_replayer subscribe the topic output from the perception module of autoware, converts it to the data format expected by perception_eval, and passes it on.
-It is also responsible for publishing and visualizing the evaluation results returned from perception_eval in the ROS topic.
+`driving_log_replayer` subscribes the topic output from the perception module of Autoware, converts it to the data format expected by [perception_eval](https://github.com/tier4/autoware_perception_evaluation), and passes it on.
+It is also responsible for publishing and visualizing the evaluation results from [perception_eval](https://github.com/tier4/autoware_perception_evaluation) on proper ROS topic.
 
-Perception_eval is in charge of the part that compares the detection results passed from driving_log_replayer with GroundTruth, calculates the index, and outputs the results.
+[perception_eval](https://github.com/tier4/autoware_perception_evaluation) is in charge of the part that compares the detection results passed from `driving_log_replayer` with ground truth data, calculates the index, and outputs the results.
 
 ## About simulation
 
@@ -82,7 +80,7 @@ State the information required to run the simulation.
 
 ### Topic to be included in the input rosbag
 
-Must contain the required topics in t4_dataset
+Must contain the required topics in `t4_dataset` format.
 
 ## About Evaluation
 
@@ -93,7 +91,7 @@ State the information necessary for the evaluation.
 There are two types of evaluation: use case evaluation and database evaluation.
 Use case evaluation is performed on a single dataset, while database evaluation uses multiple datasets and takes the average of the results for each dataset.
 
-In the database evaluation, the vehicle_id should be able to be set for each data set, since the calibration values may change.
+In the database evaluation, the `vehicle_id` should be able to be set for each data set, since the calibration values may change.
 Also, it is necessary to set whether or not to activate the sensing module.
 
 ```yaml
@@ -138,13 +136,13 @@ Evaluation:
 
 ### Evaluation Result Format
 
-In perception, the results of evaluation by perception_eval under the conditions specified in the scenario are output for each frame.
-Only the final line has a different format from the other lines, since the final metrics are calculated after all data has been flushed.
+The evaluation results by [perception_eval](https://github.com/tier4/autoware_perception_evaluation) under the conditions specified in the scenario are output for each frame.
+Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.
 
-The format of each frame and the format of the metrics are shown below.
-However, common parts that have already been explained in the result file format are omitted.
+The format of each frame and the metrics format are shown below.
+*NOTE: common part of the result file format, which has already been explained, is omitted.*
 
-Format of each frame
+Format of each frame:
 
 ```json
 {
@@ -165,7 +163,7 @@ Format of each frame
 }
 ```
 
-Metrics Data Format
+Metrics Data Format:
 
 ```json
 {
@@ -188,12 +186,12 @@ Metrics Data Format
 
 ### pickle file
 
-In database evaluation, it is necessary to replay multiple bags, but due to the ROS specification, it is not possible to use multiple bags in a single launch.
-Since one bag, i.e., one t4_dataset, requires one launch, it is necessary to execute as many launches as the number of datasets contained in the database evaluation.
+In database evaluation, it is necessary to replay multiple rosbags, but due to the ROS specification, it is impossible to use multiple bags in a single launch.
+Since one rosbag, i.e., one `t4_dataset`, requires one launch, it is necessary to execute as many launches as the number of datasets contained in the database evaluation.
 
-Since database evaluation cannot be done in a single launch, perception outputs a file scene_result.pkl in addition to result.jsonl.
-The pickle file is a python object saved as a file, PerceptionEvaluationManager.frame_results of perception_eval.
-The dataset evaluation can be performed by reading all the objects recorded in the pickle file and outputting the index of the average of the dataset.
+Since database evaluation cannot be done in a single launch, perception outputs a file `scene_result.pkl` in addition to `result.jsonl` file.
+A pickle file is a python object saved as a file, PerceptionEvaluationManager.frame_results of [perception_eval](https://github.com/tier4/autoware_perception_evaluation).
+The dataset evaluation can be performed by reading all the objects recorded in the pickle file and outputting the index of the dataset's average.
 
 ### Result file of database evaluation
 

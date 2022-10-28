@@ -1,6 +1,5 @@
 # Driving Log Replayer Result File Format
 
-This section describes the format of the result file output by driving_log_replayer.
 
 It is in JSONL format, with each line containing a string in JSON format.
 

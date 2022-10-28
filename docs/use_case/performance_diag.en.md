@@ -1,38 +1,38 @@
 # Evaluate diagnostics
 
-Evaluate whether Autoware's diagnostics function as intended.
+Evaluate whether Autoware's diagnostics functionality behaves as expected.
 
-Currently, it supports evaluation of lidar visibility and blockage.
+The following subjects of evaluation are currently supported:
 
 - visibility: function to determine if visibility is impaired by fog, rain, etc.
 - blockage: function to determine if leaves or other objects are attached to LiDAR and obstructing the measurement.
 
 ## Evaluation Method
 
-Use performance_diag.launch.py to evaluate.
-When launch is launched, the following is executed and evaluated.
+The diagnostics evaluation is executed by launching the `performance_diag.launch.py` file.
+Launching the file executes the following steps:
 
-1. launch the evaluation node (performance_diag_evaluator_node), logging_simulator.launch and ros2 bag play
-2. autoware receives sensor data output from bag and outputs /diagnostics_agg
-3. evaluation node subscribe to /diagnostics_agg, evaluates in callback and records the result in a file
-4. when the playback of the bag is finished, launch is automatically terminated and the evaluation is finished
+1. Execute launch of evaluation node (`performance_diag_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command.
+2.Autoware receives sensor data output from the input rosbag and outputs the`/diagnostics_agg` topic.
+3. The evaluation node subscribes to `/diagnostics_agg` topic,  and evaluates data. The result is dumped into a file.
+4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ### visibility evaluation
 
-In the evaluation of visibility, it is confirmed that more than a certain number of ERRORs for visibility are output using data obtained in rainy weather or at facilities where rain is artificially generated.
+The evaluation process confirms that more than a specified number of ERRORs for limited visibility are generated for rosbag input data obtained under rainy conditions (naturally or artificially generated).
 Also, using data obtained during sunny weather, it is confirmed that ERRORs are never generated.
 
 ### blockage evaluation
 
-For blockage evaluation, acquire data with LiDAR intentionally covered with a plastic bag, etc., and confirm that ERROR for blockage is output more than a certain number of times.
-Also, confirm that no ERROR is generated for LiDAR that is not covered with a plastic bag.
+For blockage evaluation, acquire data with LiDAR intentionally covered with a material that will not pass the laser beam (for example box). The evaluation confirms that ERROR for blockage is output more than a certain number of times for the considered situation.
+The node will also confirm that no ERROR is generated for not covered LiDAR.
 
 ## Evaluation Result
 
 For each LiDAR diagnostic subscription, the evaluation judgment will be published on the topics described below:
 
-- visibility: /autoware/sensing/lidar/performance_monitoring/visibility/. \*.
-- blockage: /autoware/sensing/lidar/performance_monitoring/blockage/. \*
+- visibility: `/autoware/sensing/lidar/performance_monitoring/visibility/*
+- blockage: `/autoware/sensing/lidar/performance_monitoring/blockage/*`
 
 Each output of the evaluation can be considered a success or a  failure depending on what you want to evaluate. You can change this by describing the type in the scenario.
 
