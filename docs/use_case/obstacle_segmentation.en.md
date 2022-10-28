@@ -4,7 +4,7 @@ Evaluate if the Autoware point cloud generation process (if there is a connectio
 
 The following evaluations are performed simultaneously to check if point cloud published by perception nodes is valid.
 
-1. Check whether vehicles, pedestrians and other traffic participatns, annotated in advance, are detected (detection step).
+1. Check whether vehicles, pedestrians and other traffic participants, annotated in advance, are detected (detection step).
 2. Check whether extra point clouds appear in the overlapping area between the lane and the polygons around the vehicle defined in the scenario (non_detection step).
 
 The recommended annotation tool is [Deepen](https://www.deepen.ai/), but any tool that supports conversion to `t4_dataset` format can be used.
