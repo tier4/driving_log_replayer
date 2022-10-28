@@ -5,7 +5,7 @@ This section describes the scenario format used in driving_log_replayer.
 ## Notes on the format
 
 - Keys are defined in CamelCase.
-- Unless otherwise specified, the coordinate system is the same as that of Lanelet2. Map coordinate system.
+- Unless otherwise specified, the coordinate system is the same as that of the Lanelet2 `map` coordinate system.
 - Unless otherwise specified, the following unit system is used.
 
 ```shell
@@ -26,7 +26,7 @@ The basic structure is as follows. Details of each key are described below.
 
 ### 2.x.x Format
 
-for localization and performance_diag
+For `localization` and `performance_diag` evaluation scenarios
 
 ```yaml
 ScenarioFormatVersion: 2.x.x
@@ -44,9 +44,9 @@ Evaluation:
 
 ### 3.x.x Format
 
-for perception and obstacle_segmentation
+For `perception` and `obstacle_segmentation` evaluation scenarios.
 
-VehicleId and LocalMapPath have been changed to be set for each id of t4_dataset.
+** NOTE: VehicleId and LocalMapPath have been changed to be set for each id of t4_dataset.**
 
 ```yaml
 ScenarioFormatVersion: 3.x.x
@@ -68,8 +68,8 @@ Evaluation:
 
 Describe the version information of the scenario format. Use the semantic version.
 
-localization and performance_diag use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
-Perception and obstacle_segmentation use 3.x.x series. The latest version of 3.x.x is 3.0.0
+`localization` and `performance_diag` scenarios use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
+`perception` and `obstacle_segmentation` scenarios use 3.x.x series. The latest version of 3.x.x is 3.0.0
 
 Minor versions are updated each time the format is updated.
 
@@ -83,15 +83,15 @@ Describes a scenario description, used as a scenario description on the Autoware
 
 ### SensorModel
 
-Specify sensor_model as argument in autoware_launch/launch/logging_simulator.launch.xml
+Specify `sensor_model` as argument in `autoware_launch/launch/logging_simulator.launch.xml`
 
 ### VehicleModel
 
-Specify vehicle_model as argument in autoware_launch/launch/logging_simulator.launch.xml
+Specify `vehicle_model` as an argument in `autoware_launch/launch/logging_simulator.launch.xml`
 
 ### VehicleId
 
-Specify vehicle_id as argument in autoware_launch/launch/logging_simulator.launch.xml
+Specify `vehicle_id` as an argument in `autoware_launch/launch/logging_simulator.launch.xml`
 
 If vehicle ID is not specified, use "default".
 
@@ -109,8 +109,8 @@ Define the evaluation conditions for the simulation.
 
 Specify an evaluation program.
 
-The evaluation is executed by calling the launch file with the same name as the name specified here.
-The launch.py file with the same name as the specified name must exist in driving_log_replayer/launch.
+The evaluation is executed by calling the launch file with the name specified here.
+The `launch.py` file with the same name as specified must exist in the `driving_log_replayer/launch` folder.
 
 #### UseCaseFormatVersion
 
@@ -122,4 +122,4 @@ The initial version is 0.1.0.
 
 Specify conditions that can be set for each use case.
 
-Refer to each use case for the conditions that can be specified.
+Refer to each [use case](../use_case/index.en.md) for the conditions that can be specified.

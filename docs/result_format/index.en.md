@@ -2,7 +2,7 @@
 
 This section describes the format of the result file output by driving_log_replayer.
 
-It is in jsonl format, with each line containing a string in json format.
+It is in JSONL format, with each line containing a string in JSON format.
 
 ## Format
 
@@ -26,13 +26,15 @@ The actual output is a single line of text, but it is formatted for ease of read
 }
 ```
 
+Each evaluation output consists of the following attributes:
+
 - Result: Result of the evaluation of the executed scenario
 - Stamp: The time of the evaluation
 - Frame: Evaluation results for one received frame (topic) and attached information such as values used for judgment.
 
 For more information on Frame, see the evaluation results file format for each use case.
 
-## Output json file
+## Output JSON file
 
 jsonl is used because it can append lines and is easy to handle programmatically.
 However, when a person visually checks the result, it is easier to understand if it is indented in json format.

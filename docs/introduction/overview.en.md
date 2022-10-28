@@ -1,13 +1,15 @@
 # Package Overview
 
-Driving Log Replayer is the package that reads a scenario describing the conditions of evaluation, starts autoware, and outputs the evaluation results in jsonl file format.
-The overview is shown in the figure below.
+The evaluation node works in the following manner:
+- reads a scenario describing the conditions of positive evaluation
+- launches autoware
+- outputs the evaluation result in a JSON file format
+
+The details of the node's operation are shown in the figure below.
 
 ![overview](images/overview.drawio.svg)
 
-## Operating Environment
-
-The system shall be as follows.
+## System Requirements
 
 - CPU amd64
 - Ubuntu 20.04 / 22.04

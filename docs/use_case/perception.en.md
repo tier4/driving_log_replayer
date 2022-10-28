@@ -34,14 +34,14 @@ If there are objects with evaluation failure using the function of perception_ev
 
 ## Topic name and data type used by evaluation node
 
-- subscribe
+Subscribed topics:
 
 | Topic name                                       | Data type                                         |
 | ------------------------------------------------ | ------------------------------------------------- |
 | /perception/object_recognition/detection/objects | autoware_auto_perception_msgs/msg/DetectedObjects |
 | /perception/object_recognition/tracking/objects  | autoware_auto_perception_msgs/msg/TrackedObjects  |
 
-- publish
+Published topics:
 
 | Topic name                                | Data type                            |
 | ----------------------------------------- | ------------------------------------ |
@@ -197,6 +197,6 @@ The dataset evaluation can be performed by reading all the objects recorded in t
 
 ### Result file of database evaluation
 
-In the case of a database evaluation with multiple datasets in the scenario, a file named database_result.json is output to the results output directory.
+In the case of a database evaluation with multiple datasets in the scenario, a file named `database_result.json` is output to the results directory.
 
 The format is the same as the metrics format.

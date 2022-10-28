@@ -1,8 +1,8 @@
 # Evaluate self-localization estimation
 
-Evaluate whether Autoware's self-location estimation (localization) is working stably.
+Evaluate whether Autoware's localization is working stably.
 
-In the evaluation of self-location estimation, the reliability and convergence of NDT are evaluated.
+In the evaluation of localization, the reliability and convergence of NDT are evaluated.
 
 ## Evaluation method
 
@@ -16,49 +16,49 @@ When the launch file is launched, the following is executed and evaluated.
 
 ## Evaluation Result
 
-For each subscription, the judgment result described below is output.
+The results are calculated for each subscription. The format and available states are described below.
 
 ### Reliability of NDT
 
 Of the following two topics, the one specified in the scenario will be used for evaluation.
 
-- /localization/pose_estimator/transform_probability
-- /localization/pose_estimator/nearest_voxel_transformation_likelihood
+- `/localization/pose_estimator/transform_probability`
+- `/localization/pose_estimator/nearest_voxel_transformation_likelihood`
 
 ### Convergence of NDT
 
-Evaluate using the following
+Convergence evaluation is based on the following topics:
 
-- /localization/pose_estimator/pose
-- /localization/pose_twist_fusion_filter/pose
+- `/localization/pose_estimator/pose`
+- `/localization/pose_twist_fusion_filter/pose`
 
 However, the convergence evaluation starts with /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
 
 ### Reliability Normal
 
-If the data in /localization/pose_estimator/transform_probability or /localization/pose_estimator/nearest_voxel_transformation_likelihood is greater than or equal the AllowableLikelihood described in the scenario.
+If the data in `/localization/pose_estimator/transform_probability` or `/localization/pose_estimator/nearest_voxel_transformation_likelihood` is greater than or equal the `AllowableLikelihood` described in the scenario.
 
 ### Reliability Error
 
-If the data in /localization/pose_estimator/transform_probability or /localization/pose_estimator/nearest_voxel_transformation_likelihood is less than the AllowableLikelihood described in the scenario.
+If the data in `/localization/pose_estimator/transform_probability` or `/localization/pose_estimator/nearest_voxel_transformation_likelihood` is less than the `AllowableLikelihood` described in the scenario.
 
 ### Convergence Normal
 
-If all of the following three conditions are met
+If all of the following conditions are met, the convergence is reported as Normal:
 
-1. Calculate the lateral distance from /localization/pose_estimator/pose and /localization/pose_twist_fusion_filter/pose, and if the lateral distance is less than or equal to AllowableDistance described in the scenario
-2. /localization/pose_estimator/exe_time_ms is less than or equal to AllowableExeTimeMs described in the scenario
-3. /localization/pose_estimator/iteration_num is less than or equal to AllowableIterationNum described in the scenario
+1. The lateral distance (calculated from `/localization/pose_estimator/pose` and `/localization/pose_twist_fusion_filter/pose` topics output)  is less than or equal to `AllowableDistance` described in the scenario
+2. Execution time published to `/localization/pose_estimator/exe_time_ms` is less than or equal to `AllowableExeTimeMs` described in the scenario
+3. Number of iterations published to `/localization/pose_estimator/iteration_num` is less than or equal to `AllowableIterationNum` described in the scenario
 
-The lateral distance calculated in the step 1 is published as /driving_log_replayer/localization/lateral_distance.
+The lateral distance calculated in the step 1 is published as `/driving_log_replayer/localization/lateral_distance`.
 
 ### Convergence Error
 
-When conditions for Convergence Normal are not met
+The convergence evaluation output is marked as `Error` when conditions for ` Convergence Normal` are not met.
 
 ## Topic name and data type used by evaluation node
 
-- subscribe
+Subscribed topics:
 
 | Topic name                                                           | Data type                             |
 | -------------------------------------------------------------------- | ------------------------------------- |
@@ -72,7 +72,7 @@ When conditions for Convergence Normal are not met
 | /localization/pose_estimator/exe_time_ms                             | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/iteration_num                           | tier4_debug_msgs::msg::Int32Stamped   |
 
-- publish
+Published topics:
 
 | Topic name                                          | Data type                                     |
 | --------------------------------------------------- | --------------------------------------------- |
@@ -81,8 +81,8 @@ When conditions for Convergence Normal are not met
 
 ## Arguments passed to logging_simulator.launch
 
-To lighten autoware processing, modules that are not relevant to evaluation are disabled by passing false as a launch argument.
-The following is set.
+To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
+The following parameters are set to `false` when launching the `localization` evaluation scenario:
 
 - planning: false
 - control: false
@@ -143,13 +143,13 @@ Evaluation:
 
 ### Evaluation Result Format
 
-Since localization evaluates both convergence and confidence, each line contains the result of either convergence or confidence.
-The Result is true if both convergence and confidence pass, and false otherwise.
+Since localization evaluates both convergence and confidence of the localization, each line contains the result of either convergence or confidence.
+The result is `true` if both convergence and confidence are evaluated correctly. Otherwise, the output is set to `false`.
 
 Examples of each evaluation are described below.
-However, common parts that have already been explained in the result file format are omitted.
+*NOTE: common part of the result file format, which has already been explained, is omitted.*
 
-Convergence Result (when there is a Convergence item in the Frame)
+Convergence Result example:
 
 ```json
 {
@@ -169,7 +169,7 @@ Convergence Result (when there is a Convergence item in the Frame)
 }
 ```
 
-Reliability Result (when there is a Reliability item in the Frame)
+Reliability Result  example:
 
 ```json
 {

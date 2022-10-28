@@ -1,14 +1,13 @@
 # Evaluate point cloud generation
 
-Evaluate if the Autoware point cloud process (sensing -> perception) runs and /perception/obstacle_segmentation/pointcloud is output as intended.
+Evaluate if the Autoware point cloud generation process (if there is a connection between sensing and perception nodes) runs, and if data is being published to the `/perception/obstacle_segmentation/pointcloud` topic as intended.
 
-The judgment whether the point cloud is output as intended is made using t4_dataset and the point cloud.
-The following evaluations are performed simultaneously
+The following evaluations are performed simultaneously to check if point cloud published by perception nodes is valid.
 
-1. evaluation of whether vehicles, pedestrians, etc. annotated in advance are detected (detection)
-2. evaluation of whether extra point clouds appear in the overlapping area between the lane and the polygons around the vehicle defined in the scenario (non_detection).
+1. Check whether vehicles, pedestrians and other traffic participatns, annotated in advance, are detected (detection step).
+2. Check whether extra point clouds appear in the overlapping area between the lane and the polygons around the vehicle defined in the scenario (non_detection step).
 
-The recommended annotation tool is [Deepen](https://www.deepen.ai/), but any tool that supports conversion to t4_dataset is available.
+The recommended annotation tool is [Deepen](https://www.deepen.ai/), but any tool that supports conversion to `t4_dataset` format can be used.
 Multiple annotation tools can be used as long as a conversion tool can be created.
 
 ## Evaluation method
@@ -25,7 +24,7 @@ When launch is launched, the following is executed and evaluated.
 
 ## Evaluation Result
 
-For each subscription, the judgment result described below is output.
+The results are calculated for each subscription. The format and available states are described below.
 
 ### Detection Normal
 
@@ -40,21 +39,19 @@ If the visibility of the bounding box with the UUID specified in the scenario is
 
 ### Detection Error
 
-If neither detection warning nor detection normal
+The detection state is `Error` when neither conditions for `Normal` nor `Warning` state cannot be met.
 
 ### Non-Detection Normal
 
-There must be no single point cloud in the non-detection area.
-
-The non-detection area is the area calculated by the C++ node in step 3 of the evaluation method.
+The state is `Normal` when no point is contained in the non-detection area, which is calculated by the C++ node in step 3 of the evaluation method.
 
 ### Non-Detection Error
 
-There are some point cloud in the non-detection area.
+The state is `Error` when any point was found in the non-detection area.
 
 ## Topic name and data type used by evaluation node
 
-- subscribe
+Subscribed topics:
 
 | Topic name                                      | Data type                                    |
 | ----------------------------------------------- | -------------------------------------------- |
@@ -65,7 +62,7 @@ There are some point cloud in the non-detection area.
 | /planning/scenario_planning/status/stop_reasons | tier4_planning_msgs::msg::StopReasonArray    |
 | /planning/scenario_planning/trajectory          | autoware_auto_planning_msgs::msg::Trajectory |
 
-- publish
+Published topics:
 
 | Topic name                                        | Data type                                                |
 | ------------------------------------------------- | -------------------------------------------------------- |
@@ -78,8 +75,8 @@ There are some point cloud in the non-detection area.
 
 ## Arguments passed to logging_simulator.launch
 
-To lighten autoware processing, modules that are not relevant to evaluation are disabled by passing false as a launch argument.
-The following is set.
+To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
+The following parameters are set to `false` when launching the `obstacle_segmentation` evaluation scenario:
 
 - localization: false
 - control: false
@@ -90,7 +87,7 @@ State the information required to run the simulation.
 
 ### Topic to be included in the input rosbag
 
-Must contain the required topics in t4_dataset
+Must contain the required topics in `t4_dataset` format.
 
 ## About Evaluation
 

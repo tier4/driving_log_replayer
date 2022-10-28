@@ -29,36 +29,36 @@ Also, confirm that no ERROR is generated for LiDAR that is not covered with a pl
 
 ## Evaluation Result
 
-For each subscribe of LiDAR diagnostic results, the judgment result described below will be output.
+For each LiDAR diagnostic subscription, the evaluation judgment will be published on the topics described below:
 
 - visibility: /autoware/sensing/lidar/performance_monitoring/visibility/. \*.
 - blockage: /autoware/sensing/lidar/performance_monitoring/blockage/. \*
 
-The case in which an ERROR is generated can be considered a success or a failure depending on what you want to evaluate, so you can change this by describing the type in the scenario.
+Each output of the evaluation can be considered a success or a  failure depending on what you want to evaluate. You can change this by describing the type in the scenario.
 
-- If the scenario type is TP, success will be achieved if a certain number of Diag ERRORs are generated.
-- If the scenario type is FP, it succeeds if Diag never becomes ERROR.
+- If the scenario type is TP (true positive), success will be achieved if a certain number of `Diag` ERRORs is generated.
+- If the scenario type is FP (false positive), it succeeds if the `Diag` state never becomes ERROR.
 - If the scenario type is null, the test is omitted.
 
 ### TP Normal
 
-IF the scenario type is TP and the level of visibility or blockage in the diagnostic information (/diagnostics_agg) is ERROR (=2)
+If the scenario type is TP and the level of visibility or blockage in the diagnostic information (`/diagnostics_agg`) is ERROR
 
 ### TP Error
 
-If the scenario type is TP and the level of visibility or blockage in the diagnostic information (/diagnostics_agg) is not ERROR (! =2)
+If the scenario type is TP and the level of visibility or blockage in the diagnostic information (`/diagnostics_agg`) is not ERROR.
 
 ### FP Normal
 
-If the scenario type is FP and the level of visibility or blockage in the diagnostic information (/diagnostics_agg) is not ERROR (!=2) =2)
+If the scenario type is FP and the level of visibility or blockage in the diagnostic information (`/diagnostics_agg`) is not ERROR.
 
 ### FP Error
 
-If the scenario type is FP and the level of visibility or blockage in the diagnostic information (/diagnostics_agg) is ERROR (=2)
+If the scenario type is FP and the level of visibility or blockage in the diagnostic information (`/diagnostics_agg`) is ERROR.
 
 ## Topic name and data type used by evaluation node
 
-- subscribe
+Subscribed topics:
 
 | Topic name                                   | Data type                             |
 | -------------------------------------------- | ------------------------------------- |
@@ -66,7 +66,7 @@ If the scenario type is FP and the level of visibility or blockage in the diagno
 | /diagnostics_agg                             | diagnostic_msgs::msg::DiagnosticArray |
 | /tf                                          | tf2_msgs/msg/TFMessage                |
 
-- publish
+Published topics:
 
 | Topic name                                               | Data type                                     |
 | -------------------------------------------------------- | --------------------------------------------- |
@@ -81,8 +81,8 @@ If the scenario type is FP and the level of visibility or blockage in the diagno
 
 ## Arguments passed to logging_simulator.launch
 
-To lighten autoware processing, modules that are not relevant to evaluation are disabled by passing false as a launch argument.
-The following is set.
+To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
+The following parameters are set to `false` when launching the `performance_diag` evaluation scenario:
 
 - planning: false
 - control: false
@@ -164,11 +164,12 @@ Evaluation:
 
 ### Evaluation Result Format
 
-In performance_diag, visibility and blockage are evaluated.
-The Result is true if both visibility and blockage are passed, and false otherwise.
+In `performance_diag` evaluation scenario visibility and blockage are evaluated.
+The `Result` is `true` if both visibility and blockage evaluation steps have passed. Otherwise, the `Result` is `false`.
 
-The format is shown below.
-However, common parts that have already been explained in the result file format are omitted.
+The result format is shown below.
+*NOTE: common part of the result file format, which has already been explained, is omitted.*
+
 
 ```json
 {

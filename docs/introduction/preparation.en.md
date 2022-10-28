@@ -1,16 +1,16 @@
 # Preparation
 
-The following work is required to use driving_log_replayer.
+The following steps are required to use driving_log_replayer.
 
-1. Build driving_log_replayer with autoware
-2. install driving_log_replayer_cli
-3. create the cli configuration file
-4. Place the scenario and dataset for evaluation in the specified directory
+1. Build driving_log_replayer with Autoware
+2. Install driving_log_replayer_cli
+3. Create the cli configuration file
+4. Place the scenario and dataset for evaluation in the specified directory (described below)
 
 ## build driving_log_replayer
 
-This package uses Autoware functionality, so it should be set up with Autoware.
-Add driving_log_replayer and driving_log_replayer dependencies perception_eval and ros2_numpy to simulator.repos in the root of autoware and build it with autoware.
+This package uses Autoware's functionalities and depends on packages which are implemented there so it should be set up with Autoware.
+To build the `driving_log_replayer` with an Autoware please add the following dependencies into `simulator.repos` file in the Autoware repository.
 
 ```yaml
 simulator/driving_log_replayer:
@@ -30,23 +30,23 @@ simulator/vendor/ros2_numpy:
 ## install cli
 
 The driving_log_replayer is invoked by setting the parameters described in the scenario as launch arguments.
-Since cli parses the scenario, sets the launch argument, and executes it, it is necessary to install cli.
+Since cli parses the scenario, sets the launch arguments, and executes it, it is necessary to install CLI. The CLI can be installed with the following command:
 The actual ros2 launch command is displayed in the terminal, and the executed command is saved as a file named run.bash in the output folder.
 
 ```shell
 pipx install git+https://github.com/tier4/driving_log_replayer.git
 ```
 
-### set up cli
+### Set up cli
 
-In driving_log_replayer_cli, in order to reduce the number of arguments to be passed to cli, the directories specified as arguments are described in a configuration file, which is then read from the configuration file.
+In order to reduce the number of arguments to be passed to `driving_log_replayer_cli`, the directories specified as arguments are described in a configuration file.
 
-Therefore, before using the cli, create a $HOME/.driving_log_replayer.config.toml file in the following format.
+Therefore, before using the cli, create a $HOME/.driving_log_replayer.config.toml file in the format presented below.
 You can create it manually or by using the driving_log_replayer configure command.
 
 At least one profile is required, and one must be named default.
 
-Specifying the profile name with -p ${profile} in the commands described below will load the settings specified in the profile.
+Specifying the profile name with `-p ${profile_name}` in the commands described below will load the settings specified in the profile.
 You can switch between multiple autoware profiles, and if no profile is specified, default is used.
 
 ```toml
@@ -83,16 +83,16 @@ autoware_path = "$HOME/autoware"
 
 ## Folder structure and file naming rules
 
-This section describes the folder structure and file naming rules expected by driving_log_replayer.
+This section describes the folder structure and file naming rules expected by `driving_log_replayer`.
 
-In driving_log_replayer, the folder structure and file names are fixed to reduce the number of paths to be described in the scenario and the arguments to be passed to the command.
-Also, by placing multiple folders in data_directory, multiple tests can be executed in succession.
+In `driving_log_replayer` the folder structure and file names are fixed to reduce the number of paths to be described in the scenario and the arguments to be passed to the command.
+Also, by placing multiple folders in `data_directory` multiple tests can be executed in succession.
 
 ### Data Folder
 
 A folder where resources used in the simulation are stored.
 
-For each test case, a scenario, bag, and dataset are placed.
+For each test case: a scenario, rosbag, and dataset are placed.
 
 ### Data Folder Structure for localization and performance_diag
 
