@@ -1,6 +1,6 @@
 # Driving Log Replayer ドキュメント
 
-日本語ドキュメント
+ページトップの "文 A" アイコンから言語の切り替えが可能です。
 
 ## Driving Log Replayer について
 

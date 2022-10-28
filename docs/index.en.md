@@ -1,8 +1,6 @@
 # Driving Log Replayer Documentation
 
-English documentation
-
-Switching to Japanese is available from the icon "文 A" at the top of the page.
+Language selection is available by pressing the "文 A" icon at the top of the page.
 
 ## About Driving Log Replayer
 
