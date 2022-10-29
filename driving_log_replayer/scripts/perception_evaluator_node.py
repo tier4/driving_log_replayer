@@ -136,7 +136,19 @@ class PerceptionResult(ResultBase):
         self, frame: PerceptionFrameResult, skip: int, header: Header, map_to_baselink: Dict
     ) -> Tuple[MarkerArray, MarkerArray]:
         self.__total += 1
-        success = "Success" if frame.pass_fail_result.get_fail_object_num() == 0 else "Fail"
+        has_objects = True
+        if (
+            frame.pass_fail_result.tp_objects is None
+            and frame.pass_fail_result.fp_objects_result is None
+            and frame.pass_fail_result.fn_objects is None
+        ):
+            has_objects = False
+
+        success = (
+            "Success"
+            if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects
+            else "Fail"
+        )
         if success == "Success":
             self.__success += 1
         out_frame = {
@@ -144,13 +156,22 @@ class PerceptionResult(ResultBase):
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
+        tp_num = 0
+        if frame.pass_fail_result.tp_objects is not None:
+            len(frame.pass_fail_result.tp_objects)
+        fp_num = 0
+        if frame.pass_fail_result.fp_objects_result is not None:
+            len(frame.pass_fail_result.fp_objects_result)
+        fn_num = 0
+        if frame.pass_fail_result.fn_objects is not None:
+            len(frame.pass_fail_result.fn_objects)
         out_frame["PassFail"] = {
             "Result": success,
             "Info": [
                 {
-                    "TP": len(frame.pass_fail_result.tp_objects),
-                    "FP": len(frame.pass_fail_result.fp_objects_result),
-                    "FN": len(frame.pass_fail_result.fn_objects),
+                    "TP": tp_num,
+                    "FP": fp_num,
+                    "FN": fn_num,
                 }
             ],
         }
