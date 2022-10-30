@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.0.7
+
+Bug Fix
+
+| Module       | Feature                  | Brief summary | Pull request                                                 | JIRA       | Contributor                                   |
+| ------------ | ------------------------ | ------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `perception` | pass fail decision logic | fix logic     | [#25](https://github.com/tier4/driving_log_replayer/pull/25) | T4PB-22918 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.0.6
 
 Bug Fix
