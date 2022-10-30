@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.7 (2022-10-30)
+------------------
+* fix: frame pass fail logic (`#25 <https://github.com/tier4/driving_log_replayer/issues/25>`_)
+  closes: `#24 <https://github.com/tier4/driving_log_replayer/issues/24>`_
+* Contributors: Hayato Mizushima
+
 1.0.6 (2022-10-27)
 ------------------
 * fix: cast number from yaml file (`#22 <https://github.com/tier4/driving_log_replayer/issues/22>`_)
