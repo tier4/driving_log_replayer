@@ -197,4 +197,4 @@ The dataset evaluation can be performed by reading all the objects recorded in t
 
 In the case of a database evaluation with multiple datasets in the scenario, a file named `database_result.json` is output to the results directory.
 
-The format is the same as the metrics format.
+The format is the same as the [Metrics Data Format](#evaluation-result-format).
