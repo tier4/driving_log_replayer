@@ -26,7 +26,7 @@ The results are calculated for each subscription. The format and available state
 
 ### Perception Normal
 
-If there are 0 objects with evaluation failure using the function perception_eval, frame_result.pass_fail_result.get_fail_object_num() == 0
+If no object fail the evaluation function `perception_eval` (`frame_result.pass_fail_result.get_fail_object_num() == 0`).
 
 ### Perception Error
 
