@@ -79,7 +79,7 @@ Describes the name of the scenario, used as the display name of the scenario on 
 
 ### ScenarioDescription
 
-Describes a scenario description, used as a scenario description on the Autoware Evaluator.
+Describes a scenario, used as a scenario description on the Autoware Evaluator.
 
 ### SensorModel
 
