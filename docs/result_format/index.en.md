@@ -35,12 +35,12 @@ For more information on Frame, see the evaluation results file format for each u
 
 ## Output JSON file
 
-jsonl is used because it can append lines and is easy to handle programmatically.
-However, when a person visually checks the result, it is easier to understand if it is indented in json format.
-Therefore, when simulations are run using driving_log_replayer_cli, the json file is also output by default.
+JSONL is used because it is more compact when generating output logfiles.
+However, it is easier to read a JSON file format when investigating the files manually.
+Therefore, when simulations are run using driving_log_replayer_cli, the JSON file is also output by default.
 
-On the other hand, if the simulation is run locally with wasim or in the cloud, only a jsonl file is created.
-If you want to convert a jsonl file to json, you can do so with the following command.
+On the other hand, if the simulation is run locally with [wasim](https://docs.web.auto/en/developers-guides/wasim/use-cases/run-simulations-locally/) or in [the cloud](https://docs.web.auto/en/user-manuals/evaluator/introduction), only a JSONL file is created.
+If you want to convert a JSONL file to JSON, you can do so with the following command.
 
 ```shell
 # Conversion of result files, converting result.jsonl under output_directory to result.json
