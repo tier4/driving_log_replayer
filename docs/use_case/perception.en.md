@@ -56,7 +56,7 @@ The following parameters are set to `false` when launching the `perception` eval
 - localization: false
 - planning: false
 - control: false
-- sensing: false / true (default value is false. Specify in scenario)
+- sensing: false / true (default value is false. Specify by `LaunchSensing` key for each t4_dataset in the scenario)
 
 *NOTE: The `tf` in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.*
 

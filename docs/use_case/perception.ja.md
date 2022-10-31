@@ -56,7 +56,7 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 - localization: false
 - planning: false
 - control: false
-- sensing: false / true (デフォルト false、シナリオで指定する)
+- sensing: false / true (デフォルト false、シナリオの `LaunchSensing` キーで t4_dataset 毎に指定する)
 
 ## 依存ライブラリ
 
