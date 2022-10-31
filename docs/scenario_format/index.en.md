@@ -13,7 +13,6 @@ Distance: m
 Velocity: m/s
 acceleration: m/s^2
 Time: s
-Time: UNIX TIME
 ```
 
 ## Samples
