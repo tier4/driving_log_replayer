@@ -32,7 +32,7 @@ If all of the following conditions are met, the evaluation is reported as normal
 
 1. A bounding box with the UUID specified in the scenario must contain a point cloud (topic `/perception/obstacle_segmentation/pointcloud`) with at least a number of points equal to the specified number.
    - If multiple UUIDs are specified, the condition must be satisfied for all the specified bounding boxes.
-2. The output rate of the point cloud cannot be in error state (this data is provided by Autoware's diagnostic function). The default frequency value is 1.0Hz or less.
+2. The output rate of the point cloud cannot be in error state (this data is provided by Autoware's diagnostic function). The default frequency value is 1.0Hz.
 
 ### Detection Warning
 
