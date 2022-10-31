@@ -32,7 +32,7 @@ Convergence evaluation is based on the following topics:
 - `/localization/pose_estimator/pose`
 - `/localization/pose_twist_fusion_filter/pose`
 
-However, the convergence evaluation starts with /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
+However, evaluation of convergence will be started after NDT convergence, and convergence is determined by /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
 
 ### Reliability Normal
 
