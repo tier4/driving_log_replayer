@@ -93,7 +93,7 @@ Specify `vehicle_model` as an argument in `autoware_launch/launch/logging_simula
 
 Specify `vehicle_id` as an argument in `autoware_launch/launch/logging_simulator.launch.xml`
 
-If vehicle ID is not specified, use "default".
+If you don't know `vehicle_id`, set `default`.
 
 ### LocalMapPath
 

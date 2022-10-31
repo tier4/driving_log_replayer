@@ -92,7 +92,7 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_model �
 
 autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。
 
-車両 ID の指定がない場合は、default を指定する。
+車両 ID が不明な場合は、default を設定する。
 
 ### LocalMapPath
 
