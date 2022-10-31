@@ -44,6 +44,14 @@ In order to reduce the number of arguments to be passed to `driving_log_replayer
 Therefore, before using the cli, create a $HOME/.driving_log_replayer.config.toml file in the format presented below.
 You can create it manually or by using the driving_log_replayer configure command.
 
+```shell
+# manual creation
+nano $HOME/.driving_log_replayer.config.toml
+
+# cli creation
+driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
+```
+
 At least one profile is required, and one must be named default.
 
 Specifying the profile name with `-p ${profile_name}` in the commands described below will load the settings specified in the profile.
