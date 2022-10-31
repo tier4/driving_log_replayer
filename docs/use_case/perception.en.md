@@ -53,12 +53,12 @@ Published topics:
 To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
 The following parameters are set to `false` when launching the `perception` evaluation scenario:
 
-The tf in the bag is used for the purpose of aligning the self-location during annotation and simulation. Therefore, localization is invalid.
-
 - localization: false
 - planning: false
 - control: false
 - sensing: false / true (default value is false. Specify in scenario)
+
+*NOTE: The `tf` in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.*
 
 ## Dependent libraries
 
