@@ -93,10 +93,8 @@ State the information required to run the simulation.
 
 ### Topic to be included in the input rosbag
 
-The CAN of the vehicle's ECU and the topic of the sensor being used are required.
-The following is an example, and may be changed if different sensors are used.
-
-If multiple LiDARs are installed, include packets for all LiDARs installed.
+The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
+The following example shows the topic list available in evaluation input rosbag when multiple LiDARs are used in a real-world vehicle configuration.
 
 - /sensing/gnss/ublox/fix_velocity
 - /sensing/gnss/ublox/nav_sat_fix
