@@ -16,9 +16,9 @@ Launching the file executes the following steps:
 
 ### Notes
 
-It may appear that bag play starts at the time of launch in step 1 of the evaluation method.
-This is because when autoware workspace is set up and perception module is launched for the first time, it waits for the conversion process of lidar_centerpoint's onnx files.
-Wait until the string "lidar_centerpoint engine files" are generated.
+Autoware's perception module is launched for the first time, it converts `onnx` files in `lidar_centerpoint` package.
+In step 1 of the evaluation method, there is a long, seemingly halting process as it waits for the conversion to complete.
+This is normal operation, so please do not stop with keyboard input, but wait as is.
 
 ## Evaluation results
 
