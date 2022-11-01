@@ -34,7 +34,7 @@ For more information on Frame, see the evaluation results file format for each u
 
 ## Output JSON file
 
-JSONL is used because it is appendable, and one result can be appended per topic subscription.
+JSONL is used because it can be appended, and one result will be added per topic subscription.
 However, it is easier to read a JSON file format when investigating the files manually.
 Therefore, when simulations are run using driving_log_replayer_cli, the JSON file is also output by default.
 
