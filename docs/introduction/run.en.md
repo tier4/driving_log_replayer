@@ -4,7 +4,6 @@ To run `driving_log_replayer` all the steps described in [Preparation](./prepara
 
 ## Command
 
-
 After installing `driving_log_replayer_cli`, the `driving_log_replayer` command can be executed in the terminal.
 The `driving_log_replayer` command has subcommands.
 The arguments required for each command can be displayed by specifying the `--help` option.
