@@ -8,9 +8,9 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
 2. [Install pipx](https://pypa.github.io/pipx/)
 3. [Install zstd](https://github.com/facebook/zstd)
 
-    ```shell
-    sudo apt install zstd
-    ```
+   ```shell
+   sudo apt install zstd
+   ```
 
 ## How to build
 
