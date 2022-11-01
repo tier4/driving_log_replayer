@@ -6,7 +6,7 @@
 
    ```bash
    mkdir -p ~/driving_log_replayer_data/obstacle_segmentation/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/docs/sample/obstacle_segmentation/scenario.yaml ~/driving_log_replayer_data/obstacle_segmentation/sample
+   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/obstacle_segmentation/scenario.yaml ~/driving_log_replayer_data/obstacle_segmentation/sample
    ```
 
 2. Copy bag file from dataset

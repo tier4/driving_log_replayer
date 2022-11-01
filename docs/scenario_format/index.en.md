@@ -17,7 +17,7 @@ Time: s
 
 ## Samples
 
-Sample scenarios are stored in the docs/sample folder.
+Sample scenarios are stored in the [sample](https://github.com/tier4/driving_log_replayer/tree/develop/sample) folder.
 
 ## Format
 

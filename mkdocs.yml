@@ -35,12 +35,6 @@ extra:
   version:
     provider: mike
 
-extra_javascript:
-  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js
-  - javascripts/config.js
-extra_css:
-  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css
-
 plugins:
   - awesome-pages:
       strict: false
@@ -62,7 +56,6 @@ markdown_extensions:
       guess_lang: false
   - mdx_truly_sane_lists:
       nested_indent: 2
-  - pymdownx.highlight
   - pymdownx.superfences:
   - toc:
       permalink: "#"

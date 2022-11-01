@@ -3,13 +3,6 @@
 Driving Log Replayer は、log(rosbag2)を用いて Autoware の open loop simulation を実行し、Autoware が出力するトピックを評価するパッケージです。
 Sensing, Localization, Perception の性能確認と、ソフトウェアのリグレッションテストに使用します。
 
-## アーキテクチャ
-
-Driving Log Replayer は、Autoware の評価ノードを Autoware の標準機能に付加した構成となっている。
-アーキテクチャ図を以下に示す。
-
-![architecture](images/architecture.png)
-
 ## 関連ドキュメント
 
 1. [AutowareDocumentation](https://autowarefoundation.github.io/autoware-documentation/main/)
@@ -19,6 +12,13 @@ Driving Log Replayer は、Autoware の評価ノードを Autoware の標準機�
 
 1. [ros2bag_extensions](https://github.com/tier4/ros2bag_extensions)
 2. [perception_eval](https://github.com/tier4/autoware_perception_evaluation)
+
+## アーキテクチャ
+
+Driving Log Replayer は、Autoware の評価ノードを Autoware の標準機能に付加した構成となっている。
+アーキテクチャ図を以下に示す。
+
+![architecture](images/architecture.png)
 
 ## パッケージ構成
 

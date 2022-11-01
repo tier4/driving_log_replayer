@@ -6,7 +6,7 @@
 
    ```bash
    mkdir -p ~/driving_log_replayer_data/localization/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/docs/sample/localization/scenario.yaml ~/driving_log_replayer_data/localization/sample
+   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/localization/scenario.yaml ~/driving_log_replayer_data/localization/sample
    ```
 
 2. Copy bag file from dataset
