@@ -2,7 +2,7 @@ nav:
   - index.en.md
   - index.ja.md
   - quick_start
-  - introduction
+  - overview
   - scenario_format
   - result_format
   - use_case

@@ -2,15 +2,16 @@
 
 This document contains step-by-step instruction on how to build [AWF Autoware Core/Universe](https://github.com/autowarefoundation/autoware) with `driving_log_replayer`.
 
-## Prerequisites
+## Requirements
 
-1. [Autoware has been built and installed](https://autowarefoundation.github.io/autoware-documentation/main/installation/)
-2. [Install pipx](https://pypa.github.io/pipx/)
-3. [Install zstd](https://github.com/facebook/zstd)
-
-   ```shell
-   sudo apt install zstd
-   ```
+- CPU amd64
+- Ubuntu 20.04 / 22.04
+- ROS galactic / humble
+- Python 3.8 / 3.10
+- NVIDIA GPU (required if running perception)
+- [pipx](https://pypa.github.io/pipx/)
+- [zstd](https://github.com/facebook/zstd)
+  - sudo apt install zstd
 
 ## How to build
 
