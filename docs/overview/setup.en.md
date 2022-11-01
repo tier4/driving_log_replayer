@@ -1,6 +1,6 @@
 # Setup
 
-Describe the settings necessary to use driving_log_replayer.
+This section describes the settings required to use driving_log_replayer.
 
 ## Cli setting
 
