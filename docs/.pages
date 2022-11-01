@@ -1,6 +1,7 @@
 nav:
   - index.en.md
   - index.ja.md
+  - quick_start
   - introduction
   - scenario_format
   - result_format
