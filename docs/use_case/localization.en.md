@@ -9,8 +9,8 @@ In the evaluation of localization, the reliability and convergence of NDT are ev
 The localization's evaluation is executed by launching the `localization.launch.py` file.
 Launching the file executes the following steps:
 
-1. Execute launch of evaluation node (`localization_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command 
-2. Autoware receives sensor data  input from previously prepared rosbag and performs localization estimation
+1. Execute launch of evaluation node (`localization_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
+2. Autoware receives sensor data input from previously prepared rosbag and performs localization estimation
 3. Evaluation node subscribes to Autoware's output topics, determines whether NDT reliability and convergence meet the criteria, and dumps the results to a file
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
@@ -46,7 +46,7 @@ If the data in `/localization/pose_estimator/transform_probability` or `/localiz
 
 If all of the following conditions are met, the convergence is reported as Normal:
 
-1. The lateral distance (calculated from `/localization/pose_estimator/pose` and `/localization/pose_twist_fusion_filter/pose` topics output)  is less than or equal to `AllowableDistance` described in the scenario
+1. The lateral distance (calculated from `/localization/pose_estimator/pose` and `/localization/pose_twist_fusion_filter/pose` topics output) is less than or equal to `AllowableDistance` described in the scenario
 2. Execution time published to `/localization/pose_estimator/exe_time_ms` is less than or equal to `AllowableExeTimeMs` described in the scenario
 3. Number of iterations published to `/localization/pose_estimator/iteration_num` is less than or equal to `AllowableIterationNum` described in the scenario
 
@@ -54,7 +54,7 @@ The lateral distance calculated in the step 1 is published as `/driving_log_repl
 
 ### Convergence Error
 
-The convergence evaluation output is marked as `Error` when conditions for ` Convergence Normal` are not met.
+The convergence evaluation output is marked as `Error` when conditions for `Convergence Normal` are not met.
 
 ## Topic name and data type used by evaluation node
 
@@ -145,7 +145,7 @@ Since localization evaluates both convergence and confidence of the localization
 The result is `true` if both convergence and confidence are evaluated correctly. Otherwise, the output is set to `false`.
 
 Examples of each evaluation are described below.
-*NOTE: common part of the result file format, which has already been explained, is omitted.*
+**NOTE: common part of the result file format, which has already been explained, is omitted.**
 
 Convergence Result example:
 
@@ -167,7 +167,7 @@ Convergence Result example:
 }
 ```
 
-Reliability Result  example:
+Reliability Result example:
 
 ```json
 {

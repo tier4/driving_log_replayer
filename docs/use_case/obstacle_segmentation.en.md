@@ -134,7 +134,7 @@ Although they are evaluated simultaneously, in one callback function, they are c
 The `Result` is `true` if both detection and non-detection evaluation steps have passed. Otherwise the `Result` is `false`.
 
 An example of evaluation is described below.
-*NOTE: common part of the result file format, which has already been explained, is omitted.*
+**NOTE: common part of the result file format, which has already been explained, is omitted.**
 
 ```json
 {

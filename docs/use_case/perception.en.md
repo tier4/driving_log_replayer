@@ -30,7 +30,7 @@ If no object fail the evaluation function `perception_eval` (`frame_result.pass_
 
 ### Perception Error
 
-The perception evaluation output is marked as `Error` when condition for ` Normal` is not met.
+The perception evaluation output is marked as `Error` when condition for `Normal` is not met.
 
 ## Topic name and data type used by evaluation node
 
@@ -58,7 +58,7 @@ The following parameters are set to `false` when launching the `perception` eval
 - control: false
 - sensing: false / true (default value is false. Specify by `LaunchSensing` key for each t4_dataset in the scenario)
 
-*NOTE: The `tf` in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.*
+**NOTE: The `tf` in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.**
 
 ## Dependent libraries
 
@@ -66,7 +66,7 @@ The perception evaluation step bases on the [perception_eval](https://github.com
 
 ### Division of roles of driving_log_replayer with dependent libraries
 
-`driving_log_replayer` package is in charge of the connection with ROS. The actual perception evaluation is conducted in  [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
+`driving_log_replayer` package is in charge of the connection with ROS. The actual perception evaluation is conducted in [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
 The [perception_eval](https://github.com/tier4/autoware_perception_evaluation) is a ROS-independent library, it cannot receive ROS objects. Also, ROS timestamps use nanoseconds while the `t4_dataset` format is based on milliseconds (because it uses `nuScenes`), so the values must be properly converted before using the library's functions.
 
 `driving_log_replayer` subscribes the topic output from the perception module of Autoware, converts it to the data format expected by [perception_eval](https://github.com/tier4/autoware_perception_evaluation), and passes it on.
@@ -140,7 +140,7 @@ The evaluation results by [perception_eval](https://github.com/tier4/autoware_pe
 Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.
 
 The format of each frame and the metrics format are shown below.
-*NOTE: common part of the result file format, which has already been explained, is omitted.*
+**NOTE: common part of the result file format, which has already been explained, is omitted.**
 
 Format of each frame:
 

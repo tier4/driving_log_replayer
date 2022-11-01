@@ -13,9 +13,9 @@ The diagnostics evaluation is executed by launching the `performance_diag.launch
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`performance_diag_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command.
-2.Autoware receives sensor data output from the input rosbag and outputs the`/diagnostics_agg` topic.
-3. The evaluation node subscribes to `/diagnostics_agg` topic,  and evaluates data. The result is dumped into a file.
-4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
+   2.Autoware receives sensor data output from the input rosbag and outputs the`/diagnostics_agg` topic.
+2. The evaluation node subscribes to `/diagnostics_agg` topic, and evaluates data. The result is dumped into a file.
+3. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ### visibility evaluation
 
@@ -31,10 +31,10 @@ The node will also confirm that no ERROR is generated for not covered LiDAR.
 
 For each LiDAR diagnostic subscription, the evaluation judgment will be published on the topics described below:
 
-- visibility: `/autoware/sensing/lidar/performance_monitoring/visibility/*
+- visibility: `/autoware/sensing/lidar/performance_monitoring/visibility/\*
 - blockage: `/autoware/sensing/lidar/performance_monitoring/blockage/*`
 
-Each output of the evaluation can be considered a success or a  failure depending on what you want to evaluate. You can change this by describing the type in the scenario.
+Each output of the evaluation can be considered a success or a failure depending on what you want to evaluate. You can change this by describing the type in the scenario.
 
 - If the scenario type is TP (true positive), success will be achieved if a certain number of `Diag` ERRORs is generated.
 - If the scenario type is FP (false positive), it succeeds if the `Diag` state never becomes ERROR.
@@ -166,8 +166,7 @@ In `performance_diag` evaluation scenario visibility and blockage are evaluated.
 The `Result` is `true` if both visibility and blockage evaluation steps have passed. Otherwise, the `Result` is `false`.
 
 The result format is shown below.
-*NOTE: common part of the result file format, which has already been explained, is omitted.*
-
+_NOTE: common part of the result file format, which has already been explained, is omitted._
 
 ```json
 {

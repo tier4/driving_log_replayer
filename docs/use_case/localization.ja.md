@@ -28,7 +28,7 @@ launch を立ち上げると以下のことが実行され、評価される。
 - /localization/pose_estimator/pose
 - /localization/pose_twist_fusion_filter/pose
 
-ただし収束性はNDTが収束してから評価開始とし、収束の判定は/localization/pose_estimator/transform_probability > 0 もしくは /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0 を用いる。
+ただし収束性は NDT が収束してから評価開始とし、収束の判定は/localization/pose_estimator/transform_probability > 0 もしくは /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0 を用いる。
 
 ## 評価結果
 

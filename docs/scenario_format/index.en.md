@@ -45,7 +45,7 @@ Evaluation:
 
 For `perception` and `obstacle_segmentation` evaluation scenarios.
 
-** NOTE: VehicleId and LocalMapPath have been changed to be set for each id of t4_dataset.**
+**NOTE: VehicleId and LocalMapPath have been changed to be set for each id of t4_dataset.**
 
 ```yaml
 ScenarioFormatVersion: 3.x.x
