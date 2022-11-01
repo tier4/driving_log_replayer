@@ -28,6 +28,13 @@ theme:
         icon: material/weather-night
         name: Switch to light mode
 
+extra:
+  font:
+    text: Roboto
+    code: Roboto Mono
+  version:
+    provider: mike
+
 plugins:
   - awesome-pages:
       strict: false
@@ -41,3 +48,16 @@ plugins:
         ja:
           name: 日本語
           build: true
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - mdx_truly_sane_lists:
+      nested_indent: 2
+  - pymdownx.highlight
+  - pymdownx.superfences:
+  - toc:
+      permalink: "#"
+      toc_depth: 3
