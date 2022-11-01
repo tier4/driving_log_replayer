@@ -1,8 +1,4 @@
-# 起動方法
-
-driving_log_replayer を起動するには、autoware のワークスペースのビルド、cli のインストール、及び、評価するデータの準備を事前に済ませている必要がある。
-
-## コマンド
+# コマンド
 
 driving_log_replayer_cli のコマンドについて解説する。
 

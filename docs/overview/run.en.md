@@ -1,8 +1,4 @@
-# How to run
-
-To run `driving_log_replayer` all the steps described in [Preparation](./preparation.en.md) Section should be previously executed. Also, the rosbag input data should be prepared in advance.
-
-## Command
+# Command
 
 After installing `driving_log_replayer_cli`, the `driving_log_replayer` command can be executed in the terminal.
 The `driving_log_replayer` command has subcommands.
