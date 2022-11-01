@@ -1,43 +1,8 @@
-# 準備
+# 設定
 
-driving_log_replayer を利用するには以下の作業が必要となる。
+driving_log_replayer を利用するのに必要な設定を述べる。
 
-1. driving_log_replayer を autoware と一緒にビルドする
-2. driving_log_replayer_cli をインストールする
-3. cli の設定ファイルを作成する
-4. 評価用のシナリオとデータセットを指定のディレクトリに配置する
-
-## driving_log_replayer のビルド
-
-本パッケージは Autoware の機能を使用するので、Autoware と一緒にセットアップする。
-autoware のルートにある simulator.repos に driving_log_replayer と driving_log_replayer が依存する perception_eval、ros2_numpy を追加し、autoware と一緒にビルドする。
-
-```yaml
-simulator/driving_log_replayer:
-  type: git
-  url: https://github.com/tier4/driving_log_replayer.git
-  version: main
-simulator/perception_eval:
-  type: git
-  url: https://github.com/tier4/autoware_perception_evaluation.git
-  version: main
-simulator/vendor/ros2_numpy:
-  type: git
-  url: https://github.com/Box-Robotics/ros2_numpy.git
-  version: humble
-```
-
-## cli のインストール
-
-driving_log_replayer は、シナリオに記述されたパラメータを launch の引数に設定して起動する仕組みになっている。
-cli がシナリオをパースして launch の引数をセットして実行してくれるので cli をインストールしておく必要がある。
-実際に叩いてる ros2 launch のコマンドはターミナルに表示され、また結果の出力先フォルダに run.bash というファイル名で実行したコマンドがファイルで保存される。
-
-```shell
-pipx install git+https://github.com/tier4/driving_log_replayer.git
-```
-
-### cli の設定
+## cli の設定
 
 driving_log_replayer_cli では、cli に渡す引数を少なくするために引数に指定するディレクトリを設定ファイルに記載し設定ファイルから読み込む形式を取る。
 

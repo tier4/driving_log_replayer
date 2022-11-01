@@ -1,9 +1,7 @@
 nav:
   - index.en.md
   - index.ja.md
-  - overview.en.md
-  - overview.ja.md
-  - preparation.en.md
-  - preparation.ja.md
-  - run.en.md
-  - run.ja.md
+  - setup.en.en.md
+  - setup.ja.md
+  - command.en.md
+  - command.ja.md

@@ -1,43 +1,8 @@
-# Preparation
+# Setup
 
-The following steps are required to use driving_log_replayer.
+Describe the settings necessary to use driving_log_replayer.
 
-1. Build driving_log_replayer with Autoware
-2. Install driving_log_replayer_cli
-3. Create the cli configuration file
-4. Place the scenario and dataset for evaluation in the specified directory (described below)
-
-## build driving_log_replayer
-
-This package uses Autoware's functionalities and depends on packages which are implemented there so it should be set up with Autoware.
-To build the `driving_log_replayer` with an Autoware please add the following dependencies into `simulator.repos` file in the Autoware repository.
-
-```yaml
-simulator/driving_log_replayer:
-  type: git
-  url: https://github.com/tier4/driving_log_replayer.git
-  version: main
-simulator/perception_eval:
-  type: git
-  url: https://github.com/tier4/autoware_perception_evaluation.git
-  version: main
-simulator/vendor/ros2_numpy:
-  type: git
-  url: https://github.com/Box-Robotics/ros2_numpy.git
-  version: humble
-```
-
-## install cli
-
-The driving_log_replayer is invoked by setting the parameters described in the scenario as launch arguments.
-Since cli parses the scenario, sets the launch arguments, and executes it, it is necessary to install CLI. The CLI can be installed with the following command:
-The actual ros2 launch command is displayed in the terminal, and the executed command is saved as a file named run.bash in the output folder.
-
-```shell
-pipx install git+https://github.com/tier4/driving_log_replayer.git
-```
-
-### Set up cli
+## Cli setting
 
 In order to reduce the number of arguments to be passed to `driving_log_replayer_cli`, the directories specified as arguments are described in a configuration file.
 
