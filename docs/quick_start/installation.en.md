@@ -21,7 +21,7 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
    cd autoware
    ```
 
-2. Add dependency packages
+2. Add dependency packages:
 
    ```shell
    nano simulator.repos
@@ -54,7 +54,7 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
    vcs import src < simulator.repos
    ```
 
-4. Update rosdep
+4. Update rosdep:
 
    ```shell
    rosdep update
@@ -72,7 +72,7 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
    ```
 
-7. Install cli to run driving_log_replayer
+7. Install cli to run driving_log_replayer:
 
    ```shell
    pipx install git+https://github.com/tier4/driving_log_replayer.git
