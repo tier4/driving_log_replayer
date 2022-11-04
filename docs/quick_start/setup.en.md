@@ -15,6 +15,7 @@
    The same maps as in planning-simulation are used, so if you have already downloaded them, you do not need to do this step.
 
    ```bash
+   mkdir -p ~/autoware_map
    gdown -O ~/autoware_map/sample-map-planning.zip 'https://docs.google.com/uc?export=download&id=1499_nsbUbIeturZaDj7jhUownh5fvXHd'
    unzip -d ~/autoware_map ~/autoware_map/sample-map-planning.zip
    ```
