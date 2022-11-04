@@ -39,5 +39,6 @@
    The driving_log_replayer tutorial uses the same setting, so this step is not necessary if you have already copied it from other evaluation.
 
    ```bash
+   # assuming that autoware is placed under ~/autoware directory
    cp ~/autoware/src/simulator/driving_log_replayer/sample/.driving_log_replayer.config.toml ~/
    ```
