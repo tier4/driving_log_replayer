@@ -4,6 +4,11 @@ Changelog for package driving_log_replayer_msgs
 
 1.0.8 (2022-11-04)
 ------------------
+* fix: MkDocs Dependency
+* Contributors: Hayato Mizushima
+
+1.0.8 (2022-11-04)
+------------------
 * docs: English document
 * Contributors: Hayato Mizushima
 
