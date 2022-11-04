@@ -29,23 +29,23 @@
    ```
 
    ```shell
-    simulator/perception_eval:
-      type: git
-      url: https://github.com/tier4/autoware_perception_evaluation.git
-      version: main
-    simulator/driving_log_replayer:
-      type: git
-      url: https://github.com/tier4/driving_log_replayer.git
-      version: main
-    simulator/vendor/ros2_numpy:
-      type: git
-      url: https://github.com/Box-Robotics/ros2_numpy.git
-      # galacticで使用する場合でもバージョン指定はhumbleで良い
-      version: humble
-    simulator/vendor/ros2bag_extensions:
-      type: git
-      url: https://github.com/tier4/ros2bag_extensions.git
-      version: main
+     simulator/perception_eval:
+       type: git
+       url: https://github.com/tier4/autoware_perception_evaluation.git
+       version: main
+     simulator/driving_log_replayer:
+       type: git
+       url: https://github.com/tier4/driving_log_replayer.git
+       version: main
+     simulator/vendor/ros2_numpy:
+       type: git
+       url: https://github.com/Box-Robotics/ros2_numpy.git
+       # version humble is available for both humble and galactic
+       version: humble
+     simulator/vendor/ros2bag_extensions:
+       type: git
+       url: https://github.com/tier4/ros2bag_extensions.git
+       version: main
    ```
 
 3. simulatorの依存パッケージをインポートする:
