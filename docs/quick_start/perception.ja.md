@@ -1,24 +1,24 @@
-# Perception Evaluation
+# 認識機能の評価
 
-## Preparation
+## 準備
 
-1. Copy sample scenario
+1. サンプルのシナリオのコピー
 
    ```bash
    mkdir -p ~/driving_log_replayer_data/perception/sample
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/perception/scenario.yaml ~/driving_log_replayer_data/perception/sample
    ```
 
-2. Copy bag file from dataset
+2. サンプルのデータセットをコピー
 
    ```bash
    mkdir -p ~/driving_log_replayer_data/perception/sample/t4_dataset
    cp -r ~/driving_log_replayer_data/sample_dataset ~/driving_log_replayer_data/perception/sample/t4_dataset
    ```
 
-## How to run
+## 実行方法
 
-1. Run the simulation
+1. シミュレーションの実行
 
    ```bash
    driving_log_replayer simulation run -p perception --rate 0.5
@@ -26,10 +26,10 @@
 
    ![perception](images/perception.png)
 
-2. Check the results
+2. 結果の確認
 
-   Results are displayed in the terminal like below.
-   The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
+   以下のような結果がターミナルに表示されます。
+   PCの性能やCPUの負荷状況によってテスト回数が若干異なることがありますが、多少の差は問題ありません。
 
    ```bash
     test case 1 / 1 : use case: sample

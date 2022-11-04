@@ -1,21 +1,21 @@
-# Localization Evaluation
+# 自己位置推定機能の評価
 
-## Preparation
+## 準備
 
-1. Copy sample scenario
+1. サンプルのシナリオのコピー
 
    ```bash
    mkdir -p ~/driving_log_replayer_data/localization/sample
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/localization/scenario.yaml ~/driving_log_replayer_data/localization/sample
    ```
 
-2. Copy bag file from dataset
+2. サンプルのデータセットをコピー
 
    ```bash
    cp -r ~/driving_log_replayer_data/sample_dataset/input_bag ~/driving_log_replayer_data/localization/sample
    ```
 
-3. Filter and slice bag
+3. 入力のbagファイルのフィルタとスライス処理
 
    ```bash
    source ~/autoware/install/setup.bash
@@ -27,9 +27,9 @@
    mv sliced_bag input_bag
    ```
 
-## How to run
+## 実行方法
 
-1. Run the simulation
+1. シミュレーションの実行
 
    ```bash
    driving_log_replayer simulation run -p localization --rate 0.5
@@ -37,10 +37,10 @@
 
    ![localization](images/localization.png)
 
-2. Check the results
+2. 結果の確認
 
-   Results are displayed in the terminal like below.
-   The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
+   以下のような結果がターミナルに表示されます。
+   PCの性能やCPUの負荷状況によってテスト回数が若干異なることがありますが、多少の差は問題ありません。
 
    ```bash
     test case 1 / 1 : use case: sample

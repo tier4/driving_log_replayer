@@ -1,3 +1,3 @@
-# Performance Diag Evaluation
+# 診断機能の評価
 
-Performance diag evaluation is currently not available with autowarefoundation-autoware.
+autowarefoundation-autowareでは、現在、診断機能の評価はできません。
