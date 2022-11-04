@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.0.9
+
+Bug Fix
+
+| Module | Feature       | Brief summary         | Pull request                                                 | JIRA       | Contributor                                   |
+| ------ | ------------- | --------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `all`  | documentation | fix MkDocs Dependency | [#28](https://github.com/tier4/driving_log_replayer/pull/28) | T4PB-21730 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.0.8
 
 Minor Tweaks
