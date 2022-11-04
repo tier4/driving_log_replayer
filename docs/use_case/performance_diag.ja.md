@@ -7,23 +7,56 @@ Autoware の診断機能(diagnostics)が意図通りに機能しているかを�
 - visibility: 霧や雨などで視界が悪くなっていないかを判定する機能
 - blockage: LiDAR に葉っぱなどが付着して計測の妨げをしていないかを判定する機能
 
+## 評価方法
+
+performance_diag.launch.py を使用して評価する。
+launch を立ち上げると以下のことが実行され、評価される。
+
+1. launch で評価ノード(performance_diag_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
+2. bag から出力されたセンサーデータを autoware が受け取って、/diagnostics_agg を出力する
+3. 評価ノードが/diagnostics_agg を subscribe して、コールバックで評価を行い結果をファイルに記録する。
+4. bag の再生が終了すると自動で launch が終了して評価が終了する
+
+### visibility 評価
+
 visibility の評価では、雨天時や人工的に雨を降らせられる施設で取得したデータを用いて visibility の ERROR が一定数以上出力されることを確認する。
 また、晴天時のデータを利用して、ERROR が一度も出ないことを確認する。
+
+### blockage 評価
 
 blockage の評価では、LiDAR をビニール袋などでわざと覆った状態でデータを取得し blockage の ERROR が一定数以上出力されることを確認する。
 また、覆ってない LiDAR については ERROR が一度も出ないことを確認する。
 
-上記のように、評価したい内容によって ERROR が出る場合を成功とするか失敗とするかが分かれるので、シナリオにタイプを記述することで変更できるようになっている。
+## 評価結果
+
+LiDAR の診断結果の subscribe 1 回につき、以下に記述する判定結果が出力される。
+
+- visibility: /autoware/sensing/lidar/performance_monitoring/visibility/.\*
+- blockage: /autoware/sensing/lidar/performance_monitoring/blockage/.\*
+
+評価したい内容によって ERROR が出る場合を成功とするか失敗とするかが分かれるので、シナリオにタイプを記述することで変更できるようになっている。
 
 - シナリオ種類が TP の場合は Diag が一定数以上 ERROR になれば成功
 - シナリオ種類が FP の場合は Diag が一度も ERROR にならなければ成功
 - シナリオ種類が null の場合はテストを省略する
 
-## 評価方法
+### TP 正常
 
-driving_log_replayer/launch/performance_diag.launch.py を用いて、評価用のノードを autoware_launch の logging_simulator.launch と一緒に立ち上げる。
+シナリオ種類が TP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR(=2)の場合
 
-## 評価ノードが使用する Topic とデータ型
+### TP 異常
+
+シナリオ種類が TP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR でない(!=2)の場合
+
+### FP 正常
+
+シナリオ種類が FP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR でない(!=2)の場合
+
+### FP 異常
+
+シナリオ種類が FP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR(=2)の場合
+
+## 評価ノードが使用する Topic 名とデータ型
 
 - subscribe
 
@@ -46,43 +79,13 @@ driving_log_replayer/launch/performance_diag.launch.py を用いて、評価用�
 
 {lidar_name}には、搭載されている lidar の名前が入る。
 
-### logging_simulator.launch に渡す引数
+## logging_simulator.launch に渡す引数
 
 autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
 
 - planning: false
 - control: false
 - localization: false / true (デフォルト false、シナリオで指定する)
-
-autoware から出力される診断情報(/diagnostics_agg)を評価する。
-メッセージ毎に以下のいずれかとして評価される。
-
-対象となる status は、LiDAR の visibility と blockage に対応していて、
-
-- visibility: /autoware/sensing/lidar/performance_monitoring/visibility/.\*
-- blockage: /autoware/sensing/lidar/performance_monitoring/blockage/.\*
-
-### TP 正常
-
-シナリオ種類が TP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR(=2)の場合
-
-### TP 異常
-
-シナリオ種類が TP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR でない(!=2)の場合
-
-### FP 正常
-
-シナリオ種類が FP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR でない(!=2)の場合
-
-### FP 異常
-
-シナリオ種類が FP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR(=2)の場合
-
-### 評価フロー
-
-1. launch で評価ノード(performance_diag_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、/diagnostics_agg を出力する
-3. 評価ノードが/diagnostics_agg を subscribe して、コールバックで評価を行う
 
 ## simulation
 
@@ -117,18 +120,18 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 Evaluation:
   UseCaseName: performance_diag
   UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # falseのときはbagの中に/tfが入っている必要がある。
-  InitialPose: null # LaunchLocalizationが有効のときだけ機能する
+  LaunchLocalization: false # falseのときはbagの中に入っている/tfを出力する。trueのときはbagの中のtfはリマップされ無効化される。
+  InitialPose: null # 初期位置を指定する。LaunchLocalizationが有効のときだけ機能する
   Conditions:
     LiDAR:
       Visibility:
-        PassFrameCount: 100 # ScenarioTypeがTPのときにこの値以上ERRORが出ればVisibilityの試験は成功とする。FPの場合はERRORが一切出ないことが条件なので無視される
+        PassFrameCount: 100 # ScenarioTypeがTPのときにこの回数以上ERRORが出ればVisibilityの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される
         ScenarioType: FP # TP/FP/null
       Blockage:
-        front_lower: # 搭載されているLidar毎に設定する
+        front_lower: # 搭載されているLiDAR毎に設定する
           ScenarioType: TP # TP/FP/null
-          BlockageType: both # sky/ground/both 空側、地面側、またはその両方、どこでblockageが発生しているか
-          PassFrameCount: 100 # ScenarioTypeがTPで、かつ、Blockageのタイプが一致するERRORがこの値以上出ればBlockageの試験は成功とする。FPの場合はERRORが一切出ないことが条件なので無視される
+          BlockageType: both # sky/ground/both どこでblockageが発生しているか
+          PassFrameCount: 100 # ScenarioTypeがTP、Blockageのタイプが一致、かつERRORがこの回数以上出ればBlockageの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される
         front_upper:
           ScenarioType: TP
           BlockageType: both
@@ -159,10 +162,9 @@ Evaluation:
           PassFrameCount: 80
 ```
 
-### 評価結果ファイルフォーマット
+### 評価結果フォーマット
 
 performance_diag では、visibility と blockage の 2 つを評価している。
-1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。
 Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。
 
 以下に、フォーマットを示す。
@@ -187,7 +189,7 @@ Result は visibility と blockage の両方をパスしていれば true でそ
         "Result": "Success or Fail or Skipped",
         "Info": [
           {
-            "Name": "lidarの名前",
+            "Name": "LiDARの名前",
             "Level": "diagのレベル",
             "GroundBlockageRatio": "地上側のblockage比率",
             "GroundBlockageCount": "参考値",

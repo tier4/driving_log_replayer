@@ -8,18 +8,18 @@ LocalMapPath: $HOME/map/diag
 Evaluation:
   UseCaseName: performance_diag
   UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # falseのときはbagの中に/tfが入っている必要がある。
-  InitialPose: null # LaunchLocalizationが有効のときだけ機能する
+  LaunchLocalization: false # If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.
+  InitialPose: null # Specifies the initial pose; only works when LaunchLocalization is enabled.
   Conditions:
     LiDAR:
       Visibility:
-        PassFrameCount: 100 # ScenarioTypeがTPのときにこの値以上ERRORが出ればVisibilityの試験は成功とする。FPの場合はERRORが一切出ないことが条件なので無視される
+        PassFrameCount: 100 # When ScenarioType is TP, the Visibility test is considered successful if this number of ERRORs are generated; for FP, this condition is ignored because the test must not generate any ERRORs.
         ScenarioType: FP # TP/FP/null
       Blockage:
-        front_lower: # 搭載されているLidar毎に設定する
+        front_lower: # Set for each on-board LiDAR
           ScenarioType: TP # TP/FP/null
-          BlockageType: both # sky/ground/both 空側、地面側、またはその両方、どこでblockageが発生しているか
-          PassFrameCount: 100 # ScenarioTypeがTPで、かつ、Blockageのタイプが一致するERRORがこの値以上出ればBlockageの試験は成功とする。FPの場合はERRORが一切出ないことが条件なので無視される
+          BlockageType: both # sky/ground/both Where is the blockage occurring?
+          PassFrameCount: 100 # If ScenarioType is TP, Blockage type matches, and ERROR is generated at least this many times, the Blockage test is considered successful.  for FP, this condition is ignored because the test must not generate any ERRORs.
         front_upper:
           ScenarioType: TP
           BlockageType: both

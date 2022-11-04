@@ -4,37 +4,35 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-- /perception/object_recognition/detection/objects|autoware_auto_perception_msgs/msg/DetectedObjects
-- /perception/object_recognition/tracking/objects|autoware_auto_perception_msgs/msg/TrackedObjects
-
-## 注意事項
-
-autoware をセットアップして perception のモジュールを初回起動した場合には、lidar_centerpoint の onnx ファイルの変換処理の待ちが入るため、途中で launch が止まったように見えることがある。
-
-青文字太字灰色背景で lidar_centerpoint engine files are generated.
-という文字列が表示されるまでは、そのまま待つこと。
-
-## 依存ライブラリ
-
-[perception_eval](https://github.com/tier4/autoware_perception_evaluation)
-
-### 依存ライブラリとの driving_log_replayer の役割分担
-
-ROS との接続部分が driving_log_replayer、データセットを扱う部分が perception_eval という役割分担になっている。
-
-perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトをそのまま受け取ることができない。
-また、timestamp が ROS ではナノ秒、データセットは nuScenes ベースでミリ秒が使用されている。
-
-driving_log_replayer 側では、autoware の perception モジュールから出力された topic を subscribe し、perception_eval が期待するデータ形式に変換する。
-変換したデータを perception_eval に渡して評価を依頼し、結果を受け取って、可視化のために ROS の topic で結果を publish する部分を担当する。
-
-perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。
-
 ## 評価方法
 
-driving_log_replayer/launch/perception.launch.py を用いて、評価用のノードを autoware_launch の logging_simulator.launch と一緒に立ち上げる。
+perception.launch.py を使用して評価する。
+launch を立ち上げると以下のことが実行され、評価される。
 
-## 評価ノードが使用する Topic とデータ型
+1. launch で評価ノード(perception_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
+2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
+3. 評価ノードが/perception/object_recognition/{detection, tracking}/objects を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
+4. bag の再生が終了すると自動で launch が終了して評価が終了する
+
+### 注意事項
+
+autoware をワークスペースをセットアップして perception のモジュールを初回起動した場合には、lidar_centerpoint の onnx ファイルの変換処理が行われる
+評価方法のステップ 1 では、変換が完了するのを待つため、一見止まっているように見える長い処理があります。
+これは正常な動作ですので、キーボード入力で停止せず、そのままお待ちください。
+
+## 評価結果
+
+topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
+
+### 正常
+
+perception_eval の関数を使って評価失敗のオブジェクトが 0 個の場合、frame_result.pass_fail_result.get_fail_object_num() == 0
+
+### 異常
+
+perception_eval の関数を使って評価失敗のオブジェクトが存在する場合、frame_result.pass_fail_result.get_fail_object_num() > 0
+
+## 評価ノードが使用する Topic 名とデータ型
 
 - subscribe
 
@@ -50,7 +48,7 @@ driving_log_replayer/launch/perception.launch.py を用いて、評価用のノ�
 | /driving_log_replayer/marker/ground_truth | visualization_msgs::msg::MarkerArray |
 | /driving_log_replayer/marker/results      | visualization_msgs::msg::MarkerArray |
 
-### logging_simulator.launch に渡す引数
+## logging_simulator.launch に渡す引数
 
 autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
 アノーテション時とシミュレーション時で自己位置を合わせたいので bag に入っている tf を使い回す。そのため localization は無効である。
@@ -58,24 +56,23 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 - localization: false
 - planning: false
 - control: false
-- sensing: false / true (デフォルト false、シナリオで指定する)
+- sensing: false / true (デフォルト false、シナリオの `LaunchSensing` キーで t4_dataset 毎に指定する)
 
-autoware から出力される認識結果(/perception/object_recognition/detection/objects)を Ground Truth データと比較して評価する。
-評価には、perception_eval を利用する。
+## 依存ライブラリ
 
-### 正常
+[perception_eval](https://github.com/tier4/autoware_perception_evaluation)
 
-perception_eval の関数を使って評価失敗のオブジェクトが 0 個の場合、frame_result.pass_fail_result.get_fail_object_num() # 0
+### 依存ライブラリとの driving_log_replayer の役割分担
 
-### 異常
+driving_log_replayer が ROS との接続部分を担当し、perception_eval がデータセットを扱う部分がを担当するという分担になっている。
+perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトを受け取ることができない。
+また、timestamp が ROS ではナノ秒、データセットは ミリ秒が使用されている。
+t4_dataset は nuScenes をベースとしており、nuScenes がミリ秒を採用しているので t4_dataset もミリ秒となっている。
 
-perception_eval の関数を使って評価失敗のオブジェクトが存在する場合、frame_result.pass_fail_result.get_fail_object_num() > 0
+driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval が期待するデータ形式に変換して渡す。
+また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。
 
-### 評価フロー
-
-1. launch で評価ノード(perception_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、perception モジュールで認識を行う
-3. 評価ノードが/perception/object_recognition/{detection, tracking}/objects を subscribe して、コールバックで perception_eval の関数を用いて評価を行う
+perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。
 
 ## simulation
 
@@ -83,24 +80,7 @@ perception_eval の関数を使って評価失敗のオブジェクトが存在�
 
 ### 入力 rosbag に含まれるべき topic
 
-車両の ECU の CAN と、使用している sensor の topic が必要
-以下は例であり、違うセンサーを使っている場合は適宜読み替える。
-
-LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める
-
-- /sensing/gnss/ublox/fix_velocity
-- /sensing/gnss/ublox/nav_sat_fix
-- /sensing/gnss/ublox/navpvt
-- /sensing/imu/tamagawa/imu_raw
-- /sensing/lidar/\*/velodyne_packets
-- /gsm8/from_can_bus
-- /tf
-
-tf は実験時に取得したものをそのまま使用するか、rosbag replay simulation で取得しなおす。
-
-### 入力 rosbag に含まれてはいけない topic
-
-- /clock
+t4_dataset で必要なトピックが含まれていること
 
 ## evaluation
 
@@ -111,15 +91,8 @@ tf は実験時に取得したものをそのまま使用するか、rosbag repl
 ユースケース評価とデータベース評価の 2 種類の評価がある。
 ユースケースは 1 個のデータセットで行う評価で、データベースは複数のデータセットを用いて、各データセット毎の結果の平均を取る評価である。
 
-クラウドで実行されるときは、並列に実行されることも考慮にいれると Dataset 毎の設定を配列で記述する以下のような形式とする。
 データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。
-追加でデータセット毎に必要な設定項目が出てきたら、キーを追加して設定する。
-
-成否判定に関しては perception_eval に判定の条件を渡すことで結果を出すときに成否の判定も同時にされるので、判定条件をシナリオに記載する。
-
-記述形式は以下の yaml のようになっており、PerceptionEvaluationConfig、CriticalObjectFilterConfig、PerceptionPassFailConfig の 3 種類を記述する。
-各設定オブジェクトに追加や削除があればそれに合わせてシナリオの Config の項目も追加・削除する。
 
 ```yaml
 Evaluation:
@@ -161,7 +134,7 @@ Evaluation:
     plane_distance_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
 ```
 
-### 評価結果ファイルフォーマット
+### 評価結果フォーマット
 
 perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
 全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。
@@ -197,14 +170,14 @@ perception では、シナリオに指定した条件で perception_eval が評�
   "Frame": {
     "FinalScore": {
       "Score": {
-        "TP": "ラベル毎のTP率",
-        "FP": "ラベル毎のFP率",
-        "FN": "ラベル毎のFN率",
-        "AP": "ラベル毎のAP値",
-        "APH": "ラベル毎のAPH値"
+        "TP": "ラベルのTP率",
+        "FP": "ラベルのFP率",
+        "FN": "ラベルのFN率",
+        "AP": "ラベルのAP値",
+        "APH": "ラベルのAPH値"
       },
       "Error": {
-        "ラベル": "ラベル毎の値との誤差メトリクス"
+        "ラベル": "ラベルの誤差メトリクス"
       }
     }
   }
@@ -213,13 +186,15 @@ perception では、シナリオに指定した条件で perception_eval が評�
 
 ### pickle ファイル
 
-perception の評価では、result.json の他に scene_result.pkl というファイルを出力する。
+データベース評価では、複数の bag を再生する必要があるが、ROS の仕様上、1 回の launch で、複数の bag を利用することは出来ない。
+1 つの bag、すなわち 1 つの t4_dataset に対して launch を 1 回叩くことなるので、データベース評価では、含まれるデータセットの数だけ launch を実行する必要がある。
+
+データベース評価は 1 回の launch で評価できないため、perception では、result.jsonl の他に scene_result.pkl というファイルを出力する。
 pickle ファイルは python のオブジェクトをファイルとして保存したものであり、perception_eval の PerceptionEvaluationManager.frame_results を保存している。
+pickle ファイルに記録した object をすべて読み込み、dataset の平均の指標を出力することでデータセット評価が行える。
 
-perception の評価は、1 個のデータセットで行うユースケース評価と、複数のデータセットを用いて各データセット毎の結果の平均を取るデータベース評価がある。
-ROS の仕様上、1 回の launch で、複数のデータセット(bag、地図、アノテーションファイルの集合)を渡して連続で実行することは出来ない。
-1 組のデータセットに対して launch を 1 回叩くことなるので、データベース評価を実施するには、含まれるデータセットの数だけ launch を実行する必要がある。
+### データベース評価の結果ファイル
 
-なので、それぞれのデータセットに対して実行した frame_results を pickle ファイルで保存し、全てのデータセットで pickle ファイルが作成されたあとに frame_results を結合して最終的な結果を出すという運用を想定している。
+シナリオに複数の dataset を記述したデータベース評価の場合には、結果出力先ディレクトリに database_result.json というファイルが出力される。
 
-pickle ファイルを使用するサンプル実装を driving_log_replayer/scripts/perception_load_scene_result.py に置いているので参照されたい。
+形式は[メトリクスのフォーマット](#評価結果フォーマット) と同じ

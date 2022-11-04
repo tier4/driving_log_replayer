@@ -28,6 +28,35 @@ theme:
         icon: material/weather-night
         name: Switch to light mode
 
+extra:
+  font:
+    text: Roboto
+    code: Roboto Mono
+  version:
+    provider: mike
+
 plugins:
-  - awesome-pages
+  - awesome-pages:
+      strict: false
   - search
+  - i18n:
+      default_language: en
+      languages:
+        en:
+          name: English
+          build: true
+        ja:
+          name: 日本語
+          build: true
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - mdx_truly_sane_lists:
+      nested_indent: 2
+  - pymdownx.superfences:
+  - toc:
+      permalink: "#"
+      toc_depth: 3
