@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.8 (2022-11-04)
+------------------
+* docs: English document
+* Contributors: Hayato Mizushima
+
 1.0.7 (2022-10-30)
 ------------------
 * fix: frame pass fail logic (`#25 <https://github.com/tier4/driving_log_replayer/issues/25>`_)
