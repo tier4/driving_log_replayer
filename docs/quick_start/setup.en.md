@@ -27,6 +27,7 @@
    The driving_log_replayer tutorial uses the same dataset, so this step is not necessary if you have already downloaded it from other evaluation.
 
    ```bash
+   mkdir -p ~/driving_log_replayer_data
    gdown -O ~/driving_log_replayer_data/sample_dataset.tar.zst 'https://docs.google.com/uc?export=download&id=1UjMWZj5Yc55O7BZiGHa0ikZGhwmcfPiS'
    tar -I zstd -xvf ~/driving_log_replayer_data/sample_dataset.tar.zst -C ~/driving_log_replayer_data/
    ```
