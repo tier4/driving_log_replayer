@@ -5,7 +5,7 @@ This section describes the scenario format used in driving_log_replayer.
 ## Notes on the format
 
 - Keys are defined in CamelCase.
-- Unless otherwise specified, the coordinate system is the same as that of the Lanelet2 `map` coordinate system.
+- Unless otherwise specified, the coordinate system is `map` coordinate system.
 - Unless otherwise specified, the following unit system is used.
 
 ```shell

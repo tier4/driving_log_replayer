@@ -5,7 +5,7 @@ driving_log_replayer で用いるシナリオのフォーマットについて�
 ## フォーマットに関する注意事項
 
 - キーは CamelCase にて定義する。
-- 座標系に関しては、特に指定なければ Lanelet2 と同じ座標系にて記述。マップ座標系。
+- 座標系に関しては、 `map` 座標系を使用する
 - 単位系に関しては、特に指定がなければ以下を使用する。
 
 ```shell
@@ -25,7 +25,7 @@ driving_log_replayer で用いるシナリオのフォーマットについて�
 
 ### 2.x.x フォーマット
 
-localization と performance_diag で使用する。
+`localization` と `performance_diag` で使用する。
 
 ```yaml
 ScenarioFormatVersion: 2.x.x
@@ -43,8 +43,9 @@ Evaluation:
 
 ### 3.x.x フォーマット
 
-perception と obstacle_segmentation で使用する。
-VehicleId と LocalMapPath が t4_dataset の id 毎に設定するように変更されている。
+`perception` と `obstacle_segmentation` で使用する。
+
+**注意: VehicleId と LocalMapPath が t4_dataset の id 毎に設定するように変更されている。**
 
 ```yaml
 ScenarioFormatVersion: 3.x.x
@@ -66,8 +67,8 @@ Evaluation:
 
 シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
 
-localization と performance_diag は 2.x.x 系を使用する。2.x.x の最新バージョンは 2.2.0
-perception と obstacle_segmentation は 3.x.x 系を使用する。3.x.x の最新バージョンは 3.0.0
+`localization` と `performance_diag` は 2.x.x 系を使用する。2.x.x の最新バージョンは 2.2.0
+`perception` と `obstacle_segmentation` は 3.x.x 系を使用する。3.x.x の最新バージョンは 3.0.0
 
 フォーマットの更新の度にマイナーバージョンを更新する。
 
@@ -91,7 +92,7 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_model �
 
 autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。
 
-車両 ID が不明な場合は、default を設定する。
+車両 ID が不明な場合は、`default` を設定する。
 
 ### LocalMapPath
 
