@@ -43,19 +43,19 @@ Each output of the evaluation can be considered a success or a failure depending
 
 ### TP Normal
 
-If the scenario type is TP and the level of visibility or blockage in the diagnostic information (`/diagnostics_agg`) is ERROR
+If the scenario type is TP and the level in the diagnostic information is ERROR
 
 ### TP Error
 
-If the scenario type is TP and the level of visibility or blockage in the diagnostic information (`/diagnostics_agg`) is not ERROR.
+If the scenario type is TP and the level in the diagnostic information is not ERROR.
 
 ### FP Normal
 
-If the scenario type is FP and the level of visibility or blockage in the diagnostic information (`/diagnostics_agg`) is not ERROR.
+If the scenario type is FP and the level in the diagnostic information is not ERROR.
 
 ### FP Error
 
-If the scenario type is FP and the level of visibility or blockage in the diagnostic information (`/diagnostics_agg`) is ERROR.
+If the scenario type is FP and the level in the diagnostic information is ERROR.
 
 ## Topic name and data type used by evaluation node
 
