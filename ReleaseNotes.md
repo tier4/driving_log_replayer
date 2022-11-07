@@ -4,8 +4,8 @@
 
 Minor Tweaks
 
-| Module | Feature       | Brief summary         | Pull request                                                 | JIRA       | Contributor                                   |
-| ------ | ------------- | --------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| Module | Feature       | Brief summary                 | Pull request                                                 | JIRA       | Contributor                                   |
+| ------ | ------------- | ----------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
 | `all`  | documentation | update Japanese Documentation | [#30](https://github.com/tier4/driving_log_replayer/pull/30) | T4PB-23145 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.0.9
