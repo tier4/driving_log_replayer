@@ -38,7 +38,7 @@ Driving Log Replayer の評価ノードは、以下のように動作します�
 2. 取得した rosbag を必要な時間、topic だけ残るようにフィルタする
    - フィルタ処理には TIER IV で開発した [ros2bag_extensions](https://github.com/tier4/ros2bag_extensions) を使用する
      - `/tf` を除き収録時に autoware が出力したトピックを落とす。センサーのトピックだけを残す
-     - 自己位置合わせのために走行前に10秒停車している時間を残しておく
+     - 自己位置合わせのために走行前に 10 秒停車している時間を残しておく
 3. シナリオを作成する
    1. [sample folder](https://github.com/tier4/driving_log_replayer/tree/main/sample) 内にシナリオの例あり
    2. 記述内容は[フォーマット定義](../result_format/index.md)を参照

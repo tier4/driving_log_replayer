@@ -37,8 +37,8 @@ LiDAR の診断結果の subscribe 1 回につき、以下に記述する判定�
 
 評価したい内容によって ERROR が出る場合を成功とするか失敗とするかが分かれるので、シナリオにタイプを記述することで変更できるようになっている。
 
-- シナリオ種類が TP の場合は Diag がERROR になれば成功
-- シナリオ種類が FP の場合は Diag がERROR にならなければ成功
+- シナリオ種類が TP の場合は Diag が ERROR になれば成功
+- シナリオ種類が FP の場合は Diag が ERROR にならなければ成功
 - シナリオ種類が null の場合はテストを省略する
 
 ### TP 正常
@@ -107,7 +107,7 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 - /gsm8/from_can_bus
 - /tf
 
-**注:localizationがfalse(デフォルトでfalse)の場合は/tfが必要。**
+**注:localization が false(デフォルトで false)の場合は/tf が必要。**
 
 ### 入力 rosbag に含まれてはいけない topic
 

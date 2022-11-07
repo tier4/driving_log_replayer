@@ -4,5 +4,5 @@
 
 ## Driving Log Replayer について
 
-Driving Log Replayerは、過去に記録された入力データをもとにAutoware.Universeの性能を評価するROS2パッケージです。
+Driving Log Replayer は、過去に記録された入力データをもとに Autoware.Universe の性能を評価する ROS2 パッケージです。
 システム運用の前提条件を定義し、その条件を満たしているかどうかを確認することができます。

@@ -106,7 +106,7 @@ The following example shows the topic list available in evaluation input rosbag 
 - /gsm8/from_can_bus
 - /tf
 
-**NOTE:If localization is false (false by default), /tf is required.**
+**NOTE: If localization is false (false by default), /tf is required.**
 
 ### Topics that must not be included in the input rosbag
 

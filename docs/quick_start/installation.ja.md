@@ -48,19 +48,19 @@
        version: main
    ```
 
-3. simulatorの依存パッケージをインポートする:
+3. simulator の依存パッケージをインポートする:
 
    ```shell
    vcs import src < simulator.repos
    ```
 
-4. 依存解決のためにrosdepを更新する:
+4. 依存解決のために rosdep を更新する:
 
    ```shell
    rosdep update
    ```
 
-5. rosdepで依存のパッケージをインストールする:
+5. rosdep で依存のパッケージをインストールする:
 
    ```shell
    rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
@@ -72,7 +72,7 @@
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
    ```
 
-7. driving_log_replayer_cliをインストールする:
+7. driving_log_replayer_cli をインストールする:
 
    ```shell
    pipx install git+https://github.com/tier4/driving_log_replayer.git

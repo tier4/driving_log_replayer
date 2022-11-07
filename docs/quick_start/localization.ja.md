@@ -15,7 +15,7 @@
    cp -r ~/driving_log_replayer_data/sample_dataset/input_bag ~/driving_log_replayer_data/localization/sample
    ```
 
-3. 入力のbagファイルのフィルタとスライス処理
+3. 入力の bag ファイルのフィルタとスライス処理
 
    ```bash
    source ~/autoware/install/setup.bash
@@ -40,7 +40,7 @@
 2. 結果の確認
 
    以下のような結果がターミナルに表示されます。
-   PCの性能やCPUの負荷状況によってテスト回数が若干異なることがありますが、多少の差は問題ありません。
+   PC の性能や CPU の負荷状況によってテスト回数が若干異なることがありますが、多少の差は問題ありません。
 
    ```bash
     test case 1 / 1 : use case: sample
