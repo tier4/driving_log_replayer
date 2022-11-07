@@ -9,10 +9,10 @@ Autoware の診断機能(diagnostics)が意図通りに機能しているかを�
 
 ## 評価方法
 
-performance_diag.launch.py を使用して評価する。
+`performance_diag.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で評価ノード(performance_diag_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
+1. launch で評価ノード(`performance_diag_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、/diagnostics_agg を出力する
 3. 評価ノードが/diagnostics_agg を subscribe して、コールバックで評価を行い結果をファイルに記録する。
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
@@ -22,43 +22,44 @@ launch を立ち上げると以下のことが実行され、評価される。
 visibility の評価では、雨天時や人工的に雨を降らせられる施設で取得したデータを用いて visibility の ERROR が一定数以上出力されることを確認する。
 また、晴天時のデータを利用して、ERROR が一度も出ないことを確認する。
 
+`/diagnostics_agg`の`status.name`が`/autoware/sensing/lidar/performance_monitoring/visibility/\*`に該当するものを判定に利用する。
+
 ### blockage 評価
 
-blockage の評価では、LiDAR をビニール袋などでわざと覆った状態でデータを取得し blockage の ERROR が一定数以上出力されることを確認する。
+blockage の評価では、LiDAR を意図的にレーザー光を通さない素材(箱など)で覆った状態でデータを取得し blockage の ERROR が一定数以上出力されることを確認する。
 また、覆ってない LiDAR については ERROR が一度も出ないことを確認する。
+
+`/diagnostics_agg`の`status.name`が`/autoware/sensing/lidar/performance_monitoring/blockage/*`に該当するものを判定に利用する。
 
 ## 評価結果
 
 LiDAR の診断結果の subscribe 1 回につき、以下に記述する判定結果が出力される。
 
-- visibility: /autoware/sensing/lidar/performance_monitoring/visibility/.\*
-- blockage: /autoware/sensing/lidar/performance_monitoring/blockage/.\*
-
 評価したい内容によって ERROR が出る場合を成功とするか失敗とするかが分かれるので、シナリオにタイプを記述することで変更できるようになっている。
 
-- シナリオ種類が TP の場合は Diag が一定数以上 ERROR になれば成功
-- シナリオ種類が FP の場合は Diag が一度も ERROR にならなければ成功
+- シナリオ種類が TP の場合は Diag が ERROR になれば成功
+- シナリオ種類が FP の場合は Diag が ERROR にならなければ成功
 - シナリオ種類が null の場合はテストを省略する
 
 ### TP 正常
 
-シナリオ種類が TP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR(=2)の場合
+シナリオ種類が TP の場合で、診断情報の level が ERROR(=2)の場合
 
 ### TP 異常
 
-シナリオ種類が TP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR でない(!=2)の場合
+シナリオ種類が TP の場合で、診断情報の level が ERROR でない(!=2)の場合
 
 ### FP 正常
 
-シナリオ種類が FP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR でない(!=2)の場合
+シナリオ種類が FP の場合で、診断情報の level が ERROR でない(!=2)の場合
 
 ### FP 異常
 
-シナリオ種類が FP の場合で、診断情報(/diagnostics_agg)に含まれる visibility または blockage の level が ERROR(=2)の場合
+シナリオ種類が FP の場合で、診断情報の level が ERROR(=2)の場合
 
 ## 評価ノードが使用する Topic 名とデータ型
 
-- subscribe
+Subscribed topics:
 
 | topic 名                                     | データ型                              |
 | -------------------------------------------- | ------------------------------------- |
@@ -66,7 +67,7 @@ LiDAR の診断結果の subscribe 1 回につき、以下に記述する判定�
 | /diagnostics_agg                             | diagnostic_msgs::msg::DiagnosticArray |
 | /tf                                          | tf2_msgs/msg/TFMessage                |
 
-- publish
+Published topics:
 
 | topic 名                                                 | データ型                                      |
 | -------------------------------------------------------- | --------------------------------------------- |
@@ -105,6 +106,8 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 - /sensing/lidar/\*/velodyne_packets
 - /gsm8/from_can_bus
 - /tf
+
+**注:localization が false(デフォルトで false)の場合は/tf が必要。**
 
 ### 入力 rosbag に含まれてはいけない topic
 
@@ -168,7 +171,7 @@ performance_diag では、visibility と blockage の 2 つを評価している
 Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。
 
 以下に、フォーマットを示す。
-ただし、結果ファイルフォーマットで解説済みの共通部分については省略する。
+**注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
 
 ```json
 {

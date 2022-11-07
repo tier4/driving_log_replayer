@@ -12,10 +12,10 @@ Autoware の点群処理のプロセス(sensing→perception)が動作して、/
 
 ## 評価方法
 
-obstacle_segmentation.launch.py を使用して評価する。
+`obstacle_segmentation.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で C++の評価ノードと、Python の評価ノード、logging_simulator.launch、ros2 bag play を立ち上げる
+1. launch で `C++の評価ノード`と、`Python の評価ノード`、`logging_simulator.launch`、`ros2 bag play` コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、/perception/obstacle_segmentation/pointcloud を出力する
 3. C++の評価ノードが/perception/obstacle_segmentation/pointcloud を subscribe して、header の時刻で非検知エリアの polygon を計算する。
 4. 非検知エリアのポリゴン、pointcloud を/driving_log_replayer/obstacle_segmentation/input に publish する
@@ -28,9 +28,11 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ### 検知正常
 
-シナリオで指定した UUID を持つ bounding box 内に、指定した点数以上の点群(/perception/obstacle_segmentation/pointcloud)が入っていること。
-複数の UUID を指定した場合は指定した全ての bounding box に対して条件を満たしていること。
-かつ、autoware が提供する診断機能で点群の出力レートがエラーではないこと。デフォルトでは 1.0Hz 以下でエラー
+以下の条件をすべて満たす場合、検知正常となる。
+
+1. シナリオで指定した UUID を持バウンディングボックス内に、指定した点数以上の点群（/perception/obstacle_segmentation/pointcloud）が含まれていること。
+   - 複数の UUID を指定した場合は、指定したすべてのバウンディングボックスについて条件を満たす必要があります。
+2. Autoware の診断機能で提供される点群の出力レートがエラー状態でない。デフォルトのしきい値は 1.0Hz です。
 
 ### 検知警告
 
@@ -52,7 +54,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ## 評価ノードが使用する Topic 名とデータ型
 
-- subscribe
+Subscribed topics:
 
 | topic 名                                        | データ型                                     |
 | ----------------------------------------------- | -------------------------------------------- |
@@ -63,7 +65,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 | /planning/scenario_planning/status/stop_reasons | tier4_planning_msgs::msg::StopReasonArray    |
 | /planning/scenario_planning/trajectory          | autoware_auto_planning_msgs::msg::Trajectory |
 
-- publish
+Published topics:
 
 | topic 名                                          | データ型                                                 |
 | ------------------------------------------------- | -------------------------------------------------------- |
@@ -133,7 +135,7 @@ obstacle_segmentation では、検知(Detection)と非検知(NonDetection)の 2 
 Result は検知と非検知両方のパスしていれば true でそれ以外は false 失敗となる。
 
 以下に、フォーマットを示す。
-ただし、結果ファイルフォーマットで解説済みの共通部分については省略する。
+**注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
 
 ```json
 {

@@ -1,10 +1,8 @@
 # コマンド
 
-driving_log_replayer_cli のコマンドについて解説する。
-
-driving_log_replayer_cli をインストールすると、ターミナルで driving_log_replayer というコマンドが実行できるようになる。
-driving_log_replayer コマンドは、サブコマンドを持っている。
-各コマンドに必要な引数は--help オプションを指定すると表示できるようになっている。
+driving_log_replayer_cli をインストールすると、ターミナルで `driving_log_replayer` というコマンドが実行できるようになります。
+`driving_log_replayer` コマンドは、サブコマンドを持っています。
+各コマンドに必要な引数は `--help` オプションを指定すると表示できるます。
 
 ```shell
 # driving_log_replayer top level help
@@ -29,10 +27,11 @@ driving_log_replayer subcommand subsubcommand --help
 
 ### driving_log_replayer configure
 
-設定ファイル.driving_log_replayer.config.toml を操作するコマンド。
+設定ファイル `.driving_log_replayer.config.toml` を操作するコマンド。
 
 ```shell
-# -pで指定したprofile名にdata_directory、output_directory、autoware_pathを設定する。-pを省略した場合はdefaultが指定される
+# -pで指定したprofile名にdata_directory、output_directory、autoware_pathを設定する。
+# -pを省略した場合はprofile名にdefaultが指定される
 driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
 ```
 

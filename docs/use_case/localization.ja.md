@@ -6,10 +6,10 @@ Autoware の自己位置推定(localization)が安定して動作しているか
 
 ## 評価方法
 
-localization.launch.py を使用して評価する。
+`localization.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で評価ノード(localization_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
+1. launch で評価ノード(`localization_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う
 3. 評価ノードが topic を subscribe して、NDT の信頼度、収束性が基準を満たしているかを判定して結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
@@ -58,7 +58,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ## 評価ノードが使用する Topic 名とデータ型
 
-- subscribe
+Subscribed topics:
 
 | topic 名                                                             | データ型                              |
 | -------------------------------------------------------------------- | ------------------------------------- |
@@ -72,7 +72,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 | /localization/pose_estimator/exe_time_ms                             | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/iteration_num                           | tier4_debug_msgs::msg::Int32Stamped   |
 
-- publish
+Published topics:
 
 | topic 名                                            | データ型                                      |
 | --------------------------------------------------- | --------------------------------------------- |
@@ -146,7 +146,7 @@ localization では、収束性と信頼度の 2 つを評価しているので�
 Result は収束性と信頼度両方のパスしていれば true でそれ以外は false 失敗となる。
 
 以下に、それぞれの評価の例を記述する。
-ただし、結果ファイルフォーマットで解説済みの共通部分については省略する。
+**注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
 
 収束性の結果(Frame の中に Convergence 項目がある場合)
 

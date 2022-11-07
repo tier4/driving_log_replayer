@@ -17,7 +17,7 @@ nano $HOME/.driving_log_replayer.config.toml
 driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
 ```
 
-profile は最低 1 つ必要で、1 つは default という名前である必要がある。
+profile は最低 1 つ必要で、1 つは `default` という名前である必要がある。
 
 以降で説明するコマンドで-p ${profile}で profile 名を指定すると、プロファイルに指定した設定が読み込まれる。
 複数の autoware を切り替えて利用することが出来、プロファイルを何も指定しない場合は default が使用される。
@@ -59,7 +59,7 @@ autoware_path = "$HOME/autoware"
 driving_log_replayer が期待するフォルダ構成、ファイル命名規則について解説する。
 
 driving_log_replayer では、フォルダ構成、ファイル名などを固定にすることで、シナリオに記述するパスや、コマンドに渡す引数を少なくしている。
-また、data_directory に複数のフォルダを置くことで、複数のテストを連続で実行できるようになっている。
+また、`data_directory` に複数のフォルダを置くことで、複数のテストを連続で実行できるようになっている。
 
 ### データフォルダ
 

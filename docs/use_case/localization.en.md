@@ -14,10 +14,6 @@ Launching the file executes the following steps:
 3. Evaluation node subscribes to Autoware's output topics, determines whether NDT reliability and convergence meet the criteria, and dumps the results to a file
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
-## Evaluation Result
-
-The results are calculated for each subscription. The format and available states are described below.
-
 ### Reliability of NDT
 
 Of the following two topics, the one specified in the scenario will be used for evaluation.
@@ -33,6 +29,10 @@ Convergence evaluation is based on the following topics:
 - `/localization/pose_twist_fusion_filter/pose`
 
 However, evaluation of convergence will be started after NDT convergence, and convergence is determined by /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
+
+## Evaluation Result
+
+The results are calculated for each subscription. The format and available states are described below.
 
 ### Reliability Normal
 

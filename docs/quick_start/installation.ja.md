@@ -1,6 +1,6 @@
-# Installation
+# インストール
 
-This document contains step-by-step instruction on how to build [AWF Autoware Core/Universe](https://github.com/autowarefoundation/autoware) with `driving_log_replayer`.
+[AWF Autoware Core/Universe](https://github.com/autowarefoundation/autoware)を`driving_log_replayer`と一緒にビルドする方法を解説します。
 
 ## Requirements
 
@@ -13,19 +13,19 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
 - [zstd](https://github.com/facebook/zstd)
   - sudo apt install zstd
 
-## How to build
+## ビルド方法
 
-1. Navigate to the Autoware workspace:
+1. Autoware workspace に移動する:
 
    ```shell
    cd autoware
    ```
 
-2. Add dependency packages:
+2. 依存パッケージを追加する:
 
    ```shell
    nano simulator.repos
-   # add repositories below.
+   # 以下の内容を追加する
    ```
 
    ```shell
@@ -48,31 +48,31 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
        version: main
    ```
 
-3. Import Simulator dependencies:
+3. simulator の依存パッケージをインポートする:
 
    ```shell
    vcs import src < simulator.repos
    ```
 
-4. Update rosdep:
+4. 依存解決のために rosdep を更新する:
 
    ```shell
    rosdep update
    ```
 
-5. Install dependent ROS packages:
+5. rosdep で依存のパッケージをインストールする:
 
    ```shell
    rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
    ```
 
-6. Build the workspace:
+6. ワークスペースをビルドする:
 
    ```shell
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
    ```
 
-7. Install cli to run driving_log_replayer:
+7. driving_log_replayer_cli をインストールする:
 
    ```shell
    pipx install git+https://github.com/tier4/driving_log_replayer.git
