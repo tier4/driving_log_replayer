@@ -1,4 +1,4 @@
-name: colcon_test
+name: colcon-test
 
 on:
   pull_request:

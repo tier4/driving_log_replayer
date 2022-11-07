@@ -1,4 +1,4 @@
-name: SyncReleaseNotes
+name: sync-release-notes
 on:
   workflow_dispatch:
   push:
