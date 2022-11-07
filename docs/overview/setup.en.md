@@ -17,7 +17,7 @@ nano $HOME/.driving_log_replayer.config.toml
 driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
 ```
 
-At least one profile is required, and one must be named default.
+At least one profile is required, and one must be named `default`.
 
 Specifying the profile name with `-p ${profile_name}` in the commands described below will load the settings specified in the profile.
 You can switch between multiple autoware profiles, and if no profile is specified, default is used.
