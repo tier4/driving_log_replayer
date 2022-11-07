@@ -13,31 +13,32 @@ The diagnostics evaluation is executed by launching the `performance_diag.launch
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`performance_diag_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command.
-   2.Autoware receives sensor data output from the input rosbag and outputs the`/diagnostics_agg` topic.
-2. The evaluation node subscribes to `/diagnostics_agg` topic, and evaluates data. The result is dumped into a file.
-3. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
+2. Autoware receives sensor data output from the input rosbag and outputs the`/diagnostics_agg` topic.
+3. The evaluation node subscribes to `/diagnostics_agg` topic, and evaluates data. The result is dumped into a file.
+4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ### visibility evaluation
 
 The evaluation process confirms that more than a specified number of ERRORs for limited visibility are generated for rosbag input data obtained under rainy conditions (naturally or artificially generated).
 Also, using data obtained during sunny weather, it is confirmed that ERRORs are never generated.
 
+The `status.name` in `/diagnostics_agg` corresponding to `/autoware/sensing/lidar/performance_monitoring/visibility/\*` is used for judgment.
+
 ### blockage evaluation
 
 For blockage evaluation, acquire data with LiDAR intentionally covered with a material that will not pass the laser beam (for example box). The evaluation confirms that ERROR for blockage is output more than a certain number of times for the considered situation.
 The node will also confirm that no ERROR is generated for not covered LiDAR.
 
+The `status.name` in `/diagnostics_agg` corresponding to `/autoware/sensing/lidar/performance_monitoring/blockage/*` is used for judgment.
+
 ## Evaluation Result
 
 For each LiDAR diagnostic subscription, the evaluation judgment will be published on the topics described below:
 
-- visibility: `/autoware/sensing/lidar/performance_monitoring/visibility/\*
-- blockage: `/autoware/sensing/lidar/performance_monitoring/blockage/*`
-
 Each output of the evaluation can be considered a success or a failure depending on what you want to evaluate. You can change this by describing the type in the scenario.
 
-- If the scenario type is TP (true positive), success will be achieved if a certain number of `Diag` ERRORs is generated.
-- If the scenario type is FP (false positive), it succeeds if the `Diag` state never becomes ERROR.
+- If the scenario type is TP (true positive), it succeeds if the `Diag` state is ERROR.
+- If the scenario type is FP (false positive), it succeeds if the `Diag` state is not ERROR.
 - If the scenario type is null, the test is omitted.
 
 ### TP Normal
@@ -103,6 +104,9 @@ The following example shows the topic list available in evaluation input rosbag 
 - /sensing/imu/tamagawa/imu_raw
 - /sensing/lidar/\*/velodyne_packets
 - /gsm8/from_can_bus
+- /tf
+
+**NOTE:If localization is false (false by default), /tf is required.**
 
 ### Topics that must not be included in the input rosbag
 
@@ -166,7 +170,7 @@ In `performance_diag` evaluation scenario visibility and blockage are evaluated.
 The `Result` is `true` if both visibility and blockage evaluation steps have passed. Otherwise, the `Result` is `false`.
 
 The result format is shown below.
-_NOTE: common part of the result file format, which has already been explained, is omitted._
+**NOTE: common part of the result file format, which has already been explained, is omitted.**
 
 ```json
 {

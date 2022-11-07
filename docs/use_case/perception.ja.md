@@ -6,10 +6,10 @@ perception モジュールを起動して出力される perception の topic �
 
 ## 評価方法
 
-perception.launch.py を使用して評価する。
+`perception.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で評価ノード(perception_evaluator_node)と logging_simulator.launch、ros2 bag play を立ち上げる
+1. launch で評価ノード(`perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
 3. 評価ノードが/perception/object_recognition/{detection, tracking}/objects を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
@@ -26,22 +26,25 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ### 正常
 
-perception_eval の関数を使って評価失敗のオブジェクトが 0 個の場合、frame_result.pass_fail_result.get_fail_object_num() == 0
+perception_eval の評価関数を実行して以下の条件を満たすとき
+
+1. frame_result.pass_fail_resultにobjectが最低1つ入っている (`tp_objects is not None and fp_objects is not None and fn_objects is not None`)
+2. 評価失敗のオブジェクトが 0 個 (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
 
 ### 異常
 
-perception_eval の関数を使って評価失敗のオブジェクトが存在する場合、frame_result.pass_fail_result.get_fail_object_num() > 0
+正常の条件を満たさない場合
 
 ## 評価ノードが使用する Topic 名とデータ型
 
-- subscribe
+Subscribed topics:
 
 | topic 名                                         | データ型                                          |
 | ------------------------------------------------ | ------------------------------------------------- |
 | /perception/object_recognition/detection/objects | autoware_auto_perception_msgs/msg/DetectedObjects |
 | /perception/object_recognition/tracking/objects  | autoware_auto_perception_msgs/msg/TrackedObjects  |
 
-- publish
+Published topics:
 
 | topic 名                                  | データ型                             |
 | ----------------------------------------- | ------------------------------------ |
@@ -51,23 +54,24 @@ perception_eval の関数を使って評価失敗のオブジェクトが存在�
 ## logging_simulator.launch に渡す引数
 
 autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
-アノーテション時とシミュレーション時で自己位置を合わせたいので bag に入っている tf を使い回す。そのため localization は無効である。
 
 - localization: false
 - planning: false
 - control: false
 - sensing: false / true (デフォルト false、シナリオの `LaunchSensing` キーで t4_dataset 毎に指定する)
 
+**注:アノーテション時とシミュレーション時で自己位置を合わせたいので bag に入っている tf を使い回す。そのため localization は無効である。**
+
 ## 依存ライブラリ
 
-[perception_eval](https://github.com/tier4/autoware_perception_evaluation)
+認識機能の評価は[perception_eval](https://github.com/tier4/autoware_perception_evaluation)に依存している。
 
 ### 依存ライブラリとの driving_log_replayer の役割分担
 
-driving_log_replayer が ROS との接続部分を担当し、perception_eval がデータセットを扱う部分がを担当するという分担になっている。
+driving_log_replayer が ROS との接続部分を担当し、perception_eval がデータセットを使って実際に評価する部分を担当するという分担になっている。
 perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトを受け取ることができない。
-また、timestamp が ROS ではナノ秒、データセットは ミリ秒が使用されている。
-t4_dataset は nuScenes をベースとしており、nuScenes がミリ秒を採用しているので t4_dataset もミリ秒となっている。
+また、timestamp が ROS ではナノ秒、t4_dataset は `nuScenes` をベースしているためミリ秒が採用されている。
+このため、ライブラリ使用前に適切な変換が必要となる。
 
 driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval が期待するデータ形式に変換して渡す。
 また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。
@@ -140,7 +144,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
 全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。
 
 以下に、各フレームのフォーマットとメトリクスのフォーマットを示す。
-ただし、結果ファイルフォーマットで解説済みの共通部分については省略する。
+**注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
 
 各フレームのフォーマット
 
