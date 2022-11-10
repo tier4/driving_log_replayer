@@ -30,8 +30,12 @@ ObstacleSegmentationEvaluatorComponent::ObstacleSegmentationEvaluatorComponent(
 
   try {
     scenario_yaml_ = YAML::LoadFile(scenario_path);
-    proposed_area_ =
-      getProposedArea(scenario_yaml_["Evaluation"]["Conditions"]["NonDetection"]["ProposedArea"]);
+    if (scenario_yaml_["Evaluation"]["Conditions"]["NonDetection"].IsNull()) {
+      proposed_area_ = {{}, 0.0, 0.0};
+    } else {
+      proposed_area_ =
+        getProposedArea(scenario_yaml_["Evaluation"]["Conditions"]["NonDetection"]["ProposedArea"]);
+    }
   } catch (YAML::Exception & e) {
     RCLCPP_ERROR_STREAM(get_logger(), e.what());
     std::exit(EXIT_FAILURE);
@@ -102,17 +106,20 @@ void ObstacleSegmentationEvaluatorComponent::pointsCallback(
   // create MarkerArray(LineStrip) for proposed areas
   int current_intersection_count = 0;
   auto & [proposed_area, z_min, z_max] = proposed_area_;
-  visualization_msgs::msg::Marker line_strip;
-  // Perform a coordinate transformation and get the intersections with lanelet2.
-  // convert points' coordinate from base_link to map
-  auto [proposed_area_map, average_z] = transformToMap(proposed_area, msg->header, map_to_baselink);
-  // get intersection of proposed area and lanelets
-  auto intersection_lanelets =
-    getIntersectionPolygon(proposed_area_map, baselink_to_map, z_min, z_max, average_z);
-  for (const auto & intersection_lanelet : intersection_lanelets) {
-    line_strip =
-      getLineStripFromPointStampedArray(intersection_lanelet, ++current_intersection_count);
-    marker_array.markers.emplace_back(line_strip);
+  if (!proposed_area.empty()) {
+    visualization_msgs::msg::Marker line_strip;
+    // Perform a coordinate transformation and get the intersections with lanelet2.
+    // convert points' coordinate from base_link to map
+    auto [proposed_area_map, average_z] =
+      transformToMap(proposed_area, msg->header, map_to_baselink);
+    // get intersection of proposed area and lanelets
+    auto intersection_lanelets =
+      getIntersectionPolygon(proposed_area_map, baselink_to_map, z_min, z_max, average_z);
+    for (const auto & intersection_lanelet : intersection_lanelets) {
+      line_strip =
+        getLineStripFromPointStampedArray(intersection_lanelet, ++current_intersection_count);
+      marker_array.markers.emplace_back(line_strip);
+    }
   }
 
   driving_log_replayer_msgs::msg::ObstacleSegmentationInput input_data;
