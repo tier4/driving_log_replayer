@@ -105,7 +105,7 @@ Evaluation:
         VehicleId: default
         LocalMapPath: $HOME/autoware_map/sample-map-planning
   Conditions:
-    ObstacleDetection:
+    Detection:
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
     NonDetection:
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.

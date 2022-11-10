@@ -106,9 +106,9 @@ Evaluation:
         VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
         LocalMapPath: $HOME/map/obstacle_segmentation # データセット毎にLocalMapPathを指定する
   Conditions:
-    ObstacleDetection:
+    Detection: # Detectionの評価を行わない場合はnullをセットする
       PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    NonDetection:
+    NonDetection: # NonDetectionの評価を行わない場合はnullをセットする
       PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
       ProposedArea: # base_linkを中心に非検知のエリアを一筆描きのpolygonで記述する。時計周りに記述する
         polygon_2d: # xy平面でpolygonを時計回りで記述する
