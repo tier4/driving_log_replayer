@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.11 (2022-11-11)
+-------------------
+* feat: `#33 <https://github.com/tier4/driving_log_replayer/issues/33>`_ test mode for obstacle segmentation (`#35 <https://github.com/tier4/driving_log_replayer/issues/35>`_)
+  closes: `#33 <https://github.com/tier4/driving_log_replayer/issues/33>`_
+* Contributors: Hayato Mizushima
+
 1.0.10 (2022-11-07)
 -------------------
 * docs: update Japanese Documentation
