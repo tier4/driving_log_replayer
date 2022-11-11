@@ -4,8 +4,15 @@ Evaluate if the Autoware point cloud generation process (if there is a connectio
 
 The following evaluations are performed simultaneously to check if point cloud published by perception nodes is valid.
 
-1. Check whether vehicles, pedestrians and other traffic participants, annotated in advance, are detected (detection step).
-2. Check whether extra point clouds appear in the overlapping area between the lane and the polygons around the vehicle defined in the scenario (non_detection step).
+- Check whether vehicles, pedestrians and other traffic participants, annotated in advance, are detected (detection step).
+- Check whether extra point clouds appear in the overlapping area between the lane and the polygons around the vehicle defined in the scenario (non_detection step).
+
+It is also possible not to evaluate if null is specified as the evaluation condition.
+In other words, evaluation can be performed in the following three modes.
+
+1. evaluate detection and non_detection at the same time
+2. evaluate only detection (NonDetection: null)
+3. Evaluate only non_detection (Detection: null)
 
 The recommended annotation tool is [Deepen](https://www.deepen.ai/), but any tool that supports conversion to `t4_dataset` format can be used.
 Multiple annotation tools can be used as long as a conversion tool can be created.
@@ -99,15 +106,15 @@ State the information necessary for the evaluation.
 ```yaml
 Evaluation:
   UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.1.0
+  UseCaseFormatVersion: 0.2.0
   Datasets:
     - sample_dataset:
         VehicleId: default
         LocalMapPath: $HOME/autoware_map/sample-map-planning
   Conditions:
-    ObstacleDetection:
+    Detection: # set `null` if Detection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-    NonDetection:
+    NonDetection: set `null` if NonDetection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
       ProposedArea: # Non-detection area centered on the base_link with a single stroke polygon.
         polygon_2d: # Describe polygon in xy-plane in clockwise direction
@@ -142,7 +149,7 @@ An example of evaluation is described below.
     "FrameName": "Frame number of t4_dataset used for evaluation",
     "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
     "Detection": {
-      "Result": "Success or Warn or Fail",
+      "Result": "Success, Warn, Fail, or Skipped",
       "Info": [
         {
           "Annotation": "Annotated banding box information, position pose, and ID",
@@ -151,7 +158,7 @@ An example of evaluation is described below.
       ]
     },
     "NonDetection": {
-      "Result": "Success or Fail",
+      "Result": "Success, Fail, or Skipped",
       "Info": [
         {
           "PointCloud": "Number of points out in the non-detection area and distribution by distance from the base_link."

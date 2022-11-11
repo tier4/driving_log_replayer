@@ -18,6 +18,7 @@ import logging
 import os
 from typing import Dict
 from typing import List
+from typing import Optional
 from typing import Tuple
 
 from driving_log_replayer.node_common import get_goal_pose_from_t4_dataset
@@ -78,7 +79,7 @@ def summarize_frame_container(
     container: List[DynamicObjectWithSensingResult],
     header: Header,
     color: ColorRGBA,
-    summary_dict: Dict,
+    info: List,
     counter: int,
     marker_array: MarkerArray,
     pcd: np.ndarray,
@@ -106,81 +107,8 @@ def summarize_frame_container(
             "NumPoints": result.inside_pointcloud_num,
             "Nearest": result.nearest_point.tolist() if result.nearest_point is not None else [],
         }
-        summary_dict["Info"].append(info_dict)
-    return summary_dict, counter, marker_array, pcd
-
-
-def summarize_detection(
-    frame_result: SensingFrameResult, topic_rate: bool, header: Header
-) -> Tuple[Dict, str, MarkerArray, PointCloud2]:
-    success = "Fail"
-    if len(frame_result.detection_fail_results) == 0 and topic_rate:
-        success = "Success"
-    if len(frame_result.detection_warning_results) != 0:
-        success = "Warn"
-    summary_dict = {"Result": success, "Info": []}
-
-    # initialize
-    marker_array = MarkerArray()
-    # create detection pcd
-    pcd = np.zeros(
-        0,
-        dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
-    )
-    counter = 0
-
-    color_success = ColorRGBA()
-    color_success.r = 0.0
-    color_success.g = 1.0
-    color_success.b = 0.0
-    color_success.a = 0.3
-
-    summary_dict, counter, marker_array, pcd = summarize_frame_container(
-        frame_result.detection_success_results,
-        header,
-        color_success,
-        summary_dict,
-        counter,
-        marker_array,
-        pcd,
-    )
-
-    color_fail = ColorRGBA()
-    color_fail.r = 1.0
-    color_fail.g = 0.0
-    color_fail.b = 0.0
-    color_fail.a = 0.3
-
-    summary_dict, counter, marker_array, pcd = summarize_frame_container(
-        frame_result.detection_fail_results,
-        header,
-        color_fail,
-        summary_dict,
-        counter,
-        marker_array,
-        pcd,
-    )
-
-    color_warn = ColorRGBA()
-    color_warn.r = 1.0
-    color_warn.g = 0.65
-    color_warn.b = 0.0
-    color_warn.a = 0.3
-
-    summary_dict, counter, marker_array, pcd = summarize_frame_container(
-        frame_result.detection_warning_results,
-        header,
-        color_warn,
-        summary_dict,
-        counter,
-        marker_array,
-        pcd,
-    )
-
-    pcd_detection = ros2_numpy.msgify(PointCloud2, pcd)
-    pcd_detection.header = header
-
-    return summary_dict, success, marker_array, pcd_detection
+        info.append(info_dict)
+    return info, counter, marker_array, pcd
 
 
 def summarize_numpy_pointcloud(
@@ -208,70 +136,155 @@ def summarize_numpy_pointcloud(
     return ros_pcd, dist_array
 
 
-def summarize_non_detection(
-    pcd_list: List[np.ndarray], topic_rate: bool, header: Header
-) -> Tuple[Dict, str, PointCloud2]:
-    success = "Success" if len(pcd_list) == 0 and topic_rate else "Fail"
-    summary_dict = {"Result": success}
-    ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
-
-    # 詳細情報の追記を書く
-    dist_dict = {}
-    # print(dist_array)
-    for i in range(100):
-        dist_dict[f"{i}-{i+1}"] = np.count_nonzero((i <= dist_array) & (dist_array < i + 1))
-    # NonDetectionは結果はInfoに入るのは１個しかないがDetectionに合わせてlistにしておく
-    summary_dict["Info"] = [
-        {
-            "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
-        }
-    ]
-    return summary_dict, success, ros_pcd
-
-
 class ObstacleSegmentationResult(ResultBase):
     def __init__(self, condition: Dict):
         super().__init__()
-        self.__detection_pass_rate = condition["ObstacleDetection"]["PassRate"]
-        self.__non_detection_pass_rate = condition["NonDetection"]["PassRate"]
+        self.__condition_detection: Optional[Dict] = condition.get("Detection", None)
+        self.__condition_non_detection: Optional[Dict] = condition.get("NonDetection", None)
+
         self.__detection_total = 0
         self.__detection_success = 0
+        self.__detection_msg = "NotTested"
+        self.__detection_result = True
         self.__detection_warn = 0
         self.__non_detection_total = 0
         self.__non_detection_success = 0
+        self.__non_detection_msg = "NotTested"
+        self.__non_detection_result = True
 
     def update(self):
-        detection_rate = (
-            0.0
-            if self.__detection_total == 0
-            else self.__detection_success / self.__detection_total * 100.0
-        )
-        non_detection_rate = (
-            0.0
-            if self.__non_detection_total == 0
-            else self.__non_detection_success / self.__non_detection_total * 100.0
-        )
-        success_detection = detection_rate >= self.__detection_pass_rate
-        success_non_detection = non_detection_rate >= self.__non_detection_pass_rate
-
-        summary_str = (
-            f"detection: {self.__detection_success} / {self.__detection_total } -> {detection_rate:.2f}% "
-            + f"detection_warn: {self.__detection_warn} "
-            + f"non_detection: {self.__non_detection_success} / {self.__non_detection_total} -> {non_detection_rate:.2f}%"
-        )
-
-        if success_detection and success_non_detection:
+        summary_str = f"Detection: {self.__detection_msg} NonDetection: {self.__non_detection_msg}"
+        if self.__detection_result and self.__non_detection_result:
             self._success = True
             self._summary = f"Passed: {summary_str}"
-        elif success_detection and not success_non_detection:
+        elif self.__detection_result and not self.__non_detection_result:
             self._success = False
             self._summary = f"NonDetection Failed: {summary_str}"
-        elif not success_detection and success_non_detection:
+        elif not self.__detection_result and self.__non_detection_result:
             self._success = False
             self._summary = f"Detection Failed: {summary_str}"
-        elif not success_detection and not success_non_detection:
+        elif not self.__detection_result and not self.__non_detection_result:
             self._success = False
             self._summary = f"Detection and NonDetection Failed: {summary_str}"
+
+    def summarize_detection(
+        self, frame_result: SensingFrameResult, topic_rate: bool, header: Header
+    ) -> Tuple[Dict, Optional[MarkerArray], Optional[PointCloud2]]:
+        result = "Skipped"
+        info = []
+        marker_array = None
+        pcd_detection = None
+
+        if self.__condition_detection is not None:
+            if len(frame_result.detection_warning_results) != 0:
+                result = "Warn"
+                self.__detection_warn += 1
+            else:
+                self.__detection_total += 1
+                if len(frame_result.detection_fail_results) == 0 and topic_rate:
+                    result = "Success"
+                    self.__detection_success += 1
+
+            detection_rate = (
+                0.0
+                if self.__detection_total == 0
+                else self.__detection_success / self.__detection_total * 100.0
+            )
+            self.__detection_result = detection_rate >= self.__condition_detection["PassRate"]
+            self.__detection_msg = f"Detection: {self.__detection_success} / {self.__detection_total } -> {detection_rate:.2f}% (Warn: {self.__detection_warn})"
+
+            # initialize
+            marker_array = MarkerArray()
+            # create detection pcd
+            pcd = np.zeros(
+                0,
+                dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
+            )
+            counter = 0
+
+            color_success = ColorRGBA()
+            color_success.r = 0.0
+            color_success.g = 1.0
+            color_success.b = 0.0
+            color_success.a = 0.3
+
+            info, counter, marker_array, pcd = summarize_frame_container(
+                frame_result.detection_success_results,
+                header,
+                color_success,
+                info,
+                counter,
+                marker_array,
+                pcd,
+            )
+
+            color_fail = ColorRGBA()
+            color_fail.r = 1.0
+            color_fail.g = 0.0
+            color_fail.b = 0.0
+            color_fail.a = 0.3
+
+            info, counter, marker_array, pcd = summarize_frame_container(
+                frame_result.detection_fail_results,
+                header,
+                color_fail,
+                info,
+                counter,
+                marker_array,
+                pcd,
+            )
+
+            color_warn = ColorRGBA()
+            color_warn.r = 1.0
+            color_warn.g = 0.65
+            color_warn.b = 0.0
+            color_warn.a = 0.3
+
+            info, counter, marker_array, pcd = summarize_frame_container(
+                frame_result.detection_warning_results,
+                header,
+                color_warn,
+                info,
+                counter,
+                marker_array,
+                pcd,
+            )
+
+            pcd_detection = ros2_numpy.msgify(PointCloud2, pcd)
+            pcd_detection.header = header
+        return {"Result": result, "Info": info}, marker_array, pcd_detection
+
+    def summarize_non_detection(
+        self, pcd_list: List[np.ndarray], topic_rate: bool, header: Header
+    ) -> Tuple[Dict, Optional[PointCloud2]]:
+        result = "Skipped"
+        info = []
+        ros_pcd = None
+        if self.__condition_non_detection is not None:
+            self.__non_detection_total += 1
+            if len(pcd_list) == 0 and topic_rate:
+                result = "Success"
+                self.__non_detection_success += 1
+            non_detection_rate = self.__non_detection_success / self.__non_detection_total * 100.0
+            self.__non_detection_result = (
+                non_detection_rate >= self.__condition_non_detection["PassRate"]
+            )
+            self.__non_detection_msg = f"NonDetection: {self.__non_detection_success} / {self.__non_detection_total} -> {non_detection_rate:.2f}%"
+
+            ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
+
+            # 詳細情報の追記を書く
+            dist_dict = {}
+            # print(dist_array)
+            for i in range(100):
+                dist_dict[f"{i}-{i+1}"] = np.count_nonzero((i <= dist_array) & (dist_array < i + 1))
+            # NonDetectionは結果はInfoに入るのは１個しかないがDetectionに合わせてlistにしておく
+            info.append(
+                {
+                    "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
+                }
+            )
+        return {"Result": result, "Info": info}, ros_pcd
 
     def add_frame(
         self,
@@ -281,37 +294,23 @@ class ObstacleSegmentationResult(ResultBase):
         stop_reasons: List[Dict],
         topic_rate: bool,
         header: Header,
-    ) -> Tuple[MarkerArray, PointCloud2, PointCloud2]:
-        self.__non_detection_total += 1
+    ) -> Tuple[Optional[MarkerArray], Optional[PointCloud2], Optional[PointCloud2]]:
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
-
         (
             out_frame["Detection"],
-            detection_success,
             marker_detection,
             pcd_detection,
-        ) = summarize_detection(frame, topic_rate, header)
+        ) = self.summarize_detection(frame, topic_rate, header)
         (
             out_frame["NonDetection"],
-            non_detection_success,
             pcd_non_detection,
-        ) = summarize_non_detection(frame.pointcloud_failed_non_detection, topic_rate, header)
+        ) = self.summarize_non_detection(frame.pointcloud_failed_non_detection, topic_rate, header)
         out_frame["StopReasons"] = stop_reasons
         out_frame["TopicRate"] = str(topic_rate)
-
-        if detection_success == "Warn":
-            self.__detection_warn += 1
-        else:
-            self.__detection_total += 1
-            if detection_success == "Success":
-                self.__detection_success += 1
-        if non_detection_success == "Success":
-            self.__non_detection_success += 1
-
         # update current frame
         self._frame = out_frame
         # update result
@@ -478,10 +477,12 @@ class ObstacleSegmentationEvaluator(Node):
             )
             self.__result_writer.write(self.__result)
 
-            self.__pub_pcd_detection.publish(pcd_detection)
-            self.__pub_pcd_non_detection.publish(pcd_non_detection)
-            self.__pub_marker_detection.publish(marker_detection)
-            # self.visualize(frame_result)
+            if marker_detection is not None:
+                self.__pub_marker_detection.publish(marker_detection)
+            if pcd_detection is not None:
+                self.__pub_pcd_detection.publish(pcd_detection)
+            if pcd_non_detection is not None:
+                self.__pub_pcd_non_detection.publish(pcd_non_detection)
 
     def stop_reason_cb(self, msg: StopReasonArray):
         reasons = []
@@ -497,34 +498,6 @@ class ObstacleSegmentationEvaluator(Node):
         for frame_results in self.__evaluator.frame_results:
             num_use_case_fail += len(frame_results.detection_fail_results)
         logging.warning(f"{num_use_case_fail} fail results.")
-
-    @staticmethod
-    def visualize(frame_result: SensingFrameResult) -> None:
-        """Visualize results per frame.
-
-        Args:
-            frame_result (SensingFrameResult)
-        """
-        if len(frame_result.detection_fail_results) > 0:
-            logging.warning(f"Fail {len(frame_result.detection_fail_results)} detection.")
-            for fail_result in frame_result.detection_fail_results:
-                logging.info(
-                    f"[FAIL] Inside points: {fail_result.inside_pointcloud_num}, Is detected: {fail_result.is_detected}"
-                )
-        else:
-            logging.info("all detections were succeeded.")
-
-        for success_result in frame_result.detection_success_results:
-            logging.info(
-                f"[SUCCESS] Inside points: {success_result.inside_pointcloud_num}, "
-                f"Is detected: {success_result.is_detected}, "
-                f"Nearest point: {success_result.nearest_point}\n"
-            )
-
-        if len(frame_result.pointcloud_failed_non_detection) > 0:
-            logging.warning(
-                f"The number of Failed non-detection pointcloud: {len(frame_result.pointcloud_failed_non_detection)}"
-            )
 
 
 def main(args=None):

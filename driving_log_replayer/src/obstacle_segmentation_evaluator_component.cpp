@@ -30,8 +30,12 @@ ObstacleSegmentationEvaluatorComponent::ObstacleSegmentationEvaluatorComponent(
 
   try {
     scenario_yaml_ = YAML::LoadFile(scenario_path);
-    proposed_area_ =
-      getProposedArea(scenario_yaml_["Evaluation"]["Conditions"]["NonDetection"]["ProposedArea"]);
+    if (scenario_yaml_["Evaluation"]["Conditions"]["NonDetection"].IsNull()) {
+      proposed_area_ = {{}, 0.0, 0.0};
+    } else {
+      proposed_area_ =
+        getProposedArea(scenario_yaml_["Evaluation"]["Conditions"]["NonDetection"]["ProposedArea"]);
+    }
   } catch (YAML::Exception & e) {
     RCLCPP_ERROR_STREAM(get_logger(), e.what());
     std::exit(EXIT_FAILURE);
@@ -82,9 +86,9 @@ void ObstacleSegmentationEvaluatorComponent::pointsCallback(
   const sensor_msgs::msg::PointCloud2::ConstSharedPtr msg)
 {
   visualization_msgs::msg::MarkerArray marker_array;
-  // rvizは標準ではgeometry_msgs::msg::Polygonには対応しているが、配列には対応していない。
-  // MarkerArrayならいけるので、line_stripのarrayにする。
-  // polygonとline_stripの違いは、startとendが結ばれるかどうか。
+  // Rviz supports geometry_msgs::msg::Polygon by default, but not arrays.
+  // MarkerArray is supported in Rviz, so display polygon array with line_strip array
+  // The difference between polygon and line_strip is whether start and end are connected.
   visualization_msgs::msg::MarkerArray marker_bbox;
 
   geometry_msgs::msg::TransformStamped map_to_baselink;
@@ -102,17 +106,20 @@ void ObstacleSegmentationEvaluatorComponent::pointsCallback(
   // create MarkerArray(LineStrip) for proposed areas
   int current_intersection_count = 0;
   auto & [proposed_area, z_min, z_max] = proposed_area_;
-  visualization_msgs::msg::Marker line_strip;
-  // 座標変換をして、lanelet2とのintersectionを取る操作をする。
-  // convert points' coordinate from base_link to map
-  auto [proposed_area_map, average_z] = transformToMap(proposed_area, msg->header, map_to_baselink);
-  // get intersection of proposed area and lanelets
-  auto intersection_lanelets =
-    getIntersectionPolygon(proposed_area_map, baselink_to_map, z_min, z_max, average_z);
-  for (const auto & intersection_lanelet : intersection_lanelets) {
-    line_strip =
-      getLineStripFromPointStampedArray(intersection_lanelet, ++current_intersection_count);
-    marker_array.markers.emplace_back(line_strip);
+  if (!proposed_area.empty()) {
+    visualization_msgs::msg::Marker line_strip;
+    // Perform a coordinate transformation and get the intersections with lanelet2.
+    // convert points' coordinate from base_link to map
+    auto [proposed_area_map, average_z] =
+      transformToMap(proposed_area, msg->header, map_to_baselink);
+    // get intersection of proposed area and lanelets
+    auto intersection_lanelets =
+      getIntersectionPolygon(proposed_area_map, baselink_to_map, z_min, z_max, average_z);
+    for (const auto & intersection_lanelet : intersection_lanelets) {
+      line_strip =
+        getLineStripFromPointStampedArray(intersection_lanelet, ++current_intersection_count);
+      marker_array.markers.emplace_back(line_strip);
+    }
   }
 
   driving_log_replayer_msgs::msg::ObstacleSegmentationInput input_data;
@@ -161,7 +168,7 @@ ObstacleSegmentationEvaluatorComponent::getProposedArea(const YAML::Node & propo
 
   for (auto & point : yaml_poly) {
     geometry_msgs::msg::PointStamped point_stamped;
-    // clockwiseでpointが入っていることを想定している。
+    // Points in the array are stored in clockwise order.
     point_stamped.point.x = point[0];
     point_stamped.point.y = point[1];
     point_stamped.point.z = 0.0;
@@ -197,11 +204,10 @@ ObstacleSegmentationEvaluatorComponent::getIntersectionPolygon(
   const geometry_msgs::msg::TransformStamped & baselink_to_map, const double & z_min,
   const double & z_max, const double & average_z)
 {
-  std::vector<std::vector<geometry_msgs::msg::PointStamped>> out;  // 最終的な結果
-  // point_stamped_arrayからpolygonを作成する
+  std::vector<std::vector<geometry_msgs::msg::PointStamped>> out;  // final result
   Polygon2d poly = toBoostPoly(point_stamped_poly);
 
-  // 道路のレーンとの重なっているpolygonを取得する
+  // get the polygon overlapping the lane of the road
   for (const auto & road_lanelet : road_lanelets_) {
     std::vector<Polygon2d> intersections;
     boost::geometry::intersection(

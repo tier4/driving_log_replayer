@@ -177,7 +177,7 @@ The result format is shown below.
   "Frame": {
     "Visibility": [
       {
-        "Result": "Success or Fail or Skipped",
+        "Result": "Success, Fail, Skipped",
         "Info": [
           {
             "Level": "Level of diag",
@@ -188,7 +188,7 @@ The result format is shown below.
     ],
     "Blockage": [
       {
-        "Result": "Success or Fail or Skipped",
+        "Result": "Success, Fail, or Skipped",
         "Info": [
           {
             "Name": "Name of LiDAR",

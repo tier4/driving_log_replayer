@@ -4,8 +4,14 @@ Autoware の点群処理のプロセス(sensing→perception)が動作して、/
 
 点群が意図通りに出力されているかの判定は、t4_dataset と点群を用いて行う。以下の評価を同時に行う。
 
-1. 事前にアノテーションしておいた車両や歩行者などが検知出来ているかの評価（detection: 検知）
-2. レーンとシナリオで定義した自車両周りのポリゴンが重なるエリアに余分な点群が出ていないかの評価（non_detection: 非検知）
+- 事前にアノテーションしておいた車両や歩行者などが検知出来ているかの評価（detection: 検知）
+- レーンとシナリオで定義した自車両周りのポリゴンが重なるエリアに余分な点群が出ていないかの評価（non_detection: 非検知）
+
+また、評価条件に null を指定すれば評価しないことも可能である。すなわち以下の 3 モードで評価を実施できる。
+
+1. detection と non_detection を同時に評価する
+2. detection だけ評価する(NonDetection: null)
+3. non_detection だけ評価する(Detection: null)
 
 アノテーションツールは[Deepen](https://www.deepen.ai/)が推奨であるが、t4_dataset への変換がサポートされているツールであればよい。
 変換ツールさえ作成できれば複数のアノテーションツールを利用することが可能である。
@@ -100,15 +106,15 @@ t4_dataset で必要なトピックが含まれていること
 ```yaml
 Evaluation:
   UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.1.0
+  UseCaseFormatVersion: 0.2.0
   Datasets:
     - 63800729-18d2-4383-91e9-fea7bad384f4:
         VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
         LocalMapPath: $HOME/map/obstacle_segmentation # データセット毎にLocalMapPathを指定する
   Conditions:
-    ObstacleDetection:
+    Detection: # Detectionの評価を行わない場合はnullをセットする
       PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    NonDetection:
+    NonDetection: # NonDetectionの評価を行わない場合はnullをセットする
       PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
       ProposedArea: # base_linkを中心に非検知のエリアを一筆描きのpolygonで記述する。時計周りに記述する
         polygon_2d: # xy平面でpolygonを時計回りで記述する
@@ -143,7 +149,7 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
     "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
     "Detection": {
-      "Result": "Success or Warn or Fail",
+      "Result": "Success, Warn, Fail, or Skipped",
       "Info": [
         {
           "Annotation": "アノテーションされたバンディングボックスの情報、位置姿勢、ID",
@@ -152,7 +158,7 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
       ]
     },
     "NonDetection": {
-      "Result": "Success or Fail",
+      "Result": "Success, Fail, or Skipped",
       "Info": [
         {
           "PointCloud": "非検知エリアに出ている点の数と、base_linkからの距離毎の分布"
