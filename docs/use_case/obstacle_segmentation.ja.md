@@ -7,11 +7,11 @@ Autoware の点群処理のプロセス(sensing→perception)が動作して、/
 - 事前にアノテーションしておいた車両や歩行者などが検知出来ているかの評価（detection: 検知）
 - レーンとシナリオで定義した自車両周りのポリゴンが重なるエリアに余分な点群が出ていないかの評価（non_detection: 非検知）
 
-また、評価条件にnullを指定すれば評価しないことも可能である。すなわち以下の3モードで評価を実施できる。
+また、評価条件に null を指定すれば評価しないことも可能である。すなわち以下の 3 モードで評価を実施できる。
 
-1. detectionとnon_detectionを同時に評価する
-2. detectionだけ評価する(NonDetection: null)
-3. non_detectionだけ評価する(Detection: null)
+1. detection と non_detection を同時に評価する
+2. detection だけ評価する(NonDetection: null)
+3. non_detection だけ評価する(Detection: null)
 
 アノテーションツールは[Deepen](https://www.deepen.ai/)が推奨であるが、t4_dataset への変換がサポートされているツールであればよい。
 変換ツールさえ作成できれば複数のアノテーションツールを利用することが可能である。
