@@ -295,13 +295,11 @@ class ObstacleSegmentationResult(ResultBase):
         topic_rate: bool,
         header: Header,
     ) -> Tuple[Optional[MarkerArray], Optional[PointCloud2], Optional[PointCloud2]]:
-        self.__non_detection_total += 1
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
-
         (
             out_frame["Detection"],
             marker_detection,
