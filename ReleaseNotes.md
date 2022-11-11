@@ -6,7 +6,7 @@ Major Changes
 
 | Module                  | Feature   | Brief summary                                 | Pull request                                                 | JIRA       | Contributor                                   |
 | ----------------------- | --------- | --------------------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
-| `obstacle_segmentation` | test mode | support 3 test mode for obstacle_segmentation | [#33](https://github.com/tier4/driving_log_replayer/pull/33) | T4PB-23145 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | test mode | support 3 test mode for obstacle_segmentation | [#35](https://github.com/tier4/driving_log_replayer/pull/35) | T4PB-23309 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.0.10
 
