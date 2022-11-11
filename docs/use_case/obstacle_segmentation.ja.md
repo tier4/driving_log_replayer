@@ -106,7 +106,7 @@ t4_dataset で必要なトピックが含まれていること
 ```yaml
 Evaluation:
   UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.1.0
+  UseCaseFormatVersion: 0.2.0
   Datasets:
     - 63800729-18d2-4383-91e9-fea7bad384f4:
         VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する

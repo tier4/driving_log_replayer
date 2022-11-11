@@ -106,15 +106,15 @@ State the information necessary for the evaluation.
 ```yaml
 Evaluation:
   UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.1.0
+  UseCaseFormatVersion: 0.2.0
   Datasets:
     - sample_dataset:
         VehicleId: default
         LocalMapPath: $HOME/autoware_map/sample-map-planning
   Conditions:
-    Detection:
+    Detection: # set `null` if Detection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-    NonDetection:
+    NonDetection: set `null` if NonDetection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
       ProposedArea: # Non-detection area centered on the base_link with a single stroke polygon.
         polygon_2d: # Describe polygon in xy-plane in clockwise direction
