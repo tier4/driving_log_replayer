@@ -182,7 +182,12 @@ class ObstacleSegmentationResult(ResultBase):
                 self.__detection_warn += 1
             else:
                 self.__detection_total += 1
-                if len(frame_result.detection_fail_results) == 0 and topic_rate:
+                # Failure if there is no point cloud and no success
+                if (
+                    len(frame_result.detection_fail_results) == 0
+                    and len(frame_result.detection_success_results) != 0
+                    and topic_rate
+                ):
                     result = "Success"
                     self.__detection_success += 1
 
