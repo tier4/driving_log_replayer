@@ -4,8 +4,14 @@ Autoware の点群処理のプロセス(sensing→perception)が動作して、/
 
 点群が意図通りに出力されているかの判定は、t4_dataset と点群を用いて行う。以下の評価を同時に行う。
 
-1. 事前にアノテーションしておいた車両や歩行者などが検知出来ているかの評価（detection: 検知）
-2. レーンとシナリオで定義した自車両周りのポリゴンが重なるエリアに余分な点群が出ていないかの評価（non_detection: 非検知）
+- 事前にアノテーションしておいた車両や歩行者などが検知出来ているかの評価（detection: 検知）
+- レーンとシナリオで定義した自車両周りのポリゴンが重なるエリアに余分な点群が出ていないかの評価（non_detection: 非検知）
+
+また、評価条件にnullを指定すれば評価しないことも可能である。すなわち以下の3モードで評価を実施できる。
+
+1. detectionとnon_detectionを同時に評価する
+2. detectionだけ評価する(NonDetection: null)
+3. non_detectionだけ評価する(Detection: null)
 
 アノテーションツールは[Deepen](https://www.deepen.ai/)が推奨であるが、t4_dataset への変換がサポートされているツールであればよい。
 変換ツールさえ作成できれば複数のアノテーションツールを利用することが可能である。
@@ -143,7 +149,7 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
     "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
     "Detection": {
-      "Result": "Success or Warn or Fail",
+      "Result": "Success, Warn, Fail, or Skipped",
       "Info": [
         {
           "Annotation": "アノテーションされたバンディングボックスの情報、位置姿勢、ID",
@@ -152,7 +158,7 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
       ]
     },
     "NonDetection": {
-      "Result": "Success or Fail",
+      "Result": "Success, Fail, or Skipped",
       "Info": [
         {
           "PointCloud": "非検知エリアに出ている点の数と、base_linkからの距離毎の分布"

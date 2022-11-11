@@ -178,7 +178,7 @@ Result は visibility と blockage の両方をパスしていれば true でそ
   "Frame": {
     "Visibility": [
       {
-        "Result": "Success or Fail or Skipped",
+        "Result": "Success, Fail, or Skipped",
         "Info": [
           {
             "Level": "diagのレベル",
@@ -189,7 +189,7 @@ Result は visibility と blockage の両方をパスしていれば true でそ
     ],
     "Blockage": [
       {
-        "Result": "Success or Fail or Skipped",
+        "Result": "Success, Fail, or Skipped",
         "Info": [
           {
             "Name": "LiDARの名前",

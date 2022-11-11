@@ -1,0 +1,24 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: obstacle_segmentation-sample
+ScenarioDescription: obstacle_segmentation-sample
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: obstacle_segmentation
+  UseCaseFormatVersion: 0.2.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default
+        LocalMapPath: $HOME/autoware_map/sample-map-planning
+  Conditions:
+    Detection: # set `null` if Detection is not evaluated.
+      PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
+    NonDetection: null
+  SensingEvaluationConfig:
+    evaluation_config_dict:
+      evaluation_task: sensing # fixed value
+      target_uuids: # UUIDs of bounding box to be detected
+        - dcb2b352232fff50c4fad23718f31611
+      box_scale_0m: 1.0 # Scaling factor to scale the bounding box according to distance. Value at 0m
+      box_scale_100m: 1.0 # Scaling factor at 100m. Magnification is determined by linear completion according to distance from 0 to 100m
+      min_points_threshold: 1 # Threshold of how many points must be in the bounding box to be successful.
