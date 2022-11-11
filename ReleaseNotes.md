@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.0.12
+
+Bug fix
+
+| Module                  | Feature      | Brief summary                  | Pull request                                                 | JIRA       | Contributor                                   |
+| ----------------------- | ------------ | ------------------------------ | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `obstacle_segmentation` | frame result | fix status and judgement logic | [#37](https://github.com/tier4/driving_log_replayer/pull/37) | T4PB-23309 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.0.11
 
 Major Changes
