@@ -190,7 +190,7 @@ class ObstacleSegmentationResult(ResultBase):
                 if self.__detection_total == 0
                 else self.__detection_success / self.__detection_total * 100.0
             )
-            self.__detection_result = detection_rate >= self.__detection_pass_rate
+            self.__detection_result = detection_rate >= self.__condition_detection["PassRate"]
             self.__detection_msg = f"Detection: {self.__detection_success} / {self.__detection_total } -> {detection_rate:.2f}% (Warn: {self.__detection_warn})"
 
             # initialize
@@ -266,7 +266,9 @@ class ObstacleSegmentationResult(ResultBase):
                 result = "Success"
                 self.__non_detection_success += 1
             non_detection_rate = self.__non_detection_success / self.__non_detection_total * 100.0
-            self.__non_detection_result = non_detection_rate >= self.__non_detection_pass_rate
+            self.__non_detection_result = (
+                non_detection_rate >= self.__condition_non_detection["PassRate"]
+            )
             self.__non_detection_msg = f"NonDetection: {self.__non_detection_success} / {self.__non_detection_total} -> {non_detection_rate:.2f}%"
 
             ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
