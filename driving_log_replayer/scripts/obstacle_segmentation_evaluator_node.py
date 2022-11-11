@@ -176,6 +176,7 @@ class ObstacleSegmentationResult(ResultBase):
         pcd_detection = None
 
         if self.__condition_detection is not None:
+            result = "Fail"
             if len(frame_result.detection_warning_results) != 0:
                 result = "Warn"
                 self.__detection_warn += 1
@@ -261,6 +262,7 @@ class ObstacleSegmentationResult(ResultBase):
         info = []
         ros_pcd = None
         if self.__condition_non_detection is not None:
+            result = "Fail"
             self.__non_detection_total += 1
             if len(pcd_list) == 0 and topic_rate:
                 result = "Success"
@@ -271,19 +273,23 @@ class ObstacleSegmentationResult(ResultBase):
             )
             self.__non_detection_msg = f"NonDetection: {self.__non_detection_success} / {self.__non_detection_total} -> {non_detection_rate:.2f}%"
 
-            ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
+            if result == "Fail":
+                # 成功のときはこの処理をやるだけ無駄なのでやらなくてよい。
+                ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
 
-            # 詳細情報の追記を書く
-            dist_dict = {}
-            # print(dist_array)
-            for i in range(100):
-                dist_dict[f"{i}-{i+1}"] = np.count_nonzero((i <= dist_array) & (dist_array < i + 1))
-            # NonDetectionは結果はInfoに入るのは１個しかないがDetectionに合わせてlistにしておく
-            info.append(
-                {
-                    "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
-                }
-            )
+                # 詳細情報の追記を書く
+                dist_dict = {}
+                # print(dist_array)
+                for i in range(100):
+                    dist_dict[f"{i}-{i+1}"] = np.count_nonzero(
+                        (i <= dist_array) & (dist_array < i + 1)
+                    )
+                # NonDetectionは結果はInfoに入るのは１個しかないがDetectionに合わせてlistにしておく
+                info.append(
+                    {
+                        "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
+                    }
+                )
         return {"Result": result, "Info": info}, ros_pcd
 
     def add_frame(
