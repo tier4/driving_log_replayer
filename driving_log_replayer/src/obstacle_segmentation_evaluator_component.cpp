@@ -71,8 +71,8 @@ void ObstacleSegmentationEvaluatorComponent::diagCallback(
   for (const auto & diagnostic_status : msg->status) {
     if (
       diagnostic_status.name ==
-      "/autoware/sensing/node_alive_monitoring/topic_status/ad_service_state_monitor: "
-      "sensing_topic_status") {
+      "/autoware/perception/node_alive_monitoring/topic_status/"
+      "topic_state_monitor_obstacle_segmentation_pointcloud: perception_topic_status") {
       if (diagnostic_status.level >= diagnostic_status.ERROR) {
         topic_rate_ = false;
       } else {
