@@ -4,8 +4,8 @@
 
 Major Changes
 
-| Module                  | Feature                     | Brief summary                                           | Pull request                                                 | JIRA       | Contributor                                   |
-| ----------------------- | --------------------------- | ------------------------------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| Module                  | Feature                      | Brief summary                                            | Pull request                                                 | JIRA       | Contributor                                   |
+| ----------------------- | ---------------------------- | -------------------------------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
 | `obstacle_segmentation` | point cloud topic rate check | update diagnostics status name of point cloud topic rate | [#40](https://github.com/tier4/driving_log_replayer/pull/40) | T4PB-23868 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.0.12
