@@ -1,0 +1,11 @@
+vehicle:
+  front_overhang: 0.530 # between front wheel center and vehicle front
+  wheel_base: 1.335 # between front wheel center and rear wheel center
+fp_threshold:
+  very_near: 0.1
+  near: 1.0
+  medium: 10.0
+  far: 100.0
+bird_view:
+  scale: square # 指定できる値は [auto, square, 数値]。autoの場合はauto scale, squareの場合はx, y軸の大きい値に合わせる。数値の場合は指定した範囲をスケールとする。
+  origin: false # 0点を中心とする場合はtrue、しない場合はfalse
