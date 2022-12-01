@@ -2,11 +2,23 @@
 name = "driving_log_replayer_cli"
 version = "1.0.12"
 description = "command line tool for driving_log_replayer"
-authors = ["Hayato Mizushima <hayato.mizushima@tier4.jp>"]
+authors = [
+  "Hayato Mizushima <hayato.mizushima@tier4.jp>",
+  "Keisuke Shima <keisuke.shima@tier4.jp>",
+]
 license = "Apache V2"
+packages = [
+  { include = "driving_log_replayer_cli"},
+  { include = "driving_log_replayer_analyzer", from="driving_log_replayer_analyzer"},
+]
+include = [
+  "driving_log_replayer_cli",
+  "driving_log_replayer_analyzer",
+]
 
 [tool.poetry.scripts]
 driving_log_replayer = "driving_log_replayer_cli:main"
+dlr_analyzer = "driving_log_replayer_analyzer.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -15,6 +27,9 @@ natsort = "^7.1.1"
 PyYAML = "^5.4.1"
 toml = "^0.10.2"
 click = "^8.0.3"
+pandas = "^1.5.2"
+plotly = "^5.11.0"
+kaleido = "0.2.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
