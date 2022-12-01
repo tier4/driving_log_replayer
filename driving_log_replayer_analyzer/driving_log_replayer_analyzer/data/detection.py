@@ -30,15 +30,11 @@ class Detection:
                 di = DetectionInfo()
                 di.uuid = info["Annotation"]["UUID"]
                 di.short_uuid = info["Annotation"]["UUID"][0:6]
-                di.annotation_position = Position(
-                    info["Annotation"]["Position"]["position"]
-                )
+                di.annotation_position = Position(info["Annotation"]["Position"]["position"])
                 di.annotation_distance = di.annotation_position.get_xy_distance()
                 di.pointcloud_numpoints = info["PointCloud"]["NumPoints"]
                 if di.pointcloud_numpoints > 0:
-                    di.pointcloud_nearest_position = Position(
-                        info["PointCloud"]["Nearest"]
-                    )
+                    di.pointcloud_nearest_position = Position(info["PointCloud"]["Nearest"])
                     di.pointcloud_nearest_distance = (
                         di.pointcloud_nearest_position.get_xy_distance()
                     )

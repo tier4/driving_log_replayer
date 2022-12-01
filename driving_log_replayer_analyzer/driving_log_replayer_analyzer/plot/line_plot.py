@@ -19,7 +19,5 @@ class LinePlot(PlotBase):
 
         if use_boolean_tick:
             self._fig.update_layout(
-                yaxis=dict(
-                    tickmode="array", tickvals=[0, 1], ticktext=["False", "True"]
-                )
+                yaxis=dict(tickmode="array", tickvals=[0, 1], ticktext=["False", "True"])
             )

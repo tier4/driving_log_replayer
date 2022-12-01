@@ -53,12 +53,8 @@ class BirdViewPlot(PlotBase):
                 pass
 
         # 座標軸を表示
-        self._fig.update_xaxes(
-            zeroline=True, zerolinewidth=2, zerolinecolor="LightPink"
-        )
-        self._fig.update_yaxes(
-            zeroline=True, zerolinewidth=2, zerolinecolor="LightPink"
-        )
+        self._fig.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor="LightPink")
+        self._fig.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor="LightPink")
 
     def plot(
         self,

@@ -30,16 +30,14 @@ class NonDetection:
             self.result = json_dict["Frame"]["NonDetection"]["Result"]
             self.frame = int(json_dict["Frame"]["FrameName"])
             self.ego_position = Position(
-                json_dict["Frame"]["Ego"]["TransformStamped"]["transform"][
-                    "translation"
-                ]
+                json_dict["Frame"]["Ego"]["TransformStamped"]["transform"]["translation"]
             )
             self.pointcloud_points = float(
                 json_dict["Frame"]["NonDetection"]["Info"][0]["PointCloud"]["NumPoints"]
             )
-            for distance_str, num_points in json_dict["Frame"]["NonDetection"]["Info"][
-                0
-            ]["PointCloud"]["Distance"].items():
+            for distance_str, num_points in json_dict["Frame"]["NonDetection"]["Info"][0][
+                "PointCloud"
+            ]["Distance"].items():
                 distance_list = distance_str.split(sep="-")
                 dist = (int(distance_list[1]) + int(distance_list[0])) / 2
                 self.distance[dist] = num_points
