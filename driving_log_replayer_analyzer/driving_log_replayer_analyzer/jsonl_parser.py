@@ -59,7 +59,8 @@ class JsonlParser:
                 record.ego_position.add_overhang(overhang)
 
     def export_to_csv(self, output_path: Path):
-        """データをCSV出力する。暫定的に必要なデータのみ出力する。
+        """データをCSV出力する。暫定的に必要なデータのみ出力する.
+
         TODO: detection: List[Detection]の形式を変えて、detection.py内部でリストを保持するように変更する。合わせてこの関数も移動。
         """
         with open(output_path, "w") as f:
@@ -85,8 +86,7 @@ class JsonlParser:
         return ret
 
     def get_bb_position(self) -> List:
-        """自車を基準としたアノテーションバウンディングボックス(BB)の中心点(x, y)とSuccess/Failのフレーム毎のリストを作成する"""
-
+        """自車を基準としたアノテーションバウンディングボックス(BB)の中心点(x, y)とSuccess/Failのフレーム毎のリストを作成する."""
         ret = []
         for frame in self.detection:
             for detection_info in frame.detection_info:
@@ -101,8 +101,7 @@ class JsonlParser:
         return ret
 
     def get_pointcloud_position(self) -> list:
-        """自車を基準としたアノテーションバウンディングボックス(BB)のPointCloudの最近傍点、ラベルとしてPointCloudを付与したリストを作成する"""
-
+        """自車を基準としたアノテーションバウンディングボックス(BB)のPointCloudの最近傍点、ラベルとしてPointCloudを付与したリストを作成する."""
         ret = []
         for frame in self.detection:
             for detection_info in frame.detection_info:
@@ -117,7 +116,7 @@ class JsonlParser:
         return ret
 
     def get_bb_distance(self) -> List:
-        """自車を基準としたBBの最近傍点の距離とResult
+        """自車を基準としたBBの最近傍点の距離とResult.
 
         Returns:
             list: 距離と結果を含むリスト
@@ -145,7 +144,7 @@ class JsonlParser:
         return ret
 
     def get_pointcloud_points_per_uuid(self) -> List:
-        """Detectionで検出した自車～Annotation BB内の最近傍PCの距離ごとの検知点群数のリストを返す
+        """Detectionで検出した自車～Annotation BB内の最近傍PCの距離ごとの検知点群数のリストを返す.
 
         Returns:
             list: UUIDごとの自車～Annotation BB内の最近傍PCの距離ごとの検知点群数のリスト
@@ -164,7 +163,7 @@ class JsonlParser:
         return self._split_list_per_uuid(tmp)
 
     def get_annotation_and_pointcloud_distance(self) -> List:
-        """自車～Annotation BBの最近傍点と検知点群の最近傍点との距離差
+        """自車～Annotation BBの最近傍点と検知点群の最近傍点との距離差.
 
         Returns:
             list: UUIDごとの自車～Annotation BBの最近傍点と検知点群の最近傍点との距離差
@@ -190,7 +189,7 @@ class JsonlParser:
         return self._split_list_per_uuid(tmp)
 
     def get_non_detection_frame_points(self, fp_dist: FpDistance) -> List:
-        """Non detection評価のフレームごとの点群数の累積を計算する
+        """Non detection評価のフレームごとの点群数の累積を計算する.
 
         Returns:
             list: フレームと点群数の累積数、ポップアップ表示用に使用する距離毎のFP数
@@ -211,7 +210,7 @@ class JsonlParser:
         return ret
 
     def get_non_detection_position(self, fp_dist: FpDistance) -> List:
-        """自車の位置とNon detectionのNumPointsのリストを作成する
+        """自車の位置とNon detectionのNumPointsのリストを作成する.
 
         Returns:
             list: 自車の位置(x,y)とNon detectionのNumPoints、ポップアップ表示用に使用する距離毎のFP数

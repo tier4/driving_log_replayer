@@ -53,12 +53,8 @@ class BirdViewPlot(PlotBase):
                 pass
 
         # 座標軸を表示
-        self._fig.update_xaxes(
-            zeroline=True, zerolinewidth=2, zerolinecolor="LightPink"
-        )
-        self._fig.update_yaxes(
-            zeroline=True, zerolinewidth=2, zerolinecolor="LightPink"
-        )
+        self._fig.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor="LightPink")
+        self._fig.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor="LightPink")
 
     def plot(
         self,
@@ -66,7 +62,7 @@ class BirdViewPlot(PlotBase):
         xlabel: str = "",
         ylabel: str = "",
     ):
-        """Plotを作成して保存する
+        """Plotを作成して保存する.
 
         Args:
             path (Path): 保存先。拡張子はpng
@@ -104,7 +100,7 @@ class BirdViewPlot(PlotBase):
         ylabel: str = "",
         origin: bool = True,
     ):
-        """Plotを作成して保存する
+        """Plotを作成して保存する.
 
         Args:
             path (Path): 保存先。拡張子はpng

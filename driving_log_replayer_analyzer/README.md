@@ -2,7 +2,7 @@
 
 ## About
 
-driving_log_replayerの[use_case obstacle_segmentation](https://github.com/tier4/driving_log_replayer/blob/main/docs/use_case/obstacle_segmentation.ja.md)の結果ファイル（jsonl形式）の内容を可視化するためのスクリプト。
+driving_log_replayer の[use_case obstacle_segmentation](https://github.com/tier4/driving_log_replayer/blob/main/docs/use_case/obstacle_segmentation.ja.md)の結果ファイル（jsonl 形式）の内容を可視化するためのスクリプト。
 
 ## Requirements
 

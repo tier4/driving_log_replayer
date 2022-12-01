@@ -47,6 +47,4 @@ class ScatterPlot(PlotBase):
     def add_vert_line(self, vert_line_config: dict, output_dir: Path):
         for key, val in vert_line_config.items():
             if key in str(output_dir):
-                self._fig.add_vline(
-                    x=val, line_width=3, line_dash="dash", line_color="green"
-                )
+                self._fig.add_vline(x=val, line_width=3, line_dash="dash", line_color="green")

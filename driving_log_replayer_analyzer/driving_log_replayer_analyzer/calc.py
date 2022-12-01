@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def fail_3_times_in_a_row(data: List) -> List:
-    """対象点から近いほうの点3点から、連続して3点Failしている点をFailとする変換を行う。
+    """対象点から近いほうの点3点から、連続して3点Failしている点をFailとする変換を行う.
 
     Args:
         data (list): [距離, 0 or 1, Success or Fail]
@@ -13,7 +13,6 @@ def fail_3_times_in_a_row(data: List) -> List:
     Returns:
         list: Inputと同じ形式のlist。2項目目の0 or 1が変更される。
     """
-
     WINDOW = 3
 
     df = pd.DataFrame(data, columns=["Dist", "Val", "Result"])
