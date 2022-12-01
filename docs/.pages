@@ -6,3 +6,4 @@ nav:
   - scenario_format
   - result_format
   - use_case
+  - analyzer

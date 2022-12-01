@@ -1,17 +1,21 @@
-# Obstacle Segmentation Visualizer
+# Driving Log Replayer Analyzer
 
-## About
+Driving Log Replayer Analyzer is a package that analyses result files.
 
-driving_log_replayer の[use_case obstacle_segmentation](https://github.com/tier4/driving_log_replayer/blob/main/docs/use_case/obstacle_segmentation.ja.md)の結果ファイル（jsonl 形式）の内容を可視化するためのスクリプト。
+## Notice
+
+Currently only [use_case obstacle_segmentation](https://github.com/tier4/driving_log_replayer/blob/main/docs/use_case/obstacle_segmentation.ja.md) is supported.
 
 ## Requirements
 
-TODO: Add description
+Same as driving_log_replayer
 
 ## Install
 
-TODO: Add description
+This package is installed with driving_log_replayer_cli
 
 ## How to use
 
-TODO: Add description
+```shell
+driving_log_replayer_analyzer ${result_jsonl_path} -c ${config_path}
+```
