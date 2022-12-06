@@ -365,6 +365,9 @@ class ObstacleSegmentationEvaluator(Node):
             self.__result_json_path, self.get_clock(), self.__condition
         )
 
+        self.__bounding_boxes_start = self.__condition["Detection"]["BoundingBoxes"]["Start"]
+        self.__bounding_boxes_end = self.__condition["Detection"]["BoundingBoxes"]["End"]
+
         s_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
@@ -455,6 +458,10 @@ class ObstacleSegmentationEvaluator(Node):
         )
         # Ground truthがない場合はスキップされたことを記録する
         if ground_truth_now_frame is None:
+            self.__skip_counter += 1
+        elif self.__bounding_boxes_start < pcd_header < self.__bounding_boxes_end:
+            # Ground Truthはあるけど、評価期間じゃなかった場合
+            # この実装では実行時エラーになる。floatとros time比べている。ここはちゃんと治す必要ある。
             self.__skip_counter += 1
         else:
             numpy_pcd = ros2_numpy.numpify(msg.pointcloud)
