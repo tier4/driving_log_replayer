@@ -53,7 +53,7 @@ class TestScriptGenerator:
                     if command is not None:
                         generated_cmd += command + "\n"
                         # kill zombie ros2 process
-                        generated_cmd += "ps aux | grep ros2 | grep -v grep | awk '{ print \"kill -9\", $2 }' | sh\n"
+                        generated_cmd += "ps aux | grep -i ros | grep -v Microsoft | grep -v ros2_daemon | grep -v grep | awk '{ print \"kill -9\", $2 }' | sh"
                         # kill rviz
                         generated_cmd += "ps aux | grep rviz | grep -v grep | awk '{ print \"kill -9\", $2 }' | sh\n"
                         # sleep 1 sec
