@@ -52,6 +52,12 @@ class TestScriptGenerator:
                     command = self.__parse_scenario(dataset_path)
                     if command is not None:
                         generated_cmd += command + "\n"
+                        # kill zombie ros2 process
+                        generated_cmd += "ps aux | grep -i ros | grep -v Microsoft | grep -v ros2_daemon | grep -v grep | awk '{ print \"kill -9\", $2 }' | sh"
+                        # kill rviz
+                        generated_cmd += "ps aux | grep rviz | grep -v grep | awk '{ print \"kill -9\", $2 }' | sh\n"
+                        # sleep 1 sec
+                        generated_cmd += "sleep 1\n"
             with open(self.script_path, "w") as f:
                 f.write(generated_cmd)
             return True
