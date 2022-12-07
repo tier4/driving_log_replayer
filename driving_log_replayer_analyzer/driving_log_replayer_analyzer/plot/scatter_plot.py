@@ -32,7 +32,7 @@ class ScatterPlot(PlotBase):
             xaxis_title=xlabel,
             yaxis_title=ylabel,
         )
-        self._fig.update_traces(marker=dict(size=4), selector=dict(mode="markers"))
+        self._fig.update_traces(marker=dict(size=4), selector=dict(mode="markers"))  # noqa: C408
 
     def plot_with_hover(self, title="", xlabel="", ylabel=""):
         # hover dataをdfから抽出
@@ -50,12 +50,12 @@ class ScatterPlot(PlotBase):
             xaxis_title=xlabel,
             yaxis_title=ylabel,
         )
-        self._fig.update_traces(marker=dict(size=4), selector=dict(mode="markers"))
+        self._fig.update_traces(marker=dict(size=4), selector=dict(mode="markers"))  # noqa: C408
 
     def use_boolean_tick(self):
         self._fig.update_yaxes(range=[-0.066, 1.066])
         self._fig.update_layout(
-            yaxis=dict(tickmode="array", tickvals=[0, 1], ticktext=["False", "True"])
+            yaxis=dict(tickmode="array", tickvals=[0, 1], ticktext=["False", "True"])  # noqa: C408
         )
 
     def add_vert_line(self, vert_line_config: dict, output_dir: Path):
