@@ -99,7 +99,7 @@ class BirdViewPlot(PlotBase):
             height=self.FIGURE_SIZE,
         )
 
-        self._fig.update_traces(marker=dict(size=2), selector=dict(mode="markers"))
+        self._fig.update_traces(marker=dict(size=2), selector=dict(mode="markers"))  # noqa: C408
 
         self._fig.update_layout(
             title=title,
@@ -141,7 +141,7 @@ class BirdViewPlot(PlotBase):
             height=self.FIGURE_SIZE,
         )
 
-        self._fig.update_traces(marker=dict(size=2), selector=dict(mode="markers"))
+        self._fig.update_traces(marker=dict(size=2), selector=dict(mode="markers"))  # noqa: C408
 
         self._fig.update_layout(
             title=title,
