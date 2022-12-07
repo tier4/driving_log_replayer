@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat(cli): kill zombie process
+* fix: lint check (`#49 <https://github.com/tier4/driving_log_replayer/issues/49>`_)
+* Contributors: Hayato Mizushima
+
 1.1.1 (2022-12-01)
 ------------------
 * feat: analyzer (`#44 <https://github.com/tier4/driving_log_replayer/issues/44>`_)
