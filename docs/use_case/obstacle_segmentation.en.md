@@ -175,12 +175,12 @@ An example of evaluation is described below.
             "StampFloat": "Bounding box unix_time[us] made into a float."
           },
           "PointCloud": {
-              "NumPoints": "バウンディングボックス内に含まれる点群の数",
-              "Nearest": "バウンディングボックス内でbase_linkから最も近い点の[x,y,z]座標",
-              "Stamp": {
-                "sec": "使用した点群のheader.stampのsec",
-                "nanosec": "使用した点群のheader.stampのnanosec"
-              }
+            "NumPoints": "バウンディングボックス内に含まれる点群の数",
+            "Nearest": "バウンディングボックス内でbase_linkから最も近い点の[x,y,z]座標",
+            "Stamp": {
+              "sec": "使用した点群のheader.stampのsec",
+              "nanosec": "使用した点群のheader.stampのnanosec"
+            }
           }
         }
       ]
