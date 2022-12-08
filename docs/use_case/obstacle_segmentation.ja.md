@@ -152,8 +152,36 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
       "Result": "Success, Warn, Fail, or Skipped",
       "Info": [
         {
-          "Annotation": "アノテーションされたバンディングボックスの情報、位置姿勢、ID",
-          "PointCloud": "評価した点群の情報、バウンディングボックス内の点の数と、base_linkからの最近傍の点の位置"
+          "Annotation": {
+            "Scale": {
+              "x": "バウンディングボックスのx方向の長さ",
+              "y": "バウンディングボックスのy方向の長さ",
+              "z": "バウンディングボックスのz方向の長さ"
+            },
+            "Position": {
+              "position": {
+                "x": "バウンディングボックスの位置x",
+                "y": "バウンディングボックスの位置y",
+                "z": "バウンディングボックスの位置z"
+              },
+              "orientation": {
+                "x": "バウンディングボックスの向きx",
+                "y": "バウンディングボックスの向きy",
+                "z": "バウンディングボックスの向きz",
+                "w": "バウンディングボックスの向きw"
+              }
+            },
+            "UUID": "バウンディングボックスのUUID",
+            "StampFloat": "バウンディングボックスのunix_time[us]のfloatにしたもの"
+          },
+          "PointCloud": {
+              "NumPoints": "バウンディングボックス内に含まれる点群の数",
+              "Nearest": "バウンディングボックス内でbase_linkから最も近い点の[x,y,z]座標",
+              "Stamp": {
+                "sec": "使用した点群のheader.stampのsec",
+                "nanosec": "使用した点群のheader.stampのnanosec"
+              }
+          }
         }
       ]
     },
@@ -161,7 +189,14 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
       "Result": "Success, Fail, or Skipped",
       "Info": [
         {
-          "PointCloud": "非検知エリアに出ている点の数と、base_linkからの距離毎の分布"
+          "PointCloud": {
+            "NumPoints": "非検知エリアに出ている点群の数",
+            "Distance": {
+              "0-1": "base_linkから0-1mの間の非検知エリアに出ている点群数",
+              "x-x+1": "非検知エリアに出ている点群の距離毎の分布",
+              "99-100": "base_linkから99-100mの間の非検知エリアに出ている点群数"
+            }
+          }
         }
       ]
     },
