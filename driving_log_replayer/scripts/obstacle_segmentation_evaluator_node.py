@@ -32,6 +32,7 @@ import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
 from perception_eval.common.object import DynamicObject
 from perception_eval.config.sensing_evaluation_config import SensingEvaluationConfig
+from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithSensingResult
 from perception_eval.manager.sensing_evaluation_manager import SensingEvaluationManager
@@ -134,6 +135,24 @@ def summarize_numpy_pointcloud(
     ros_pcd = ros2_numpy.msgify(PointCloud2, numpy_pcd)
     ros_pcd.header = header
     return ros_pcd, dist_array
+
+
+def get_sensing_frame_config(
+    pcd_header: Header, scenario_yaml_obj: Dict
+) -> Optional[SensingFrameConfig]:
+    bbox_conf = scenario_yaml_obj["Evaluation"]["Conditions"]["Detection"].get(
+        "BoundingBoxConfig", None
+    )
+    if bbox_conf is None:
+        return None
+    target_uuids = []
+    for k, v in bbox_conf.items():
+        # k: uuid, v: Dict
+        start: Optional[float] = v["Start"]
+        end: Optional[float] = v["End"]
+        # compare time
+
+    return True, None
 
 
 class ObstacleSegmentationResult(ResultBase):
@@ -365,10 +384,7 @@ class ObstacleSegmentationEvaluator(Node):
             self.__result_json_path, self.get_clock(), self.__condition
         )
 
-        self.__bounding_boxes_start = self.__condition["Detection"]["BoundingBoxes"]["Start"]
-        self.__bounding_boxes_end = self.__condition["Detection"]["BoundingBoxes"]["End"]
-
-        s_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
+        e_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
@@ -376,7 +392,7 @@ class ObstacleSegmentationEvaluator(Node):
             merge_similar_labels=False,
             does_use_pointcloud=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
-            evaluation_config_dict=s_cfg["evaluation_config_dict"],
+            evaluation_config_dict=e_cfg["evaluation_config_dict"],
         )
 
         _ = configure_logger(
@@ -459,11 +475,14 @@ class ObstacleSegmentationEvaluator(Node):
         # Ground truthがない場合はスキップされたことを記録する
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
-        elif self.__bounding_boxes_start < pcd_header < self.__bounding_boxes_end:
-            # Ground Truthはあるけど、評価期間じゃなかった場合
-            # この実装では実行時エラーになる。floatとros time比べている。ここはちゃんと治す必要ある。
-            self.__skip_counter += 1
         else:
+            # create sensing_frame_config
+            skip_this_frame, sensing_frame_config = get_sensing_frame_config(
+                pcd_header, self.__scenario_yaml_obj
+            )
+            if skip_this_frame:
+                self.__skip_counter += 1
+                return
             numpy_pcd = ros2_numpy.numpify(msg.pointcloud)
             pointcloud = np.zeros((numpy_pcd.shape[0], 3))
             pointcloud[:, 0] = numpy_pcd["x"]
@@ -482,6 +501,7 @@ class ObstacleSegmentationEvaluator(Node):
                 ground_truth_now_frame=ground_truth_now_frame,
                 pointcloud=pointcloud,
                 non_detection_areas=non_detection_areas,
+                sensing_frame_config=sensing_frame_config,
             )
 
             # write result

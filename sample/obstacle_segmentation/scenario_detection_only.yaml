@@ -13,6 +13,10 @@ Evaluation:
   Conditions:
     Detection: # set `null` if Detection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
+      BoundingBoxConfig:
+        - dcb2b352232fff50c4fad23718f31611:
+            Start: 1649138856.594
+            End: 1649138915.566
     NonDetection: null
   SensingEvaluationConfig:
     evaluation_config_dict:
