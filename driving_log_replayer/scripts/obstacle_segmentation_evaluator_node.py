@@ -70,6 +70,7 @@ def get_box_marker(
             "Scale": message_to_ordereddict(bbox.scale),
             "Position": message_to_ordereddict(bbox.pose),
             "UUID": ground_truth_obj.uuid,
+            "StampFloat": ground_truth_obj.unix_time / pow(10, 6),
         }
     }
     return bbox, uuid, info_dict
@@ -106,6 +107,7 @@ def summarize_frame_container(
         info_dict["PointCloud"] = {
             "NumPoints": result.inside_pointcloud_num,
             "Nearest": result.nearest_point.tolist() if result.nearest_point is not None else [],
+            "Stamp": message_to_ordereddict(header.stamp),
         }
         info.append(info_dict)
     return info, counter, marker_array, pcd

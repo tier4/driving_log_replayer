@@ -152,8 +152,36 @@ An example of evaluation is described below.
       "Result": "Success, Warn, Fail, or Skipped",
       "Info": [
         {
-          "Annotation": "Annotated banding box information, position pose, and ID",
-          "PointCloud": "Information on the evaluated point cloud, number of points in the bounding box and position of the nearest point from the base_link."
+          "Annotation": {
+            "Scale": {
+              "x": "Length of bounding box in x-direction",
+              "y": "Length of bounding box in y-direction",
+              "z": "Length of bounding box in z-direction"
+            },
+            "Position": {
+              "position": {
+                "x": "Bounding box position x",
+                "y": "Bounding box position y",
+                "z": "Bounding box position z"
+              },
+              "orientation": {
+                "x": "Bounding box direction x",
+                "y": "Bounding box direction y",
+                "z": "Bounding box direction z",
+                "w": "Bounding box direction w"
+              }
+            },
+            "UUID": "UUID of the bounding box",
+            "StampFloat": "Bounding box unix_time[us] made into a float."
+          },
+          "PointCloud": {
+            "NumPoints": "Number of point clouds contained within the bounding box.",
+            "Nearest": "[x,y,z] coordinates of the closest point in the bounding box from the base_link",
+            "Stamp": {
+              "sec": "Sec of header.stamp of the point cloud",
+              "nanosec": "NanoSec of header.stamp of the point cloud"
+            }
+          }
         }
       ]
     },
@@ -161,7 +189,14 @@ An example of evaluation is described below.
       "Result": "Success, Fail, or Skipped",
       "Info": [
         {
-          "PointCloud": "Number of points out in the non-detection area and distribution by distance from the base_link."
+          "PointCloud": {
+            "NumPoints": "Number of point clouds out in non-detected areas.",
+            "Distance": {
+              "0-1": "Number of point clouds out in non-detected areas between 0-1 m from base_link",
+              "x-x+1": "Distribution of point clouds appearing in non-detected areas by distance",
+              "99-100": "Number of point clouds out in non-detected areas between 99-100 m from base_link"
+            }
+          }
         }
       ]
     },
