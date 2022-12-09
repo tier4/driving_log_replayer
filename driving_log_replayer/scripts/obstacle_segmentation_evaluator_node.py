@@ -494,10 +494,10 @@ class ObstacleSegmentationEvaluator(Node):
             self.__skip_counter += 1
         else:
             # create sensing_frame_config
-            skip_this_frame, sensing_frame_config = get_sensing_frame_config(
+            frame_ok, sensing_frame_config = get_sensing_frame_config(
                 pcd_header, self.__scenario_yaml_obj
             )
-            if skip_this_frame:
+            if not frame_ok:
                 self.__skip_counter += 1
                 return
             numpy_pcd = ros2_numpy.numpify(msg.pointcloud)
