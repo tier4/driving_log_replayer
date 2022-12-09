@@ -108,12 +108,16 @@ Evaluation:
   UseCaseName: obstacle_segmentation
   UseCaseFormatVersion: 0.2.0
   Datasets:
-    - 63800729-18d2-4383-91e9-fea7bad384f4:
-        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
-        LocalMapPath: $HOME/map/obstacle_segmentation # データセット毎にLocalMapPathを指定する
+    - sample_dataset:
+        VehicleId: default # データセット毎にVehicleIdを指定する
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
   Conditions:
     Detection: # Detectionの評価を行わない場合はnullをセットする
       PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+      BoundingBoxConfig: # バウンディングボックスの設定。設定しない場合はnullと記載する。
+        - dcb2b352232fff50c4fad23718f31611: # 設定を適用したいtargetのuuidを指定する
+            Start: null # ここに指定した時間を以降の点群を評価する。指定しない場合はnullと記載する。nullの場合は0.0を指定したのと同等になる
+            End: null # ここに指定した時間までの点群を評価する。指定しない場合はnullと記載する。nullの場合はsys.float_info.maxを指定したのと同等になる
     NonDetection: # NonDetectionの評価を行わない場合はnullをセットする
       PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
       ProposedArea: # base_linkを中心に非検知のエリアを一筆描きのpolygonで記述する。時計周りに記述する
@@ -127,8 +131,7 @@ Evaluation:
   SensingEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: sensing # 固定値
-      target_uuids: # detectionで対象とするバウンディングボックスのID
-        - 1b40c0876c746f96ac679a534e1037a2
+      target_uuids: null # detectionで対象とするバウンディングボックスのID。アノテーションされているすべてのbounding boxを対象としたい場合はnullを設定する
       box_scale_0m: 1.0 # バウンディングボックスを距離に応じて拡大縮小する倍率0m地点
       box_scale_100m: 1.0 # 100m地点の倍率、0から100mまで距離に応じて線形補完で倍率が決定する
       min_points_threshold: 1 # バウンディングボックスに最低何個の点が入っていればDetectionを成功とするかのしきい値
