@@ -162,7 +162,9 @@ def get_sensing_frame_config(
     if target_uuids == []:
         return False, None
     else:
-        e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]["evaluation_config_dict"]
+        e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"][
+            "evaluation_config_dict"
+        ]
         sensing_frame_config = SensingFrameConfig(
             target_uuids=target_uuids,
             box_scale_0m=e_conf["box_scale_0m"],
