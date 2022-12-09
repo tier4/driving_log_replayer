@@ -16,6 +16,7 @@
 
 import logging
 import os
+import sys
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -139,20 +140,36 @@ def summarize_numpy_pointcloud(
 
 def get_sensing_frame_config(
     pcd_header: Header, scenario_yaml_obj: Dict
-) -> Optional[SensingFrameConfig]:
+) -> Tuple[bool, Optional[SensingFrameConfig]]:
     bbox_conf = scenario_yaml_obj["Evaluation"]["Conditions"]["Detection"].get(
         "BoundingBoxConfig", None
     )
     if bbox_conf is None:
-        return None
+        return True, None
     target_uuids = []
-    for k, v in bbox_conf.items():
-        # k: uuid, v: Dict
-        start: Optional[float] = v["Start"]
-        end: Optional[float] = v["End"]
-        # compare time
-
-    return True, None
+    for uuid_dict in bbox_conf:
+        for uuid, v in uuid_dict.items():
+            # uuid: str, v: Dict
+            start: Optional[float] = v.get("Start", None)
+            end: Optional[float] = v.get("End", None)
+            if start is None:
+                start = 0.0
+            if end is None:
+                end = sys.float_info.max
+            stamp_float = pcd_header.stamp.sec + (pcd_header.stamp.nanosec / pow(10, 9))
+            if start <= stamp_float <= end:
+                target_uuids.append(uuid)
+    if target_uuids == []:
+        return False, None
+    else:
+        e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]["evaluation_config_dict"]
+        sensing_frame_config = SensingFrameConfig(
+            target_uuids=target_uuids,
+            box_scale_0m=e_conf["box_scale_0m"],
+            box_scale_100m=e_conf["box_scale_100m"],
+            min_points_threshold=e_conf["min_points_threshold"],
+        )
+        return True, sensing_frame_config
 
 
 class ObstacleSegmentationResult(ResultBase):
