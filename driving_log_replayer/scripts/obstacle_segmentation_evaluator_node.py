@@ -144,9 +144,7 @@ def get_sensing_frame_config(
     detection_config = scenario_yaml_obj["Evaluation"]["Conditions"].get("Detection", None)
     if detection_config is None:
         return True, None
-    bbox_conf = detection_config.get(
-        "BoundingBoxConfig", None
-    )
+    bbox_conf = detection_config.get("BoundingBoxConfig", None)
     if bbox_conf is None:
         return True, None
     target_uuids = []

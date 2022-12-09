@@ -135,7 +135,6 @@ Evaluation:
       box_scale_0m: 1.0 # Scaling factor to scale the bounding box according to distance. Value at 0m
       box_scale_100m: 1.0 # Scaling factor at 100m. Magnification is determined by linear completion according to distance from 0 to 100m
       min_points_threshold: 1 # Threshold of how many points must be in the bounding box to be successful.
-
 ```
 
 ### Evaluation Result Format
