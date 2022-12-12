@@ -106,7 +106,7 @@ t4_dataset で必要なトピックが含まれていること
 ```yaml
 Evaluation:
   UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Datasets:
     - sample_dataset:
         VehicleId: default # データセット毎にVehicleIdを指定する
@@ -114,8 +114,8 @@ Evaluation:
   Conditions:
     Detection: # Detectionの評価を行わない場合はnullをセットする
       PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-      BoundingBoxConfig: # バウンディングボックスの設定。設定しない場合はnullと記載する。
-        - dcb2b352232fff50c4fad23718f31611: # 設定を適用したいtargetのuuidを指定する
+      BoundingBoxConfig: # バウンディングボックスの設定。設定しない場合はnullと記載する。このキーを記述するとSensingEvaluationConfigのtarget_uuidsが上書きされる。
+        - dcb2b352232fff50c4fad23718f31611: # 設定を適用したいtargetのuuidを指定する。
             Start: null # ここに指定した時間を以降の点群を評価する。指定しない場合はnullと記載する。nullの場合は0.0を指定したのと同等になる
             End: null # ここに指定した時間までの点群を評価する。指定しない場合はnullと記載する。nullの場合はsys.float_info.maxを指定したのと同等になる
     NonDetection: # NonDetectionの評価を行わない場合はnullをセットする

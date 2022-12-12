@@ -106,7 +106,7 @@ State the information necessary for the evaluation.
 ```yaml
 Evaluation:
   UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Datasets:
     - sample_dataset:
         VehicleId: default # Specify VehicleId for each data set
@@ -114,7 +114,7 @@ Evaluation:
   Conditions:
     Detection: # set `null` if Detection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-      BoundingBoxConfig: # Bounding box setting. If not set, state "null".
+      BoundingBoxConfig: # Bounding box setting. If not set, state "null". Writing this key overrides the target_uuids in the SensingEvaluationConfig.
         - dcb2b352232fff50c4fad23718f31611: # Specify the uuid of the target to which you want to apply the settings
             Start: null # Evaluate the point cloud after the time specified here. If not specified, it should be written as null. null is equivalent to specifying 0.0.
             End: null # Evaluate the point cloud up to the time specified here. If not specified, it is written as null. null is equivalent to specifying sys.float_info.max.

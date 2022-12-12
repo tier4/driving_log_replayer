@@ -5,7 +5,7 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Datasets:
     - sample_dataset:
         VehicleId: default
