@@ -106,15 +106,19 @@ State the information necessary for the evaluation.
 ```yaml
 Evaluation:
   UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Datasets:
     - sample_dataset:
-        VehicleId: default
-        LocalMapPath: $HOME/autoware_map/sample-map-planning
+        VehicleId: default # Specify VehicleId for each data set
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each dataset
   Conditions:
     Detection: # set `null` if Detection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-    NonDetection: set `null` if NonDetection is not evaluated.
+      BoundingBoxConfig: # Bounding box setting. If not set, state "null". Writing this key overrides the target_uuids in the SensingEvaluationConfig.
+        - dcb2b352232fff50c4fad23718f31611: # Specify the uuid of the target to which you want to apply the settings
+            Start: null # Evaluate the point cloud after the time specified here. If not specified, it should be written as null. null is equivalent to specifying 0.0.
+            End: null # Evaluate the point cloud up to the time specified here. If not specified, it is written as null. null is equivalent to specifying sys.float_info.max.
+    NonDetection: # set `null` if NonDetection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
       ProposedArea: # Non-detection area centered on the base_link with a single stroke polygon.
         polygon_2d: # Describe polygon in xy-plane in clockwise direction
@@ -127,8 +131,7 @@ Evaluation:
   SensingEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: sensing # fixed value
-      target_uuids: # UUIDs of bounding box to be detected
-        - dcb2b352232fff50c4fad23718f31611
+      target_uuids: null # UUIDs of bounding box to be detected. Set null if you want to target all annotated bounding boxes
       box_scale_0m: 1.0 # Scaling factor to scale the bounding box according to distance. Value at 0m
       box_scale_100m: 1.0 # Scaling factor at 100m. Magnification is determined by linear completion according to distance from 0 to 100m
       min_points_threshold: 1 # Threshold of how many points must be in the bounding box to be successful.

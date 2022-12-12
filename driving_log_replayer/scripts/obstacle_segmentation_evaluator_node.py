@@ -16,6 +16,7 @@
 
 import logging
 import os
+import sys
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -32,6 +33,7 @@ import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
 from perception_eval.common.object import DynamicObject
 from perception_eval.config.sensing_evaluation_config import SensingEvaluationConfig
+from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithSensingResult
 from perception_eval.manager.sensing_evaluation_manager import SensingEvaluationManager
@@ -136,6 +138,43 @@ def summarize_numpy_pointcloud(
     ros_pcd = ros2_numpy.msgify(PointCloud2, numpy_pcd)
     ros_pcd.header = header
     return ros_pcd, dist_array
+
+
+def get_sensing_frame_config(
+    pcd_header: Header, scenario_yaml_obj: Dict
+) -> Tuple[bool, Optional[SensingFrameConfig]]:
+    detection_config = scenario_yaml_obj["Evaluation"]["Conditions"].get("Detection", None)
+    if detection_config is None:
+        return True, None
+    bbox_conf = detection_config.get("BoundingBoxConfig", None)
+    if bbox_conf is None:
+        return True, None
+    target_uuids = []
+    for uuid_dict in bbox_conf:
+        for uuid, v in uuid_dict.items():
+            # uuid: str, v: Dict
+            start: Optional[float] = v.get("Start", None)
+            end: Optional[float] = v.get("End", None)
+            if start is None:
+                start = 0.0
+            if end is None:
+                end = sys.float_info.max
+            stamp_float = pcd_header.stamp.sec + (pcd_header.stamp.nanosec / pow(10, 9))
+            if start <= stamp_float <= end:
+                target_uuids.append(uuid)
+    if target_uuids == []:
+        return False, None
+    else:
+        e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"][
+            "evaluation_config_dict"
+        ]
+        sensing_frame_config = SensingFrameConfig(
+            target_uuids=target_uuids,
+            box_scale_0m=e_conf["box_scale_0m"],
+            box_scale_100m=e_conf["box_scale_100m"],
+            min_points_threshold=e_conf["min_points_threshold"],
+        )
+        return True, sensing_frame_config
 
 
 class ObstacleSegmentationResult(ResultBase):
@@ -367,7 +406,7 @@ class ObstacleSegmentationEvaluator(Node):
             self.__result_json_path, self.get_clock(), self.__condition
         )
 
-        s_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
+        e_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
@@ -375,7 +414,7 @@ class ObstacleSegmentationEvaluator(Node):
             merge_similar_labels=False,
             does_use_pointcloud=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
-            evaluation_config_dict=s_cfg["evaluation_config_dict"],
+            evaluation_config_dict=e_cfg["evaluation_config_dict"],
         )
 
         _ = configure_logger(
@@ -459,6 +498,13 @@ class ObstacleSegmentationEvaluator(Node):
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
         else:
+            # create sensing_frame_config
+            frame_ok, sensing_frame_config = get_sensing_frame_config(
+                pcd_header, self.__scenario_yaml_obj
+            )
+            if not frame_ok:
+                self.__skip_counter += 1
+                return
             numpy_pcd = ros2_numpy.numpify(msg.pointcloud)
             pointcloud = np.zeros((numpy_pcd.shape[0], 3))
             pointcloud[:, 0] = numpy_pcd["x"]
@@ -477,6 +523,7 @@ class ObstacleSegmentationEvaluator(Node):
                 ground_truth_now_frame=ground_truth_now_frame,
                 pointcloud=pointcloud,
                 non_detection_areas=non_detection_areas,
+                sensing_frame_config=sensing_frame_config,
             )
 
             # write result
