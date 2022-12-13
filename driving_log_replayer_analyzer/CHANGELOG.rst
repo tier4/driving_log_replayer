@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: git mv
+* feat: delete perception_starter
+* feat: delete onnx file convert wait
+* Contributors: Hayato Mizushima
+
 1.1.3 (2022-12-13)
 ------------------
 * feat: `#51 <https://github.com/tier4/driving_log_replayer/issues/51>`_ set evaluation period for each bbox (`#54 <https://github.com/tier4/driving_log_replayer/issues/54>`_)
