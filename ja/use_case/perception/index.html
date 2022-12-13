@@ -790,21 +790,15 @@
       
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
-    評価方法
-  </a>
-  
-    <nav class="md-nav" aria-label="評価方法">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    注意事項
+    事前準備
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    評価方法
+  </a>
   
 </li>
       
@@ -1031,21 +1025,15 @@
       
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
-    評価方法
-  </a>
-  
-    <nav class="md-nav" aria-label="評価方法">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    注意事項
+    事前準備
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    評価方法
+  </a>
   
 </li>
       
@@ -1194,7 +1182,25 @@
 <h1 id="_1">認識機能の評価<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
 <p>Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。</p>
 <p>perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。</p>
-<h2 id="_2">評価方法<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
+<h2 id="_2">事前準備<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
+<p>perception では、機械学習の学習済みモデルを使用する。
+モデルはセットアップ時に自動的にダウンロードされる。
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115">lidar_centerpoint/CMakeList.txt</a></p>
+<p>また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
+変換処理は、perception のモジュールを初回起動したときに行われる。</p>
+<p>なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
+GPU の性能によって、engine の出力までにかかる時間が異なるので、<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15">lidar_based_detection.launch.xml</a>
+に記載のディレクトリに engine ファイルが 2 つ出力されるまで待ちます。</p>
+<p>autowarefoundation の autoware.universe を使用した場合の例を以下に示す。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># $HOME/autowareにautowareをインストールした場合</span>
+<span class="nb">source</span> ~/autoware/install/setup.bash
+ros2 launch autoware_launch logging_simulator.launch.xml map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-rosbag vehicle_model:<span class="o">=</span>sample_vehicle sensor_model:<span class="o">=</span>sample_sensor_kit
+
+<span class="c1"># ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下の２つが出力されるまでまつ</span>
+<span class="c1"># pts_backbone_neck_head_centerpoint_tiny.engine</span>
+<span class="c1"># pts_voxel_encoder_centerpoint_tiny.engine</span>
+</code></pre></div>
+<h2 id="_3">評価方法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <p><code>perception.launch.py</code> を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。</p>
 <ol>
@@ -1203,10 +1209,6 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <li>評価ノードが/perception/object_recognition/{detection, tracking}/objects を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
-<h3 id="_3">注意事項<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
-<p>autoware をワークスペースをセットアップして perception のモジュールを初回起動した場合には、lidar_centerpoint の onnx ファイルの変換処理が行われる
-評価方法のステップ 1 では、変換が完了するのを待つため、一見止まっているように見える長い処理があります。
-これは正常な動作ですので、キーボード入力で停止せず、そのままお待ちください。</p>
 <h2 id="_4">評価結果<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <p>topic の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
 <h3 id="_5">正常<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>

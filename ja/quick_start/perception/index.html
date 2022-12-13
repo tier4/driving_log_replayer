@@ -950,6 +950,16 @@ cp -r ~/autoware/src/simulator/driving_log_replayer/sample/perception/scenario.y
 cp -r ~/driving_log_replayer_data/sample_dataset ~/driving_log_replayer_data/perception/sample/t4_dataset
 </code></pre></div>
 </li>
+<li>
+<p>機械学習の学習済みモデルの変換を行う</p>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> ~/autoware/install/setup
+ros2 launch autoware_launch logging_simulator.launch.xml map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-planning vehicle_model:<span class="o">=</span>sample_vehicle sensor_model:<span class="o">=</span>sample_sensor_kit
+<span class="c1"># ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下のファイルができるまで待つ</span>
+<span class="c1"># - pts_backbone_neck_head_centerpoint_tiny.engine</span>
+<span class="c1"># - pts_voxel_encoder_centerpoint_tiny.engine</span>
+<span class="c1"># ファイルが出力されたらCtrl+Cでlaunchを止める</span>
+</code></pre></div>
+</li>
 </ol>
 <h2 id="_3">実行方法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <ol>

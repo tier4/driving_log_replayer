@@ -789,22 +789,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#evaluation-method" class="md-nav__link">
-    Evaluation method
-  </a>
-  
-    <nav class="md-nav" aria-label="Evaluation method">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
-    Notes
+  <a href="#preparation" class="md-nav__link">
+    Preparation
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-method" class="md-nav__link">
+    Evaluation method
+  </a>
   
 </li>
       
@@ -1030,22 +1024,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#evaluation-method" class="md-nav__link">
-    Evaluation method
-  </a>
-  
-    <nav class="md-nav" aria-label="Evaluation method">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
-    Notes
+  <a href="#preparation" class="md-nav__link">
+    Preparation
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-method" class="md-nav__link">
+    Evaluation method
+  </a>
   
 </li>
       
@@ -1194,6 +1182,23 @@
 <h1 id="evaluate-perception">Evaluate perception<a class="headerlink" href="#evaluate-perception" title="Permanent link">#</a></h1>
 <p>The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.</p>
 <p>Run the perception module and pass the output perception topic to the evaluation library for evaluation.</p>
+<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
+<p>In perception evaluation, machine learning pre-trained models are used.
+The models are automatically downloaded during set-up.
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115">lidar_centerpoint/CMakeList.txt</a></p>
+<p>The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
+The conversion process is performed when the perception module is started for the first time.</p>
+<p>So, as a preliminary preparation, you need to start logging_simulator.launch and convert the onnx files in the workspace into engine files.
+Depending on the performance of the GPU, the time it takes to output the engine varies, so wait until two engine files are output in the directory listed in <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15">lidar_based_detection.launch.xml</a></p>
+<p>An example of the use of autowarefoundation's autoware.universe is shown below.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># If autoware is installed in $HOME/autoware</span>
+<span class="nb">source</span> ~/autoware/install/setup.bash
+ros2 launch autoware_launch logging_simulator.launch.xml map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-rosbag vehicle_model:<span class="o">=</span>sample_vehicle sensor_model:<span class="o">=</span>sample_sensor_kit
+
+<span class="c1"># Wait until the following two outputs appear in ~/autoware/install/lidar_centrepoint/share/lidar_centrepoint/data</span>
+<span class="c1"># pts_backbone_neck_head_centerpoint_tiny.engine</span>
+<span class="c1"># pts_voxel_encoder_centerpoint_tiny.engine</span>
+</code></pre></div>
 <h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
 <p>The perception evaluation is executed by launching the <code>perception.launch.py</code> file.
 Launching the file executes the following steps:</p>
@@ -1203,10 +1208,6 @@ Launching the file executes the following steps:</p>
 <li>The evaluation node subscribes to <code>/perception/object_recognition/{detection, tracking}/objects</code> and evaluates data. The result is dumped into a file.</li>
 <li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
-<h3 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">#</a></h3>
-<p>Autoware's perception module is launched for the first time, it converts <code>onnx</code> files in <code>lidar_centerpoint</code> package.
-In step 1 of the evaluation method, there is a long, seemingly halting process as it waits for the conversion to complete.
-This is normal operation, so please do not stop with keyboard input, but wait as is.</p>
 <h2 id="evaluation-results">Evaluation results<a class="headerlink" href="#evaluation-results" title="Permanent link">#</a></h2>
 <p>The results are calculated for each subscription. The format and available states are described below.</p>
 <h3 id="perception-normal">Perception Normal<a class="headerlink" href="#perception-normal" title="Permanent link">#</a></h3>
