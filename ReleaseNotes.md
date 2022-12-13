@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.4
+
+Major Changes
+
+| Module       | Feature        | Brief summary                                 | Pull request                                                 | JIRA       | Contributor   |
+| ------------ | -------------- | --------------------------------------------- | ------------------------------------------------------------ | ---------- | ------------- |
+| `perception` | launch process | Removed waiting for conversion of onnx files. | [#59](https://github.com/tier4/driving_log_replayer/pull/59) | T4PB-24362 | [hayato-m126] |
+
 ## Version 1.1.3
 
 Major Changes
