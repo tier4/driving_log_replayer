@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.1.3
+
+Major Changes
+
+| Module                  | Feature             | Brief summary                                    | Pull request                                                 | JIRA       | Contributor                                   |
+| ----------------------- | ------------------- | ------------------------------------------------ | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `obstacle segmentation` | evaluation settings | set evaluation period for each bbox              | [#51](https://github.com/tier4/driving_log_replayer/pull/51) | T4PB-24138 | [hayato-m126]                                 |
+| `obstacle segmentation` | result file         | output timestamp of bounding box and point cloud | [#52](https://github.com/tier4/driving_log_replayer/pull/52) | T4PB-24238 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.2
 
 Minor Tweak
