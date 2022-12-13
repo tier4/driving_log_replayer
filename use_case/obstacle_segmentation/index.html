@@ -1298,16 +1298,20 @@ The following parameters are set to <code>false</code> when launching the <code>
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
 <div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">obstacle_segmentation</span><span class="w"></span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2.0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3.0</span><span class="w"></span>
 <span class="w">  </span><span class="nt">Datasets</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sample_dataset</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"></span>
-<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/autoware_map/sample-map-planning</span><span class="w"></span>
+<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"> </span><span class="c1"># Specify VehicleId for each data set</span><span class="w"></span>
+<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/autoware_map/sample-map-planning</span><span class="w"> </span><span class="c1"># Specify LocalMapPath for each dataset</span><span class="w"></span>
 <span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">Detection</span><span class="p">:</span><span class="w"> </span><span class="c1"># set `null` if Detection is not evaluated.</span><span class="w"></span>
 <span class="w">      </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span><span class="w"></span>
-<span class="w">    </span><span class="nt">NonDetection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set `null` if NonDetection is not evaluated.</span><span class="w"></span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">PassRate</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">BoundingBoxConfig</span><span class="p">:</span><span class="w"> </span><span class="c1"># Bounding box setting. If not set, state &quot;null&quot;. Writing this key overrides the target_uuids in the SensingEvaluationConfig.</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">dcb2b352232fff50c4fad23718f31611</span><span class="p">:</span><span class="w"> </span><span class="c1"># Specify the uuid of the target to which you want to apply the settings</span><span class="w"></span>
+<span class="w">            </span><span class="nt">Start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Evaluate the point cloud after the time specified here. If not specified, it should be written as null. null is equivalent to specifying 0.0.</span><span class="w"></span>
+<span class="w">            </span><span class="nt">End</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Evaluate the point cloud up to the time specified here. If not specified, it is written as null. null is equivalent to specifying sys.float_info.max.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">NonDetection</span><span class="p">:</span><span class="w"> </span><span class="c1"># set `null` if NonDetection is not evaluated.</span><span class="w"></span>
+<span class="w">      </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span><span class="w"></span>
 <span class="w">      </span><span class="nt">ProposedArea</span><span class="p">:</span><span class="w"> </span><span class="c1"># Non-detection area centered on the base_link with a single stroke polygon.</span><span class="w"></span>
 <span class="w">        </span><span class="nt">polygon_2d</span><span class="p">:</span><span class="w"> </span><span class="c1"># Describe polygon in xy-plane in clockwise direction</span><span class="w"></span>
 <span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.5</span><span class="p p-Indicator">]</span><span class="w"></span>
@@ -1319,8 +1323,7 @@ The following parameters are set to <code>false</code> when launching the <code>
 <span class="w">  </span><span class="nt">SensingEvaluationConfig</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">evaluation_config_dict</span><span class="p">:</span><span class="w"></span>
 <span class="w">      </span><span class="nt">evaluation_task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensing</span><span class="w"> </span><span class="c1"># fixed value</span><span class="w"></span>
-<span class="w">      </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="c1"># UUIDs of bounding box to be detected</span><span class="w"></span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dcb2b352232fff50c4fad23718f31611</span><span class="w"></span>
+<span class="w">      </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># UUIDs of bounding box to be detected. Set null if you want to target all annotated bounding boxes</span><span class="w"></span>
 <span class="w">      </span><span class="nt">box_scale_0m</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"> </span><span class="c1"># Scaling factor to scale the bounding box according to distance. Value at 0m</span><span class="w"></span>
 <span class="w">      </span><span class="nt">box_scale_100m</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"> </span><span class="c1"># Scaling factor at 100m. Magnification is determined by linear completion according to distance from 0 to 100m</span><span class="w"></span>
 <span class="w">      </span><span class="nt">min_points_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"> </span><span class="c1"># Threshold of how many points must be in the bounding box to be successful.</span><span class="w"></span>
@@ -1339,8 +1342,36 @@ The <code>Result</code> is <code>true</code> if both detection and non-detection
 <span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Warn, Fail, or Skipped&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 <span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">          </span><span class="nt">&quot;Annotation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Annotated banding box information, position pose, and ID&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="nt">&quot;PointCloud&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Information on the evaluated point cloud, number of points in the bounding box and position of the nearest point from the base_link.&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;Annotation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Scale&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Length of bounding box in x-direction&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Length of bounding box in y-direction&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;z&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Length of bounding box in z-direction&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;position&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bounding box position x&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bounding box position y&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;z&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bounding box position z&quot;</span><span class="w"></span>
+<span class="w">              </span><span class="p">},</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;orientation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bounding box direction x&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bounding box direction y&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;z&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bounding box direction z&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;w&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bounding box direction w&quot;</span><span class="w"></span>
+<span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;UUID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UUID of the bounding box&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;StampFloat&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bounding box unix_time[us] made into a float.&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;PointCloud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;NumPoints&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds contained within the bounding box.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Nearest&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[x,y,z] coordinates of the closest point in the bounding box from the base_link&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Stamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;sec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sec of header.stamp of the point cloud&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;nanosec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NanoSec of header.stamp of the point cloud&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
 <span class="w">        </span><span class="p">}</span><span class="w"></span>
 <span class="w">      </span><span class="p">]</span><span class="w"></span>
 <span class="w">    </span><span class="p">},</span><span class="w"></span>
@@ -1348,7 +1379,14 @@ The <code>Result</code> is <code>true</code> if both detection and non-detection
 <span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Skipped&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 <span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">          </span><span class="nt">&quot;PointCloud&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of points out in the non-detection area and distribution by distance from the base_link.&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;PointCloud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;NumPoints&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Distance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;0-1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas between 0-1 m from base_link&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;x-x+1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Distribution of point clouds appearing in non-detected areas by distance&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="nt">&quot;99-100&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas between 99-100 m from base_link&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
 <span class="w">        </span><span class="p">}</span><span class="w"></span>
 <span class="w">      </span><span class="p">]</span><span class="w"></span>
 <span class="w">    </span><span class="p">},</span><span class="w"></span>
