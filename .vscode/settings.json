@@ -1,6 +1,4 @@
 {
-  "asciidoc.asciidoctor_command": "asciidoctorj -r asciidoctor-diagram",
-  "asciidoc.use_asciidoctor_js": false,
   "cSpell.languageSettings": [
     {
       "languageId": "c,cpp,python",
