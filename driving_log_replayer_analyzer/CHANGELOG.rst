@@ -2,6 +2,14 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: `#51 <https://github.com/tier4/driving_log_replayer/issues/51>`_ set evaluation period for each bbox (`#54 <https://github.com/tier4/driving_log_replayer/issues/54>`_)
+  closes: `#51 <https://github.com/tier4/driving_log_replayer/issues/51>`_
+* feat: `#52 <https://github.com/tier4/driving_log_replayer/issues/52>`_-output-timestamp-of-bbox-and-pcd (`#53 <https://github.com/tier4/driving_log_replayer/issues/53>`_)
+  closes: `#52 <https://github.com/tier4/driving_log_replayer/issues/52>`_
+* Contributors: Hayato Mizushima
+
 1.1.2 (2022-12-07)
 ------------------
 * feat(cli): kill zombie process
