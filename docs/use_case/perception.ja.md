@@ -13,7 +13,7 @@ perceptionでは、機械学習の学習済みモデルを使用する。
 また、ダウンロードしたonnxファイルはそのまま使用するのではなく、TensorRTのengineファイルに変換して利用する。
 変換処理は、perception のモジュールを初回起動したときに行われる。
 
-なので、事前準備として、logging_simulator.launchを起動して、ワークスペースのonnxファイルをengineに変換する必要があります。
+なので、事前準備として、logging_simulator.launchを起動して、ワークスペースにあるonnxファイルをengineファイルに変換する必要があります。
 GPUの性能によって、engineの出力までにかかる時間が異なるので、[lidar_based_detection.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15)
 に記載のディレクトリにengineファイルが2つ出力されるまで待ちます。
 

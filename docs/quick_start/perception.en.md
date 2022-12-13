@@ -16,6 +16,17 @@
    cp -r ~/driving_log_replayer_data/sample_dataset ~/driving_log_replayer_data/perception/sample/t4_dataset
    ```
 
+3. Transform machine learning trained models
+
+   ```bash
+   source ~/autoware/install/setup
+   ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+   # Wait until the following file is created in ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data
+   # - pts_backbone_neck_head_centerpoint_tiny.engine
+   # - pts_voxel_encoder_centerpoint_tiny.engine
+   # When the file is output, press Ctrl+C to stop launch.
+   ```
+
 ## How to run
 
 1. Run the simulation

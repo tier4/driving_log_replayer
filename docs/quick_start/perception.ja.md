@@ -16,6 +16,17 @@
    cp -r ~/driving_log_replayer_data/sample_dataset ~/driving_log_replayer_data/perception/sample/t4_dataset
    ```
 
+3. 機械学習の学習済みモデルの変換を行う
+
+   ```bash
+   source ~/autoware/install/setup
+   ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+   # ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下のファイルができるまで待つ
+   # - pts_backbone_neck_head_centerpoint_tiny.engine
+   # - pts_voxel_encoder_centerpoint_tiny.engine
+   # ファイルが出力されたらCtrl+Cでlaunchを止める
+   ```
+
 ## 実行方法
 
 1. シミュレーションの実行

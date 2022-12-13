@@ -4,6 +4,30 @@ The performance of Autoware's recognition function (perception) is evaluated by 
 
 Run the perception module and pass the output perception topic to the evaluation library for evaluation.
 
+## Preparation
+
+In perception evaluation, machine learning pre-trained models are used.
+The models are automatically downloaded during set-up.
+[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115)
+
+The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
+The conversion process is performed when the perception module is started for the first time.
+
+So, as a preliminary preparation, you need to start logging_simulator.launch and convert the onnx files in the workspace into engine files.
+Depending on the performance of the GPU, the time it takes to output the engine varies, so wait until two engine files are output in the directory listed in [lidar_based_detection.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15)
+
+An example of the use of autowarefoundation's autoware.universe is shown below.
+
+```shell
+# If autoware is installed in $HOME/autoware
+source ~/autoware/install/setup.bash
+ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-rosbag vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+
+# Wait until the following two outputs appear in ~/autoware/install/lidar_centrepoint/share/lidar_centrepoint/data
+# pts_backbone_neck_head_centerpoint_tiny.engine
+# pts_voxel_encoder_centerpoint_tiny.engine
+```
+
 ## Evaluation method
 
 The perception evaluation is executed by launching the `perception.launch.py` file.
@@ -13,12 +37,6 @@ Launching the file executes the following steps:
 2. Autoware receives sensor data output from input rosbag and outputs point cloud data, and the perception module performs recognition.
 3. The evaluation node subscribes to `/perception/object_recognition/{detection, tracking}/objects` and evaluates data. The result is dumped into a file.
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
-
-### Notes
-
-Autoware's perception module is launched for the first time, it converts `onnx` files in `lidar_centerpoint` package.
-In step 1 of the evaluation method, there is a long, seemingly halting process as it waits for the conversion to complete.
-This is normal operation, so please do not stop with keyboard input, but wait as is.
 
 ## Evaluation results
 
