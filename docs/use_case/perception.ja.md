@@ -6,18 +6,18 @@ perception モジュールを起動して出力される perception の topic �
 
 ## 事前準備
 
-perceptionでは、機械学習の学習済みモデルを使用する。
+perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。
 [lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115)
 
-また、ダウンロードしたonnxファイルはそのまま使用するのではなく、TensorRTのengineファイルに変換して利用する。
+また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換処理は、perception のモジュールを初回起動したときに行われる。
 
-なので、事前準備として、logging_simulator.launchを起動して、ワークスペースにあるonnxファイルをengineファイルに変換する必要があります。
-GPUの性能によって、engineの出力までにかかる時間が異なるので、[lidar_based_detection.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15)
-に記載のディレクトリにengineファイルが2つ出力されるまで待ちます。
+なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
+GPU の性能によって、engine の出力までにかかる時間が異なるので、[lidar_based_detection.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15)
+に記載のディレクトリに engine ファイルが 2 つ出力されるまで待ちます。
 
-autowarefoundationのautoware.universeを使用した場合の例を以下に示す。
+autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
 ```shell
 # $HOME/autowareにautowareをインストールした場合
