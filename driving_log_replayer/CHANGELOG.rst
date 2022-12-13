@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.4 (2022-12-13)
+------------------
 * chore: git mv
 * feat: delete perception_starter
 * feat: delete onnx file convert wait
