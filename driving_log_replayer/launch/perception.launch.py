@@ -13,9 +13,7 @@
 # limitations under the License.
 
 import copy
-import os
 
-from ament_index_python.packages import get_package_prefix
 import driving_log_replayer.launch_common
 import launch
 from launch.actions import DeclareLaunchArgument
@@ -55,22 +53,15 @@ def generate_launch_description():
         ]
     )
 
-    starter_script_path = os.path.join(
-        get_package_prefix("driving_log_replayer"),
-        "lib",
-        "driving_log_replayer",
-        "perception_starter.py",
-    )
-
     player_normal = ExecuteProcess(
-        cmd=["python3", starter_script_path],
+        cmd=["sleep", LaunchConfiguration("play_delay")],
         on_exit=[ExecuteProcess(cmd=play_cmd)],
         output="screen",
         condition=UnlessCondition(LaunchConfiguration("sensing")),
     )
 
     player_remap = ExecuteProcess(
-        cmd=["python3", starter_script_path],
+        cmd=["sleep", LaunchConfiguration("play_delay")],
         on_exit=[ExecuteProcess(cmd=play_cmd_remap)],
         output="screen",
         condition=IfCondition(LaunchConfiguration("sensing")),

@@ -4,6 +4,31 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
+## 事前準備
+
+perception では、機械学習の学習済みモデルを使用する。
+モデルはセットアップ時に自動的にダウンロードされる。
+[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115)
+
+また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
+変換処理は、perception のモジュールを初回起動したときに行われる。
+
+なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
+GPU の性能によって、engine の出力までにかかる時間が異なるので、[lidar_based_detection.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15)
+に記載のディレクトリに engine ファイルが 2 つ出力されるまで待ちます。
+
+autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
+
+```shell
+# $HOME/autowareにautowareをインストールした場合
+source ~/autoware/install/setup.bash
+ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-rosbag vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+
+# ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下の２つが出力されるまでまつ
+# pts_backbone_neck_head_centerpoint_tiny.engine
+# pts_voxel_encoder_centerpoint_tiny.engine
+```
+
 ## 評価方法
 
 `perception.launch.py` を使用して評価する。
@@ -13,12 +38,6 @@ launch を立ち上げると以下のことが実行され、評価される。
 2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
 3. 評価ノードが/perception/object_recognition/{detection, tracking}/objects を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
-
-### 注意事項
-
-autoware をワークスペースをセットアップして perception のモジュールを初回起動した場合には、lidar_centerpoint の onnx ファイルの変換処理が行われる
-評価方法のステップ 1 では、変換が完了するのを待つため、一見止まっているように見える長い処理があります。
-これは正常な動作ですので、キーボード入力で停止せず、そのままお待ちください。
 
 ## 評価結果
 
