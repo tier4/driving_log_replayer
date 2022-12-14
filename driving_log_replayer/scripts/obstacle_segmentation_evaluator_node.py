@@ -477,7 +477,7 @@ class ObstacleSegmentationEvaluator(Node):
         self.__pub_graph_detection = self.create_publisher(
             DetectionResultArray, "graph/detection", 1
         )
-        self.__pub_graph_detection = self.create_publisher(
+        self.__pub_graph_non_detection = self.create_publisher(
             NonDetectionResult, "graph/non_detection", 1
         )
 
