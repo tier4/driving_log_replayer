@@ -1,0 +1,3 @@
+std_msgs/Header header
+example_interfaces/Int64 number_of_pointcloud
+example_interfaces/Bool decision

@@ -6,7 +6,12 @@ autoware_package()
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ObstacleSegmentationInput.msg"
+  "msg/BoolStamped.msg"
+  "msg/DetectionResult.msg"
+  "msg/DetectionResultArray.msg"
+  "msg/NonDetectionResult.msg"
   DEPENDENCIES
+    std_msgs
     example_interfaces
     geometry_msgs
     sensor_msgs

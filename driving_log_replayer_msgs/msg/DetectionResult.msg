@@ -1,0 +1,3 @@
+example_interfaces/Int64 number_of_pointcloud
+example_interfaces/Bool decision
+example_interfaces/String bbox_uuid
