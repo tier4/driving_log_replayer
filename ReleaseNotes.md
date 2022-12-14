@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.5
+
+Bug fix
+
+| Module       | Feature      | Brief summary                                            | Pull request                                                 | JIRA       | Contributor   |
+| ------------ | ------------ | -------------------------------------------------------- | ------------------------------------------------------------ | ---------- | ------------- |
+| `perception` | marker color | different colors are applied to tp_gt, tp_est, fp and fn | [#61](https://github.com/tier4/driving_log_replayer/pull/61) | T4PB-24425 | [hayato-m126] |
+
 ## Version 1.1.4
 
 Major Changes
