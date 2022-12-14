@@ -27,7 +27,12 @@ from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
+from driving_log_replayer_msgs.msg import DetectionResult
+from driving_log_replayer_msgs.msg import DetectionResultArray
+from driving_log_replayer_msgs.msg import NonDetectionResult
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
+from driving_log_replayer_msgs.msg import ResultStatus
+from driving_log_replayer_msgs.msg import ResultStatusStamped
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
@@ -210,11 +215,12 @@ class ObstacleSegmentationResult(ResultBase):
 
     def summarize_detection(
         self, frame_result: SensingFrameResult, topic_rate: bool, header: Header
-    ) -> Tuple[Dict, Optional[MarkerArray], Optional[PointCloud2]]:
+    ) -> Tuple[Dict, Optional[MarkerArray], Optional[PointCloud2], Optional[DetectionResultArray]]:
         result = "Skipped"
         info = []
         marker_array = None
         pcd_detection = None
+        graph_detection = None
 
         if self.__condition_detection is not None:
             result = "Fail"
@@ -299,14 +305,16 @@ class ObstacleSegmentationResult(ResultBase):
 
             pcd_detection = ros2_numpy.msgify(PointCloud2, pcd)
             pcd_detection.header = header
-        return {"Result": result, "Info": info}, marker_array, pcd_detection
+        return {"Result": result, "Info": info}, marker_array, pcd_detection, graph_detection
 
     def summarize_non_detection(
         self, pcd_list: List[np.ndarray], topic_rate: bool, header: Header
-    ) -> Tuple[Dict, Optional[PointCloud2]]:
+    ) -> Tuple[Dict, Optional[PointCloud2], Optional[NonDetectionResult]]:
         result = "Skipped"
         info = []
         ros_pcd = None
+        graph_non_detection = None
+
         if self.__condition_non_detection is not None:
             result = "Fail"
             self.__non_detection_total += 1
@@ -336,7 +344,7 @@ class ObstacleSegmentationResult(ResultBase):
                         "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
                     }
                 )
-        return {"Result": result, "Info": info}, ros_pcd
+        return {"Result": result, "Info": info}, ros_pcd, graph_non_detection
 
     def add_frame(
         self,
@@ -346,7 +354,13 @@ class ObstacleSegmentationResult(ResultBase):
         stop_reasons: List[Dict],
         topic_rate: bool,
         header: Header,
-    ) -> Tuple[Optional[MarkerArray], Optional[PointCloud2], Optional[PointCloud2]]:
+    ) -> Tuple[
+        Optional[MarkerArray],
+        Optional[PointCloud2],
+        Optional[DetectionResultArray],
+        Optional[PointCloud2],
+        Optional[NonDetectionResult],
+    ]:
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
@@ -356,10 +370,12 @@ class ObstacleSegmentationResult(ResultBase):
             out_frame["Detection"],
             marker_detection,
             pcd_detection,
+            graph_detection,
         ) = self.summarize_detection(frame, topic_rate, header)
         (
             out_frame["NonDetection"],
             pcd_non_detection,
+            graph_non_detection,
         ) = self.summarize_non_detection(frame.pointcloud_failed_non_detection, topic_rate, header)
         out_frame["StopReasons"] = stop_reasons
         out_frame["TopicRate"] = str(topic_rate)
@@ -367,7 +383,13 @@ class ObstacleSegmentationResult(ResultBase):
         self._frame = out_frame
         # update result
         self.update()
-        return marker_detection, pcd_detection, pcd_non_detection
+        return (
+            marker_detection,
+            pcd_detection,
+            graph_detection,
+            pcd_non_detection,
+            graph_non_detection,
+        )
 
 
 class ObstacleSegmentationEvaluator(Node):
@@ -448,6 +470,16 @@ class ObstacleSegmentationEvaluator(Node):
         self.__pub_goal_pose = self.create_publisher(
             PoseStamped, "/planning/mission_planning/goal", 1
         )
+        # for Autoware Evaluator visualization
+        self.__pub_graph_topic_rate = self.create_publisher(
+            ResultStatusStamped, "graph/topic_rate", 1
+        )
+        self.__pub_graph_detection = self.create_publisher(
+            DetectionResultArray, "graph/detection", 1
+        )
+        self.__pub_graph_detection = self.create_publisher(
+            NonDetectionResult, "graph/non_detection", 1
+        )
 
         self.__current_time = Time().to_msg()
         self.__prev_time = Time().to_msg()
@@ -527,7 +559,13 @@ class ObstacleSegmentationEvaluator(Node):
             )
 
             # write result
-            marker_detection, pcd_detection, pcd_non_detection = self.__result.add_frame(
+            (
+                marker_detection,
+                pcd_detection,
+                graph_detection,
+                pcd_non_detection,
+                graph_non_detection,
+            ) = self.__result.add_frame(
                 frame_result,
                 self.__skip_counter,
                 transform_stamped_with_euler_angle(msg.map_to_baselink),
@@ -537,12 +575,24 @@ class ObstacleSegmentationEvaluator(Node):
             )
             self.__result_writer.write(self.__result)
 
+            topic_rate_data = ResultStatusStamped()
+            topic_rate_data.header = msg.pointcloud.header
+            if msg.topic_rate.data:
+                topic_rate_data.status = ResultStatus.OK
+            else:
+                topic_rate_data.status = ResultStatus.ERROR
+            self.__pub_graph_topic_rate.publish(topic_rate_data)
+
             if marker_detection is not None:
                 self.__pub_marker_detection.publish(marker_detection)
             if pcd_detection is not None:
                 self.__pub_pcd_detection.publish(pcd_detection)
+            if graph_detection is not None:
+                self.__pub_graph_detection.publish(graph_detection)
             if pcd_non_detection is not None:
                 self.__pub_pcd_non_detection.publish(pcd_non_detection)
+            if graph_non_detection is not None:
+                self.__pub_graph_non_detection.publish(graph_non_detection)
 
     def stop_reason_cb(self, msg: StopReasonArray):
         reasons = []

@@ -56,6 +56,9 @@ def generate_launch_description():
             "/driving_log_replayer/pcd/detection",
             "/driving_log_replayer/pcd/non_detection",
             "/driving_log_replayer/obstacle_segmentation/input",
+            "/driving_log_replayer/graph/topic_rate",
+            "/driving_log_replayer/graph/detection",
+            "/driving_log_replayer/graph/non_detection",
         ],
     )
 
