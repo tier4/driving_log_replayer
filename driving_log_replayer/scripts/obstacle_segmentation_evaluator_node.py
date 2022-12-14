@@ -576,11 +576,13 @@ class ObstacleSegmentationEvaluator(Node):
             self.__result_writer.write(self.__result)
 
             topic_rate_data = ResultStatusStamped()
+            topic_status = ResultStatus()
             topic_rate_data.header = msg.pointcloud.header
             if msg.topic_rate.data:
-                topic_rate_data.status = ResultStatus.OK
+                topic_status.status = ResultStatus.OK
             else:
-                topic_rate_data.status = ResultStatus.ERROR
+                topic_status.status = ResultStatus.ERROR
+            topic_rate_data.status = topic_status
             self.__pub_graph_topic_rate.publish(topic_rate_data)
 
             if marker_detection is not None:
