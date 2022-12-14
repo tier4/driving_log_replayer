@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: marker color
+* Contributors: Hayato Mizushima
+
 1.1.4 (2022-12-13)
 ------------------
 * chore: git mv
