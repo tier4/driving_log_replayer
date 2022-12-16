@@ -22,6 +22,8 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
+from autoware_adapi_v1_msgs.msg import ResponseStatus
+from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from driving_log_replayer.node_common import set_initial_pose
@@ -328,10 +330,7 @@ class PerformanceDiagEvaluator(Node):
         self.__initial_pose = set_initial_pose(
             self.__scenario_yaml_obj["Evaluation"]["InitialPose"]
         )
-        self.__initial_pose_counter = 0
-        self.__pub_initial_pose = self.create_publisher(
-            PoseWithCovarianceStamped, "/initialpose", 10
-        )
+        self.__initial_pose_success = False
 
         self.__pub_visibility_value = self.create_publisher(Float64, "visibility/value", 1)
         self.__pub_visibility_level = self.create_publisher(Byte, "visibility/level", 1)
@@ -370,15 +369,24 @@ class PerformanceDiagEvaluator(Node):
             self.diag_cb,
             1,
         )
+        # service client
+        self.__initial_pose_client = self.create_client(
+            InitializeLocalization, "/api/localization/initialize"
+        )
+        while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("service not available, waiting again...")
 
     def timer_cb(self) -> None:
         self.__current_time = self.get_clock().now().to_msg()
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self.__current_time.sec > 0:
-            self.__initial_pose_counter += 1
-            if self.__initial_pose is not None and self.__initial_pose_counter <= 5:
+            if self.__initial_pose is not None and not self.__initial_pose_success:
                 self.__initial_pose.header.stamp = self.__current_time
                 self.__pub_initial_pose.publish(self.__initial_pose)
+                future = self.__initial_pose_client.call_async(
+                    InitializeLocalization.Request(pose=[self.__initial_pose])
+                )
+                future.add_done_callback(self.initial_pose_cb)
             if self.__current_time == self.__prev_time:
                 self.__counter += 1
             else:
@@ -387,6 +395,14 @@ class PerformanceDiagEvaluator(Node):
             if self.__counter >= 5:
                 self.__result_writer.close()
                 rclpy.shutdown()
+
+    def initial_pose_cb(self, future):
+        result = future.result()
+        if result is not None:
+            res_status: ResponseStatus = result.status
+            self.__initial_pose_success = res_status.success
+        else:
+            self.get_logger().error(f"Exception for service: {future.exception()}")
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
         # self.get_logger().error(

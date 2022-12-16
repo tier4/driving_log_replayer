@@ -218,7 +218,6 @@ class LocalizationEvaluator(Node):
         self.__initial_pose = set_initial_pose(
             self.__scenario_yaml_obj["Evaluation"]["InitialPose"]
         )
-        self.__initial_pose_counter = 0
         self.__initial_pose_success = False
 
         self.__current_time = Time().to_msg()
