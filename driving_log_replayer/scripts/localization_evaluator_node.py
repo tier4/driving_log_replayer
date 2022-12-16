@@ -285,13 +285,6 @@ class LocalizationEvaluator(Node):
         )
         while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warning("service not available, waiting again...")
-        self.__req = InitializeLocalization.Request()
-
-    def send_request(self, pose: PoseWithCovarianceStamped):
-        self.__req.pose = [pose]
-        self.__future = self.__initial_pose_client.call_async(self.__req)
-        if self.__future.done():
-            return self.__future.result()
 
     def ekf_pose_cb(self, msg: Odometry):
         self.__latest_ekf_pose = msg
@@ -354,13 +347,10 @@ class LocalizationEvaluator(Node):
         if self.__current_time.sec > 0:
             if self.__initial_pose is not None and not self.__initial_pose_success:
                 self.__initial_pose.header.stamp = self.__current_time
-                self.get_logger().error("call initialpose service")
-                res = self.send_request(self.__initial_pose)
-                self.get_logger().error("response ok")
-                res_status: ResponseStatus = res.status
-                self.get_logger().error("res status ok")
-                self.__initial_pose_success = res_status.success
-                self.get_logger().error(f"res status success is: {self.__initial_pose_success}")
+                future = self.__initial_pose_client.call_async(
+                    InitializeLocalization.Request(pose=[self.__initial_pose])
+                )
+                future.add_done_callback(self.initial_pose_cb)
             if self.__current_time == self.__prev_time:
                 self.__counter += 1
             else:
@@ -369,6 +359,14 @@ class LocalizationEvaluator(Node):
             if self.__counter >= 5:
                 self.__result_writer.close()
                 rclpy.shutdown()
+
+    def initial_pose_cb(self, future):
+        result = future.result()
+        if result is not None:
+            res_status: ResponseStatus = result.status
+            self.__initial_pose_success = res_status.success
+        else:
+            self.get_logger().error(f"Exception for service: {future.exception()}")
 
 
 def main(args=None):
