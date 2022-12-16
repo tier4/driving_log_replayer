@@ -32,7 +32,6 @@ from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
-from geometry_msgs.msg import PoseWithCovarianceStamped
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.clock import Clock

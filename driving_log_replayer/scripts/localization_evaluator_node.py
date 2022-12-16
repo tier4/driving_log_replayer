@@ -26,7 +26,6 @@ from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
-from geometry_msgs.msg import PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry
 import numpy as np
 import rclpy
