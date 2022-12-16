@@ -290,8 +290,8 @@ class LocalizationEvaluator(Node):
     def send_request(self, pose: PoseWithCovarianceStamped):
         self.__req.pose = [pose]
         self.__future = self.__initial_pose_client.call_async(self.__req)
-        rclpy.spin_until_future_complete(self, self.__future)
-        return self.__future.result()
+        if self.__future.done():
+            return self.__future.result()
 
     def ekf_pose_cb(self, msg: Odometry):
         self.__latest_ekf_pose = msg
@@ -353,10 +353,14 @@ class LocalizationEvaluator(Node):
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self.__current_time.sec > 0:
             if self.__initial_pose is not None and not self.__initial_pose_success:
-                self.get_logger().error("call initial pose service")
                 self.__initial_pose.header.stamp = self.__current_time
-                response: ResponseStatus = self.send_request(self.__initial_pose)
-                self.__initial_pose_success = response.success
+                self.get_logger().error("call initialpose service")
+                res = self.send_request(self.__initial_pose)
+                self.get_logger().error("response ok")
+                res_status: ResponseStatus = res.status
+                self.get_logger().error("res status ok")
+                self.__initial_pose_success = res_status.success
+                self.get_logger().error(f"res status success is: {self.__initial_pose_success}")
             if self.__current_time == self.__prev_time:
                 self.__counter += 1
             else:
