@@ -18,6 +18,8 @@
 import os
 from typing import Dict
 
+from autoware_adapi_v1_msgs.msg import ResponseStatus
+from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from driving_log_replayer.node_common import set_initial_pose
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 from driving_log_replayer.result import ResultBase
@@ -217,9 +219,7 @@ class LocalizationEvaluator(Node):
             self.__scenario_yaml_obj["Evaluation"]["InitialPose"]
         )
         self.__initial_pose_counter = 0
-        self.__pub_initial_pose = self.create_publisher(
-            PoseWithCovarianceStamped, "/initialpose", 10
-        )
+        self.__initial_pose_success = False
 
         self.__current_time = Time().to_msg()
         self.__prev_time = Time().to_msg()
@@ -279,6 +279,19 @@ class LocalizationEvaluator(Node):
             self.iteration_num_cb,
             1,
         )
+        # service client
+        self.__initial_pose_client = self.create_client(
+            InitializeLocalization, "/api/localization/initialize"
+        )
+        while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("service not available, waiting again...")
+        self.__req = InitializeLocalization.Request()
+
+    def send_request(self, pose: PoseWithCovarianceStamped):
+        self.__req.pose = [pose]
+        self.__future = self.__initial_pose_client.call_async(self.__req)
+        rclpy.spin_until_future_complete(self, self.__future)
+        return self.__future.result()
 
     def ekf_pose_cb(self, msg: Odometry):
         self.__latest_ekf_pose = msg
@@ -339,10 +352,11 @@ class LocalizationEvaluator(Node):
         self.__current_time = self.get_clock().now().to_msg()
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self.__current_time.sec > 0:
-            self.__initial_pose_counter += 1
-            if self.__initial_pose is not None and self.__initial_pose_counter <= 5:
+            if self.__initial_pose is not None and not self.__initial_pose_success:
+                self.get_logger().error("call initial pose service")
                 self.__initial_pose.header.stamp = self.__current_time
-                self.__pub_initial_pose.publish(self.__initial_pose)
+                response: ResponseStatus = self.send_request(self.__initial_pose)
+                self.__initial_pose_success = response.success
             if self.__current_time == self.__prev_time:
                 self.__counter += 1
             else:

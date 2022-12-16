@@ -35,15 +35,7 @@
     "${env:HOME}/ros_ws/x2/install/driving_log_replayer_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/x2/install/tier4_debug_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/x2/install/driving_log_replayer_analyzer/local/lib/python3.10/dist-packages",
-    "/opt/ros/galactic/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/autoware_auto_perception_msgs/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/autoware_auto_vehicle_msgs/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/tier4_planning_msgs/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/perception_eval/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/ros2_numpy/lib/python3.8/sist-packages",
-    "${env:HOME}/ros_ws/x2/install/driving_log_replayer_msgs/lib/python3.8/sist-packages",
-    "${env:HOME}/ros_ws/x2/install/tier4_debug_msgs/lib/python3.8/sist-packages",
-    "${env:HOME}/ros_ws/x2/install/driving_log_replayer_analyzer/lib/python3.8/sist-packages"
+    "${env:HOME}/ros_ws/x2/install/autoware_adapi_v1_msgs/local/lib/python3.10/dist-packages",
   ],
   "python.analysis.extraPaths": [
     "/opt/ros/humble/lib/python3.10/site-packages",
@@ -55,15 +47,7 @@
     "${env:HOME}/ros_ws/x2/install/driving_log_replayer_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/x2/install/tier4_debug_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/x2/install/driving_log_replayer_analyzer/local/lib/python3.10/dist-packages",
-    "/opt/ros/galactic/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/autoware_auto_perception_msgs/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/autoware_auto_vehicle_msgs/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/tier4_planning_msgs/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/perception_eval/lib/python3.8/site-packages",
-    "${env:HOME}/ros_ws/x2/install/ros2_numpy/lib/python3.8/sist-packages",
-    "${env:HOME}/ros_ws/x2/install/driving_log_replayer_msgs/lib/python3.8/sist-packages",
-    "${env:HOME}/ros_ws/x2/install/tier4_debug_msgs/lib/python3.8/sist-packages",
-    "${env:HOME}/ros_ws/x2/install/driving_log_replayer_analyzer/lib/python3.8/sist-packages"
+    "${env:HOME}/ros_ws/x2/install/autoware_adapi_v1_msgs/local/lib/python3.10/dist-packages",
   ],
   "files.associations": {
     "cctype": "cpp",
