@@ -69,13 +69,13 @@ Subscribed topics:
 
 Published topics:
 
-| Topic name                                               | Data type                                     |
-| -------------------------------------------------------- | --------------------------------------------- |
-| /driving_log_replayer/visibility/value                   | example_interfaces::msg::Float64              |
-| /driving_log_replayer/visibility/level                   | example_interfaces::msg::Byte                 |
-| /driving_log_replayer/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64              |
-| /driving_log_replayer/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64              |
-| /driving_log_replayer/blockage/{lidar_name}/level        | example_interfaces::msg::Byte                 |
+| Topic name                                               | Data type                        |
+| -------------------------------------------------------- | -------------------------------- |
+| /driving_log_replayer/visibility/value                   | example_interfaces::msg::Float64 |
+| /driving_log_replayer/visibility/level                   | example_interfaces::msg::Byte    |
+| /driving_log_replayer/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64 |
+| /driving_log_replayer/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64 |
+| /driving_log_replayer/blockage/{lidar_name}/level        | example_interfaces::msg::Byte    |
 
 {lidar_name} contains the name of the mounted lidar.
 

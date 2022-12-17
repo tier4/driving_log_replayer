@@ -69,13 +69,13 @@ Subscribed topics:
 
 Published topics:
 
-| topic 名                                                 | データ型                                      |
-| -------------------------------------------------------- | --------------------------------------------- |
-| /driving_log_replayer/visibility/value                   | example_interfaces::msg::Float64              |
-| /driving_log_replayer/visibility/level                   | example_interfaces::msg::Byte                 |
-| /driving_log_replayer/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64              |
-| /driving_log_replayer/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64              |
-| /driving_log_replayer/blockage/{lidar_name}/level        | example_interfaces::msg::Byte                 |
+| topic 名                                                 | データ型                         |
+| -------------------------------------------------------- | -------------------------------- |
+| /driving_log_replayer/visibility/value                   | example_interfaces::msg::Float64 |
+| /driving_log_replayer/visibility/level                   | example_interfaces::msg::Byte    |
+| /driving_log_replayer/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64 |
+| /driving_log_replayer/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64 |
+| /driving_log_replayer/blockage/{lidar_name}/level        | example_interfaces::msg::Byte    |
 
 {lidar_name}には、搭載されている lidar の名前が入る。
 
