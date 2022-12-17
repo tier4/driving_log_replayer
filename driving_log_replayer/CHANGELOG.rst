@@ -2,6 +2,15 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: lint
+* feat: apply initial pose service for performance diag
+* fix: service callback
+* feat(WIP): time cb works but response is not ready
+* feat(WIP): use ad-api
+* Contributors: Hayato Mizushima
+
 1.1.5 (2022-12-14)
 ------------------
 * fix: marker color
