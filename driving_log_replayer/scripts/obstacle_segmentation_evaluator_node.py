@@ -33,7 +33,6 @@ from driving_log_replayer_msgs.msg import NonDetectionResult
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
 from driving_log_replayer_msgs.msg import ResultStatus
 from driving_log_replayer_msgs.msg import ResultStatusStamped
-from example_interfaces.msg import Int64
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
@@ -320,7 +319,7 @@ class ObstacleSegmentationResult(ResultBase):
             graph_non_detection.status = ResultStatus(
                 status=ResultStatus.ERROR if result == "Fail" else ResultStatus.OK
             )
-            graph_non_detection.number_of_pointcloud = Int64(data=dist_array.shape[0])
+            graph_non_detection.number_of_pointcloud = dist_array.shape[0]
 
             if result == "Fail":
                 # 詳細情報の追記を書く
@@ -568,13 +567,10 @@ class ObstacleSegmentationEvaluator(Node):
             self.__result_writer.write(self.__result)
 
             topic_rate_data = ResultStatusStamped()
-            topic_status = ResultStatus()
             topic_rate_data.header = msg.pointcloud.header
-            if msg.topic_rate:
-                topic_status.status = ResultStatus.OK
-            else:
-                topic_status.status = ResultStatus.ERROR
-            topic_rate_data.status = topic_status
+            topic_rate_data.status = ResultStatus(
+                status=ResultStatus.OK if msg.topic_rate else ResultStatus.ERROR
+            )
             self.__pub_graph_topic_rate.publish(topic_rate_data)
 
             if marker_detection is not None:

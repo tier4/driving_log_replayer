@@ -1,3 +1,3 @@
 std_msgs/Header header
-example_interfaces/Int64 number_of_pointcloud
+int64 number_of_pointcloud
 ResultStatus status
