@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.6
+
+Minor Tweak
+
+| Module                             | Feature      | Brief summary               | Pull request                                                 | JIRA       | Contributor   |
+| ---------------------------------- | ------------ | --------------------------- | ------------------------------------------------------------ | ---------- | ------------- |
+| `localization`, `performance_diag` | initial pose | set initial pose via ad-api | [#65](https://github.com/tier4/driving_log_replayer/pull/65) | T4PB-24491 | [hayato-m126] |
+
 ## Version 1.1.5
 
 Bug fix
