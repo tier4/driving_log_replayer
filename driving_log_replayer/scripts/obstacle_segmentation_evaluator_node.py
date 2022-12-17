@@ -562,7 +562,7 @@ class ObstacleSegmentationEvaluator(Node):
                 self.__skip_counter,
                 transform_stamped_with_euler_angle(msg.map_to_baselink),
                 self.__latest_stop_reasons,
-                msg.topic_rate.data,
+                msg.topic_rate,
                 pcd_header,
             )
             self.__result_writer.write(self.__result)
@@ -570,7 +570,7 @@ class ObstacleSegmentationEvaluator(Node):
             topic_rate_data = ResultStatusStamped()
             topic_status = ResultStatus()
             topic_rate_data.header = msg.pointcloud.header
-            if msg.topic_rate.data:
+            if msg.topic_rate:
                 topic_status.status = ResultStatus.OK
             else:
                 topic_status.status = ResultStatus.ERROR
