@@ -76,9 +76,14 @@ Published topics:
 | /driving_log_replayer/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64              |
 | /driving_log_replayer/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64              |
 | /driving_log_replayer/blockage/{lidar_name}/level        | example_interfaces::msg::Byte                 |
-| /initialpose                                             | geometry_msgs::msg::PoseWithCovarianceStamped |
 
 {lidar_name} contains the name of the mounted lidar.
+
+## Service name and data type used by the evaluation node
+
+| Service name                 | Data type              |
+| ---------------------------- | ---------------------- |
+| /api/localization/initialize | InitializeLocalization |
 
 ## Arguments passed to logging_simulator.launch
 
