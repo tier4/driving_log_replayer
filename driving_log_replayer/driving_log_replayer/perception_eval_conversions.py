@@ -26,7 +26,6 @@ from perception_eval.evaluation.result.object_result import DynamicObjectWithPer
 from perception_eval.evaluation.result.perception_pass_fail_result import PassFailResult
 from pyquaternion.quaternion import Quaternion
 from rclpy.time import Duration
-from rosidl_runtime_py import set_message_fields
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from visualization_msgs.msg import Marker
@@ -153,29 +152,24 @@ def dynamic_objects_to_ros_points(
 def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Header) -> MarkerArray:
     marker_results = MarkerArray()
 
-    scale = Vector3()
-    set_message_fields(scale, {"x": 1.0, "y": 1.0, "z": 0.0})
+    scale = Vector3(x=1.0, y=1.0, z=0.0)
 
     if objs := pass_fail.tp_objects:
         # estimated obj
-        c_tp_est = ColorRGBA()
-        set_message_fields(c_tp_est, {"r": 0.0, "g": 0.0, "b": 1.0, "a": 1.0})
+        c_tp_est = ColorRGBA(r=0.0, g=0.0, b=1.0, a=1.0)
         marker = dynamic_objects_to_ros_points(objs, header, scale, c_tp_est, "tp_est", 0)
         marker_results.markers.append(marker)
     if objs := pass_fail.tp_objects:
         # ground truth obj
-        c_tp_gt = ColorRGBA()
-        set_message_fields(c_tp_gt, {"r": 1.0, "g": 0.0, "b": 0.0, "a": 1.0})
+        c_tp_gt = ColorRGBA(r=1.0, g=0.0, b=0.0, a=1.0)
         marker = dynamic_objects_to_ros_points(objs, header, scale, c_tp_gt, "tp_gt", 0, tp_gt=True)
         marker_results.markers.append(marker)
     if objs := pass_fail.fp_objects_result:
-        c_fp = ColorRGBA()
-        set_message_fields(c_fp, {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0})
+        c_fp = ColorRGBA(r=0.0, g=1.0, b=1.0, a=1.0)
         marker = dynamic_objects_to_ros_points(objs, header, scale, c_fp, "fp", 0)
         marker_results.markers.append(marker)
     if objs := pass_fail.fn_objects:
-        c_fn = ColorRGBA()
-        set_message_fields(c_fn, {"r": 1.0, "g": 0.5, "b": 0.0, "a": 1.0})
+        c_fn = ColorRGBA(r=1.0, g=0.5, b=0.0, a=1.0)
         marker = dynamic_objects_to_ros_points(objs, header, scale, c_fn, "fn", 0)
         marker_results.markers.append(marker)
     return marker_results

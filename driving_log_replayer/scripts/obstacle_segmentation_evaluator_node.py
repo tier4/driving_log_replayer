@@ -33,6 +33,7 @@ from driving_log_replayer_msgs.msg import NonDetectionResult
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
 from driving_log_replayer_msgs.msg import ResultStatus
 from driving_log_replayer_msgs.msg import ResultStatusStamped
+from example_interfaces.msg import Int64
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
@@ -254,12 +255,7 @@ class ObstacleSegmentationResult(ResultBase):
                 dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
             )
             counter = 0
-
-            color_success = ColorRGBA()
-            color_success.r = 0.0
-            color_success.g = 1.0
-            color_success.b = 0.0
-            color_success.a = 0.3
+            color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
 
             info, counter, marker_array, pcd = summarize_frame_container(
                 frame_result.detection_success_results,
@@ -271,11 +267,7 @@ class ObstacleSegmentationResult(ResultBase):
                 pcd,
             )
 
-            color_fail = ColorRGBA()
-            color_fail.r = 1.0
-            color_fail.g = 0.0
-            color_fail.b = 0.0
-            color_fail.a = 0.3
+            color_fail = ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
 
             info, counter, marker_array, pcd = summarize_frame_container(
                 frame_result.detection_fail_results,
@@ -287,12 +279,7 @@ class ObstacleSegmentationResult(ResultBase):
                 pcd,
             )
 
-            color_warn = ColorRGBA()
-            color_warn.r = 1.0
-            color_warn.g = 0.65
-            color_warn.b = 0.0
-            color_warn.a = 0.3
-
+            color_warn = ColorRGBA(r=1.0, g=0.65, b=0.0, a=0.3)
             info, counter, marker_array, pcd = summarize_frame_container(
                 frame_result.detection_warning_results,
                 header,
@@ -327,10 +314,15 @@ class ObstacleSegmentationResult(ResultBase):
             )
             self.__non_detection_msg = f"NonDetection: {self.__non_detection_success} / {self.__non_detection_total} -> {non_detection_rate:.2f}%"
 
-            if result == "Fail":
-                # 成功のときはこの処理をやるだけ無駄なのでやらなくてよい。
-                ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
+            ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
+            graph_non_detection = NonDetectionResult()
+            graph_non_detection.header = header
+            graph_non_detection.status = ResultStatus(
+                status=ResultStatus.ERROR if result == "Fail" else ResultStatus.OK
+            )
+            graph_non_detection.number_of_pointcloud = Int64(data=dist_array.shape[0])
 
+            if result == "Fail":
                 # 詳細情報の追記を書く
                 dist_dict = {}
                 # print(dist_array)

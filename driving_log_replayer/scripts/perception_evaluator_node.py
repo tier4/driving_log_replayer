@@ -47,7 +47,6 @@ from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from rclpy.time import Time
-from rosidl_runtime_py import set_message_fields
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_ros import Buffer
@@ -176,8 +175,7 @@ class PerceptionResult(ResultBase):
             ],
         }
         marker_ground_truth = MarkerArray()
-        color_success = ColorRGBA()
-        set_message_fields(color_success, {"r": 0.0, "g": 1.0, "b": 0.0, "a": 0.3})
+        color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
 
         for cnt, obj in enumerate(frame.frame_ground_truth.objects, start=1):
             bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
