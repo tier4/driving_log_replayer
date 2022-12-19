@@ -381,7 +381,6 @@ class PerformanceDiagEvaluator(Node):
         if self.__current_time.sec > 0:
             if self.__initial_pose is not None and not self.__initial_pose_success:
                 self.__initial_pose.header.stamp = self.__current_time
-                self.__pub_initial_pose.publish(self.__initial_pose)
                 future = self.__initial_pose_client.call_async(
                     InitializeLocalization.Request(pose=[self.__initial_pose])
                 )
