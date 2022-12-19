@@ -18,13 +18,14 @@
 import os
 from typing import Dict
 
+from autoware_adapi_v1_msgs.msg import ResponseStatus
+from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from driving_log_replayer.node_common import set_initial_pose
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
-from geometry_msgs.msg import PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry
 import numpy as np
 import rclpy
@@ -216,10 +217,7 @@ class LocalizationEvaluator(Node):
         self.__initial_pose = set_initial_pose(
             self.__scenario_yaml_obj["Evaluation"]["InitialPose"]
         )
-        self.__initial_pose_counter = 0
-        self.__pub_initial_pose = self.create_publisher(
-            PoseWithCovarianceStamped, "/initialpose", 10
-        )
+        self.__initial_pose_success = False
 
         self.__current_time = Time().to_msg()
         self.__prev_time = Time().to_msg()
@@ -279,6 +277,12 @@ class LocalizationEvaluator(Node):
             self.iteration_num_cb,
             1,
         )
+        # service client
+        self.__initial_pose_client = self.create_client(
+            InitializeLocalization, "/api/localization/initialize"
+        )
+        while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("service not available, waiting again...")
 
     def ekf_pose_cb(self, msg: Odometry):
         self.__latest_ekf_pose = msg
@@ -339,10 +343,12 @@ class LocalizationEvaluator(Node):
         self.__current_time = self.get_clock().now().to_msg()
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self.__current_time.sec > 0:
-            self.__initial_pose_counter += 1
-            if self.__initial_pose is not None and self.__initial_pose_counter <= 5:
+            if self.__initial_pose is not None and not self.__initial_pose_success:
                 self.__initial_pose.header.stamp = self.__current_time
-                self.__pub_initial_pose.publish(self.__initial_pose)
+                future = self.__initial_pose_client.call_async(
+                    InitializeLocalization.Request(pose=[self.__initial_pose])
+                )
+                future.add_done_callback(self.initial_pose_cb)
             if self.__current_time == self.__prev_time:
                 self.__counter += 1
             else:
@@ -351,6 +357,14 @@ class LocalizationEvaluator(Node):
             if self.__counter >= 5:
                 self.__result_writer.close()
                 rclpy.shutdown()
+
+    def initial_pose_cb(self, future):
+        result = future.result()
+        if result is not None:
+            res_status: ResponseStatus = result.status
+            self.__initial_pose_success = res_status.success
+        else:
+            self.get_logger().error(f"Exception for service: {future.exception()}")
 
 
 def main(args=None):
