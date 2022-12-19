@@ -862,6 +862,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#service-name-and-data-type-used-by-the-evaluation-node" class="md-nav__link">
+    Service name and data type used by the evaluation node
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
     Arguments passed to logging_simulator.launch
   </a>
@@ -1125,6 +1132,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#service-name-and-data-type-used-by-the-evaluation-node" class="md-nav__link">
+    Service name and data type used by the evaluation node
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
     Arguments passed to logging_simulator.launch
   </a>
@@ -1273,6 +1287,14 @@ Launching the file executes the following steps:</p>
 <td>nav_msgs::msg::Odometry</td>
 </tr>
 <tr>
+<td>/localization/pose_estimator/exe_time_ms</td>
+<td>tier4_debug_msgs::msg::Float32Stamped</td>
+</tr>
+<tr>
+<td>/localization/pose_estimator/iteration_num</td>
+<td>tier4_debug_msgs::msg::Int32Stamped</td>
+</tr>
+<tr>
 <td>/tf</td>
 <td>tf2_msgs/msg/TFMessage</td>
 </tr>
@@ -1283,14 +1305,6 @@ Launching the file executes the following steps:</p>
 <tr>
 <td>/localization/pose_estimator/points_aligned</td>
 <td>sensor_msgs::msg::PointCloud2</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/exe_time_ms</td>
-<td>tier4_debug_msgs::msg::Float32Stamped</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/iteration_num</td>
-<td>tier4_debug_msgs::msg::Int32Stamped</td>
 </tr>
 </tbody>
 </table>
@@ -1307,9 +1321,20 @@ Launching the file executes the following steps:</p>
 <td>/driving_log_replayer/localization/lateral_distance</td>
 <td>example_interfaces::msg::Float64</td>
 </tr>
+</tbody>
+</table>
+<h2 id="service-name-and-data-type-used-by-the-evaluation-node">Service name and data type used by the evaluation node<a class="headerlink" href="#service-name-and-data-type-used-by-the-evaluation-node" title="Permanent link">#</a></h2>
+<table>
+<thead>
 <tr>
-<td>/initialpose</td>
-<td>geometry_msgs::msg::PoseWithCovarianceStamped</td>
+<th>Service name</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/localization/initialize</td>
+<td>InitializeLocalization</td>
 </tr>
 </tbody>
 </table>

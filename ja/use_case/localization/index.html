@@ -836,6 +836,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    評価ノードが使用する Service 名とデータ型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#logging_simulatorlaunch" class="md-nav__link">
     logging_simulator.launch に渡す引数
   </a>
@@ -1099,6 +1106,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    評価ノードが使用する Service 名とデータ型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#logging_simulatorlaunch" class="md-nav__link">
     logging_simulator.launch に渡す引数
   </a>
@@ -1247,6 +1261,14 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <td>nav_msgs::msg::Odometry</td>
 </tr>
 <tr>
+<td>/localization/pose_estimator/exe_time_ms</td>
+<td>tier4_debug_msgs::msg::Float32Stamped</td>
+</tr>
+<tr>
+<td>/localization/pose_estimator/iteration_num</td>
+<td>tier4_debug_msgs::msg::Int32Stamped</td>
+</tr>
+<tr>
 <td>/tf</td>
 <td>tf2_msgs/msg/TFMessage</td>
 </tr>
@@ -1257,14 +1279,6 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <tr>
 <td>/localization/pose_estimator/points_aligned</td>
 <td>sensor_msgs::msg::PointCloud2</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/exe_time_ms</td>
-<td>tier4_debug_msgs::msg::Float32Stamped</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/iteration_num</td>
-<td>tier4_debug_msgs::msg::Int32Stamped</td>
 </tr>
 </tbody>
 </table>
@@ -1281,9 +1295,20 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <td>/driving_log_replayer/localization/lateral_distance</td>
 <td>example_interfaces::msg::Float64</td>
 </tr>
+</tbody>
+</table>
+<h2 id="service">評価ノードが使用する Service 名とデータ型<a class="headerlink" href="#service" title="Permanent link">#</a></h2>
+<table>
+<thead>
 <tr>
-<td>/initialpose</td>
-<td>geometry_msgs::msg::PoseWithCovarianceStamped</td>
+<th>service 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/localization/initialize</td>
+<td>InitializeLocalization</td>
 </tr>
 </tbody>
 </table>

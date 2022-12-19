@@ -878,6 +878,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    評価ノードが使用する Service 名とデータ型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#logging_simulatorlaunch" class="md-nav__link">
     logging_simulator.launch に渡す引数
   </a>
@@ -1099,6 +1106,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    評価ノードが使用する Service 名とデータ型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#logging_simulatorlaunch" class="md-nav__link">
     logging_simulator.launch に渡す引数
   </a>
@@ -1272,13 +1286,24 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <td>/driving_log_replayer/blockage/{lidar_name}/level</td>
 <td>example_interfaces::msg::Byte</td>
 </tr>
-<tr>
-<td>/initialpose</td>
-<td>geometry_msgs::msg::PoseWithCovarianceStamped</td>
-</tr>
 </tbody>
 </table>
 <p>{lidar_name}には、搭載されている lidar の名前が入る。</p>
+<h2 id="service">評価ノードが使用する Service 名とデータ型<a class="headerlink" href="#service" title="Permanent link">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>service 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/localization/initialize</td>
+<td>InitializeLocalization</td>
+</tr>
+</tbody>
+</table>
 <h2 id="logging_simulatorlaunch">logging_simulator.launch に渡す引数<a class="headerlink" href="#logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。</p>
 <ul>

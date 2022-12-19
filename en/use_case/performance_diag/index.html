@@ -878,6 +878,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#service-name-and-data-type-used-by-the-evaluation-node" class="md-nav__link">
+    Service name and data type used by the evaluation node
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
     Arguments passed to logging_simulator.launch
   </a>
@@ -1099,6 +1106,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#service-name-and-data-type-used-by-the-evaluation-node" class="md-nav__link">
+    Service name and data type used by the evaluation node
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
     Arguments passed to logging_simulator.launch
   </a>
@@ -1272,13 +1286,24 @@ The node will also confirm that no ERROR is generated for not covered LiDAR.</p>
 <td>/driving_log_replayer/blockage/{lidar_name}/level</td>
 <td>example_interfaces::msg::Byte</td>
 </tr>
-<tr>
-<td>/initialpose</td>
-<td>geometry_msgs::msg::PoseWithCovarianceStamped</td>
-</tr>
 </tbody>
 </table>
 <p>{lidar_name} contains the name of the mounted lidar.</p>
+<h2 id="service-name-and-data-type-used-by-the-evaluation-node">Service name and data type used by the evaluation node<a class="headerlink" href="#service-name-and-data-type-used-by-the-evaluation-node" title="Permanent link">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Service name</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/api/localization/initialize</td>
+<td>InitializeLocalization</td>
+</tr>
+</tbody>
+</table>
 <h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
 The following parameters are set to <code>false</code> when launching the <code>performance_diag</code> evaluation scenario:</p>
