@@ -1,4 +1,4 @@
-vehicle:
+vehicle: # This section uses the values in your vehicle model's vehicle_info.param.yaml.
   front_overhang: 0.530 # between front wheel center and vehicle front
   wheel_base: 1.335 # between front wheel center and rear wheel center
 fp_threshold:

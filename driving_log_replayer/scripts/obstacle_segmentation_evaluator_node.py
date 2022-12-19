@@ -28,6 +28,8 @@ import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
+from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
+from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
@@ -86,7 +88,9 @@ def summarize_frame_container(
     counter: int,
     marker_array: MarkerArray,
     pcd: np.ndarray,
-) -> Tuple[Dict, int, MarkerArray, np.ndarray]:
+    graph_detection: ObstacleSegmentationMarkerArray,
+    result_status: int,
+) -> Tuple[Dict, int, MarkerArray, np.ndarray, ObstacleSegmentationMarkerArray]:
     for result in container:
         pcd_result = np.zeros(
             result.inside_pointcloud_num,
@@ -112,7 +116,14 @@ def summarize_frame_container(
             "Stamp": message_to_ordereddict(header.stamp),
         }
         info.append(info_dict)
-    return info, counter, marker_array, pcd
+        marker = ObstacleSegmentationMarker(
+            header=header,
+            number_of_pointcloud=result.inside_pointcloud_num,
+            status=result_status,
+            bbox_uuid=result.ground_truth_object.uuid,
+        )
+        graph_detection.markers.append(marker)
+    return info, counter, marker_array, pcd, graph_detection
 
 
 def summarize_numpy_pointcloud(
@@ -210,11 +221,17 @@ class ObstacleSegmentationResult(ResultBase):
 
     def summarize_detection(
         self, frame_result: SensingFrameResult, topic_rate: bool, header: Header
-    ) -> Tuple[Dict, Optional[MarkerArray], Optional[PointCloud2]]:
+    ) -> Tuple[
+        Dict,
+        Optional[MarkerArray],
+        Optional[PointCloud2],
+        Optional[ObstacleSegmentationMarkerArray],
+    ]:
         result = "Skipped"
         info = []
         marker_array = None
         pcd_detection = None
+        graph_detection = None
 
         if self.__condition_detection is not None:
             result = "Fail"
@@ -248,14 +265,10 @@ class ObstacleSegmentationResult(ResultBase):
                 dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
             )
             counter = 0
+            graph_detection = ObstacleSegmentationMarkerArray()
 
-            color_success = ColorRGBA()
-            color_success.r = 0.0
-            color_success.g = 1.0
-            color_success.b = 0.0
-            color_success.a = 0.3
-
-            info, counter, marker_array, pcd = summarize_frame_container(
+            color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
+            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
                 frame_result.detection_success_results,
                 header,
                 color_success,
@@ -263,15 +276,12 @@ class ObstacleSegmentationResult(ResultBase):
                 counter,
                 marker_array,
                 pcd,
+                graph_detection,
+                ObstacleSegmentationMarker.OK,
             )
 
-            color_fail = ColorRGBA()
-            color_fail.r = 1.0
-            color_fail.g = 0.0
-            color_fail.b = 0.0
-            color_fail.a = 0.3
-
-            info, counter, marker_array, pcd = summarize_frame_container(
+            color_fail = ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
+            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
                 frame_result.detection_fail_results,
                 header,
                 color_fail,
@@ -279,15 +289,12 @@ class ObstacleSegmentationResult(ResultBase):
                 counter,
                 marker_array,
                 pcd,
+                graph_detection,
+                ObstacleSegmentationMarker.ERROR,
             )
 
-            color_warn = ColorRGBA()
-            color_warn.r = 1.0
-            color_warn.g = 0.65
-            color_warn.b = 0.0
-            color_warn.a = 0.3
-
-            info, counter, marker_array, pcd = summarize_frame_container(
+            color_warn = ColorRGBA(r=1.0, g=0.65, b=0.0, a=0.3)
+            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
                 frame_result.detection_warning_results,
                 header,
                 color_warn,
@@ -295,18 +302,22 @@ class ObstacleSegmentationResult(ResultBase):
                 counter,
                 marker_array,
                 pcd,
+                graph_detection,
+                ObstacleSegmentationMarker.WARN,
             )
 
             pcd_detection = ros2_numpy.msgify(PointCloud2, pcd)
             pcd_detection.header = header
-        return {"Result": result, "Info": info}, marker_array, pcd_detection
+        return {"Result": result, "Info": info}, marker_array, pcd_detection, graph_detection
 
     def summarize_non_detection(
         self, pcd_list: List[np.ndarray], topic_rate: bool, header: Header
-    ) -> Tuple[Dict, Optional[PointCloud2]]:
+    ) -> Tuple[Dict, Optional[PointCloud2], Optional[ObstacleSegmentationMarker]]:
         result = "Skipped"
         info = []
         ros_pcd = None
+        graph_non_detection = None
+
         if self.__condition_non_detection is not None:
             result = "Fail"
             self.__non_detection_total += 1
@@ -319,10 +330,17 @@ class ObstacleSegmentationResult(ResultBase):
             )
             self.__non_detection_msg = f"NonDetection: {self.__non_detection_success} / {self.__non_detection_total} -> {non_detection_rate:.2f}%"
 
-            if result == "Fail":
-                # 成功のときはこの処理をやるだけ無駄なのでやらなくてよい。
-                ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
+            ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
+            graph_non_detection = ObstacleSegmentationMarker()
+            graph_non_detection.header = header
+            graph_non_detection.status = (
+                ObstacleSegmentationMarker.ERROR
+                if result == "Fail"
+                else ObstacleSegmentationMarker.OK
+            )
+            graph_non_detection.number_of_pointcloud = dist_array.shape[0]
 
+            if result == "Fail":
                 # 詳細情報の追記を書く
                 dist_dict = {}
                 # print(dist_array)
@@ -336,7 +354,7 @@ class ObstacleSegmentationResult(ResultBase):
                         "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
                     }
                 )
-        return {"Result": result, "Info": info}, ros_pcd
+        return {"Result": result, "Info": info}, ros_pcd, graph_non_detection
 
     def add_frame(
         self,
@@ -346,7 +364,13 @@ class ObstacleSegmentationResult(ResultBase):
         stop_reasons: List[Dict],
         topic_rate: bool,
         header: Header,
-    ) -> Tuple[Optional[MarkerArray], Optional[PointCloud2], Optional[PointCloud2]]:
+    ) -> Tuple[
+        Optional[MarkerArray],
+        Optional[PointCloud2],
+        Optional[ObstacleSegmentationMarkerArray],
+        Optional[PointCloud2],
+        Optional[ObstacleSegmentationMarker],
+    ]:
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
@@ -356,10 +380,12 @@ class ObstacleSegmentationResult(ResultBase):
             out_frame["Detection"],
             marker_detection,
             pcd_detection,
+            graph_detection,
         ) = self.summarize_detection(frame, topic_rate, header)
         (
             out_frame["NonDetection"],
             pcd_non_detection,
+            graph_non_detection,
         ) = self.summarize_non_detection(frame.pointcloud_failed_non_detection, topic_rate, header)
         out_frame["StopReasons"] = stop_reasons
         out_frame["TopicRate"] = str(topic_rate)
@@ -367,7 +393,13 @@ class ObstacleSegmentationResult(ResultBase):
         self._frame = out_frame
         # update result
         self.update()
-        return marker_detection, pcd_detection, pcd_non_detection
+        return (
+            marker_detection,
+            pcd_detection,
+            graph_detection,
+            pcd_non_detection,
+            graph_non_detection,
+        )
 
 
 class ObstacleSegmentationEvaluator(Node):
@@ -448,6 +480,16 @@ class ObstacleSegmentationEvaluator(Node):
         self.__pub_goal_pose = self.create_publisher(
             PoseStamped, "/planning/mission_planning/goal", 1
         )
+        # for Autoware Evaluator visualization
+        self.__pub_graph_topic_rate = self.create_publisher(
+            ObstacleSegmentationMarker, "graph/topic_rate", 1
+        )
+        self.__pub_graph_detection = self.create_publisher(
+            ObstacleSegmentationMarkerArray, "graph/detection", 1
+        )
+        self.__pub_graph_non_detection = self.create_publisher(
+            ObstacleSegmentationMarker, "graph/non_detection", 1
+        )
 
         self.__current_time = Time().to_msg()
         self.__prev_time = Time().to_msg()
@@ -527,22 +569,41 @@ class ObstacleSegmentationEvaluator(Node):
             )
 
             # write result
-            marker_detection, pcd_detection, pcd_non_detection = self.__result.add_frame(
+            (
+                marker_detection,
+                pcd_detection,
+                graph_detection,
+                pcd_non_detection,
+                graph_non_detection,
+            ) = self.__result.add_frame(
                 frame_result,
                 self.__skip_counter,
                 transform_stamped_with_euler_angle(msg.map_to_baselink),
                 self.__latest_stop_reasons,
-                msg.topic_rate.data,
+                msg.topic_rate,
                 pcd_header,
             )
             self.__result_writer.write(self.__result)
+
+            topic_rate_data = ObstacleSegmentationMarker()
+            topic_rate_data.header = msg.pointcloud.header
+            topic_rate_data.status = (
+                ObstacleSegmentationMarker.OK
+                if msg.topic_rate
+                else ObstacleSegmentationMarker.ERROR
+            )
+            self.__pub_graph_topic_rate.publish(topic_rate_data)
 
             if marker_detection is not None:
                 self.__pub_marker_detection.publish(marker_detection)
             if pcd_detection is not None:
                 self.__pub_pcd_detection.publish(pcd_detection)
+            if graph_detection is not None:
+                self.__pub_graph_detection.publish(graph_detection)
             if pcd_non_detection is not None:
                 self.__pub_pcd_non_detection.publish(pcd_non_detection)
+            if graph_non_detection is not None:
+                self.__pub_graph_non_detection.publish(graph_non_detection)
 
     def stop_reason_cb(self, msg: StopReasonArray):
         reasons = []

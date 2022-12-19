@@ -126,9 +126,7 @@ void ObstacleSegmentationEvaluatorComponent::pointsCallback(
   input_data.pointcloud = *msg;
   input_data.marker_array = marker_array;
   input_data.map_to_baselink = map_to_baselink;
-  example_interfaces::msg::Bool msg_topic_rate;
-  msg_topic_rate.data = topic_rate_;
-  input_data.topic_rate = msg_topic_rate;
+  input_data.topic_rate = topic_rate_;
   input_pub_->publish(input_data);
 }
 
