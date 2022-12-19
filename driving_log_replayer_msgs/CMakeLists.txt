@@ -13,7 +13,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/NonDetectionResult.msg"
   DEPENDENCIES
     std_msgs
-    example_interfaces
     geometry_msgs
     sensor_msgs
     visualization_msgs
