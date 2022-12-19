@@ -1,3 +1,0 @@
-std_msgs/Header header
-int64 number_of_pointcloud
-ResultStatus status

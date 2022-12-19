@@ -27,12 +27,9 @@ from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
-from driving_log_replayer_msgs.msg import DetectionResult
-from driving_log_replayer_msgs.msg import DetectionResultArray
-from driving_log_replayer_msgs.msg import NonDetectionResult
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
-from driving_log_replayer_msgs.msg import ResultStatus
-from driving_log_replayer_msgs.msg import ResultStatusStamped
+from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
+from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
@@ -91,7 +88,9 @@ def summarize_frame_container(
     counter: int,
     marker_array: MarkerArray,
     pcd: np.ndarray,
-) -> Tuple[Dict, int, MarkerArray, np.ndarray]:
+    graph_detection: ObstacleSegmentationMarkerArray,
+    result_status: int,
+) -> Tuple[Dict, int, MarkerArray, np.ndarray, ObstacleSegmentationMarkerArray]:
     for result in container:
         pcd_result = np.zeros(
             result.inside_pointcloud_num,
@@ -117,7 +116,7 @@ def summarize_frame_container(
             "Stamp": message_to_ordereddict(header.stamp),
         }
         info.append(info_dict)
-    return info, counter, marker_array, pcd
+    return info, counter, marker_array, pcd, graph_detection
 
 
 def summarize_numpy_pointcloud(
@@ -215,7 +214,12 @@ class ObstacleSegmentationResult(ResultBase):
 
     def summarize_detection(
         self, frame_result: SensingFrameResult, topic_rate: bool, header: Header
-    ) -> Tuple[Dict, Optional[MarkerArray], Optional[PointCloud2], Optional[DetectionResultArray]]:
+    ) -> Tuple[
+        Dict,
+        Optional[MarkerArray],
+        Optional[PointCloud2],
+        Optional[ObstacleSegmentationMarkerArray],
+    ]:
         result = "Skipped"
         info = []
         marker_array = None
@@ -254,9 +258,10 @@ class ObstacleSegmentationResult(ResultBase):
                 dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
             )
             counter = 0
-            color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
+            graph_detection = ObstacleSegmentationMarkerArray()
 
-            info, counter, marker_array, pcd = summarize_frame_container(
+            color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
+            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
                 frame_result.detection_success_results,
                 header,
                 color_success,
@@ -264,11 +269,12 @@ class ObstacleSegmentationResult(ResultBase):
                 counter,
                 marker_array,
                 pcd,
+                graph_detection,
+                ObstacleSegmentationMarker.OK,
             )
 
             color_fail = ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
-
-            info, counter, marker_array, pcd = summarize_frame_container(
+            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
                 frame_result.detection_fail_results,
                 header,
                 color_fail,
@@ -276,10 +282,12 @@ class ObstacleSegmentationResult(ResultBase):
                 counter,
                 marker_array,
                 pcd,
+                graph_detection,
+                ObstacleSegmentationMarker.ERROR,
             )
 
             color_warn = ColorRGBA(r=1.0, g=0.65, b=0.0, a=0.3)
-            info, counter, marker_array, pcd = summarize_frame_container(
+            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
                 frame_result.detection_warning_results,
                 header,
                 color_warn,
@@ -287,6 +295,8 @@ class ObstacleSegmentationResult(ResultBase):
                 counter,
                 marker_array,
                 pcd,
+                graph_detection,
+                ObstacleSegmentationMarker.WARN,
             )
 
             pcd_detection = ros2_numpy.msgify(PointCloud2, pcd)
@@ -295,7 +305,7 @@ class ObstacleSegmentationResult(ResultBase):
 
     def summarize_non_detection(
         self, pcd_list: List[np.ndarray], topic_rate: bool, header: Header
-    ) -> Tuple[Dict, Optional[PointCloud2], Optional[NonDetectionResult]]:
+    ) -> Tuple[Dict, Optional[PointCloud2], Optional[ObstacleSegmentationMarker]]:
         result = "Skipped"
         info = []
         ros_pcd = None
@@ -314,10 +324,12 @@ class ObstacleSegmentationResult(ResultBase):
             self.__non_detection_msg = f"NonDetection: {self.__non_detection_success} / {self.__non_detection_total} -> {non_detection_rate:.2f}%"
 
             ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
-            graph_non_detection = NonDetectionResult()
+            graph_non_detection = ObstacleSegmentationMarker()
             graph_non_detection.header = header
-            graph_non_detection.status = ResultStatus(
-                status=ResultStatus.ERROR if result == "Fail" else ResultStatus.OK
+            graph_non_detection.status = (
+                ObstacleSegmentationMarker.ERROR
+                if result == "Fail"
+                else ObstacleSegmentationMarker.OK
             )
             graph_non_detection.number_of_pointcloud = dist_array.shape[0]
 
@@ -348,9 +360,9 @@ class ObstacleSegmentationResult(ResultBase):
     ) -> Tuple[
         Optional[MarkerArray],
         Optional[PointCloud2],
-        Optional[DetectionResultArray],
+        Optional[ObstacleSegmentationMarkerArray],
         Optional[PointCloud2],
-        Optional[NonDetectionResult],
+        Optional[ObstacleSegmentationMarker],
     ]:
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
@@ -463,13 +475,13 @@ class ObstacleSegmentationEvaluator(Node):
         )
         # for Autoware Evaluator visualization
         self.__pub_graph_topic_rate = self.create_publisher(
-            ResultStatusStamped, "graph/topic_rate", 1
+            ObstacleSegmentationMarker, "graph/topic_rate", 1
         )
         self.__pub_graph_detection = self.create_publisher(
-            DetectionResultArray, "graph/detection", 1
+            ObstacleSegmentationMarkerArray, "graph/detection", 1
         )
         self.__pub_graph_non_detection = self.create_publisher(
-            NonDetectionResult, "graph/non_detection", 1
+            ObstacleSegmentationMarker, "graph/non_detection", 1
         )
 
         self.__current_time = Time().to_msg()
@@ -566,10 +578,12 @@ class ObstacleSegmentationEvaluator(Node):
             )
             self.__result_writer.write(self.__result)
 
-            topic_rate_data = ResultStatusStamped()
+            topic_rate_data = ObstacleSegmentationMarker()
             topic_rate_data.header = msg.pointcloud.header
-            topic_rate_data.status = ResultStatus(
-                status=ResultStatus.OK if msg.topic_rate else ResultStatus.ERROR
+            topic_rate_data.status = (
+                ObstacleSegmentationMarker.OK
+                if msg.topic_rate
+                else ObstacleSegmentationMarker.ERROR
             )
             self.__pub_graph_topic_rate.publish(topic_rate_data)
 

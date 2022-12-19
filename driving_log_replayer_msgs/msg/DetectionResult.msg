@@ -1,3 +1,0 @@
-int64 number_of_pointcloud
-ResultStatus status
-string bbox_uuid
