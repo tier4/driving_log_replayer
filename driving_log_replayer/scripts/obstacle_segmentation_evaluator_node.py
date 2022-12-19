@@ -116,6 +116,13 @@ def summarize_frame_container(
             "Stamp": message_to_ordereddict(header.stamp),
         }
         info.append(info_dict)
+        marker = ObstacleSegmentationMarker(
+            header=header,
+            number_of_pointcloud=result.inside_pointcloud_num,
+            status=result_status,
+            bbox_uuid=result.ground_truth_object.uuid,
+        )
+        graph_detection.markers.append(marker)
     return info, counter, marker_array, pcd, graph_detection
 
 
