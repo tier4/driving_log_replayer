@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.6 (2022-12-19)
+------------------
 * fix: lint
 * feat: apply initial pose service for performance diag
 * fix: service callback
