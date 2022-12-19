@@ -17,12 +17,29 @@
 import argparse
 from pathlib import Path
 
+from ament_index_python.packages import get_package_share_directory
 from driving_log_replayer_analyzer.calc import fail_3_times_in_a_row
+from driving_log_replayer_analyzer.config import Config
 from driving_log_replayer_analyzer.config import load_config
 from driving_log_replayer_analyzer.jsonl_parser import JsonlParser
-from driving_log_replayer_analyzer.plot.bird_view_plot import BirdViewPlot
-from driving_log_replayer_analyzer.plot.line_plot import LinePlot
 from driving_log_replayer_analyzer.plot.scatter_plot import ScatterPlot
+import yaml
+
+
+def update_config(config: Config, vehicle_model: str) -> Config:
+    vehicle_info_param = Path(
+        get_package_share_directory(vehicle_model + "_description"),
+        "config",
+        "vehicle_info.param.yaml",
+    )
+    with open(vehicle_info_param) as f:
+        yaml_obj = yaml.safe_load(f)
+
+    config.overhang_from_baselink = (
+        yaml_obj["/**"]["ros__parameters"]["front_overhang"]
+        + yaml_obj["/**"]["ros__parameters"]["wheel_base"]
+    )
+    return config
 
 
 def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path):
@@ -30,27 +47,11 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path):
 
     # 設定ファイルのロード
     config = load_config(config_yaml)
+    # ここにvehicle paramから更新するところ入れる
+    config = update_config(config, "gsm8")
 
     # Load result.jsonl
     parser = JsonlParser(input_jsonl, config)
-
-    # Create summary
-    parser.summary.save(output_dir / "0_summary")
-
-    # Plot
-    bird_view_plot = BirdViewPlot()
-    bird_view_plot.add_data(parser.get_bb_position())
-    bird_view_plot.add_data(parser.get_pointcloud_position())
-    bird_view_plot.plot(
-        title="車両先端～Annotation BoundingBox(BB)の中心点(x,y)とDetectionのPass/Fail",
-        xlabel="y[m]",
-        ylabel="x[m]",
-    )
-    bird_view_plot.set_scale(config.bird_view_scale, config.bird_view_origin)
-    bird_view_plot.set_tick_span(x=5.0, y=5.0)
-    bird_view_plot.save_plot(
-        output_dir / "1_ego_to_bb_detection_result",
-    )
 
     detection_dist_plot = ScatterPlot()
     detection_dist_plot.add_data(parser.get_bb_distance(), legend="1 Frame")
@@ -68,13 +69,6 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path):
         output_dir / "2_detection_distance",
     )
 
-    topic_rate_plot = LinePlot()
-    topic_rate_plot.add_data(parser.get_topic_rate(), legend="Rate")
-    topic_rate_plot.plot(title="Frame rate (0.5倍速)", xlabel="Frame", ylabel="周期[Hz]")
-    topic_rate_plot.save_plot(
-        output_dir / "3_frame_rate",
-    )
-
     pointcloud_numpoints_plot = ScatterPlot()
     for data in parser.get_pointcloud_points_per_uuid():
         pointcloud_numpoints_plot.add_data(data, legend=data[0][2])
@@ -86,47 +80,6 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path):
     pointcloud_numpoints_plot.save_plot(
         output_dir / "4_ego_to_bb_points",
     )
-
-    pointcloud_diff_plot = LinePlot()
-    for data in parser.get_annotation_and_pointcloud_distance():
-        pointcloud_diff_plot.add_data(data, legend=data[0][2])
-    pointcloud_diff_plot.plot(
-        title="車両先端～Annotation BBの最近傍点と検知点群の最近傍点との距離差",
-        xlabel="車両先端~Annotation BBの最近傍点の距離[m]",
-        ylabel="Pointcloudの最近傍点とAnnotation BBの距離差[m]",
-    )
-    pointcloud_diff_plot.save_plot(
-        output_dir / "5_diff_bb_and_points",
-    )
-
-    pointcloud_non_detection_plot = ScatterPlot()
-    pointcloud_non_detection_plot.add_data_with_hover(
-        parser.get_non_detection_frame_points(config.fp_distance), legend="points"
-    )
-    pointcloud_non_detection_plot.plot_with_hover(
-        title="False Positive",
-        xlabel="Frame number",
-        ylabel="Non detection領域の検知点数",
-    )
-    pointcloud_non_detection_plot.save_plot(
-        output_dir / "6_false_positive_points_per_frame",
-    )
-
-    non_detection_tf_plot = BirdViewPlot()
-    non_detection_tf_plot.add_data_with_hover(parser.get_non_detection_position(config.fp_distance))
-    non_detection_tf_plot.plot_with_hover(
-        title="非検知領域での検知点群数",
-        xlabel="y[m]",
-        ylabel="x[m]",
-    )
-    non_detection_tf_plot.set_scale(config.bird_view_scale, origin=False)
-    non_detection_tf_plot.set_tick_span(5.0)
-    non_detection_tf_plot.save_plot(
-        output_dir / "7_false_positive_points_per_position",
-    )
-
-    # Output data to csv
-    parser.export_to_csv(output_dir / "result.csv")
 
 
 def main():
