@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.1.7
+
+Minor Tweak, Bug fix
+
+| Module                             | Feature       | Brief summary                                        | Pull request                                                 | JIRA       | Contributor   |
+| ---------------------------------- | ------------- | ---------------------------------------------------- | ------------------------------------------------------------ | ---------- | ------------- |
+| `obstacle_segmentation`            | visualization | publish and record data for visualization            | [#67](https://github.com/tier4/driving_log_replayer/pull/67) | T4PB-23864 | [hayato-m126] |
+| `performance_diag`                 | initial pose  | delete uninitialized publisher                       | [#68](https://github.com/tier4/driving_log_replayer/pull/68) | T4PB-24491 | [hayato-m126] |
+| `localization`, `performance_diag` | initial pose  | use map fit service to correct `initialpose z value` | [#70](https://github.com/tier4/driving_log_replayer/pull/70) | T4PB-24491 | [hayato-m126] |
+
 ## Version 1.1.6
 
 Minor Tweak
