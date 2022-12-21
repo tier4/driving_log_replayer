@@ -549,7 +549,12 @@ class ObstacleSegmentationEvaluator(Node):
             last_line = jsonl_file.readlines()[-1]
             try:
                 last_line_dict = json.loads(last_line)
-                last_line_dict["Frame"] = {"GraphData": [detection_dist, pointcloud_numpoints]}
+                last_line_dict["Frame"] = {
+                    "GraphData": {
+                        "DetectionDist": detection_dist,
+                        "PointcloudCount": pointcloud_numpoints,
+                    }
+                }
                 str_last_line = json.dumps(last_line_dict) + "\n"
                 jsonl_file.write(str_last_line)
             except json.JSONDecodeError:
