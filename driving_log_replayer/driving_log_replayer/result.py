@@ -42,9 +42,7 @@ class ResultBase:
 class ResultWriter:
     def __init__(self, result_json_path: str, ros_clock: Clock, condition: Dict):
         # 拡張子を書き換える
-        result_file = (
-            os.path.splitext(os.path.expandvars(result_json_path))[0] + ".jsonl"
-        )
+        result_file = os.path.splitext(os.path.expandvars(result_json_path))[0] + ".jsonl"
         self._result_file = open(result_file, "w")
         self._ros_clock = ros_clock
         self._system_clock = Clock(clock_type=ClockType.SYSTEM_TIME)

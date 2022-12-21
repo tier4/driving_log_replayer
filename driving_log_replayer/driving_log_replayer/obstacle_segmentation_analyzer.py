@@ -79,9 +79,7 @@ def get_graph_data(
     return detection_dist_plot._df.to_dict(), pointcloud_numpoints_plot._df.to_dict()
 
 
-def visualize(
-    input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path
-):
+def visualize(input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path):
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード
@@ -126,9 +124,7 @@ def main():
     parser.add_argument(
         "-i", "--input_file", required=True, help="Input file (result.jsonl)", type=str
     )
-    parser.add_argument(
-        "-v", "--vehicle", required=True, help="Vehicle Model Name", type=str
-    )
+    parser.add_argument("-v", "--vehicle", required=True, help="Vehicle Model Name", type=str)
     parser.add_argument(
         "-o",
         "--output_dir",
