@@ -24,11 +24,7 @@ ROS のパッケージになっていれば、他のパッケージと自動で�
 ## 使い方
 
 ```shell
-# pythonのcliコマンドで使う場合
 driving_log_replayer_analyzer ${jsonl_path} -c ${config_path}
-
-# ros2 launchから使う。こちらは後で消す予定
-ros2 launch driving_log_replayer obstacle_segmentation_analyze.launch.py result_json_path=${jsonl_path}
 ```
 
 ## これからやる
