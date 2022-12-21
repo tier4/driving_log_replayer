@@ -267,7 +267,11 @@ class ObstacleSegmentationResult(ResultBase):
             counter = 0
             graph_detection = ObstacleSegmentationMarkerArray()
 
-            color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
+            color_success = (
+                ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
+                if result == "Success"
+                else ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
+            )
             info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
                 frame_result.detection_success_results,
                 header,
@@ -277,7 +281,9 @@ class ObstacleSegmentationResult(ResultBase):
                 marker_array,
                 pcd,
                 graph_detection,
-                ObstacleSegmentationMarker.OK,
+                ObstacleSegmentationMarker.OK
+                if result == "Success"
+                else ObstacleSegmentationMarker.ERROR,
             )
 
             color_fail = ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
