@@ -63,7 +63,7 @@
       "name": "obstacle_segementation_analyzer",
       "type": "python",
       "request": "launch",
-      "program": "driving_log_replayer/scripts/analyzer/obstacle_segmentation_analyzer.py",
+      "program": "driving_log_replayer/driving_log_replayer/obstacle_segmentation_analyzer.py",
       "console": "integratedTerminal",
       "args": [
         "-i",

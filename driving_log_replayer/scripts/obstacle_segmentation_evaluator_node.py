@@ -14,8 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import logging
 import os
+from pathlib import Path
 import sys
 from typing import Dict
 from typing import List
@@ -24,6 +26,8 @@ from typing import Tuple
 
 from driving_log_replayer.node_common import get_goal_pose_from_t4_dataset
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+from driving_log_replayer.obstacle_segmentation_analyzer import default_config_path
+from driving_log_replayer.obstacle_segmentation_analyzer import get_graph_data
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
@@ -415,6 +419,7 @@ class ObstacleSegmentationEvaluator(Node):
         self.declare_parameter("result_json_path", "")
         self.declare_parameter("t4_dataset_path", "")
         self.declare_parameter("result_archive_path", "")
+        self.declare_parameter("vehicle_model", "")
 
         self.__timer_group = MutuallyExclusiveCallbackGroup()
 
@@ -432,6 +437,9 @@ class ObstacleSegmentationEvaluator(Node):
                 self.get_parameter("t4_dataset_path").get_parameter_value().string_value
             )
         ]
+        self.__vehicle_model = (
+            self.get_parameter("vehicle_model").get_parameter_value().string_value
+        )
         self.__perception_eval_log_path = os.path.join(
             os.path.dirname(self.__result_json_path), "perception_eval_log"
         )
@@ -523,17 +531,38 @@ class ObstacleSegmentationEvaluator(Node):
                 self.__shutdown_counter = 0
             self.__prev_time = self.__current_time
             if self.__shutdown_counter >= 5:
-                self.get_final_result()
-                # for debug
-                # from driving_log_replayer.result import PickleWriter
-
-                # self.__pkl_path = os.path.join(
-                #     os.path.dirname(self.__result_json_path), "frame.pkl"
-                # )
-                # self.__pickle_writer = PickleWriter(self.__pkl_path)
-                # self.__pickle_writer.dump(self.__evaluator.frame_results)
-                self.__result_writer.close()
+                # self.save_pkl()
+                self.write_graph_data()
                 rclpy.shutdown()
+
+    def write_graph_data(self):
+        # jsonlを一旦閉じて開きなおす
+        self.__result_writer.close()
+        jsonl_file_path = Path(
+            os.path.splitext(os.path.expandvars(self.__result_json_path))[0] + ".jsonl"
+        )
+        self.get_logger().error(f"jsonl file: {jsonl_file_path}")
+        detection_dist, pointcloud_numpoints = get_graph_data(
+            jsonl_file_path, self.__vehicle_model, jsonl_file_path.parent, default_config_path()
+        )
+        with open(jsonl_file_path, "r+") as jsonl_file:
+            last_line = jsonl_file.readlines()[-1]
+            try:
+                last_line_dict = json.loads(last_line)
+                last_line_dict["Frame"] = {"GraphData": [detection_dist, pointcloud_numpoints]}
+                str_last_line = json.dumps(last_line_dict) + "\n"
+                jsonl_file.write(str_last_line)
+            except json.JSONDecodeError:
+                pass
+            jsonl_file.close()
+
+    def save_pkl(self):
+        # for debug
+        from driving_log_replayer.result import PickleWriter
+
+        self.__pkl_path = os.path.join(os.path.dirname(self.__result_json_path), "frame.pkl")
+        self.__pickle_writer = PickleWriter(self.__pkl_path)
+        self.__pickle_writer.dump(self.__evaluator.frame_results)
 
     def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput):
         self.__pub_marker_non_detection.publish(msg.marker_array)
@@ -617,14 +646,6 @@ class ObstacleSegmentationEvaluator(Node):
             if msg_reason.reason == "ObstacleStop":
                 reasons.append(message_to_ordereddict(msg_reason))
         self.__latest_stop_reasons = reasons
-
-    def get_final_result(self) -> None:
-        """Output the evaluation results on the command line."""
-        # use case fail object num
-        num_use_case_fail: int = 0
-        for frame_results in self.__evaluator.frame_results:
-            num_use_case_fail += len(frame_results.detection_fail_results)
-        logging.warning(f"{num_use_case_fail} fail results.")
 
 
 def main(args=None):

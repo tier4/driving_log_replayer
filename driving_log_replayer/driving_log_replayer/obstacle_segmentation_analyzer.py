@@ -17,6 +17,8 @@
 import argparse
 import os
 from pathlib import Path
+from typing import Dict
+from typing import Tuple
 
 from ament_index_python.packages import get_package_share_directory
 from driving_log_replayer_analyzer.calc import fail_3_times_in_a_row
@@ -25,6 +27,14 @@ from driving_log_replayer_analyzer.config import load_config
 from driving_log_replayer_analyzer.jsonl_parser import JsonlParser
 from driving_log_replayer_analyzer.plot.scatter_plot import ScatterPlot
 import yaml
+
+
+def default_config_path() -> Path:
+    return Path(
+        get_package_share_directory("driving_log_replayer_analyzer"),
+        "config",
+        "config.yaml",
+    )
 
 
 def update_config(config: Config, vehicle_model: str) -> Config:
@@ -43,7 +53,35 @@ def update_config(config: Config, vehicle_model: str) -> Config:
     return config
 
 
-def visualize(input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path):
+def get_graph_data(
+    input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path
+) -> Tuple[Dict, Dict]:
+    output_dir.mkdir(exist_ok=True)
+
+    # 設定ファイルのロード
+    config = load_config(config_yaml)
+    # ここにvehicle paramから更新するところ入れる
+    config = update_config(config, vehicle_model)
+
+    # Load result.jsonl
+    parser = JsonlParser(input_jsonl, config)
+
+    detection_dist_plot = ScatterPlot()
+    detection_dist_plot.add_data(parser.get_bb_distance(), legend="1 Frame")
+
+    min3_data = fail_3_times_in_a_row(parser.get_bb_distance())
+    detection_dist_plot.add_data(min3_data, legend="3 Frames")
+
+    pointcloud_numpoints_plot = ScatterPlot()
+    for data in parser.get_pointcloud_points_per_uuid():
+        pointcloud_numpoints_plot.add_data(data, legend=data[0][2])
+
+    return detection_dist_plot._df.to_dict(), pointcloud_numpoints_plot._df.to_dict()
+
+
+def visualize(
+    input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path
+):
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード
@@ -88,7 +126,9 @@ def main():
     parser.add_argument(
         "-i", "--input_file", required=True, help="Input file (result.jsonl)", type=str
     )
-    parser.add_argument("-v", "--vehicle", required=True, help="Vehicle Model Name", type=str)
+    parser.add_argument(
+        "-v", "--vehicle", required=True, help="Vehicle Model Name", type=str
+    )
     parser.add_argument(
         "-o",
         "--output_dir",
@@ -96,14 +136,11 @@ def main():
         required=False,
         type=str,
     )
-    default_config_path = Path(
-        get_package_share_directory("driving_log_replayer_analyzer"), "config", "config.yaml"
-    )
     parser.add_argument(
         "-c",
         "--config",
         help="Config file",
-        default=default_config_path,
+        default=default_config_path(),
         type=str,
     )
     args = parser.parse_args()
