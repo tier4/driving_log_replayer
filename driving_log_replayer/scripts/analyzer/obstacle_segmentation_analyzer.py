@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import argparse
+import os
 from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
@@ -42,7 +43,7 @@ def update_config(config: Config, vehicle_model: str) -> Config:
     return config
 
 
-def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, vehicle_model: str):
+def visualize(input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path):
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード
@@ -85,27 +86,34 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, vehicle_mo
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "-i", "--input_file", required=True, help="Input file (result.jsonl)", type=str
+    )
+    parser.add_argument("-v", "--vehicle", required=True, help="Vehicle Model Name", type=str)
+    parser.add_argument(
         "-o",
         "--output_dir",
         help="Output directory",
         required=False,
-        type=Path,
+        type=str,
+    )
+    default_config_path = Path(
+        get_package_share_directory("driving_log_replayer_analyzer"), "config", "config.yaml"
     )
     parser.add_argument(
         "-c",
         "--config",
         help="Config file",
-        default=Path(__file__).parent.parent.parent / "config" / "config.yaml",
-        type=Path,
+        default=default_config_path,
+        type=str,
     )
-    parser.add_argument("input_file", nargs=1, help="Input file (result.jsonl)", type=Path)
-    parser.add_argument("vehicle", help="Vehicle Model Name", type=str)
     args = parser.parse_args()
-
-    if not args.output_dir:
-        args.output_dir = Path(args.input_file[0]).parent
-
-    visualize(args.input_file[0], args.output_dir, args.config, args.vehicle)
+    p_input_file = Path(os.path.expandvars(args.input_file))
+    if args.output_dir:
+        p_output_dir = Path(os.path.expandvars(args.output_dir))
+    else:
+        p_output_dir = p_input_file.parent
+    p_config = Path(os.path.expandvars(args.config))
+    visualize(p_input_file, args.vehicle, p_output_dir, p_config)
 
 
 if __name__ == "__main__":

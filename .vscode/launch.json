@@ -58,6 +58,19 @@
         "-l",
         "$HOME/out/obstacle_segmentation/latest/sample/63800729-18d2-4383-91e9-fea7bad384f4/perception_eval_log"
       ]
+    },
+    {
+      "name": "obstacle_segementation_analyzer",
+      "type": "python",
+      "request": "launch",
+      "program": "driving_log_replayer/scripts/analyzer/obstacle_segmentation_analyzer.py",
+      "console": "integratedTerminal",
+      "args": [
+        "-i",
+        "$HOME/out/obstacle_segmentation/latest/sample/63800729-18d2-4383-91e9-fea7bad384f4/result.jsonl",
+        "-v",
+        "gsm8"
+      ]
     }
   ]
 }
