@@ -42,13 +42,13 @@ def update_config(config: Config, vehicle_model: str) -> Config:
     return config
 
 
-def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path):
+def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, vehicle_model: str):
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード
     config = load_config(config_yaml)
     # ここにvehicle paramから更新するところ入れる
-    config = update_config(config, "gsm8")
+    config = update_config(config, vehicle_model)
 
     # Load result.jsonl
     parser = JsonlParser(input_jsonl, config)
@@ -99,12 +99,13 @@ def main():
         type=Path,
     )
     parser.add_argument("input_file", nargs=1, help="Input file (result.jsonl)", type=Path)
+    parser.add_argument("vehicle", help="Vehicle Model Name", type=str)
     args = parser.parse_args()
 
     if not args.output_dir:
         args.output_dir = Path(args.input_file[0]).parent
 
-    visualize(args.input_file[0], args.output_dir, args.config)
+    visualize(args.input_file[0], args.output_dir, args.config, args.vehicle)
 
 
 if __name__ == "__main__":
