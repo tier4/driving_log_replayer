@@ -1,38 +1,48 @@
 # Release Notes
 
+## Version 1.1.8
+
+Minor Tweak, Bug fix
+
+| Module                  | Feature       | Brief summary                                                                 | Pull request                                                 | JIRA       | Contributor                                   |
+| ----------------------- | ------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `obstacle_segmentation` | marker color  | The result of the topic's rate is reflected in the color of the bounding box. | [#72](https://github.com/tier4/driving_log_replayer/pull/72) | T4PB-23864 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | visualization | add graph data to result.jsonl                                                | [#73](https://github.com/tier4/driving_log_replayer/pull/73) | T4PB-23864 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag`      | localization  | fix infinite wait when localization module off                                | [#75](https://github.com/tier4/driving_log_replayer/pull/75) | T4PB-24705 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.7
 
 Minor Tweak, Bug fix
 
-| Module                             | Feature       | Brief summary                                        | Pull request                                                 | JIRA       | Contributor   |
-| ---------------------------------- | ------------- | ---------------------------------------------------- | ------------------------------------------------------------ | ---------- | ------------- |
-| `obstacle_segmentation`            | visualization | publish and record data for visualization            | [#67](https://github.com/tier4/driving_log_replayer/pull/67) | T4PB-23864 | [hayato-m126] |
-| `performance_diag`                 | initial pose  | delete uninitialized publisher                       | [#68](https://github.com/tier4/driving_log_replayer/pull/68) | T4PB-24491 | [hayato-m126] |
-| `localization`, `performance_diag` | initial pose  | use map fit service to correct `initialpose z value` | [#70](https://github.com/tier4/driving_log_replayer/pull/70) | T4PB-24491 | [hayato-m126] |
+| Module                             | Feature       | Brief summary                                        | Pull request                                                 | JIRA       | Contributor                                   |
+| ---------------------------------- | ------------- | ---------------------------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `obstacle_segmentation`            | visualization | publish and record data for visualization            | [#67](https://github.com/tier4/driving_log_replayer/pull/67) | T4PB-23864 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag`                 | initial pose  | delete uninitialized publisher                       | [#68](https://github.com/tier4/driving_log_replayer/pull/68) | T4PB-24491 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization`, `performance_diag` | initial pose  | use map fit service to correct `initialpose z value` | [#70](https://github.com/tier4/driving_log_replayer/pull/70) | T4PB-24491 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.1.6
 
 Minor Tweak
 
-| Module                             | Feature      | Brief summary               | Pull request                                                 | JIRA       | Contributor   |
-| ---------------------------------- | ------------ | --------------------------- | ------------------------------------------------------------ | ---------- | ------------- |
-| `localization`, `performance_diag` | initial pose | set initial pose via ad-api | [#65](https://github.com/tier4/driving_log_replayer/pull/65) | T4PB-24491 | [hayato-m126] |
+| Module                             | Feature      | Brief summary               | Pull request                                                 | JIRA       | Contributor                                   |
+| ---------------------------------- | ------------ | --------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `localization`, `performance_diag` | initial pose | set initial pose via ad-api | [#65](https://github.com/tier4/driving_log_replayer/pull/65) | T4PB-24491 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.1.5
 
 Bug fix
 
-| Module       | Feature      | Brief summary                                            | Pull request                                                 | JIRA       | Contributor   |
-| ------------ | ------------ | -------------------------------------------------------- | ------------------------------------------------------------ | ---------- | ------------- |
-| `perception` | marker color | different colors are applied to tp_gt, tp_est, fp and fn | [#61](https://github.com/tier4/driving_log_replayer/pull/61) | T4PB-24425 | [hayato-m126] |
+| Module       | Feature      | Brief summary                                            | Pull request                                                 | JIRA       | Contributor                                   |
+| ------------ | ------------ | -------------------------------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `perception` | marker color | different colors are applied to tp_gt, tp_est, fp and fn | [#61](https://github.com/tier4/driving_log_replayer/pull/61) | T4PB-24425 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.1.4
 
 Major Changes
 
-| Module       | Feature        | Brief summary                                 | Pull request                                                 | JIRA       | Contributor   |
-| ------------ | -------------- | --------------------------------------------- | ------------------------------------------------------------ | ---------- | ------------- |
-| `perception` | launch process | Removed waiting for conversion of onnx files. | [#59](https://github.com/tier4/driving_log_replayer/pull/59) | T4PB-24362 | [hayato-m126] |
+| Module       | Feature        | Brief summary                                 | Pull request                                                 | JIRA       | Contributor                                   |
+| ------------ | -------------- | --------------------------------------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `perception` | launch process | Removed waiting for conversion of onnx files. | [#59](https://github.com/tier4/driving_log_replayer/pull/59) | T4PB-24362 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.1.3
 
@@ -40,7 +50,7 @@ Major Changes
 
 | Module                  | Feature             | Brief summary                                    | Pull request                                                 | JIRA       | Contributor                                   |
 | ----------------------- | ------------------- | ------------------------------------------------ | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
-| `obstacle segmentation` | evaluation settings | set evaluation period for each bbox              | [#51](https://github.com/tier4/driving_log_replayer/pull/51) | T4PB-24138 | [hayato-m126]                                 |
+| `obstacle segmentation` | evaluation settings | set evaluation period for each bbox              | [#51](https://github.com/tier4/driving_log_replayer/pull/51) | T4PB-24138 | [hayato-m126](https://github.com/hayato-m126) |
 | `obstacle segmentation` | result file         | output timestamp of bounding box and point cloud | [#52](https://github.com/tier4/driving_log_replayer/pull/52) | T4PB-24238 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.1.2
