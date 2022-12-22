@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix(performance_diag): infinite wait at initialization
+* Feat/`#57 <https://github.com/tier4/driving_log_replayer/issues/57>`_ obstacle segmentation visualization (`#73 <https://github.com/tier4/driving_log_replayer/issues/73>`_)
+* fix: change bounding box color (`#72 <https://github.com/tier4/driving_log_replayer/issues/72>`_)
+* Contributors: Hayato Mizushima
+
 1.1.7 (2022-12-20)
 ------------------
 * feat(performance_diag): use map fit
