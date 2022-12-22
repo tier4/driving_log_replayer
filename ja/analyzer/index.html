@@ -957,7 +957,11 @@
 <p><a href="https://docs.web.auto/user-manuals/evaluator/introduction">Autoware Evaluator</a>でビルドして実行されることを考えると、pip などで別途インストールする構成にしてしまうとクラウド基盤側にライブラリを導入するための特別な処理が必要になる。
 ROS のパッケージになっていれば、他のパッケージと自動でインストールされる。</p>
 <h2 id="_4">使い方<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
-<div class="highlight"><pre><span></span><code>driving_log_replayer_analyzer <span class="si">${</span><span class="nv">jsonl_path</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">config_path</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># pythonのcliコマンドで使う場合</span>
+driving_log_replayer_analyzer <span class="si">${</span><span class="nv">jsonl_path</span><span class="si">}</span> -c <span class="si">${</span><span class="nv">config_path</span><span class="si">}</span>
+
+<span class="c1"># ros2 launchから使う。こちらは後で消す予定</span>
+ros2 launch driving_log_replayer obstacle_segmentation_analyze.launch.py <span class="nv">result_json_path</span><span class="o">=</span><span class="si">${</span><span class="nv">jsonl_path</span><span class="si">}</span>
 </code></pre></div>
 <h2 id="_5">これからやる<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <p>現状では、cli と、ros2 の launch で同じことをやっているだけに過ぎないが、今後用途を以下のように分けていく。</p>
