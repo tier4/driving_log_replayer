@@ -31,7 +31,9 @@ def generate_launch_description():
     )
     rviz_node = driving_log_replayer.launch_common.get_rviz("autoware.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
-        "performance_diag", python_node=True
+        "performance_diag",
+        python_node=True,
+        addition_parameter={"localization": LaunchConfiguration("localization")},
     )
     evaluator_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(evaluator_node)
 

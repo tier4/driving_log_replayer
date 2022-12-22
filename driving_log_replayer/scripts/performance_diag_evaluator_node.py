@@ -305,6 +305,7 @@ class PerformanceDiagEvaluator(Node):
         super().__init__("performance_diag_evaluator")
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
+        self.declare_parameter("localization", False)
 
         self.__timer_group = MutuallyExclusiveCallbackGroup()
         self.__tf_buffer = Buffer()
@@ -312,6 +313,9 @@ class PerformanceDiagEvaluator(Node):
 
         scenario_path = os.path.expandvars(
             self.get_parameter("scenario_path").get_parameter_value().string_value
+        )
+        self.__launch_localization = (
+            self.get_parameter("scenario_path").get_parameter_value().bool_value
         )
         self.__scenario_yaml_obj = None
         with open(scenario_path, "r") as scenario_file:
@@ -376,16 +380,21 @@ class PerformanceDiagEvaluator(Node):
         self.__map_fit_client = self.create_client(
             PoseWithCovarianceStamped, "/localization/util/fit_map_height"
         )
-        while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("service not available, waiting again...")
-        while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("service not available, waiting again...")
+        if self.__launch_localization:
+            while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
+                self.get_logger().warning("service not available, waiting again...")
+            while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
+                self.get_logger().warning("service not available, waiting again...")
 
     def timer_cb(self) -> None:
         self.__current_time = self.get_clock().now().to_msg()
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self.__current_time.sec > 0:
-            if self.__initial_pose is not None and not self.__initial_pose_success:
+            if (
+                self.__launch_localization
+                and self.__initial_pose is not None
+                and not self.__initial_pose_success
+            ):
                 self.__initial_pose.header.stamp = self.__current_time
                 self.__initial_pose.header.stamp = self.__current_time
                 future_map_fit = self.__map_fit_client.call_async(
