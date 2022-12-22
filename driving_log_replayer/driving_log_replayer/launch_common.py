@@ -189,6 +189,7 @@ def get_recorder(record_config_name: str, record_topics: list):
             os.path.join(
                 get_package_share_directory("driving_log_replayer"), "config", record_config_name
             ),
+            "--use-sim-time",
         ]
     )
     return ExecuteProcess(cmd=record_cmd)
@@ -209,6 +210,7 @@ def get_regex_recorder(record_config_name: str, allowlist: str):
         ),
         "-e",
         allowlist,
+        "--use-sim-time",
     ]
     return ExecuteProcess(cmd=record_cmd)
 
