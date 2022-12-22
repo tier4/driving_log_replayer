@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.8 (2022-12-22)
+------------------
 * fix(performance_diag): infinite wait at initialization
 * Feat/`#57 <https://github.com/tier4/driving_log_replayer/issues/57>`_ obstacle segmentation visualization (`#73 <https://github.com/tier4/driving_log_replayer/issues/73>`_)
 * fix: change bounding box color (`#72 <https://github.com/tier4/driving_log_replayer/issues/72>`_)
