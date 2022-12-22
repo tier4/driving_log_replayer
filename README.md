@@ -4,8 +4,8 @@ Driving Log Replayer is a ROS package that evaluates the functionality of Autowa
 
 ## Requirements
 
-- ROS2 galactic / humble
-- [Python 3.8 / 3.10](https://www.python.org/)
+- ROS2 humble
+- [Python 3.10](https://www.python.org/)
 - [pipx](https://pipxproject.github.io/pipx/)
   - **Please do not install pipx using apt**
   - See the above link, and install pipx using pip
