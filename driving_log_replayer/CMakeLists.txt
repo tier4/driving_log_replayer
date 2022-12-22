@@ -29,7 +29,6 @@ install(PROGRAMS
   scripts/perception_evaluator_node.py
   scripts/perception_database_result.py
   scripts/obstacle_segmentation_evaluator_node.py
-  scripts/obstacle_segmentation_analyzer.py
   scripts/performance_diag_evaluator_node.py
   scripts/localization_evaluator_node.py
   DESTINATION lib/${PROJECT_NAME}
