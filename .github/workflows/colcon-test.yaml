@@ -15,13 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         ros_distribution:
-          - galactic
           - humble
         include:
-          # Galactic Geochelone (May 2021 - November 2022)
-          - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
-            ros_distribution: galactic
-            ros_version: 2
           # Humble Hawksbill (May 2022 - May 2027)
           - docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-ros-base-latest
             ros_distribution: humble
@@ -56,12 +51,3 @@ jobs:
           target-ros2-distro: ${{ matrix.ros_distribution }}
           vcs-repo-file-url: github_action_dependency.repos
           import-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Notify Slack
-        uses: 8398a7/action-slack@v2
-        if: failure()
-        with:
-          status: ${{ job.status }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
