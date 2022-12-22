@@ -181,6 +181,8 @@ def get_recorder(record_config_name: str, record_topics: list):
         ["ros2", "bag", "record"]
         + record_topics
         + [
+            "-s",
+            "mcap",
             "-o",
             LaunchConfiguration("result_bag_path"),
             "--qos-profile-overrides-path",
@@ -197,6 +199,8 @@ def get_regex_recorder(record_config_name: str, allowlist: str):
         "ros2",
         "bag",
         "record",
+        "-s",
+        "mcap",
         "-o",
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
