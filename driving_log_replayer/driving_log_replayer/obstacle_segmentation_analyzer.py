@@ -23,7 +23,7 @@ from driving_log_replayer_analyzer.calc import fail_3_times_in_a_row
 from driving_log_replayer_analyzer.config import Config
 from driving_log_replayer_analyzer.config import load_config
 from driving_log_replayer_analyzer.jsonl_parser import JsonlParser
-from driving_log_replayer_analyzer.plot.scatter_plot import PlotBase
+from driving_log_replayer_analyzer.plot.plot_base import PlotBase
 import yaml
 
 
