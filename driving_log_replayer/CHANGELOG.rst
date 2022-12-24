@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: no module named plotly (`#78 <https://github.com/tier4/driving_log_replayer/issues/78>`_)
+* Contributors: Hayato Mizushima
+
 1.1.8 (2022-12-22)
 ------------------
 * fix(performance_diag): infinite wait at initialization
