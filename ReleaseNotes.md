@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.9
+
+Bug fix
+
+| Module                  | Feature       | Brief summary    | Pull request                                                 | JIRA       | Contributor                                   |
+| ----------------------- | ------------- | ---------------- | ------------------------------------------------------------ | ---------- | --------------------------------------------- |
+| `obstacle_segmentation` | visualization | fix import error | [#78](https://github.com/tier4/driving_log_replayer/pull/78) | T4PB-23864 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.8
 
 Minor Tweak, Bug fix
