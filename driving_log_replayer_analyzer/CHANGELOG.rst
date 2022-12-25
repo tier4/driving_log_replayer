@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.9 (2022-12-25)
+------------------
 * fix: no module named plotly (`#78 <https://github.com/tier4/driving_log_replayer/issues/78>`_)
 * Contributors: Hayato Mizushima
 
