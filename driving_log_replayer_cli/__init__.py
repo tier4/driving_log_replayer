@@ -1,5 +1,5 @@
 import click
-from driving_log_replayer_cli.configure import configure
+from driving_log_replayer_cli.configuration import configuration
 from driving_log_replayer_cli.simulation import simulation
 import pkg_resources
 
@@ -9,7 +9,7 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
 def main():
-    cmd.add_command(configure)
+    cmd.add_command(configuration)
     cmd.add_command(simulation)
     cmd()
 
