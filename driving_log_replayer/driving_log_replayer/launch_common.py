@@ -23,6 +23,7 @@ from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
+from launch.substitutions import PythonExpression
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
@@ -189,9 +190,14 @@ def get_recorder(record_config_name: str, record_topics: list):
             os.path.join(
                 get_package_share_directory("driving_log_replayer"), "config", record_config_name
             ),
+            "--use-sim-time",
         ]
     )
-    return ExecuteProcess(cmd=record_cmd)
+    # Start after play to avoid time starting in UNIX epoch(1970-01-01-00:00:00)
+    return ExecuteProcess(
+        cmd=["sleep", PythonExpression([LaunchConfiguration("play_delay"), "+2.0"])],
+        on_exit=[ExecuteProcess(cmd=record_cmd)],
+    )
 
 
 def get_regex_recorder(record_config_name: str, allowlist: str):
@@ -209,8 +215,13 @@ def get_regex_recorder(record_config_name: str, allowlist: str):
         ),
         "-e",
         allowlist,
+        "--use-sim-time",
     ]
-    return ExecuteProcess(cmd=record_cmd)
+    # Start after play to avoid time starting in UNIX epoch(1970-01-01-00:00:00)
+    return ExecuteProcess(
+        cmd=["sleep", PythonExpression([LaunchConfiguration("play_delay"), "+2.0"])],
+        on_exit=[ExecuteProcess(cmd=record_cmd)],
+    )
 
 
 def get_player(additional_argument=None):

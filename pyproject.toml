@@ -21,7 +21,7 @@ driving_log_replayer = "driving_log_replayer_cli:main"
 driving_log_replayer_analyzer = "driving_log_replayer_analyzer.main:main"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 termcolor = "^1.1.0"
 natsort = "^7.1.1"
 PyYAML = "^5.4.1"
