@@ -18,7 +18,7 @@ include = [
 
 [tool.poetry.scripts]
 driving_log_replayer = "driving_log_replayer_cli:main"
-driving_log_replayer_analyzer = "driving_log_replayer_analyzer.main:main"
+driving_log_replayer_analyzer = "driving_log_replayer_analyzer:main"
 
 [tool.poetry.dependencies]
 python = "^3.8"
