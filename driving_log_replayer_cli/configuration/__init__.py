@@ -6,12 +6,12 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
-def configure():
+def configuration():
     """Command to setup driving_log_replayer config file."""
     pass
 
 
-@configure.command(context_settings=CONTEXT_SETTINGS)
+@configuration.command(context_settings=CONTEXT_SETTINGS)
 @click.option("--data_directory", "-d", required=True, type=str)
 @click.option("--output_directory", "-o", required=True, type=str)
 @click.option("--autoware_path", "-a", required=True, type=str)
