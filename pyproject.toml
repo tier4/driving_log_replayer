@@ -6,7 +6,7 @@ authors = [
   "Hayato Mizushima <hayato.mizushima@tier4.jp>",
   "Keisuke Shima <keisuke.shima@tier4.jp>",
 ]
-license = "Apache V2"
+license = "Apache-2.0"
 packages = [
   { include = "driving_log_replayer_cli"},
   { include = "driving_log_replayer_analyzer", from="driving_log_replayer_analyzer"},

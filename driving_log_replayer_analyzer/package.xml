@@ -5,7 +5,7 @@
   <version>1.1.9</version>
   <description>The driving_log_replayer_analyzer package</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
-  <license>Apache V2</license>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>

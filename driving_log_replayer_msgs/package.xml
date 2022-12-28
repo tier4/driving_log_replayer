@@ -5,7 +5,7 @@
   <version>1.1.9</version>
   <description>driving_log_replayer msgs</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
-  <license>Apache V2</license>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
   <build_depend>autoware_cmake</build_depend>
