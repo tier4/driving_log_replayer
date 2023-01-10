@@ -15,7 +15,7 @@
 from dataclasses import dataclass
 from typing import Dict
 
-from .position import Position
+from driving_log_replayer_analyzer.data.position import Position
 
 
 @dataclass
