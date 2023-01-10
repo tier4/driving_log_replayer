@@ -14,9 +14,9 @@
 
 from pathlib import Path
 
-from driving_log_replayer_analyzer.calc import fail_3_times_in_a_row
 from driving_log_replayer_analyzer.config import load_config
-from driving_log_replayer_analyzer.jsonl_parser import JsonlParser
+from driving_log_replayer_analyzer.data.calc import fail_3_times_in_a_row
+from driving_log_replayer_analyzer.data.jsonl_parser import JsonlParser
 from driving_log_replayer_analyzer.plot.bird_view_plot import BirdViewPlot
 from driving_log_replayer_analyzer.plot.line_plot import LinePlot
 from driving_log_replayer_analyzer.plot.scatter_plot import ScatterPlot
