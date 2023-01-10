@@ -18,12 +18,12 @@ from pathlib import Path
 import sys
 from typing import List
 
-from .config import Config
-from .data.common import Common
-from .data.detection import Detection
-from .data.non_detection import FpDistance
-from .data.non_detection import NonDetection
-from .data.summary import Summary
+from driving_log_replayer_analyzer.config import Config
+from driving_log_replayer_analyzer.data.common import Common
+from driving_log_replayer_analyzer.data.detection import Detection
+from driving_log_replayer_analyzer.data.non_detection import FpDistance
+from driving_log_replayer_analyzer.data.non_detection import NonDetection
+from driving_log_replayer_analyzer.data.summary import Summary
 
 
 class JsonlParser:
