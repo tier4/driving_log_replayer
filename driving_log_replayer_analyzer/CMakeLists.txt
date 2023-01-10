@@ -8,5 +8,5 @@ autoware_package()
 ament_python_install_package(${PROJECT_NAME})
 
 ament_auto_package(INSTALL_TO_SHARE
-  config
+  ${PROJECT_NAME}/config
 )
