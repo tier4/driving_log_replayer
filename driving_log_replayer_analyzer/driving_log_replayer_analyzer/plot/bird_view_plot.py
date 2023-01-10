@@ -14,7 +14,7 @@
 
 import plotly.express as px
 
-from .plot_base import PlotBase
+from . import PlotBase
 
 
 class BirdViewPlot(PlotBase):
