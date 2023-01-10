@@ -40,7 +40,7 @@ def obstacle_segmentation(input_jsonl: str, output_dir: Optional[str], config_ya
     else:
         p_output_dir = Path(os.path.expandvars(output_dir))
     if config_yaml is None:
-        p_config = Path.home().joinpath("config.yaml")
+        p_config = Path(__file__).resolve().parent.parent.joinpath("config", "config.yaml")
     else:
         p_config = Path(os.path.expandvars(config_yaml))
     os_vis(p_input_jsonl, p_output_dir, p_config)
