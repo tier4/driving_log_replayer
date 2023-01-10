@@ -18,7 +18,7 @@ from typing import Any
 
 import yaml
 
-from .data.non_detection import FpDistance
+from ..data.non_detection import FpDistance
 
 
 @dataclass
