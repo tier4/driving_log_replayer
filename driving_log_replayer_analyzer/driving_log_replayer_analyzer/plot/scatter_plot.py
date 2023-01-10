@@ -16,7 +16,7 @@ from pathlib import Path
 
 import plotly.express as px
 
-from .plot_base import PlotBase
+from . import PlotBase
 
 
 class ScatterPlot(PlotBase):
