@@ -18,7 +18,7 @@ from pathlib import Path
 import sys
 from typing import List
 
-from driving_log_replayer_analyzer.config import Config
+from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
 from driving_log_replayer_analyzer.data.common import Common
 from driving_log_replayer_analyzer.data.detection import Detection
 from driving_log_replayer_analyzer.data.non_detection import FpDistance
