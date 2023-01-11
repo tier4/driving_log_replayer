@@ -19,8 +19,8 @@ from pathlib import Path
 from typing import Dict
 from typing import List
 
-from driving_log_replayer_analyzer.data import fail_3_times_in_a_row
-from driving_log_replayer_analyzer.data import get_min_range
+from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
+from driving_log_replayer_analyzer.data.obstacle_segmentation import get_min_range
 
 
 @dataclass
