@@ -19,22 +19,22 @@ import sys
 from typing import List
 
 from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
-from driving_log_replayer_analyzer.data.common import Common
-from driving_log_replayer_analyzer.data.detection import Detection
-from driving_log_replayer_analyzer.data.non_detection import FpDistance
-from driving_log_replayer_analyzer.data.non_detection import NonDetection
+from driving_log_replayer_analyzer.data import Stamp
+from driving_log_replayer_analyzer.data.obstacle_segmentation import Detection
+from driving_log_replayer_analyzer.data.obstacle_segmentation import FpDistance
+from driving_log_replayer_analyzer.data.obstacle_segmentation import NonDetection
 from driving_log_replayer_analyzer.data.summary import Summary
 
 
 class JsonlParser:
     summary: Summary
-    common: List[Common]
+    stamp: List[Stamp]
     detection: List[Detection]
     non_detection: List[NonDetection]
 
     def __init__(self, filepath: Path, config: Config) -> None:
         self.summary = Summary()
-        self.common = []
+        self.stamp = []
         self.detection = []
         self.non_detection = []
         self._read_jsonl_results(filepath)
@@ -48,9 +48,9 @@ class JsonlParser:
         for line in lines:
             json_dict = json.loads(line)
             self.summary.update(json_dict)
-            common = Common(json_dict)
-            if common.validate():
-                self.common.append(common)
+            stamp = Stamp(json_dict)
+            if stamp.validate():
+                self.stamp.append(stamp)
             self.detection.append(Detection(json_dict))
             self.non_detection.append(NonDetection(json_dict))
 
@@ -89,8 +89,8 @@ class JsonlParser:
     def get_topic_rate(self) -> List:
         ret = []
         index = 1
-        previous_time = self.common[0].timestamp_system
-        for frame in self.common:
+        previous_time = self.stamp[0].timestamp_system
+        for frame in self.stamp:
             time_diff = frame.timestamp_system - previous_time
             if time_diff < sys.float_info.min:
                 continue
