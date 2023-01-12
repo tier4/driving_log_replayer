@@ -22,6 +22,7 @@ from typing import Dict
 from typing import List
 
 from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
+from driving_log_replayer_analyzer.config.obstacle_segmentation import FpDistance
 from driving_log_replayer_analyzer.data import Position
 from driving_log_replayer_analyzer.data import Stamp
 import pandas as pd
@@ -58,14 +59,6 @@ def get_min_range(data: List) -> float:
 
     # Passしたもののうち、最大の距離を計算する。ただし、一度でもFailするとダメなので、その条件も加える。
     return df[(df["Val"] == 1) & (df["Dist"] < minimum_fail_dist)].max()["Dist"]
-
-
-@dataclass
-class FpDistance:
-    very_near: float
-    near: float
-    medium: float
-    far: float
 
 
 @dataclass

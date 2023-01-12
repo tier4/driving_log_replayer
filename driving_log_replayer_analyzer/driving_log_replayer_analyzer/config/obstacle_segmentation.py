@@ -16,8 +16,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from driving_log_replayer_analyzer.data.obstacle_segmentation import FpDistance
 import yaml
+
+
+@dataclass
+class FpDistance:
+    very_near: float
+    near: float
+    medium: float
+    far: float
 
 
 @dataclass
