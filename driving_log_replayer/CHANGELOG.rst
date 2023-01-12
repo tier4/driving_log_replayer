@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: catch TransformException (`#85 <https://github.com/tier4/driving_log_replayer/issues/85>`_)
+* fix: add exec depend (`#83 <https://github.com/tier4/driving_log_replayer/issues/83>`_)
+* chore: license (`#82 <https://github.com/tier4/driving_log_replayer/issues/82>`_)
+* Contributors: Hayato Mizushima
+
 1.1.9 (2022-12-25)
 ------------------
 * fix: no module named plotly (`#78 <https://github.com/tier4/driving_log_replayer/issues/78>`_)
