@@ -10,8 +10,14 @@
       
         <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/en/overview/setup/">
       
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../command/">
+      
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
     
     
       
@@ -19,11 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.975780f9.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6b71719e.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.2505c338.min.css">
-        
       
       
 
@@ -117,8 +122,6 @@
       <form class="md-header__option" data-md-component="palette">
         
           
-          
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
@@ -126,8 +129,6 @@
             </label>
           
         
-          
-          
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
@@ -380,26 +381,29 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
-      
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
         
       
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
-        <label class="md-nav__link" for="__nav_2">
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2" tabindex="0" aria-expanded="false">
           Quick start
           <span class="md-nav__icon md-icon"></span>
         </label>
@@ -514,8 +518,9 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
         
@@ -676,8 +681,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
         
@@ -720,8 +728,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
         
@@ -764,8 +775,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
         
@@ -876,8 +890,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
         
@@ -997,10 +1014,9 @@
                 
                   
 
-  <a href="https://github.com/tier4/driving_log_replayer/edit/main/docs/overview/setup.en.md" title="Edit this page" class="md-content__button md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+  
+  
+
 
 
 <h1 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">#</a></h1>
@@ -1010,40 +1026,40 @@
 <p>Therefore, before using the cli, create a $HOME/.driving_log_replayer.config.toml file in the format presented below.
 You can create it manually or by using the driving_log_replayer configure command.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># manual creation</span>
-nano <span class="nv">$HOME</span>/.driving_log_replayer.config.toml
+nano<span class="w"> </span><span class="nv">$HOME</span>/.driving_log_replayer.config.toml
 
 <span class="c1"># cli creation</span>
-driving_log_replayer configure register -d <span class="si">${</span><span class="nv">data_directory</span><span class="si">}</span> -o <span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span> -a <span class="si">${</span><span class="nv">autoware_path</span><span class="si">}</span> <span class="o">[</span>-p <span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="o">]</span>
+driving_log_replayer<span class="w"> </span>configure<span class="w"> </span>register<span class="w"> </span>-d<span class="w"> </span><span class="si">${</span><span class="nv">data_directory</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span><span class="w"> </span>-a<span class="w"> </span><span class="si">${</span><span class="nv">autoware_path</span><span class="si">}</span><span class="w"> </span><span class="o">[</span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="o">]</span>
 </code></pre></div>
 <p>At least one profile is required, and one must be named <code>default</code>.</p>
 <p>Specifying the profile name with <code>-p ${profile_name}</code> in the commands described below will load the settings specified in the profile.
 You can switch between multiple autoware profiles, and if no profile is specified, default is used.</p>
-<div class="highlight"><pre><span></span><code><span class="k">[profile_name]</span><span class="w"></span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the data folder used as input for the simulation&quot;</span><span class="w"></span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the folder to output the simulation results&quot;</span><span class="w"></span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the autoware workspace folder&quot;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">[profile_name]</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the data folder used as input for the simulation&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the folder to output the simulation results&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the autoware workspace folder&quot;</span>
 </code></pre></div>
 <p>example setting</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># default is required and selected when profile name is omitted</span><span class="w"></span>
-<span class="k">[default]</span><span class="w"></span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/default&quot;</span><span class="w"></span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/default&quot;</span><span class="w"></span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1"># default is required and selected when profile name is omitted</span>
+<span class="k">[default]</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/default&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/default&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
 
-<span class="k">[localization]</span><span class="w"></span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/localization&quot;</span><span class="w"></span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/localization&quot;</span><span class="w"></span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span><span class="w"></span>
+<span class="k">[localization]</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/localization&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/localization&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
 
-<span class="k">[obstacle_segmentation]</span><span class="w"></span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/obstacle_segmentation&quot;</span><span class="w"></span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/obstacle_segmentation&quot;</span><span class="w"></span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span><span class="w"></span>
+<span class="k">[obstacle_segmentation]</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/obstacle_segmentation&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/obstacle_segmentation&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
 
-<span class="k">[perception]</span><span class="w"></span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/perception&quot;</span><span class="w"></span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/perception&quot;</span><span class="w"></span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span><span class="w"></span>
+<span class="k">[perception]</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/perception&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/perception&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
 </code></pre></div>
 <h2 id="folder-structure-and-file-naming-rules">Folder structure and file naming rules<a class="headerlink" href="#folder-structure-and-file-naming-rules" title="Permanent link">#</a></h2>
 <p>This section describes the folder structure and file naming rules expected by <code>driving_log_replayer</code>.</p>
@@ -1053,47 +1069,47 @@ Also, by placing multiple folders in <code>data_directory</code> multiple tests 
 <p>A folder where resources used in the simulation are stored.</p>
 <p>For each test case: a scenario, rosbag, and dataset are placed.</p>
 <h3 id="data-folder-structure-for-localization-and-performance_diag">Data Folder Structure for localization and performance_diag<a class="headerlink" href="#data-folder-structure-for-localization-and-performance_diag" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code>driving_log_replayer_data             // .driving_log_replayer.config の data_directory
+<div class="highlight"><pre><span></span><code>driving_log_replayer_data<span class="w">             </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>data_directory
 │
-├── TC001                          // Test <span class="k">case</span> directory. Directry name can be named arbitrarily
-│   ├── scenario.yaml             // Scenario
-│   └── input_bag                 // Bag <span class="k">for</span> input containing sensor data
-│       ├── input_bag_0.db3       // Binary file of bag
-│       └── metadata.yaml         // Metadata file of bag
+├──<span class="w"> </span>TC001<span class="w">                          </span>//<span class="w"> </span>Test<span class="w"> </span><span class="k">case</span><span class="w"> </span>directory.<span class="w"> </span>Directry<span class="w"> </span>name<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>named<span class="w"> </span>arbitrarily
+│<span class="w">   </span>├──<span class="w"> </span>scenario.yaml<span class="w">             </span>//<span class="w"> </span>Scenario
+│<span class="w">   </span>└──<span class="w"> </span>input_bag<span class="w">                 </span>//<span class="w"> </span>Bag<span class="w"> </span><span class="k">for</span><span class="w"> </span>input<span class="w"> </span>containing<span class="w"> </span>sensor<span class="w"> </span>data
+│<span class="w">       </span>├──<span class="w"> </span>input_bag_0.db3<span class="w">       </span>//<span class="w"> </span>Binary<span class="w"> </span>file<span class="w"> </span>of<span class="w"> </span>bag
+│<span class="w">       </span>└──<span class="w"> </span>metadata.yaml<span class="w">         </span>//<span class="w"> </span>Metadata<span class="w"> </span>file<span class="w"> </span>of<span class="w"> </span>bag
 │
-├── TC002                           // Test <span class="k">case</span> directory. Same structure as TC001
+├──<span class="w"> </span>TC002<span class="w">                           </span>//<span class="w"> </span>Test<span class="w"> </span><span class="k">case</span><span class="w"> </span>directory.<span class="w"> </span>Same<span class="w"> </span>structure<span class="w"> </span>as<span class="w"> </span>TC001
 ...
 </code></pre></div>
 <h3 id="data-folder-structure-for-obstacle_segmentation-and-perception">Data Folder Structure for obstacle_segmentation and perception<a class="headerlink" href="#data-folder-structure-for-obstacle_segmentation-and-perception" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code>driving_log_replayer_data              // .driving_log_replayer.config の data_directory
+<div class="highlight"><pre><span></span><code>driving_log_replayer_data<span class="w">              </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>data_directory
 │
-├── TC001                           // Test <span class="k">case</span> directory. Directry name can be named arbitrarily
-│   ├── scenario.yaml              // Scenario
-│   └── t4_dataset
-│       ├── T4D001                 // t4_dataset directory. If use <span class="k">case</span> is sensing, t4_dataset is always one.
-│       │   ├── annotation
-│       │   ├── data
-│       │   │   └── LIDAR_CONCAT
-│       │   └── input_bag
-│       └── T4D002                 // t4_dataset directory. If use <span class="k">case</span> is peception, t4_dataset can be multiple.
-│           ├── annotation
-│           ├── data
-│           │   └── LIDAR_CONCAT
-│           └── input_bag
-│          ...
+├──<span class="w"> </span>TC001<span class="w">                           </span>//<span class="w"> </span>Test<span class="w"> </span><span class="k">case</span><span class="w"> </span>directory.<span class="w"> </span>Directry<span class="w"> </span>name<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>named<span class="w"> </span>arbitrarily
+│<span class="w">   </span>├──<span class="w"> </span>scenario.yaml<span class="w">              </span>//<span class="w"> </span>Scenario
+│<span class="w">   </span>└──<span class="w"> </span>t4_dataset
+│<span class="w">       </span>├──<span class="w"> </span>T4D001<span class="w">                 </span>//<span class="w"> </span>t4_dataset<span class="w"> </span>directory.<span class="w"> </span>If<span class="w"> </span>use<span class="w"> </span><span class="k">case</span><span class="w"> </span>is<span class="w"> </span>sensing,<span class="w"> </span>t4_dataset<span class="w"> </span>is<span class="w"> </span>always<span class="w"> </span>one.
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>annotation
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>data
+│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>LIDAR_CONCAT
+│<span class="w">       </span>│<span class="w">   </span>└──<span class="w"> </span>input_bag
+│<span class="w">       </span>└──<span class="w"> </span>T4D002<span class="w">                 </span>//<span class="w"> </span>t4_dataset<span class="w"> </span>directory.<span class="w"> </span>If<span class="w"> </span>use<span class="w"> </span><span class="k">case</span><span class="w"> </span>is<span class="w"> </span>peception,<span class="w"> </span>t4_dataset<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>multiple.
+│<span class="w">           </span>├──<span class="w"> </span>annotation
+│<span class="w">           </span>├──<span class="w"> </span>data
+│<span class="w">           </span>│<span class="w">   </span>└──<span class="w"> </span>LIDAR_CONCAT
+│<span class="w">           </span>└──<span class="w"> </span>input_bag
+│<span class="w">          </span>...
 │
-├── TC002                           // Test <span class="k">case</span> directory. Same structure as TC001
+├──<span class="w"> </span>TC002<span class="w">                           </span>//<span class="w"> </span>Test<span class="w"> </span><span class="k">case</span><span class="w"> </span>directory.<span class="w"> </span>Same<span class="w"> </span>structure<span class="w"> </span>as<span class="w"> </span>TC001
 ...
 </code></pre></div>
 <h3 id="map-folder">Map Folder<a class="headerlink" href="#map-folder" title="Permanent link">#</a></h3>
 <p>A folder where all the maps used in the simulation are stored.</p>
 <div class="highlight"><pre><span></span><code>autoware_map
 │
-├── LocalMapPath1            // Path specified by LocalMapPath <span class="k">in</span> the scenario
-│   ├── lanelet2_map.osm    // lanelet file
-│   └── pointcloud_map.pcd  // pcd file
+├──<span class="w"> </span>LocalMapPath1<span class="w">            </span>//<span class="w"> </span>Path<span class="w"> </span>specified<span class="w"> </span>by<span class="w"> </span>LocalMapPath<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>scenario
+│<span class="w">   </span>├──<span class="w"> </span>lanelet2_map.osm<span class="w">    </span>//<span class="w"> </span>lanelet<span class="w"> </span>file
+│<span class="w">   </span>└──<span class="w"> </span>pointcloud_map.pcd<span class="w">  </span>//<span class="w"> </span>pcd<span class="w"> </span>file
 │
-├── LocalMapPath2            // Path specified by LocalMapPath <span class="k">in</span> the scenario
+├──<span class="w"> </span>LocalMapPath2<span class="w">            </span>//<span class="w"> </span>Path<span class="w"> </span>specified<span class="w"> </span>by<span class="w"> </span>LocalMapPath<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>scenario
 ...
 </code></pre></div>
 
@@ -1116,42 +1132,6 @@ Also, by placing multiple folders in <code>data_directory</code> multiple tests 
       </main>
       
         <footer class="md-footer">
-  
-    
-    <nav class="md-footer__inner md-grid" aria-label="Footer" >
-      
-        
-        <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Overview
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../command/" class="md-footer__link md-footer__link--next" aria-label="Next: Command" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Command
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1178,12 +1158,11 @@ Also, by placing multiple folders in <code>data_directory</code> multiple tests 
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top"], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top"], "search": "../../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.ba449ae6.min.js"></script>
       
-    
     
   </body>
 </html>

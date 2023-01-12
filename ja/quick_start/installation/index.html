@@ -10,8 +10,14 @@
       
         <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/quick_start/installation/">
       
+      
+        <link rel="prev" href="../../">
+      
+      
+        <link rel="next" href="../setup/">
+      
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
     
     
       
@@ -19,11 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.975780f9.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6b71719e.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.2505c338.min.css">
-        
       
       
 
@@ -117,8 +122,6 @@
       <form class="md-header__option" data-md-component="palette">
         
           
-          
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
@@ -126,8 +129,6 @@
             </label>
           
         
-          
-          
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
@@ -382,26 +383,27 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
-      
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
-        <label class="md-nav__link" for="__nav_2">
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2" tabindex="0" aria-expanded="true">
           Quick start
           <span class="md-nav__icon md-icon"></span>
         </label>
@@ -562,8 +564,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       
         
@@ -642,8 +647,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
         
@@ -686,8 +694,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
         
@@ -730,8 +741,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
         
@@ -842,8 +856,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
         
@@ -929,10 +946,9 @@
                 
                   
 
-  <a href="https://github.com/tier4/driving_log_replayer/edit/main/docs/quick_start/installation.ja.md" title="編集" class="md-content__button md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+  
+  
+
 
 
 <h1 id="_1">インストール<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
@@ -954,56 +970,56 @@
 <ol>
 <li>
 <p>Autoware workspace に移動する:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span> autoware
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>autoware
 </code></pre></div>
 </li>
 <li>
 <p>依存パッケージを追加する:</p>
-<div class="highlight"><pre><span></span><code>nano simulator.repos
+<div class="highlight"><pre><span></span><code>nano<span class="w"> </span>simulator.repos
 <span class="c1"># 以下の内容を追加する</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>  simulator/perception_eval:
-    type: git
-    url: https://github.com/tier4/autoware_perception_evaluation.git
-    version: main
-  simulator/driving_log_replayer:
-    type: git
-    url: https://github.com/tier4/driving_log_replayer.git
-    version: main
-  simulator/vendor/ros2_numpy:
-    type: git
-    url: https://github.com/Box-Robotics/ros2_numpy.git
-    <span class="c1"># version humble is available for both humble and galactic</span>
-    version: humble
-  simulator/vendor/ros2bag_extensions:
-    type: git
-    url: https://github.com/tier4/ros2bag_extensions.git
-    version: main
+<div class="highlight"><pre><span></span><code><span class="w">  </span>simulator/perception_eval:
+<span class="w">    </span>type:<span class="w"> </span>git
+<span class="w">    </span>url:<span class="w"> </span>https://github.com/tier4/autoware_perception_evaluation.git
+<span class="w">    </span>version:<span class="w"> </span>main
+<span class="w">  </span>simulator/driving_log_replayer:
+<span class="w">    </span>type:<span class="w"> </span>git
+<span class="w">    </span>url:<span class="w"> </span>https://github.com/tier4/driving_log_replayer.git
+<span class="w">    </span>version:<span class="w"> </span>main
+<span class="w">  </span>simulator/vendor/ros2_numpy:
+<span class="w">    </span>type:<span class="w"> </span>git
+<span class="w">    </span>url:<span class="w"> </span>https://github.com/Box-Robotics/ros2_numpy.git
+<span class="w">    </span><span class="c1"># version humble is available for both humble and galactic</span>
+<span class="w">    </span>version:<span class="w"> </span>humble
+<span class="w">  </span>simulator/vendor/ros2bag_extensions:
+<span class="w">    </span>type:<span class="w"> </span>git
+<span class="w">    </span>url:<span class="w"> </span>https://github.com/tier4/ros2bag_extensions.git
+<span class="w">    </span>version:<span class="w"> </span>main
 </code></pre></div>
 </li>
 <li>
 <p>simulator の依存パッケージをインポートする:</p>
-<div class="highlight"><pre><span></span><code>vcs import src &lt; simulator.repos
+<div class="highlight"><pre><span></span><code>vcs<span class="w"> </span>import<span class="w"> </span>src<span class="w"> </span>&lt;<span class="w"> </span>simulator.repos
 </code></pre></div>
 </li>
 <li>
 <p>依存解決のために rosdep を更新する:</p>
-<div class="highlight"><pre><span></span><code>rosdep update
+<div class="highlight"><pre><span></span><code>rosdep<span class="w"> </span>update
 </code></pre></div>
 </li>
 <li>
 <p>rosdep で依存のパッケージをインストールする:</p>
-<div class="highlight"><pre><span></span><code>rosdep install -y --from-paths src --ignore-src --rosdistro <span class="nv">$ROS_DISTRO</span>
+<div class="highlight"><pre><span></span><code>rosdep<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--from-paths<span class="w"> </span>src<span class="w"> </span>--ignore-src<span class="w"> </span>--rosdistro<span class="w"> </span><span class="nv">$ROS_DISTRO</span>
 </code></pre></div>
 </li>
 <li>
 <p>ワークスペースをビルドする:</p>
-<div class="highlight"><pre><span></span><code>colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE<span class="o">=</span>Release
+<div class="highlight"><pre><span></span><code>colcon<span class="w"> </span>build<span class="w"> </span>--symlink-install<span class="w"> </span>--cmake-args<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release
 </code></pre></div>
 </li>
 <li>
 <p>driving_log_replayer_cli をインストールする:</p>
-<div class="highlight"><pre><span></span><code>pipx install git+https://github.com/tier4/driving_log_replayer.git
+<div class="highlight"><pre><span></span><code>pipx<span class="w"> </span>install<span class="w"> </span>git+https://github.com/tier4/driving_log_replayer.git
 </code></pre></div>
 </li>
 </ol>
@@ -1027,42 +1043,6 @@
       </main>
       
         <footer class="md-footer">
-  
-    
-    <nav class="md-footer__inner md-grid" aria-label="フッター" >
-      
-        
-        <a href="../../" class="md-footer__link md-footer__link--prev" aria-label="前: Driving Log Replayer ドキュメント" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                前
-              </span>
-              Driving Log Replayer ドキュメント
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../setup/" class="md-footer__link md-footer__link--next" aria-label="次: 設定" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                次
-              </span>
-              設定
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1089,12 +1069,11 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top"], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\u3000\u3001\u3002\uff0c\uff0e]+", "search.placeholder": "\u691c\u7d22", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top"], "search": "../../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.ba449ae6.min.js"></script>
       
-    
     
   </body>
 </html>

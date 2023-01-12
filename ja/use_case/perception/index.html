@@ -10,8 +10,14 @@
       
         <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/use_case/perception/">
       
+      
+        <link rel="prev" href="../obstacle_segmentation/">
+      
+      
+        <link rel="next" href="../performance_diag/">
+      
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
     
     
       
@@ -19,11 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.975780f9.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6b71719e.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.2505c338.min.css">
-        
       
       
 
@@ -117,8 +122,6 @@
       <form class="md-header__option" data-md-component="palette">
         
           
-          
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
@@ -126,8 +129,6 @@
             </label>
           
         
-          
-          
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="grey" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
@@ -380,26 +381,29 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
-      
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
-        
-          
         
       
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
-        <label class="md-nav__link" for="__nav_2">
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2" tabindex="0" aria-expanded="false">
           Quick start
           <span class="md-nav__icon md-icon"></span>
         </label>
@@ -512,8 +516,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       
         
@@ -592,8 +599,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
         
@@ -636,8 +646,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
         
@@ -682,8 +695,9 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
       
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
       
       
         
@@ -964,8 +978,11 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
       
+      
+        
+      
+      <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
         
@@ -1173,10 +1190,9 @@
                 
                   
 
-  <a href="https://github.com/tier4/driving_log_replayer/edit/main/docs/use_case/perception.ja.md" title="編集" class="md-content__button md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+  
+  
+
 
 
 <h1 id="_1">認識機能の評価<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
@@ -1193,8 +1209,8 @@ GPU の性能によって、engine の出力までにかかる時間が異なる
 に記載のディレクトリに engine ファイルが 2 つ出力されるまで待ちます。</p>
 <p>autowarefoundation の autoware.universe を使用した場合の例を以下に示す。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># $HOME/autowareにautowareをインストールした場合</span>
-<span class="nb">source</span> ~/autoware/install/setup.bash
-ros2 launch autoware_launch logging_simulator.launch.xml map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-rosbag vehicle_model:<span class="o">=</span>sample_vehicle sensor_model:<span class="o">=</span>sample_sensor_kit
+<span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
+ros2<span class="w"> </span>launch<span class="w"> </span>autoware_launch<span class="w"> </span>logging_simulator.launch.xml<span class="w"> </span>map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-rosbag<span class="w"> </span>vehicle_model:<span class="o">=</span>sample_vehicle<span class="w"> </span>sensor_model:<span class="o">=</span>sample_sensor_kit
 
 <span class="c1"># ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下の２つが出力されるまでまつ</span>
 <span class="c1"># pts_backbone_neck_head_centerpoint_tiny.engine</span>
@@ -1288,43 +1304,43 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 ユースケースは 1 個のデータセットで行う評価で、データベースは複数のデータセットを用いて、各データセット毎の結果の平均を取る評価である。</p>
 <p>データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。</p>
-<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perception</span><span class="w"></span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3.0</span><span class="w"></span>
-<span class="w">  </span><span class="nt">Datasets</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">f72e1065-7c38-40fe-a4e2-c5bbe6ff6443</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ps1/20210620/CAL_000015</span><span class="w"> </span><span class="c1"># データセット毎にVehicleIdを指定する</span><span class="w"></span>
-<span class="w">        </span><span class="nt">LaunchSensing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># データセット毎にsensing moduleを起動するかを指定する</span><span class="w"></span>
-<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/map/perception</span><span class="w"> </span><span class="c1"># データセット毎にLocalMapPathを指定する</span><span class="w"></span>
-<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># 評価試行回数の内、どの程度(%)評価成功だったら成功とするか</span><span class="w"></span>
-<span class="w">  </span><span class="nt">PerceptionEvaluationConfig</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">evaluation_config_dict</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">evaluation_task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detection</span><span class="w"> </span><span class="c1"># detection/tracking ここで指定したobjectsを評価する</span><span class="w"></span>
-<span class="w">      </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価ラベル</span><span class="w"></span>
-<span class="w">      </span><span class="nt">max_x_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">102.4</span><span class="w"> </span><span class="c1"># 評価対象 object の最大 x 位置</span><span class="w"></span>
-<span class="w">      </span><span class="nt">max_y_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">102.4</span><span class="w"> </span><span class="c1"># 評価対象 object の最大 y 位置</span><span class="w"></span>
-<span class="w">      </span><span class="nt">max_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull</span><span class="w"></span>
-<span class="w">      </span><span class="nt">min_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull</span><span class="w"></span>
-<span class="w">      </span><span class="nt">min_point_numbers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価</span><span class="w"></span>
-<span class="w">      </span><span class="nt">confidence_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象の estimated object の confidence の閾値</span><span class="w"></span>
-<span class="w">      </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象</span><span class="w"></span>
-<span class="w">      </span><span class="nt">center_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[[</span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">],</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]]</span><span class="w"> </span><span class="c1"># 中心間距離マッチング時の閾値</span><span class="w"></span>
-<span class="w">      </span><span class="nt">plane_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 平面距離マッチング時の閾値</span><span class="w"></span>
-<span class="w">      </span><span class="nt">iou_bev_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># BEV IoU 　マッチング時の閾値</span><span class="w"></span>
-<span class="w">      </span><span class="nt">iou_3d_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 3D IoU マッチング時の閾値</span><span class="w"></span>
-<span class="w">  </span><span class="nt">CriticalObjectFilterConfig</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価対象ラベル名</span><span class="w"></span>
-<span class="w">    </span><span class="nt">max_x_position_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価対象 object の最大 x 位置</span><span class="w"></span>
-<span class="w">    </span><span class="nt">max_y_position_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価対象 object の最大 y 位置</span><span class="w"></span>
-<span class="w">    </span><span class="nt">max_distance_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull</span><span class="w"></span>
-<span class="w">    </span><span class="nt">min_distance_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull</span><span class="w"></span>
-<span class="w">    </span><span class="nt">min_point_numbers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価</span><span class="w"></span>
-<span class="w">    </span><span class="nt">confidence_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象の estimated object の confidence の閾値</span><span class="w"></span>
-<span class="w">    </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象</span><span class="w"></span>
-<span class="w">  </span><span class="nt">PerceptionPassFailConfig</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"></span>
-<span class="w">    </span><span class="nt">plane_distance_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 平面距離マッチング時の閾値</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perception</span>
+<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3.0</span>
+<span class="w">  </span><span class="nt">Datasets</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">f72e1065-7c38-40fe-a4e2-c5bbe6ff6443</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ps1/20210620/CAL_000015</span><span class="w"> </span><span class="c1"># データセット毎にVehicleIdを指定する</span>
+<span class="w">        </span><span class="nt">LaunchSensing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># データセット毎にsensing moduleを起動するかを指定する</span>
+<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/map/perception</span><span class="w"> </span><span class="c1"># データセット毎にLocalMapPathを指定する</span>
+<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># 評価試行回数の内、どの程度(%)評価成功だったら成功とするか</span>
+<span class="w">  </span><span class="nt">PerceptionEvaluationConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">evaluation_config_dict</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">evaluation_task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detection</span><span class="w"> </span><span class="c1"># detection/tracking ここで指定したobjectsを評価する</span>
+<span class="w">      </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価ラベル</span>
+<span class="w">      </span><span class="nt">max_x_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">102.4</span><span class="w"> </span><span class="c1"># 評価対象 object の最大 x 位置</span>
+<span class="w">      </span><span class="nt">max_y_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">102.4</span><span class="w"> </span><span class="c1"># 評価対象 object の最大 y 位置</span>
+<span class="w">      </span><span class="nt">max_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull</span>
+<span class="w">      </span><span class="nt">min_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull</span>
+<span class="w">      </span><span class="nt">min_point_numbers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価</span>
+<span class="w">      </span><span class="nt">confidence_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象の estimated object の confidence の閾値</span>
+<span class="w">      </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象</span>
+<span class="w">      </span><span class="nt">center_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[[</span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">],</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]]</span><span class="w"> </span><span class="c1"># 中心間距離マッチング時の閾値</span>
+<span class="w">      </span><span class="nt">plane_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 平面距離マッチング時の閾値</span>
+<span class="w">      </span><span class="nt">iou_bev_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># BEV IoU 　マッチング時の閾値</span>
+<span class="w">      </span><span class="nt">iou_3d_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 3D IoU マッチング時の閾値</span>
+<span class="w">  </span><span class="nt">CriticalObjectFilterConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価対象ラベル名</span>
+<span class="w">    </span><span class="nt">max_x_position_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価対象 object の最大 x 位置</span>
+<span class="w">    </span><span class="nt">max_y_position_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価対象 object の最大 y 位置</span>
+<span class="w">    </span><span class="nt">max_distance_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull</span>
+<span class="w">    </span><span class="nt">min_distance_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull</span>
+<span class="w">    </span><span class="nt">min_point_numbers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価</span>
+<span class="w">    </span><span class="nt">confidence_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 評価対象の estimated object の confidence の閾値</span>
+<span class="w">    </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象</span>
+<span class="w">  </span><span class="nt">PerceptionPassFailConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">plane_distance_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 平面距離マッチング時の閾値</span>
 </code></pre></div>
 <h3 id="_9">評価結果フォーマット<a class="headerlink" href="#_9" title="Permanent link">#</a></h3>
 <p>perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
@@ -1332,40 +1348,40 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 <p>以下に、各フレームのフォーマットとメトリクスのフォーマットを示す。
 <strong>注:結果ファイルフォーマットで解説済みの共通部分については省略する。</strong></p>
 <p>各フレームのフォーマット</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;評価に使用したt4_datasetのフレーム番号&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;PassFail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TPと判定された数&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FPと判定された数&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FNと判定された数&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">      </span><span class="p">]</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;評価に使用したt4_datasetのフレーム番号&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;PassFail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TPと判定された数&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FPと判定された数&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FNと判定された数&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>メトリクスデータのフォーマット</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;FinalScore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;Score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのTP率&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFP率&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFN率&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAP値&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAPH値&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="p">},</span><span class="w"></span>
-<span class="w">      </span><span class="nt">&quot;Error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;ラベル&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルの誤差メトリクス&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;FinalScore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのTP率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFP率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFN率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAP値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAPH値&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;ラベル&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルの誤差メトリクス&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h3 id="pickle">pickle ファイル<a class="headerlink" href="#pickle" title="Permanent link">#</a></h3>
 <p>データベース評価では、複数の bag を再生する必要があるが、ROS の仕様上、1 回の launch で、複数の bag を利用することは出来ない。
@@ -1397,42 +1413,6 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
       
         <footer class="md-footer">
   
-    
-    <nav class="md-footer__inner md-grid" aria-label="フッター" >
-      
-        
-        <a href="../obstacle_segmentation/" class="md-footer__link md-footer__link--prev" aria-label="前: 点群生成の評価" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                前
-              </span>
-              点群生成の評価
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../performance_diag/" class="md-footer__link md-footer__link--next" aria-label="次: 診断機能の評価" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                次
-              </span>
-              診断機能の評価
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
-  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -1458,12 +1438,11 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top"], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\u3000\u3001\u3002\uff0c\uff0e]+", "search.placeholder": "\u691c\u7d22", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top"], "search": "../../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.ba449ae6.min.js"></script>
       
-    
     
   </body>
 </html>
