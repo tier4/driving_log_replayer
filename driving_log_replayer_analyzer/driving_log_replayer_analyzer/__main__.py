@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import importlib.metadata
+from importlib.metadata import version
 
 import click
 from driving_log_replayer_analyzer.analysis import analysis
 
-__version__ = importlib.metadata.version("driving_log_replayer_cli")
-
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
+
+try:
+    __version__ = version(__package__)
+except Exception:
+    __version__ = "0.0.0"
 
 
 def print_version(ctx, param, value):
