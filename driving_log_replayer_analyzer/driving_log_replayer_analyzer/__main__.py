@@ -22,11 +22,6 @@ __version__ = importlib.metadata.version("driving_log_replayer_cli")
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
-def main():
-    cmd.add_command(analysis)
-    cmd()
-
-
 def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
@@ -44,3 +39,7 @@ def cmd():
     https://github.com/tier4/driving_log_replayer
     """
     pass
+
+
+cmd.add_command(analysis)
+cmd()
