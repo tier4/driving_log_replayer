@@ -56,12 +56,3 @@ jobs:
           target-ros2-distro: ${{ matrix.ros_distribution }}
           vcs-repo-file-url: github_action_dependency.repos
           import-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Notify Slack
-        uses: 8398a7/action-slack@v2
-        if: failure()
-        with:
-          status: ${{ job.status }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
