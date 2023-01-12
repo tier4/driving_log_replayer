@@ -32,6 +32,7 @@ from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
+from geometry_msgs.msg import TransformStamped
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.clock import Clock
@@ -42,6 +43,7 @@ from rclpy.time import Duration
 from rclpy.time import Time
 from std_msgs.msg import Header
 from tf2_ros import Buffer
+from tf2_ros import TransformException
 from tf2_ros import TransformListener
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped
 import yaml
@@ -438,9 +440,13 @@ class PerformanceDiagEvaluator(Node):
         if msg.header == self.__diag_header_prev:
             return
         self.__diag_header_prev = msg.header
-        map_to_baselink = self.__tf_buffer.lookup_transform(
-            "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
-        )
+        try:
+            map_to_baselink = self.__tf_buffer.lookup_transform(
+                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
+            )
+        except TransformException as ex:
+            self.get_logger().info(f"Could not transform map to baselink: {ex}")
+            map_to_baselink = TransformStamped()
         (
             msg_visibility_value,
             msg_visibility_level,
