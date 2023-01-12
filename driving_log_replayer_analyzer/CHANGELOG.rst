@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.10 (2023-01-12)
+-------------------
 * fix: catch TransformException (`#85 <https://github.com/tier4/driving_log_replayer/issues/85>`_)
 * fix: add exec depend (`#83 <https://github.com/tier4/driving_log_replayer/issues/83>`_)
 * chore: license (`#82 <https://github.com/tier4/driving_log_replayer/issues/82>`_)
