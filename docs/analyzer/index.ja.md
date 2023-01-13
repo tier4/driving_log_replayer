@@ -17,15 +17,15 @@ driving_log_replayer_analyzer
 ```
 
 図に示すように使用される。
-ROSに依存しないパッケージではあるが、ROSのノードにもライブラリとしてimportされるので、ROSパッケージとしてもインストールされる。
+ROS に依存しないパッケージではあるが、ROS のノードにもライブラリとして import されるので、ROS パッケージとしてもインストールされる。
 
 ![architecture](./images/architecture.drawio.svg)
 
 ## 注意
 
 現状では obstacle_segmentation の result.jsonl の分析のみ可能
-必要に応じて、各use caseに対応した分析モジュールを追加する。
-analysis, config, dataにuse_case名.pyファイルを追加する。
+必要に応じて、各 use case に対応した分析モジュールを追加する。
+analysis, config, data に use_case 名.py ファイルを追加する。
 
 ## インストール方法
 
