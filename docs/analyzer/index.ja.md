@@ -4,7 +4,8 @@ Driving Log Replayer で行ったテストの結果ファイルを分析する�
 
 ## 注意
 
-開発中であり、現状では obstacle_segmentation の result.jsonl の分析のみ可能
+現状では obstacle_segmentation の result.jsonl の分析のみ可能
+必要に応じて、分析スクリプトを追加する
 
 ## インストール方法
 
@@ -24,7 +25,7 @@ ROS のパッケージになっていれば、他のパッケージと自動で�
 ## 使い方
 
 ```shell
-driving_log_replayer_analyzer ${jsonl_path} -c ${config_path}
+driving_log_replayer_analyzer analysis ${use-case-name} ${result.jsonl_path} [-c ${config_path}]
 ```
 
 ## これからやる
