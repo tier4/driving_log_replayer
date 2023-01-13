@@ -12,17 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from importlib.metadata import version
+from . import __version__
 
 import click
 from driving_log_replayer_analyzer.analysis import analysis
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
-
-try:
-    __version__ = version(__package__)
-except Exception:
-    __version__ = "0.0.0"
 
 
 def print_version(ctx, param, value):
