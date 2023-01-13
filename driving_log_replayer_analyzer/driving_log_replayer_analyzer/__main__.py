@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import __version__
-
 import click
 from driving_log_replayer_analyzer.analysis import analysis
+
+from . import __version__
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
