@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.11
+
+Bug fix
+
+| Module | Feature             | Brief summary             | Pull request | JIRA | Contributor                                   |
+| ------ | ------------------- | ------------------------- | ------------ | ---- | --------------------------------------------- |
+| `cli`  | kill zombie process | use pgrep to find process | -            | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.10
 
 Bug fix
