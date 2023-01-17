@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: cli kill zombie process
+* Contributors: Hayato Mizushima
+
 1.1.10 (2023-01-12)
 -------------------
 * fix: catch TransformException (`#85 <https://github.com/tier4/driving_log_replayer/issues/85>`_)

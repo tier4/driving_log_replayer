@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.11
+
+Bug fix
+
+| Module | Feature             | Brief summary                                | Pull request                                                 | JIRA | Contributor                                     |
+| ------ | ------------------- | -------------------------------------------- | ------------------------------------------------------------ | ---- | ----------------------------------------------- |
+| `cli`  | kill zombie process | Fixed to not kill processes unrelated to ros | [#92](https://github.com/tier4/driving_log_replayer/pull/92) | -    | [M(-\_-)Sakamoto](https://github.com/Motsu-san) |
+
 ## Version 1.1.10
 
 Bug fix
