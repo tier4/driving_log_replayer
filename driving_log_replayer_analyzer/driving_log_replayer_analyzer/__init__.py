@@ -22,5 +22,4 @@ except Exception:
 
 
 def main():
-    # noinspection PyUnresolvedReferences
-    from . import __main__
+    from . import __main__  # noqa
