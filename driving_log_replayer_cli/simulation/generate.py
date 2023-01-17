@@ -53,9 +53,11 @@ class TestScriptGenerator:
                     if command is not None:
                         generated_cmd += command + "\n"
                         # kill zombie ros2 process
-                        generated_cmd += "ps aux | grep -i ros | grep -v Microsoft | grep -v ros2_daemon | grep -v grep | grep -v /bin/sh | grep -v /bin/bash |awk '{ print \"kill -9\", $2 }' | sh\n"
-                        # kill rviz
-                        generated_cmd += "ps aux | grep rviz | grep -v grep | awk '{ print \"kill -9\", $2 }' | sh\n"
+                        generated_cmd += 'pgrep ros | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh\n'
+                        generated_cmd += 'pgrep ros | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh\n'
+                        # kill rviz awk '{ print \"kill -9\", $2 }'
+                        generated_cmd += 'pgrep rviz | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh\n'
+                        generated_cmd += 'pgrep rviz | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh\n'
                         # sleep 1 sec
                         generated_cmd += "sleep 1\n"
             with open(self.script_path, "w") as f:
