@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.11 (2023-01-17)
+-------------------
 * fix: cli kill zombie process
 * Contributors: Hayato Mizushima
 
