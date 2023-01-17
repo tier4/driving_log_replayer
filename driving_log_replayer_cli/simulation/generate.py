@@ -53,11 +53,11 @@ class TestScriptGenerator:
                     if command is not None:
                         generated_cmd += command + "\n"
                         # kill zombie ros2 process
-                        generated_cmd += "pgrep ros | awk '{ print \"kill -9 $(pgrep -P \", $1, \") > /dev/null 2>&1\" }' | sh\n"
-                        generated_cmd += "pgrep ros | awk '{ print \"kill -9 \", $1, \" > /dev/null 2>&1\" }' | sh\n"
+                        generated_cmd += 'pgrep ros | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh\n'
+                        generated_cmd += 'pgrep ros | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh\n'
                         # kill rviz awk '{ print \"kill -9\", $2 }'
-                        generated_cmd += "pgrep rviz | awk '{ print \"kill -9 $(pgrep -P \", $1, \") > /dev/null 2>&1\" }' | sh\n"
-                        generated_cmd += "pgrep rviz | awk '{ print \"kill -9 \", $1, \" > /dev/null 2>&1\" }' | sh\n"
+                        generated_cmd += 'pgrep rviz | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh\n'
+                        generated_cmd += 'pgrep rviz | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh\n'
                         # sleep 1 sec
                         generated_cmd += "sleep 1\n"
             with open(self.script_path, "w") as f:
