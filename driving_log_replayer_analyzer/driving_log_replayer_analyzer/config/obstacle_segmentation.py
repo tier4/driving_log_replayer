@@ -18,7 +18,13 @@ from typing import Any
 
 import yaml
 
-from .data.non_detection import FpDistance
+
+@dataclass
+class FpDistance:
+    very_near: float
+    near: float
+    medium: float
+    far: float
 
 
 @dataclass

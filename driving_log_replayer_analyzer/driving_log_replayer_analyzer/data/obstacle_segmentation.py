@@ -13,28 +13,172 @@
 # limitations under the License.
 
 import csv
+import dataclasses
+from dataclasses import dataclass
 import json
 from pathlib import Path
 import sys
+from typing import Dict
 from typing import List
 
-from .config import Config
-from .data.common import Common
-from .data.detection import Detection
-from .data.non_detection import FpDistance
-from .data.non_detection import NonDetection
-from .data.summary import Summary
+from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
+from driving_log_replayer_analyzer.config.obstacle_segmentation import FpDistance
+from driving_log_replayer_analyzer.data import Position
+from driving_log_replayer_analyzer.data import Stamp
+import pandas as pd
+
+
+def fail_3_times_in_a_row(data: List) -> List:
+    """対象点から近いほうの点3点から、連続して3点Failしている点をFailとする変換を行う.
+
+    Args:
+        data (list): [距離, 0 or 1, Success or Fail]
+
+    Returns:
+        list: Inputと同じ形式のlist。2項目目の0 or 1が変更される。
+    """
+    WINDOW = 3
+
+    df = pd.DataFrame(data, columns=["Dist", "Val", "Result"])
+
+    # 距離順にソート
+    df.sort_values("Dist", ascending=True, inplace=True)
+    df.reset_index(inplace=True, drop=True)
+    df["Val"] = df["Val"].rolling(WINDOW, min_periods=1).max()
+
+    return df.to_numpy().tolist()
+
+
+def get_min_range(data: List) -> float:
+    df = pd.DataFrame(data, columns=["Dist", "Val", "Result"])
+
+    # Val == 0はFail, 最初にFailした距離を探索する
+    minimum_fail_dist = df[df["Val"] == 0].min()["Dist"]
+    if pd.isnull(minimum_fail_dist):
+        minimum_fail_dist = sys.float_info.max
+
+    # Passしたもののうち、最大の距離を計算する。ただし、一度でもFailするとダメなので、その条件も加える。
+    return df[(df["Val"] == 1) & (df["Dist"] < minimum_fail_dist)].max()["Dist"]
+
+
+@dataclass
+class NonDetection:
+    result: str
+    frame: int
+    ego_position: Position
+    pointcloud_points: float
+    distance: Dict[int, int]
+
+    def __init__(self, json_dict: Dict) -> None:
+        self.result = ""
+        self.frame = ""
+        self.pointcloud_points = 0
+        self.distance = {}
+        self.ego_position = Position()
+        try:
+            self.result = json_dict["Frame"]["NonDetection"]["Result"]
+            self.frame = int(json_dict["Frame"]["FrameName"])
+            self.ego_position = Position(
+                json_dict["Frame"]["Ego"]["TransformStamped"]["transform"]["translation"]
+            )
+            self.pointcloud_points = float(
+                json_dict["Frame"]["NonDetection"]["Info"][0]["PointCloud"]["NumPoints"]
+            )
+            for distance_str, num_points in json_dict["Frame"]["NonDetection"]["Info"][0][
+                "PointCloud"
+            ]["Distance"].items():
+                distance_list = distance_str.split(sep="-")
+                dist = (int(distance_list[1]) + int(distance_list[0])) / 2
+                self.distance[dist] = num_points
+        except (KeyError, IndexError):
+            pass
+
+    def get_points_within_dist(self, threshold: float) -> int:
+        sum_points = 0
+        for dist, num_points in self.distance.items():
+            if dist < threshold:
+                sum_points = sum_points + num_points
+        return sum_points
+
+
+@dataclass
+class DetectionInfo:
+    uuid: str = None
+    short_uuid: str = None
+    annotation_position: Position = Position()
+    annotation_distance: float = None
+    pointcloud_numpoints: int = None
+    pointcloud_nearest_distance: float = None
+    pointcloud_nearest_position: Position = Position()
+
+
+@dataclass
+class Detection:
+    result: str
+    detection_info: List[DetectionInfo]
+
+    def __init__(self, json_dict: Dict) -> None:
+        self.result = ""
+        self.detection_info = []
+        try:
+            self.result = json_dict["Frame"]["Detection"]["Result"]
+            for info in json_dict["Frame"]["Detection"]["Info"]:
+                di = DetectionInfo()
+                di.uuid = info["Annotation"]["UUID"]
+                di.short_uuid = info["Annotation"]["UUID"][0:6]
+                di.annotation_position = Position(info["Annotation"]["Position"]["position"])
+                di.annotation_distance = di.annotation_position.get_xy_distance()
+                di.pointcloud_numpoints = info["PointCloud"]["NumPoints"]
+                if di.pointcloud_numpoints > 0:
+                    di.pointcloud_nearest_position = Position(info["PointCloud"]["Nearest"])
+                    di.pointcloud_nearest_distance = (
+                        di.pointcloud_nearest_position.get_xy_distance()
+                    )
+                self.detection_info.append(di)
+        except (KeyError, IndexError):
+            pass
+
+
+@dataclass
+class Summary:
+    detection_pass_rate: float
+    non_detection_pass_rate: float
+    visible_range_one_frame: float
+    visible_range_three_frame: float
+
+    def __init__(self) -> None:
+        pass
+
+    def update(self, json_dict: Dict) -> None:
+        if "Condition" in json_dict.keys():
+            try:
+                self.detection_pass_rate = json_dict["Condition"]["Detection"]["PassRate"]
+            except (KeyError, TypeError):
+                self.detection_pass_rate = "N/A"
+            try:
+                self.non_detection_pass_rate = json_dict["Condition"]["NonDetection"]["PassRate"]
+            except (KeyError, TypeError):
+                self.non_detection_pass_rate = "N/A"
+
+    def update_visible_range(self, pass_fail_list: List):
+        self.visible_range_one_frame = get_min_range(pass_fail_list)
+        self.visible_range_three_frame = get_min_range(fail_3_times_in_a_row(pass_fail_list))
+
+    def save(self, path: Path):
+        with open(path.with_suffix(".json"), "w") as f:
+            json.dump(dataclasses.asdict(self), f, indent=2)
+            f.write("\n")
 
 
 class JsonlParser:
     summary: Summary
-    common: List[Common]
+    stamp: List[Stamp]
     detection: List[Detection]
     non_detection: List[NonDetection]
 
     def __init__(self, filepath: Path, config: Config) -> None:
         self.summary = Summary()
-        self.common = []
+        self.stamp = []
         self.detection = []
         self.non_detection = []
         self._read_jsonl_results(filepath)
@@ -48,9 +192,9 @@ class JsonlParser:
         for line in lines:
             json_dict = json.loads(line)
             self.summary.update(json_dict)
-            common = Common(json_dict)
-            if common.validate():
-                self.common.append(common)
+            stamp = Stamp(json_dict)
+            if stamp.validate():
+                self.stamp.append(stamp)
             self.detection.append(Detection(json_dict))
             self.non_detection.append(NonDetection(json_dict))
 
@@ -89,8 +233,8 @@ class JsonlParser:
     def get_topic_rate(self) -> List:
         ret = []
         index = 1
-        previous_time = self.common[0].timestamp_system
-        for frame in self.common:
+        previous_time = self.stamp[0].timestamp_system
+        for frame in self.stamp:
             time_diff = frame.timestamp_system - previous_time
             if time_diff < sys.float_info.min:
                 continue

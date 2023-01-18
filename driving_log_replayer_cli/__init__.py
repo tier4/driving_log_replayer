@@ -1,9 +1,13 @@
+from importlib.metadata import version
+
 import click
 from driving_log_replayer_cli.configuration import configuration
 from driving_log_replayer_cli.simulation import simulation
-import pkg_resources
 
-__version__ = pkg_resources.get_distribution("driving_log_replayer_cli").version
+try:
+    __version__ = version(__package__)
+except Exception:
+    __version__ = "0.0.0"
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 

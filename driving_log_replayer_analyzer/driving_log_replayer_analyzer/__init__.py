@@ -11,3 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+
+from importlib.metadata import version
+
+try:
+    __version__ = version("driving_log_replayer_cli")
+except Exception:
+    __version__ = "0.0.0"
+
+
+def main():
+    from . import __main__  # noqa

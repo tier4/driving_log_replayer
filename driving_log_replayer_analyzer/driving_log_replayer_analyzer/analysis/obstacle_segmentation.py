@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import argparse
 from pathlib import Path
 
-from driving_log_replayer_analyzer.calc import fail_3_times_in_a_row
-from driving_log_replayer_analyzer.config import load_config
-from driving_log_replayer_analyzer.jsonl_parser import JsonlParser
+from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
+from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
+from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
 from driving_log_replayer_analyzer.plot.bird_view_plot import BirdViewPlot
 from driving_log_replayer_analyzer.plot.line_plot import LinePlot
 from driving_log_replayer_analyzer.plot.scatter_plot import ScatterPlot
@@ -125,32 +124,3 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path):
 
     # Output data to csv
     parser.export_to_csv(output_dir / "result.csv")
-
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-o",
-        "--output_dir",
-        help="Output directory",
-        required=False,
-        type=Path,
-    )
-    parser.add_argument(
-        "-c",
-        "--config",
-        help="Config file",
-        default=Path(__file__).parent.parent.parent / "config" / "config.yaml",
-        type=Path,
-    )
-    parser.add_argument("input_file", nargs=1, help="Input file (result.jsonl)", type=Path)
-    args = parser.parse_args()
-
-    if not args.output_dir:
-        args.output_dir = Path(args.input_file[0]).parent
-
-    visualize(args.input_file[0], args.output_dir, args.config)
-
-
-if __name__ == "__main__":
-    main()
