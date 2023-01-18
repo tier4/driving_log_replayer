@@ -2,9 +2,9 @@
 
 Driving Log Replayer で行ったテストの結果ファイルを分析するパッケージ。
 
-## 構成
+## ディレクトリ構成
 
-以下のようなフォルダ構成を取る。
+以下のようなディレクトリ構成を取る。
 
 ```shell
 driving_log_replayer_analyzer
@@ -16,8 +16,9 @@ driving_log_replayer_analyzer
 └── plot             # データを描画するモジュール
 ```
 
-図に示すように使用される。
 ROS に依存しないパッケージではあるが、ROS のノードにもライブラリとして import されるので、ROS パッケージとしてもインストールされる。
+
+モジュールの役割を図に示す。
 
 ![architecture](./images/architecture.drawio.svg)
 
@@ -25,7 +26,7 @@ ROS に依存しないパッケージではあるが、ROS のノードにもラ
 
 現状では obstacle_segmentation の result.jsonl の分析のみ可能
 必要に応じて、各 use case に対応した分析モジュールを追加する。
-analysis, config, data に use_case 名.py ファイルを追加する。
+analysis, config, data に use_case_name.py ファイルを追加する。
 
 ## インストール方法
 
