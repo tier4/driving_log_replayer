@@ -18,6 +18,7 @@ from typing import Optional
 
 import click
 from driving_log_replayer_analyzer.analysis.obstacle_segmentation import visualize as os_vis
+from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
@@ -32,7 +33,16 @@ def analysis():
 @click.argument("input_jsonl", type=str)
 @click.option("--output_dir", "-o", type=str)
 @click.option("--config_yaml", "-c", type=str)
-def obstacle_segmentation(input_jsonl: str, output_dir: Optional[str], config_yaml: Optional[str]):
+@click.option(
+    "--dist_type",
+    "-d",
+    type=click.Choice(["front", "side", "euclidean"], case_sensitive=False),
+    default="euclidean",
+    help="Distance type to calculate threshold. Possible values are front(vehicle front direction), side(vehicle side direction) and euclidean distance",
+)
+def obstacle_segmentation(
+    input_jsonl: str, output_dir: Optional[str], config_yaml: Optional[str], dist_type: str
+):
     """Run obstacle_segmentation analysis."""
     p_input_jsonl = Path(os.path.expandvars(input_jsonl))
     if output_dir is None:
@@ -45,4 +55,4 @@ def obstacle_segmentation(input_jsonl: str, output_dir: Optional[str], config_ya
         )
     else:
         p_config = Path(os.path.expandvars(config_yaml))
-    os_vis(p_input_jsonl, p_output_dir, p_config)
+    os_vis(p_input_jsonl, p_output_dir, p_config, convert_str_to_dist_type(dist_type))

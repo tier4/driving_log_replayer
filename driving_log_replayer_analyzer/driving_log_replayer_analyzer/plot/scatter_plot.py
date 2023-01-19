@@ -58,7 +58,5 @@ class ScatterPlot(PlotBase):
             yaxis=dict(tickmode="array", tickvals=[0, 1], ticktext=["False", "True"])  # noqa: C408
         )
 
-    def add_vert_line(self, vert_line_config: dict, output_dir: Path):
-        for key, val in vert_line_config.items():
-            if key in str(output_dir):
-                self._fig.add_vline(x=val, line_width=3, line_dash="dash", line_color="green")
+    def add_vert_line(self, dist: float):
+        self._fig.add_vline(x=dist, line_width=3, line_dash="dash", line_color="green")

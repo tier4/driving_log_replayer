@@ -13,8 +13,26 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+from enum import Enum
 import math
 from typing import Dict
+
+
+class DistType(Enum):
+    EUCLID = 0
+    X = 1
+    Y = 2
+
+
+def convert_str_to_dist_type(dist_type_str: str) -> DistType:
+    if dist_type_str == "front":
+        return DistType.Y
+    elif dist_type_str == "side":
+        return DistType.X
+    elif dist_type_str == "euclidean":
+        return DistType.EUCLID
+    else:
+        raise RuntimeError("Unknown distance type.")
 
 
 @dataclass
@@ -35,10 +53,8 @@ class Stamp:
 
 @dataclass
 class Position:
-    # In the vehicle's coordinate system, x is frontal and y is lateral, but in the graph, x is lateral and y is vertical.
-    # Swap axes to match the xy in the graph.
-    x: float = None
-    y: float = None
+    x: float = None  # vehicle side (right side is positive)
+    y: float = None  # vehicle front
     z: float = None
 
     def __init__(self, data: Dict = {}) -> None:
@@ -47,15 +63,15 @@ class Position:
     def try_parse_dict(self, data):
         if isinstance(data, dict):
             try:
-                self.y = data["x"]  # Swap axes
-                self.x = data["y"]  # Swap axes
+                self.y = data["x"]
+                self.x = data["y"]
                 self.z = data["z"]
             except KeyError:
                 pass
         elif isinstance(data, list):
             try:
-                self.y = data[0]  # Swap axes
-                self.x = data[1]  # Swap axes
+                self.y = data[0]
+                self.x = data[1]
                 self.z = data[2]
             except IndexError:
                 pass
@@ -65,9 +81,14 @@ class Position:
     def validate(self):
         return self.x is not None and self.y is not None and self.z is not None
 
-    def get_xy_distance(self) -> float:
+    def get_distance(self, dist_type: DistType) -> float:
         if self.validate():
-            return math.hypot(self.x, self.y)
+            if dist_type == DistType.X:
+                return abs(self.x)
+            elif dist_type == DistType.Y:
+                return abs(self.y)
+            else:
+                return math.hypot(self.x, self.y)
         else:
             return None
 
