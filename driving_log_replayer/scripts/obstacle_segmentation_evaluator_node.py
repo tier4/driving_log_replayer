@@ -31,6 +31,7 @@ from driving_log_replayer.obstacle_segmentation_analyzer import get_graph_data
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
+from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
@@ -543,7 +544,11 @@ class ObstacleSegmentationEvaluator(Node):
         )
         # self.get_logger().error(f"jsonl file: {jsonl_file_path}")
         detection_dist, pointcloud_numpoints = get_graph_data(
-            jsonl_file_path, self.__vehicle_model, jsonl_file_path.parent, default_config_path()
+            jsonl_file_path,
+            self.__vehicle_model,
+            jsonl_file_path.parent,
+            default_config_path(),
+            convert_str_to_dist_type("euclidean"),
         )
         with open(jsonl_file_path, "r+") as jsonl_file:
             last_line = jsonl_file.readlines()[-1]
