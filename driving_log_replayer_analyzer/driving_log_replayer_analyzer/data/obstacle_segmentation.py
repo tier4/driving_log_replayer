@@ -161,8 +161,6 @@ class Summary:
     non_detection_pass_rate: float
     visible_range_one_frame: float
     visible_range_three_frame: float
-    timestamp_start: float
-    timestamp_end: float
 
     def __init__(self) -> None:
         pass
@@ -178,31 +176,12 @@ class Summary:
             except (KeyError, TypeError):
                 self.non_detection_pass_rate = "N/A"
 
-    def update(self, parser, threshold):
+    def update(self, parser):
         self._update_visible_range(parser.get_bb_distance())
-        self._update_timestamp(parser.get_bb_dist_with_stamp(), threshold)
 
     def _update_visible_range(self, pass_fail_list: List):
         self.visible_range_one_frame = get_min_range(pass_fail_list)
         self.visible_range_three_frame = get_min_range(fail_3_times_in_a_row(pass_fail_list))
-
-    def _update_timestamp(self, dist_with_stamp: List, threshold: float):
-        min_dist_item = min(dist_with_stamp, key=lambda x: x["y"])
-        over_threshold_list = [x for x in dist_with_stamp if x["y"] > threshold]
-        if len(over_threshold_list) == 0:
-            # Pass criteriaの距離までデータがない場合、データ内で最大距離の点のタイムスタンプを利用する
-            max_dist_item = max(dist_with_stamp, key=lambda x: x["y"])
-        else:
-            max_dist_item = min(over_threshold_list, key=lambda x: x["y"])
-
-        stamp_1 = min_dist_item["timestamp_ros"]
-        stamp_2 = max_dist_item["timestamp_ros"]
-        if stamp_1 < stamp_2:
-            self.timestamp_start = stamp_1
-            self.timestamp_end = stamp_2
-        else:
-            self.timestamp_start = stamp_2
-            self.timestamp_end = stamp_1
 
     def save(self, path: Path):
         with open(path.with_suffix(".json"), "w") as f:

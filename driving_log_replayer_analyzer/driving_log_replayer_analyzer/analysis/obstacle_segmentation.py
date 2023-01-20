@@ -33,7 +33,7 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type:
     parser = JsonlParser(input_jsonl, config, dist_type)
 
     # Create summary
-    parser.summary.update(parser, config.get_threshold(input_jsonl))
+    parser.summary.update(parser)
     parser.summary.save(output_dir / "0_summary")
 
     # Plot
@@ -62,9 +62,7 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type:
         ylabel="Pass/Fail",
     )
     detection_dist_plot.use_boolean_tick()
-    detection_dist_plot.add_vert_line(config.get_threshold(input_jsonl))
     detection_dist_plot.set_tick_span(x=5.0)
-    detection_dist_plot.set_xy_range(config.xy_range["plot_2"])
     detection_dist_plot.save_plot(
         output_dir / "2_detection_distance",
     )
