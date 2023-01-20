@@ -372,7 +372,8 @@ class JsonlParser:
 
     def _split_list_per_uuid(self, input_list: List) -> List:
         # UUIDごとにリストを分割
-        uuid_set = set([x[2] for x in input_list])  # UUIDの重複を削除したset
+        # UUIDの重複を削除したset
+        uuid_set = set([x[2] for x in input_list])  # noqa: C403
         ret = []
         for uuid in uuid_set:
             ret.append([x for x in input_list if x[2] == uuid])
