@@ -35,7 +35,6 @@ from driving_log_replayer.result import ResultWriter
 from perception_eval.common.object import DynamicObject
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
-from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
