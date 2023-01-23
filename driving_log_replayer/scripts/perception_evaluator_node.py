@@ -33,11 +33,12 @@ from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from perception_eval.common.object import DynamicObject
-from perception_eval.config.perception_evaluation_config import PerceptionEvaluationConfig
+from perception_eval.config import PerceptionEvaluationConfig
+from perception_eval.evaluation import PerceptionFrameResult
+from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
-from perception_eval.evaluation.result.perception_frame_result import PerceptionFrameResult
-from perception_eval.manager.perception_evaluation_manager import PerceptionEvaluationManager
+from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionPerformanceAnalyzer
 from perception_eval.util.logger_config import configure_logger
 import rclpy
@@ -252,9 +253,9 @@ class PerceptionEvaluator(Node):
             dataset_paths=self.__t4_dataset_paths,
             frame_id=frame_id,
             merge_similar_labels=False,
-            does_use_pointcloud=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
             evaluation_config_dict=p_cfg["evaluation_config_dict"],
+            load_raw_data=False,
         )
         _ = configure_logger(
             log_file_directory=evaluation_config.log_directory,
@@ -279,7 +280,7 @@ class PerceptionEvaluator(Node):
         self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
             evaluator_config=evaluation_config,
             target_labels=f_cfg["target_labels"],
-            plane_distance_threshold_list=f_cfg["plane_distance_threshold_list"],
+            matching_threshold_list=f_cfg["matching_threshold_list"],
         )
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
         self.__sub_perception = self.create_subscription(
