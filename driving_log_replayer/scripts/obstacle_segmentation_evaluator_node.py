@@ -56,6 +56,7 @@ from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
+from tier4_api_msgs.msg import AwapiAutowareStatus
 from tier4_planning_msgs.msg import StopReasonArray
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
@@ -472,10 +473,10 @@ class ObstacleSegmentationEvaluator(Node):
         self.__evaluator = SensingEvaluationManager(evaluation_config=evaluation_config)
 
         self.__latest_stop_reasons: List[Dict] = []
-        self.__sub_stop_reasons = self.create_subscription(
-            StopReasonArray,
-            "/planning/scenario_planning/status/stop_reasons",
-            self.stop_reason_cb,
+        self.__sub_awapi_autoware_status = self.create_subscription(
+            AwapiAutowareStatus,
+            "/awapi/autoware/get/status",
+            self.awapi_status_cb,
             1,
         )
 
@@ -645,11 +646,12 @@ class ObstacleSegmentationEvaluator(Node):
             if graph_non_detection is not None:
                 self.__pub_graph_non_detection.publish(graph_non_detection)
 
-    def stop_reason_cb(self, msg: StopReasonArray):
+    def awapi_status_cb(self, msg: AwapiAutowareStatus):
         reasons = []
-        for msg_reason in msg.stop_reasons:
-            if msg_reason.reason == "ObstacleStop":
-                reasons.append(message_to_ordereddict(msg_reason))
+        for stop_reason_array in msg.stop_reason:
+            for msg_reason in stop_reason_array.stop_reasons:
+                if msg_reason.reason == "ObstacleStop":
+                    reasons.append(message_to_ordereddict(msg_reason))
         self.__latest_stop_reasons = reasons
 
 
