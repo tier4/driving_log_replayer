@@ -90,7 +90,12 @@ def get_driving_log_replayer_common_argument():
 
 
 def get_autoware_launch(
-    sensing="true", localization="true", perception="true", planning="false", control="false"
+    sensing="true",
+    localization="true",
+    perception="true",
+    planning="false",
+    control="false",
+    scenario_simulation="false",
 ):
     # autoware launch
     autoware_launch_file = os.path.join(
@@ -109,6 +114,7 @@ def get_autoware_launch(
             "perception": perception,
             "planning": planning,
             "control": control,
+            "scenario_simulation": scenario_simulation,
             "rviz": "false",
         }.items(),
         condition=IfCondition(LaunchConfiguration("with_autoware")),
