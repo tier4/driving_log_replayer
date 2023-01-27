@@ -647,10 +647,13 @@ class ObstacleSegmentationEvaluator(Node):
 
     def awapi_status_cb(self, msg: AwapiAutowareStatus):
         reasons = []
-        for stop_reason_array in msg.stop_reason:
-            for msg_reason in stop_reason_array.stop_reasons:
-                if msg_reason.reason == "ObstacleStop":
-                    reasons.append(message_to_ordereddict(msg_reason))
+        if reasons := msg.stop_reason.stop_reasons:
+            for msg_reason in reasons:
+                self.get_logger().error(f"stop_reason: {msg_reason.reason}")
+                if msg_reason.reason == "SurroundObstacleCheck":
+                    # reasons.append(message_to_ordereddict(msg_reason)) # This expression is not working
+                    reason_dict = {"Reason": msg_reason.reason, "StopFactor": "dummy"}
+                    reasons.append(reason_dict)
         self.__latest_stop_reasons = reasons
 
 
