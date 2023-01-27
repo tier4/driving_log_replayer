@@ -38,11 +38,11 @@ from geometry_msgs.msg import PoseStamped
 import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
 from perception_eval.common.object import DynamicObject
-from perception_eval.config.sensing_evaluation_config import SensingEvaluationConfig
+from perception_eval.config import SensingEvaluationConfig
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithSensingResult
-from perception_eval.manager.sensing_evaluation_manager import SensingEvaluationManager
+from perception_eval.manager import SensingEvaluationManager
 from perception_eval.util.logger_config import configure_logger
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
@@ -458,9 +458,9 @@ class ObstacleSegmentationEvaluator(Node):
             dataset_paths=self.__t4_dataset_paths,
             frame_id="base_link",
             merge_similar_labels=False,
-            does_use_pointcloud=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
             evaluation_config_dict=e_cfg["evaluation_config_dict"],
+            load_raw_data=False,
         )
 
         _ = configure_logger(

@@ -5,7 +5,7 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
-  UseCaseFormatVersion: 0.3.0
+  UseCaseFormatVersion: 0.4.0
   Datasets:
     - sample_dataset:
         VehicleId: default
@@ -39,4 +39,4 @@ Evaluation:
     target_uuids: null
   PerceptionPassFailConfig:
     target_labels: [car, bicycle, pedestrian, motorbike]
-    plane_distance_threshold_list: [2.0, 2.0, 2.0, 2.0]
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0]
