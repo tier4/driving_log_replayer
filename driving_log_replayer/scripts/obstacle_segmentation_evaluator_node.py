@@ -57,7 +57,6 @@ from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tier4_api_msgs.msg import AwapiAutowareStatus
-from tier4_planning_msgs.msg import StopReasonArray
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 import yaml
