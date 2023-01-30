@@ -541,7 +541,7 @@ class ObstacleSegmentationEvaluator(Node):
         jsonl_file_path = Path(
             os.path.splitext(os.path.expandvars(self.__result_json_path))[0] + ".jsonl"
         )
-        self.get_logger().error(f"jsonl file: {jsonl_file_path}")
+        # self.get_logger().error(f"jsonl file: {jsonl_file_path}")
         detection_dist, pointcloud_numpoints = get_graph_data(
             jsonl_file_path, self.__vehicle_model, jsonl_file_path.parent, default_config_path()
         )
@@ -646,15 +646,12 @@ class ObstacleSegmentationEvaluator(Node):
                 self.__pub_graph_non_detection.publish(graph_non_detection)
 
     def awapi_status_cb(self, msg: AwapiAutowareStatus):
-        reasons = []
+        self.__latest_stop_reasons = []
         if reasons := msg.stop_reason.stop_reasons:
             for msg_reason in reasons:
-                self.get_logger().error(f"stop_reason: {msg_reason.reason}")
+                # self.get_logger().error(f"stop_reason: {msg_reason.reason}")
                 if msg_reason.reason == "SurroundObstacleCheck":
-                    # reasons.append(message_to_ordereddict(msg_reason)) # This expression is not working
-                    reason_dict = {"Reason": msg_reason.reason, "StopFactor": "dummy"}
-                    reasons.append(reason_dict)
-        self.__latest_stop_reasons = reasons
+                    self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
 
 
 def main(args=None):
