@@ -650,7 +650,7 @@ class ObstacleSegmentationEvaluator(Node):
         if reasons := msg.stop_reason.stop_reasons:
             for msg_reason in reasons:
                 # self.get_logger().error(f"stop_reason: {msg_reason.reason}")
-                if msg_reason.reason == "SurroundObstacleCheck":
+                if msg_reason.reason == "ObstacleStop":
                     self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
 
 
