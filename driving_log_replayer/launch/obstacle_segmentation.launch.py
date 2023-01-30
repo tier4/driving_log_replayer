@@ -21,7 +21,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
-        planning="true", localization="false"
+        planning="true", localization="false", control="true", scenario_simulation="true"
     )
     rviz_node = driving_log_replayer.launch_common.get_rviz("obstacle_segmentation.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
