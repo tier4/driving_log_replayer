@@ -2,6 +2,16 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: `#96 <https://github.com/tier4/driving_log_replayer/issues/96>`_ topic stop reasons (`#99 <https://github.com/tier4/driving_log_replayer/issues/99>`_)
+  closes: `#96 <https://github.com/tier4/driving_log_replayer/issues/96>`_
+* feat: `#97 <https://github.com/tier4/driving_log_replayer/issues/97>`_ update perception eval (`#98 <https://github.com/tier4/driving_log_replayer/issues/98>`_)
+  closes: `#97 <https://github.com/tier4/driving_log_replayer/issues/97>`_
+* refactor: `#88 <https://github.com/tier4/driving_log_replayer/issues/88>`_ analyzer (`#89 <https://github.com/tier4/driving_log_replayer/issues/89>`_)
+  closes: `#88 <https://github.com/tier4/driving_log_replayer/issues/88>`_
+* Contributors: Hayato Mizushima
+
 1.1.11 (2023-01-17)
 -------------------
 * fix: cli kill zombie process
