@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: `#93 <https://github.com/tier4/driving_log_replayer/issues/93>`_ update obstacle segmentation analyzer (`#94 <https://github.com/tier4/driving_log_replayer/issues/94>`_)
+  closes: `#93 <https://github.com/tier4/driving_log_replayer/issues/93>`_
+* Contributors: Hayato Mizushima
+
 1.1.12 (2023-01-30)
 -------------------
 * feat: `#96 <https://github.com/tier4/driving_log_replayer/issues/96>`_ topic stop reasons (`#99 <https://github.com/tier4/driving_log_replayer/issues/99>`_)
