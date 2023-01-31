@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.14 (2023-01-31)
+-------------------
 * docs: update mkdocs setting
 * Contributors: Hayato Mizushima
 
