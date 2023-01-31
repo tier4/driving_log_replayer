@@ -21,6 +21,7 @@ from typing import Tuple
 from ament_index_python.packages import get_package_share_directory
 from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
 from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
+from driving_log_replayer_analyzer.data import DistType
 from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
 from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
 from driving_log_replayer_analyzer.plot import PlotBase
@@ -52,7 +53,7 @@ def update_config(config: Config, vehicle_model: str) -> Config:
 
 
 def get_graph_data(
-    input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path
+    input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path, dist_type: DistType
 ) -> Tuple[Dict, Dict]:
     output_dir.mkdir(exist_ok=True)
 
@@ -62,7 +63,7 @@ def get_graph_data(
     config = update_config(config, vehicle_model)
 
     # Load result.jsonl
-    parser = JsonlParser(input_jsonl, config)
+    parser = JsonlParser(input_jsonl, config, dist_type)
 
     detection_dist_plot = PlotBase()
     detection_dist_plot.add_data(parser.get_bb_distance(), legend="1 Frame")

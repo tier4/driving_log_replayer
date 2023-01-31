@@ -15,6 +15,7 @@
 from pathlib import Path
 
 from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
+from driving_log_replayer_analyzer.data import DistType
 from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
 from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
 from driving_log_replayer_analyzer.plot.bird_view_plot import BirdViewPlot
@@ -22,16 +23,17 @@ from driving_log_replayer_analyzer.plot.line_plot import LinePlot
 from driving_log_replayer_analyzer.plot.scatter_plot import ScatterPlot
 
 
-def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path):
+def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type: DistType):
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード
     config = load_config(config_yaml)
 
     # Load result.jsonl
-    parser = JsonlParser(input_jsonl, config)
+    parser = JsonlParser(input_jsonl, config, dist_type)
 
     # Create summary
+    parser.summary.update(parser)
     parser.summary.save(output_dir / "0_summary")
 
     # Plot
@@ -124,3 +126,16 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path):
 
     # Output data to csv
     parser.export_to_csv(output_dir / "result.csv")
+
+    # Debugging
+    debug_detection_dist_plot = ScatterPlot()
+    debug_detection_dist_plot.add_data_with_hover(parser.get_bb_dist_with_stamp(), legend="1 Frame")
+    debug_detection_dist_plot.plot_with_hover(
+        title="最大検知距離の確認",
+        xlabel="フレームNo",
+        ylabel="距離[m]",
+    )
+    debug_detection_dist_plot.set_tick_span(x=5.0)
+    debug_detection_dist_plot.save_plot(
+        output_dir / "99_detection_distance_debug",
+    )

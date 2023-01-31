@@ -23,6 +23,7 @@ from typing import List
 
 from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
 from driving_log_replayer_analyzer.config.obstacle_segmentation import FpDistance
+from driving_log_replayer_analyzer.data import DistType
 from driving_log_replayer_analyzer.data import Position
 from driving_log_replayer_analyzer.data import Stamp
 import pandas as pd
@@ -59,6 +60,17 @@ def get_min_range(data: List) -> float:
 
     # Passしたもののうち、最大の距離を計算する。ただし、一度でもFailするとダメなので、その条件も加える。
     return df[(df["Val"] == 1) & (df["Dist"] < minimum_fail_dist)].max()["Dist"]
+
+
+@dataclass
+class Frame:
+    frame_name: int = -1
+
+    def __init__(self, json_dict: Dict) -> None:
+        try:
+            self.frame_name = int(json_dict["Frame"]["FrameName"])
+        except (KeyError, IndexError):
+            pass
 
 
 @dataclass
@@ -107,9 +119,11 @@ class DetectionInfo:
     short_uuid: str = None
     annotation_position: Position = Position()
     annotation_distance: float = None
+    annotation_stamp: float = None
     pointcloud_numpoints: int = None
     pointcloud_nearest_distance: float = None
     pointcloud_nearest_position: Position = Position()
+    pointcloud_stamp: float = None
 
 
 @dataclass
@@ -117,7 +131,7 @@ class Detection:
     result: str
     detection_info: List[DetectionInfo]
 
-    def __init__(self, json_dict: Dict) -> None:
+    def __init__(self, json_dict: Dict, dist_type: DistType) -> None:
         self.result = ""
         self.detection_info = []
         try:
@@ -127,16 +141,18 @@ class Detection:
                 di.uuid = info["Annotation"]["UUID"]
                 di.short_uuid = info["Annotation"]["UUID"][0:6]
                 di.annotation_position = Position(info["Annotation"]["Position"]["position"])
-                di.annotation_distance = di.annotation_position.get_xy_distance()
+                di.annotation_distance = di.annotation_position.get_distance(dist_type)
                 di.pointcloud_numpoints = info["PointCloud"]["NumPoints"]
                 if di.pointcloud_numpoints > 0:
                     di.pointcloud_nearest_position = Position(info["PointCloud"]["Nearest"])
-                    di.pointcloud_nearest_distance = (
-                        di.pointcloud_nearest_position.get_xy_distance()
+                    di.pointcloud_nearest_distance = di.pointcloud_nearest_position.get_distance(
+                        dist_type
                     )
+                # di.annotation_stamp = info["Annotation"]["StampFloat"]
+                # di.pointcloud_stamp = info["PointCloud"]["Stamp"]["sec"] + info["PointCloud"]["Stamp"]["nanosec"] * 1e-9
                 self.detection_info.append(di)
         except (KeyError, IndexError):
-            pass
+            print("Passed frame")
 
 
 @dataclass
@@ -149,7 +165,7 @@ class Summary:
     def __init__(self) -> None:
         pass
 
-    def update(self, json_dict: Dict) -> None:
+    def update_condition(self, json_dict: Dict) -> None:
         if "Condition" in json_dict.keys():
             try:
                 self.detection_pass_rate = json_dict["Condition"]["Detection"]["PassRate"]
@@ -160,7 +176,10 @@ class Summary:
             except (KeyError, TypeError):
                 self.non_detection_pass_rate = "N/A"
 
-    def update_visible_range(self, pass_fail_list: List):
+    def update(self, parser):
+        self._update_visible_range(parser.get_bb_distance())
+
+    def _update_visible_range(self, pass_fail_list: List):
         self.visible_range_one_frame = get_min_range(pass_fail_list)
         self.visible_range_three_frame = get_min_range(fail_3_times_in_a_row(pass_fail_list))
 
@@ -172,30 +191,47 @@ class Summary:
 
 class JsonlParser:
     summary: Summary
+    frame: List[Frame]
     stamp: List[Stamp]
     detection: List[Detection]
     non_detection: List[NonDetection]
 
-    def __init__(self, filepath: Path, config: Config) -> None:
+    def __init__(self, filepath: Path, config: Config, dist_type: str) -> None:
         self.summary = Summary()
+        self.frame = []
         self.stamp = []
         self.detection = []
         self.non_detection = []
+        self._dist_type = dist_type
         self._read_jsonl_results(filepath)
         self._modify_center_from_baselink_to_overhang(config.overhang_from_baselink)
-        self.summary.update_visible_range(self.get_bb_distance())
 
     def _read_jsonl_results(self, path: Path):
         with open(path, "r") as f:
             lines = f.read().splitlines()
 
+        previous_dist = sys.float_info.max
         for line in lines:
             json_dict = json.loads(line)
-            self.summary.update(json_dict)
-            stamp = Stamp(json_dict)
-            if stamp.validate():
-                self.stamp.append(stamp)
-            self.detection.append(Detection(json_dict))
+
+            # tmp: 片側から車両が来るケースにおいて、自車の前（距離が最短となるとき）を通過後のデータは使わない
+            try:
+                position = Position(
+                    json_dict["Frame"]["Detection"]["Info"][0]["Annotation"]["Position"]["position"]
+                )
+                if (
+                    previous_dist < position.get_distance(self._dist_type)
+                    and position.get_distance(self._dist_type) < 5.0
+                ):
+                    break
+                previous_dist = position.get_distance(self._dist_type)
+            except (KeyError, IndexError):
+                pass
+
+            self.summary.update_condition(json_dict)
+            self.frame.append(Frame(json_dict))
+            self.stamp.append(Stamp(json_dict))
+            self.detection.append(Detection(json_dict, self._dist_type))
             self.non_detection.append(NonDetection(json_dict))
 
     def _modify_center_from_baselink_to_overhang(self, overhang: float):
@@ -204,12 +240,12 @@ class JsonlParser:
                 if detection_info.annotation_position.validate():
                     detection_info.annotation_position.sub_overhang(overhang)
                     detection_info.annotation_distance = (
-                        detection_info.annotation_position.get_xy_distance()
+                        detection_info.annotation_position.get_distance(self._dist_type)
                     )
                 if detection_info.pointcloud_nearest_position.validate():
                     detection_info.pointcloud_nearest_position.sub_overhang(overhang)
                     detection_info.pointcloud_nearest_distance = (
-                        detection_info.pointcloud_nearest_position.get_xy_distance()
+                        detection_info.pointcloud_nearest_position.get_distance(self._dist_type)
                     )
 
         for record in self.non_detection:
@@ -291,6 +327,26 @@ class JsonlParser:
                             frame.result,
                         ]
                     )
+        return ret
+
+    def get_bb_dist_with_stamp(self):
+        ret = []
+        i = 0
+        for detection, frame, stamp in zip(self.detection, self.frame, self.stamp):
+            for detection_info in detection.detection_info:
+                if detection_info.annotation_distance is not None:
+                    ret.append(
+                        {
+                            "x": i,
+                            "y": detection_info.annotation_distance,
+                            "color": detection.result,
+                            "number": frame.frame_name,
+                            "timestamp_ros": stamp.timestamp_ros,
+                            "annotation_stamp": detection_info.annotation_stamp,
+                            "pointcloud_stamp": detection_info.pointcloud_stamp,
+                        }
+                    )
+                i = i + 1
         return ret
 
     def _split_list_per_uuid(self, input_list: List) -> List:
