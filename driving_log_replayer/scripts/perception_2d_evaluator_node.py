@@ -196,9 +196,9 @@ class PerceptionResult(ResultBase):
         self._frame = {"FinalScore": final_metrics}
 
 
-class PerceptionEvaluator(Node):
+class Perception2DEvaluator(Node):
     def __init__(self):
-        super().__init__("perception_evaluator")
+        super().__init__("perception_2d_evaluator")
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
         self.declare_parameter("t4_dataset_path", "")
@@ -235,7 +235,7 @@ class PerceptionEvaluator(Node):
         ).as_posix()
 
         self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-        self.__result = PerceptionResult(self.__condition)
+        self.__result = Perception2DResult(self.__condition)
 
         self.__result_writer = ResultWriter(
             self.__result_json_path, self.get_clock(), self.__condition
