@@ -6,5 +6,5 @@ This section describes how driving_log_replayer can be used for evaluation.
 
 - [Localization](localization.md)
 - [Obstacle Segmentation](obstacle_segmentation.md)
-- [Perception](percepiton.md)
+- [Perception](perception.md)
 - [Performance Diag](performance_diag.md)
