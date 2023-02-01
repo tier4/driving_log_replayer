@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.15 (2023-02-01)
+-------------------
 * docs: fix lint
 * Contributors: Hayato Mizushima
 
