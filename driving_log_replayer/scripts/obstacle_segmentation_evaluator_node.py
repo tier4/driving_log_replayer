@@ -560,7 +560,7 @@ class ObstacleSegmentationEvaluator(Node):
                         "PointcloudCount": pointcloud_numpoints,
                     }
                 }
-                str_last_line = json.dumps(last_line_dict) + "\n"
+                str_last_line = json.dumps(last_line_dict, ignore_nan=True) + "\n"
                 jsonl_file.write(str_last_line)
             except json.JSONDecodeError:
                 pass
