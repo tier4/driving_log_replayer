@@ -14,13 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import os
 import pickle
 from typing import Dict
 
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
+import simplejson as json
 
 
 class ResultBase:

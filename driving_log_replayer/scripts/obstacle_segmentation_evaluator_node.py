@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import logging
 import os
 from pathlib import Path
@@ -55,6 +54,7 @@ from rclpy.time import Time
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
+import simplejson as json
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tier4_api_msgs.msg import AwapiAutowareStatus

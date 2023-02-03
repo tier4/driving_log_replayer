@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import os
 from typing import Dict
 from typing import Optional
@@ -24,6 +23,7 @@ from geometry_msgs.msg import PoseWithCovarianceStamped
 from geometry_msgs.msg import TransformStamped
 import numpy as np
 from rosidl_runtime_py import message_to_ordereddict
+import simplejson as json
 from tf_transformations import euler_from_quaternion
 
 

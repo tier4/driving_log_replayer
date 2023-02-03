@@ -1,9 +1,9 @@
 import glob
-import json
 import os
 from pathlib import Path
 
 from natsort import natsorted
+import simplejson as json
 import termcolor
 
 

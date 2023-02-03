@@ -16,10 +16,10 @@
 
 import argparse
 import glob
-import json
 import os
 
 from perception_eval.tool import PerceptionPerformanceAnalyzer
+import simplejson as json
 
 
 class PerceptionLoadDatabaseResult:
