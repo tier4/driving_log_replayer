@@ -15,7 +15,6 @@
 import csv
 import dataclasses
 from dataclasses import dataclass
-import json
 from pathlib import Path
 import sys
 from typing import Dict
@@ -27,6 +26,7 @@ from driving_log_replayer_analyzer.data import DistType
 from driving_log_replayer_analyzer.data import Position
 from driving_log_replayer_analyzer.data import Stamp
 import pandas as pd
+import simplejson as json
 
 
 def fail_3_times_in_a_row(data: List) -> List:

@@ -14,13 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import os
 import pickle
 from typing import Dict
 
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
+import simplejson as json
 
 
 class ResultBase:
@@ -54,7 +54,7 @@ class ResultWriter:
 
     def write_condition(self, condition: Dict):
         dict_condition = {"Condition": condition}
-        str_condition = json.dumps(dict_condition) + "\n"
+        str_condition = json.dumps(dict_condition, ignore_nan=True) + "\n"
         self._result_file.write(str_condition)
 
     def write_header(self):
@@ -64,7 +64,7 @@ class ResultWriter:
             "Stamp": {"System": system_time.nanoseconds / pow(10, 9)},
             "Frame": {},
         }
-        str_header = json.dumps(dict_header) + "\n"
+        str_header = json.dumps(dict_header, ignore_nan=True) + "\n"
         self._result_file.write(str_header)
 
     def write(self, result: ResultBase):
@@ -81,7 +81,7 @@ class ResultWriter:
             "Stamp": time_dict,
             "Frame": result.frame(),
         }
-        str_record = json.dumps(dict_record) + "\n"
+        str_record = json.dumps(dict_record, ignore_nan=True) + "\n"
         self._result_file.write(str_record)
 
 
