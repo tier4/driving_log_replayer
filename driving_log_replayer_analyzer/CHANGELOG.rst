@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: `#108 <https://github.com/tier4/driving_log_replayer/issues/108>`_ perception json value (`#109 <https://github.com/tier4/driving_log_replayer/issues/109>`_)
+  closes: `#108 <https://github.com/tier4/driving_log_replayer/issues/108>`_
+* Contributors: Hayato Mizushima
+
 1.1.15 (2023-02-01)
 -------------------
 * docs: fix lint
