@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.16
+
+Bug fix
+
+| Module       | Feature      | Brief summary                         | Pull request                                                   | JIRA       | Contributor                                   |
+| ------------ | ------------ | ------------------------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
+| `perception` | json library | use simplejson to convert NaN to null | [#109](https://github.com/tier4/driving_log_replayer/pull/109) | T4PB-25810 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.15
 
 Bug fix
