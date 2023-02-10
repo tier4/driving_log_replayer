@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2021 TIER IV.inc
+# Copyright (c) 2023 TIER IV.inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ def get_most_probable_classification(
     return highest_classification
 
 
-class PerceptionResult(ResultBase):
+class Perception2DResult(ResultBase):
     def __init__(self, condition: Dict):
         super().__init__()
         self.__pass_rate = condition["PassRate"]
@@ -245,7 +245,7 @@ class Perception2DEvaluator(Node):
         c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
         f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
-        evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+        self.__evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
         frame_id = get_frame_id(evaluation_task)
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
