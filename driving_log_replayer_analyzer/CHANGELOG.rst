@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.17 (2023-02-14)
+-------------------
 * feat: update rviz (`#111 <https://github.com/tier4/driving_log_replayer/issues/111>`_)
 * Contributors: Hayato Mizushima
 
