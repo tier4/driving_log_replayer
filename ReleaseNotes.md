@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.17
+
+Minor Tweak
+
+| Module | Feature       | Brief summary        | Pull request                                                   | JIRA       | Contributor                                   |
+| ------ | ------------- | -------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
+| `all`  | visualization | update rviz settings | [#111](https://github.com/tier4/driving_log_replayer/pull/111) | T4PB-25343 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.16
 
 Bug fix

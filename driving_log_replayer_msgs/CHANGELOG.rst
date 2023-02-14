@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: update rviz (`#111 <https://github.com/tier4/driving_log_replayer/issues/111>`_)
+* Contributors: Hayato Mizushima
+
 1.1.16 (2023-02-08)
 -------------------
 * fix: `#108 <https://github.com/tier4/driving_log_replayer/issues/108>`_ perception json value (`#109 <https://github.com/tier4/driving_log_replayer/issues/109>`_)
