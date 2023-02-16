@@ -33,6 +33,7 @@ from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from perception_eval.common.object import DynamicObject
+from perception_eval.common.status import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
@@ -247,6 +248,7 @@ class PerceptionEvaluator(Node):
 
         evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
         frame_id = get_frame_id(evaluation_task)
+        self.__frame_id = FrameID.from_value(frame_id)
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
@@ -354,6 +356,7 @@ class PerceptionEvaluator(Node):
 
             estimated_object = DynamicObject(
                 unix_time=unix_time,
+                frame_id=self.__frame_id,
                 position=eval_conversions.position_from_ros_msg(
                     perception_object.kinematics.pose_with_covariance.pose.position
                 ),
