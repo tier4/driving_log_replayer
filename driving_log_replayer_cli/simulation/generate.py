@@ -77,6 +77,7 @@ class TestScriptGenerator:
                 if scenario_yaml_obj["Evaluation"]["UseCaseName"] in [
                     "perception",
                     "obstacle_segmentation",
+                    "perception_2d",
                 ]:
                     return self.__create_launch_command_with_t4_dataset(
                         scenario_root.as_posix(), scenario_output_dir, scenario_yaml_obj

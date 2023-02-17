@@ -32,7 +32,7 @@ import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
-from perception_eval.common.object import DynamicObject
+from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
@@ -53,16 +53,6 @@ from tf2_ros import Buffer
 from tf2_ros import TransformListener
 from visualization_msgs.msg import MarkerArray
 import yaml
-
-
-def get_frame_id(task: str) -> str:
-    if task == "detection":
-        frame_id = "base_link"
-    elif task == "tracking":
-        frame_id = "map"
-    else:
-        raise ValueError(f"Unexpected evaluation task: {task}")
-    return frame_id
 
 
 def get_perception_msg_type(evaluation_task: str):
@@ -245,15 +235,20 @@ class Perception2DEvaluator(Node):
         c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
         f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
-        self.__evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
-        frame_id = get_frame_id(evaluation_task)
+        self.__camera_type = p_cfg["camera_type"]
+
+        evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+        topic_prefix = evaluation_task.replace("2d", "")
+        if not topic_prefix in ["detection", "tracking"]:
+            raise ValueError(f"Unexpected evaluation task: {evaluation_task}")
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
-            frame_id=frame_id,
+            frame_id=self.__camera_type,
             merge_similar_labels=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
             evaluation_config_dict=p_cfg["evaluation_config_dict"],
+            label_prefix="autoware",
             load_raw_data=False,
         )
         _ = configure_logger(
@@ -266,13 +261,6 @@ class Perception2DEvaluator(Node):
             CriticalObjectFilterConfig(
                 evaluator_config=evaluation_config,
                 target_labels=c_cfg["target_labels"],
-                max_x_position_list=c_cfg["max_x_position_list"],
-                max_y_position_list=c_cfg["max_y_position_list"],
-                max_distance_list=c_cfg["max_distance_list"],
-                min_distance_list=c_cfg["min_distance_list"],
-                min_point_numbers=c_cfg["min_point_numbers"],
-                confidence_threshold_list=c_cfg["confidence_threshold_list"],
-                target_uuids=c_cfg["target_uuids"],
             )
         )
         # Pass fail を決めるパラメータ
@@ -283,8 +271,8 @@ class Perception2DEvaluator(Node):
         )
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
         self.__sub_perception = self.create_subscription(
-            get_perception_msg_type(evaluation_task),
-            "/perception/object_recognition/" + evaluation_task + "/objects",
+            get_perception_msg_type(topic_prefix),
+            "/perception/object_recognition/" + topic_prefix + "/objects",
             self.perception_cb,
             1,
         )
@@ -317,23 +305,23 @@ class Perception2DEvaluator(Node):
             if self.__counter >= 5:
                 self.__pickle_writer = PickleWriter(self.__pkl_path)
                 self.__pickle_writer.dump(self.__evaluator.frame_results)
-                analyzer = PerceptionPerformanceAnalyzer(self.__evaluator.evaluator_config)
-                analyzer.add(self.__evaluator.frame_results)
-                score_df, error_df = analyzer.analyze()
-                score_dict = score_df.to_dict()
-                error_dict = (
-                    error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
-                )
-                final_metrics = {"Score": score_dict, "Error": error_dict}
-                self.__result.add_final_metrics(final_metrics)
-                self.__result_writer.write(self.__result)
+                # analyzer = PerceptionPerformanceAnalyzer(self.__evaluator.evaluator_config)
+                # analyzer.add(self.__evaluator.frame_results)
+                # score_df, error_df = analyzer.analyze()
+                # score_dict = score_df.to_dict()
+                # error_dict = (
+                #     error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
+                # )
+                # final_metrics = {"Score": score_dict, "Error": error_dict}
+                # self.__result.add_final_metrics(final_metrics)
+                # self.__result_writer.write(self.__result)
                 self.__result_writer.close()
                 rclpy.shutdown()
 
-    def list_dynamic_object_from_ros_msg(
+    def list_dynamic_object_2d_from_ros_msg(
         self, unix_time: int, objects: Union[List[DetectedObject], List[TrackedObject]]
-    ) -> List[DynamicObject]:
-        estimated_objects: List[DynamicObject] = []
+    ) -> List[DynamicObject2D]:
+        estimated_objects: List[DynamicObject2D] = []
         for perception_object in objects:
             most_probable_classification = get_most_probable_classification(
                 perception_object.classification
@@ -342,25 +330,13 @@ class Perception2DEvaluator(Node):
                 label=get_label(most_probable_classification)
             )
 
-            uuid = None
-            if isinstance(perception_object, TrackedObject):
-                uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
-
-            estimated_object = DynamicObject(
+            estimated_object = DynamicObject2D(
                 unix_time=unix_time,
-                position=eval_conversions.position_from_ros_msg(
-                    perception_object.kinematics.pose_with_covariance.pose.position
-                ),
-                orientation=eval_conversions.orientation_from_ros_msg(
-                    perception_object.kinematics.pose_with_covariance.pose.orientation
-                ),
-                size=eval_conversions.dimensions_from_ros_msg(perception_object.shape.dimensions),
-                velocity=eval_conversions.velocity_from_ros_msg(
-                    perception_object.kinematics.twist_with_covariance.twist.linear
-                ),
+                frame_id=self.__camera_type,
                 semantic_score=most_probable_classification.probability,
                 semantic_label=label,
-                uuid=uuid,
+                roi=None,
+                uuid=None,
             )
             estimated_objects.append(estimated_object)
         return estimated_objects
@@ -374,7 +350,7 @@ class Perception2DEvaluator(Node):
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
         else:
-            estimated_objects: List[DynamicObject] = self.list_dynamic_object_from_ros_msg(
+            estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
                 unix_time, msg.objects
             )
             ros_critical_ground_truth_objects = ground_truth_now_frame.objects
@@ -404,10 +380,10 @@ class Perception2DEvaluator(Node):
 def main(args=None):
     rclpy.init(args=args)
     executor = MultiThreadedExecutor()
-    perception_evaluator = PerceptionEvaluator()
-    executor.add_node(perception_evaluator)
+    perception_2d_evaluator = Perception2DEvaluator()
+    executor.add_node(perception_2d_evaluator)
     executor.spin()
-    perception_evaluator.destroy_node()
+    perception_2d_evaluator.destroy_node()
     rclpy.shutdown()
 
 
