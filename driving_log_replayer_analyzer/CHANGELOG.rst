@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: update for perception_eval PR `#12 <https://github.com/tier4/driving_log_replayer/issues/12>`_ (`#113 <https://github.com/tier4/driving_log_replayer/issues/113>`_)
+* fix: add cli dependency (`#114 <https://github.com/tier4/driving_log_replayer/issues/114>`_)
+* Contributors: Hayato Mizushima
+
 1.1.17 (2023-02-14)
 -------------------
 * feat: update rviz (`#111 <https://github.com/tier4/driving_log_replayer/issues/111>`_)
