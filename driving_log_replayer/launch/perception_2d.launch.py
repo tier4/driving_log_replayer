@@ -29,7 +29,7 @@ def generate_launch_description():
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
         sensing=LaunchConfiguration("sensing"), localization="false"
     )
-    rviz_node = driving_log_replayer.launch_common.get_rviz("perception_2d.rviz")
+    rviz_node = driving_log_replayer.launch_common.get_rviz("perception.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
         "perception_2d", python_node=True
     )
