@@ -30,6 +30,7 @@ click = "^8.0.3"
 pandas = "^1.5.2"
 plotly = "^5.11.0"
 kaleido = "0.2.1"
+simplejson = "^3.18.3"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
