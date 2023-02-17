@@ -1,0 +1,27 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: perception_2d_x2
+ScenarioDescription: perception_2d_x2
+SensorModel: aip_x2
+VehicleModel: gsm8
+Evaluation:
+  UseCaseName: perception_2d
+  UseCaseFormatVersion: 0.1.0
+  Datasets:
+    - sample:
+        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
+        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
+        LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
+  Conditions:
+    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+  PerceptionEvaluationConfig:
+    camera_type: cam_front
+    evaluation_config_dict:
+      evaluation_task: detection2d # detection2d / tracking2d
+      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
+      center_distance_thresholds: [1.0, 2.0]
+      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
+  CriticalObjectFilterConfig:
+    target_labels: [car, bicycle, pedestrian, motorbike] # 評価対象ラベル名
+  PerceptionPassFailConfig:
+    target_labels: [car, truck, bicycle, pedestrian, motorbike]
+    matching_threshold_list: null
