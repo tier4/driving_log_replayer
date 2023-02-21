@@ -224,6 +224,14 @@ class Perception2DEvaluator(Node):
         f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
         self.__camera_type = p_cfg["camera_type"]
+        self.__camera_no = None
+        for k, v in p_cfg["camera_mapping"].items():
+            if v == self.__camera_type:
+                self.__camera_no = int(k.replace("camera", ""))
+                print(f"camera_no:{self.__camera_no}")
+                break
+        if self.__camera_no is None:
+            raise ValueError(f"camera_type: {self.__camera_type} is not found in camera_mapping")
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
@@ -255,7 +263,7 @@ class Perception2DEvaluator(Node):
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
         self.__sub_detected_objs = self.create_subscription(
             DetectedObjectsWithFeature,
-            "/perception/object_recognition/detection/rois0",
+            f"/perception/object_recognition/detection/rois{self.__camera_no}",
             self.detected_objs_cb,
             1,
         )
