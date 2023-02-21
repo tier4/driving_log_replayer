@@ -49,29 +49,45 @@ def get_driving_log_replayer_common_argument():
 
     def add_launch_arg(name: str, default_value=None, description=""):
         launch_arguments.append(
-            DeclareLaunchArgument(name, default_value=default_value, description=description)
+            DeclareLaunchArgument(
+                name, default_value=default_value, description=description
+            )
         )
 
     add_launch_arg(
-        "with_autoware", default_value="true", description="Whether to launch autoware or not"
+        "with_autoware",
+        default_value="true",
+        description="Whether to launch autoware or not",
     )
-    add_launch_arg("rviz", default_value="true", description="Whether to display rviz or not")
-    add_launch_arg("scenario_path", default_value="/tmp/scenario", description="scenario path")
+    add_launch_arg(
+        "rviz", default_value="true", description="Whether to display rviz or not"
+    )
+    add_launch_arg(
+        "scenario_path", default_value="/tmp/scenario", description="scenario path"
+    )
     add_launch_arg(
         "result_json_path",
         default_value="/tmp/result_json",
         description="result json save path",
     )
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
-    add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
+    add_launch_arg(
+        "play_delay", default_value="10.0", description="ros2 bag play delay"
+    )
     add_launch_arg("input_bag", description="full path to the input bag")
     add_launch_arg(
-        "result_bag_path", default_value="/tmp/result_bag", description="result bag save path"
+        "result_bag_path",
+        default_value="/tmp/result_bag",
+        description="result bag save path",
     )
-    add_launch_arg("map_path", description="point cloud and lanelet2 map directory path")
+    add_launch_arg(
+        "map_path", description="point cloud and lanelet2 map directory path"
+    )
     add_launch_arg("vehicle_model", description="vehicle model name")
     add_launch_arg("sensor_model", description="sensor model name")
-    add_launch_arg("vehicle_id", default_value="default", description="vehicle specific ID")
+    add_launch_arg(
+        "vehicle_id", default_value="default", description="vehicle specific ID"
+    )
 
     # additional argument
     add_launch_arg(
@@ -96,13 +112,18 @@ def get_autoware_launch(
     planning="false",
     control="false",
     scenario_simulation="false",
+    perception_mode="lidar",
 ):
     # autoware launch
     autoware_launch_file = os.path.join(
-        get_package_share_directory("autoware_launch"), "launch", "logging_simulator.launch.xml"
+        get_package_share_directory("autoware_launch"),
+        "launch",
+        "logging_simulator.launch.xml",
     )
     autoware_launch = launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(autoware_launch_file),
+        launch.launch_description_sources.AnyLaunchDescriptionSource(
+            autoware_launch_file
+        ),
         launch_arguments={
             "map_path": LaunchConfiguration("map_path"),
             "vehicle_model": LaunchConfiguration("vehicle_model"),
@@ -115,6 +136,7 @@ def get_autoware_launch(
             "planning": planning,
             "control": control,
             "scenario_simulation": scenario_simulation,
+            "perception_mode": perception_mode,
             "rviz": "false",
         }.items(),
         condition=IfCondition(LaunchConfiguration("with_autoware")),
@@ -191,7 +213,9 @@ def get_recorder(record_config_name: str, record_topics: list):
             LaunchConfiguration("result_bag_path"),
             "--qos-profile-overrides-path",
             os.path.join(
-                get_package_share_directory("driving_log_replayer"), "config", record_config_name
+                get_package_share_directory("driving_log_replayer"),
+                "config",
+                record_config_name,
             ),
         ]
     )
@@ -207,7 +231,9 @@ def get_regex_recorder(record_config_name: str, allowlist: str):
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
         os.path.join(
-            get_package_share_directory("driving_log_replayer"), "config", record_config_name
+            get_package_share_directory("driving_log_replayer"),
+            "config",
+            record_config_name,
         ),
         "-e",
         allowlist,
@@ -236,7 +262,9 @@ def get_player(additional_argument=None):
 
 
 def get_evaluator_container(
-    usecase_name: str, package_name: str = "driving_log_replayer", addition_parameter=None
+    usecase_name: str,
+    package_name: str = "driving_log_replayer",
+    addition_parameter=None,
 ):
     params = {
         "use_sim_time": True,
@@ -250,14 +278,20 @@ def get_evaluator_container(
 
     evaluator_node = ComposableNode(
         package=package_name,
-        plugin="driving_log_replayer::" + snake_to_pascal(usecase_name) + "EvaluatorComponent",
+        plugin="driving_log_replayer::"
+        + snake_to_pascal(usecase_name)
+        + "EvaluatorComponent",
         namespace="/driving_log_replayer",
         name=usecase_name + "_evaluator",
         parameters=[params],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+        extra_arguments=[
+            {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+        ],
     )
     evaluator_container = ComposableNodeContainer(
-        name="DrivingLogReplayer" + snake_to_pascal(usecase_name) + "EvaluatorContainer",
+        name="DrivingLogReplayer"
+        + snake_to_pascal(usecase_name)
+        + "EvaluatorContainer",
         namespace="",
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
@@ -268,7 +302,9 @@ def get_evaluator_container(
 
 
 def add_container_argument(launch_arguments: list):
-    launch_arguments.append(DeclareLaunchArgument("use_multithread", default_value="true"))
+    launch_arguments.append(
+        DeclareLaunchArgument("use_multithread", default_value="true")
+    )
     launch_arguments.append(
         DeclareLaunchArgument(
             "use_intra_process",
