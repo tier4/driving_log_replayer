@@ -20,13 +20,8 @@ from pathlib import Path
 from typing import Dict
 from typing import List
 from typing import Tuple
-from typing import Union
 
-from autoware_auto_perception_msgs.msg import DetectedObject
-from autoware_auto_perception_msgs.msg import DetectedObjects
 from autoware_auto_perception_msgs.msg import ObjectClassification
-from autoware_auto_perception_msgs.msg import TrackedObject
-from autoware_auto_perception_msgs.msg import TrackedObjects
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import PickleWriter
@@ -51,17 +46,10 @@ from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformListener
+from tier4_perception_msgs.msg import DetectedObjectsWithFeature
+from tier4_perception_msgs.msg import DetectedObjectWithFeature
 from visualization_msgs.msg import MarkerArray
 import yaml
-
-
-def get_perception_msg_type(evaluation_task: str):
-    if evaluation_task == "detection":
-        return DetectedObjects
-    elif evaluation_task == "tracking":
-        return TrackedObjects
-    else:
-        raise ValueError(f"Unexpected evaluation task: {evaluation_task}")
 
 
 def get_label(classification: ObjectClassification) -> str:
@@ -237,11 +225,6 @@ class Perception2DEvaluator(Node):
 
         self.__camera_type = p_cfg["camera_type"]
 
-        evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
-        topic_prefix = evaluation_task.replace("2d", "")
-        if topic_prefix not in ["detection", "tracking"]:
-            raise ValueError(f"Unexpected evaluation task: {evaluation_task}")
-
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
             frame_id=self.__camera_type,
@@ -270,10 +253,10 @@ class Perception2DEvaluator(Node):
             matching_threshold_list=f_cfg["matching_threshold_list"],
         )
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
-        self.__sub_perception = self.create_subscription(
-            get_perception_msg_type(topic_prefix),
-            "/perception/object_recognition/" + topic_prefix + "/objects",
-            self.perception_cb,
+        self.__sub_detected_objs = self.create_subscription(
+            DetectedObjectsWithFeature,
+            "/perception/object_recognition/detection/rois0",
+            self.detected_objs_cb,
             1,
         )
         self.__pub_marker_ground_truth = self.create_publisher(
@@ -319,31 +302,32 @@ class Perception2DEvaluator(Node):
                 rclpy.shutdown()
 
     def list_dynamic_object_2d_from_ros_msg(
-        self, unix_time: int, objects: Union[List[DetectedObject], List[TrackedObject]]
+        self, unix_time: int, feature_objects: List[DetectedObjectWithFeature]
     ) -> List[DynamicObject2D]:
         estimated_objects: List[DynamicObject2D] = []
-        for perception_object in objects:
+        for perception_object in feature_objects:
             most_probable_classification = get_most_probable_classification(
                 perception_object.classification
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
                 label=get_label(most_probable_classification)
             )
+            obj_roi = perception_object.feature.roi
+            roi = obj_roi.x_offset, obj_roi.y_offset, obj_roi.width, obj_roi.height
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
                 frame_id=self.__camera_type,
                 semantic_score=most_probable_classification.probability,
                 semantic_label=label,
-                roi=None,
+                roi=roi,
                 uuid=None,
             )
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def perception_cb(self, msg: Union[DetectedObjects, TrackedObjects]):
+    def detected_objs_cb(self, msg: DetectedObjectsWithFeature):
         map_to_baselink = self.__tf_buffer.lookup_transform("map", "base_link", msg.header.stamp)
-        # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
@@ -351,7 +335,7 @@ class Perception2DEvaluator(Node):
             self.__skip_counter += 1
         else:
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
-                unix_time, msg.objects
+                unix_time, msg.feature_objects
             )
             ros_critical_ground_truth_objects = ground_truth_now_frame.objects
             # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
