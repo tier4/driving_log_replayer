@@ -239,7 +239,7 @@ class Perception2DEvaluator(Node):
 
         evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
         topic_prefix = evaluation_task.replace("2d", "")
-        if not topic_prefix in ["detection", "tracking"]:
+        if topic_prefix not in ["detection", "tracking"]:
             raise ValueError(f"Unexpected evaluation task: {evaluation_task}")
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(

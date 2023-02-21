@@ -15,6 +15,13 @@ Evaluation:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
   PerceptionEvaluationConfig:
     camera_type: cam_front
+    camera_mapping:
+      camera0: cam_front
+      camera1: cam_front_right
+      camera2: cam_back_right
+      camera3: cam_back
+      camera4: cam_back_left
+      camera5: cam_front_left
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d / tracking2d
       target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
