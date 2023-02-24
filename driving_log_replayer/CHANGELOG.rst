@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.19 (2023-02-24)
+-------------------
 * fix: count tp fp fn (`#116 <https://github.com/tier4/driving_log_replayer/issues/116>`_)
 * Contributors: Hayato Mizushima
 
