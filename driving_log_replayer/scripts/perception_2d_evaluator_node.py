@@ -30,6 +30,7 @@ from driving_log_replayer.result import ResultWriter
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
+from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
@@ -277,6 +278,7 @@ class Perception2DEvaluator(Node):
             if self.__counter >= 5:
                 self.__pickle_writer = PickleWriter(self.__pkl_path)
                 self.__pickle_writer.dump(self.__evaluator.frame_results)
+                self.get_final_result()
                 # analyzer = PerceptionPerformanceAnalyzer(self.__evaluator.evaluator_config)
                 # analyzer.add(self.__evaluator.frame_results)
                 # score_df, error_df = analyzer.analyze()
@@ -346,6 +348,16 @@ class Perception2DEvaluator(Node):
                 transform_stamped_with_euler_angle(map_to_baselink),
             )
             self.__result_writer.write(self.__result)
+
+    def get_final_result(self) -> MetricsScore:
+        """
+        処理の最後に評価結果を出す
+        """
+        final_metric_score = self.__evaluator.get_scene_result()
+
+        # final result
+        logging.info(f"final metrics result {final_metric_score}")
+        return final_metric_score
 
 
 def main(args=None):
