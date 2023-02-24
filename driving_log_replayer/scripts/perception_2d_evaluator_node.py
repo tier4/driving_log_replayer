@@ -315,7 +315,7 @@ class Perception2DEvaluator(Node):
         estimated_objects: List[DynamicObject2D] = []
         for perception_object in feature_objects:
             most_probable_classification = get_most_probable_classification(
-                perception_object.classification
+                perception_object.object.classification
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
                 label=get_label(most_probable_classification)
