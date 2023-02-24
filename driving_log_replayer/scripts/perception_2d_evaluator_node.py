@@ -152,23 +152,23 @@ class Perception2DResult(ResultBase):
                 }
             ],
         }
-        marker_ground_truth = MarkerArray()
-        color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
+        # marker_ground_truth = MarkerArray()
+        # color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
 
-        for cnt, obj in enumerate(frame.frame_ground_truth.objects, start=1):
-            bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
-                obj.state, header, "ground_truth", cnt, color_success, obj.uuid
-            )
-            marker_ground_truth.markers.append(bbox)
-            marker_ground_truth.markers.append(uuid)
+        # for cnt, obj in enumerate(frame.frame_ground_truth.objects, start=1):
+        #     bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
+        #         obj.state, header, "ground_truth", cnt, color_success, obj.uuid
+        #     )
+        #     marker_ground_truth.markers.append(bbox)
+        #     marker_ground_truth.markers.append(uuid)
 
-        marker_results = eval_conversions.pass_fail_result_to_ros_points_array(
-            frame.pass_fail_result, header
-        )
+        # marker_results = eval_conversions.pass_fail_result_to_ros_points_array(
+        #     frame.pass_fail_result, header
+        # )
 
         self._frame = out_frame
         self.update()
-        return marker_ground_truth, marker_results
+        return MarkerArray(), MarkerArray()
 
     def add_final_metrics(self, final_metrics: Dict):
         self._frame = {"FinalScore": final_metrics}
