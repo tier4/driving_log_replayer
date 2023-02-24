@@ -111,7 +111,7 @@ class Perception2DResult(ResultBase):
 
     def add_frame(
         self, frame: PerceptionFrameResult, skip: int, header: Header, map_to_baselink: Dict
-    ) -> Tuple[MarkerArray, MarkerArray]:
+    ):
         self.__total += 1
         has_objects = True
         if (
@@ -135,13 +135,13 @@ class Perception2DResult(ResultBase):
         }
         tp_num = 0
         if frame.pass_fail_result.tp_objects is not None:
-            len(frame.pass_fail_result.tp_objects)
+            tp_num = len(frame.pass_fail_result.tp_objects)
         fp_num = 0
         if frame.pass_fail_result.fp_objects_result is not None:
-            len(frame.pass_fail_result.fp_objects_result)
+            fp_num = len(frame.pass_fail_result.fp_objects_result)
         fn_num = 0
         if frame.pass_fail_result.fn_objects is not None:
-            len(frame.pass_fail_result.fn_objects)
+            fn_num = len(frame.pass_fail_result.fn_objects)
         out_frame["PassFail"] = {
             "Result": success,
             "Info": [
@@ -152,23 +152,8 @@ class Perception2DResult(ResultBase):
                 }
             ],
         }
-        # marker_ground_truth = MarkerArray()
-        # color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
-
-        # for cnt, obj in enumerate(frame.frame_ground_truth.objects, start=1):
-        #     bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
-        #         obj.state, header, "ground_truth", cnt, color_success, obj.uuid
-        #     )
-        #     marker_ground_truth.markers.append(bbox)
-        #     marker_ground_truth.markers.append(uuid)
-
-        # marker_results = eval_conversions.pass_fail_result_to_ros_points_array(
-        #     frame.pass_fail_result, header
-        # )
-
         self._frame = out_frame
         self.update()
-        return MarkerArray(), MarkerArray()
 
     def add_final_metrics(self, final_metrics: Dict):
         self._frame = {"FinalScore": final_metrics}
@@ -267,10 +252,6 @@ class Perception2DEvaluator(Node):
             self.detected_objs_cb,
             1,
         )
-        self.__pub_marker_ground_truth = self.create_publisher(
-            MarkerArray, "marker/ground_truth", 1
-        )
-        self.__pub_marker_results = self.create_publisher(MarkerArray, "marker/results", 1)
 
         self.__current_time = Time().to_msg()
         self.__prev_time = Time().to_msg()
@@ -358,15 +339,13 @@ class Perception2DEvaluator(Node):
                 frame_pass_fail_config=self.__frame_pass_fail_config,
             )
             # write result
-            marker_ground_truth, marker_results = self.__result.add_frame(
+            self.__result.add_frame(
                 frame_result,
                 self.__skip_counter,
                 msg.header,
                 transform_stamped_with_euler_angle(map_to_baselink),
             )
             self.__result_writer.write(self.__result)
-            self.__pub_marker_ground_truth.publish(marker_ground_truth)
-            self.__pub_marker_results.publish(marker_results)
 
 
 def main(args=None):
