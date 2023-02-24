@@ -36,6 +36,7 @@ from perception_eval.common.object import DynamicObject
 from perception_eval.common.status import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
+from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
@@ -158,13 +159,13 @@ class PerceptionResult(ResultBase):
         }
         tp_num = 0
         if frame.pass_fail_result.tp_objects is not None:
-            len(frame.pass_fail_result.tp_objects)
+            tp_num = len(frame.pass_fail_result.tp_objects)
         fp_num = 0
         if frame.pass_fail_result.fp_objects_result is not None:
-            len(frame.pass_fail_result.fp_objects_result)
+            fp_num = len(frame.pass_fail_result.fp_objects_result)
         fn_num = 0
         if frame.pass_fail_result.fn_objects is not None:
-            len(frame.pass_fail_result.fn_objects)
+            fn_num = len(frame.pass_fail_result.fn_objects)
         out_frame["PassFail"] = {
             "Result": success,
             "Info": [
@@ -319,6 +320,7 @@ class PerceptionEvaluator(Node):
             if self.__counter >= 5:
                 self.__pickle_writer = PickleWriter(self.__pkl_path)
                 self.__pickle_writer.dump(self.__evaluator.frame_results)
+                self.get_final_result()
                 analyzer = PerceptionPerformanceAnalyzer(self.__evaluator.evaluator_config)
                 analyzer.add(self.__evaluator.frame_results)
                 score_df, error_df = analyzer.analyze()
@@ -408,6 +410,16 @@ class PerceptionEvaluator(Node):
             self.__result_writer.write(self.__result)
             self.__pub_marker_ground_truth.publish(marker_ground_truth)
             self.__pub_marker_results.publish(marker_results)
+
+    def get_final_result(self) -> MetricsScore:
+        """
+        処理の最後に評価結果を出す
+        """
+        final_metric_score = self.__evaluator.get_scene_result()
+
+        # final result
+        logging.info(f"final metrics result {final_metric_score}")
+        return final_metric_score
 
 
 def main(args=None):
