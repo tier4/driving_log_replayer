@@ -195,7 +195,7 @@ class TestScriptGenerator:
             vehicle_id = dataset[key].get("VehicleId", "")
             map_path = os.path.expandvars(dataset[key].get("LocalMapPath", ""))
             t4_dataset_path = os.path.join(t4_dataset_base_path, key)
-            launch_sensing = str(dataset[key].get("LaunchSensing", False))
+            launch_sensing = str(dataset[key].get("LaunchSensing", True))
 
             if vehicle_id == "":
                 termcolor.cprint(
@@ -249,11 +249,10 @@ class TestScriptGenerator:
 
             # t4_dataset
             launch_args += " t4_dataset_path:=" + t4_dataset_path
-            if scenario_yaml_obj["Evaluation"]["UseCaseName"] == "perception":
-                launch_args += " result_archive_path:=" + os.path.join(
-                    output_dir_per_dataset, "result_archive"
-                )
-                launch_args += " sensing:=" + launch_sensing
+            launch_args += " result_archive_path:=" + os.path.join(
+                output_dir_per_dataset, "result_archive"
+            )
+            launch_args += " sensing:=" + launch_sensing
             launch_command = launch_base_command + launch_args + "\n"
             launch_command_for_all_dataset += launch_command
         if is_database_evaluation:
