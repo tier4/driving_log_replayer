@@ -412,9 +412,6 @@ class PerceptionEvaluator(Node):
             self.__pub_marker_results.publish(marker_results)
 
     def get_final_result(self) -> MetricsScore:
-        """
-        処理の最後に評価結果を出す
-        """
         final_metric_score = self.__evaluator.get_scene_result()
 
         # final result
