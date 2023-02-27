@@ -1,4 +1,4 @@
-# 認識機能の評価(3D)
+# 認識機能の評価(LiDAR)
 
 Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。
 
@@ -14,7 +14,7 @@ perception では、機械学習の学習済みモデルを使用する。
 変換処理は、perception のモジュールを初回起動したときに行われる。
 
 なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
-GPU の性能によって、engine の出力までにかかる時間が異なるので、[lidar_based_detection.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15)
+GPU の性能によって、engine の出力までにかかる時間が異なるので、[perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L13)
 に記載のディレクトリに engine ファイルが 2 つ出力されるまで待ちます。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。

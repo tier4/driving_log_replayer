@@ -1,4 +1,4 @@
-# 認識機能の評価(2D)
+# 認識機能の評価(カメラ)
 
 Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。
 
@@ -8,25 +8,25 @@ perception モジュールを起動して出力される perception の topic �
 
 perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。
-[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115)
+[tensorrt_yolo/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolo/CMakeLists.txt#L110-L116)
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換処理は、perception のモジュールを初回起動したときに行われる。
 
 なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
-GPU の性能によって、engine の出力までにかかる時間が異なるので、[lidar_based_detection.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15)
-に記載のディレクトリに engine ファイルが 2 つ出力されるまで待ちます。
+GPU の性能によって、engine の出力までにかかる時間が異なるので、[tensorrt_yolo.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolo/launch/tensorrt_yolo.launch.xml#L6)
+に記載のディレクトリに engine ファイルが出力されるまで待ちます。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
 ```shell
 # $HOME/autowareにautowareをインストールした場合
 source ~/autoware/install/setup.bash
-ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-rosbag vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-rosbag vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit perception_mode:=camera_lidar_fusion
 
-# ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下の２つが出力されるまでまつ
-# pts_backbone_neck_head_centerpoint_tiny.engine
-# pts_voxel_encoder_centerpoint_tiny.engine
+# ~/autoware/install/tensorrt_yolo/share/tensorrt_yolo/dataに指定したyolo typeのengineが出力されるまで待つ
+# <arg name="yolo_type" default="yolov3"/>の場合
+# yolov3.engine
 ```
 
 ## 評価方法
@@ -36,7 +36,7 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
-3. 評価ノードが/perception/object_recognition/{detection, tracking}/objects を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
+3. 評価ノードが/perception/object_recognition/detection/rois${camera_no} を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 ## 評価結果
@@ -141,8 +141,6 @@ Evaluation:
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
   CriticalObjectFilterConfig:
     target_labels: [car, bicycle, pedestrian, motorbike] # 評価対象ラベル名
-   confidence_threshold_list: null # 評価対象の estimated object の confidence の閾値
-    target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
   PerceptionPassFailConfig:
     target_labels: [car, bicycle, pedestrian, motorbike]
     matching_threshold_list: null
