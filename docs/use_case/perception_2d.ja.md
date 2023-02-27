@@ -36,8 +36,10 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
-3. 評価ノードが/perception/object_recognition/detection/rois${camera_no} を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
+3. 評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
+
+注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。
 
 ## 評価結果
 
@@ -58,9 +60,9 @@ perception_eval の評価関数を実行して以下の条件を満たすとき
 
 Subscribed topics:
 
-| topic 名                                         | データ型                                          |
-| ------------------------------------------------ | ------------------------------------------------- |
-| /perception/object_recognition/detection/rois${camera_no} | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| topic 名                                       | データ型                                             |
+| ---------------------------------------------- | ---------------------------------------------------- |
+| /perception/object_recognition/detection/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
 
 Published topics:
 

@@ -249,7 +249,7 @@ class Perception2DEvaluator(Node):
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
         self.__sub_detected_objs = self.create_subscription(
             DetectedObjectsWithFeature,
-            f"/perception/object_recognition/detection/rois{self.__camera_no}",
+            "/perception/object_recognition/detection/rois0",
             self.detected_objs_cb,
             1,
         )

@@ -49,9 +49,7 @@ def get_driving_log_replayer_common_argument():
 
     def add_launch_arg(name: str, default_value=None, description=""):
         launch_arguments.append(
-            DeclareLaunchArgument(
-                name, default_value=default_value, description=description
-            )
+            DeclareLaunchArgument(name, default_value=default_value, description=description)
         )
 
     add_launch_arg(
@@ -59,35 +57,25 @@ def get_driving_log_replayer_common_argument():
         default_value="true",
         description="Whether to launch autoware or not",
     )
-    add_launch_arg(
-        "rviz", default_value="true", description="Whether to display rviz or not"
-    )
-    add_launch_arg(
-        "scenario_path", default_value="/tmp/scenario", description="scenario path"
-    )
+    add_launch_arg("rviz", default_value="true", description="Whether to display rviz or not")
+    add_launch_arg("scenario_path", default_value="/tmp/scenario", description="scenario path")
     add_launch_arg(
         "result_json_path",
         default_value="/tmp/result_json",
         description="result json save path",
     )
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
-    add_launch_arg(
-        "play_delay", default_value="10.0", description="ros2 bag play delay"
-    )
+    add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
     add_launch_arg("input_bag", description="full path to the input bag")
     add_launch_arg(
         "result_bag_path",
         default_value="/tmp/result_bag",
         description="result bag save path",
     )
-    add_launch_arg(
-        "map_path", description="point cloud and lanelet2 map directory path"
-    )
+    add_launch_arg("map_path", description="point cloud and lanelet2 map directory path")
     add_launch_arg("vehicle_model", description="vehicle model name")
     add_launch_arg("sensor_model", description="sensor model name")
-    add_launch_arg(
-        "vehicle_id", default_value="default", description="vehicle specific ID"
-    )
+    add_launch_arg("vehicle_id", default_value="default", description="vehicle specific ID")
 
     # additional argument
     add_launch_arg(
@@ -121,9 +109,7 @@ def get_autoware_launch(
         "logging_simulator.launch.xml",
     )
     autoware_launch = launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(
-            autoware_launch_file
-        ),
+        launch.launch_description_sources.AnyLaunchDescriptionSource(autoware_launch_file),
         launch_arguments={
             "map_path": LaunchConfiguration("map_path"),
             "vehicle_model": LaunchConfiguration("vehicle_model"),
@@ -278,20 +264,14 @@ def get_evaluator_container(
 
     evaluator_node = ComposableNode(
         package=package_name,
-        plugin="driving_log_replayer::"
-        + snake_to_pascal(usecase_name)
-        + "EvaluatorComponent",
+        plugin="driving_log_replayer::" + snake_to_pascal(usecase_name) + "EvaluatorComponent",
         namespace="/driving_log_replayer",
         name=usecase_name + "_evaluator",
         parameters=[params],
-        extra_arguments=[
-            {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
-        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
     evaluator_container = ComposableNodeContainer(
-        name="DrivingLogReplayer"
-        + snake_to_pascal(usecase_name)
-        + "EvaluatorContainer",
+        name="DrivingLogReplayer" + snake_to_pascal(usecase_name) + "EvaluatorContainer",
         namespace="",
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
@@ -302,9 +282,7 @@ def get_evaluator_container(
 
 
 def add_container_argument(launch_arguments: list):
-    launch_arguments.append(
-        DeclareLaunchArgument("use_multithread", default_value="true")
-    )
+    launch_arguments.append(DeclareLaunchArgument("use_multithread", default_value="true"))
     launch_arguments.append(
         DeclareLaunchArgument(
             "use_intra_process",

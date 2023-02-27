@@ -14,8 +14,8 @@ Evaluation:
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
   PerceptionEvaluationConfig:
-    camera_type: cam_front
-    camera_mapping:
+    camera_type: cam_front # 評価に使用するカメラを指定する
+    camera_mapping: # autowareで使用するcamera noとtypeの対応関係を記述する
       camera0: cam_front
       camera1: cam_front_right
       camera2: cam_back_right
