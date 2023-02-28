@@ -20,13 +20,9 @@ from pathlib import Path
 from typing import Dict
 from typing import List
 from typing import Tuple
-from typing import Union
 
-from autoware_auto_perception_msgs.msg import DetectedObject
-from autoware_auto_perception_msgs.msg import DetectedObjects
 from autoware_auto_perception_msgs.msg import ObjectClassification
-from autoware_auto_perception_msgs.msg import TrackedObject
-from autoware_auto_perception_msgs.msg import TrackedObjects
+from autoware_auto_perception_msgs.msg import TrafficSignalArray
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import PickleWriter
@@ -35,6 +31,7 @@ from driving_log_replayer.result import ResultWriter
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
+from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
@@ -51,17 +48,10 @@ from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformListener
+from tier4_perception_msgs.msg import DetectedObjectsWithFeature
+from tier4_perception_msgs.msg import DetectedObjectWithFeature
 from visualization_msgs.msg import MarkerArray
 import yaml
-
-
-def get_perception_msg_type(evaluation_task: str):
-    if evaluation_task == "detection":
-        return DetectedObjects
-    elif evaluation_task == "tracking":
-        return TrackedObjects
-    else:
-        raise ValueError(f"Unexpected evaluation task: {evaluation_task}")
 
 
 def get_label(classification: ObjectClassification) -> str:
@@ -102,7 +92,7 @@ def get_most_probable_classification(
     return highest_classification
 
 
-class Perception2DResult(ResultBase):
+class TrafficLightResult(ResultBase):
     def __init__(self, condition: Dict):
         super().__init__()
         self.__pass_rate = condition["PassRate"]
@@ -123,7 +113,7 @@ class Perception2DResult(ResultBase):
 
     def add_frame(
         self, frame: PerceptionFrameResult, skip: int, header: Header, map_to_baselink: Dict
-    ) -> Tuple[MarkerArray, MarkerArray]:
+    ):
         self.__total += 1
         has_objects = True
         if (
@@ -147,13 +137,13 @@ class Perception2DResult(ResultBase):
         }
         tp_num = 0
         if frame.pass_fail_result.tp_objects is not None:
-            len(frame.pass_fail_result.tp_objects)
+            tp_num = len(frame.pass_fail_result.tp_objects)
         fp_num = 0
         if frame.pass_fail_result.fp_objects_result is not None:
-            len(frame.pass_fail_result.fp_objects_result)
+            fp_num = len(frame.pass_fail_result.fp_objects_result)
         fn_num = 0
         if frame.pass_fail_result.fn_objects is not None:
-            len(frame.pass_fail_result.fn_objects)
+            fn_num = len(frame.pass_fail_result.fn_objects)
         out_frame["PassFail"] = {
             "Result": success,
             "Info": [
@@ -164,31 +154,16 @@ class Perception2DResult(ResultBase):
                 }
             ],
         }
-        marker_ground_truth = MarkerArray()
-        color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
-
-        for cnt, obj in enumerate(frame.frame_ground_truth.objects, start=1):
-            bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
-                obj.state, header, "ground_truth", cnt, color_success, obj.uuid
-            )
-            marker_ground_truth.markers.append(bbox)
-            marker_ground_truth.markers.append(uuid)
-
-        marker_results = eval_conversions.pass_fail_result_to_ros_points_array(
-            frame.pass_fail_result, header
-        )
-
         self._frame = out_frame
         self.update()
-        return marker_ground_truth, marker_results
 
     def add_final_metrics(self, final_metrics: Dict):
         self._frame = {"FinalScore": final_metrics}
 
 
-class Perception2DEvaluator(Node):
+class TrafficLightEvaluator(Node):
     def __init__(self):
-        super().__init__("perception_2d_evaluator")
+        super().__init__("traffic_light_evaluator")
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
         self.declare_parameter("t4_dataset_path", "")
@@ -225,7 +200,7 @@ class Perception2DEvaluator(Node):
         ).as_posix()
 
         self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-        self.__result = Perception2DResult(self.__condition)
+        self.__result = TrafficLightResult(self.__condition)
 
         self.__result_writer = ResultWriter(
             self.__result_json_path, self.get_clock(), self.__condition
@@ -237,18 +212,13 @@ class Perception2DEvaluator(Node):
 
         self.__camera_type = p_cfg["camera_type"]
 
-        evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
-        topic_prefix = evaluation_task.replace("2d", "")
-        if topic_prefix not in ["detection", "tracking"]:
-            raise ValueError(f"Unexpected evaluation task: {evaluation_task}")
-
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
             frame_id=self.__camera_type,
             merge_similar_labels=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
             evaluation_config_dict=p_cfg["evaluation_config_dict"],
-            label_prefix="autoware",
+            label_prefix="traffic_light",
             load_raw_data=False,
         )
         _ = configure_logger(
@@ -270,16 +240,12 @@ class Perception2DEvaluator(Node):
             matching_threshold_list=f_cfg["matching_threshold_list"],
         )
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
-        self.__sub_perception = self.create_subscription(
-            get_perception_msg_type(topic_prefix),
-            "/perception/object_recognition/" + topic_prefix + "/objects",
-            self.perception_cb,
+        self.__sub_traffic_signals = self.create_subscription(
+            TrafficSignalArray,
+            "/perception/traffic_light_recognition/traffic_signals",
+            self.traffic_signals_cb,
             1,
         )
-        self.__pub_marker_ground_truth = self.create_publisher(
-            MarkerArray, "marker/ground_truth", 1
-        )
-        self.__pub_marker_results = self.create_publisher(MarkerArray, "marker/results", 1)
 
         self.__current_time = Time().to_msg()
         self.__prev_time = Time().to_msg()
@@ -305,6 +271,7 @@ class Perception2DEvaluator(Node):
             if self.__counter >= 5:
                 self.__pickle_writer = PickleWriter(self.__pkl_path)
                 self.__pickle_writer.dump(self.__evaluator.frame_results)
+                self.get_final_result()
                 # analyzer = PerceptionPerformanceAnalyzer(self.__evaluator.evaluator_config)
                 # analyzer.add(self.__evaluator.frame_results)
                 # score_df, error_df = analyzer.analyze()
@@ -319,31 +286,32 @@ class Perception2DEvaluator(Node):
                 rclpy.shutdown()
 
     def list_dynamic_object_2d_from_ros_msg(
-        self, unix_time: int, objects: Union[List[DetectedObject], List[TrackedObject]]
+        self, unix_time: int, feature_objects: List[DetectedObjectWithFeature]
     ) -> List[DynamicObject2D]:
         estimated_objects: List[DynamicObject2D] = []
-        for perception_object in objects:
+        for perception_object in feature_objects:
             most_probable_classification = get_most_probable_classification(
-                perception_object.classification
+                perception_object.object.classification
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
                 label=get_label(most_probable_classification)
             )
+            obj_roi = perception_object.feature.roi
+            roi = obj_roi.x_offset, obj_roi.y_offset, obj_roi.width, obj_roi.height
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
                 frame_id=self.__camera_type,
                 semantic_score=most_probable_classification.probability,
                 semantic_label=label,
-                roi=None,
+                roi=roi,
                 uuid=None,
             )
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def perception_cb(self, msg: Union[DetectedObjects, TrackedObjects]):
+    def traffic_signals_cb(self, msg: TrafficSignalArray):
         map_to_baselink = self.__tf_buffer.lookup_transform("map", "base_link", msg.header.stamp)
-        # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
@@ -351,7 +319,7 @@ class Perception2DEvaluator(Node):
             self.__skip_counter += 1
         else:
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
-                unix_time, msg.objects
+                unix_time, msg.feature_objects
             )
             ros_critical_ground_truth_objects = ground_truth_now_frame.objects
             # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
@@ -366,24 +334,32 @@ class Perception2DEvaluator(Node):
                 frame_pass_fail_config=self.__frame_pass_fail_config,
             )
             # write result
-            marker_ground_truth, marker_results = self.__result.add_frame(
+            self.__result.add_frame(
                 frame_result,
                 self.__skip_counter,
                 msg.header,
                 transform_stamped_with_euler_angle(map_to_baselink),
             )
             self.__result_writer.write(self.__result)
-            self.__pub_marker_ground_truth.publish(marker_ground_truth)
-            self.__pub_marker_results.publish(marker_results)
+
+    def get_final_result(self) -> MetricsScore:
+        """
+        処理の最後に評価結果を出す
+        """
+        final_metric_score = self.__evaluator.get_scene_result()
+
+        # final result
+        logging.info(f"final metrics result {final_metric_score}")
+        return final_metric_score
 
 
 def main(args=None):
     rclpy.init(args=args)
     executor = MultiThreadedExecutor()
-    perception_2d_evaluator = Perception2DEvaluator()
-    executor.add_node(perception_2d_evaluator)
+    traffic_light_evaluator = TrafficLightEvaluator()
+    executor.add_node(traffic_light_evaluator)
     executor.spin()
-    perception_2d_evaluator.destroy_node()
+    traffic_light_evaluator.destroy_node()
     rclpy.shutdown()
 
 

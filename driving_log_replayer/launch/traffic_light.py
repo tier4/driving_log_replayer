@@ -31,7 +31,7 @@ def generate_launch_description():
     )
     rviz_node = driving_log_replayer.launch_common.get_rviz("perception.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
-        "perception_2d", python_node=True
+        "traffic_light", python_node=True
     )
     evaluator_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(evaluator_node)
 
