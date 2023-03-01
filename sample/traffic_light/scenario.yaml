@@ -1,20 +1,20 @@
 ScenarioFormatVersion: 3.0.0
-ScenarioName: traffic_light_x2
-ScenarioDescription: traffic_light_x2
-SensorModel: aip_x2
-VehicleModel: gsm8
+ScenarioName: traffic_light_xx1
+ScenarioDescription: traffic_light_xx1
+SensorModel: aip_xx1
+VehicleModel: jpntaxi
 Evaluation:
   UseCaseName: traffic_light
   UseCaseFormatVersion: 0.1.0
   Datasets:
     - sample:
-        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
+        VehicleId: '7' # データセット毎にVehicleIdを指定する
         LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
+        LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
   PerceptionEvaluationConfig:
-    camera_type: cam_front
+    camera_type: cam_traffic_light_near
     evaluation_config_dict:
       evaluation_task: classification2d # 固定
       target_labels: [green, red, yellow, unknown] # 評価ラベル

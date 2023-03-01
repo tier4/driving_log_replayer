@@ -21,7 +21,8 @@ from typing import Dict
 from typing import List
 from typing import Tuple
 
-from autoware_auto_perception_msgs.msg import ObjectClassification
+from autoware_auto_perception_msgs.msg import TrafficLight
+from autoware_auto_perception_msgs.msg import TrafficSignal
 from autoware_auto_perception_msgs.msg import TrafficSignalArray
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 import driving_log_replayer.perception_eval_conversions as eval_conversions
@@ -48,48 +49,30 @@ from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformListener
-from tier4_perception_msgs.msg import DetectedObjectsWithFeature
-from tier4_perception_msgs.msg import DetectedObjectWithFeature
-from visualization_msgs.msg import MarkerArray
 import yaml
 
 
-def get_label(classification: ObjectClassification) -> str:
-    if classification.label == ObjectClassification.UNKNOWN:
-        return "unknown"
-    elif classification.label == ObjectClassification.CAR:
-        return "car"
-    elif classification.label == ObjectClassification.TRUCK:
-        return "truck"
-    elif classification.label == ObjectClassification.BUS:
-        return "bus"
-    elif classification.label == ObjectClassification.TRAILER:
-        # not implemented in iv
-        return "trailer"
-    elif classification.label == ObjectClassification.MOTORCYCLE:
-        # iv: motorbike, auto: motorbike
-        return "motorbike"
-    elif classification.label == ObjectClassification.BICYCLE:
-        return "bicycle"
-    elif classification.label == ObjectClassification.PEDESTRIAN:
-        return "pedestrian"
-    # not implemented in auto
-    # elif classification.label == ObjectClassification.ANIMAL:
-    #     return "animal"
+def get_label(light: TrafficLight) -> str:
+    if light.color == TrafficLight.RED:
+        return "red"
+    elif light.color == TrafficLight.AMBER:
+        return "yellow"
+    elif light.color == TrafficLight.GREEN:
+        return "green"
     else:
-        return "other"
+        return "unknown"
 
 
-def get_most_probable_classification(
-    array_classification: List[ObjectClassification],
-) -> ObjectClassification:
+def get_most_probable_signal(
+    lights: List[TrafficLight],
+) -> TrafficLight:
     highest_probability = 0.0
-    highest_classification = None
-    for classification in array_classification:
-        if classification.probability >= highest_probability:
-            highest_probability = classification.probability
-            highest_classification = classification
-    return highest_classification
+    highest_light = None
+    for light in lights:
+        if light.confidence >= highest_probability:
+            highest_probability = light.confidence
+            highest_light = light
+    return highest_light
 
 
 class TrafficLightResult(ResultBase):
@@ -286,26 +269,22 @@ class TrafficLightEvaluator(Node):
                 rclpy.shutdown()
 
     def list_dynamic_object_2d_from_ros_msg(
-        self, unix_time: int, feature_objects: List[DetectedObjectWithFeature]
+        self, unix_time: int, signals: List[TrafficSignal]
     ) -> List[DynamicObject2D]:
         estimated_objects: List[DynamicObject2D] = []
-        for perception_object in feature_objects:
-            most_probable_classification = get_most_probable_classification(
-                perception_object.object.classification
-            )
+        for signal in signals:
+            most_probable_light = get_most_probable_signal(signal.lights)
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                label=get_label(most_probable_classification)
+                label=get_label(most_probable_light)
             )
-            obj_roi = perception_object.feature.roi
-            roi = obj_roi.x_offset, obj_roi.y_offset, obj_roi.width, obj_roi.height
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
                 frame_id=self.__camera_type,
-                semantic_score=most_probable_classification.probability,
+                semantic_score=most_probable_light.confidence,
                 semantic_label=label,
-                roi=roi,
-                uuid=None,
+                roi=None,
+                uuid=str(signal.map_primitive_id),
             )
             estimated_objects.append(estimated_object)
         return estimated_objects
@@ -319,7 +298,7 @@ class TrafficLightEvaluator(Node):
             self.__skip_counter += 1
         else:
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
-                unix_time, msg.feature_objects
+                unix_time, msg.signals
             )
             ros_critical_ground_truth_objects = ground_truth_now_frame.objects
             # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
