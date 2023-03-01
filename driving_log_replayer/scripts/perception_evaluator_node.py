@@ -40,7 +40,7 @@ from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
-from perception_eval.tool import PerceptionPerformanceAnalyzer
+from perception_eval.tool import PerceptionAnalyzer3D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
@@ -321,7 +321,7 @@ class PerceptionEvaluator(Node):
                 self.__pickle_writer = PickleWriter(self.__pkl_path)
                 self.__pickle_writer.dump(self.__evaluator.frame_results)
                 self.get_final_result()
-                analyzer = PerceptionPerformanceAnalyzer(self.__evaluator.evaluator_config)
+                analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
                 analyzer.add(self.__evaluator.frame_results)
                 score_df, error_df = analyzer.analyze()
                 score_dict = {}
