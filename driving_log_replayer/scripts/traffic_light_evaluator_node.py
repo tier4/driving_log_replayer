@@ -36,7 +36,7 @@ from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
-from perception_eval.tool import PerceptionPerformanceAnalyzer
+from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
@@ -255,16 +255,18 @@ class TrafficLightEvaluator(Node):
                 self.__pickle_writer = PickleWriter(self.__pkl_path)
                 self.__pickle_writer.dump(self.__evaluator.frame_results)
                 self.get_final_result()
-                # analyzer = PerceptionPerformanceAnalyzer(self.__evaluator.evaluator_config)
-                # analyzer.add(self.__evaluator.frame_results)
-                # score_df, error_df = analyzer.analyze()
-                # score_dict = score_df.to_dict()
-                # error_dict = (
-                #     error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
-                # )
-                # final_metrics = {"Score": score_dict, "Error": error_dict}
-                # self.__result.add_final_metrics(final_metrics)
-                # self.__result_writer.write(self.__result)
+                analyzer = PerceptionAnalyzer2D(self.__evaluator.evaluator_config)
+                analyzer.add(self.__evaluator.frame_results)
+                score_df, error_df = analyzer.analyze()
+                score_dict = {}
+                error_dict = {}
+                if score_df is not None:
+                    score_dict = score_df.to_dict()
+                if error_df is not None:
+                    error_dict = error_df.to_dict()
+                final_metrics = {"Score": score_dict, "Error": error_dict}
+                self.__result.add_final_metrics(final_metrics)
+                self.__result_writer.write(self.__result)
                 self.__result_writer.close()
                 rclpy.shutdown()
 
