@@ -99,10 +99,11 @@ class TrafficLightResult(ResultBase):
     ):
         self.__total += 1
         has_objects = True
+        # OptionalでNoneが入る場合と、空配列の場合の2種類ありそうなので、is None判定ではなくnotで判定する
         if (
-            frame.pass_fail_result.tp_objects is None
-            and frame.pass_fail_result.fp_objects_result is None
-            and frame.pass_fail_result.fn_objects is None
+            not frame.pass_fail_result.tp_objects
+            and not frame.pass_fail_result.fp_objects_result
+            and not frame.pass_fail_result.fn_objects
         ):
             has_objects = False
 
@@ -118,13 +119,13 @@ class TrafficLightResult(ResultBase):
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
-        tp_num = 0
+        tp_num = None
         if frame.pass_fail_result.tp_objects is not None:
             tp_num = len(frame.pass_fail_result.tp_objects)
-        fp_num = 0
+        fp_num = None
         if frame.pass_fail_result.fp_objects_result is not None:
             fp_num = len(frame.pass_fail_result.fp_objects_result)
-        fn_num = 0
+        fn_num = None
         if frame.pass_fail_result.fn_objects is not None:
             fn_num = len(frame.pass_fail_result.fn_objects)
         out_frame["PassFail"] = {
