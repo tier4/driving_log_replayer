@@ -304,6 +304,9 @@ class TrafficLightEvaluator(Node):
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
         else:
+            self.get_logger().error(
+                f"get grond truth: {self.__current_time.sec}.{self.__current_time.nanosec}"
+            )
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
                 unix_time, msg.signals
             )
