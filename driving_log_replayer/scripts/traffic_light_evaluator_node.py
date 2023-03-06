@@ -19,7 +19,6 @@ import os
 from pathlib import Path
 from typing import Dict
 from typing import List
-from typing import Tuple
 
 from autoware_auto_perception_msgs.msg import TrafficLight
 from autoware_auto_perception_msgs.msg import TrafficSignal
@@ -36,7 +35,6 @@ from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
-from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
@@ -45,7 +43,6 @@ from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from rclpy.time import Time
-from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformListener
@@ -335,9 +332,6 @@ class TrafficLightEvaluator(Node):
             self.__result_writer.write(self.__result)
 
     def get_final_result(self) -> MetricsScore:
-        """
-        処理の最後に評価結果を出す
-        """
         final_metric_score = self.__evaluator.get_scene_result()
 
         # final result

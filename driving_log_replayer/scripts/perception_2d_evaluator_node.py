@@ -19,7 +19,6 @@ import os
 from pathlib import Path
 from typing import Dict
 from typing import List
-from typing import Tuple
 
 from autoware_auto_perception_msgs.msg import ObjectClassification
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
@@ -43,13 +42,11 @@ from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from rclpy.time import Time
-from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformListener
 from tier4_perception_msgs.msg import DetectedObjectsWithFeature
 from tier4_perception_msgs.msg import DetectedObjectWithFeature
-from visualization_msgs.msg import MarkerArray
 import yaml
 
 
@@ -357,9 +354,6 @@ class Perception2DEvaluator(Node):
             self.__result_writer.write(self.__result)
 
     def get_final_result(self) -> MetricsScore:
-        """
-        処理の最後に評価結果を出す
-        """
         final_metric_score = self.__evaluator.get_scene_result()
 
         # final result
