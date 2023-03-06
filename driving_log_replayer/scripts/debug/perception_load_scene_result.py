@@ -22,7 +22,7 @@ import pickle
 from perception_eval.config.perception_evaluation_config import PerceptionEvaluationConfig
 from perception_eval.evaluation.metrics.metrics import MetricsScore
 from perception_eval.manager.perception_evaluation_manager import PerceptionEvaluationManager
-from perception_eval.tool import PerceptionPerformanceAnalyzer
+from perception_eval.tool import PerceptionAnalyzer3D
 from perception_eval.util.logger_config import configure_logger
 import yaml
 
@@ -77,11 +77,15 @@ class PerceptionEvaluatorPickle:
         logging.info(f"final use case fail object: {number_use_case_fail_object}")
         final_metric_score = self.__evaluator.get_scene_result()
         logging.info(f"final metrics result {final_metric_score}")
-        analyzer = PerceptionPerformanceAnalyzer(self.__evaluator.evaluator_config)
+        analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
         analyzer.add(self.__evaluator.frame_results)
         score_df, error_df = analyzer.analyze()
-        score_dict = score_df.to_dict()
-        error_dict = error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
+        if score_df is not None:
+            score_dict = score_df.to_dict()
+        if error_df is not None:
+            error_dict = (
+                error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
+            )
         print(score_dict)
         print(error_dict)
         # self.__evaluator.visualizer.visualize_all(self.__evaluator.frame_results)

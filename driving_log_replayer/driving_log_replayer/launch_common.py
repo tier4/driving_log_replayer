@@ -53,7 +53,9 @@ def get_driving_log_replayer_common_argument():
         )
 
     add_launch_arg(
-        "with_autoware", default_value="true", description="Whether to launch autoware or not"
+        "with_autoware",
+        default_value="true",
+        description="Whether to launch autoware or not",
     )
     add_launch_arg("rviz", default_value="true", description="Whether to display rviz or not")
     add_launch_arg("scenario_path", default_value="/tmp/scenario", description="scenario path")
@@ -66,7 +68,9 @@ def get_driving_log_replayer_common_argument():
     add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
     add_launch_arg("input_bag", description="full path to the input bag")
     add_launch_arg(
-        "result_bag_path", default_value="/tmp/result_bag", description="result bag save path"
+        "result_bag_path",
+        default_value="/tmp/result_bag",
+        description="result bag save path",
     )
     add_launch_arg("map_path", description="point cloud and lanelet2 map directory path")
     add_launch_arg("vehicle_model", description="vehicle model name")
@@ -96,10 +100,13 @@ def get_autoware_launch(
     planning="false",
     control="false",
     scenario_simulation="false",
+    perception_mode="lidar",
 ):
     # autoware launch
     autoware_launch_file = os.path.join(
-        get_package_share_directory("autoware_launch"), "launch", "logging_simulator.launch.xml"
+        get_package_share_directory("autoware_launch"),
+        "launch",
+        "logging_simulator.launch.xml",
     )
     autoware_launch = launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(autoware_launch_file),
@@ -115,6 +122,7 @@ def get_autoware_launch(
             "planning": planning,
             "control": control,
             "scenario_simulation": scenario_simulation,
+            "perception_mode": perception_mode,
             "rviz": "false",
         }.items(),
         condition=IfCondition(LaunchConfiguration("with_autoware")),
@@ -191,7 +199,9 @@ def get_recorder(record_config_name: str, record_topics: list):
             LaunchConfiguration("result_bag_path"),
             "--qos-profile-overrides-path",
             os.path.join(
-                get_package_share_directory("driving_log_replayer"), "config", record_config_name
+                get_package_share_directory("driving_log_replayer"),
+                "config",
+                record_config_name,
             ),
         ]
     )
@@ -207,7 +217,9 @@ def get_regex_recorder(record_config_name: str, allowlist: str):
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
         os.path.join(
-            get_package_share_directory("driving_log_replayer"), "config", record_config_name
+            get_package_share_directory("driving_log_replayer"),
+            "config",
+            record_config_name,
         ),
         "-e",
         allowlist,
@@ -236,7 +248,9 @@ def get_player(additional_argument=None):
 
 
 def get_evaluator_container(
-    usecase_name: str, package_name: str = "driving_log_replayer", addition_parameter=None
+    usecase_name: str,
+    package_name: str = "driving_log_replayer",
+    addition_parameter=None,
 ):
     params = {
         "use_sim_time": True,
