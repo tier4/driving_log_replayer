@@ -1,4 +1,4 @@
-# Evaluate perception
+# Evaluate perception(LiDAR)
 
 The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.
 
@@ -14,7 +14,7 @@ The downloaded onnx file is not used as is, but is converted into a TensorRT eng
 The conversion process is performed when the perception module is started for the first time.
 
 So, as a preliminary preparation, you need to start logging_simulator.launch and convert the onnx files in the workspace into engine files.
-Depending on the performance of the GPU, the time it takes to output the engine varies, so wait until two engine files are output in the directory listed in [lidar_based_detection.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/object_recognition/detection/lidar_based_detection.launch.xml#L14-L15)
+Depending on the performance of the GPU, the time it takes to output the engine varies, so wait until two engine files are output in the directory listed in [perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L13)
 
 An example of the use of autowarefoundation's autoware.universe is shown below.
 

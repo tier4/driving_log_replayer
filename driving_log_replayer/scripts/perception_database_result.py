@@ -18,13 +18,13 @@ import argparse
 import glob
 import os
 
-from perception_eval.tool import PerceptionPerformanceAnalyzer
+from perception_eval.tool import PerceptionAnalyzer3D
 import simplejson as json
 
 
 class PerceptionLoadDatabaseResult:
     def __init__(self, result_root_directory, scenario_path):
-        analyzer = PerceptionPerformanceAnalyzer.from_scenario(
+        analyzer = PerceptionAnalyzer3D.from_scenario(
             result_root_directory,
             scenario_path,
         )

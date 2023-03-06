@@ -2,6 +2,43 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.1.20 (2023-03-06)
+-------------------
+* fix: lint
+* fix: lint and comment out debug code
+* chore: comment out analyzer
+* chore: add debug code
+* chore: add debug code to count traffic singal cb
+* feat: update condition
+* fix: convert dict
+* feat: add 2d analyzer
+* feat: update 3d analyzer
+* fix: rename
+* feat: update traffic light node
+* feat: update traffic light node
+* feat: update
+* feat: output metrics score
+* fix: TP FP FN count
+* fix: work
+* fix: data access
+* feat: set camera no from camera type
+* feat: update 2d detection
+* feat: set perception_mode
+* fix: lint
+* feat: add traffice light evaluator
+* fix: rviz file
+* feat: update node
+* feat: update scenario
+* fix: CMakeList
+* WIP
+* feat: add file
+* Contributors: Hayato Mizushima
+
+1.1.19 (2023-02-24)
+-------------------
+* fix: count tp fp fn (`#116 <https://github.com/tier4/driving_log_replayer/issues/116>`_)
+* Contributors: Hayato Mizushima
+
 1.1.18 (2023-02-17)
 -------------------
 * feat: update for perception_eval PR `#12 <https://github.com/tier4/driving_log_replayer/issues/12>`_ (`#113 <https://github.com/tier4/driving_log_replayer/issues/113>`_)
