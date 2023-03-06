@@ -8,10 +8,10 @@
       
       
       
-        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/en/use_case/perception/">
+        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/en/use_case/perception_2d.ja/">
       
       
-        <link rel="prev" href="../obstacle_segmentation/">
+        <link rel="prev" href="../perception/">
       
       
         <link rel="next" href="../performance_diag/">
@@ -21,7 +21,7 @@
     
     
       
-        <title>Evaluate perception(LiDAR) - Driving Log Replayer Documentation</title>
+        <title>認識機能の評価(カメラ) - Driving Log Replayer Documentation</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#evaluate-perceptionlidar" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Evaluate perception(LiDAR)
+              認識機能の評価(カメラ)
             
           </span>
         </div>
@@ -767,181 +767,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Evaluate perception(LiDAR)
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../perception/" class="md-nav__link">
         Evaluate perception(LiDAR)
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#preparation" class="md-nav__link">
-    Preparation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#evaluation-method" class="md-nav__link">
-    Evaluation method
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#evaluation-results" class="md-nav__link">
-    Evaluation results
-  </a>
-  
-    <nav class="md-nav" aria-label="Evaluation results">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#perception-normal" class="md-nav__link">
-    Perception Normal
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#perception-error" class="md-nav__link">
-    Perception Error
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#topic-name-and-data-type-used-by-evaluation-node" class="md-nav__link">
-    Topic name and data type used by evaluation node
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
-    Arguments passed to logging_simulator.launch
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependent-libraries" class="md-nav__link">
-    Dependent libraries
-  </a>
-  
-    <nav class="md-nav" aria-label="Dependent libraries">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#division-of-roles-of-driving_log_replayer-with-dependent-libraries" class="md-nav__link">
-    Division of roles of driving_log_replayer with dependent libraries
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#about-simulation" class="md-nav__link">
-    About simulation
-  </a>
-  
-    <nav class="md-nav" aria-label="About simulation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#topic-to-be-included-in-the-input-rosbag" class="md-nav__link">
-    Topic to be included in the input rosbag
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#about-evaluation" class="md-nav__link">
-    About Evaluation
-  </a>
-  
-    <nav class="md-nav" aria-label="About Evaluation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#scenario-format" class="md-nav__link">
-    Scenario Format
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#evaluation-result-format" class="md-nav__link">
-    Evaluation Result Format
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pickle-file" class="md-nav__link">
-    pickle file
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#result-file-of-database-evaluation" class="md-nav__link">
-    Result file of database evaluation
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1041,37 +871,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#preparation" class="md-nav__link">
-    Preparation
+  <a href="#_2" class="md-nav__link">
+    事前準備
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#evaluation-method" class="md-nav__link">
-    Evaluation method
+  <a href="#_3" class="md-nav__link">
+    評価方法
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#evaluation-results" class="md-nav__link">
-    Evaluation results
+  <a href="#_4" class="md-nav__link">
+    評価結果
   </a>
   
-    <nav class="md-nav" aria-label="Evaluation results">
+    <nav class="md-nav" aria-label="評価結果">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#perception-normal" class="md-nav__link">
-    Perception Normal
+  <a href="#_5" class="md-nav__link">
+    正常
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#perception-error" class="md-nav__link">
-    Perception Error
+  <a href="#_6" class="md-nav__link">
+    異常
   </a>
   
 </li>
@@ -1082,30 +912,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#topic-name-and-data-type-used-by-evaluation-node" class="md-nav__link">
-    Topic name and data type used by evaluation node
+  <a href="#topic" class="md-nav__link">
+    評価ノードが使用する Topic 名とデータ型
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
-    Arguments passed to logging_simulator.launch
+  <a href="#logging_simulatorlaunch" class="md-nav__link">
+    logging_simulator.launch に渡す引数
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#dependent-libraries" class="md-nav__link">
-    Dependent libraries
+  <a href="#_7" class="md-nav__link">
+    依存ライブラリ
   </a>
   
-    <nav class="md-nav" aria-label="Dependent libraries">
+    <nav class="md-nav" aria-label="依存ライブラリ">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#division-of-roles-of-driving_log_replayer-with-dependent-libraries" class="md-nav__link">
-    Division of roles of driving_log_replayer with dependent libraries
+  <a href="#driving_log_replayer" class="md-nav__link">
+    依存ライブラリとの driving_log_replayer の役割分担
   </a>
   
 </li>
@@ -1116,16 +946,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#about-simulation" class="md-nav__link">
-    About simulation
+  <a href="#simulation" class="md-nav__link">
+    simulation
   </a>
   
-    <nav class="md-nav" aria-label="About simulation">
+    <nav class="md-nav" aria-label="simulation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#topic-to-be-included-in-the-input-rosbag" class="md-nav__link">
-    Topic to be included in the input rosbag
+  <a href="#rosbag-topic" class="md-nav__link">
+    入力 rosbag に含まれるべき topic
   </a>
   
 </li>
@@ -1136,37 +966,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#about-evaluation" class="md-nav__link">
-    About Evaluation
+  <a href="#evaluation" class="md-nav__link">
+    evaluation
   </a>
   
-    <nav class="md-nav" aria-label="About Evaluation">
+    <nav class="md-nav" aria-label="evaluation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#scenario-format" class="md-nav__link">
-    Scenario Format
+  <a href="#_8" class="md-nav__link">
+    シナリオフォーマット
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#evaluation-result-format" class="md-nav__link">
-    Evaluation Result Format
+  <a href="#_9" class="md-nav__link">
+    評価結果フォーマット
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pickle-file" class="md-nav__link">
-    pickle file
+  <a href="#pickle" class="md-nav__link">
+    pickle ファイル
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#result-file-of-database-evaluation" class="md-nav__link">
-    Result file of database evaluation
+  <a href="#_10" class="md-nav__link">
+    データベース評価の結果ファイル
   </a>
   
 </li>
@@ -1194,197 +1024,176 @@
   
 
 
-<h1 id="evaluate-perceptionlidar">Evaluate perception(LiDAR)<a class="headerlink" href="#evaluate-perceptionlidar" title="Permanent link">#</a></h1>
-<p>The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.</p>
-<p>Run the perception module and pass the output perception topic to the evaluation library for evaluation.</p>
-<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
-<p>In perception evaluation, machine learning pre-trained models are used.
-The models are automatically downloaded during set-up.
-<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115">lidar_centerpoint/CMakeList.txt</a></p>
-<p>The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-The conversion process is performed when the perception module is started for the first time.</p>
-<p>So, as a preliminary preparation, you need to start logging_simulator.launch and convert the onnx files in the workspace into engine files.
-Depending on the performance of the GPU, the time it takes to output the engine varies, so wait until two engine files are output in the directory listed in <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L13">perception.launch.xml</a></p>
-<p>An example of the use of autowarefoundation's autoware.universe is shown below.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># If autoware is installed in $HOME/autoware</span>
+<h1 id="_1">認識機能の評価(カメラ)<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
+<p>Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。</p>
+<p>perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。</p>
+<h2 id="_2">事前準備<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
+<p>perception では、機械学習の学習済みモデルを使用する。
+モデルはセットアップ時に自動的にダウンロードされる。
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolo/CMakeLists.txt#L110-L116">tensorrt_yolo/CMakeList.txt</a></p>
+<p>また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
+変換処理は、perception のモジュールを初回起動したときに行われる。</p>
+<p>なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
+GPU の性能によって、engine の出力までにかかる時間が異なるので、<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolo/launch/tensorrt_yolo.launch.xml#L6">tensorrt_yolo.launch.xml</a>
+に記載のディレクトリに engine ファイルが出力されるまで待ちます。</p>
+<p>autowarefoundation の autoware.universe を使用した場合の例を以下に示す。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># $HOME/autowareにautowareをインストールした場合</span>
 <span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
-ros2<span class="w"> </span>launch<span class="w"> </span>autoware_launch<span class="w"> </span>logging_simulator.launch.xml<span class="w"> </span>map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-rosbag<span class="w"> </span>vehicle_model:<span class="o">=</span>sample_vehicle<span class="w"> </span>sensor_model:<span class="o">=</span>sample_sensor_kit
+ros2<span class="w"> </span>launch<span class="w"> </span>autoware_launch<span class="w"> </span>logging_simulator.launch.xml<span class="w"> </span>map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-rosbag<span class="w"> </span>vehicle_model:<span class="o">=</span>sample_vehicle<span class="w"> </span>sensor_model:<span class="o">=</span>sample_sensor_kit<span class="w"> </span>perception_mode:<span class="o">=</span>camera_lidar_fusion
 
-<span class="c1"># Wait until the following two outputs appear in ~/autoware/install/lidar_centrepoint/share/lidar_centrepoint/data</span>
-<span class="c1"># pts_backbone_neck_head_centerpoint_tiny.engine</span>
-<span class="c1"># pts_voxel_encoder_centerpoint_tiny.engine</span>
+<span class="c1"># ~/autoware/install/tensorrt_yolo/share/tensorrt_yolo/dataに指定したyolo typeのengineが出力されるまで待つ</span>
+<span class="c1"># &lt;arg name=&quot;yolo_type&quot; default=&quot;yolov3&quot;/&gt;の場合</span>
+<span class="c1"># yolov3.engine</span>
 </code></pre></div>
-<h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
-<p>The perception evaluation is executed by launching the <code>perception.launch.py</code> file.
-Launching the file executes the following steps:</p>
+<h2 id="_3">評価方法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
+<p><code>perception.launch_2d.py</code> を使用して評価する。
+launch を立ち上げると以下のことが実行され、評価される。</p>
 <ol>
-<li>Execute launch of evaluation node (<code>perception_evaluator_node</code>), <code>logging_simulator.launch</code> file and <code>ros2 bag play</code> command</li>
-<li>Autoware receives sensor data output from input rosbag and outputs point cloud data, and the perception module performs recognition.</li>
-<li>The evaluation node subscribes to <code>/perception/object_recognition/{detection, tracking}/objects</code> and evaluates data. The result is dumped into a file.</li>
-<li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
+<li>launch で評価ノード(<code>perception_2d_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
+<li>bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う</li>
+<li>評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
+<li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
-<h2 id="evaluation-results">Evaluation results<a class="headerlink" href="#evaluation-results" title="Permanent link">#</a></h2>
-<p>The results are calculated for each subscription. The format and available states are described below.</p>
-<h3 id="perception-normal">Perception Normal<a class="headerlink" href="#perception-normal" title="Permanent link">#</a></h3>
-<p>If no object fail the evaluation function <code>perception_eval</code> (<code>frame_result.pass_fail_result.get_fail_object_num() == 0</code>).</p>
-<h3 id="perception-error">Perception Error<a class="headerlink" href="#perception-error" title="Permanent link">#</a></h3>
-<p>The perception evaluation output is marked as <code>Error</code> when condition for <code>Normal</code> is not met.</p>
-<h2 id="topic-name-and-data-type-used-by-evaluation-node">Topic name and data type used by evaluation node<a class="headerlink" href="#topic-name-and-data-type-used-by-evaluation-node" title="Permanent link">#</a></h2>
+<p>注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。</p>
+<h2 id="_4">評価結果<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
+<p>topic の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
+<h3 id="_5">正常<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
+<p>perception_eval の評価関数を実行して以下の条件を満たすとき</p>
+<ol>
+<li>frame_result.pass_fail_result に object が最低 1 つ入っている (<code>tp_objects is not None and fp_objects is not None and fn_objects is not None</code>)</li>
+<li>評価失敗のオブジェクトが 0 個 (<code>frame_result.pass_fail_result.get_fail_object_num() == 0</code>)</li>
+</ol>
+<h3 id="_6">異常<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
+<p>正常の条件を満たさない場合</p>
+<h2 id="topic">評価ノードが使用する Topic 名とデータ型<a class="headerlink" href="#topic" title="Permanent link">#</a></h2>
 <p>Subscribed topics:</p>
 <table>
 <thead>
 <tr>
-<th>Topic name</th>
-<th>Data type</th>
+<th>topic 名</th>
+<th>データ型</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>/perception/object_recognition/detection/objects</td>
-<td>autoware_auto_perception_msgs/msg/DetectedObjects</td>
-</tr>
-<tr>
-<td>/perception/object_recognition/tracking/objects</td>
-<td>autoware_auto_perception_msgs/msg/TrackedObjects</td>
+<td>/perception/object_recognition/detection/rois0</td>
+<td>tier4_perception_msgs/msg/DetectedObjectsWithFeature</td>
 </tr>
 </tbody>
 </table>
 <p>Published topics:</p>
-<table>
-<thead>
-<tr>
-<th>Topic name</th>
-<th>Data type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>/driving_log_replayer/marker/ground_truth</td>
-<td>visualization_msgs::msg::MarkerArray</td>
-</tr>
-<tr>
-<td>/driving_log_replayer/marker/results</td>
-<td>visualization_msgs::msg::MarkerArray</td>
-</tr>
-</tbody>
-</table>
-<h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
-<p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
-The following parameters are set to <code>false</code> when launching the <code>perception</code> evaluation scenario:</p>
+<p>現状なし</p>
+<h2 id="logging_simulatorlaunch">logging_simulator.launch に渡す引数<a class="headerlink" href="#logging_simulatorlaunch" title="Permanent link">#</a></h2>
+<p>autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。</p>
 <ul>
 <li>localization: false</li>
 <li>planning: false</li>
 <li>control: false</li>
-<li>sensing: false / true (default value is false. Specify by <code>LaunchSensing</code> key for each t4_dataset in the scenario)</li>
+<li>sensing: false / true (デフォルト false、シナリオの <code>LaunchSensing</code> キーで t4_dataset 毎に指定する)</li>
+<li>perception_mode: camera_lidar_fusion</li>
 </ul>
-<p><strong>NOTE: The <code>tf</code> in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.</strong></p>
-<h2 id="dependent-libraries">Dependent libraries<a class="headerlink" href="#dependent-libraries" title="Permanent link">#</a></h2>
-<p>The perception evaluation step bases on the <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> library.</p>
-<h3 id="division-of-roles-of-driving_log_replayer-with-dependent-libraries">Division of roles of driving_log_replayer with dependent libraries<a class="headerlink" href="#division-of-roles-of-driving_log_replayer-with-dependent-libraries" title="Permanent link">#</a></h3>
-<p><code>driving_log_replayer</code> package is in charge of the connection with ROS. The actual perception evaluation is conducted in <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> library.
-The <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> is a ROS-independent library, it cannot receive ROS objects. Also, ROS timestamps use nanoseconds while the <code>t4_dataset</code> format is based on milliseconds (because it uses <code>nuScenes</code>), so the values must be properly converted before using the library's functions.</p>
-<p><code>driving_log_replayer</code> subscribes the topic output from the perception module of Autoware, converts it to the data format expected by <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a>, and passes it on.
-It is also responsible for publishing and visualizing the evaluation results from <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> on proper ROS topic.</p>
-<p><a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> is in charge of the part that compares the detection results passed from <code>driving_log_replayer</code> with ground truth data, calculates the index, and outputs the results.</p>
-<h2 id="about-simulation">About simulation<a class="headerlink" href="#about-simulation" title="Permanent link">#</a></h2>
-<p>State the information required to run the simulation.</p>
-<h3 id="topic-to-be-included-in-the-input-rosbag">Topic to be included in the input rosbag<a class="headerlink" href="#topic-to-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
-<p>Must contain the required topics in <code>t4_dataset</code> format.</p>
-<h2 id="about-evaluation">About Evaluation<a class="headerlink" href="#about-evaluation" title="Permanent link">#</a></h2>
-<p>State the information necessary for the evaluation.</p>
-<h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
-<p>There are two types of evaluation: use case evaluation and database evaluation.
-Use case evaluation is performed on a single dataset, while database evaluation uses multiple datasets and takes the average of the results for each dataset.</p>
-<p>In the database evaluation, the <code>vehicle_id</code> should be able to be set for each data set, since the calibration values may change.
-Also, it is necessary to set whether or not to activate the sensing module.</p>
+<p><strong>注:アノーテション時とシミュレーション時で自己位置を合わせたいので bag に入っている tf を使い回す。そのため localization は無効である。</strong></p>
+<h2 id="_7">依存ライブラリ<a class="headerlink" href="#_7" title="Permanent link">#</a></h2>
+<p>認識機能の評価は<a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a>に依存している。</p>
+<h3 id="driving_log_replayer">依存ライブラリとの driving_log_replayer の役割分担<a class="headerlink" href="#driving_log_replayer" title="Permanent link">#</a></h3>
+<p>driving_log_replayer が ROS との接続部分を担当し、perception_eval がデータセットを使って実際に評価する部分を担当するという分担になっている。
+perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトを受け取ることができない。
+また、timestamp が ROS ではナノ秒、t4_dataset は <code>nuScenes</code> をベースしているためミリ秒が採用されている。
+このため、ライブラリ使用前に適切な変換が必要となる。</p>
+<p>driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval が期待するデータ形式に変換して渡す。
+また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。</p>
+<p>perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。</p>
+<h2 id="simulation">simulation<a class="headerlink" href="#simulation" title="Permanent link">#</a></h2>
+<p>シミュレーション実行に必要な情報を述べる。</p>
+<h3 id="rosbag-topic">入力 rosbag に含まれるべき topic<a class="headerlink" href="#rosbag-topic" title="Permanent link">#</a></h3>
+<p>t4_dataset で必要なトピックが含まれていること</p>
+<h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
+<p>評価に必要な情報を述べる。</p>
+<h3 id="_8">シナリオフォーマット<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
+<p>ユースケース評価とデータベース評価の 2 種類の評価がある。
+ユースケースは 1 個のデータセットで行う評価で、データベースは複数のデータセットを用いて、各データセット毎の結果の平均を取る評価である。</p>
+<p>データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
+また、Sensing モジュールを起動するかどうかの設定も行う。</p>
 <div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perception</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3.0</span>
+<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perception_2d</span>
+<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1.0</span>
 <span class="w">  </span><span class="nt">Datasets</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sample_dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-<span class="w">        </span><span class="nt">LaunchSensing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/autoware_map/sample-map-planning</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">f72e1065-7c38-40fe-a4e2-c5bbe6ff6443</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ps1/20210620/CAL_000015</span><span class="w"> </span><span class="c1"># データセット毎にVehicleIdを指定する</span>
+<span class="w">        </span><span class="nt">LaunchSensing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># データセット毎にsensing moduleを起動するかを指定する</span>
+<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/map/perception</span><span class="w"> </span><span class="c1"># データセット毎にLocalMapPathを指定する</span>
 <span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span>
+<span class="w">    </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># 評価試行回数の内、どの程度(%)評価成功だったら成功とするか</span>
 <span class="w">  </span><span class="nt">PerceptionEvaluationConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">camera_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_front</span>
+<span class="w">    </span><span class="nt">camera_mapping</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">camera0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_front</span>
+<span class="w">      </span><span class="nt">camera1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_front_right</span>
+<span class="w">      </span><span class="nt">camera2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_back_right</span>
+<span class="w">      </span><span class="nt">camera3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_back</span>
+<span class="w">      </span><span class="nt">camera4</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_back_left</span>
+<span class="w">      </span><span class="nt">camera5</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_front_left</span>
 <span class="w">    </span><span class="nt">evaluation_config_dict</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">evaluation_task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detection</span><span class="w"> </span><span class="c1"># detection or tracking. Evaluate the objects specified here</span>
-<span class="w">      </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># evaluation label</span>
-<span class="w">      </span><span class="nt">max_x_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">102.4</span><span class="w"> </span><span class="c1"># Maximum x position of object to be evaluated</span>
-<span class="w">      </span><span class="nt">max_y_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">102.4</span><span class="w"> </span><span class="c1"># Maximum y position of object to be evaluated</span>
-<span class="w">      </span><span class="nt">max_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Maximum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.</span>
-<span class="w">      </span><span class="nt">min_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Minimum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.</span>
-<span class="w">      </span><span class="nt">min_point_numbers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Minimum number of point clouds in bounding box for ground truth object. If min_point_numbers=0, all ground truth objects are evaluated</span>
-<span class="w">      </span><span class="nt">confidence_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Threshold of confidence for the estimated object to be evaluated</span>
-<span class="w">      </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># If you want to evaluate only specific ground truths, specify the UUIDs of the ground truths to be evaluated. If null, use all</span>
-<span class="w">      </span><span class="nt">center_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[[</span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">],</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]]</span><span class="w"> </span><span class="c1"># Threshold for center-to-center distance matching</span>
-<span class="w">      </span><span class="nt">plane_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Threshold for planar distance matching</span>
-<span class="w">      </span><span class="nt">iou_bev_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Threshold for BEV IoU</span>
-<span class="w">      </span><span class="nt">iou_3d_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Threshold for 3D IoU</span>
+<span class="w">      </span><span class="nt">evaluation_task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detection2d</span><span class="w"> </span><span class="c1"># detection2d / tracking2d ここで指定したobjectsを評価する</span>
+<span class="w">      </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価ラベル</span>
+<span class="w">      </span><span class="nt">center_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">iou_2d_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 2D IoU マッチング時の閾値</span>
 <span class="w">  </span><span class="nt">CriticalObjectFilterConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">max_x_position_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">max_y_position_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">max_distance_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="w">    </span><span class="nt">min_distance_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="w">    </span><span class="nt">min_point_numbers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">confidence_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="w">    </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価対象ラベル名</span>
 <span class="w">  </span><span class="nt">PerceptionPassFailConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">plane_distance_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">matching_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 </code></pre></div>
-<h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
-<p>The evaluation results by <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> under the conditions specified in the scenario are output for each frame.
-Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.</p>
-<p>The format of each frame and the metrics format are shown below.
-<strong>NOTE: common part of the result file format, which has already been explained, is omitted.</strong></p>
-<p>Format of each frame:</p>
+<h3 id="_9">評価結果フォーマット<a class="headerlink" href="#_9" title="Permanent link">#</a></h3>
+<p>perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
+全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。</p>
+<p>以下に、各フレームのフォーマットとメトリクスのフォーマットを示す。
+<strong>注:結果ファイルフォーマットで解説済みの共通部分については省略する。</strong></p>
+<p>各フレームのフォーマット</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frame number of t4_dataset used for evaluation&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;評価に使用したt4_datasetのフレーム番号&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;PassFail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of TPs&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of FPs&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of FNs&quot;</span>
+<span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TPと判定された数&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FPと判定された数&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FNと判定された数&quot;</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Metrics Data Format:</p>
+<p>メトリクスデータのフォーマット</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;FinalScore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;Score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TP rate of the label&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FP rate of the label&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of the label&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP value of the label&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH value of the label&quot;</span>
+<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのTP率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFP率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFN率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAP値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAPH値&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;Error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error metrics for the label&quot;</span>
+<span class="w">        </span><span class="nt">&quot;ラベル&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルの誤差メトリクス&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h3 id="pickle-file">pickle file<a class="headerlink" href="#pickle-file" title="Permanent link">#</a></h3>
-<p>In database evaluation, it is necessary to replay multiple rosbags, but due to the ROS specification, it is impossible to use multiple bags in a single launch.
-Since one rosbag, i.e., one <code>t4_dataset</code>, requires one launch, it is necessary to execute as many launches as the number of datasets contained in the database evaluation.</p>
-<p>Since database evaluation cannot be done in a single launch, perception outputs a file <code>scene_result.pkl</code> in addition to <code>result.jsonl</code> file.
-A pickle file is a python object saved as a file, PerceptionEvaluationManager.frame_results of <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a>.
-The dataset evaluation can be performed by reading all the objects recorded in the pickle file and outputting the index of the dataset's average.</p>
-<h3 id="result-file-of-database-evaluation">Result file of database evaluation<a class="headerlink" href="#result-file-of-database-evaluation" title="Permanent link">#</a></h3>
-<p>In the case of a database evaluation with multiple datasets in the scenario, a file named <code>database_result.json</code> is output to the results directory.</p>
-<p>The format is the same as the <a href="#evaluation-result-format">Metrics Data Format</a>.</p>
+<h3 id="pickle">pickle ファイル<a class="headerlink" href="#pickle" title="Permanent link">#</a></h3>
+<p>データベース評価では、複数の bag を再生する必要があるが、ROS の仕様上、1 回の launch で、複数の bag を利用することは出来ない。
+1 つの bag、すなわち 1 つの t4_dataset に対して launch を 1 回叩くことなるので、データベース評価では、含まれるデータセットの数だけ launch を実行する必要がある。</p>
+<p>データベース評価は 1 回の launch で評価できないため、perception では、result.jsonl の他に scene_result.pkl というファイルを出力する。
+pickle ファイルは python のオブジェクトをファイルとして保存したものであり、perception_eval の PerceptionEvaluationManager.frame_results を保存している。
+pickle ファイルに記録した object をすべて読み込み、dataset の平均の指標を出力することでデータセット評価が行える。</p>
+<h3 id="_10">データベース評価の結果ファイル<a class="headerlink" href="#_10" title="Permanent link">#</a></h3>
+<p>シナリオに複数の dataset を記述したデータベース評価の場合には、結果出力先ディレクトリに database_result.json というファイルが出力される。</p>
+<p>形式は<a href="#評価結果フォーマット">メトリクスのフォーマット</a> と同じ</p>
 
 
 
@@ -1411,7 +1220,7 @@ The dataset evaluation can be performed by reading all the objects recorded in t
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../obstacle_segmentation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Evaluate point cloud generation" rel="prev">
+          <a href="../perception/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Evaluate perception(LiDAR)" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1420,7 +1229,7 @@ The dataset evaluation can be performed by reading all the objects recorded in t
                 <span class="md-footer__direction">
                   Previous
                 </span>
-                Evaluate point cloud generation
+                Evaluate perception(LiDAR)
               </div>
             </div>
           </a>
