@@ -301,15 +301,15 @@ class TrafficLightEvaluator(Node):
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
         else:
-            self.get_logger().error(
-                f"debug: get grond truth: {self.__current_time.sec}.{self.__current_time.nanosec}"
-            )
+            # self.get_logger().error(
+            #     f"debug: get ground truth: {self.__current_time.sec}.{self.__current_time.nanosec}"
+            # )
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
                 unix_time, msg.signals
             )
-            self.get_logger().error(
-                f"debug: get dynamic object 2d: {self.__current_time.sec}.{self.__current_time.nanosec}"
-            )
+            # self.get_logger().error(
+            #     f"debug: get dynamic object 2d: {self.__current_time.sec}.{self.__current_time.nanosec}"
+            # )
             ros_critical_ground_truth_objects = ground_truth_now_frame.objects
             # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
             # 動的に変える条件をかけるようになるまでは、初期化時に一括設定
@@ -322,9 +322,9 @@ class TrafficLightEvaluator(Node):
                 critical_object_filter_config=self.__critical_object_filter_config,
                 frame_pass_fail_config=self.__frame_pass_fail_config,
             )
-            self.get_logger().error(
-                f"debug: get frame result: {self.__current_time.sec}.{self.__current_time.nanosec}"
-            )
+            # self.get_logger().error(
+            #     f"debug: get frame result: {self.__current_time.sec}.{self.__current_time.nanosec}"
+            # )
             # write result
             self.__result.add_frame(
                 frame_result,
