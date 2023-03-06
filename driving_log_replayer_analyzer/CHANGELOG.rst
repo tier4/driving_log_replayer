@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.20 (2023-03-06)
+-------------------
 * fix: lint
 * fix: lint and comment out debug code
 * chore: comment out analyzer
