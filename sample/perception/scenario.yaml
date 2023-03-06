@@ -17,7 +17,6 @@ Evaluation:
     evaluation_config_dict:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here
       target_labels: [car, bicycle, pedestrian, motorbike] # evaluation label
-      # target_labels: ["green", "red", "yellow", "unknown"] # traffic_light
       max_x_position: 102.4 # Maximum x position of object to be evaluated
       max_y_position: 102.4 # Maximum y position of object to be evaluated
       max_distance: null # Maximum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.
