@@ -49,7 +49,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 perception_eval の評価関数を実行して以下の条件を満たすとき
 
-1. frame_result.pass_fail_result に object が最低 1 つ入っている (`tp_objects is not None and fp_objects is not None and fn_objects is not None`)
+1. frame_result.pass_fail_result に object が最低 1 つ入っている (`tp_object_results != [] and fp_object_results != [] and fn_objects != []`)
 2. 評価失敗のオブジェクトが 0 個 (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
 
 ### 異常

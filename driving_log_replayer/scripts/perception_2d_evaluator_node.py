@@ -113,9 +113,9 @@ class Perception2DResult(ResultBase):
         self.__total += 1
         has_objects = True
         if (
-            frame.pass_fail_result.tp_objects is None
-            and frame.pass_fail_result.fp_objects_result is None
-            and frame.pass_fail_result.fn_objects is None
+            frame.pass_fail_result.tp_object_results == []
+            and frame.pass_fail_result.fp_object_results == []
+            and frame.pass_fail_result.fn_objects == []
         ):
             has_objects = False
 
@@ -131,22 +131,13 @@ class Perception2DResult(ResultBase):
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
-        tp_num = 0
-        if frame.pass_fail_result.tp_objects is not None:
-            tp_num = len(frame.pass_fail_result.tp_objects)
-        fp_num = 0
-        if frame.pass_fail_result.fp_objects_result is not None:
-            fp_num = len(frame.pass_fail_result.fp_objects_result)
-        fn_num = 0
-        if frame.pass_fail_result.fn_objects is not None:
-            fn_num = len(frame.pass_fail_result.fn_objects)
         out_frame["PassFail"] = {
             "Result": success,
             "Info": [
                 {
-                    "TP": tp_num,
-                    "FP": fp_num,
-                    "FN": fn_num,
+                    "TP": len(frame.pass_fail_result.tp_object_results),
+                    "FP": len(frame.pass_fail_result.fp_object_results),
+                    "FN": len(frame.pass_fail_result.fn_objects),
                 }
             ],
         }
