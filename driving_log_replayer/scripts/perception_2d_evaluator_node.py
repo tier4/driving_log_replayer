@@ -268,9 +268,9 @@ class Perception2DEvaluator(Node):
                 self.__pickle_writer.dump(self.__evaluator.frame_results)
                 self.get_final_result()
 
-                analyzer = PerceptionAnalyzer2D(self.__evaluator.evaluator_config)
-                analyzer.add(self.__evaluator.frame_results)
-                score_df, conf_mat_df = analyzer.analyze()
+                # analyzer = PerceptionAnalyzer2D(self.__evaluator.evaluator_config)
+                # analyzer.add(self.__evaluator.frame_results)
+                # score_df, conf_mat_df = analyzer.analyze()
                 # score_dict = {}
                 # conf_mat_dict = {}
                 # if score_df is not None:
