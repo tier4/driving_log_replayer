@@ -100,6 +100,51 @@ State the information required to run the simulation.
 
 Must contain the required topics in `t4_dataset` format.
 
+The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
+The following example shows the topic list available in evaluation input rosbag when multiple LiDARs and Cameras are used in a real-world vehicle configuration.
+
+/sensing/lidar/concatenated/pointcloud is used if the scenario LaunchSensing: false.
+
+| Topic name                                           | Data type                                    |
+| ---------------------------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                  |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
+| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+
+The vehicle topics can be included instead of CAN.
+
+| Topic name                                           | Data type                                           |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                         |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
+| /tf                                                  | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+
+### Topics that must not be included in the input rosbag
+
+| Topic name | Data type               |
+| ---------- | ----------------------- |
+| /clock     | rosgraph_msgs/msg/Clock |
+
+The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.
+
 ## About Evaluation
 
 State the information necessary for the evaluation.
@@ -118,8 +163,8 @@ Evaluation:
   UseCaseFormatVersion: 0.3.0
   Datasets:
     - sample_dataset:
-        VehicleId: default
-        LaunchSensing: false
+        VehicleId: default # Specify VehicleId for each data set.
+        LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset; if false, use concatenated/pointcloud in bag
         LocalMapPath: $HOME/autoware_map/sample-map-planning
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.

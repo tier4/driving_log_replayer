@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* docs: update input bag topic list
+* Contributors: Hayato Mizushima
+
 1.1.20 (2023-03-06)
 -------------------
 * fix: lint
