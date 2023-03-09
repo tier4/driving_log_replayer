@@ -1,4 +1,4 @@
-# 認識機能の評価(カメラ)
+# 信号機認識機能の評価
 
 Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。
 
@@ -8,7 +8,8 @@ perception モジュールを起動して出力される perception の topic �
 
 perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。
-[tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58)
+[traffic_light_classifier/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_classifier/CMakeLists.txt#L104)
+[traffic_light_ssd_fine_detector/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112)
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autowareのワークスペースをsourceしてコマンドを実行する。
@@ -20,22 +21,22 @@ autowarefoundation の autoware.universe を使用した場合の例を以下に
 ```shell
 # $HOME/autowareにautowareをインストールした場合
 source ~/autoware/install/setup.bash
-ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=true
+ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
+ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.launch.xml build_only:=true
 
-# ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engineが出力されている
+# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engineが出力されている
+# ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engineが出力されている
 ```
 
 ## 評価方法
 
-`perception.launch_2d.py` を使用して評価する。
+`traffic_light.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
+1. launch で評価ノード(`traffic_light_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
-3. 評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
+3. 評価ノードが/perception/traffic_light_recognition/traffic_signals を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
-
-注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。
 
 ## 評価結果
 
@@ -58,7 +59,7 @@ Subscribed topics:
 
 | topic 名                                       | データ型                                             |
 | ---------------------------------------------- | ---------------------------------------------------- |
-| /perception/object_recognition/detection/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| /perception/traffic_light_recognition/traffic_signals | tier4_perception_msgs/msg/TrafficSignalArray |
 
 Published topics:
 
@@ -113,6 +114,8 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 | /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
+| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage              |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
 | /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
 | /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
@@ -127,6 +130,8 @@ CAN の代わりに vehicle の topic を含めても良い。
 | ---------------------------------------------------- | --------------------------------------------------- |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
+| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage              |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
 | /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
 | /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
@@ -162,34 +167,27 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ```yaml
 Evaluation:
-  UseCaseName: perception_2d
+  UseCaseName: traffic_light
   UseCaseFormatVersion: 0.1.0
   Datasets:
-    - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
-        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
+    - 158d2973-325d-449d-8c5a-f22fa177b169:
+        VehicleId: '7' # データセット毎にVehicleIdを指定する
         LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
+        LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
   PerceptionEvaluationConfig:
-    camera_type: cam_front
-    camera_mapping:
-      camera0: cam_front
-      camera1: cam_front_right
-      camera2: cam_back_right
-      camera3: cam_back
-      camera4: cam_back_left
-      camera5: cam_front_left
+    camera_type: cam_traffic_light_near
     evaluation_config_dict:
-      evaluation_task: detection2d # detection2d / tracking2d ここで指定したobjectsを評価する
-      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
+      evaluation_task: classification2d # 固定
+      target_labels: [green, red, yellow, unknown] # 評価ラベル
       center_distance_thresholds: [1.0, 2.0]
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
   CriticalObjectFilterConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike] # 評価対象ラベル名
+    target_labels: [green, red, yellow, unknown] # 評価対象ラベル名
   PerceptionPassFailConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike]
-    matching_threshold_list: null
+    target_labels: [green, red, yellow, unknown]
+    matching_threshold_list: [0.5, 0.5, 0.5, 0.5]
 ```
 
 ### 評価結果フォーマット
