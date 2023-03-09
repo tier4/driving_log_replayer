@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.21 (2023-03-09)
+-------------------
 * docs: update input bag topic list
 * Contributors: Hayato Mizushima
 
