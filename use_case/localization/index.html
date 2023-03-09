@@ -1365,18 +1365,107 @@ The following parameters are set to <code>false</code> when launching the <code>
 <h3 id="topic-to-be-included-in-the-input-rosbag">Topic to be included in the input rosbag<a class="headerlink" href="#topic-to-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
 <p>The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
 The following example shows the topic list available in evaluation input rosbag when multiple LiDARs are used in a real-world vehicle configuration.</p>
-<ul>
-<li>/sensing/gnss/ublox/fix_velocity</li>
-<li>/sensing/gnss/ublox/nav_sat_fix</li>
-<li>/sensing/gnss/ublox/navpvt</li>
-<li>/sensing/imu/tamagawa/imu_raw</li>
-<li>/sensing/lidar/*/velodyne_packets</li>
-<li>/gsm8/from_can_bus</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Topic name</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/gsm8/from_can_bus</td>
+<td>can_msgs/msg/Frame</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/fix_velocity</td>
+<td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/nav_sat_fix</td>
+<td>sensor_msgs/msg/NavSatFix</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/navpvt</td>
+<td>ublox_msgs/msg/NavPVT</td>
+</tr>
+<tr>
+<td>/sensing/imu/tamagawa/imu_raw</td>
+<td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/*/velodyne_packets</td>
+<td>velodyne_msgs/VelodyneScan</td>
+</tr>
+</tbody>
+</table>
+<p>The vehicle topics can be included instead of CAN.</p>
+<table>
+<thead>
+<tr>
+<th>Topic name</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/sensing/gnss/ublox/fix_velocity</td>
+<td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/nav_sat_fix</td>
+<td>sensor_msgs/msg/NavSatFix</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/navpvt</td>
+<td>ublox_msgs/msg/NavPVT</td>
+</tr>
+<tr>
+<td>/sensing/imu/tamagawa/imu_raw</td>
+<td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/*/velodyne_packets</td>
+<td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/vehicle/status/control_mode</td>
+<td>autoware_auto_vehicle_msgs/msg/ControlModeReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/gear_status</td>
+<td>autoware_auto_vehicle_msgs/msg/GearReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/steering_status</td>
+<td>autoware_auto_vehicle_msgs/SteeringReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/turn_indicators_status</td>
+<td>autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/velocity_status</td>
+<td>autoware_auto_vehicle_msgs/msg/VelocityReport</td>
+</tr>
+</tbody>
+</table>
 <h3 id="topics-that-must-not-be-included-in-the-input-rosbag">Topics that must not be included in the input rosbag<a class="headerlink" href="#topics-that-must-not-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
-<ul>
-<li>/clock</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>Topic name</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/clock</td>
+<td>rosgraph_msgs/msg/Clock</td>
+</tr>
+</tbody>
+</table>
+<p>The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.</p>
 <h2 id="about-evaluation">About Evaluation<a class="headerlink" href="#about-evaluation" title="Permanent link">#</a></h2>
 <p>State the information necessary for the evaluation.</p>
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>

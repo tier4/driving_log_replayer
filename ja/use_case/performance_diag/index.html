@@ -1332,20 +1332,116 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <p>車両の ECU の CAN と、使用している sensor の topic が必要
 以下は例であり、違うセンサーを使っている場合は適宜読み替える。</p>
 <p>LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める</p>
-<ul>
-<li>/sensing/gnss/ublox/fix_velocity</li>
-<li>/sensing/gnss/ublox/nav_sat_fix</li>
-<li>/sensing/gnss/ublox/navpvt</li>
-<li>/sensing/imu/tamagawa/imu_raw</li>
-<li>/sensing/lidar/*/velodyne_packets</li>
-<li>/gsm8/from_can_bus</li>
-<li>/tf</li>
-</ul>
-<p><strong>注:localization が false(デフォルトで false)の場合は/tf が必要。</strong></p>
+<table>
+<thead>
+<tr>
+<th>topic 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/gsm8/from_can_bus</td>
+<td>can_msgs/msg/Frame</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/fix_velocity</td>
+<td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/nav_sat_fix</td>
+<td>sensor_msgs/msg/NavSatFix</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/navpvt</td>
+<td>ublox_msgs/msg/NavPVT</td>
+</tr>
+<tr>
+<td>/sensing/imu/tamagawa/imu_raw</td>
+<td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/*/velodyne_packets</td>
+<td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/tf</td>
+<td>tf2_msgs/msg/TFMessage</td>
+</tr>
+</tbody>
+</table>
+<p>CAN の代わりに vehicle の topic を含めても良い。</p>
+<table>
+<thead>
+<tr>
+<th>topic 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/sensing/gnss/ublox/fix_velocity</td>
+<td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/nav_sat_fix</td>
+<td>sensor_msgs/msg/NavSatFix</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/navpvt</td>
+<td>ublox_msgs/msg/NavPVT</td>
+</tr>
+<tr>
+<td>/sensing/imu/tamagawa/imu_raw</td>
+<td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/*/velodyne_packets</td>
+<td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/tf</td>
+<td>tf2_msgs/msg/TFMessage</td>
+</tr>
+<tr>
+<td>/vehicle/status/control_mode</td>
+<td>autoware_auto_vehicle_msgs/msg/ControlModeReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/gear_status</td>
+<td>autoware_auto_vehicle_msgs/msg/GearReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/steering_status</td>
+<td>autoware_auto_vehicle_msgs/SteeringReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/turn_indicators_status</td>
+<td>autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/velocity_status</td>
+<td>autoware_auto_vehicle_msgs/msg/VelocityReport</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注:localization が false(デフォルトで false)の場合は/tf が使用される。</strong></p>
 <h3 id="rosbag-topic_1">入力 rosbag に含まれてはいけない topic<a class="headerlink" href="#rosbag-topic_1" title="Permanent link">#</a></h3>
-<ul>
-<li>/clock</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>topic 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/clock</td>
+<td>rosgraph_msgs/msg/Clock</td>
+</tr>
+</tbody>
+</table>
+<p>clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない</p>
 <h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
 <p>評価に必要な情報を述べる。</p>
 <h3 id="_4">シナリオフォーマット<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>

@@ -892,6 +892,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#topics-that-must-not-be-included-in-the-input-rosbag" class="md-nav__link">
+    Topics that must not be included in the input rosbag
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1130,6 +1137,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#topics-that-must-not-be-included-in-the-input-rosbag" class="md-nav__link">
+    Topics that must not be included in the input rosbag
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1290,6 +1304,142 @@ It is also responsible for publishing and visualizing the evaluation results fro
 <p>State the information required to run the simulation.</p>
 <h3 id="topic-to-be-included-in-the-input-rosbag">Topic to be included in the input rosbag<a class="headerlink" href="#topic-to-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
 <p>Must contain the required topics in <code>t4_dataset</code> format.</p>
+<p>The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
+The following example shows the topic list available in evaluation input rosbag when multiple LiDARs and Cameras are used in a real-world vehicle configuration.</p>
+<p>/sensing/lidar/concatenated/pointcloud is used if the scenario LaunchSensing: false.</p>
+<table>
+<thead>
+<tr>
+<th>Topic name</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/gsm8/from_can_bus</td>
+<td>can_msgs/msg/Frame</td>
+</tr>
+<tr>
+<td>/sensing/camera/camera*/camera_info</td>
+<td>sensor_msgs/msg/CameraInfo</td>
+</tr>
+<tr>
+<td>/sensing/camera/camera*/image_rect_color/compressed</td>
+<td>sensor_msgs/msg/CompressedImage</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/fix_velocity</td>
+<td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/nav_sat_fix</td>
+<td>sensor_msgs/msg/NavSatFix</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/navpvt</td>
+<td>ublox_msgs/msg/NavPVT</td>
+</tr>
+<tr>
+<td>/sensing/imu/tamagawa/imu_raw</td>
+<td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/concatenated/pointcloud</td>
+<td>sensor_msgs/msg/PointCloud2</td>
+</tr>
+<tr>
+<td>/sensing/lidar/*/velodyne_packets</td>
+<td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/tf</td>
+<td>tf2_msgs/msg/TFMessage</td>
+</tr>
+</tbody>
+</table>
+<p>The vehicle topics can be included instead of CAN.</p>
+<table>
+<thead>
+<tr>
+<th>Topic name</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/sensing/camera/camera*/camera_info</td>
+<td>sensor_msgs/msg/CameraInfo</td>
+</tr>
+<tr>
+<td>/sensing/camera/camera*/image_rect_color/compressed</td>
+<td>sensor_msgs/msg/CompressedImage</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/fix_velocity</td>
+<td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/nav_sat_fix</td>
+<td>sensor_msgs/msg/NavSatFix</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/navpvt</td>
+<td>ublox_msgs/msg/NavPVT</td>
+</tr>
+<tr>
+<td>/sensing/imu/tamagawa/imu_raw</td>
+<td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/concatenated/pointcloud</td>
+<td>sensor_msgs/msg/PointCloud2</td>
+</tr>
+<tr>
+<td>/sensing/lidar/*/velodyne_packets</td>
+<td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/tf</td>
+<td>tf2_msgs/msg/TFMessage</td>
+</tr>
+<tr>
+<td>/vehicle/status/control_mode</td>
+<td>autoware_auto_vehicle_msgs/msg/ControlModeReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/gear_status</td>
+<td>autoware_auto_vehicle_msgs/msg/GearReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/steering_status</td>
+<td>autoware_auto_vehicle_msgs/SteeringReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/turn_indicators_status</td>
+<td>autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/velocity_status</td>
+<td>autoware_auto_vehicle_msgs/msg/VelocityReport</td>
+</tr>
+</tbody>
+</table>
+<h3 id="topics-that-must-not-be-included-in-the-input-rosbag">Topics that must not be included in the input rosbag<a class="headerlink" href="#topics-that-must-not-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Topic name</th>
+<th>Data type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/clock</td>
+<td>rosgraph_msgs/msg/Clock</td>
+</tr>
+</tbody>
+</table>
+<p>The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.</p>
 <h2 id="about-evaluation">About Evaluation<a class="headerlink" href="#about-evaluation" title="Permanent link">#</a></h2>
 <p>State the information necessary for the evaluation.</p>
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
@@ -1302,8 +1452,8 @@ Also, it is necessary to set whether or not to activate the sensing module.</p>
 <span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3.0</span>
 <span class="w">  </span><span class="nt">Datasets</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sample_dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
-<span class="w">        </span><span class="nt">LaunchSensing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"> </span><span class="c1"># Specify VehicleId for each data set.</span>
+<span class="w">        </span><span class="nt">LaunchSensing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># Specifies whether the sensing module should be activated for each dataset; if false, use concatenated/pointcloud in bag</span>
 <span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/autoware_map/sample-map-planning</span>
 <span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span>
