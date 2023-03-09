@@ -249,12 +249,12 @@ class TrafficLightEvaluator(Node):
                 analyzer.add(self.__evaluator.frame_results)
                 score_df, conf_mat_df = analyzer.analyze()
                 score_dict = {}
-                conf_mat__dict = {}
+                conf_mat_dict = {}
                 if score_df is not None:
                     score_dict = score_df.to_dict()
                 if conf_mat_df is not None:
-                    conf_mat__dict = conf_mat_df.to_dict()
-                final_metrics = {"Score": score_dict, "Error": conf_mat__dict}
+                    conf_mat_dict = conf_mat_df.to_dict()
+                final_metrics = {"Score": score_dict, "ConfusionMatrix": conf_mat_dict}
                 self.__result.add_final_metrics(final_metrics)
                 self.__result_writer.write(self.__result)
                 self.__result_writer.close()
