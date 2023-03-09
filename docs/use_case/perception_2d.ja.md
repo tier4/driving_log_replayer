@@ -8,25 +8,24 @@ perception モジュールを起動して出力される perception の topic �
 
 perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。
-[tensorrt_yolo/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolo/CMakeLists.txt#L110-L116)
+[tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L21-L59)
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換処理は、perception のモジュールを初回起動したときに行われる。
 
 なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
-GPU の性能によって、engine の出力までにかかる時間が異なるので、[tensorrt_yolo.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolo/launch/tensorrt_yolo.launch.xml#L6)
-に記載のディレクトリに engine ファイルが出力されるまで待ちます。
+変換用のコマンドが用意されているので、autowareのワークスペースをsourceしてコマンドを実行する。
+launchが終了すると、[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
+に記載のディレクトリに engine ファイルが出力されているので確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
 ```shell
 # $HOME/autowareにautowareをインストールした場合
 source ~/autoware/install/setup.bash
-ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-rosbag vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit perception_mode:=camera_lidar_fusion
+ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=true
 
-# ~/autoware/install/tensorrt_yolo/share/tensorrt_yolo/dataに指定したyolo typeのengineが出力されるまで待つ
-# <arg name="yolo_type" default="yolov3"/>の場合
-# yolov3.engine
+# ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engineが出力されている
 ```
 
 ## 評価方法
@@ -103,6 +102,54 @@ perception_eval は、driving_log_replayer から渡された検知結果と Gro
 ### 入力 rosbag に含まれるべき topic
 
 t4_dataset で必要なトピックが含まれていること
+
+車両の ECU の CAN と、使用している sensor の topic が必要
+以下は例であり、違うセンサーを使っている場合は適宜読み替える。
+
+LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。
+/sensing/lidar/concatenated/pointcloud は、シナリオの LaunchSensing: false の場合に使用される。
+
+CAMERA が複数ついている場合は、搭載されているすべての camera_info と image_rect_color_compressed を含める
+
+| topic 名                                             | データ型                                     |
+| ---------------------------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                  |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
+| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+
+CAN の代わりに vehicle の topic を含めても良い。
+
+| topic 名                                             | データ型                                            |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                         |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
+| /tf                                                  | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+
+### 入力 rosbag に含まれてはいけない topic
+
+| topic 名 | データ型                |
+| -------- | ----------------------- |
+| /clock   | rosgraph_msgs/msg/Clock |
+
+clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない
 
 ## evaluation
 
@@ -190,8 +237,8 @@ perception では、シナリオに指定した条件で perception_eval が評�
         "AP": "ラベルのAP値",
         "APH": "ラベルのAPH値"
       },
-      "Error": {
-        "ラベル": "ラベルの誤差メトリクス"
+      "ConfusionMatrix": {
+        "ラベル(真値)": "予測結果"
       }
     }
   }
