@@ -132,6 +132,15 @@ The vehicle topics can be included instead of CAN.
 | /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
 | /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
+### Topics that must not be included in the input rosbag
+
+| Topic name | Data type               |
+| ---------- | ----------------------- |
+| /clock     | rosgraph_msgs/msg/Clock |
+
+The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.
+
+
 ## About Evaluation
 
 State the information necessary for the evaluation.
