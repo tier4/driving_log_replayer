@@ -102,16 +102,37 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める
 
-- /sensing/gnss/ublox/fix_velocity
-- /sensing/gnss/ublox/nav_sat_fix
-- /sensing/gnss/ublox/navpvt
-- /sensing/imu/tamagawa/imu_raw
-- /sensing/lidar/\*/velodyne_packets
-- /gsm8/from_can_bus
+| topic 名                           | データ型                                     |
+| ---------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw      | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets | velodyne_msgs/VelodyneScan                   |
+
+CAN の代わりに vehicle の topic を含めても良い。
+
+| topic 名                               | データ型                                            |
+| -------------------------------------- | --------------------------------------------------- |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### 入力 rosbag に含まれてはいけない topic
 
-- /clock
+| topic 名 | データ型                |
+| -------- | ----------------------- |
+| /clock   | rosgraph_msgs/msg/Clock |
+
+clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない
 
 ## evaluation
 
