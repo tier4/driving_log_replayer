@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.21
+
+Documentation
+
+| Module | Feature  | Brief summary               | Pull request                                                   | JIRA       | Contributor                                   |
+| ------ | -------- | --------------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
+| `all`  | document | update input bag topic list | [#120](https://github.com/tier4/driving_log_replayer/pull/120) | T4PB-26922 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.20
 
 Minor Tweak
