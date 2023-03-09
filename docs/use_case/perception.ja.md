@@ -109,7 +109,7 @@ t4_dataset で必要なトピックが含まれていること
 以下は例であり、違うセンサーを使っている場合は適宜読み替える。
 
 LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。
-/sensing/lidar/concatenated/pointcloudは、シナリオのLaunchSensing: falseの場合に使用される。
+/sensing/lidar/concatenated/pointcloud は、シナリオの LaunchSensing: false の場合に使用される。
 
 CAMERA が複数ついている場合は、搭載されているすべての camera_info と image_rect_color_compressed を含める
 

@@ -140,7 +140,6 @@ The vehicle topics can be included instead of CAN.
 
 The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.
 
-
 ## About Evaluation
 
 State the information necessary for the evaluation.
