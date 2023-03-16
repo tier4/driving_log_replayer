@@ -4,6 +4,8 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
+現状、classificationの評価のみ
+
 ## 事前準備
 
 perception では、機械学習の学習済みモデルを使用する。

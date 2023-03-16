@@ -4,7 +4,11 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
+現状、detectionの評価のみ、カメラの台数は1台にしか対応していない。
+
 ## 事前準備
+
+### モデルの変換
 
 perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。
@@ -23,6 +27,93 @@ source ~/autoware/install/setup.bash
 ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=true
 
 # ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engineが出力されている
+```
+
+### launchの変更
+
+PC一台で評価するには、launchをいじって、カメラの認識結果を出力するように変更する必要がある。
+以下のように、launchを変更する。
+
+```shell
+❯ vcs diff src/
+.................................
+diff --git a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
+index 094856c9..c06657aa 100644
+--- a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
++++ b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
+@@ -28,6 +28,10 @@
+   <arg name="use_validator" default="true" description="use obstacle_pointcloud based validator"/>
+   <arg name="score_threshold" default="0.35"/>
+ 
++  <group>
++    <include file="$(find-pkg-share tensorrt_yolox)/launch/yolox.launch.xml" />
++  </group>
++
+   <!-- Jetson AGX -->
+   <!-- <include file="$(find-pkg-share tensorrt_yolo)/launch/yolo.launch.xml">
+     <arg name="image_raw0" value="$(var image_raw0)"/>
+diff --git a/launch/tier4_perception_launch/launch/perception.launch.xml b/launch/tier4_perception_launch/launch/perception.launch.xml
+index ffc6f908..b01f5aab 100644
+--- a/launch/tier4_perception_launch/launch/perception.launch.xml
++++ b/launch/tier4_perception_launch/launch/perception.launch.xml
+@@ -33,7 +33,7 @@
+   <arg name="camera_info6" default="/sensing/camera/camera6/camera_info"/>
+   <arg name="image_raw7" default="/sensing/camera/camera7/image_rect_color"/>
+   <arg name="camera_info7" default="/sensing/camera/camera7/camera_info"/>
+-  <arg name="image_number" default="6" description="choose image raw number(0-7)"/>
++  <arg name="image_number" default="1" description="choose image raw number(0-7)"/>
+   <arg name="use_vector_map" default="true" description="use vector map in prediction"/>
+   <arg name="use_pointcloud_map" default="true" description="use pointcloud map in detection"/>
+   <arg name="use_object_filter" default="true" description="use object filter"/>
+diff --git a/perception/tensorrt_yolox/launch/yolox.launch.xml b/perception/tensorrt_yolox/launch/yolox.launch.xml
+index b697b1f5..b9cb5310 100644
+--- a/perception/tensorrt_yolox/launch/yolox.launch.xml
++++ b/perception/tensorrt_yolox/launch/yolox.launch.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0"?>
+ <launch>
+   <arg name="input/image" default="/sensing/camera/camera0/image_rect_color"/>
+-  <arg name="output/objects" default="/perception/object_recognition/detection/rois0"/>
++  <arg name="output/objects_yolox" default="/perception/object_recognition/detection/rois0"/>
+   <arg name="model_name" default="yolox-tiny"/>
+   <arg name="model_path" default="$(find-pkg-share tensorrt_yolox)/data"/>
+   <arg name="score_threshold" default="0.35"/>
+@@ -16,7 +16,7 @@
+ 
+   <node pkg="tensorrt_yolox" exec="tensorrt_yolox_node_exe" name="tensorrt_yolox" output="screen">
+     <remap from="~/in/image" to="$(var input/image)"/>
+-    <remap from="~/out/objects" to="$(var output/objects)"/>
++    <remap from="~/out/objects" to="$(var output/objects_yolox)"/>
+     <param name="score_threshold" value="$(var score_threshold)"/>
+     <param name="nms_threshold" value="$(var nms_threshold)"/>
+     <param name="model_path" value="$(var model_path)/$(var model_name).onnx"/>
+```
+
+現状だとcamera0にカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は0と3を入れ替える例
+
+```shell
+--- a/launch/tier4_perception_launch/launch/perception.launch.xml
++++ b/launch/tier4_perception_launch/launch/perception.launch.xml
+@@ -17,14 +17,14 @@
+   <arg name="input/pointcloud" default="/sensing/lidar/concatenated/pointcloud" description="The topic will be used in the detection module"/>
+   <arg name="mode" default="camera_lidar_fusion" description="options: `camera_lidar_radar_fusion`, `camera_lidar_fusion`, `lidar_radar_fusion`, `lidar` or `radar`"/>
+   <arg name="lidar_detection_model" default="centerpoint" description="options: `centerpoint`, `apollo`, `pointpainting`, `clustering`"/>
+-  <arg name="image_raw0" default="/sensing/camera/camera0/image_rect_color" description="image raw topic name"/>
+-  <arg name="camera_info0" default="/sensing/camera/camera0/camera_info" description="camera info topic name"/>
++  <arg name="image_raw0" default="/sensing/camera/camera3/image_rect_color" description="image raw topic name"/>
++  <arg name="camera_info0" default="/sensing/camera/camera3/camera_info" description="camera info topic name"/>
+   <arg name="image_raw1" default="/sensing/camera/camera1/image_rect_color"/>
+   <arg name="camera_info1" default="/sensing/camera/camera1/camera_info"/>
+   <arg name="image_raw2" default="/sensing/camera/camera2/image_rect_color"/>
+   <arg name="camera_info2" default="/sensing/camera/camera2/camera_info"/>
+-  <arg name="image_raw3" default="/sensing/camera/camera3/image_rect_color"/>
+-  <arg name="camera_info3" default="/sensing/camera/camera3/camera_info"/>
++  <arg name="image_raw3" default="/sensing/camera/camera0/image_rect_color"/>
++  <arg name="camera_info3" default="/sensing/camera/camera0/camera_info"/>
+   <arg name="image_raw4" default="/sensing/camera/camera4/image_rect_color"/>
+   <arg name="camera_info4" default="/sensing/camera/camera4/camera_info"/>
+   <arg name="image_raw5" default="/sensing/camera/camera5/image_rect_color"/>
+@@ -33,7 +33,7 @@
 ```
 
 ## 評価方法
@@ -172,8 +263,8 @@ Evaluation:
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
   PerceptionEvaluationConfig:
-    camera_type: cam_front
-    camera_mapping:
+    camera_type: cam_front # アノテーションデータと対応させるためにどのカメラか指定する
+    camera_mapping: # 現状は1台にしか対応してないのでここは使用されない。今後の拡張用
       camera0: cam_front
       camera1: cam_front_right
       camera2: cam_back_right
@@ -181,7 +272,7 @@ Evaluation:
       camera4: cam_back_left
       camera5: cam_front_left
     evaluation_config_dict:
-      evaluation_task: detection2d # detection2d / tracking2d ここで指定したobjectsを評価する
+      evaluation_task: detection2d # detection2d # 現時点ではdetectionにしか対応していない。今後の拡張でtracking2dにも対応予定
       target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
       center_distance_thresholds: [1.0, 2.0]
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
