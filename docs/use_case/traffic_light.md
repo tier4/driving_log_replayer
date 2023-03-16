@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、classificationの評価のみ
+現状、classificationの評価のみ。
 
 ## 事前準備
 
@@ -15,7 +15,7 @@ perception では、機械学習の学習済みモデルを使用する。
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autowareのワークスペースをsourceしてコマンドを実行する。
-launchが終了すると、[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
+launchが終了すると、[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
 に記載のディレクトリに engine ファイルが出力されているので確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
@@ -181,7 +181,7 @@ Evaluation:
   PerceptionEvaluationConfig:
     camera_type: cam_traffic_light_near
     evaluation_config_dict:
-      evaluation_task: classification2d # 固定
+      evaluation_task: classification2d # 現状はclassification2d固定、後に拡張でdetection2dに対応させる予定。
       target_labels: [green, red, yellow, unknown] # 評価ラベル
       center_distance_thresholds: [1.0, 2.0]
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
