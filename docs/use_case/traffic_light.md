@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、classificationの評価のみ。
+現状、classification の評価のみ。
 
 ## 事前準備
 
@@ -14,8 +14,8 @@ perception では、機械学習の学習済みモデルを使用する。
 [traffic_light_ssd_fine_detector/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112)
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
-変換用のコマンドが用意されているので、autowareのワークスペースをsourceしてコマンドを実行する。
-launchが終了すると、[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
+変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
+launch が終了すると、[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
 に記載のディレクトリに engine ファイルが出力されているので確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
@@ -59,8 +59,8 @@ perception_eval の評価関数を実行して以下の条件を満たすとき
 
 Subscribed topics:
 
-| topic 名                                       | データ型                                             |
-| ---------------------------------------------- | ---------------------------------------------------- |
+| topic 名                                              | データ型                                     |
+| ----------------------------------------------------- | -------------------------------------------- |
 | /perception/traffic_light_recognition/traffic_signals | tier4_perception_msgs/msg/TrafficSignalArray |
 
 Published topics:
@@ -132,8 +132,8 @@ CAN の代わりに vehicle の topic を含めても良い。
 | ---------------------------------------------------- | --------------------------------------------------- |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
-| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                   |
-| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage              |
+| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                          |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage                     |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
 | /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
 | /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
@@ -173,7 +173,7 @@ Evaluation:
   UseCaseFormatVersion: 0.1.0
   Datasets:
     - 158d2973-325d-449d-8c5a-f22fa177b169:
-        VehicleId: '7' # データセット毎にVehicleIdを指定する
+        VehicleId: "7" # データセット毎にVehicleIdを指定する
         LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
         LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
   Conditions:

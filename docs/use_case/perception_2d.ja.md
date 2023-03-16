@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、detectionの評価のみ、カメラの台数は1台にしか対応していない。
+現状、detection の評価のみ、カメラの台数は 1 台にしか対応していない。
 
 ## 事前準備
 
@@ -15,8 +15,8 @@ perception では、機械学習の学習済みモデルを使用する。
 [tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58)
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
-変換用のコマンドが用意されているので、autowareのワークスペースをsourceしてコマンドを実行する。
-launchが終了すると、[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
+変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
+launch が終了すると、[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
 に記載のディレクトリに engine ファイルが出力されているので確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
@@ -29,10 +29,10 @@ ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=tr
 # ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engineが出力されている
 ```
 
-### launchの変更
+### launch の変更
 
-PC一台で評価するには、launchをいじって、カメラの認識結果を出力するように変更する必要がある。
-以下のように、launchを変更する。
+PC 一台で評価するには、launch をいじって、カメラの認識結果を出力するように変更する必要がある。
+以下のように、launch を変更する。
 
 ```shell
 ❯ vcs diff src/
@@ -44,7 +44,7 @@ index 094856c9..c06657aa 100644
 @@ -28,6 +28,10 @@
    <arg name="use_validator" default="true" description="use obstacle_pointcloud based validator"/>
    <arg name="score_threshold" default="0.35"/>
- 
+
 +  <group>
 +    <include file="$(find-pkg-share tensorrt_yolox)/launch/yolox.launch.xml" />
 +  </group>
@@ -79,7 +79,7 @@ index b697b1f5..b9cb5310 100644
    <arg name="model_path" default="$(find-pkg-share tensorrt_yolox)/data"/>
    <arg name="score_threshold" default="0.35"/>
 @@ -16,7 +16,7 @@
- 
+
    <node pkg="tensorrt_yolox" exec="tensorrt_yolox_node_exe" name="tensorrt_yolox" output="screen">
      <remap from="~/in/image" to="$(var input/image)"/>
 -    <remap from="~/out/objects" to="$(var output/objects)"/>
@@ -89,7 +89,7 @@ index b697b1f5..b9cb5310 100644
      <param name="model_path" value="$(var model_path)/$(var model_name).onnx"/>
 ```
 
-現状だとcamera0にカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は0と3を入れ替える例
+現状だと camera0 にカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例
 
 ```shell
 --- a/launch/tier4_perception_launch/launch/perception.launch.xml
