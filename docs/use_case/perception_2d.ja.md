@@ -178,7 +178,7 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 また、timestamp が ROS ではナノ秒、t4_dataset は `nuScenes` をベースしているためミリ秒が採用されている。
 このため、ライブラリ使用前に適切な変換が必要となる。
 
-driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval で定義されているclassに合わせたデータ形式に変換して渡す。
+driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval で定義されている class に合わせたデータ形式に変換して渡す。
 また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。
 
 perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。
