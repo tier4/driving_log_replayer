@@ -66,7 +66,7 @@ def generate_launch_description():
 
     recorder = driving_log_replayer.launch_common.get_regex_recorder(
         "performance_diag.qos.yaml",
-        "^/clock$|^/tf$|/perception/obstacle_segmentation/pointcloud|/sensing/lidar/concatenated/pointcloud|^/diagnostics$|^/diagnostics_agg$|^/driving_log_replayer/.*|^/sensing/camera/.*|^/sensing/lidar/.*/blockage_diag/debug/blockage_mask_image$",
+        "^/clock$|^/tf$|/perception/obstacle_segmentation/pointcloud|/sensing/lidar/concatenated/pointcloud|^/diagnostics$|^/diagnostics_agg$|^/driving_log_replayer/.*|^/sensing/lidar/.*/blockage_diag/debug/blockage_mask_image$",
     )
     return launch.LaunchDescription(
         launch_arguments
