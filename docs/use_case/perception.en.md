@@ -194,7 +194,7 @@ Evaluation:
     target_uuids: null
   PerceptionPassFailConfig:
     target_labels: [car, bicycle, pedestrian, motorbike]
-    plane_distance_threshold_list: [2.0, 2.0, 2.0, 2.0]
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0]
 ```
 
 ### Evaluation Result Format

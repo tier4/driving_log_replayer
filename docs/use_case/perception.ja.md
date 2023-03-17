@@ -202,7 +202,7 @@ Evaluation:
     target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
   PerceptionPassFailConfig:
     target_labels: [car, bicycle, pedestrian, motorbike]
-    plane_distance_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
 ```
 
 ### 評価結果フォーマット
