@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: drop camera image (`#123 <https://github.com/tier4/driving_log_replayer/issues/123>`_)
+* Contributors: Hayato Mizushima
+
 1.1.21 (2023-03-09)
 -------------------
 * docs: update input bag topic list
