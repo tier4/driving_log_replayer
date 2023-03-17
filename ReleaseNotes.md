@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.1.22
+
+Minor Tweak
+
+| Module             | Feature    | Brief summary     | Pull request                                                   | JIRA | Contributor                                   |
+| ------------------ | ---------- | ----------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `performance_diag` | bag record | drop camera topic | [#123](https://github.com/tier4/driving_log_replayer/pull/123) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.21
 
 Documentation
