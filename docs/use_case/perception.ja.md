@@ -189,7 +189,7 @@ Evaluation:
       target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
       center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # 中心間距離マッチング時の閾値
       plane_distance_thresholds: [2.0, 30.0] # 平面距離マッチング時の閾値
-      iou_bev_thresholds: [0.5] # BEV IoU 　マッチング時の閾値
+      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
       iou_3d_thresholds: [0.5] # 3D IoU マッチング時の閾値
   CriticalObjectFilterConfig:
     target_labels: [car, bicycle, pedestrian, motorbike] # 評価対象ラベル名
@@ -202,7 +202,7 @@ Evaluation:
     target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
   PerceptionPassFailConfig:
     target_labels: [car, bicycle, pedestrian, motorbike]
-    plane_distance_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
 ```
 
 ### 評価結果フォーマット
