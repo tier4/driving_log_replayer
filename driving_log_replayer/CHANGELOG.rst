@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.22 (2023-03-17)
+-------------------
 * chore: drop camera image (`#123 <https://github.com/tier4/driving_log_replayer/issues/123>`_)
 * Contributors: Hayato Mizushima
 
