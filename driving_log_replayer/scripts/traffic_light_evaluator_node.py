@@ -35,6 +35,7 @@ from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
+from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
@@ -98,9 +99,9 @@ class TrafficLightResult(ResultBase):
         has_objects = True
         # OptionalでNoneが入る場合と、空配列の場合の2種類ありそうなので、is None判定ではなくnotで判定する
         if (
-            not frame.pass_fail_result.tp_objects
-            and not frame.pass_fail_result.fp_objects_result
-            and not frame.pass_fail_result.fn_objects
+            frame.pass_fail_result.tp_object_results == []
+            and frame.pass_fail_result.fp_object_results == []
+            and frame.pass_fail_result.fn_objects == []
         ):
             has_objects = False
 
@@ -116,22 +117,13 @@ class TrafficLightResult(ResultBase):
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
-        tp_num = None
-        if frame.pass_fail_result.tp_objects is not None:
-            tp_num = len(frame.pass_fail_result.tp_objects)
-        fp_num = None
-        if frame.pass_fail_result.fp_objects_result is not None:
-            fp_num = len(frame.pass_fail_result.fp_objects_result)
-        fn_num = None
-        if frame.pass_fail_result.fn_objects is not None:
-            fn_num = len(frame.pass_fail_result.fn_objects)
         out_frame["PassFail"] = {
             "Result": success,
             "Info": [
                 {
-                    "TP": tp_num,
-                    "FP": fp_num,
-                    "FN": fn_num,
+                    "TP": len(frame.pass_fail_result.tp_object_results),
+                    "FP": len(frame.pass_fail_result.fp_object_results),
+                    "FN": len(frame.pass_fail_result.fn_objects),
                 }
             ],
         }
@@ -253,19 +245,18 @@ class TrafficLightEvaluator(Node):
                 self.__pickle_writer = PickleWriter(self.__pkl_path)
                 self.__pickle_writer.dump(self.__evaluator.frame_results)
                 self.get_final_result()
-                # このコールバックが無限ループする
-                # analyzer = PerceptionAnalyzer2D(self.__evaluator.evaluator_config)
-                # analyzer.add(self.__evaluator.frame_results)
-                # score_df, error_df = analyzer.analyze()
-                # score_dict = {}
-                # error_dict = {}
-                # if score_df is not None:
-                #     score_dict = score_df.to_dict()
-                # if error_df is not None:
-                #     error_dict = error_df.to_dict()
-                # final_metrics = {"Score": score_dict, "Error": error_dict}
-                # self.__result.add_final_metrics(final_metrics)
-                # self.__result_writer.write(self.__result)
+                analyzer = PerceptionAnalyzer2D(self.__evaluator.evaluator_config)
+                analyzer.add(self.__evaluator.frame_results)
+                score_df, conf_mat_df = analyzer.analyze()
+                score_dict = {}
+                conf_mat_dict = {}
+                if score_df is not None:
+                    score_dict = score_df.to_dict()
+                if conf_mat_df is not None:
+                    conf_mat_dict = conf_mat_df.to_dict()
+                final_metrics = {"Score": score_dict, "ConfusionMatrix": conf_mat_dict}
+                self.__result.add_final_metrics(final_metrics)
+                self.__result_writer.write(self.__result)
                 self.__result_writer.close()
                 rclpy.shutdown()
 

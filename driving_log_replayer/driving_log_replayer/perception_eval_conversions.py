@@ -154,17 +154,17 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
 
     scale = Vector3(x=1.0, y=1.0, z=0.0)
 
-    if objs := pass_fail.tp_objects:
+    if objs := pass_fail.tp_object_results:
         # estimated obj
         c_tp_est = ColorRGBA(r=0.0, g=0.0, b=1.0, a=1.0)
         marker = dynamic_objects_to_ros_points(objs, header, scale, c_tp_est, "tp_est", 0)
         marker_results.markers.append(marker)
-    if objs := pass_fail.tp_objects:
+    if objs := pass_fail.tp_object_results:
         # ground truth obj
         c_tp_gt = ColorRGBA(r=1.0, g=0.0, b=0.0, a=1.0)
         marker = dynamic_objects_to_ros_points(objs, header, scale, c_tp_gt, "tp_gt", 0, tp_gt=True)
         marker_results.markers.append(marker)
-    if objs := pass_fail.fp_objects_result:
+    if objs := pass_fail.fp_object_results:
         c_fp = ColorRGBA(r=0.0, g=1.0, b=1.0, a=1.0)
         marker = dynamic_objects_to_ros_points(objs, header, scale, c_fp, "fp", 0)
         marker_results.markers.append(marker)
