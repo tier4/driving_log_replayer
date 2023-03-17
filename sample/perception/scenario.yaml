@@ -8,9 +8,9 @@ Evaluation:
   UseCaseFormatVersion: 0.4.0
   Datasets:
     - sample_dataset:
-        VehicleId: default
-        LaunchSensing: false
-        LocalMapPath: $HOME/autoware_map/sample-map-planning
+        VehicleId: default # Specify VehicleId for each data set.
+        LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset; if false, use concatenated/pointcloud in bag
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
   PerceptionEvaluationConfig:
@@ -26,7 +26,7 @@ Evaluation:
       target_uuids: null # If you want to evaluate only specific ground truths, specify the UUIDs of the ground truths to be evaluated. If null, use all
       center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # Threshold for center-to-center distance matching
       plane_distance_thresholds: [2.0, 30.0] # Threshold for planar distance matching
-      iou_2d_thresholds: [0.5] # Threshold for BEV IoU
+      iou_2d_thresholds: [0.5] # Threshold for 2D IoU
       iou_3d_thresholds: [0.5] # Threshold for 3D IoU
   CriticalObjectFilterConfig:
     target_labels: [car, bicycle, pedestrian, motorbike]
@@ -39,4 +39,4 @@ Evaluation:
     target_uuids: null
   PerceptionPassFailConfig:
     target_labels: [car, bicycle, pedestrian, motorbike]
-    matching_threshold_list: [2.0, 2.0, 2.0, 2.0]
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # Threshold for planar distance matching
