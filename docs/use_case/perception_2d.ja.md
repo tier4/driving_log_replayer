@@ -272,7 +272,7 @@ Evaluation:
       camera4: cam_back_left
       camera5: cam_front_left
     evaluation_config_dict:
-      evaluation_task: detection2d # detection2d # 現時点ではdetectionにしか対応していない。今後の拡張でtracking2dにも対応予定
+      evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
       target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
       center_distance_thresholds: [1.0, 2.0]
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
