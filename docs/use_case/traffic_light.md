@@ -189,7 +189,7 @@ Evaluation:
     target_labels: [green, red, yellow, unknown] # 評価対象ラベル名
   PerceptionPassFailConfig:
     target_labels: [green, red, yellow, unknown]
-    matching_threshold_list: [0.5, 0.5, 0.5, 0.5]
+    matching_threshold_list: null # detection2dでのみ使用される
 ```
 
 ### 評価結果フォーマット
