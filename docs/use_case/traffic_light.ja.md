@@ -167,30 +167,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。
 
-```yaml
-Evaluation:
-  UseCaseName: traffic_light
-  UseCaseFormatVersion: 0.1.0
-  Datasets:
-    - 158d2973-325d-449d-8c5a-f22fa177b169:
-        VehicleId: "7" # データセット毎にVehicleIdを指定する
-        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
-  Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-  PerceptionEvaluationConfig:
-    camera_type: cam_traffic_light_near
-    evaluation_config_dict:
-      evaluation_task: classification2d # 現状はclassification2d固定、後に拡張でdetection2dに対応させる予定。
-      target_labels: [green, red, yellow, unknown] # 評価ラベル 指定可能なラベルは以下を参照。https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#trafficlightlabel
-      center_distance_thresholds: [100, 200]
-      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
-  CriticalObjectFilterConfig:
-    target_labels: [green, red, yellow, unknown] # 評価対象ラベル名
-  PerceptionPassFailConfig:
-    target_labels: [green, red, yellow, unknown]
-    matching_threshold_list: null # detection2dでのみ使用される
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
