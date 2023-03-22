@@ -145,51 +145,7 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-```yaml
-Evaluation:
-  UseCaseName: performance_diag
-  UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.
-  InitialPose: null # Specifies the initial pose; only works when LaunchLocalization is enabled.
-  Conditions:
-    LiDAR:
-      Visibility:
-        PassFrameCount: 100 # When ScenarioType is TP, the Visibility test is considered successful if this number of ERRORs are generated; for FP, this condition is ignored because the test must not generate any ERRORs.
-        ScenarioType: FP # TP/FP/null
-      Blockage:
-        front_lower: # Set for each on-board LiDAR
-          ScenarioType: TP # TP/FP/null
-          BlockageType: both # sky/ground/both Where is the blockage occurring?
-          PassFrameCount: 100 # If ScenarioType is TP, Blockage type matches, and ERROR is generated at least this many times, the Blockage test is considered successful.  for FP, this condition is ignored because the test must not generate any ERRORs.
-        front_upper:
-          ScenarioType: TP
-          BlockageType: both
-          PassFrameCount: 100
-        left_lower:
-          ScenarioType: FP
-          BlockageType: sky
-          PassFrameCount: 30
-        left_upper:
-          ScenarioType: FP
-          BlockageType: both
-          PassFrameCount: 40
-        rear_lower:
-          ScenarioType: FP
-          BlockageType: ground
-          PassFrameCount: 50
-        rear_upper:
-          ScenarioType: FP
-          BlockageType: sky
-          PassFrameCount: 60
-        right_lower:
-          ScenarioType: FP
-          BlockageType: both
-          PassFrameCount: 70
-        right_upper:
-          ScenarioType: FP
-          BlockageType: ground
-          PassFrameCount: 80
-```
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.yaml).
 
 ### Evaluation Result Format
 
