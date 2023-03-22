@@ -182,8 +182,8 @@ Evaluation:
     camera_type: cam_traffic_light_near
     evaluation_config_dict:
       evaluation_task: classification2d # 現状はclassification2d固定、後に拡張でdetection2dに対応させる予定。
-      target_labels: [green, red, yellow, unknown] # 評価ラベル
-      center_distance_thresholds: [1.0, 2.0]
+      target_labels: [green, red, yellow, unknown] # 評価ラベル 指定可能なラベルは以下を参照。https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#trafficlightlabel
+      center_distance_thresholds: [100, 200]
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
   CriticalObjectFilterConfig:
     target_labels: [green, red, yellow, unknown] # 評価対象ラベル名

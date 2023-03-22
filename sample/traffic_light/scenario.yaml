@@ -8,17 +8,17 @@ Evaluation:
   UseCaseFormatVersion: 0.1.0
   Datasets:
     - sample:
-        VehicleId: "7" # データセット毎にVehicleIdを指定する
-        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
+        VehicleId: "7" # Specify VehicleId for each data set.
+        LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
+        LocalMapPath: $HOME/map/traffic_light_xx1 # Specify LocalMapPath for each data set.
   Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
   PerceptionEvaluationConfig:
-    camera_type: cam_traffic_light_near
+    camera_type: cam_traffic_light_near # Specifies the type of camera.
     evaluation_config_dict:
-      evaluation_task: classification2d # 固定
+      evaluation_task: classification2d # Currently only classification2 is supported. Future extensions will support detection2d.
       target_labels: [green, red, yellow, unknown] # 評価ラベル 指定可能なラベルは以下を参照。https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#trafficlightlabel
-      center_distance_thresholds: [1.0, 2.0]
+      center_distance_thresholds: [100, 200]
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
   CriticalObjectFilterConfig:
     target_labels: [green, red, yellow, unknown]
