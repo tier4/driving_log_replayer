@@ -263,7 +263,7 @@ Evaluation:
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
   PerceptionEvaluationConfig:
-    camera_type: cam_front # アノテーションデータと対応させるためにどのカメラか指定する
+    camera_type: cam_front # /perception/object_recognition/detection/rois0に出力されるカメラのタイプを指定する。
     camera_mapping: # 現状は1台にしか対応してないのでここは使用されない。今後の拡張用
       camera0: cam_front
       camera1: cam_front_right
