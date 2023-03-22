@@ -165,45 +165,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。
 
-```yaml
-Evaluation:
-  UseCaseName: perception
-  UseCaseFormatVersion: 0.3.0
-  Datasets:
-    - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
-        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
-        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する。falseの場合はbag中にあるconcatenated/pointcloudを使用する
-        LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
-  Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-  PerceptionEvaluationConfig:
-    evaluation_config_dict:
-      evaluation_task: detection # detection/tracking ここで指定したobjectsを評価する
-      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
-      max_x_position: 102.4 # 評価対象 object の最大 x 位置
-      max_y_position: 102.4 # 評価対象 object の最大 y 位置
-      max_distance: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-      min_distance: null # 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-      min_point_numbers: [0, 0, 0, 0] # ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価
-      confidence_threshold: null # 評価対象の estimated object の confidence の閾値
-      target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
-      center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # 中心間距離マッチング時の閾値
-      plane_distance_thresholds: [2.0, 30.0] # 平面距離マッチング時の閾値
-      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
-      iou_3d_thresholds: [0.5] # 3D IoU マッチング時の閾値
-  CriticalObjectFilterConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike] # 評価対象ラベル名
-    max_x_position_list: [30.0, 30.0, 30.0, 30.0] # 評価対象 object の最大 x 位置
-    max_y_position_list: [30.0, 30.0, 30.0, 30.0] # 評価対象 object の最大 y 位置
-    max_distance_list: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-    min_distance_list: null # 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-    min_point_numbers: [0, 0, 0, 0] # ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価
-    confidence_threshold_list: null # 評価対象の estimated object の confidence の閾値
-    target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
-  PerceptionPassFailConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike]
-    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 

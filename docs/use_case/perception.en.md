@@ -157,45 +157,7 @@ Use case evaluation is performed on a single dataset, while database evaluation 
 In the database evaluation, the `vehicle_id` should be able to be set for each data set, since the calibration values may change.
 Also, it is necessary to set whether or not to activate the sensing module.
 
-```yaml
-Evaluation:
-  UseCaseName: perception
-  UseCaseFormatVersion: 0.3.0
-  Datasets:
-    - sample_dataset:
-        VehicleId: default # Specify VehicleId for each data set.
-        LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
-  Conditions:
-    PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-  PerceptionEvaluationConfig:
-    evaluation_config_dict:
-      evaluation_task: detection # detection or tracking. Evaluate the objects specified here
-      target_labels: [car, bicycle, pedestrian, motorbike] # evaluation label
-      max_x_position: 102.4 # Maximum x position of object to be evaluated
-      max_y_position: 102.4 # Maximum y position of object to be evaluated
-      max_distance: null # Maximum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.
-      min_distance: null # Minimum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.
-      min_point_numbers: [0, 0, 0, 0] # Minimum number of point clouds in bounding box for ground truth object. If min_point_numbers=0, all ground truth objects are evaluated
-      confidence_threshold: null # Threshold of confidence for the estimated object to be evaluated
-      target_uuids: null # If you want to evaluate only specific ground truths, specify the UUIDs of the ground truths to be evaluated. If null, use all
-      center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # Threshold for center-to-center distance matching
-      plane_distance_thresholds: [2.0, 30.0] # Threshold for planar distance matching
-      iou_2d_thresholds: [0.5] # Threshold for 2D IoU
-      iou_3d_thresholds: [0.5] # Threshold for 3D IoU
-  CriticalObjectFilterConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike]
-    max_x_position_list: [30.0, 30.0, 30.0, 30.0]
-    max_y_position_list: [30.0, 30.0, 30.0, 30.0]
-    max_distance_list: null
-    min_distance_list: null
-    min_point_numbers: [0, 0, 0, 0]
-    confidence_threshold_list: null
-    target_uuids: null
-  PerceptionPassFailConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike]
-    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # Threshold for planar distance matching
-```
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/scenario.yaml).
 
 ### Evaluation Result Format
 
