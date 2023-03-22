@@ -139,7 +139,7 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/develop/sample/localization/scenario.yaml).
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.yaml).
 
 ### Evaluation Result Format
 
