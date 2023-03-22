@@ -139,31 +139,7 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-```yaml
-Evaluation:
-  UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
-  Conditions:
-    Convergence:
-      AllowableDistance: 0.2 # Lateral distance to be considered convergence
-      AllowableExeTimeMs: 100.0 # If the NDT computation time is less than or equal to this value, it is considered successful.
-      AllowableIterationNum: 30 # If the number of NDT calculations is less than or equal to this value, it is considered a success.
-      PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    Reliability:
-      Method: NVTL # NVTL or TP which method to use for evaluation
-      AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
-      NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
-  InitialPose:
-    position:
-      x: 3836.5478515625
-      y: 73729.96875
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: -0.9689404241590215
-      w: 0.2472942668776119
-```
+See [sample](https://github.com/tier4/driving_log_replayer/blob/develop/sample/localization/scenario.yaml).
 
 ### Evaluation Result Format
 
