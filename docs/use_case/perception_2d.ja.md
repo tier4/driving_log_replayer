@@ -273,13 +273,13 @@ Evaluation:
       camera5: cam_front_left
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
-      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
-      center_distance_thresholds: [1.0, 2.0]
+      target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル
+      center_distance_thresholds: [100, 200] # # 中心間距離マッチング時の閾値。カメラ画像上のピクセルで指定する
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
   CriticalObjectFilterConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike] # 評価対象ラベル名
+    target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価対象ラベル名
   PerceptionPassFailConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike]
+    target_labels: [car, truck, bicycle, pedestrian, motorbike]
     matching_threshold_list: null
 ```
 
