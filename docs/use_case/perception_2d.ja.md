@@ -251,37 +251,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。
 
-```yaml
-Evaluation:
-  UseCaseName: perception_2d
-  UseCaseFormatVersion: 0.1.0
-  Datasets:
-    - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
-        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
-        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
-  Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-  PerceptionEvaluationConfig:
-    camera_type: cam_front # /perception/object_recognition/detection/rois0に出力されるカメラのタイプを指定する。
-    camera_mapping: # 現状は1台にしか対応してないのでここは使用されない。今後の拡張用
-      camera0: cam_front
-      camera1: cam_front_right
-      camera2: cam_back_right
-      camera3: cam_back
-      camera4: cam_back_left
-      camera5: cam_front_left
-    evaluation_config_dict:
-      evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
-      target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル
-      center_distance_thresholds: [100, 200] # # 中心間距離マッチング時の閾値。カメラ画像上のピクセルで指定する
-      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
-  CriticalObjectFilterConfig:
-    target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価対象ラベル名
-  PerceptionPassFailConfig:
-    target_labels: [car, truck, bicycle, pedestrian, motorbike]
-    matching_threshold_list: null
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception_2d/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
