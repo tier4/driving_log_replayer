@@ -87,7 +87,7 @@ Published topics:
 ## Arguments passed to logging_simulator.launch
 
 To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
-The following parameters are set to `false` when launching the `localization` evaluation scenario:
+The following parameters are set to `false`:
 
 - planning: false
 - control: false
