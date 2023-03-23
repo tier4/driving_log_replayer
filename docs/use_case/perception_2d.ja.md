@@ -89,7 +89,7 @@ index b697b1f5..b9cb5310 100644
      <param name="model_path" value="$(var model_path)/$(var model_name).onnx"/>
 ```
 
-現状だと camera0 にカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例
+現状だと 0 番のカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例
 
 ```shell
 --- a/launch/tier4_perception_launch/launch/perception.launch.xml
@@ -122,7 +122,7 @@ index b697b1f5..b9cb5310 100644
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
+2. bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う
 3. 評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 

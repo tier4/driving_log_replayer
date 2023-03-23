@@ -36,7 +36,7 @@ ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.laun
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`traffic_light_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
+2. bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う
 3. 評価ノードが/perception/traffic_light_recognition/traffic_signals を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 

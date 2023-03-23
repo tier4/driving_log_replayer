@@ -15,9 +15,8 @@ The models are automatically downloaded during set-up.
 [tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58)
 
 The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-launch が終了すると、[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
-に記載のディレクトリに engine ファイルが出力されているので確認する。
+Commands for model conversion are available, so source the autoware workspace and execute the commands.
+When the conversion command finishes, check that the engine file is output to the directory listed in [tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6).
 
 An example of the use of autowarefoundation's autoware.universe is shown below.
 
@@ -31,8 +30,8 @@ ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=tr
 
 ### Modifying the launch file
 
-PC 一台で評価するには、launch をいじって、カメラの認識結果を出力するように変更する必要がある。
-以下のように、launch を変更する。
+To evaluate on a single PC, it is necessary to modify launch to output the recognition results of the camera.
+Change launch as follows.
 
 ```shell
 ❯ vcs diff src/
@@ -89,7 +88,7 @@ index b697b1f5..b9cb5310 100644
      <param name="model_path" value="$(var model_path)/$(var model_name).onnx"/>
 ```
 
-現状だと camera0 にカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例
+Currently, only camera No.0 can be evaluated, so if you want to evaluate other cameras, swap the camera numbers. The following example shows how to swap 0 and 3
 
 ```shell
 --- a/launch/tier4_perception_launch/launch/perception.launch.xml
@@ -116,28 +115,26 @@ index b697b1f5..b9cb5310 100644
 @@ -33,7 +33,7 @@
 ```
 
-## 評価方法
+## Evaluation method
 
-`perception.launch_2d.py` を使用して評価する。
-launch を立ち上げると以下のことが実行され、評価される。
+The perception_2d evaluation is executed by launching the `perception_2d.launch.py` file.
+Launching the file executes the following steps:
 
-1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
-3. 評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
-4. bag の再生が終了すると自動で launch が終了して評価が終了する
+1. Execute launch of evaluation node (`perception_2d_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
+2. Autoware receives sensor data output from input rosbag and outputs camera, and the perception module performs recognition.
+3. The evaluation node subscribes to `/perception/object_recognition/detection/rois0` and evaluates data. The result is dumped into a file.
+4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
-注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。
+## Evaluation results
 
-## 評価結果
+The results are calculated for each subscription. The format and available states are described below.
 
-topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
+### Perception Normal
 
-### 正常
+When the following conditions are satisfied by executing the evaluation function of perception_eval
 
-perception_eval の評価関数を実行して以下の条件を満たすとき
-
-1. frame_result.pass_fail_result に object が最低 1 つ入っている (`tp_object_results != [] and fp_object_results != [] and fn_objects != []`)
-2. 評価失敗のオブジェクトが 0 個 (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
+1. frame_result.pass_fail_result contains at least one object (`tp_object_results ! = [] and fp_object_results ! = [] and fn_objects ! = []`)
+2. no object fail (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
 
 ### Perception Error
 
