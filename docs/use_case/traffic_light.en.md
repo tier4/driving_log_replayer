@@ -69,7 +69,7 @@ Published topics:
 | ---------- | --------- |
 | -          | -         |
 
-## logging_simulator.launch に渡す引数
+## Arguments passed to logging_simulator.launch
 
 To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
 The following parameters are set to `false` when launching the `perception` evaluation scenario:
