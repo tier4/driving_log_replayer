@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、classification の評価のみ。
+現状、`classification2d` の評価のみ。
 
 ## 事前準備
 
@@ -15,8 +15,8 @@ perception では、機械学習の学習済みモデルを使用する。
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-launch が終了すると、[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
-に記載のディレクトリに engine ファイルが出力されているので確認する。
+変換コマンドが終了すると、engine ファイルが出力されているので[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
+に記載のディレクトリ確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
@@ -36,7 +36,7 @@ ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.laun
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`traffic_light_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
+2. bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う
 3. 評価ノードが/perception/traffic_light_recognition/traffic_signals を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
@@ -65,7 +65,9 @@ Subscribed topics:
 
 Published topics:
 
-現状なし
+| topic 名 | データ型 |
+| -------- | -------- |
+| -        | -        |
 
 ## logging_simulator.launch に渡す引数
 
@@ -167,30 +169,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。
 
-```yaml
-Evaluation:
-  UseCaseName: traffic_light
-  UseCaseFormatVersion: 0.1.0
-  Datasets:
-    - 158d2973-325d-449d-8c5a-f22fa177b169:
-        VehicleId: "7" # データセット毎にVehicleIdを指定する
-        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
-  Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-  PerceptionEvaluationConfig:
-    camera_type: cam_traffic_light_near
-    evaluation_config_dict:
-      evaluation_task: classification2d # 現状はclassification2d固定、後に拡張でdetection2dに対応させる予定。
-      target_labels: [green, red, yellow, unknown] # 評価ラベル
-      center_distance_thresholds: [1.0, 2.0]
-      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
-  CriticalObjectFilterConfig:
-    target_labels: [green, red, yellow, unknown] # 評価対象ラベル名
-  PerceptionPassFailConfig:
-    target_labels: [green, red, yellow, unknown]
-    matching_threshold_list: null # detection2dでのみ使用される
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 

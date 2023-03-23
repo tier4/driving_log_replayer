@@ -149,39 +149,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-```yaml
-Evaluation:
-  UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.3.0
-  Datasets:
-    - sample_dataset:
-        VehicleId: default # データセット毎にVehicleIdを指定する
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
-  Conditions:
-    Detection: # Detectionの評価を行わない場合はnullをセットする
-      PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-      BoundingBoxConfig: # バウンディングボックスの設定。設定しない場合はnullと記載する。このキーを記述するとSensingEvaluationConfigのtarget_uuidsが上書きされる。
-        - dcb2b352232fff50c4fad23718f31611: # 設定を適用したいtargetのuuidを指定する。
-            Start: null # ここに指定した時間を以降の点群を評価する。指定しない場合はnullと記載する。nullの場合は0.0を指定したのと同等になる
-            End: null # ここに指定した時間までの点群を評価する。指定しない場合はnullと記載する。nullの場合はsys.float_info.maxを指定したのと同等になる
-    NonDetection: # NonDetectionの評価を行わない場合はnullをセットする
-      PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-      ProposedArea: # base_linkを中心に非検知のエリアを一筆描きのpolygonで記述する。時計周りに記述する
-        polygon_2d: # xy平面でpolygonを時計回りで記述する
-          - [10.0, 1.5]
-          - [10.0, -1.5]
-          - [0.0, -1.5]
-          - [0.0, 1.5]
-        z_min: 0.0 # 3Dにするときのz下限値
-        z_max: 1.5 # 3Dにするときのz上限値
-  SensingEvaluationConfig:
-    evaluation_config_dict:
-      evaluation_task: sensing # 固定値
-      target_uuids: null # detectionで対象とするバウンディングボックスのID。アノテーションされているすべてのbounding boxを対象としたい場合はnullを設定する
-      box_scale_0m: 1.0 # バウンディングボックスを距離に応じて拡大縮小する倍率0m地点
-      box_scale_100m: 1.0 # 100m地点の倍率、0から100mまで距離に応じて線形補完で倍率が決定する
-      min_points_threshold: 1 # バウンディングボックスに最低何個の点が入っていればDetectionを成功とするかのしきい値
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 

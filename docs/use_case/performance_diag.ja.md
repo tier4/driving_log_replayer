@@ -146,51 +146,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-```yaml
-Evaluation:
-  UseCaseName: performance_diag
-  UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # falseのときはbagの中に入っている/tfを出力する。trueのときはbagの中のtfはリマップされ無効化される。
-  InitialPose: null # 初期位置を指定する。LaunchLocalizationが有効のときだけ機能する
-  Conditions:
-    LiDAR:
-      Visibility:
-        PassFrameCount: 100 # ScenarioTypeがTPのときにこの回数以上ERRORが出ればVisibilityの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される
-        ScenarioType: FP # TP/FP/null
-      Blockage:
-        front_lower: # 搭載されているLiDAR毎に設定する
-          ScenarioType: TP # TP/FP/null
-          BlockageType: both # sky/ground/both どこでblockageが発生しているか
-          PassFrameCount: 100 # ScenarioTypeがTP、Blockageのタイプが一致、かつERRORがこの回数以上出ればBlockageの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される
-        front_upper:
-          ScenarioType: TP
-          BlockageType: both
-          PassFrameCount: 100
-        left_lower:
-          ScenarioType: FP
-          BlockageType: sky
-          PassFrameCount: 30
-        left_upper:
-          ScenarioType: FP
-          BlockageType: both
-          PassFrameCount: 40
-        rear_lower:
-          ScenarioType: FP
-          BlockageType: ground
-          PassFrameCount: 50
-        rear_upper:
-          ScenarioType: FP
-          BlockageType: sky
-          PassFrameCount: 60
-        right_lower:
-          ScenarioType: FP
-          BlockageType: both
-          PassFrameCount: 70
-        right_upper:
-          ScenarioType: FP
-          BlockageType: ground
-          PassFrameCount: 80
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 

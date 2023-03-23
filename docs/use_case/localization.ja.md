@@ -140,31 +140,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-```yaml
-Evaluation:
-  UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
-  Conditions:
-    Convergence: # 収束性評価
-      AllowableDistance: 0.2 # 直線距離でこの距離以内だったら収束とみなす
-      AllowableExeTimeMs: 100.0 # NDTの計算時間がこの値以下なら成功とみなす
-      AllowableIterationNum: 30 # NDTの計算回数がこの値以下なら成功とみなす
-      PassRate: 95.0 # 収束性の評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    Reliability: # 信頼度評価
-      Method: NVTL # NVTL or TPのどちらで評価を行うか
-      AllowableLikelihood: 3.0 # この値以上なら信頼度は正常とみなす
-      NGCount: 10 # 信頼度異常が連続でこの回数続いたら信頼度評価失敗とみなす
-  InitialPose:
-    position:
-      x: 16876.271484375
-      y: 36087.9453125
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: 0.23490284404117467
-      w: 0.9720188546840887
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 

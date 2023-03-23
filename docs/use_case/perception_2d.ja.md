@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、detection の評価のみ、カメラの台数は 1 台にしか対応していない。
+現状、`detection2d` の評価のみ、カメラの台数は 1 台にしか対応していない。
 
 ## 事前準備
 
@@ -16,8 +16,8 @@ perception では、機械学習の学習済みモデルを使用する。
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-launch が終了すると、[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
-に記載のディレクトリに engine ファイルが出力されているので確認する。
+変換コマンドが終了すると、engine ファイルが出力されているので[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
+に記載のディレクトリを確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
@@ -89,7 +89,7 @@ index b697b1f5..b9cb5310 100644
      <param name="model_path" value="$(var model_path)/$(var model_name).onnx"/>
 ```
 
-現状だと camera0 にカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例
+現状だと 0 番のカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例
 
 ```shell
 --- a/launch/tier4_perception_launch/launch/perception.launch.xml
@@ -122,7 +122,7 @@ index b697b1f5..b9cb5310 100644
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
+2. bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う
 3. 評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
@@ -153,7 +153,9 @@ Subscribed topics:
 
 Published topics:
 
-現状なし
+| topic 名 | データ型 |
+| -------- | -------- |
+| -        | -        |
 
 ## logging_simulator.launch に渡す引数
 
@@ -251,37 +253,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。
 
-```yaml
-Evaluation:
-  UseCaseName: perception_2d
-  UseCaseFormatVersion: 0.1.0
-  Datasets:
-    - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
-        VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
-        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
-  Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-  PerceptionEvaluationConfig:
-    camera_type: cam_front # アノテーションデータと対応させるためにどのカメラか指定する
-    camera_mapping: # 現状は1台にしか対応してないのでここは使用されない。今後の拡張用
-      camera0: cam_front
-      camera1: cam_front_right
-      camera2: cam_back_right
-      camera3: cam_back
-      camera4: cam_back_left
-      camera5: cam_front_left
-    evaluation_config_dict:
-      evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
-      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
-      center_distance_thresholds: [1.0, 2.0]
-      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
-  CriticalObjectFilterConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike] # 評価対象ラベル名
-  PerceptionPassFailConfig:
-    target_labels: [car, bicycle, pedestrian, motorbike]
-    matching_threshold_list: null
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception_2d/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
