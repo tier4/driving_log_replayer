@@ -4,7 +4,7 @@ The performance of Autoware's recognition function (perception) is evaluated by 
 
 Run the perception module and pass the output perception topic to the evaluation library for evaluation.
 
-Currently, only the evaluation of DETECTION and only one camera is supported.
+Currently, only the evaluation of `detection2d` and only one camera is supported.
 
 ## Preparation
 
@@ -248,7 +248,7 @@ Use case evaluation is performed on a single dataset, while database evaluation 
 In the database evaluation, the `vehicle_id` should be able to be set for each data set, since the calibration values may change.
 Also, it is necessary to set whether or not to activate the sensing module.
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/scenario.yaml).
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception_2d/scenario.yaml).
 
 ### Evaluation Result Format
 

@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、classification の評価のみ。
+現状、`classification2d` の評価のみ。
 
 ## 事前準備
 
@@ -16,7 +16,7 @@ perception では、機械学習の学習済みモデルを使用する。
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
 変換コマンド終了すると、engine ファイルが出力されているので[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
-に記載のディレクトリを確認する。
+に記載のディレクトリ確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
@@ -36,7 +36,7 @@ ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.laun
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`traffic_light_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う
+2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
 3. 評価ノードが/perception/traffic_light_recognition/traffic_signals を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 

@@ -1,117 +1,117 @@
-# 信号機認識機能の評価
+# Evaluate traffic light
 
-Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。
+The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.
 
-perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
+Run the perception module and pass the output perception topic to the evaluation library for evaluation.
 
-現状、classification の評価のみ。
+Currently, only the evaluation of `classification2d` is supported.
 
-## 事前準備
+## Preparation
 
-perception では、機械学習の学習済みモデルを使用する。
-モデルはセットアップ時に自動的にダウンロードされる。
+In perception evaluation, machine learning pre-trained models are used.
+The models are automatically downloaded during set-up.
 [traffic_light_classifier/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_classifier/CMakeLists.txt#L104)
 [traffic_light_ssd_fine_detector/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112)
 
-また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
-変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-launch が終了すると、[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
-に記載のディレクトリに engine ファイルが出力されているので確認する。
+The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
+Commands for model conversion are available, so source the autoware workspace and execute the commands.
+When the conversion command finishes, check that the engine file is output to the directory listed in [traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10).
 
-autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
+An example of the use of autowarefoundation's autoware.universe is shown below.
 
 ```shell
-# $HOME/autowareにautowareをインストールした場合
+# If autoware is installed in $HOME/autoware
 source ~/autoware/install/setup.bash
 ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
 ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.launch.xml build_only:=true
 
-# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engineが出力されている
-# ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engineが出力されている
+# The following two engine files appear in 
+# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engine
+# ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engine
 ```
 
-## 評価方法
+## Evaluation method
 
-`traffic_light.launch.py` を使用して評価する。
-launch を立ち上げると以下のことが実行され、評価される。
+The traffic_light evaluation is executed by launching the `traffic_light.launch.py` file.
+Launching the file executes the following steps:
 
-1. launch で評価ノード(`traffic_light_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う
-3. 評価ノードが/perception/traffic_light_recognition/traffic_signals を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
-4. bag の再生が終了すると自動で launch が終了して評価が終了する
+1. Execute launch of evaluation node (`traffic_light_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
+2. Autoware receives sensor data output from input rosbag and outputs camera, and the perception module performs recognition.
+3. The evaluation node subscribes to `/perception/traffic_light_recognition/traffic_signals` and evaluates data. The result is dumped into a file.
+4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
-## 評価結果
+## Evaluation results
 
-topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
+The results are calculated for each subscription. The format and available states are described below.
 
-### 正常
+### Perception Normal
 
-perception_eval の評価関数を実行して以下の条件を満たすとき
+When the following conditions are satisfied by executing the evaluation function of perception_eval
 
-1. frame_result.pass_fail_result に object が最低 1 つ入っている (`tp_object_results != [] and fp_object_results != [] and fn_objects != []`)
-2. 評価失敗のオブジェクトが 0 個 (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
+1. frame_result.pass_fail_result contains at least one object (`tp_object_results ! = [] and fp_object_results ! = [] and fn_objects ! = []`)
+2. no object fail (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
 
-### 異常
+### Perception Error
 
-正常の条件を満たさない場合
+The perception evaluation output is marked as `Error` when condition for `Normal` is not met.
 
-## 評価ノードが使用する Topic 名とデータ型
+## Topic name and data type used by evaluation node
 
 Subscribed topics:
 
-| topic 名                                              | データ型                                     |
-| ----------------------------------------------------- | -------------------------------------------- |
+| Topic name                                     | Data type                                            |
+| ---------------------------------------------- | ---------------------------------------------------- |
 | /perception/traffic_light_recognition/traffic_signals | tier4_perception_msgs/msg/TrafficSignalArray |
-
 Published topics:
 
-現状なし
+| Topic name | Data type |
+| ---------- | --------- |
+| -          | -         |
 
 ## logging_simulator.launch に渡す引数
 
-autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
+To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
+The following parameters are set to `false` when launching the `perception` evaluation scenario:
 
 - localization: false
 - planning: false
 - control: false
-- sensing: false / true (デフォルト false、シナリオの `LaunchSensing` キーで t4_dataset 毎に指定する)
+- sensing: false / true (default value is false. Specify by `LaunchSensing` key for each t4_dataset in the scenario)
 - perception_mode: camera_lidar_fusion
 
-**注:アノーテション時とシミュレーション時で自己位置を合わせたいので bag に入っている tf を使い回す。そのため localization は無効である。**
+**NOTE: The `tf` in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.**
 
-## 依存ライブラリ
+## Dependent libraries
 
-認識機能の評価は[perception_eval](https://github.com/tier4/autoware_perception_evaluation)に依存している。
+The perception evaluation step bases on the [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
 
-### 依存ライブラリとの driving_log_replayer の役割分担
+### Division of roles of driving_log_replayer with dependent libraries
 
-driving_log_replayer が ROS との接続部分を担当し、perception_eval がデータセットを使って実際に評価する部分を担当するという分担になっている。
-perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトを受け取ることができない。
-また、timestamp が ROS ではナノ秒、t4_dataset は `nuScenes` をベースしているためミリ秒が採用されている。
-このため、ライブラリ使用前に適切な変換が必要となる。
+`driving_log_replayer` package is in charge of the connection with ROS. The actual perception evaluation is conducted in [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
+The [perception_eval](https://github.com/tier4/autoware_perception_evaluation) is a ROS-independent library, it cannot receive ROS objects. Also, ROS timestamps use nanoseconds while the `t4_dataset` format is based on milliseconds (because it uses `nuScenes`), so the values must be properly converted before using the library's functions.
 
-driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval で定義されている class に合わせたデータ形式に変換して渡す。
-また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。
+`driving_log_replayer` subscribes the topic output from the perception module of Autoware, converts it to the data format defined in [perception_eval](https://github.com/tier4/autoware_perception_evaluation), and passes it on.
+It is also responsible for publishing and visualizing the evaluation results from [perception_eval](https://github.com/tier4/autoware_perception_evaluation) on proper ROS topic.
 
-perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。
+[perception_eval](https://github.com/tier4/autoware_perception_evaluation) is in charge of the part that compares the detection results passed from `driving_log_replayer` with ground truth data, calculates the index, and outputs the results.
 
-## simulation
+## About simulation
 
-シミュレーション実行に必要な情報を述べる。
+State the information required to run the simulation.
 
-### 入力 rosbag に含まれるべき topic
+### Topic to be included in the input rosbag
 
-t4_dataset で必要なトピックが含まれていること
+Must contain the required topics in `t4_dataset` format.
 
-車両の ECU の CAN と、使用している sensor の topic が必要
-以下は例であり、違うセンサーを使っている場合は適宜読み替える。
+The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
+The following example shows the topic list available in evaluation input rosbag when multiple LiDARs and Cameras are used in a real-world vehicle configuration.
 
-LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。
-/sensing/lidar/concatenated/pointcloud は、シナリオの LaunchSensing: false の場合に使用される。
+/sensing/lidar/concatenated/pointcloud is used if the scenario LaunchSensing: false.
 
-CAMERA が複数ついている場合は、搭載されているすべての camera_info と image_rect_color_compressed を含める
+If there is more than one CAMERA, include all on-board camera_info and image_rect_color_compressed.
 
-| topic 名                                             | データ型                                     |
+
+| Topic name                                           | Data type                                    |
 | ---------------------------------------------------- | -------------------------------------------- |
 | /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
@@ -126,9 +126,9 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 | /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
 | /tf                                                  | tf2_msgs/msg/TFMessage                       |
 
-CAN の代わりに vehicle の topic を含めても良い。
+The vehicle topics can be included instead of CAN.
 
-| topic 名                                             | データ型                                            |
+| Topic name                                           | Data type                                           |
 | ---------------------------------------------------- | --------------------------------------------------- |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
@@ -147,50 +147,50 @@ CAN の代わりに vehicle の topic を含めても良い。
 | /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
 | /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
-### 入力 rosbag に含まれてはいけない topic
+### Topics that must not be included in the input rosbag
 
-| topic 名 | データ型                |
-| -------- | ----------------------- |
-| /clock   | rosgraph_msgs/msg/Clock |
+| Topic name | Data type               |
+| ---------- | ----------------------- |
+| /clock     | rosgraph_msgs/msg/Clock |
 
-clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない
+The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.
 
-## evaluation
+## About Evaluation
 
-評価に必要な情報を述べる。
+State the information necessary for the evaluation.
 
-### シナリオフォーマット
+### Scenario Format
 
-ユースケース評価とデータベース評価の 2 種類の評価がある。
-ユースケースは 1 個のデータセットで行う評価で、データベースは複数のデータセットを用いて、各データセット毎の結果の平均を取る評価である。
+There are two types of evaluation: use case evaluation and database evaluation.
+Use case evaluation is performed on a single dataset, while database evaluation uses multiple datasets and takes the average of the results for each dataset.
 
-データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
-また、Sensing モジュールを起動するかどうかの設定も行う。
+In the database evaluation, the `vehicle_id` should be able to be set for each data set, since the calibration values may change.
+Also, it is necessary to set whether or not to activate the sensing module.
 
 See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/scenario.yaml).
 
-### 評価結果フォーマット
+### Evaluation Result Format
 
-perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
-全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。
+The evaluation results by [perception_eval](https://github.com/tier4/autoware_perception_evaluation) under the conditions specified in the scenario are output for each frame.
+Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.
 
-以下に、各フレームのフォーマットとメトリクスのフォーマットを示す。
-**注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
+The format of each frame and the metrics format are shown below.
+**NOTE: common part of the result file format, which has already been explained, is omitted.**
 
-各フレームのフォーマット
+Format of each frame:
 
 ```json
 {
   "Frame": {
-    "FrameName": "評価に使用したt4_datasetのフレーム番号",
-    "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
+    "FrameName": "Frame number of t4_dataset used for evaluation",
+    "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
     "PassFail": {
       "Result": "Success or Fail",
       "Info": [
         {
-          "TP": "TPと判定された数",
-          "FP": "FPと判定された数",
-          "FN": "FNと判定された数"
+          "TP": "Number of TPs",
+          "FP": "Number of FPs",
+          "FN": "Number of FNs"
         }
       ]
     }
@@ -198,38 +198,38 @@ perception では、シナリオに指定した条件で perception_eval が評�
 }
 ```
 
-メトリクスデータのフォーマット
+Metrics Data Format:
 
 ```json
 {
   "Frame": {
     "FinalScore": {
       "Score": {
-        "TP": "ラベルのTP率",
-        "FP": "ラベルのFP率",
-        "FN": "ラベルのFN率",
-        "AP": "ラベルのAP値",
-        "APH": "ラベルのAPH値"
+        "TP": "TP rate of the label",
+        "FP": "FP rate of the label",
+        "FN": "FN rate of the label",
+        "AP": "AP value of the label",
+        "APH": "APH value of the label"
       },
       "ConfusionMatrix": {
-        "ラベル(真値)": "予測結果"
+        "Label(GroundTruth)": "Prediction results"
       }
     }
   }
 }
 ```
 
-### pickle ファイル
+### pickle file
 
-データベース評価では、複数の bag を再生する必要があるが、ROS の仕様上、1 回の launch で、複数の bag を利用することは出来ない。
-1 つの bag、すなわち 1 つの t4_dataset に対して launch を 1 回叩くことなるので、データベース評価では、含まれるデータセットの数だけ launch を実行する必要がある。
+In database evaluation, it is necessary to replay multiple rosbags, but due to the ROS specification, it is impossible to use multiple bags in a single launch.
+Since one rosbag, i.e., one `t4_dataset`, requires one launch, it is necessary to execute as many launches as the number of datasets contained in the database evaluation.
 
-データベース評価は 1 回の launch で評価できないため、perception では、result.jsonl の他に scene_result.pkl というファイルを出力する。
-pickle ファイルは python のオブジェクトをファイルとして保存したものであり、perception_eval の PerceptionEvaluationManager.frame_results を保存している。
-pickle ファイルに記録した object をすべて読み込み、dataset の平均の指標を出力することでデータセット評価が行える。
+Since database evaluation cannot be done in a single launch, perception outputs a file `scene_result.pkl` in addition to `result.jsonl` file.
+A pickle file is a python object saved as a file, PerceptionEvaluationManager.frame_results of [perception_eval](https://github.com/tier4/autoware_perception_evaluation).
+The dataset evaluation can be performed by reading all the objects recorded in the pickle file and outputting the index of the dataset's average.
 
-### データベース評価の結果ファイル
+### Result file of database evaluation
 
-シナリオに複数の dataset を記述したデータベース評価の場合には、結果出力先ディレクトリに database_result.json というファイルが出力される。
+In the case of a database evaluation with multiple datasets in the scenario, a file named `database_result.json` is output to the results directory.
 
-形式は[メトリクスのフォーマット](#評価結果フォーマット) と同じ
+The format is the same as the [Metrics Data Format](#evaluation-result-format).

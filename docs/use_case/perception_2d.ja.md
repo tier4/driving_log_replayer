@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、detection の評価のみ、カメラの台数は 1 台にしか対応していない。
+現状、`detection2d` の評価のみ、カメラの台数は 1 台にしか対応していない。
 
 ## 事前準備
 
