@@ -153,7 +153,9 @@ Subscribed topics:
 
 Published topics:
 
-現状なし
+| topic 名 | データ型 |
+| -------- | -------- |
+| -        | -        |
 
 ## logging_simulator.launch に渡す引数
 
