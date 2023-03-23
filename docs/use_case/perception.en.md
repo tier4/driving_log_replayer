@@ -11,10 +11,8 @@ The models are automatically downloaded during set-up.
 [lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L112-L118)
 
 The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-The conversion process is performed when the perception module is started for the first time.
-
-So, as a preliminary preparation, you need to start logging_simulator.launch and convert the onnx files in the workspace into engine files.
-Depending on the performance of the GPU, the time it takes to output the engine varies, so wait until two engine files are output in the directory listed in [perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L13)
+Commands for model conversion are available, so source the autoware workspace and execute the commands.
+When the conversion command finishes, check that the engine file is output to the directory listed in [perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L12-L14).
 
 An example of the use of autowarefoundation's autoware.universe is shown below.
 

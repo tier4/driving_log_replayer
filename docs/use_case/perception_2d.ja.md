@@ -16,8 +16,8 @@ perception では、機械学習の学習済みモデルを使用する。
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-launch が終了すると、[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
-に記載のディレクトリに engine ファイルが出力されているので確認する。
+変換コマンド終了すると、engine ファイルが出力されているので[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
+に記載のディレクトリを確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
