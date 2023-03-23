@@ -1355,7 +1355,7 @@ Launching the file executes the following steps:</p>
 </table>
 <h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
-The following parameters are set to <code>false</code> when launching the <code>localization</code> evaluation scenario:</p>
+The following parameters are set to <code>false</code>:</p>
 <ul>
 <li>planning: false</li>
 <li>control: false</li>
@@ -1469,30 +1469,7 @@ The following example shows the topic list available in evaluation input rosbag 
 <h2 id="about-evaluation">About Evaluation<a class="headerlink" href="#about-evaluation" title="Permanent link">#</a></h2>
 <p>State the information necessary for the evaluation.</p>
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localization</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.2.0</span>
-<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">Convergence</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">AllowableDistance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w"> </span><span class="c1"># Lateral distance to be considered convergence</span>
-<span class="w">      </span><span class="nt">AllowableExeTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.0</span><span class="w"> </span><span class="c1"># If the NDT computation time is less than or equal to this value, it is considered successful.</span>
-<span class="w">      </span><span class="nt">AllowableIterationNum</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"> </span><span class="c1"># If the number of NDT calculations is less than or equal to this value, it is considered a success.</span>
-<span class="w">      </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">95.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span>
-<span class="w">    </span><span class="nt">Reliability</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVTL</span><span class="w"> </span><span class="c1"># NVTL or TP which method to use for evaluation</span>
-<span class="w">      </span><span class="nt">AllowableLikelihood</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.3</span><span class="w"> </span><span class="c1"># If above this value, the localization reliability value is considered normal.</span>
-<span class="w">      </span><span class="nt">NGCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"> </span><span class="c1"># If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.</span>
-<span class="w">  </span><span class="nt">InitialPose</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">position</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3836.5478515625</span>
-<span class="w">      </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">73729.96875</span>
-<span class="w">      </span><span class="nt">z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
-<span class="w">    </span><span class="nt">orientation</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
-<span class="w">      </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
-<span class="w">      </span><span class="nt">z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-0.9689404241590215</span>
-<span class="w">      </span><span class="nt">w</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2472942668776119</span>
-</code></pre></div>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.yaml">sample</a>.</p>
 <h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
 <p>Since localization evaluates both convergence and confidence of the localization, each line contains the result of either convergence or confidence.
 The result is <code>true</code> if both convergence and confidence are evaluated correctly. Otherwise, the output is set to <code>false</code>.</p>

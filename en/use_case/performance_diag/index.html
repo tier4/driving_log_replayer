@@ -1321,7 +1321,7 @@ The node will also confirm that no ERROR is generated for not covered LiDAR.</p>
 </table>
 <h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
-The following parameters are set to <code>false</code> when launching the <code>performance_diag</code> evaluation scenario:</p>
+The following parameters are set to <code>false</code>:</p>
 <ul>
 <li>planning: false</li>
 <li>control: false</li>
@@ -1445,50 +1445,7 @@ The following example shows the topic list available in evaluation input rosbag 
 <h2 id="about-evaluation">About Evaluation<a class="headerlink" href="#about-evaluation" title="Permanent link">#</a></h2>
 <p>State the information necessary for the evaluation.</p>
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">performance_diag</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
-<span class="w">  </span><span class="nt">LaunchLocalization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.</span>
-<span class="w">  </span><span class="nt">InitialPose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Specifies the initial pose; only works when LaunchLocalization is enabled.</span>
-<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">LiDAR</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">Visibility</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># When ScenarioType is TP, the Visibility test is considered successful if this number of ERRORs are generated; for FP, this condition is ignored because the test must not generate any ERRORs.</span>
-<span class="w">        </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span><span class="w"> </span><span class="c1"># TP/FP/null</span>
-<span class="w">      </span><span class="nt">Blockage</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">front_lower</span><span class="p">:</span><span class="w"> </span><span class="c1"># Set for each on-board LiDAR</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TP</span><span class="w"> </span><span class="c1"># TP/FP/null</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span><span class="w"> </span><span class="c1"># sky/ground/both Where is the blockage occurring?</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># If ScenarioType is TP, Blockage type matches, and ERROR is generated at least this many times, the Blockage test is considered successful.  for FP, this condition is ignored because the test must not generate any ERRORs.</span>
-<span class="w">        </span><span class="nt">front_upper</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
-<span class="w">        </span><span class="nt">left_lower</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sky</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
-<span class="w">        </span><span class="nt">left_upper</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span>
-<span class="w">        </span><span class="nt">rear_lower</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ground</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
-<span class="w">        </span><span class="nt">rear_upper</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sky</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-<span class="w">        </span><span class="nt">right_lower</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">70</span>
-<span class="w">        </span><span class="nt">right_upper</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ground</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-</code></pre></div>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.yaml">sample</a>.</p>
 <h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
 <p>In <code>performance_diag</code> evaluation scenario visibility and blockage are evaluated.
 The <code>Result</code> is <code>true</code> if both visibility and blockage evaluation steps have passed. Otherwise, the <code>Result</code> is <code>false</code>.</p>

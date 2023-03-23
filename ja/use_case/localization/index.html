@@ -1443,30 +1443,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
 <p>評価に必要な情報を述べる。</p>
 <h3 id="_8">シナリオフォーマット<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localization</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.2.0</span>
-<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">Convergence</span><span class="p">:</span><span class="w"> </span><span class="c1"># 収束性評価</span>
-<span class="w">      </span><span class="nt">AllowableDistance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w"> </span><span class="c1"># 直線距離でこの距離以内だったら収束とみなす</span>
-<span class="w">      </span><span class="nt">AllowableExeTimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.0</span><span class="w"> </span><span class="c1"># NDTの計算時間がこの値以下なら成功とみなす</span>
-<span class="w">      </span><span class="nt">AllowableIterationNum</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w"> </span><span class="c1"># NDTの計算回数がこの値以下なら成功とみなす</span>
-<span class="w">      </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">95.0</span><span class="w"> </span><span class="c1"># 収束性の評価試行回数の内、どの程度(%)評価成功だったら成功とするか</span>
-<span class="w">    </span><span class="nt">Reliability</span><span class="p">:</span><span class="w"> </span><span class="c1"># 信頼度評価</span>
-<span class="w">      </span><span class="nt">Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVTL</span><span class="w"> </span><span class="c1"># NVTL or TPのどちらで評価を行うか</span>
-<span class="w">      </span><span class="nt">AllowableLikelihood</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.0</span><span class="w"> </span><span class="c1"># この値以上なら信頼度は正常とみなす</span>
-<span class="w">      </span><span class="nt">NGCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"> </span><span class="c1"># 信頼度異常が連続でこの回数続いたら信頼度評価失敗とみなす</span>
-<span class="w">  </span><span class="nt">InitialPose</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">position</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16876.271484375</span>
-<span class="w">      </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">36087.9453125</span>
-<span class="w">      </span><span class="nt">z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
-<span class="w">    </span><span class="nt">orientation</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
-<span class="w">      </span><span class="nt">y</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span>
-<span class="w">      </span><span class="nt">z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.23490284404117467</span>
-<span class="w">      </span><span class="nt">w</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.9720188546840887</span>
-</code></pre></div>
+<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.ja.yaml">サンプル</a>参照</p>
 <h3 id="_9">評価結果フォーマット<a class="headerlink" href="#_9" title="Permanent link">#</a></h3>
 <p>localization では、収束性と信頼度の 2 つを評価しているので、行毎に収束性または信頼度のどちらかの結果が入っている。
 Result は収束性と信頼度両方のパスしていれば true でそれ以外は false 失敗となる。</p>

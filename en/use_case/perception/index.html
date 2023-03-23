@@ -1214,17 +1214,16 @@
 <h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
 <p>In perception evaluation, machine learning pre-trained models are used.
 The models are automatically downloaded during set-up.
-<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115">lidar_centerpoint/CMakeList.txt</a></p>
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L112-L118">lidar_centerpoint/CMakeList.txt</a></p>
 <p>The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-The conversion process is performed when the perception module is started for the first time.</p>
-<p>So, as a preliminary preparation, you need to start logging_simulator.launch and convert the onnx files in the workspace into engine files.
-Depending on the performance of the GPU, the time it takes to output the engine varies, so wait until two engine files are output in the directory listed in <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L13">perception.launch.xml</a></p>
+Commands for model conversion are available, so source the autoware workspace and execute the commands.
+When the conversion command finishes, check that the engine file is output to the directory listed in <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L12-L14">perception.launch.xml</a>.</p>
 <p>An example of the use of autowarefoundation's autoware.universe is shown below.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># If autoware is installed in $HOME/autoware</span>
 <span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
-ros2<span class="w"> </span>launch<span class="w"> </span>autoware_launch<span class="w"> </span>logging_simulator.launch.xml<span class="w"> </span>map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-rosbag<span class="w"> </span>vehicle_model:<span class="o">=</span>sample_vehicle<span class="w"> </span>sensor_model:<span class="o">=</span>sample_sensor_kit
+ros2<span class="w"> </span>launch<span class="w"> </span>lidar_centerpoint<span class="w"> </span>lidar_centerpoint.launch.xml<span class="w"> </span>build_only:<span class="o">=</span><span class="nb">true</span>
 
-<span class="c1"># Wait until the following two outputs appear in ~/autoware/install/lidar_centrepoint/share/lidar_centrepoint/data</span>
+<span class="c1"># The following two engine files appear in ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data</span>
 <span class="c1"># pts_backbone_neck_head_centerpoint_tiny.engine</span>
 <span class="c1"># pts_voxel_encoder_centerpoint_tiny.engine</span>
 </code></pre></div>
@@ -1240,7 +1239,11 @@ Launching the file executes the following steps:</p>
 <h2 id="evaluation-results">Evaluation results<a class="headerlink" href="#evaluation-results" title="Permanent link">#</a></h2>
 <p>The results are calculated for each subscription. The format and available states are described below.</p>
 <h3 id="perception-normal">Perception Normal<a class="headerlink" href="#perception-normal" title="Permanent link">#</a></h3>
-<p>If no object fail the evaluation function <code>perception_eval</code> (<code>frame_result.pass_fail_result.get_fail_object_num() == 0</code>).</p>
+<p>When the following conditions are satisfied by executing the evaluation function of perception_eval</p>
+<ol>
+<li>frame_result.pass_fail_result contains at least one object (<code>tp_object_results ! = [] and fp_object_results ! = [] and fn_objects ! = []</code>)</li>
+<li>no object fail (<code>frame_result.pass_fail_result.get_fail_object_num() == 0</code>)</li>
+</ol>
 <h3 id="perception-error">Perception Error<a class="headerlink" href="#perception-error" title="Permanent link">#</a></h3>
 <p>The perception evaluation output is marked as <code>Error</code> when condition for <code>Normal</code> is not met.</p>
 <h2 id="topic-name-and-data-type-used-by-evaluation-node">Topic name and data type used by evaluation node<a class="headerlink" href="#topic-name-and-data-type-used-by-evaluation-node" title="Permanent link">#</a></h2>
@@ -1284,7 +1287,7 @@ Launching the file executes the following steps:</p>
 </table>
 <h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
-The following parameters are set to <code>false</code> when launching the <code>perception</code> evaluation scenario:</p>
+The following parameters are set to <code>false</code>:</p>
 <ul>
 <li>localization: false</li>
 <li>planning: false</li>
@@ -1297,7 +1300,7 @@ The following parameters are set to <code>false</code> when launching the <code>
 <h3 id="division-of-roles-of-driving_log_replayer-with-dependent-libraries">Division of roles of driving_log_replayer with dependent libraries<a class="headerlink" href="#division-of-roles-of-driving_log_replayer-with-dependent-libraries" title="Permanent link">#</a></h3>
 <p><code>driving_log_replayer</code> package is in charge of the connection with ROS. The actual perception evaluation is conducted in <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> library.
 The <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> is a ROS-independent library, it cannot receive ROS objects. Also, ROS timestamps use nanoseconds while the <code>t4_dataset</code> format is based on milliseconds (because it uses <code>nuScenes</code>), so the values must be properly converted before using the library's functions.</p>
-<p><code>driving_log_replayer</code> subscribes the topic output from the perception module of Autoware, converts it to the data format expected by <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a>, and passes it on.
+<p><code>driving_log_replayer</code> subscribes the topic output from the perception module of Autoware, converts it to the data format defined in <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a>, and passes it on.
 It is also responsible for publishing and visualizing the evaluation results from <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> on proper ROS topic.</p>
 <p><a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> is in charge of the part that compares the detection results passed from <code>driving_log_replayer</code> with ground truth data, calculates the index, and outputs the results.</p>
 <h2 id="about-simulation">About simulation<a class="headerlink" href="#about-simulation" title="Permanent link">#</a></h2>
@@ -1447,44 +1450,7 @@ The following example shows the topic list available in evaluation input rosbag 
 Use case evaluation is performed on a single dataset, while database evaluation uses multiple datasets and takes the average of the results for each dataset.</p>
 <p>In the database evaluation, the <code>vehicle_id</code> should be able to be set for each data set, since the calibration values may change.
 Also, it is necessary to set whether or not to activate the sensing module.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perception</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3.0</span>
-<span class="w">  </span><span class="nt">Datasets</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sample_dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"> </span><span class="c1"># Specify VehicleId for each data set.</span>
-<span class="w">        </span><span class="nt">LaunchSensing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># Specifies whether the sensing module should be activated for each dataset; if false, use concatenated/pointcloud in bag</span>
-<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/autoware_map/sample-map-planning</span>
-<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span>
-<span class="w">  </span><span class="nt">PerceptionEvaluationConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">evaluation_config_dict</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">evaluation_task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detection</span><span class="w"> </span><span class="c1"># detection or tracking. Evaluate the objects specified here</span>
-<span class="w">      </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># evaluation label</span>
-<span class="w">      </span><span class="nt">max_x_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">102.4</span><span class="w"> </span><span class="c1"># Maximum x position of object to be evaluated</span>
-<span class="w">      </span><span class="nt">max_y_position</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">102.4</span><span class="w"> </span><span class="c1"># Maximum y position of object to be evaluated</span>
-<span class="w">      </span><span class="nt">max_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Maximum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.</span>
-<span class="w">      </span><span class="nt">min_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Minimum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.</span>
-<span class="w">      </span><span class="nt">min_point_numbers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Minimum number of point clouds in bounding box for ground truth object. If min_point_numbers=0, all ground truth objects are evaluated</span>
-<span class="w">      </span><span class="nt">confidence_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Threshold of confidence for the estimated object to be evaluated</span>
-<span class="w">      </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># If you want to evaluate only specific ground truths, specify the UUIDs of the ground truths to be evaluated. If null, use all</span>
-<span class="w">      </span><span class="nt">center_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[[</span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.0</span><span class="p p-Indicator">],</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]]</span><span class="w"> </span><span class="c1"># Threshold for center-to-center distance matching</span>
-<span class="w">      </span><span class="nt">plane_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Threshold for planar distance matching</span>
-<span class="w">      </span><span class="nt">iou_bev_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Threshold for BEV IoU</span>
-<span class="w">      </span><span class="nt">iou_3d_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># Threshold for 3D IoU</span>
-<span class="w">  </span><span class="nt">CriticalObjectFilterConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">max_x_position_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">max_y_position_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">30.0</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">max_distance_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="w">    </span><span class="nt">min_distance_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="w">    </span><span class="nt">min_point_numbers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">confidence_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="w">    </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="w">  </span><span class="nt">PerceptionPassFailConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">plane_distance_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]</span>
-</code></pre></div>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/scenario.yaml">sample</a>.</p>
 <h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
 <p>The evaluation results by <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> under the conditions specified in the scenario are output for each frame.
 Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.</p>

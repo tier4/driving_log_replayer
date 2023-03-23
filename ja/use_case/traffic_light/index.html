@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="ja" class="no-js">
   <head>
     
       <meta charset="utf-8">
@@ -8,20 +8,18 @@
       
       
       
-        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/en/use_case/perception_2d.ja/">
+        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/use_case/traffic_light/">
       
       
-        <link rel="prev" href="../perception/">
+        <link rel="prev" href="../performance_diag/">
       
-      
-        <link rel="next" href="../performance_diag/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
     
     
       
-        <title>認識機能の評価(カメラ) - Driving Log Replayer Documentation</title>
+        <title>信号機認識機能の評価 - Driving Log Replayer Documentation</title>
       
     
     
@@ -74,7 +72,7 @@
       
         
         <a href="#_1" class="md-skip">
-          Skip to content
+          コンテンツにスキップ
         </a>
       
     </div>
@@ -92,7 +90,7 @@
   
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
     <a href="../../" title="Driving Log Replayer Documentation" class="md-header__button md-logo" aria-label="Driving Log Replayer Documentation" data-md-component="logo">
       
   
@@ -112,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              認識機能の評価(カメラ)
+              信号機認識機能の評価
             
           </span>
         </div>
@@ -148,14 +146,14 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
-      <nav class="md-search__options" aria-label="Search">
+      <nav class="md-search__options" aria-label="検索">
         
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -165,7 +163,7 @@
       <div class="md-search__scrollwrap" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
-            Initializing search
+            検索を初期化
           </div>
           <ol class="md-search-result__list" role="presentation"></ol>
         </div>
@@ -176,7 +174,7 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/tier4/driving_log_replayer" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/tier4/driving_log_replayer" title="リポジトリへ" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -191,7 +189,7 @@
   
     
       
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+<nav class="md-tabs" aria-label="タブ" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
       
@@ -202,7 +200,7 @@
 
   <li class="md-tabs__item">
     <a href="../../" class="md-tabs__link">
-      Driving Log Replayer Documentation
+      Driving Log Replayer ドキュメント
     </a>
   </li>
 
@@ -330,7 +328,7 @@
   
 
 
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="ナビゲーション" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../../" title="Driving Log Replayer Documentation" class="md-nav__button md-logo" aria-label="Driving Log Replayer Documentation" data-md-component="logo">
       
@@ -342,7 +340,7 @@
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/tier4/driving_log_replayer" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/tier4/driving_log_replayer" title="リポジトリへ" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -364,7 +362,7 @@
   
     <li class="md-nav__item">
       <a href="../../" class="md-nav__link">
-        Driving Log Replayer Documentation
+        Driving Log Replayer ドキュメント
       </a>
     </li>
   
@@ -422,7 +420,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/installation/" class="md-nav__link">
-        Installation
+        インストール
       </a>
     </li>
   
@@ -436,7 +434,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/setup/" class="md-nav__link">
-        Setup
+        設定
       </a>
     </li>
   
@@ -450,7 +448,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/localization/" class="md-nav__link">
-        Localization Evaluation
+        自己位置推定機能の評価
       </a>
     </li>
   
@@ -464,7 +462,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/obstacle_segmentation/" class="md-nav__link">
-        Obstacle Segmentation Evaluation
+        Obstacle Segmentation の評価
       </a>
     </li>
   
@@ -478,7 +476,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/perception/" class="md-nav__link">
-        Perception Evaluation
+        認識機能の評価
       </a>
     </li>
   
@@ -492,7 +490,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/performance_diag/" class="md-nav__link">
-        Performance Diag Evaluation
+        診断機能の評価
       </a>
     </li>
   
@@ -561,7 +559,7 @@
   
     <li class="md-nav__item">
       <a href="../../overview/setup/" class="md-nav__link">
-        Setup
+        設定
       </a>
     </li>
   
@@ -575,7 +573,7 @@
   
     <li class="md-nav__item">
       <a href="../../overview/command/" class="md-nav__link">
-        Command
+        コマンド
       </a>
     </li>
   
@@ -742,7 +740,7 @@
   
     <li class="md-nav__item">
       <a href="../localization/" class="md-nav__link">
-        Evaluate self-localization estimation
+        自己位置推定の評価
       </a>
     </li>
   
@@ -756,7 +754,7 @@
   
     <li class="md-nav__item">
       <a href="../obstacle_segmentation/" class="md-nav__link">
-        Evaluate point cloud generation
+        点群生成の評価
       </a>
     </li>
   
@@ -770,7 +768,7 @@
   
     <li class="md-nav__item">
       <a href="../perception/" class="md-nav__link">
-        Evaluate perception(LiDAR)
+        認識機能の評価(LiDAR)
       </a>
     </li>
   
@@ -784,7 +782,7 @@
   
     <li class="md-nav__item">
       <a href="../performance_diag/" class="md-nav__link">
-        Evaluate diagnostics
+        診断機能の評価
       </a>
     </li>
   
@@ -857,7 +855,7 @@
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+<nav class="md-nav md-nav--secondary" aria-label="目次">
   
   
   
@@ -866,7 +864,7 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      目次
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
@@ -960,6 +958,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#rosbag-topic_1" class="md-nav__link">
+    入力 rosbag に含まれてはいけない topic
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1024,43 +1029,43 @@
   
 
 
-<h1 id="_1">認識機能の評価(カメラ)<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
+<h1 id="_1">信号機認識機能の評価<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
 <p>Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。</p>
 <p>perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。</p>
+<p>現状、<code>classification2d</code> の評価のみ。</p>
 <h2 id="_2">事前準備<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
 <p>perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。
-<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolo/CMakeLists.txt#L110-L116">tensorrt_yolo/CMakeList.txt</a></p>
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_classifier/CMakeLists.txt#L104">traffic_light_classifier/CMakeList.txt</a>
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112">traffic_light_ssd_fine_detector/CMakeList.txt</a></p>
 <p>また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
-変換処理は、perception のモジュールを初回起動したときに行われる。</p>
-<p>なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
-GPU の性能によって、engine の出力までにかかる時間が異なるので、<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolo/launch/tensorrt_yolo.launch.xml#L6">tensorrt_yolo.launch.xml</a>
-に記載のディレクトリに engine ファイルが出力されるまで待ちます。</p>
+変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
+変換コマンドが終了すると、engine ファイルが出力されているので<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10">traffic_light.launch.xml</a>
+に記載のディレクトリ確認する。</p>
 <p>autowarefoundation の autoware.universe を使用した場合の例を以下に示す。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># $HOME/autowareにautowareをインストールした場合</span>
 <span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
-ros2<span class="w"> </span>launch<span class="w"> </span>autoware_launch<span class="w"> </span>logging_simulator.launch.xml<span class="w"> </span>map_path:<span class="o">=</span><span class="nv">$HOME</span>/autoware_map/sample-map-rosbag<span class="w"> </span>vehicle_model:<span class="o">=</span>sample_vehicle<span class="w"> </span>sensor_model:<span class="o">=</span>sample_sensor_kit<span class="w"> </span>perception_mode:<span class="o">=</span>camera_lidar_fusion
+ros2<span class="w"> </span>launch<span class="w"> </span>traffic_light_classifier<span class="w"> </span>traffic_light_classifier.launch.xml<span class="w"> </span>use_gpu:<span class="o">=</span><span class="nb">true</span><span class="w">  </span>build_only:<span class="o">=</span><span class="nb">true</span>
+ros2<span class="w"> </span>launch<span class="w"> </span>traffic_light_ssd_fine_detector<span class="w"> </span>traffic_light_ssd_fine_detector.launch.xml<span class="w"> </span>build_only:<span class="o">=</span><span class="nb">true</span>
 
-<span class="c1"># ~/autoware/install/tensorrt_yolo/share/tensorrt_yolo/dataに指定したyolo typeのengineが出力されるまで待つ</span>
-<span class="c1"># &lt;arg name=&quot;yolo_type&quot; default=&quot;yolov3&quot;/&gt;の場合</span>
-<span class="c1"># yolov3.engine</span>
+<span class="c1"># ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engineが出力されている</span>
+<span class="c1"># ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engineが出力されている</span>
 </code></pre></div>
 <h2 id="_3">評価方法<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p><code>perception.launch_2d.py</code> を使用して評価する。
+<p><code>traffic_light.launch.py</code> を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。</p>
 <ol>
-<li>launch で評価ノード(<code>perception_2d_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
-<li>bag から出力されたセンサーデータを autoware が受け取って、点群データを出力し、perception モジュールが認識を行う</li>
-<li>評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
+<li>launch で評価ノード(<code>traffic_light_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
+<li>bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う</li>
+<li>評価ノードが/perception/traffic_light_recognition/traffic_signals を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
-<p>注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。</p>
 <h2 id="_4">評価結果<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <p>topic の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
 <h3 id="_5">正常<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
 <p>perception_eval の評価関数を実行して以下の条件を満たすとき</p>
 <ol>
-<li>frame_result.pass_fail_result に object が最低 1 つ入っている (<code>tp_objects is not None and fp_objects is not None and fn_objects is not None</code>)</li>
+<li>frame_result.pass_fail_result に object が最低 1 つ入っている (<code>tp_object_results != [] and fp_object_results != [] and fn_objects != []</code>)</li>
 <li>評価失敗のオブジェクトが 0 個 (<code>frame_result.pass_fail_result.get_fail_object_num() == 0</code>)</li>
 </ol>
 <h3 id="_6">異常<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
@@ -1076,13 +1081,26 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </thead>
 <tbody>
 <tr>
-<td>/perception/object_recognition/detection/rois0</td>
-<td>tier4_perception_msgs/msg/DetectedObjectsWithFeature</td>
+<td>/perception/traffic_light_recognition/traffic_signals</td>
+<td>tier4_perception_msgs/msg/TrafficSignalArray</td>
 </tr>
 </tbody>
 </table>
 <p>Published topics:</p>
-<p>現状なし</p>
+<table>
+<thead>
+<tr>
+<th>topic 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
 <h2 id="logging_simulatorlaunch">logging_simulator.launch に渡す引数<a class="headerlink" href="#logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。</p>
 <ul>
@@ -1100,13 +1118,167 @@ launch を立ち上げると以下のことが実行され、評価される。<
 perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトを受け取ることができない。
 また、timestamp が ROS ではナノ秒、t4_dataset は <code>nuScenes</code> をベースしているためミリ秒が採用されている。
 このため、ライブラリ使用前に適切な変換が必要となる。</p>
-<p>driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval が期待するデータ形式に変換して渡す。
+<p>driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval で定義されている class に合わせたデータ形式に変換して渡す。
 また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。</p>
 <p>perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。</p>
 <h2 id="simulation">simulation<a class="headerlink" href="#simulation" title="Permanent link">#</a></h2>
 <p>シミュレーション実行に必要な情報を述べる。</p>
 <h3 id="rosbag-topic">入力 rosbag に含まれるべき topic<a class="headerlink" href="#rosbag-topic" title="Permanent link">#</a></h3>
 <p>t4_dataset で必要なトピックが含まれていること</p>
+<p>車両の ECU の CAN と、使用している sensor の topic が必要
+以下は例であり、違うセンサーを使っている場合は適宜読み替える。</p>
+<p>LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。
+/sensing/lidar/concatenated/pointcloud は、シナリオの LaunchSensing: false の場合に使用される。</p>
+<p>CAMERA が複数ついている場合は、搭載されているすべての camera_info と image_rect_color_compressed を含める</p>
+<table>
+<thead>
+<tr>
+<th>topic 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/gsm8/from_can_bus</td>
+<td>can_msgs/msg/Frame</td>
+</tr>
+<tr>
+<td>/sensing/camera/camera*/camera_info</td>
+<td>sensor_msgs/msg/CameraInfo</td>
+</tr>
+<tr>
+<td>/sensing/camera/camera*/image_rect_color/compressed</td>
+<td>sensor_msgs/msg/CompressedImage</td>
+</tr>
+<tr>
+<td>/sensing/camera/traffic_light/camera_info</td>
+<td>sensor_msgs/msg/CameraInfo</td>
+</tr>
+<tr>
+<td>/sensing/camera/traffic_light/image_raw/compressed</td>
+<td>sensor_msgs/msg/CompressedImage</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/fix_velocity</td>
+<td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/nav_sat_fix</td>
+<td>sensor_msgs/msg/NavSatFix</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/navpvt</td>
+<td>ublox_msgs/msg/NavPVT</td>
+</tr>
+<tr>
+<td>/sensing/imu/tamagawa/imu_raw</td>
+<td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/concatenated/pointcloud</td>
+<td>sensor_msgs/msg/PointCloud2</td>
+</tr>
+<tr>
+<td>/sensing/lidar/*/velodyne_packets</td>
+<td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/tf</td>
+<td>tf2_msgs/msg/TFMessage</td>
+</tr>
+</tbody>
+</table>
+<p>CAN の代わりに vehicle の topic を含めても良い。</p>
+<table>
+<thead>
+<tr>
+<th>topic 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/sensing/camera/camera*/camera_info</td>
+<td>sensor_msgs/msg/CameraInfo</td>
+</tr>
+<tr>
+<td>/sensing/camera/camera*/image_rect_color/compressed</td>
+<td>sensor_msgs/msg/CompressedImage</td>
+</tr>
+<tr>
+<td>/sensing/camera/traffic_light/camera_info</td>
+<td>sensor_msgs/msg/CameraInfo</td>
+</tr>
+<tr>
+<td>/sensing/camera/traffic_light/image_raw/compressed</td>
+<td>sensor_msgs/msg/CompressedImage</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/fix_velocity</td>
+<td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/nav_sat_fix</td>
+<td>sensor_msgs/msg/NavSatFix</td>
+</tr>
+<tr>
+<td>/sensing/gnss/ublox/navpvt</td>
+<td>ublox_msgs/msg/NavPVT</td>
+</tr>
+<tr>
+<td>/sensing/imu/tamagawa/imu_raw</td>
+<td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/concatenated/pointcloud</td>
+<td>sensor_msgs/msg/PointCloud2</td>
+</tr>
+<tr>
+<td>/sensing/lidar/*/velodyne_packets</td>
+<td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/tf</td>
+<td>tf2_msgs/msg/TFMessage</td>
+</tr>
+<tr>
+<td>/vehicle/status/control_mode</td>
+<td>autoware_auto_vehicle_msgs/msg/ControlModeReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/gear_status</td>
+<td>autoware_auto_vehicle_msgs/msg/GearReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/steering_status</td>
+<td>autoware_auto_vehicle_msgs/SteeringReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/turn_indicators_status</td>
+<td>autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport</td>
+</tr>
+<tr>
+<td>/vehicle/status/velocity_status</td>
+<td>autoware_auto_vehicle_msgs/msg/VelocityReport</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rosbag-topic_1">入力 rosbag に含まれてはいけない topic<a class="headerlink" href="#rosbag-topic_1" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>topic 名</th>
+<th>データ型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/clock</td>
+<td>rosgraph_msgs/msg/Clock</td>
+</tr>
+</tbody>
+</table>
+<p>clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない</p>
 <h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
 <p>評価に必要な情報を述べる。</p>
 <h3 id="_8">シナリオフォーマット<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
@@ -1114,36 +1286,7 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 ユースケースは 1 個のデータセットで行う評価で、データベースは複数のデータセットを用いて、各データセット毎の結果の平均を取る評価である。</p>
 <p>データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。</p>
-<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">perception_2d</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1.0</span>
-<span class="w">  </span><span class="nt">Datasets</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">f72e1065-7c38-40fe-a4e2-c5bbe6ff6443</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ps1/20210620/CAL_000015</span><span class="w"> </span><span class="c1"># データセット毎にVehicleIdを指定する</span>
-<span class="w">        </span><span class="nt">LaunchSensing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># データセット毎にsensing moduleを起動するかを指定する</span>
-<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/map/perception</span><span class="w"> </span><span class="c1"># データセット毎にLocalMapPathを指定する</span>
-<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># 評価試行回数の内、どの程度(%)評価成功だったら成功とするか</span>
-<span class="w">  </span><span class="nt">PerceptionEvaluationConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">camera_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_front</span>
-<span class="w">    </span><span class="nt">camera_mapping</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">camera0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_front</span>
-<span class="w">      </span><span class="nt">camera1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_front_right</span>
-<span class="w">      </span><span class="nt">camera2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_back_right</span>
-<span class="w">      </span><span class="nt">camera3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_back</span>
-<span class="w">      </span><span class="nt">camera4</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_back_left</span>
-<span class="w">      </span><span class="nt">camera5</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cam_front_left</span>
-<span class="w">    </span><span class="nt">evaluation_config_dict</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">evaluation_task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">detection2d</span><span class="w"> </span><span class="c1"># detection2d / tracking2d ここで指定したobjectsを評価する</span>
-<span class="w">      </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価ラベル</span>
-<span class="w">      </span><span class="nt">center_distance_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">2.0</span><span class="p p-Indicator">]</span>
-<span class="w">      </span><span class="nt">iou_2d_thresholds</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 2D IoU マッチング時の閾値</span>
-<span class="w">  </span><span class="nt">CriticalObjectFilterConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># 評価対象ラベル名</span>
-<span class="w">  </span><span class="nt">PerceptionPassFailConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">target_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">car</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">bicycle</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pedestrian</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">motorbike</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">matching_threshold_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-</code></pre></div>
+<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/scenario.ja.yaml">サンプル</a>参照</p>
 <h3 id="_9">評価結果フォーマット<a class="headerlink" href="#_9" title="Permanent link">#</a></h3>
 <p>perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
 全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。</p>
@@ -1178,8 +1321,8 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 <span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAP値&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAPH値&quot;</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;Error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;ラベル&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルの誤差メトリクス&quot;</span>
+<span class="w">      </span><span class="nt">&quot;ConfusionMatrix&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;ラベル(真値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;予測結果&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
@@ -1208,7 +1351,7 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-            Back to top
+            ページトップへ戻る
           </button>
         
       </main>
@@ -1217,38 +1360,23 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
   
     
       
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      <nav class="md-footer__inner md-grid" aria-label="フッター" >
         
           
-          <a href="../perception/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Evaluate perception(LiDAR)" rel="prev">
+          <a href="../performance_diag/" class="md-footer__link md-footer__link--prev" aria-label="前: 診断機能の評価" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
-                  Previous
+                  前
                 </span>
-                Evaluate perception(LiDAR)
+                診断機能の評価
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../performance_diag/" class="md-footer__link md-footer__link--next" aria-label="Next: Evaluate diagnostics" rel="next">
-            <div class="md-footer__title">
-              <div class="md-ellipsis">
-                <span class="md-footer__direction">
-                  Next
-                </span>
-                Evaluate diagnostics
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
@@ -1278,7 +1406,7 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": {"provider": "mike"}}</script>
     
     
       <script src="../../../assets/javascripts/bundle.efa0ade1.min.js"></script>

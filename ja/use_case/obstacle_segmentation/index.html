@@ -1435,38 +1435,7 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 <h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
 <p>評価に必要な情報を述べる。</p>
 <h3 id="_9">シナリオフォーマット<a class="headerlink" href="#_9" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">obstacle_segmentation</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3.0</span>
-<span class="w">  </span><span class="nt">Datasets</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sample_dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">VehicleId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w"> </span><span class="c1"># データセット毎にVehicleIdを指定する</span>
-<span class="w">        </span><span class="nt">LocalMapPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$HOME/autoware_map/sample-map-planning</span><span class="w"> </span><span class="c1"># データセット毎にLocalMapPathを指定する</span>
-<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">Detection</span><span class="p">:</span><span class="w"> </span><span class="c1"># Detectionの評価を行わない場合はnullをセットする</span>
-<span class="w">      </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># 評価試行回数の内、どの程度(%)評価成功だったら成功とするか</span>
-<span class="w">      </span><span class="nt">BoundingBoxConfig</span><span class="p">:</span><span class="w"> </span><span class="c1"># バウンディングボックスの設定。設定しない場合はnullと記載する。このキーを記述するとSensingEvaluationConfigのtarget_uuidsが上書きされる。</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">dcb2b352232fff50c4fad23718f31611</span><span class="p">:</span><span class="w"> </span><span class="c1"># 設定を適用したいtargetのuuidを指定する。</span>
-<span class="w">            </span><span class="nt">Start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># ここに指定した時間を以降の点群を評価する。指定しない場合はnullと記載する。nullの場合は0.0を指定したのと同等になる</span>
-<span class="w">            </span><span class="nt">End</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># ここに指定した時間までの点群を評価する。指定しない場合はnullと記載する。nullの場合はsys.float_info.maxを指定したのと同等になる</span>
-<span class="w">    </span><span class="nt">NonDetection</span><span class="p">:</span><span class="w"> </span><span class="c1"># NonDetectionの評価を行わない場合はnullをセットする</span>
-<span class="w">      </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">99.0</span><span class="w"> </span><span class="c1"># 評価試行回数の内、どの程度(%)評価成功だったら成功とするか</span>
-<span class="w">      </span><span class="nt">ProposedArea</span><span class="p">:</span><span class="w"> </span><span class="c1"># base_linkを中心に非検知のエリアを一筆描きのpolygonで記述する。時計周りに記述する</span>
-<span class="w">        </span><span class="nt">polygon_2d</span><span class="p">:</span><span class="w"> </span><span class="c1"># xy平面でpolygonを時計回りで記述する</span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.5</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-1.5</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-1.5</span><span class="p p-Indicator">]</span>
-<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1.5</span><span class="p p-Indicator">]</span>
-<span class="w">        </span><span class="nt">z_min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"> </span><span class="c1"># 3Dにするときのz下限値</span>
-<span class="w">        </span><span class="nt">z_max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span><span class="w"> </span><span class="c1"># 3Dにするときのz上限値</span>
-<span class="w">  </span><span class="nt">SensingEvaluationConfig</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">evaluation_config_dict</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">evaluation_task</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sensing</span><span class="w"> </span><span class="c1"># 固定値</span>
-<span class="w">      </span><span class="nt">target_uuids</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># detectionで対象とするバウンディングボックスのID。アノテーションされているすべてのbounding boxを対象としたい場合はnullを設定する</span>
-<span class="w">      </span><span class="nt">box_scale_0m</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"> </span><span class="c1"># バウンディングボックスを距離に応じて拡大縮小する倍率0m地点</span>
-<span class="w">      </span><span class="nt">box_scale_100m</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"> </span><span class="c1"># 100m地点の倍率、0から100mまで距離に応じて線形補完で倍率が決定する</span>
-<span class="w">      </span><span class="nt">min_points_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"> </span><span class="c1"># バウンディングボックスに最低何個の点が入っていればDetectionを成功とするかのしきい値</span>
-</code></pre></div>
+<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/scenario.ja.yaml">サンプル</a>参照</p>
 <h3 id="_10">評価結果フォーマット<a class="headerlink" href="#_10" title="Permanent link">#</a></h3>
 <p>obstacle_segmentation では、検知(Detection)と非検知(NonDetection)の 2 つを評価している。
 1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。

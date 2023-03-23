@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="ja" class="no-js">
+<html lang="en" class="no-js">
   <head>
     
       <meta charset="utf-8">
@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/use_case/perception_2d/">
+        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/en/use_case/perception_2d/">
       
       
         <link rel="prev" href="../perception/">
@@ -21,7 +21,7 @@
     
     
       
-        <title>認識機能の評価(カメラ) - Driving Log Replayer Documentation</title>
+        <title>Evaluate perception(Camera) - Driving Log Replayer Documentation</title>
       
     
     
@@ -73,8 +73,8 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
-          コンテンツにスキップ
+        <a href="#evaluate-perceptioncamera" class="md-skip">
+          Skip to content
         </a>
       
     </div>
@@ -92,7 +92,7 @@
   
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+  <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../" title="Driving Log Replayer Documentation" class="md-header__button md-logo" aria-label="Driving Log Replayer Documentation" data-md-component="logo">
       
   
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              認識機能の評価(カメラ)
+              Evaluate perception(Camera)
             
           </span>
         </div>
@@ -148,14 +148,14 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
-      <nav class="md-search__options" aria-label="検索">
+      <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -165,7 +165,7 @@
       <div class="md-search__scrollwrap" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
-            検索を初期化
+            Initializing search
           </div>
           <ol class="md-search-result__list" role="presentation"></ol>
         </div>
@@ -176,7 +176,7 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/tier4/driving_log_replayer" title="リポジトリへ" class="md-source" data-md-component="source">
+        <a href="https://github.com/tier4/driving_log_replayer" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -191,7 +191,7 @@
   
     
       
-<nav class="md-tabs" aria-label="タブ" data-md-component="tabs">
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
       
@@ -202,7 +202,7 @@
 
   <li class="md-tabs__item">
     <a href="../../" class="md-tabs__link">
-      Driving Log Replayer ドキュメント
+      Driving Log Replayer Documentation
     </a>
   </li>
 
@@ -330,7 +330,7 @@
   
 
 
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="ナビゲーション" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../../" title="Driving Log Replayer Documentation" class="md-nav__button md-logo" aria-label="Driving Log Replayer Documentation" data-md-component="logo">
       
@@ -342,7 +342,7 @@
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/tier4/driving_log_replayer" title="リポジトリへ" class="md-source" data-md-component="source">
+      <a href="https://github.com/tier4/driving_log_replayer" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -364,7 +364,7 @@
   
     <li class="md-nav__item">
       <a href="../../" class="md-nav__link">
-        Driving Log Replayer ドキュメント
+        Driving Log Replayer Documentation
       </a>
     </li>
   
@@ -422,7 +422,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/installation/" class="md-nav__link">
-        インストール
+        Installation
       </a>
     </li>
   
@@ -436,7 +436,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/setup/" class="md-nav__link">
-        設定
+        Setup
       </a>
     </li>
   
@@ -450,7 +450,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/localization/" class="md-nav__link">
-        自己位置推定機能の評価
+        Localization Evaluation
       </a>
     </li>
   
@@ -464,7 +464,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/obstacle_segmentation/" class="md-nav__link">
-        Obstacle Segmentation の評価
+        Obstacle Segmentation Evaluation
       </a>
     </li>
   
@@ -478,7 +478,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/perception/" class="md-nav__link">
-        認識機能の評価
+        Perception Evaluation
       </a>
     </li>
   
@@ -492,7 +492,7 @@
   
     <li class="md-nav__item">
       <a href="../../quick_start/performance_diag/" class="md-nav__link">
-        診断機能の評価
+        Performance Diag Evaluation
       </a>
     </li>
   
@@ -561,7 +561,7 @@
   
     <li class="md-nav__item">
       <a href="../../overview/setup/" class="md-nav__link">
-        設定
+        Setup
       </a>
     </li>
   
@@ -575,7 +575,7 @@
   
     <li class="md-nav__item">
       <a href="../../overview/command/" class="md-nav__link">
-        コマンド
+        Command
       </a>
     </li>
   
@@ -742,7 +742,7 @@
   
     <li class="md-nav__item">
       <a href="../localization/" class="md-nav__link">
-        自己位置推定の評価
+        Evaluate self-localization estimation
       </a>
     </li>
   
@@ -756,7 +756,7 @@
   
     <li class="md-nav__item">
       <a href="../obstacle_segmentation/" class="md-nav__link">
-        点群生成の評価
+        Evaluate point cloud generation
       </a>
     </li>
   
@@ -770,7 +770,7 @@
   
     <li class="md-nav__item">
       <a href="../perception/" class="md-nav__link">
-        認識機能の評価(LiDAR)
+        Evaluate perception(LiDAR)
       </a>
     </li>
   
@@ -784,7 +784,7 @@
   
     <li class="md-nav__item">
       <a href="../performance_diag/" class="md-nav__link">
-        診断機能の評価
+        Evaluate diagnostics
       </a>
     </li>
   
@@ -857,7 +857,7 @@
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="目次">
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
   
@@ -866,28 +866,28 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      目次
+      Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    事前準備
+  <a href="#preparation" class="md-nav__link">
+    Preparation
   </a>
   
-    <nav class="md-nav" aria-label="事前準備">
+    <nav class="md-nav" aria-label="Preparation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    モデルの変換
+  <a href="#model-conversion" class="md-nav__link">
+    Model conversion
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#launch" class="md-nav__link">
-    launch の変更
+  <a href="#modifying-the-launch-file" class="md-nav__link">
+    Modifying the launch file
   </a>
   
 </li>
@@ -898,30 +898,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    評価方法
+  <a href="#evaluation-method" class="md-nav__link">
+    Evaluation method
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    評価結果
+  <a href="#evaluation-results" class="md-nav__link">
+    Evaluation results
   </a>
   
-    <nav class="md-nav" aria-label="評価結果">
+    <nav class="md-nav" aria-label="Evaluation results">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    正常
+  <a href="#perception-normal" class="md-nav__link">
+    Perception Normal
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    異常
+  <a href="#perception-error" class="md-nav__link">
+    Perception Error
   </a>
   
 </li>
@@ -932,30 +932,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#topic" class="md-nav__link">
-    評価ノードが使用する Topic 名とデータ型
+  <a href="#topic-name-and-data-type-used-by-evaluation-node" class="md-nav__link">
+    Topic name and data type used by evaluation node
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#logging_simulatorlaunch" class="md-nav__link">
-    logging_simulator.launch に渡す引数
+  <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
+    Arguments passed to logging_simulator.launch
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
-    依存ライブラリ
+  <a href="#dependent-libraries" class="md-nav__link">
+    Dependent libraries
   </a>
   
-    <nav class="md-nav" aria-label="依存ライブラリ">
+    <nav class="md-nav" aria-label="Dependent libraries">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#driving_log_replayer" class="md-nav__link">
-    依存ライブラリとの driving_log_replayer の役割分担
+  <a href="#division-of-roles-of-driving_log_replayer-with-dependent-libraries" class="md-nav__link">
+    Division of roles of driving_log_replayer with dependent libraries
   </a>
   
 </li>
@@ -966,23 +966,23 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#simulation" class="md-nav__link">
-    simulation
+  <a href="#about-simulation" class="md-nav__link">
+    About simulation
   </a>
   
-    <nav class="md-nav" aria-label="simulation">
+    <nav class="md-nav" aria-label="About simulation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#rosbag-topic" class="md-nav__link">
-    入力 rosbag に含まれるべき topic
+  <a href="#topic-to-be-included-in-the-input-rosbag" class="md-nav__link">
+    Topic to be included in the input rosbag
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#rosbag-topic_1" class="md-nav__link">
-    入力 rosbag に含まれてはいけない topic
+  <a href="#topics-that-must-not-be-included-in-the-input-rosbag" class="md-nav__link">
+    Topics that must not be included in the input rosbag
   </a>
   
 </li>
@@ -993,37 +993,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#evaluation" class="md-nav__link">
-    evaluation
+  <a href="#about-evaluation" class="md-nav__link">
+    About Evaluation
   </a>
   
-    <nav class="md-nav" aria-label="evaluation">
+    <nav class="md-nav" aria-label="About Evaluation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
-    シナリオフォーマット
+  <a href="#scenario-format" class="md-nav__link">
+    Scenario Format
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
-    評価結果フォーマット
+  <a href="#evaluation-result-format" class="md-nav__link">
+    Evaluation Result Format
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pickle" class="md-nav__link">
-    pickle ファイル
+  <a href="#pickle-file" class="md-nav__link">
+    pickle file
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_11" class="md-nav__link">
-    データベース評価の結果ファイル
+  <a href="#result-file-of-database-evaluation" class="md-nav__link">
+    Result file of database evaluation
   </a>
   
 </li>
@@ -1051,29 +1051,28 @@
   
 
 
-<h1 id="_1">認識機能の評価(カメラ)<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
-<p>Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。</p>
-<p>perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。</p>
-<p>現状、<code>detection2d</code> の評価のみ、カメラの台数は 1 台にしか対応していない。</p>
-<h2 id="_2">事前準備<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<h3 id="_3">モデルの変換<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
-<p>perception では、機械学習の学習済みモデルを使用する。
-モデルはセットアップ時に自動的にダウンロードされる。
+<h1 id="evaluate-perceptioncamera">Evaluate perception(Camera)<a class="headerlink" href="#evaluate-perceptioncamera" title="Permanent link">#</a></h1>
+<p>The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.</p>
+<p>Run the perception module and pass the output perception topic to the evaluation library for evaluation.</p>
+<p>Currently, only the evaluation of <code>detection2d</code> and only one camera is supported.</p>
+<h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
+<h3 id="model-conversion">Model conversion<a class="headerlink" href="#model-conversion" title="Permanent link">#</a></h3>
+<p>In perception evaluation, machine learning pre-trained models are used.
+The models are automatically downloaded during set-up.
 <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58">tensorrt_yolox/CMakeList.txt</a></p>
-<p>また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
-変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-変換コマンドが終了すると、engine ファイルが出力されているので<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6">tensorrt_yolox.launch.xml</a>
-に記載のディレクトリを確認する。</p>
-<p>autowarefoundation の autoware.universe を使用した場合の例を以下に示す。</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># $HOME/autowareにautowareをインストールした場合</span>
+<p>The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
+Commands for model conversion are available, so source the autoware workspace and execute the commands.
+When the conversion command finishes, check that the engine file is output to the directory listed in <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6">tensorrt_yolox.launch.xml</a>.</p>
+<p>An example of the use of autowarefoundation's autoware.universe is shown below.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># If autoware is installed in $HOME/autoware</span>
 <span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
 ros2<span class="w"> </span>launch<span class="w"> </span>tensorrt_yolox<span class="w"> </span>yolox.launch.xml<span class="w"> </span>use_decompress:<span class="o">=</span><span class="nb">false</span><span class="w"> </span>build_only:<span class="o">=</span><span class="nb">true</span>
 
-<span class="c1"># ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engineが出力されている</span>
+<span class="c1"># The engine file appears in ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engine</span>
 </code></pre></div>
-<h3 id="launch">launch の変更<a class="headerlink" href="#launch" title="Permanent link">#</a></h3>
-<p>PC 一台で評価するには、launch をいじって、カメラの認識結果を出力するように変更する必要がある。
-以下のように、launch を変更する。</p>
+<h3 id="modifying-the-launch-file">Modifying the launch file<a class="headerlink" href="#modifying-the-launch-file" title="Permanent link">#</a></h3>
+<p>To evaluate on a single PC, it is necessary to modify launch to output the recognition results of the camera.
+Change launch as follows.</p>
 <div class="highlight"><pre><span></span><code>❯<span class="w"> </span>vcs<span class="w"> </span>diff<span class="w"> </span>src/
 .................................
 diff<span class="w"> </span>--git<span class="w"> </span>a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml<span class="w"> </span>b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
@@ -1127,7 +1126,7 @@ index<span class="w"> </span>b697b1f5..b9cb5310<span class="w"> </span><span cla
 <span class="w">     </span>&lt;param<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;nms_threshold&quot;</span><span class="w"> </span><span class="nv">value</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>var<span class="w"> </span>nms_threshold<span class="k">)</span><span class="s2">&quot;</span>/&gt;
 <span class="w">     </span>&lt;param<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;model_path&quot;</span><span class="w"> </span><span class="nv">value</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>var<span class="w"> </span>model_path<span class="k">)</span><span class="s2">/</span><span class="k">$(</span>var<span class="w"> </span>model_name<span class="k">)</span><span class="s2">.onnx&quot;</span>/&gt;
 </code></pre></div>
-<p>現状だと 0 番のカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例</p>
+<p>Currently, only camera No.0 can be evaluated, so if you want to evaluate other cameras, swap the camera numbers. The following example shows how to swap 0 and 3</p>
 <div class="highlight"><pre><span></span><code>---<span class="w"> </span>a/launch/tier4_perception_launch/launch/perception.launch.xml
 +++<span class="w"> </span>b/launch/tier4_perception_launch/launch/perception.launch.xml
 @@<span class="w"> </span>-17,14<span class="w"> </span>+17,14<span class="w"> </span>@@
@@ -1151,33 +1150,32 @@ index<span class="w"> </span>b697b1f5..b9cb5310<span class="w"> </span><span cla
 <span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw5&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera5/image_rect_color&quot;</span>/&gt;
 @@<span class="w"> </span>-33,7<span class="w"> </span>+33,7<span class="w"> </span>@@
 </code></pre></div>
-<h2 id="_4">評価方法<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
-<p><code>perception.launch_2d.py</code> を使用して評価する。
-launch を立ち上げると以下のことが実行され、評価される。</p>
+<h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
+<p>The perception_2d evaluation is executed by launching the <code>perception_2d.launch.py</code> file.
+Launching the file executes the following steps:</p>
 <ol>
-<li>launch で評価ノード(<code>perception_2d_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
-<li>bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う</li>
-<li>評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
-<li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
+<li>Execute launch of evaluation node (<code>perception_2d_evaluator_node</code>), <code>logging_simulator.launch</code> file and <code>ros2 bag play</code> command</li>
+<li>Autoware receives sensor data output from input rosbag and outputs camera, and the perception module performs recognition.</li>
+<li>The evaluation node subscribes to <code>/perception/object_recognition/detection/rois0</code> and evaluates data. The result is dumped into a file.</li>
+<li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
-<p>注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。</p>
-<h2 id="_5">評価結果<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
-<p>topic の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
-<h3 id="_6">正常<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
-<p>perception_eval の評価関数を実行して以下の条件を満たすとき</p>
+<h2 id="evaluation-results">Evaluation results<a class="headerlink" href="#evaluation-results" title="Permanent link">#</a></h2>
+<p>The results are calculated for each subscription. The format and available states are described below.</p>
+<h3 id="perception-normal">Perception Normal<a class="headerlink" href="#perception-normal" title="Permanent link">#</a></h3>
+<p>When the following conditions are satisfied by executing the evaluation function of perception_eval</p>
 <ol>
-<li>frame_result.pass_fail_result に object が最低 1 つ入っている (<code>tp_object_results != [] and fp_object_results != [] and fn_objects != []</code>)</li>
-<li>評価失敗のオブジェクトが 0 個 (<code>frame_result.pass_fail_result.get_fail_object_num() == 0</code>)</li>
+<li>frame_result.pass_fail_result contains at least one object (<code>tp_object_results ! = [] and fp_object_results ! = [] and fn_objects ! = []</code>)</li>
+<li>no object fail (<code>frame_result.pass_fail_result.get_fail_object_num() == 0</code>)</li>
 </ol>
-<h3 id="_7">異常<a class="headerlink" href="#_7" title="Permanent link">#</a></h3>
-<p>正常の条件を満たさない場合</p>
-<h2 id="topic">評価ノードが使用する Topic 名とデータ型<a class="headerlink" href="#topic" title="Permanent link">#</a></h2>
+<h3 id="perception-error">Perception Error<a class="headerlink" href="#perception-error" title="Permanent link">#</a></h3>
+<p>The perception evaluation output is marked as <code>Error</code> when condition for <code>Normal</code> is not met.</p>
+<h2 id="topic-name-and-data-type-used-by-evaluation-node">Topic name and data type used by evaluation node<a class="headerlink" href="#topic-name-and-data-type-used-by-evaluation-node" title="Permanent link">#</a></h2>
 <p>Subscribed topics:</p>
 <table>
 <thead>
 <tr>
-<th>topic 名</th>
-<th>データ型</th>
+<th>Topic name</th>
+<th>Data type</th>
 </tr>
 </thead>
 <tbody>
@@ -1191,8 +1189,8 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <table>
 <thead>
 <tr>
-<th>topic 名</th>
-<th>データ型</th>
+<th>Topic name</th>
+<th>Data type</th>
 </tr>
 </thead>
 <tbody>
@@ -1202,40 +1200,38 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </tr>
 </tbody>
 </table>
-<h2 id="logging_simulatorlaunch">logging_simulator.launch に渡す引数<a class="headerlink" href="#logging_simulatorlaunch" title="Permanent link">#</a></h2>
-<p>autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。</p>
+<h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
+<p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
+The following parameters are set to <code>false</code>:</p>
 <ul>
 <li>localization: false</li>
 <li>planning: false</li>
 <li>control: false</li>
-<li>sensing: false / true (デフォルト false、シナリオの <code>LaunchSensing</code> キーで t4_dataset 毎に指定する)</li>
+<li>sensing: false / true (default value is false. Specify by <code>LaunchSensing</code> key for each t4_dataset in the scenario)</li>
 <li>perception_mode: camera_lidar_fusion</li>
 </ul>
-<p><strong>注:アノーテション時とシミュレーション時で自己位置を合わせたいので bag に入っている tf を使い回す。そのため localization は無効である。</strong></p>
-<h2 id="_8">依存ライブラリ<a class="headerlink" href="#_8" title="Permanent link">#</a></h2>
-<p>認識機能の評価は<a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a>に依存している。</p>
-<h3 id="driving_log_replayer">依存ライブラリとの driving_log_replayer の役割分担<a class="headerlink" href="#driving_log_replayer" title="Permanent link">#</a></h3>
-<p>driving_log_replayer が ROS との接続部分を担当し、perception_eval がデータセットを使って実際に評価する部分を担当するという分担になっている。
-perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトを受け取ることができない。
-また、timestamp が ROS ではナノ秒、t4_dataset は <code>nuScenes</code> をベースしているためミリ秒が採用されている。
-このため、ライブラリ使用前に適切な変換が必要となる。</p>
-<p>driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval で定義されている class に合わせたデータ形式に変換して渡す。
-また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。</p>
-<p>perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。</p>
-<h2 id="simulation">simulation<a class="headerlink" href="#simulation" title="Permanent link">#</a></h2>
-<p>シミュレーション実行に必要な情報を述べる。</p>
-<h3 id="rosbag-topic">入力 rosbag に含まれるべき topic<a class="headerlink" href="#rosbag-topic" title="Permanent link">#</a></h3>
-<p>t4_dataset で必要なトピックが含まれていること</p>
-<p>車両の ECU の CAN と、使用している sensor の topic が必要
-以下は例であり、違うセンサーを使っている場合は適宜読み替える。</p>
-<p>LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。
-/sensing/lidar/concatenated/pointcloud は、シナリオの LaunchSensing: false の場合に使用される。</p>
-<p>CAMERA が複数ついている場合は、搭載されているすべての camera_info と image_rect_color_compressed を含める</p>
+<p><strong>NOTE: The <code>tf</code> in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.</strong></p>
+<h2 id="dependent-libraries">Dependent libraries<a class="headerlink" href="#dependent-libraries" title="Permanent link">#</a></h2>
+<p>The perception evaluation step bases on the <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> library.</p>
+<h3 id="division-of-roles-of-driving_log_replayer-with-dependent-libraries">Division of roles of driving_log_replayer with dependent libraries<a class="headerlink" href="#division-of-roles-of-driving_log_replayer-with-dependent-libraries" title="Permanent link">#</a></h3>
+<p><code>driving_log_replayer</code> package is in charge of the connection with ROS. The actual perception evaluation is conducted in <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> library.
+The <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> is a ROS-independent library, it cannot receive ROS objects. Also, ROS timestamps use nanoseconds while the <code>t4_dataset</code> format is based on milliseconds (because it uses <code>nuScenes</code>), so the values must be properly converted before using the library's functions.</p>
+<p><code>driving_log_replayer</code> subscribes the topic output from the perception module of Autoware, converts it to the data format defined in <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a>, and passes it on.
+It is also responsible for publishing and visualizing the evaluation results from <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> on proper ROS topic.</p>
+<p><a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> is in charge of the part that compares the detection results passed from <code>driving_log_replayer</code> with ground truth data, calculates the index, and outputs the results.</p>
+<h2 id="about-simulation">About simulation<a class="headerlink" href="#about-simulation" title="Permanent link">#</a></h2>
+<p>State the information required to run the simulation.</p>
+<h3 id="topic-to-be-included-in-the-input-rosbag">Topic to be included in the input rosbag<a class="headerlink" href="#topic-to-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
+<p>Must contain the required topics in <code>t4_dataset</code> format.</p>
+<p>The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
+The following example shows the topic list available in evaluation input rosbag when multiple LiDARs and Cameras are used in a real-world vehicle configuration.</p>
+<p>/sensing/lidar/concatenated/pointcloud is used if the scenario LaunchSensing: false.</p>
+<p>If there is more than one CAMERA, include all on-board camera_info and image_rect_color_compressed.</p>
 <table>
 <thead>
 <tr>
-<th>topic 名</th>
-<th>データ型</th>
+<th>Topic name</th>
+<th>Data type</th>
 </tr>
 </thead>
 <tbody>
@@ -1281,12 +1277,12 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 </tr>
 </tbody>
 </table>
-<p>CAN の代わりに vehicle の topic を含めても良い。</p>
+<p>The vehicle topics can be included instead of CAN.</p>
 <table>
 <thead>
 <tr>
-<th>topic 名</th>
-<th>データ型</th>
+<th>Topic name</th>
+<th>Data type</th>
 </tr>
 </thead>
 <tbody>
@@ -1348,12 +1344,12 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 </tr>
 </tbody>
 </table>
-<h3 id="rosbag-topic_1">入力 rosbag に含まれてはいけない topic<a class="headerlink" href="#rosbag-topic_1" title="Permanent link">#</a></h3>
+<h3 id="topics-that-must-not-be-included-in-the-input-rosbag">Topics that must not be included in the input rosbag<a class="headerlink" href="#topics-that-must-not-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
-<th>topic 名</th>
-<th>データ型</th>
+<th>Topic name</th>
+<th>Data type</th>
 </tr>
 </thead>
 <tbody>
@@ -1363,65 +1359,65 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 </tr>
 </tbody>
 </table>
-<p>clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない</p>
-<h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
-<p>評価に必要な情報を述べる。</p>
-<h3 id="_9">シナリオフォーマット<a class="headerlink" href="#_9" title="Permanent link">#</a></h3>
-<p>ユースケース評価とデータベース評価の 2 種類の評価がある。
-ユースケースは 1 個のデータセットで行う評価で、データベースは複数のデータセットを用いて、各データセット毎の結果の平均を取る評価である。</p>
-<p>データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
-また、Sensing モジュールを起動するかどうかの設定も行う。</p>
-<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/perception_2d/scenario.ja.yaml">サンプル</a>参照</p>
-<h3 id="_10">評価結果フォーマット<a class="headerlink" href="#_10" title="Permanent link">#</a></h3>
-<p>perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
-全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。</p>
-<p>以下に、各フレームのフォーマットとメトリクスのフォーマットを示す。
-<strong>注:結果ファイルフォーマットで解説済みの共通部分については省略する。</strong></p>
-<p>各フレームのフォーマット</p>
+<p>The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.</p>
+<h2 id="about-evaluation">About Evaluation<a class="headerlink" href="#about-evaluation" title="Permanent link">#</a></h2>
+<p>State the information necessary for the evaluation.</p>
+<h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
+<p>There are two types of evaluation: use case evaluation and database evaluation.
+Use case evaluation is performed on a single dataset, while database evaluation uses multiple datasets and takes the average of the results for each dataset.</p>
+<p>In the database evaluation, the <code>vehicle_id</code> should be able to be set for each data set, since the calibration values may change.
+Also, it is necessary to set whether or not to activate the sensing module.</p>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/perception_2d/scenario.yaml">sample</a>.</p>
+<h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
+<p>The evaluation results by <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> under the conditions specified in the scenario are output for each frame.
+Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.</p>
+<p>The format of each frame and the metrics format are shown below.
+<strong>NOTE: common part of the result file format, which has already been explained, is omitted.</strong></p>
+<p>Format of each frame:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;評価に使用したt4_datasetのフレーム番号&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frame number of t4_dataset used for evaluation&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;PassFail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TPと判定された数&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FPと判定された数&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FNと判定された数&quot;</span>
+<span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of TPs&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of FPs&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of FNs&quot;</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>メトリクスデータのフォーマット</p>
+<p>Metrics Data Format:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;FinalScore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;Score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのTP率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFP率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFN率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAP値&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAPH値&quot;</span>
+<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TP rate of the label&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FP rate of the label&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of the label&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP value of the label&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH value of the label&quot;</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;ConfusionMatrix&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;ラベル(真値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;予測結果&quot;</span>
+<span class="w">        </span><span class="nt">&quot;Label(GroundTruth)&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Prediction results&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<h3 id="pickle">pickle ファイル<a class="headerlink" href="#pickle" title="Permanent link">#</a></h3>
-<p>データベース評価では、複数の bag を再生する必要があるが、ROS の仕様上、1 回の launch で、複数の bag を利用することは出来ない。
-1 つの bag、すなわち 1 つの t4_dataset に対して launch を 1 回叩くことなるので、データベース評価では、含まれるデータセットの数だけ launch を実行する必要がある。</p>
-<p>データベース評価は 1 回の launch で評価できないため、perception では、result.jsonl の他に scene_result.pkl というファイルを出力する。
-pickle ファイルは python のオブジェクトをファイルとして保存したものであり、perception_eval の PerceptionEvaluationManager.frame_results を保存している。
-pickle ファイルに記録した object をすべて読み込み、dataset の平均の指標を出力することでデータセット評価が行える。</p>
-<h3 id="_11">データベース評価の結果ファイル<a class="headerlink" href="#_11" title="Permanent link">#</a></h3>
-<p>シナリオに複数の dataset を記述したデータベース評価の場合には、結果出力先ディレクトリに database_result.json というファイルが出力される。</p>
-<p>形式は<a href="#評価結果フォーマット">メトリクスのフォーマット</a> と同じ</p>
+<h3 id="pickle-file">pickle file<a class="headerlink" href="#pickle-file" title="Permanent link">#</a></h3>
+<p>In database evaluation, it is necessary to replay multiple rosbags, but due to the ROS specification, it is impossible to use multiple bags in a single launch.
+Since one rosbag, i.e., one <code>t4_dataset</code>, requires one launch, it is necessary to execute as many launches as the number of datasets contained in the database evaluation.</p>
+<p>Since database evaluation cannot be done in a single launch, perception outputs a file <code>scene_result.pkl</code> in addition to <code>result.jsonl</code> file.
+A pickle file is a python object saved as a file, PerceptionEvaluationManager.frame_results of <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a>.
+The dataset evaluation can be performed by reading all the objects recorded in the pickle file and outputting the index of the dataset's average.</p>
+<h3 id="result-file-of-database-evaluation">Result file of database evaluation<a class="headerlink" href="#result-file-of-database-evaluation" title="Permanent link">#</a></h3>
+<p>In the case of a database evaluation with multiple datasets in the scenario, a file named <code>database_result.json</code> is output to the results directory.</p>
+<p>The format is the same as the <a href="#evaluation-result-format">Metrics Data Format</a>.</p>
 
 
 
@@ -1436,7 +1432,7 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-            ページトップへ戻る
+            Back to top
           </button>
         
       </main>
@@ -1445,32 +1441,32 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
   
     
       
-      <nav class="md-footer__inner md-grid" aria-label="フッター" >
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../perception/" class="md-footer__link md-footer__link--prev" aria-label="前: 認識機能の評価(LiDAR)" rel="prev">
+          <a href="../perception/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Evaluate perception(LiDAR)" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
-                  前
+                  Previous
                 </span>
-                認識機能の評価(LiDAR)
+                Evaluate perception(LiDAR)
               </div>
             </div>
           </a>
         
         
           
-          <a href="../performance_diag/" class="md-footer__link md-footer__link--next" aria-label="次: 診断機能の評価" rel="next">
+          <a href="../performance_diag/" class="md-footer__link md-footer__link--next" aria-label="Next: Evaluate diagnostics" rel="next">
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
-                  次
+                  Next
                 </span>
-                診断機能の評価
+                Evaluate diagnostics
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1506,7 +1502,7 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
       <script src="../../../assets/javascripts/bundle.efa0ade1.min.js"></script>

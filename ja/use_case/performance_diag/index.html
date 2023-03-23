@@ -1445,50 +1445,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
 <p>評価に必要な情報を述べる。</p>
 <h3 id="_4">シナリオフォーマット<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">performance_diag</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
-<span class="w">  </span><span class="nt">LaunchLocalization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># falseのときはbagの中に入っている/tfを出力する。trueのときはbagの中のtfはリマップされ無効化される。</span>
-<span class="w">  </span><span class="nt">InitialPose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 初期位置を指定する。LaunchLocalizationが有効のときだけ機能する</span>
-<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">LiDAR</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">Visibility</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># ScenarioTypeがTPのときにこの回数以上ERRORが出ればVisibilityの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される</span>
-<span class="w">        </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span><span class="w"> </span><span class="c1"># TP/FP/null</span>
-<span class="w">      </span><span class="nt">Blockage</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">front_lower</span><span class="p">:</span><span class="w"> </span><span class="c1"># 搭載されているLiDAR毎に設定する</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TP</span><span class="w"> </span><span class="c1"># TP/FP/null</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span><span class="w"> </span><span class="c1"># sky/ground/both どこでblockageが発生しているか</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># ScenarioTypeがTP、Blockageのタイプが一致、かつERRORがこの回数以上出ればBlockageの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される</span>
-<span class="w">        </span><span class="nt">front_upper</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
-<span class="w">        </span><span class="nt">left_lower</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sky</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
-<span class="w">        </span><span class="nt">left_upper</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span>
-<span class="w">        </span><span class="nt">rear_lower</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ground</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
-<span class="w">        </span><span class="nt">rear_upper</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sky</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-<span class="w">        </span><span class="nt">right_lower</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">both</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">70</span>
-<span class="w">        </span><span class="nt">right_upper</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">ScenarioType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FP</span>
-<span class="w">          </span><span class="nt">BlockageType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ground</span>
-<span class="w">          </span><span class="nt">PassFrameCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-</code></pre></div>
+<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.ja.yaml">サンプル</a>参照</p>
 <h3 id="_5">評価結果フォーマット<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
 <p>performance_diag では、visibility と blockage の 2 つを評価している。
 Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。</p>
