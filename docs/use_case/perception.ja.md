@@ -8,23 +8,21 @@ perception モジュールを起動して出力される perception の topic �
 
 perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。
-[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115)
+[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L112-L118)
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
-変換処理は、perception のモジュールを初回起動したときに行われる。
-
-なので、事前準備として、logging_simulator.launch を起動して、ワークスペースにある onnx ファイルを engine ファイルに変換する必要があります。
-GPU の性能によって、engine の出力までにかかる時間が異なるので、[perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L13)
-に記載のディレクトリに engine ファイルが 2 つ出力されるまで待ちます。
+変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
+launch が終了すると、[perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L12-L14)
+に記載のディレクトリに engine ファイルが出力されているので確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
 ```shell
 # $HOME/autowareにautowareをインストールした場合
 source ~/autoware/install/setup.bash
-ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-rosbag vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml build_only:=true
 
-# ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下の２つが出力されるまでまつ
+# ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下の２つが出力される
 # pts_backbone_neck_head_centerpoint_tiny.engine
 # pts_voxel_encoder_centerpoint_tiny.engine
 ```

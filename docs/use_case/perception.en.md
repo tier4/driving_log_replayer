@@ -8,7 +8,7 @@ Run the perception module and pass the output perception topic to the evaluation
 
 In perception evaluation, machine learning pre-trained models are used.
 The models are automatically downloaded during set-up.
-[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L109-L115)
+[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L112-L118)
 
 The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
 The conversion process is performed when the perception module is started for the first time.
@@ -21,9 +21,9 @@ An example of the use of autowarefoundation's autoware.universe is shown below.
 ```shell
 # If autoware is installed in $HOME/autoware
 source ~/autoware/install/setup.bash
-ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-rosbag vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml build_only:=true
 
-# Wait until the following two outputs appear in ~/autoware/install/lidar_centrepoint/share/lidar_centrepoint/data
+# The following two engine files appear in ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data
 # pts_backbone_neck_head_centerpoint_tiny.engine
 # pts_voxel_encoder_centerpoint_tiny.engine
 ```
@@ -44,7 +44,10 @@ The results are calculated for each subscription. The format and available state
 
 ### Perception Normal
 
-If no object fail the evaluation function `perception_eval` (`frame_result.pass_fail_result.get_fail_object_num() == 0`).
+When the following conditions are satisfied by executing the evaluation function of perception_eval
+
+1. frame_result.pass_fail_result contains at least one object (`tp_object_results ! = [] and fp_object_results ! = [] and fn_objects ! = []`)
+2. no object fail (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
 
 ### Perception Error
 
