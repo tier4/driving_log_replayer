@@ -25,7 +25,7 @@ source ~/autoware/install/setup.bash
 ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
 ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.launch.xml build_only:=true
 
-# The following two engine files appear in 
+# The following two engine files appear in
 # ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engine
 # ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engine
 ```
@@ -59,9 +59,10 @@ The perception evaluation output is marked as `Error` when condition for `Normal
 
 Subscribed topics:
 
-| Topic name                                     | Data type                                            |
-| ---------------------------------------------- | ---------------------------------------------------- |
+| Topic name                                            | Data type                                    |
+| ----------------------------------------------------- | -------------------------------------------- |
 | /perception/traffic_light_recognition/traffic_signals | tier4_perception_msgs/msg/TrafficSignalArray |
+
 Published topics:
 
 | Topic name | Data type |
@@ -109,7 +110,6 @@ The following example shows the topic list available in evaluation input rosbag 
 /sensing/lidar/concatenated/pointcloud is used if the scenario LaunchSensing: false.
 
 If there is more than one CAMERA, include all on-board camera_info and image_rect_color_compressed.
-
 
 | Topic name                                           | Data type                                    |
 | ---------------------------------------------------- | -------------------------------------------- |
