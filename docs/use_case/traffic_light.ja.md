@@ -15,7 +15,7 @@ perception では、機械学習の学習済みモデルを使用する。
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-変換コマンド終了すると、engine ファイルが出力されているので[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
+変換コマンドが終了すると、engine ファイルが出力されているので[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
 に記載のディレクトリ確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
