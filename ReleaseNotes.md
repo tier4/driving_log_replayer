@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.3.0
+
+Major Changes
+
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/2724).
+
+| Module         | Feature                  | Brief summary                      | Pull request                                                   | JIRA       | Contributor                                   |
+| -------------- | ------------------------ | ---------------------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
+| `localization` | update for ADAPI changes | delete fit_map_height service call | [#129](https://github.com/tier4/driving_log_replayer/pull/129) | T4PB-27288 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.2.0
 
 Major Changes
