@@ -88,7 +88,7 @@ Published topics:
 ## Arguments passed to logging_simulator.launch
 
 To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
-The following parameters are set to `false` when launching the `performance_diag` evaluation scenario:
+The following parameters are set to `false`:
 
 - planning: false
 - control: false
@@ -103,19 +103,41 @@ State the information required to run the simulation.
 The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
 The following example shows the topic list available in evaluation input rosbag when multiple LiDARs are used in a real-world vehicle configuration.
 
-- /sensing/gnss/ublox/fix_velocity
-- /sensing/gnss/ublox/nav_sat_fix
-- /sensing/gnss/ublox/navpvt
-- /sensing/imu/tamagawa/imu_raw
-- /sensing/lidar/\*/velodyne_packets
-- /gsm8/from_can_bus
-- /tf
+| Topic name                         | Data type                                    |
+| ---------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw      | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets | velodyne_msgs/VelodyneScan                   |
+| /tf                                | tf2_msgs/msg/TFMessage                       |
+
+The vehicle topics can be included instead of CAN.
+
+| Topic name                             | Data type                                           |
+| -------------------------------------- | --------------------------------------------------- |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /tf                                    | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 **NOTE: If localization is false (false by default), /tf is required.**
 
 ### Topics that must not be included in the input rosbag
 
-- /clock
+| Topic name | Data type               |
+| ---------- | ----------------------- |
+| /clock     | rosgraph_msgs/msg/Clock |
+
+The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.
 
 ## About Evaluation
 
@@ -123,51 +145,7 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-```yaml
-Evaluation:
-  UseCaseName: performance_diag
-  UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.
-  InitialPose: null # Specifies the initial pose; only works when LaunchLocalization is enabled.
-  Conditions:
-    LiDAR:
-      Visibility:
-        PassFrameCount: 100 # When ScenarioType is TP, the Visibility test is considered successful if this number of ERRORs are generated; for FP, this condition is ignored because the test must not generate any ERRORs.
-        ScenarioType: FP # TP/FP/null
-      Blockage:
-        front_lower: # Set for each on-board LiDAR
-          ScenarioType: TP # TP/FP/null
-          BlockageType: both # sky/ground/both Where is the blockage occurring?
-          PassFrameCount: 100 # If ScenarioType is TP, Blockage type matches, and ERROR is generated at least this many times, the Blockage test is considered successful.  for FP, this condition is ignored because the test must not generate any ERRORs.
-        front_upper:
-          ScenarioType: TP
-          BlockageType: both
-          PassFrameCount: 100
-        left_lower:
-          ScenarioType: FP
-          BlockageType: sky
-          PassFrameCount: 30
-        left_upper:
-          ScenarioType: FP
-          BlockageType: both
-          PassFrameCount: 40
-        rear_lower:
-          ScenarioType: FP
-          BlockageType: ground
-          PassFrameCount: 50
-        rear_upper:
-          ScenarioType: FP
-          BlockageType: sky
-          PassFrameCount: 60
-        right_lower:
-          ScenarioType: FP
-          BlockageType: both
-          PassFrameCount: 70
-        right_upper:
-          ScenarioType: FP
-          BlockageType: ground
-          PassFrameCount: 80
-```
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.yaml).
 
 ### Evaluation Result Format
 

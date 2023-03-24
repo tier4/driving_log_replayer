@@ -104,19 +104,41 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める
 
-- /sensing/gnss/ublox/fix_velocity
-- /sensing/gnss/ublox/nav_sat_fix
-- /sensing/gnss/ublox/navpvt
-- /sensing/imu/tamagawa/imu_raw
-- /sensing/lidar/\*/velodyne_packets
-- /gsm8/from_can_bus
-- /tf
+| topic 名                           | データ型                                     |
+| ---------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw      | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets | velodyne_msgs/VelodyneScan                   |
+| /tf                                | tf2_msgs/msg/TFMessage                       |
 
-**注:localization が false(デフォルトで false)の場合は/tf が必要。**
+CAN の代わりに vehicle の topic を含めても良い。
+
+| topic 名                               | データ型                                            |
+| -------------------------------------- | --------------------------------------------------- |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /tf                                    | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+
+**注:localization が false(デフォルトで false)の場合は/tf が使用される。**
 
 ### 入力 rosbag に含まれてはいけない topic
 
-- /clock
+| topic 名 | データ型                |
+| -------- | ----------------------- |
+| /clock   | rosgraph_msgs/msg/Clock |
+
+clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない
 
 ## evaluation
 
@@ -124,51 +146,7 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 
 ### シナリオフォーマット
 
-```yaml
-Evaluation:
-  UseCaseName: performance_diag
-  UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # falseのときはbagの中に入っている/tfを出力する。trueのときはbagの中のtfはリマップされ無効化される。
-  InitialPose: null # 初期位置を指定する。LaunchLocalizationが有効のときだけ機能する
-  Conditions:
-    LiDAR:
-      Visibility:
-        PassFrameCount: 100 # ScenarioTypeがTPのときにこの回数以上ERRORが出ればVisibilityの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される
-        ScenarioType: FP # TP/FP/null
-      Blockage:
-        front_lower: # 搭載されているLiDAR毎に設定する
-          ScenarioType: TP # TP/FP/null
-          BlockageType: both # sky/ground/both どこでblockageが発生しているか
-          PassFrameCount: 100 # ScenarioTypeがTP、Blockageのタイプが一致、かつERRORがこの回数以上出ればBlockageの試験は成功とする。FPの場合はERRORが一切出ないことが条件なのでこの条件は無視される
-        front_upper:
-          ScenarioType: TP
-          BlockageType: both
-          PassFrameCount: 100
-        left_lower:
-          ScenarioType: FP
-          BlockageType: sky
-          PassFrameCount: 30
-        left_upper:
-          ScenarioType: FP
-          BlockageType: both
-          PassFrameCount: 40
-        rear_lower:
-          ScenarioType: FP
-          BlockageType: ground
-          PassFrameCount: 50
-        rear_upper:
-          ScenarioType: FP
-          BlockageType: sky
-          PassFrameCount: 60
-        right_lower:
-          ScenarioType: FP
-          BlockageType: both
-          PassFrameCount: 70
-        right_upper:
-          ScenarioType: FP
-          BlockageType: ground
-          PassFrameCount: 80
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 

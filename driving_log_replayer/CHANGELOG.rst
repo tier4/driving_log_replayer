@@ -2,6 +2,21 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.2.0 (2023-03-23)
+------------------
+* feat: `#104 <https://github.com/tier4/driving_log_replayer/issues/104>`_ 2d perception (`#122 <https://github.com/tier4/driving_log_replayer/issues/122>`_)
+* Contributors: Hayato Mizushima
+
+1.1.22 (2023-03-17)
+-------------------
+* chore: drop camera image (`#123 <https://github.com/tier4/driving_log_replayer/issues/123>`_)
+* Contributors: Hayato Mizushima
+
+1.1.21 (2023-03-09)
+-------------------
+* docs: update input bag topic list
+* Contributors: Hayato Mizushima
+
 1.1.20 (2023-03-06)
 -------------------
 * fix: lint

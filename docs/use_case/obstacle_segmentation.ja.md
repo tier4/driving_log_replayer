@@ -97,45 +97,59 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 t4_dataset で必要なトピックが含まれていること
 
+車両の ECU の CAN と、使用している sensor の topic が必要
+以下は例であり、違うセンサーを使っている場合は適宜読み替える。
+
+LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。
+CAMERA が複数ついている場合は、搭載されているすべての camera_info と image_rect_color_compressed を含める
+
+| topic 名                                             | データ型                                     |
+| ---------------------------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                  |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
+| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+
+CAN の代わりに vehicle の topic を含めても良い。
+
+| topic 名                                             | データ型                                            |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                         |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
+| /tf                                                  | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+
+### 入力 rosbag に含まれてはいけない topic
+
+| topic 名 | データ型                |
+| -------- | ----------------------- |
+| /clock   | rosgraph_msgs/msg/Clock |
+
+clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない
+
 ## evaluation
 
 評価に必要な情報を述べる。
 
 ### シナリオフォーマット
 
-```yaml
-Evaluation:
-  UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.3.0
-  Datasets:
-    - sample_dataset:
-        VehicleId: default # データセット毎にVehicleIdを指定する
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
-  Conditions:
-    Detection: # Detectionの評価を行わない場合はnullをセットする
-      PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-      BoundingBoxConfig: # バウンディングボックスの設定。設定しない場合はnullと記載する。このキーを記述するとSensingEvaluationConfigのtarget_uuidsが上書きされる。
-        - dcb2b352232fff50c4fad23718f31611: # 設定を適用したいtargetのuuidを指定する。
-            Start: null # ここに指定した時間を以降の点群を評価する。指定しない場合はnullと記載する。nullの場合は0.0を指定したのと同等になる
-            End: null # ここに指定した時間までの点群を評価する。指定しない場合はnullと記載する。nullの場合はsys.float_info.maxを指定したのと同等になる
-    NonDetection: # NonDetectionの評価を行わない場合はnullをセットする
-      PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-      ProposedArea: # base_linkを中心に非検知のエリアを一筆描きのpolygonで記述する。時計周りに記述する
-        polygon_2d: # xy平面でpolygonを時計回りで記述する
-          - [10.0, 1.5]
-          - [10.0, -1.5]
-          - [0.0, -1.5]
-          - [0.0, 1.5]
-        z_min: 0.0 # 3Dにするときのz下限値
-        z_max: 1.5 # 3Dにするときのz上限値
-  SensingEvaluationConfig:
-    evaluation_config_dict:
-      evaluation_task: sensing # 固定値
-      target_uuids: null # detectionで対象とするバウンディングボックスのID。アノテーションされているすべてのbounding boxを対象としたい場合はnullを設定する
-      box_scale_0m: 1.0 # バウンディングボックスを距離に応じて拡大縮小する倍率0m地点
-      box_scale_100m: 1.0 # 100m地点の倍率、0から100mまで距離に応じて線形補完で倍率が決定する
-      min_points_threshold: 1 # バウンディングボックスに最低何個の点が入っていればDetectionを成功とするかのしきい値
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 

@@ -1,39 +1,43 @@
-# Evaluate perception(LiDAR)
+# Evaluate perception(traffic light)
 
 The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.
 
 Run the perception module and pass the output perception topic to the evaluation library for evaluation.
 
+Currently, only the evaluation of `classification2d` is supported.
+
 ## Preparation
 
 In perception evaluation, machine learning pre-trained models are used.
 The models are automatically downloaded during set-up.
-[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L112-L118)
+[traffic_light_classifier/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_classifier/CMakeLists.txt#L104)
+[traffic_light_ssd_fine_detector/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112)
 
 The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
 Commands for model conversion are available, so source the autoware workspace and execute the commands.
-When the conversion command finishes, check that the engine file is output to the directory listed in [perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L12-L14).
+When the conversion command finishes, check that the engine file is output to the directory listed in [traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10).
 
 An example of the use of autowarefoundation's autoware.universe is shown below.
 
 ```shell
 # If autoware is installed in $HOME/autoware
 source ~/autoware/install/setup.bash
-ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml build_only:=true
+ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
+ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.launch.xml build_only:=true
 
-# The following two engine files appear in ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data
-# pts_backbone_neck_head_centerpoint_tiny.engine
-# pts_voxel_encoder_centerpoint_tiny.engine
+# The following two engine files appear in
+# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engine
+# ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engine
 ```
 
 ## Evaluation method
 
-The perception evaluation is executed by launching the `perception.launch.py` file.
+The traffic_light evaluation is executed by launching the `traffic_light.launch.py` file.
 Launching the file executes the following steps:
 
-1. Execute launch of evaluation node (`perception_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
-2. Autoware receives sensor data output from input rosbag and outputs point cloud data, and the perception module performs recognition.
-3. The evaluation node subscribes to `/perception/object_recognition/{detection, tracking}/objects` and evaluates data. The result is dumped into a file.
+1. Execute launch of evaluation node (`traffic_light_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
+2. Autoware receives sensor data output from input rosbag and outputs camera, and the perception module performs recognition.
+3. The evaluation node subscribes to `/perception/traffic_light_recognition/traffic_signals` and evaluates data. The result is dumped into a file.
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ## Evaluation results
@@ -55,17 +59,15 @@ The perception evaluation output is marked as `Error` when condition for `Normal
 
 Subscribed topics:
 
-| Topic name                                       | Data type                                         |
-| ------------------------------------------------ | ------------------------------------------------- |
-| /perception/object_recognition/detection/objects | autoware_auto_perception_msgs/msg/DetectedObjects |
-| /perception/object_recognition/tracking/objects  | autoware_auto_perception_msgs/msg/TrackedObjects  |
+| Topic name                                            | Data type                                    |
+| ----------------------------------------------------- | -------------------------------------------- |
+| /perception/traffic_light_recognition/traffic_signals | tier4_perception_msgs/msg/TrafficSignalArray |
 
 Published topics:
 
-| Topic name                                | Data type                            |
-| ----------------------------------------- | ------------------------------------ |
-| /driving_log_replayer/marker/ground_truth | visualization_msgs::msg::MarkerArray |
-| /driving_log_replayer/marker/results      | visualization_msgs::msg::MarkerArray |
+| Topic name | Data type |
+| ---------- | --------- |
+| -          | -         |
 
 ## Arguments passed to logging_simulator.launch
 
@@ -76,6 +78,7 @@ The following parameters are set to `false`:
 - planning: false
 - control: false
 - sensing: false / true (default value is false. Specify by `LaunchSensing` key for each t4_dataset in the scenario)
+- perception_mode: camera_lidar_fusion
 
 **NOTE: The `tf` in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.**
 
@@ -106,11 +109,15 @@ The following example shows the topic list available in evaluation input rosbag 
 
 /sensing/lidar/concatenated/pointcloud is used if the scenario LaunchSensing: false.
 
+If there is more than one CAMERA, include all on-board camera_info and image_rect_color_compressed.
+
 | Topic name                                           | Data type                                    |
 | ---------------------------------------------------- | -------------------------------------------- |
 | /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
+| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage              |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
 | /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
 | /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
@@ -125,6 +132,8 @@ The vehicle topics can be included instead of CAN.
 | ---------------------------------------------------- | --------------------------------------------------- |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
+| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                          |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage                     |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
 | /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
 | /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
@@ -158,7 +167,7 @@ Use case evaluation is performed on a single dataset, while database evaluation 
 In the database evaluation, the `vehicle_id` should be able to be set for each data set, since the calibration values may change.
 Also, it is necessary to set whether or not to activate the sensing module.
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/scenario.yaml).
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/scenario.yaml).
 
 ### Evaluation Result Format
 
@@ -202,8 +211,8 @@ Metrics Data Format:
         "AP": "AP value of the label",
         "APH": "APH value of the label"
       },
-      "Error": {
-        "Label": "Error metrics for the label"
+      "ConfusionMatrix": {
+        "Label(GroundTruth)": "Prediction results"
       }
     }
   }

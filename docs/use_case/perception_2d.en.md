@@ -1,39 +1,128 @@
-# Evaluate perception(LiDAR)
+# Evaluate perception(Camera)
 
 The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.
 
 Run the perception module and pass the output perception topic to the evaluation library for evaluation.
 
+Currently, only the evaluation of `detection2d` and only one camera is supported.
+
 ## Preparation
+
+### Model conversion
 
 In perception evaluation, machine learning pre-trained models are used.
 The models are automatically downloaded during set-up.
-[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L112-L118)
+[tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58)
 
 The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
 Commands for model conversion are available, so source the autoware workspace and execute the commands.
-When the conversion command finishes, check that the engine file is output to the directory listed in [perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L12-L14).
+When the conversion command finishes, check that the engine file is output to the directory listed in [tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6).
 
 An example of the use of autowarefoundation's autoware.universe is shown below.
 
 ```shell
 # If autoware is installed in $HOME/autoware
 source ~/autoware/install/setup.bash
-ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml build_only:=true
+ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=true
 
-# The following two engine files appear in ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data
-# pts_backbone_neck_head_centerpoint_tiny.engine
-# pts_voxel_encoder_centerpoint_tiny.engine
+# The engine file appears in ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engine
+```
+
+### Modifying the launch file
+
+To evaluate on a single PC, it is necessary to modify launch to output the recognition results of the camera.
+Change launch as follows.
+
+```shell
+❯ vcs diff src/
+.................................
+diff --git a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
+index 094856c9..c06657aa 100644
+--- a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
++++ b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
+@@ -28,6 +28,10 @@
+   <arg name="use_validator" default="true" description="use obstacle_pointcloud based validator"/>
+   <arg name="score_threshold" default="0.35"/>
+
++  <group>
++    <include file="$(find-pkg-share tensorrt_yolox)/launch/yolox.launch.xml" />
++  </group>
++
+   <!-- Jetson AGX -->
+   <!-- <include file="$(find-pkg-share tensorrt_yolo)/launch/yolo.launch.xml">
+     <arg name="image_raw0" value="$(var image_raw0)"/>
+diff --git a/launch/tier4_perception_launch/launch/perception.launch.xml b/launch/tier4_perception_launch/launch/perception.launch.xml
+index ffc6f908..b01f5aab 100644
+--- a/launch/tier4_perception_launch/launch/perception.launch.xml
++++ b/launch/tier4_perception_launch/launch/perception.launch.xml
+@@ -33,7 +33,7 @@
+   <arg name="camera_info6" default="/sensing/camera/camera6/camera_info"/>
+   <arg name="image_raw7" default="/sensing/camera/camera7/image_rect_color"/>
+   <arg name="camera_info7" default="/sensing/camera/camera7/camera_info"/>
+-  <arg name="image_number" default="6" description="choose image raw number(0-7)"/>
++  <arg name="image_number" default="1" description="choose image raw number(0-7)"/>
+   <arg name="use_vector_map" default="true" description="use vector map in prediction"/>
+   <arg name="use_pointcloud_map" default="true" description="use pointcloud map in detection"/>
+   <arg name="use_object_filter" default="true" description="use object filter"/>
+diff --git a/perception/tensorrt_yolox/launch/yolox.launch.xml b/perception/tensorrt_yolox/launch/yolox.launch.xml
+index b697b1f5..b9cb5310 100644
+--- a/perception/tensorrt_yolox/launch/yolox.launch.xml
++++ b/perception/tensorrt_yolox/launch/yolox.launch.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0"?>
+ <launch>
+   <arg name="input/image" default="/sensing/camera/camera0/image_rect_color"/>
+-  <arg name="output/objects" default="/perception/object_recognition/detection/rois0"/>
++  <arg name="output/objects_yolox" default="/perception/object_recognition/detection/rois0"/>
+   <arg name="model_name" default="yolox-tiny"/>
+   <arg name="model_path" default="$(find-pkg-share tensorrt_yolox)/data"/>
+   <arg name="score_threshold" default="0.35"/>
+@@ -16,7 +16,7 @@
+
+   <node pkg="tensorrt_yolox" exec="tensorrt_yolox_node_exe" name="tensorrt_yolox" output="screen">
+     <remap from="~/in/image" to="$(var input/image)"/>
+-    <remap from="~/out/objects" to="$(var output/objects)"/>
++    <remap from="~/out/objects" to="$(var output/objects_yolox)"/>
+     <param name="score_threshold" value="$(var score_threshold)"/>
+     <param name="nms_threshold" value="$(var nms_threshold)"/>
+     <param name="model_path" value="$(var model_path)/$(var model_name).onnx"/>
+```
+
+Currently, only camera No.0 can be evaluated, so if you want to evaluate other cameras, swap the camera numbers. The following example shows how to swap 0 and 3
+
+```shell
+--- a/launch/tier4_perception_launch/launch/perception.launch.xml
++++ b/launch/tier4_perception_launch/launch/perception.launch.xml
+@@ -17,14 +17,14 @@
+   <arg name="input/pointcloud" default="/sensing/lidar/concatenated/pointcloud" description="The topic will be used in the detection module"/>
+   <arg name="mode" default="camera_lidar_fusion" description="options: `camera_lidar_radar_fusion`, `camera_lidar_fusion`, `lidar_radar_fusion`, `lidar` or `radar`"/>
+   <arg name="lidar_detection_model" default="centerpoint" description="options: `centerpoint`, `apollo`, `pointpainting`, `clustering`"/>
+-  <arg name="image_raw0" default="/sensing/camera/camera0/image_rect_color" description="image raw topic name"/>
+-  <arg name="camera_info0" default="/sensing/camera/camera0/camera_info" description="camera info topic name"/>
++  <arg name="image_raw0" default="/sensing/camera/camera3/image_rect_color" description="image raw topic name"/>
++  <arg name="camera_info0" default="/sensing/camera/camera3/camera_info" description="camera info topic name"/>
+   <arg name="image_raw1" default="/sensing/camera/camera1/image_rect_color"/>
+   <arg name="camera_info1" default="/sensing/camera/camera1/camera_info"/>
+   <arg name="image_raw2" default="/sensing/camera/camera2/image_rect_color"/>
+   <arg name="camera_info2" default="/sensing/camera/camera2/camera_info"/>
+-  <arg name="image_raw3" default="/sensing/camera/camera3/image_rect_color"/>
+-  <arg name="camera_info3" default="/sensing/camera/camera3/camera_info"/>
++  <arg name="image_raw3" default="/sensing/camera/camera0/image_rect_color"/>
++  <arg name="camera_info3" default="/sensing/camera/camera0/camera_info"/>
+   <arg name="image_raw4" default="/sensing/camera/camera4/image_rect_color"/>
+   <arg name="camera_info4" default="/sensing/camera/camera4/camera_info"/>
+   <arg name="image_raw5" default="/sensing/camera/camera5/image_rect_color"/>
+@@ -33,7 +33,7 @@
 ```
 
 ## Evaluation method
 
-The perception evaluation is executed by launching the `perception.launch.py` file.
+The perception_2d evaluation is executed by launching the `perception_2d.launch.py` file.
 Launching the file executes the following steps:
 
-1. Execute launch of evaluation node (`perception_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
-2. Autoware receives sensor data output from input rosbag and outputs point cloud data, and the perception module performs recognition.
-3. The evaluation node subscribes to `/perception/object_recognition/{detection, tracking}/objects` and evaluates data. The result is dumped into a file.
+1. Execute launch of evaluation node (`perception_2d_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
+2. Autoware receives sensor data output from input rosbag and outputs camera, and the perception module performs recognition.
+3. The evaluation node subscribes to `/perception/object_recognition/detection/rois0` and evaluates data. The result is dumped into a file.
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ## Evaluation results
@@ -55,17 +144,15 @@ The perception evaluation output is marked as `Error` when condition for `Normal
 
 Subscribed topics:
 
-| Topic name                                       | Data type                                         |
-| ------------------------------------------------ | ------------------------------------------------- |
-| /perception/object_recognition/detection/objects | autoware_auto_perception_msgs/msg/DetectedObjects |
-| /perception/object_recognition/tracking/objects  | autoware_auto_perception_msgs/msg/TrackedObjects  |
+| Topic name                                     | Data type                                            |
+| ---------------------------------------------- | ---------------------------------------------------- |
+| /perception/object_recognition/detection/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
 
 Published topics:
 
-| Topic name                                | Data type                            |
-| ----------------------------------------- | ------------------------------------ |
-| /driving_log_replayer/marker/ground_truth | visualization_msgs::msg::MarkerArray |
-| /driving_log_replayer/marker/results      | visualization_msgs::msg::MarkerArray |
+| Topic name | Data type |
+| ---------- | --------- |
+| -          | -         |
 
 ## Arguments passed to logging_simulator.launch
 
@@ -76,6 +163,7 @@ The following parameters are set to `false`:
 - planning: false
 - control: false
 - sensing: false / true (default value is false. Specify by `LaunchSensing` key for each t4_dataset in the scenario)
+- perception_mode: camera_lidar_fusion
 
 **NOTE: The `tf` in the bag is used to align the localization during annotation and simulation. Therefore, localization is invalid.**
 
@@ -105,6 +193,8 @@ The vehicle's ECU CAN and sensors data topics are required for the evaluation to
 The following example shows the topic list available in evaluation input rosbag when multiple LiDARs and Cameras are used in a real-world vehicle configuration.
 
 /sensing/lidar/concatenated/pointcloud is used if the scenario LaunchSensing: false.
+
+If there is more than one CAMERA, include all on-board camera_info and image_rect_color_compressed.
 
 | Topic name                                           | Data type                                    |
 | ---------------------------------------------------- | -------------------------------------------- |
@@ -158,7 +248,7 @@ Use case evaluation is performed on a single dataset, while database evaluation 
 In the database evaluation, the `vehicle_id` should be able to be set for each data set, since the calibration values may change.
 Also, it is necessary to set whether or not to activate the sensing module.
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/scenario.yaml).
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception_2d/scenario.yaml).
 
 ### Evaluation Result Format
 
@@ -202,8 +292,8 @@ Metrics Data Format:
         "AP": "AP value of the label",
         "APH": "APH value of the label"
       },
-      "Error": {
-        "Label": "Error metrics for the label"
+      "ConfusionMatrix": {
+        "Label(GroundTruth)": "Prediction results"
       }
     }
   }

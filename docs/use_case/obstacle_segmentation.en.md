@@ -84,7 +84,7 @@ Published topics:
 ## Arguments passed to logging_simulator.launch
 
 To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
-The following parameters are set to `false` when launching the `obstacle_segmentation` evaluation scenario:
+The following parameters are set to `false`:
 
 - localization: false
 - control: false
@@ -97,45 +97,56 @@ State the information required to run the simulation.
 
 Must contain the required topics in `t4_dataset` format.
 
+The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
+The following example shows the topic list available in evaluation input rosbag when multiple LiDARs and Cameras are used in a real-world vehicle configuration.
+
+| Topic name                                           | Data type                                    |
+| ---------------------------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                  |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
+| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+
+The vehicle topics can be included instead of CAN.
+
+| Topic name                                           | Data type                                           |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                         |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
+| /tf                                                  | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+
+### Topics that must not be included in the input rosbag
+
+| Topic name | Data type               |
+| ---------- | ----------------------- |
+| /clock     | rosgraph_msgs/msg/Clock |
+
+The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.
+
 ## About Evaluation
 
 State the information necessary for the evaluation.
 
 ### Scenario Format
 
-```yaml
-Evaluation:
-  UseCaseName: obstacle_segmentation
-  UseCaseFormatVersion: 0.3.0
-  Datasets:
-    - sample_dataset:
-        VehicleId: default # Specify VehicleId for each data set
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each dataset
-  Conditions:
-    Detection: # set `null` if Detection is not evaluated.
-      PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-      BoundingBoxConfig: # Bounding box setting. If not set, state "null". Writing this key overrides the target_uuids in the SensingEvaluationConfig.
-        - dcb2b352232fff50c4fad23718f31611: # Specify the uuid of the target to which you want to apply the settings
-            Start: null # Evaluate the point cloud after the time specified here. If not specified, it should be written as null. null is equivalent to specifying 0.0.
-            End: null # Evaluate the point cloud up to the time specified here. If not specified, it is written as null. null is equivalent to specifying sys.float_info.max.
-    NonDetection: # set `null` if NonDetection is not evaluated.
-      PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-      ProposedArea: # Non-detection area centered on the base_link with a single stroke polygon.
-        polygon_2d: # Describe polygon in xy-plane in clockwise direction
-          - [10.0, 1.5]
-          - [10.0, -1.5]
-          - [0.0, -1.5]
-          - [0.0, 1.5]
-        z_min: 0.0 # Lower z for 3D polygon
-        z_max: 1.5 # Upper z for 3D polygon
-  SensingEvaluationConfig:
-    evaluation_config_dict:
-      evaluation_task: sensing # fixed value
-      target_uuids: null # UUIDs of bounding box to be detected. Set null if you want to target all annotated bounding boxes
-      box_scale_0m: 1.0 # Scaling factor to scale the bounding box according to distance. Value at 0m
-      box_scale_100m: 1.0 # Scaling factor at 100m. Magnification is determined by linear completion according to distance from 0 to 100m
-      min_points_threshold: 1 # Threshold of how many points must be in the bounding box to be successful.
-```
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/scenario.yaml).
 
 ### Evaluation Result Format
 

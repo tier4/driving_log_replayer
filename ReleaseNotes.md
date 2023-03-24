@@ -1,5 +1,29 @@
 # Release Notes
 
+## Version 1.2.0
+
+Major Changes
+
+| Module                         | Feature       | Brief summary                                           | Pull request                                                   | JIRA       | Contributor                                   |
+| ------------------------------ | ------------- | ------------------------------------------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
+| `perception_2d, traffic_light` | new evaluator | add perception_2d_evaluator and traffic_light_evaluator | [#122](https://github.com/tier4/driving_log_replayer/pull/122) | T4PB-25343 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.1.22
+
+Minor Tweak
+
+| Module             | Feature    | Brief summary     | Pull request                                                   | JIRA | Contributor                                   |
+| ------------------ | ---------- | ----------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `performance_diag` | bag record | drop camera topic | [#123](https://github.com/tier4/driving_log_replayer/pull/123) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.1.21
+
+Documentation
+
+| Module | Feature  | Brief summary               | Pull request                                                   | JIRA       | Contributor                                   |
+| ------ | -------- | --------------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
+| `all`  | document | update input bag topic list | [#120](https://github.com/tier4/driving_log_replayer/pull/120) | T4PB-26922 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.1.20
 
 Minor Tweak

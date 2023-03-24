@@ -87,7 +87,7 @@ Published topics:
 ## Arguments passed to logging_simulator.launch
 
 To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
-The following parameters are set to `false` when launching the `localization` evaluation scenario:
+The following parameters are set to `false`:
 
 - planning: false
 - control: false
@@ -101,16 +101,37 @@ State the information required to run the simulation.
 The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
 The following example shows the topic list available in evaluation input rosbag when multiple LiDARs are used in a real-world vehicle configuration.
 
-- /sensing/gnss/ublox/fix_velocity
-- /sensing/gnss/ublox/nav_sat_fix
-- /sensing/gnss/ublox/navpvt
-- /sensing/imu/tamagawa/imu_raw
-- /sensing/lidar/\*/velodyne_packets
-- /gsm8/from_can_bus
+| Topic name                         | Data type                                    |
+| ---------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw      | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets | velodyne_msgs/VelodyneScan                   |
+
+The vehicle topics can be included instead of CAN.
+
+| Topic name                             | Data type                                           |
+| -------------------------------------- | --------------------------------------------------- |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### Topics that must not be included in the input rosbag
 
-- /clock
+| Topic name | Data type               |
+| ---------- | ----------------------- |
+| /clock     | rosgraph_msgs/msg/Clock |
+
+The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.
 
 ## About Evaluation
 
@@ -118,31 +139,7 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-```yaml
-Evaluation:
-  UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
-  Conditions:
-    Convergence:
-      AllowableDistance: 0.2 # Lateral distance to be considered convergence
-      AllowableExeTimeMs: 100.0 # If the NDT computation time is less than or equal to this value, it is considered successful.
-      AllowableIterationNum: 30 # If the number of NDT calculations is less than or equal to this value, it is considered a success.
-      PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    Reliability:
-      Method: NVTL # NVTL or TP which method to use for evaluation
-      AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
-      NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
-  InitialPose:
-    position:
-      x: 3836.5478515625
-      y: 73729.96875
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: -0.9689404241590215
-      w: 0.2472942668776119
-```
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.yaml).
 
 ### Evaluation Result Format
 

@@ -1,132 +1,44 @@
-# 認識機能の評価(カメラ)
+# 信号機認識機能の評価
 
 Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、`detection2d` の評価のみ、カメラの台数は 1 台にしか対応していない。
+現状、`classification2d` の評価のみ。
 
 ## 事前準備
 
-### モデルの変換
-
 perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。
-[tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58)
+[traffic_light_classifier/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_classifier/CMakeLists.txt#L104)
+[traffic_light_ssd_fine_detector/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112)
 
 また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-変換コマンドが終了すると、engine ファイルが出力されているので[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
-に記載のディレクトリを確認する。
+変換コマンドが終了すると、engine ファイルが出力されているので[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
+に記載のディレクトリ確認する。
 
 autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
 
 ```shell
 # $HOME/autowareにautowareをインストールした場合
 source ~/autoware/install/setup.bash
-ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=true
+ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
+ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.launch.xml build_only:=true
 
-# ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engineが出力されている
-```
-
-### launch の変更
-
-PC 一台で評価するには、launch をいじって、カメラの認識結果を出力するように変更する必要がある。
-以下のように、launch を変更する。
-
-```shell
-❯ vcs diff src/
-.................................
-diff --git a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-index 094856c9..c06657aa 100644
---- a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-+++ b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-@@ -28,6 +28,10 @@
-   <arg name="use_validator" default="true" description="use obstacle_pointcloud based validator"/>
-   <arg name="score_threshold" default="0.35"/>
-
-+  <group>
-+    <include file="$(find-pkg-share tensorrt_yolox)/launch/yolox.launch.xml" />
-+  </group>
-+
-   <!-- Jetson AGX -->
-   <!-- <include file="$(find-pkg-share tensorrt_yolo)/launch/yolo.launch.xml">
-     <arg name="image_raw0" value="$(var image_raw0)"/>
-diff --git a/launch/tier4_perception_launch/launch/perception.launch.xml b/launch/tier4_perception_launch/launch/perception.launch.xml
-index ffc6f908..b01f5aab 100644
---- a/launch/tier4_perception_launch/launch/perception.launch.xml
-+++ b/launch/tier4_perception_launch/launch/perception.launch.xml
-@@ -33,7 +33,7 @@
-   <arg name="camera_info6" default="/sensing/camera/camera6/camera_info"/>
-   <arg name="image_raw7" default="/sensing/camera/camera7/image_rect_color"/>
-   <arg name="camera_info7" default="/sensing/camera/camera7/camera_info"/>
--  <arg name="image_number" default="6" description="choose image raw number(0-7)"/>
-+  <arg name="image_number" default="1" description="choose image raw number(0-7)"/>
-   <arg name="use_vector_map" default="true" description="use vector map in prediction"/>
-   <arg name="use_pointcloud_map" default="true" description="use pointcloud map in detection"/>
-   <arg name="use_object_filter" default="true" description="use object filter"/>
-diff --git a/perception/tensorrt_yolox/launch/yolox.launch.xml b/perception/tensorrt_yolox/launch/yolox.launch.xml
-index b697b1f5..b9cb5310 100644
---- a/perception/tensorrt_yolox/launch/yolox.launch.xml
-+++ b/perception/tensorrt_yolox/launch/yolox.launch.xml
-@@ -1,7 +1,7 @@
- <?xml version="1.0"?>
- <launch>
-   <arg name="input/image" default="/sensing/camera/camera0/image_rect_color"/>
--  <arg name="output/objects" default="/perception/object_recognition/detection/rois0"/>
-+  <arg name="output/objects_yolox" default="/perception/object_recognition/detection/rois0"/>
-   <arg name="model_name" default="yolox-tiny"/>
-   <arg name="model_path" default="$(find-pkg-share tensorrt_yolox)/data"/>
-   <arg name="score_threshold" default="0.35"/>
-@@ -16,7 +16,7 @@
-
-   <node pkg="tensorrt_yolox" exec="tensorrt_yolox_node_exe" name="tensorrt_yolox" output="screen">
-     <remap from="~/in/image" to="$(var input/image)"/>
--    <remap from="~/out/objects" to="$(var output/objects)"/>
-+    <remap from="~/out/objects" to="$(var output/objects_yolox)"/>
-     <param name="score_threshold" value="$(var score_threshold)"/>
-     <param name="nms_threshold" value="$(var nms_threshold)"/>
-     <param name="model_path" value="$(var model_path)/$(var model_name).onnx"/>
-```
-
-現状だと 0 番のカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例
-
-```shell
---- a/launch/tier4_perception_launch/launch/perception.launch.xml
-+++ b/launch/tier4_perception_launch/launch/perception.launch.xml
-@@ -17,14 +17,14 @@
-   <arg name="input/pointcloud" default="/sensing/lidar/concatenated/pointcloud" description="The topic will be used in the detection module"/>
-   <arg name="mode" default="camera_lidar_fusion" description="options: `camera_lidar_radar_fusion`, `camera_lidar_fusion`, `lidar_radar_fusion`, `lidar` or `radar`"/>
-   <arg name="lidar_detection_model" default="centerpoint" description="options: `centerpoint`, `apollo`, `pointpainting`, `clustering`"/>
--  <arg name="image_raw0" default="/sensing/camera/camera0/image_rect_color" description="image raw topic name"/>
--  <arg name="camera_info0" default="/sensing/camera/camera0/camera_info" description="camera info topic name"/>
-+  <arg name="image_raw0" default="/sensing/camera/camera3/image_rect_color" description="image raw topic name"/>
-+  <arg name="camera_info0" default="/sensing/camera/camera3/camera_info" description="camera info topic name"/>
-   <arg name="image_raw1" default="/sensing/camera/camera1/image_rect_color"/>
-   <arg name="camera_info1" default="/sensing/camera/camera1/camera_info"/>
-   <arg name="image_raw2" default="/sensing/camera/camera2/image_rect_color"/>
-   <arg name="camera_info2" default="/sensing/camera/camera2/camera_info"/>
--  <arg name="image_raw3" default="/sensing/camera/camera3/image_rect_color"/>
--  <arg name="camera_info3" default="/sensing/camera/camera3/camera_info"/>
-+  <arg name="image_raw3" default="/sensing/camera/camera0/image_rect_color"/>
-+  <arg name="camera_info3" default="/sensing/camera/camera0/camera_info"/>
-   <arg name="image_raw4" default="/sensing/camera/camera4/image_rect_color"/>
-   <arg name="camera_info4" default="/sensing/camera/camera4/camera_info"/>
-   <arg name="image_raw5" default="/sensing/camera/camera5/image_rect_color"/>
-@@ -33,7 +33,7 @@
+# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engineが出力されている
+# ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engineが出力されている
 ```
 
 ## 評価方法
 
-`perception.launch_2d.py` を使用して評価する。
+`traffic_light.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
+1. launch で評価ノード(`traffic_light_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う
-3. 評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
+3. 評価ノードが/perception/traffic_light_recognition/traffic_signals を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
-
-注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。
 
 ## 評価結果
 
@@ -147,9 +59,9 @@ perception_eval の評価関数を実行して以下の条件を満たすとき
 
 Subscribed topics:
 
-| topic 名                                       | データ型                                             |
-| ---------------------------------------------- | ---------------------------------------------------- |
-| /perception/object_recognition/detection/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| topic 名                                              | データ型                                     |
+| ----------------------------------------------------- | -------------------------------------------- |
+| /perception/traffic_light_recognition/traffic_signals | tier4_perception_msgs/msg/TrafficSignalArray |
 
 Published topics:
 
@@ -206,6 +118,8 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 | /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
+| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage              |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
 | /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
 | /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
@@ -220,6 +134,8 @@ CAN の代わりに vehicle の topic を含めても良い。
 | ---------------------------------------------------- | --------------------------------------------------- |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
+| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                          |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage                     |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
 | /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
 | /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
@@ -253,7 +169,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception_2d/scenario.ja.yaml)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 

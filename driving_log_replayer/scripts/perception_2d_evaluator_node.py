@@ -113,9 +113,9 @@ class Perception2DResult(ResultBase):
         self.__total += 1
         has_objects = True
         if (
-            frame.pass_fail_result.tp_objects is None
-            and frame.pass_fail_result.fp_objects_result is None
-            and frame.pass_fail_result.fn_objects is None
+            frame.pass_fail_result.tp_object_results == []
+            and frame.pass_fail_result.fp_object_results == []
+            and frame.pass_fail_result.fn_objects == []
         ):
             has_objects = False
 
@@ -131,22 +131,13 @@ class Perception2DResult(ResultBase):
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
-        tp_num = 0
-        if frame.pass_fail_result.tp_objects is not None:
-            tp_num = len(frame.pass_fail_result.tp_objects)
-        fp_num = 0
-        if frame.pass_fail_result.fp_objects_result is not None:
-            fp_num = len(frame.pass_fail_result.fp_objects_result)
-        fn_num = 0
-        if frame.pass_fail_result.fn_objects is not None:
-            fn_num = len(frame.pass_fail_result.fn_objects)
         out_frame["PassFail"] = {
             "Result": success,
             "Info": [
                 {
-                    "TP": tp_num,
-                    "FP": fp_num,
-                    "FN": fn_num,
+                    "TP": len(frame.pass_fail_result.tp_object_results),
+                    "FP": len(frame.pass_fail_result.fp_object_results),
+                    "FN": len(frame.pass_fail_result.fn_objects),
                 }
             ],
         }
@@ -279,18 +270,14 @@ class Perception2DEvaluator(Node):
 
                 analyzer = PerceptionAnalyzer2D(self.__evaluator.evaluator_config)
                 analyzer.add(self.__evaluator.frame_results)
-                score_df, error_df = analyzer.analyze()
+                score_df, conf_mat_df = analyzer.analyze()
                 score_dict = {}
-                error_dict = {}
+                conf_mat_dict = {}
                 if score_df is not None:
                     score_dict = score_df.to_dict()
-                if error_df is not None:
-                    error_dict = (
-                        error_df.groupby(level=0)
-                        .apply(lambda df: df.xs(df.name).to_dict())
-                        .to_dict()
-                    )
-                final_metrics = {"Score": score_dict, "Error": error_dict}
+                if conf_mat_df is not None:
+                    conf_mat_dict = conf_mat_df.to_dict()
+                final_metrics = {"Score": score_dict, "ConfusionMatrix": conf_mat_dict}
                 self.__result.add_final_metrics(final_metrics)
                 self.__result_writer.write(self.__result)
                 self.__result_writer.close()

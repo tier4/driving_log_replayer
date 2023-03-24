@@ -102,16 +102,37 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める
 
-- /sensing/gnss/ublox/fix_velocity
-- /sensing/gnss/ublox/nav_sat_fix
-- /sensing/gnss/ublox/navpvt
-- /sensing/imu/tamagawa/imu_raw
-- /sensing/lidar/\*/velodyne_packets
-- /gsm8/from_can_bus
+| topic 名                           | データ型                                     |
+| ---------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw      | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets | velodyne_msgs/VelodyneScan                   |
+
+CAN の代わりに vehicle の topic を含めても良い。
+
+| topic 名                               | データ型                                            |
+| -------------------------------------- | --------------------------------------------------- |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### 入力 rosbag に含まれてはいけない topic
 
-- /clock
+| topic 名 | データ型                |
+| -------- | ----------------------- |
+| /clock   | rosgraph_msgs/msg/Clock |
+
+clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない
 
 ## evaluation
 
@@ -119,31 +140,7 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 
 ### シナリオフォーマット
 
-```yaml
-Evaluation:
-  UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
-  Conditions:
-    Convergence: # 収束性評価
-      AllowableDistance: 0.2 # 直線距離でこの距離以内だったら収束とみなす
-      AllowableExeTimeMs: 100.0 # NDTの計算時間がこの値以下なら成功とみなす
-      AllowableIterationNum: 30 # NDTの計算回数がこの値以下なら成功とみなす
-      PassRate: 95.0 # 収束性の評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    Reliability: # 信頼度評価
-      Method: NVTL # NVTL or TPのどちらで評価を行うか
-      AllowableLikelihood: 3.0 # この値以上なら信頼度は正常とみなす
-      NGCount: 10 # 信頼度異常が連続でこの回数続いたら信頼度評価失敗とみなす
-  InitialPose:
-    position:
-      x: 16876.271484375
-      y: 36087.9453125
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: 0.23490284404117467
-      w: 0.9720188546840887
-```
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
