@@ -89,6 +89,7 @@ Published topics:
 To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
 The following parameters are set to `false`:
 
+- perception: false
 - planning: false
 - control: false
 
