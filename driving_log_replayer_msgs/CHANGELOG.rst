@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2023-03-30)
+------------------
 * chore: fix result.jsonl msg format
 * Contributors: Hayato Mizushima
 
