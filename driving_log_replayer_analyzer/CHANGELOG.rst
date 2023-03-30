@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: fix result.jsonl msg format
+* Contributors: Hayato Mizushima
+
 1.3.1 (2023-03-28)
 ------------------
 * fix: disable perception in localization launch (`#132 <https://github.com/tier4/driving_log_replayer/issues/132>`_)
