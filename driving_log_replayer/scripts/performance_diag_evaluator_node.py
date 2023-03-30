@@ -265,7 +265,7 @@ class PerformanceDiagResult(ResultBase):
         self.__blockage_result = True
         self.__blockage_msg = ""
         for lidar_name, v in self.__blockage_lidar_result.items():
-            self.__blockage_msg += f"{lidar_name}: {self.__blockage_lidar_success[lidar_name]}/{self.__blockage_total} "
+            self.__blockage_msg += f"{lidar_name}: {self.__blockage_lidar_success[lidar_name]} / {self.__blockage_total} "
             # 1個でもFalseが入ってたらlidar試験全体がfalse
             if not v:
                 self.__blockage_result = False
