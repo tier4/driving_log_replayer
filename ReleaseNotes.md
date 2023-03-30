@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.2
+
+Minor Tweak
+
+| Module            | Feature      | Brief summary         | Pull request                                                   | JIRA       | Contributor                                   |
+| ----------------- | ------------ | --------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
+| `perception_diag` | result.jsonl | fix output msg format | [#134](https://github.com/tier4/driving_log_replayer/pull/134) | T4PB-27178 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.1
 
 Minor Tweak
