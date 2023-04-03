@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.3 (2023-04-03)
+------------------
 * feat(diag): delete fit map height service call
 * Contributors: Hayato Mizushima
 
