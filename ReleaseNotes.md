@@ -4,8 +4,8 @@
 
 Major Changes
 
-| Module            | Feature      | Brief summary         | Pull request                                                   | JIRA       | Contributor                                   |
-| ----------------- | ------------ | --------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
+| Module             | Feature                  | Brief summary                      | Pull request                                                   | JIRA       | Contributor                                   |
+| ------------------ | ------------------------ | ---------------------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
 | `performance_diag` | update for ADAPI changes | delete fit_map_height service call | [#136](https://github.com/tier4/driving_log_replayer/pull/136) | T4PB-27288 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.3.2
