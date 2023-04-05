@@ -18,7 +18,7 @@ Evaluation:
       Method: NVTL # NVTL or TP which method to use for evaluation
       AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
       NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
-  InitialPose:
+  InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
     position:
       x: 3836.5478515625
       y: 73729.96875
