@@ -4,10 +4,10 @@
 
 Minor Tweak
 
-| Module             | Feature                  | Brief summary                      | Pull request                                                   | JIRA       | Contributor                                   |
-| ------------------ | ------------------------ | ---------------------------------- | -------------------------------------------------------------- | ---------- | --------------------------------------------- |
-| `all` | linter and formatter | update linter and formatter settings | [#139](https://github.com/tier4/driving_log_replayer/pull/139) | RT4-3916 | [hayato-m126](https://github.com/hayato-m126) |
-| `localization` | documentation | update scenario sample | [#138](https://github.com/tier4/driving_log_replayer/pull/138) | - | [hayato-m126](https://github.com/hayato-m126) |
+| Module         | Feature              | Brief summary                        | Pull request                                                   | JIRA     | Contributor                                   |
+| -------------- | -------------------- | ------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`          | linter and formatter | update linter and formatter settings | [#139](https://github.com/tier4/driving_log_replayer/pull/139) | RT4-3916 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization` | documentation        | update scenario sample               | [#138](https://github.com/tier4/driving_log_replayer/pull/138) | -        | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.3.3
 
