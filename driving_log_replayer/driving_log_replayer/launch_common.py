@@ -287,7 +287,7 @@ def add_container_argument(launch_arguments: list):
         DeclareLaunchArgument(
             "use_intra_process",
             default_value="false",
-            description="use ROS2 component container communication",
+            description="use ROS 2 component container communication",
         )
     )
     return launch_arguments

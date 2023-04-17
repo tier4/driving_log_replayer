@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: update linter and formatter settings
+* docs: update sample scenario
+* Contributors: Hayato Mizushima
+
 1.3.3 (2023-04-03)
 ------------------
 * feat(diag): delete fit map height service call
