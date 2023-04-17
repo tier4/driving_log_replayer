@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.4 (2023-04-17)
+------------------
 * feat: update linter and formatter settings
 * docs: update sample scenario
 * Contributors: Hayato Mizushima
