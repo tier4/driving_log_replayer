@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、`detection2d` の評価のみ、カメラの台数は 1 台にしか対応していない。
+現状、カメラの台数は 1 台にしか対応していない。
 
 ## 事前準備
 
@@ -38,22 +38,26 @@ PC 一台で評価するには、launch をいじって、カメラの認識結�
 ❯ vcs diff src/
 .................................
 diff --git a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-index 094856c9..c06657aa 100644
+index 9ca8ea3df..a35e8d00f 100644
 --- a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
 +++ b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-@@ -28,6 +28,10 @@
-   <arg name="use_validator" default="true" description="use obstacle_pointcloud based validator"/>
-   <arg name="score_threshold" default="0.35"/>
+@@ -30,6 +30,14 @@
+   <arg name="remove_unknown" default="true"/>
+   <arg name="trust_distance" default="30.0"/>
 
 +  <group>
 +    <include file="$(find-pkg-share tensorrt_yolox)/launch/yolox.launch.xml" />
++  </group>
++
++  <group>
++    <include file="$(find-pkg-share bytetrack)/launch/bytetrack.launch.xml" />
 +  </group>
 +
    <!-- Jetson AGX -->
    <!-- <include file="$(find-pkg-share tensorrt_yolo)/launch/yolo.launch.xml">
      <arg name="image_raw0" value="$(var image_raw0)"/>
 diff --git a/launch/tier4_perception_launch/launch/perception.launch.xml b/launch/tier4_perception_launch/launch/perception.launch.xml
-index ffc6f908..b01f5aab 100644
+index 0a2ef57f6..9a9b06379 100644
 --- a/launch/tier4_perception_launch/launch/perception.launch.xml
 +++ b/launch/tier4_perception_launch/launch/perception.launch.xml
 @@ -33,7 +33,7 @@
@@ -66,7 +70,7 @@ index ffc6f908..b01f5aab 100644
    <arg name="use_pointcloud_map" default="true" description="use pointcloud map in detection"/>
    <arg name="use_object_filter" default="true" description="use object filter"/>
 diff --git a/perception/tensorrt_yolox/launch/yolox.launch.xml b/perception/tensorrt_yolox/launch/yolox.launch.xml
-index b697b1f5..b9cb5310 100644
+index b697b1f50..b9cb53102 100644
 --- a/perception/tensorrt_yolox/launch/yolox.launch.xml
 +++ b/perception/tensorrt_yolox/launch/yolox.launch.xml
 @@ -1,7 +1,7 @@
@@ -123,7 +127,7 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う
-3. 評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
+3. 評価ノードが/perception/object_recognition/detection{/tracked}/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。
@@ -147,9 +151,10 @@ perception_eval の評価関数を実行して以下の条件を満たすとき
 
 Subscribed topics:
 
-| topic 名                                       | データ型                                             |
-| ---------------------------------------------- | ---------------------------------------------------- |
-| /perception/object_recognition/detection/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| topic 名                                               | データ型                                             |
+| ------------------------------------------------------ | ---------------------------------------------------- |
+| /perception/object_recognition/detection/rois0         | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| /perception/object_recognition/detection/tracked/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
 
 Published topics:
 

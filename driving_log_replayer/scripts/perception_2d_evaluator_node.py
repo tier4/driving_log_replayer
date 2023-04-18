@@ -50,6 +50,15 @@ from tier4_perception_msgs.msg import DetectedObjectWithFeature
 import yaml
 
 
+def get_topic_name(task: str) -> str:
+    if task == "detection2d":
+        return "/perception/object_recognition/detection/rois0"
+    elif task == "tracking2d":
+        return "/perception/object_recognition/detection/tracked/rois0"
+    else:
+        raise ValueError(f"Unexpected evaluation task: {task}")
+
+
 def get_label(classification: ObjectClassification) -> str:
     if classification.label == ObjectClassification.UNKNOWN:
         return "unknown"
@@ -197,6 +206,8 @@ class Perception2DEvaluator(Node):
         c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
         f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
+        evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+
         self.__camera_type = p_cfg["camera_type"]
         self.__camera_no = None
         for k, v in p_cfg["camera_mapping"].items():
@@ -237,7 +248,7 @@ class Perception2DEvaluator(Node):
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
         self.__sub_detected_objs = self.create_subscription(
             DetectedObjectsWithFeature,
-            "/perception/object_recognition/detection/rois0",
+            get_topic_name(evaluation_task),
             self.detected_objs_cb,
             1,
         )

@@ -4,7 +4,7 @@ The performance of Autoware's recognition function (perception) is evaluated by 
 
 Run the perception module and pass the output perception topic to the evaluation library for evaluation.
 
-Currently, only the evaluation of `detection2d` and only one camera is supported.
+Currently, only one camera is supported.
 
 ## Preparation
 
@@ -37,22 +37,26 @@ Change launch as follows.
 ❯ vcs diff src/
 .................................
 diff --git a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-index 094856c9..c06657aa 100644
+index 9ca8ea3df..a35e8d00f 100644
 --- a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
 +++ b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-@@ -28,6 +28,10 @@
-   <arg name="use_validator" default="true" description="use obstacle_pointcloud based validator"/>
-   <arg name="score_threshold" default="0.35"/>
+@@ -30,6 +30,14 @@
+   <arg name="remove_unknown" default="true"/>
+   <arg name="trust_distance" default="30.0"/>
 
 +  <group>
 +    <include file="$(find-pkg-share tensorrt_yolox)/launch/yolox.launch.xml" />
++  </group>
++
++  <group>
++    <include file="$(find-pkg-share bytetrack)/launch/bytetrack.launch.xml" />
 +  </group>
 +
    <!-- Jetson AGX -->
    <!-- <include file="$(find-pkg-share tensorrt_yolo)/launch/yolo.launch.xml">
      <arg name="image_raw0" value="$(var image_raw0)"/>
 diff --git a/launch/tier4_perception_launch/launch/perception.launch.xml b/launch/tier4_perception_launch/launch/perception.launch.xml
-index ffc6f908..b01f5aab 100644
+index 0a2ef57f6..9a9b06379 100644
 --- a/launch/tier4_perception_launch/launch/perception.launch.xml
 +++ b/launch/tier4_perception_launch/launch/perception.launch.xml
 @@ -33,7 +33,7 @@
@@ -65,7 +69,7 @@ index ffc6f908..b01f5aab 100644
    <arg name="use_pointcloud_map" default="true" description="use pointcloud map in detection"/>
    <arg name="use_object_filter" default="true" description="use object filter"/>
 diff --git a/perception/tensorrt_yolox/launch/yolox.launch.xml b/perception/tensorrt_yolox/launch/yolox.launch.xml
-index b697b1f5..b9cb5310 100644
+index b697b1f50..b9cb53102 100644
 --- a/perception/tensorrt_yolox/launch/yolox.launch.xml
 +++ b/perception/tensorrt_yolox/launch/yolox.launch.xml
 @@ -1,7 +1,7 @@
@@ -122,7 +126,7 @@ Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`perception_2d_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
 2. Autoware receives sensor data output from input rosbag and outputs camera, and the perception module performs recognition.
-3. The evaluation node subscribes to `/perception/object_recognition/detection/rois0` and evaluates data. The result is dumped into a file.
+3. The evaluation node subscribes to `/perception/object_recognition/detection{/detected}/rois0` and evaluates data. The result is dumped into a file.
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ## Evaluation results
@@ -144,9 +148,10 @@ The perception evaluation output is marked as `Error` when condition for `Normal
 
 Subscribed topics:
 
-| Topic name                                     | Data type                                            |
-| ---------------------------------------------- | ---------------------------------------------------- |
-| /perception/object_recognition/detection/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| Topic name                                             | Data type                                            |
+| ------------------------------------------------------ | ---------------------------------------------------- |
+| /perception/object_recognition/detection/rois0         | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| /perception/object_recognition/detection/tracked/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
 
 Published topics:
 
