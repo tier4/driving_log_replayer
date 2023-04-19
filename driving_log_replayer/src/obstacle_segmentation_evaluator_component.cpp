@@ -160,15 +160,27 @@ std::tuple<std::vector<geometry_msgs::msg::PointStamped>, double, double>
 ObstacleSegmentationEvaluatorComponent::getProposedArea(const YAML::Node & proposed_area)
 {
   std::vector<geometry_msgs::msg::PointStamped> point_array;
-  std::vector<std::vector<double>> yaml_poly;
+  std::vector<std::pair<double, double>> yaml_poly;
 
-  yaml_poly = proposed_area["polygon_2d"].as<std::vector<std::vector<double>>>();
+  yaml_poly = proposed_area["polygon_2d"].as<std::vector<std::pair<double, double>>>();
+  double check_clock_wise = 0;
+
+  for (long unsigned int i = 0; i < yaml_poly.size(); i++) {
+    auto p1 = yaml_poly[i];
+    auto p2 = yaml_poly[(i + 1) % yaml_poly.size()];  // 最後のループで次の点は0に戻す
+    check_clock_wise += (p2.first - p1.first) * (p2.second + p1.second);
+  }
+
+  if (check_clock_wise <= 0) {
+    RCLCPP_ERROR_STREAM(get_logger(), "Input polygon is not clockwise");
+    std::exit(EXIT_FAILURE);
+  }
 
   for (auto & point : yaml_poly) {
     geometry_msgs::msg::PointStamped point_stamped;
     // Points in the array are stored in clockwise order.
-    point_stamped.point.x = point[0];
-    point_stamped.point.y = point[1];
+    point_stamped.point.x = point.first;
+    point_stamped.point.y = point.second;
     point_stamped.point.z = 0.0;
     point_array.emplace_back(point_stamped);
   }
