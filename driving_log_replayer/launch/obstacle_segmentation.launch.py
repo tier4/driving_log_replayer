@@ -38,6 +38,9 @@ def generate_launch_description():
         name="obstacle_segmentation_sub",
         parameters=[{"use_sim_time": True, "scenario_path": LaunchConfiguration("scenario_path")}],
     )
+    evaluator_sub_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(
+        evaluator_sub_node
+    )
     player = driving_log_replayer.launch_common.get_player(
         additional_argument=[
             "--remap",
@@ -74,5 +77,6 @@ def generate_launch_description():
             player,
             recorder,
             evaluator_shutdown,
+            evaluator_sub_shutdown,
         ]
     )
