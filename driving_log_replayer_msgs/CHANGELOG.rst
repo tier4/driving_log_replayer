@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.5 (2023-04-20)
+------------------
 * feat: tracking2d evaluation (`#142 <https://github.com/tier4/driving_log_replayer/issues/142>`_)
   closes: `#141 <https://github.com/tier4/driving_log_replayer/issues/141>`_
 * Revert "feat: add shutdown"
