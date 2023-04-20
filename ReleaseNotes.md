@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.5
+
+Minor Tweak
+
+| Module          | Feature    | Brief summary                 | Pull request                                                   | Jira     | Contributor                                   |
+| --------------- | ---------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception_2d` | tracking2d | support tracking2d evaluation | [#142](https://github.com/tier4/driving_log_replayer/pull/142) | RT4-4048 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.4
 
 Minor Tweak
