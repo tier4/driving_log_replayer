@@ -1054,7 +1054,7 @@
 <h1 id="_1">認識機能の評価(カメラ)<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
 <p>Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。</p>
 <p>perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。</p>
-<p>現状、<code>detection2d</code> の評価のみ、カメラの台数は 1 台にしか対応していない。</p>
+<p>現状、カメラの台数は 1 台にしか対応していない。</p>
 <h2 id="_2">事前準備<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
 <h3 id="_3">モデルの変換<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
 <p>perception では、機械学習の学習済みモデルを使用する。
@@ -1077,22 +1077,26 @@ ros2<span class="w"> </span>launch<span class="w"> </span>tensorrt_yolox<span cl
 <div class="highlight"><pre><span></span><code>❯<span class="w"> </span>vcs<span class="w"> </span>diff<span class="w"> </span>src/
 .................................
 diff<span class="w"> </span>--git<span class="w"> </span>a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml<span class="w"> </span>b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-index<span class="w"> </span>094856c9..c06657aa<span class="w"> </span><span class="m">100644</span>
+index<span class="w"> </span>9ca8ea3df..a35e8d00f<span class="w"> </span><span class="m">100644</span>
 ---<span class="w"> </span>a/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
 +++<span class="w"> </span>b/launch/tier4_perception_launch/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml
-@@<span class="w"> </span>-28,6<span class="w"> </span>+28,10<span class="w"> </span>@@
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;use_validator&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;use obstacle_pointcloud based validator&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;score_threshold&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;0.35&quot;</span>/&gt;
+@@<span class="w"> </span>-30,6<span class="w"> </span>+30,14<span class="w"> </span>@@
+<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;remove_unknown&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;true&quot;</span>/&gt;
+<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;trust_distance&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;30.0&quot;</span>/&gt;
 
 +<span class="w">  </span>&lt;group&gt;
 +<span class="w">    </span>&lt;include<span class="w"> </span><span class="nv">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>find-pkg-share<span class="w"> </span>tensorrt_yolox<span class="k">)</span><span class="s2">/launch/yolox.launch.xml&quot;</span><span class="w"> </span>/&gt;
++<span class="w">  </span>&lt;/group&gt;
++
++<span class="w">  </span>&lt;group&gt;
++<span class="w">    </span>&lt;include<span class="w"> </span><span class="nv">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>find-pkg-share<span class="w"> </span>bytetrack<span class="k">)</span><span class="s2">/launch/bytetrack.launch.xml&quot;</span><span class="w"> </span>/&gt;
 +<span class="w">  </span>&lt;/group&gt;
 +
 <span class="w">   </span>&lt;!--<span class="w"> </span>Jetson<span class="w"> </span>AGX<span class="w"> </span>--&gt;
 <span class="w">   </span>&lt;!--<span class="w"> </span>&lt;include<span class="w"> </span><span class="nv">file</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>find-pkg-share<span class="w"> </span>tensorrt_yolo<span class="k">)</span><span class="s2">/launch/yolo.launch.xml&quot;</span>&gt;
 <span class="w">     </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw0&quot;</span><span class="w"> </span><span class="nv">value</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>var<span class="w"> </span>image_raw0<span class="k">)</span><span class="s2">&quot;</span>/&gt;
 diff<span class="w"> </span>--git<span class="w"> </span>a/launch/tier4_perception_launch/launch/perception.launch.xml<span class="w"> </span>b/launch/tier4_perception_launch/launch/perception.launch.xml
-index<span class="w"> </span>ffc6f908..b01f5aab<span class="w"> </span><span class="m">100644</span>
+index<span class="w"> </span>0a2ef57f6..9a9b06379<span class="w"> </span><span class="m">100644</span>
 ---<span class="w"> </span>a/launch/tier4_perception_launch/launch/perception.launch.xml
 +++<span class="w"> </span>b/launch/tier4_perception_launch/launch/perception.launch.xml
 @@<span class="w"> </span>-33,7<span class="w"> </span>+33,7<span class="w"> </span>@@
@@ -1105,7 +1109,7 @@ index<span class="w"> </span>ffc6f908..b01f5aab<span class="w"> </span><span cla
 <span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;use_pointcloud_map&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;use pointcloud map in detection&quot;</span>/&gt;
 <span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;use_object_filter&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;use object filter&quot;</span>/&gt;
 diff<span class="w"> </span>--git<span class="w"> </span>a/perception/tensorrt_yolox/launch/yolox.launch.xml<span class="w"> </span>b/perception/tensorrt_yolox/launch/yolox.launch.xml
-index<span class="w"> </span>b697b1f5..b9cb5310<span class="w"> </span><span class="m">100644</span>
+index<span class="w"> </span>b697b1f50..b9cb53102<span class="w"> </span><span class="m">100644</span>
 ---<span class="w"> </span>a/perception/tensorrt_yolox/launch/yolox.launch.xml
 +++<span class="w"> </span>b/perception/tensorrt_yolox/launch/yolox.launch.xml
 @@<span class="w"> </span>-1,7<span class="w"> </span>+1,7<span class="w"> </span>@@
@@ -1157,7 +1161,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <ol>
 <li>launch で評価ノード(<code>perception_2d_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
 <li>bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う</li>
-<li>評価ノードが/perception/object_recognition/detection/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
+<li>評価ノードが/perception/object_recognition/detection{/tracked}/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
 <p>注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。</p>
@@ -1183,6 +1187,10 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <tbody>
 <tr>
 <td>/perception/object_recognition/detection/rois0</td>
+<td>tier4_perception_msgs/msg/DetectedObjectsWithFeature</td>
+</tr>
+<tr>
+<td>/perception/object_recognition/detection/tracked/rois0</td>
 <td>tier4_perception_msgs/msg/DetectedObjectsWithFeature</td>
 </tr>
 </tbody>
