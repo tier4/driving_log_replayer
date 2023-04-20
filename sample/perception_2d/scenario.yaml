@@ -25,10 +25,12 @@ Evaluation:
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # At present, only detection2d is supported. tracking2d will be supported in future extensions.
       target_labels: [car, truck, bicycle, pedestrian, motorbike] # evaluation label
+      ignore_attributes: ["cycle_state.without_rider"] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
       center_distance_thresholds: [100, 200] # Threshold for center-to-center distance [pixel] matching
       iou_2d_thresholds: [0.5] # Threshold for 2D IoU
   CriticalObjectFilterConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike]
+    ignore_attributes: ["cycle_state.without_rider"] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
   PerceptionPassFailConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike]
     matching_threshold_list: null

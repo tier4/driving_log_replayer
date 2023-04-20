@@ -236,6 +236,7 @@ class Perception2DEvaluator(Node):
         self.__critical_object_filter_config: CriticalObjectFilterConfig = (
             CriticalObjectFilterConfig(
                 evaluator_config=evaluation_config,
+                ignore_attributes=c_cfg["ignore_attributes"],
                 target_labels=c_cfg["target_labels"],
             )
         )

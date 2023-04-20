@@ -17,6 +17,7 @@ Evaluation:
     evaluation_config_dict:
       evaluation_task: detection # detection/tracking ここで指定したobjectsを評価する
       target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
+      ignore_attributes: ["cycle_state.without_rider"] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
       max_x_position: 102.4 # 評価対象 object の最大 x 位置
       max_y_position: 102.4 # 評価対象 object の最大 y 位置
       max_distance: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
@@ -28,8 +29,9 @@ Evaluation:
       plane_distance_thresholds: [2.0, 30.0] # 平面距離マッチング時の閾値
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
       iou_3d_thresholds: [0.5] # 3D IoU マッチング時の閾値
-  CriticalObjectFilterConfig:
+  CriticalObjectFilterConfig: # 必ず検出できてほしいオブジェクトに対する config
     target_labels: [car, bicycle, pedestrian, motorbike]
+    ignore_attributes: ["cycle_state.without_rider"]
     max_x_position_list: [30.0, 30.0, 30.0, 30.0]
     max_y_position_list: [30.0, 30.0, 30.0, 30.0]
     max_distance_list: null
@@ -37,6 +39,7 @@ Evaluation:
     min_point_numbers: [0, 0, 0, 0]
     confidence_threshold_list: null
     target_uuids: null
-  PerceptionPassFailConfig:
+  PerceptionPassFailConfig: # Pass fail を決める config
     target_labels: [car, bicycle, pedestrian, motorbike]
     matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
+    confidence_threshold_list: null
