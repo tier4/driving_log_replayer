@@ -2,6 +2,18 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: tracking2d evaluation (`#142 <https://github.com/tier4/driving_log_replayer/issues/142>`_)
+  closes: `#141 <https://github.com/tier4/driving_log_replayer/issues/141>`_
+* Revert "feat: add shutdown"
+  This reverts commit e2928caf26950efccace6194dc2be48823643e30.
+* Revert "feat: check if input polygon is clockwise"
+  This reverts commit ca994e709d811816a547ed1185b2b8806fc91611.
+* feat: add shutdown
+* feat: check if input polygon is clockwise
+* Contributors: Hayato Mizushima
+
 1.3.4 (2023-04-17)
 ------------------
 * feat: update linter and formatter settings
