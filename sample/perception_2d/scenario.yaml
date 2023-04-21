@@ -14,7 +14,7 @@ Evaluation:
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
   PerceptionEvaluationConfig:
-    camera_type: cam_front # Specifies the type of camera output in /perception/object_recognition/detection/rois0.
+    camera_type: [cam_front, cam_front_right] # Describe the cameras to be evaluated in an array.
     camera_mapping: # Currently only one unit is supported, so this area is not used. For future expansion
       camera0: cam_front
       camera1: cam_front_right

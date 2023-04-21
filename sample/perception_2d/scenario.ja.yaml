@@ -14,8 +14,8 @@ Evaluation:
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
   PerceptionEvaluationConfig:
-    camera_type: cam_front # /perception/object_recognition/detection/rois0に出力されるカメラのタイプを指定する。
-    camera_mapping: # 現状は1台にしか対応してないのでここは使用されない。今後の拡張用
+    camera_type: [cam_front, cam_front_right] # 評価対象のカメラを配列で記述する
+    camera_mapping: # Describes the correspondence between the number and type of CAMERA installed in the vehicle.
       camera0: cam_front
       camera1: cam_front_right
       camera2: cam_back_right
