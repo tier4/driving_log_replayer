@@ -92,15 +92,22 @@ class Perception2DResult(ResultBase):
     def __init__(self, condition: Dict):
         super().__init__()
         self.__pass_rate = condition["PassRate"]
-        self.__success = 0
-        self.__total = 0
+        self.__target_cameras = condition["TargetCameras"]
+        self.__success = {}
+        self.__total = {}
+        self.__result = {}
+        self.__msg = {}
+        for camera_type, _ in self.__target_cameras.items():
+            self.__success[camera_type] = 0
+            self.__total[camera_type] = 0
+            self.__result[camera_type] = True
+            self.__msg[camera_type] = "NotTested"
 
     def update(self):
-        test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
-        success = test_rate >= self.__pass_rate
-        summary_str = f"{self.__success} / {self.__total } -> {test_rate:.2f}%"
-
-        if success:
+        summary_str = ""
+        for camera_type, eval_msg in self.__msg.items():
+            summary_str += f"{camera_type}: {eval_msg}"
+        if all(self.__result.values()):  # if all camera results are True
             self._success = True
             self._summary = f"Passed: {summary_str}"
         else:
@@ -108,9 +115,14 @@ class Perception2DResult(ResultBase):
             self._summary = f"Failed: {summary_str}"
 
     def add_frame(
-        self, frame: PerceptionFrameResult, skip: int, header: Header, map_to_baselink: Dict
+        self,
+        frame: PerceptionFrameResult,
+        skip: int,
+        header: Header,
+        map_to_baselink: Dict,
+        camera_type: str,
     ):
-        self.__total += 1
+        self.__total[camera_type] += 1
         has_objects = True
         if (
             frame.pass_fail_result.tp_object_results == []
@@ -125,8 +137,15 @@ class Perception2DResult(ResultBase):
             else "Fail"
         )
         if success == "Success":
-            self.__success += 1
+            self.__success[camera_type] += 1
+        test_rate = self.__success[camera_type] / self.__total[camera_type] * 100.0
+        self.__result[camera_type] = test_rate >= self.__pass_rate
+        self.__msg[
+            camera_type
+        ] = f"{ self.__success[camera_type] } / {self.__total[camera_type] } -> {test_rate:.2f}%"
+
         out_frame = {
+            "CemaraType": camera_type,
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
@@ -199,7 +218,7 @@ class Perception2DEvaluator(Node):
 
         evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
 
-        self.__camera_type_dict = p_cfg["camera_types"]
+        self.__camera_type_dict = self.__condition["TargetCameras"]
         if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
             self.get_logger().error("camera_types is not appropriate.")
             rclpy.shutdown()
@@ -234,6 +253,7 @@ class Perception2DEvaluator(Node):
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
 
         self.__subscribers = {}
+        self.__skip_counter = {}
         for camera_type, camera_no in self.__camera_type_dict.items():
             self.__subscribers[camera_type] = self.create_subscription(
                 DetectedObjectsWithFeature,
@@ -241,6 +261,7 @@ class Perception2DEvaluator(Node):
                 lambda msg: self.detected_objs_cb(msg, camera_type),
                 1,
             )
+            self.__skip_counter[camera_type] = 0
 
         self.__current_time = Time().to_msg()
         self.__prev_time = Time().to_msg()
@@ -252,7 +273,6 @@ class Perception2DEvaluator(Node):
             callback_group=self.__timer_group,
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
-        self.__skip_counter = 0
 
     def get_topic_name(self, evaluation_task: str, camera_no: int) -> str:
         if evaluation_task == "detection2d":
@@ -318,12 +338,13 @@ class Perception2DEvaluator(Node):
         return estimated_objects
 
     def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str):
+        self.get_logger().error(f"{camera_type} callback")
         map_to_baselink = self.__tf_buffer.lookup_transform("map", "base_link", msg.header.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
         if ground_truth_now_frame is None:
-            self.__skip_counter += 1
+            self.__skip_counter[camera_type] += 1
         else:
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
                 unix_time, msg.feature_objects, camera_type
@@ -343,9 +364,10 @@ class Perception2DEvaluator(Node):
             # write result
             self.__result.add_frame(
                 frame_result,
-                self.__skip_counter,
+                self.__skip_counter[camera_type],
                 msg.header,
                 transform_stamped_with_euler_angle(map_to_baselink),
+                camera_type,
             )
             self.__result_writer.write(self.__result)
 

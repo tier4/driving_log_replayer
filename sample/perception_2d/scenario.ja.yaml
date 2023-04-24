@@ -13,10 +13,10 @@ Evaluation:
         LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-  PerceptionEvaluationConfig:
-    camera_types: # 評価対象のカメラの種類をキーに、カメラの番号を値として記述する
+    TargetCameras: # 評価対象のカメラの種類をキーに、カメラの番号を値として記述する
       cam_front: 0
       cam_front_right: 1
+  PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
       target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル

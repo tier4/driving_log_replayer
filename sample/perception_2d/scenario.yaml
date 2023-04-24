@@ -13,10 +13,10 @@ Evaluation:
         LocalMapPath: $HOME/map/perception # Specify LocalMapPath for each data set.
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-  PerceptionEvaluationConfig:
-    camera_types: # Describe the cameras to be evaluated in an array adn describe camera no
+    TargetCameras: # Describe the cameras to be evaluated
       cam_front: 0
       cam_front_right: 1
+  PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # At present, only detection2d is supported. tracking2d will be supported in future extensions.
       target_labels: [car, truck, bicycle, pedestrian, motorbike] # evaluation label
