@@ -14,14 +14,9 @@ Evaluation:
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
   PerceptionEvaluationConfig:
-    camera_type: [cam_front, cam_front_right] # Describe the cameras to be evaluated in an array.
-    camera_mapping: # Currently only one unit is supported, so this area is not used. For future expansion
-      camera0: cam_front
-      camera1: cam_front_right
-      camera2: cam_back_right
-      camera3: cam_back
-      camera4: cam_back_left
-      camera5: cam_front_left
+    camera_types: # Describe the cameras to be evaluated in an array adn describe camera no
+      cam_front: 0
+      cam_front_right: 1
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # At present, only detection2d is supported. tracking2d will be supported in future extensions.
       target_labels: [car, truck, bicycle, pedestrian, motorbike] # evaluation label

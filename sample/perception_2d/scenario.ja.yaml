@@ -14,14 +14,9 @@ Evaluation:
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
   PerceptionEvaluationConfig:
-    camera_type: [cam_front, cam_front_right] # 評価対象のカメラを配列で記述する
-    camera_mapping: # Describes the correspondence between the number and type of CAMERA installed in the vehicle.
-      camera0: cam_front
-      camera1: cam_front_right
-      camera2: cam_back_right
-      camera3: cam_back
-      camera4: cam_back_left
-      camera5: cam_front_left
+    camera_types: # 評価対象のカメラの種類をキーに、カメラの番号を値として記述する
+      cam_front: 0
+      cam_front_right: 1
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
       target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル

@@ -199,23 +199,14 @@ class Perception2DEvaluator(Node):
 
         evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
 
-        self.__camera_type_list = p_cfg["camera_type"]
-        self.__camera_no_list = []
-        for camera_type in self.__camera_type_list:
-            for k, v in p_cfg["camera_mapping"].items():
-                if v == camera_type:
-                    self.__camera_no_list.append(int(k.replace("camera", "")))
-                    print(f"camera_no:{self.__camera_no}")
-                    break
-        if len(self.__camera_no_list) != len(self.__camera_type_list):
-            self.get_logger().error(
-                f"camera_type: {self.__camera_type} is not found in camera_mapping"
-            )
+        self.__camera_type_dict = p_cfg["camera_types"]
+        if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
+            self.get_logger().error("camera_types is not appropriate.")
             rclpy.shutdown()
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
-            frame_id=self.__camera_type,
+            frame_id=list(self.__camera_type_dict.keys()),
             merge_similar_labels=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
             evaluation_config_dict=p_cfg["evaluation_config_dict"],
@@ -241,12 +232,15 @@ class Perception2DEvaluator(Node):
             matching_threshold_list=f_cfg["matching_threshold_list"],
         )
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
-        self.__sub_detected_objs = self.create_subscription(
-            DetectedObjectsWithFeature,
-            get_topic_name(evaluation_task),
-            self.detected_objs_cb,
-            1,
-        )
+
+        self.__subscribers = {}
+        for camera_type, camera_no in self.__camera_type_dict.items():
+            self.__subscribers[camera_type] = self.create_subscription(
+                DetectedObjectsWithFeature,
+                self.get_topic_name(evaluation_task, camera_no),
+                lambda msg: self.detected_objs_cb(msg, camera_type),
+                1,
+            )
 
         self.__current_time = Time().to_msg()
         self.__prev_time = Time().to_msg()
@@ -259,6 +253,15 @@ class Perception2DEvaluator(Node):
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
         self.__skip_counter = 0
+
+    def get_topic_name(self, evaluation_task: str, camera_no: int) -> str:
+        if evaluation_task == "detection2d":
+            return f"/perception/object_recognition/detection/rois{camera_no}"
+        elif evaluation_task == "tracking2d":
+            return f"/perception/object_recognition/detection/tracked/rois{camera_no}"
+        else:
+            self.get_logger.error(f"invalid evaluation_task {evaluation_task}")
+            rclpy.shutdown()
 
     def timer_cb(self):
         self.__current_time = self.get_clock().now().to_msg()
@@ -290,7 +293,7 @@ class Perception2DEvaluator(Node):
                 rclpy.shutdown()
 
     def list_dynamic_object_2d_from_ros_msg(
-        self, unix_time: int, feature_objects: List[DetectedObjectWithFeature]
+        self, unix_time: int, feature_objects: List[DetectedObjectWithFeature], camera_type: str
     ) -> List[DynamicObject2D]:
         estimated_objects: List[DynamicObject2D] = []
         for perception_object in feature_objects:
@@ -305,7 +308,7 @@ class Perception2DEvaluator(Node):
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
-                frame_id=self.__camera_type,
+                frame_id=camera_type,
                 semantic_score=most_probable_classification.probability,
                 semantic_label=label,
                 roi=roi,
@@ -314,7 +317,7 @@ class Perception2DEvaluator(Node):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def detected_objs_cb(self, msg: DetectedObjectsWithFeature):
+    def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str):
         map_to_baselink = self.__tf_buffer.lookup_transform("map", "base_link", msg.header.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
@@ -323,7 +326,7 @@ class Perception2DEvaluator(Node):
             self.__skip_counter += 1
         else:
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
-                unix_time, msg.feature_objects
+                unix_time, msg.feature_objects, camera_type
             )
             ros_critical_ground_truth_objects = ground_truth_now_frame.objects
             # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
