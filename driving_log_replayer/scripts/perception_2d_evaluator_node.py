@@ -145,7 +145,7 @@ class Perception2DResult(ResultBase):
         ] = f"{ self.__success[camera_type] } / {self.__total[camera_type] } -> {test_rate:.2f}%"
 
         out_frame = {
-            "CemaraType": camera_type,
+            "CamaraType": camera_type,
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
