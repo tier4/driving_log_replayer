@@ -258,7 +258,7 @@ class Perception2DEvaluator(Node):
             self.__subscribers[camera_type] = self.create_subscription(
                 DetectedObjectsWithFeature,
                 self.get_topic_name(evaluation_task, camera_no),
-                lambda msg: self.detected_objs_cb(msg, camera_type),
+                lambda msg, local_type=camera_type: self.detected_objs_cb(msg, local_type),
                 1,
             )
             self.__skip_counter[camera_type] = 0
