@@ -50,15 +50,6 @@ from tier4_perception_msgs.msg import DetectedObjectWithFeature
 import yaml
 
 
-def get_topic_name(task: str) -> str:
-    if task == "detection2d":
-        return "/perception/object_recognition/detection/rois0"
-    elif task == "tracking2d":
-        return "/perception/object_recognition/detection/tracked/rois0"
-    else:
-        raise ValueError(f"Unexpected evaluation task: {task}")
-
-
 def get_label(classification: ObjectClassification) -> str:
     if classification.label == ObjectClassification.UNKNOWN:
         return "unknown"
@@ -208,15 +199,19 @@ class Perception2DEvaluator(Node):
 
         evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
 
-        self.__camera_type = p_cfg["camera_type"]
-        self.__camera_no = None
-        for k, v in p_cfg["camera_mapping"].items():
-            if v == self.__camera_type:
-                self.__camera_no = int(k.replace("camera", ""))
-                print(f"camera_no:{self.__camera_no}")
-                break
-        if self.__camera_no is None:
-            raise ValueError(f"camera_type: {self.__camera_type} is not found in camera_mapping")
+        self.__camera_type_list = p_cfg["camera_type"]
+        self.__camera_no_list = []
+        for camera_type in self.__camera_type_list:
+            for k, v in p_cfg["camera_mapping"].items():
+                if v == camera_type:
+                    self.__camera_no_list.append(int(k.replace("camera", "")))
+                    print(f"camera_no:{self.__camera_no}")
+                    break
+        if len(self.__camera_no_list) != len(self.__camera_type_list):
+            self.get_logger().error(
+                f"camera_type: {self.__camera_type} is not found in camera_mapping"
+            )
+            rclpy.shutdown()
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
