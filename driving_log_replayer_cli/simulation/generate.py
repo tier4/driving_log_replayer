@@ -52,7 +52,7 @@ class TestScriptGenerator:
                     command = self.__parse_scenario(dataset_path)
                     if command is not None:
                         generated_cmd += command + "\n"
-                        # echo return value of ros2 launch
+                        # echo return value of ros2 launch (0: ok, others: ng)
                         generated_cmd += "echo $?\n"
                         # kill zombie ros2 process
                         generated_cmd += 'pgrep ros | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh\n'

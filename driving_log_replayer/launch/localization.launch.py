@@ -20,10 +20,7 @@ def generate_launch_description():
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(perception="false")
     rviz_node = driving_log_replayer.launch_common.get_rviz("localization.rviz")
-    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
-        "localization", python_node=True
-    )
-    evaluator_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(evaluator_node)
+    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("localization")
     player = driving_log_replayer.launch_common.get_player()
     recorder = driving_log_replayer.launch_common.get_recorder(
         "localization.qos.yaml",
@@ -41,6 +38,5 @@ def generate_launch_description():
     )
 
     return launch.LaunchDescription(
-        launch_arguments
-        + [rviz_node, autoware_launch, evaluator_node, recorder, player, evaluator_shutdown]
+        launch_arguments + [rviz_node, autoware_launch, evaluator_node, recorder, player]
     )

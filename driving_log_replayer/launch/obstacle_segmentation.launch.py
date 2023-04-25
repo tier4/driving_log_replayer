@@ -26,10 +26,8 @@ def generate_launch_description():
     rviz_node = driving_log_replayer.launch_common.get_rviz("obstacle_segmentation.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
         "obstacle_segmentation",
-        python_node=True,
         addition_parameter={"vehicle_model": LaunchConfiguration("vehicle_model")},
     )
-    evaluator_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(evaluator_node)
     evaluator_sub_node = Node(
         package="driving_log_replayer",
         namespace="/driving_log_replayer",
@@ -66,13 +64,5 @@ def generate_launch_description():
 
     return launch.LaunchDescription(
         launch_arguments
-        + [
-            rviz_node,
-            autoware_launch,
-            evaluator_node,
-            evaluator_sub_node,
-            player,
-            recorder,
-            evaluator_shutdown,
-        ]
+        + [rviz_node, autoware_launch, evaluator_node, evaluator_sub_node, player, recorder]
     )
