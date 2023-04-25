@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.6 (2023-04-25)
+------------------
 * feat: use on_exit delete event handler
 * Contributors: Hayato Mizushima
 
