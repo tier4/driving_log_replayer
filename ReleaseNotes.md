@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.6
+
+Minor Tweak
+
+| Module | Feature | Brief summary                        | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | launch  | use on_exit and delete event handler | [#151](https://github.com/tier4/driving_log_replayer/pull/151) | RT4-4162 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.5
 
 Minor Tweak
