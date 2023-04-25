@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.6 (2023-04-25)
+------------------
+* feat: use on_exit delete event handler
+* Contributors: Hayato Mizushima
+
 1.3.5 (2023-04-20)
 ------------------
 * feat: tracking2d evaluation (`#142 <https://github.com/tier4/driving_log_replayer/issues/142>`_)
