@@ -106,13 +106,13 @@ class Perception2DResult(ResultBase):
     def update(self):
         summary_str = ""
         for camera_type, eval_msg in self.__msg.items():
-            summary_str += f"{camera_type}: {eval_msg}"
+            summary_str += f" {camera_type}: {eval_msg}"
         if all(self.__result.values()):  # if all camera results are True
             self._success = True
-            self._summary = f"Passed: {summary_str}"
+            self._summary = f"Passed:{summary_str}"
         else:
             self._success = False
-            self._summary = f"Failed: {summary_str}"
+            self._summary = f"Failed:{summary_str}"
 
     def add_frame(
         self,
@@ -142,7 +142,7 @@ class Perception2DResult(ResultBase):
         self.__result[camera_type] = test_rate >= self.__pass_rate
         self.__msg[
             camera_type
-        ] = f"{ self.__success[camera_type] } / {self.__total[camera_type] } -> {test_rate:.2f}%"
+        ] = f"{self.__success[camera_type]} / {self.__total[camera_type]} -> {test_rate:.2f}%"
 
         out_frame = {
             "CameraType": camera_type,
@@ -338,7 +338,7 @@ class Perception2DEvaluator(Node):
         return estimated_objects
 
     def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str):
-        self.get_logger().error(f"{camera_type} callback")
+        # self.get_logger().error(f"{camera_type} callback")
         map_to_baselink = self.__tf_buffer.lookup_transform("map", "base_link", msg.header.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
