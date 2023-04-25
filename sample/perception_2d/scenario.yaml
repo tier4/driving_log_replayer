@@ -13,7 +13,7 @@ Evaluation:
         LocalMapPath: $HOME/map/perception # Specify LocalMapPath for each data set.
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-    TargetCameras: # Describe the cameras to be evaluated
+    TargetCameras: # Describes the type of camera to be evaluated as a key and the camera number as a value.
       cam_front: 0
       cam_front_right: 1
   PerceptionEvaluationConfig:
