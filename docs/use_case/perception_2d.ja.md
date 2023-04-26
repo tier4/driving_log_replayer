@@ -4,8 +4,6 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-現状、カメラの台数は 1 台にしか対応していない。
-
 ## 事前準備
 
 ### モデルの変換
@@ -93,33 +91,6 @@ index b697b1f50..b9cb53102 100644
      <param name="model_path" value="$(var model_path)/$(var model_name).onnx"/>
 ```
 
-現状だと 0 番のカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例
-
-```shell
---- a/launch/tier4_perception_launch/launch/perception.launch.xml
-+++ b/launch/tier4_perception_launch/launch/perception.launch.xml
-@@ -17,14 +17,14 @@
-   <arg name="input/pointcloud" default="/sensing/lidar/concatenated/pointcloud" description="The topic will be used in the detection module"/>
-   <arg name="mode" default="camera_lidar_fusion" description="options: `camera_lidar_radar_fusion`, `camera_lidar_fusion`, `lidar_radar_fusion`, `lidar` or `radar`"/>
-   <arg name="lidar_detection_model" default="centerpoint" description="options: `centerpoint`, `apollo`, `pointpainting`, `clustering`"/>
--  <arg name="image_raw0" default="/sensing/camera/camera0/image_rect_color" description="image raw topic name"/>
--  <arg name="camera_info0" default="/sensing/camera/camera0/camera_info" description="camera info topic name"/>
-+  <arg name="image_raw0" default="/sensing/camera/camera3/image_rect_color" description="image raw topic name"/>
-+  <arg name="camera_info0" default="/sensing/camera/camera3/camera_info" description="camera info topic name"/>
-   <arg name="image_raw1" default="/sensing/camera/camera1/image_rect_color"/>
-   <arg name="camera_info1" default="/sensing/camera/camera1/camera_info"/>
-   <arg name="image_raw2" default="/sensing/camera/camera2/image_rect_color"/>
-   <arg name="camera_info2" default="/sensing/camera/camera2/camera_info"/>
--  <arg name="image_raw3" default="/sensing/camera/camera3/image_rect_color"/>
--  <arg name="camera_info3" default="/sensing/camera/camera3/camera_info"/>
-+  <arg name="image_raw3" default="/sensing/camera/camera0/image_rect_color"/>
-+  <arg name="camera_info3" default="/sensing/camera/camera0/camera_info"/>
-   <arg name="image_raw4" default="/sensing/camera/camera4/image_rect_color"/>
-   <arg name="camera_info4" default="/sensing/camera/camera4/camera_info"/>
-   <arg name="image_raw5" default="/sensing/camera/camera5/image_rect_color"/>
-@@ -33,7 +33,7 @@
-```
-
 ## 評価方法
 
 `perception.launch_2d.py` を使用して評価する。
@@ -127,10 +98,8 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う
-3. 評価ノードが/perception/object_recognition/detection{/tracked}/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
+3. 評価ノードが/perception/object_recognition/detection{/tracked}/rois{camera_no} を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
-
-注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。
 
 ## 評価結果
 
@@ -151,10 +120,10 @@ perception_eval の評価関数を実行して以下の条件を満たすとき
 
 Subscribed topics:
 
-| topic 名                                               | データ型                                             |
-| ------------------------------------------------------ | ---------------------------------------------------- |
-| /perception/object_recognition/detection/rois0         | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
-| /perception/object_recognition/detection/tracked/rois0 | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| topic 名                                                         | データ型                                             |
+| ---------------------------------------------------------------- | ---------------------------------------------------- |
+| /perception/object_recognition/detection/rois{camera_no}         | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
+| /perception/object_recognition/detection/tracked/rois{camera_no} | tier4_perception_msgs/msg/DetectedObjectsWithFeature |
 
 Published topics:
 
@@ -273,6 +242,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
 ```json
 {
   "Frame": {
+    "CameraType": "評価したカメラ",
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
     "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
     "PassFail": {
