@@ -165,7 +165,7 @@ ObstacleSegmentationEvaluatorComponent::getProposedArea(const YAML::Node & propo
   yaml_poly = proposed_area["polygon_2d"].as<std::vector<std::pair<double, double>>>();
   double check_clock_wise = 0;
 
-  for (long unsigned int i = 0; i < yaml_poly.size(); i++) {
+  for (unsigned int i = 0; i < yaml_poly.size(); i++) {
     auto p1 = yaml_poly[i];
     auto p2 = yaml_poly[(i + 1) % yaml_poly.size()];  // 最後のループで次の点は0に戻す
     check_clock_wise += (p2.first - p1.first) * (p2.second + p1.second);
