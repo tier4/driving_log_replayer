@@ -280,7 +280,9 @@ class PerceptionEvaluator(Node):
         )  # wall timer
         self.__skip_counter = 0
 
-    def get_frame_id_and_msg_type(self, evaluation_task: str) -> Tuple[str, Union[DetectedObjects, TrackedObjects]]:
+    def get_frame_id_and_msg_type(
+        self, evaluation_task: str
+    ) -> Tuple[str, Union[DetectedObjects, TrackedObjects]]:
         if evaluation_task == "detection":
             return "base_link", DetectedObjects
         elif evaluation_task == "tracking":
