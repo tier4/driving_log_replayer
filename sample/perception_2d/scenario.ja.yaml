@@ -13,15 +13,10 @@ Evaluation:
         LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    TargetCameras: # 評価対象のカメラの種類をキーに、カメラの番号を値として記述する
+      cam_front: 0
+      cam_front_right: 1
   PerceptionEvaluationConfig:
-    camera_type: cam_front # /perception/object_recognition/detection/rois0に出力されるカメラのタイプを指定する。
-    camera_mapping: # 現状は1台にしか対応してないのでここは使用されない。今後の拡張用
-      camera0: cam_front
-      camera1: cam_front_right
-      camera2: cam_back_right
-      camera3: cam_back
-      camera4: cam_back_left
-      camera5: cam_front_left
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
       target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル
