@@ -342,7 +342,7 @@ class PerceptionEvaluator(Node):
                 perception_object.classification
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                name=get_label(most_probable_classification), attributes=[]
+                name=get_label(most_probable_classification)
             )
 
             uuid = None
