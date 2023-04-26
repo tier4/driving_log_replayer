@@ -35,6 +35,7 @@ def generate_launch_description():
         output="screen",
         name="obstacle_segmentation_sub",
         parameters=[{"use_sim_time": True, "scenario_path": LaunchConfiguration("scenario_path")}],
+        on_exit=launch.actions.Shutdown(),
     )
     player = driving_log_replayer.launch_common.get_player(
         additional_argument=[
