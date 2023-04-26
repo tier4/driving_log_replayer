@@ -236,6 +236,7 @@ class Perception2DEvaluator(Node):
         self.__critical_object_filter_config: CriticalObjectFilterConfig = (
             CriticalObjectFilterConfig(
                 evaluator_config=evaluation_config,
+                ignore_attributes=c_cfg["ignore_attributes"],
                 target_labels=c_cfg["target_labels"],
             )
         )
@@ -303,7 +304,7 @@ class Perception2DEvaluator(Node):
                 perception_object.object.classification
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                label=get_label(most_probable_classification)
+                name=get_label(most_probable_classification)
             )
             obj_roi = perception_object.feature.roi
             roi = obj_roi.x_offset, obj_roi.y_offset, obj_roi.width, obj_roi.height

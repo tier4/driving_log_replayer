@@ -260,6 +260,7 @@ class PerceptionEvaluator(Node):
             CriticalObjectFilterConfig(
                 evaluator_config=evaluation_config,
                 target_labels=c_cfg["target_labels"],
+                ignore_attributes=c_cfg["ignore_attributes"],
                 max_x_position_list=c_cfg["max_x_position_list"],
                 max_y_position_list=c_cfg["max_y_position_list"],
                 max_distance_list=c_cfg["max_distance_list"],
@@ -274,6 +275,7 @@ class PerceptionEvaluator(Node):
             evaluator_config=evaluation_config,
             target_labels=f_cfg["target_labels"],
             matching_threshold_list=f_cfg["matching_threshold_list"],
+            confidence_threshold_list=f_cfg["confidence_threshold_list"],
         )
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
         self.__sub_perception = self.create_subscription(
@@ -340,7 +342,7 @@ class PerceptionEvaluator(Node):
                 perception_object.classification
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                label=get_label(most_probable_classification)
+                name=get_label(most_probable_classification)
             )
 
             uuid = None
