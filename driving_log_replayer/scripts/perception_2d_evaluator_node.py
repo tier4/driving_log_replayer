@@ -97,7 +97,7 @@ class Perception2DResult(ResultBase):
         self.__total = {}
         self.__result = {}
         self.__msg = {}
-        for camera_type, _ in self.__target_cameras.items():
+        for camera_type in self.__target_cameras.keys():
             self.__success[camera_type] = 0
             self.__total[camera_type] = 0
             self.__result[camera_type] = True
