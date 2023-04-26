@@ -13,22 +13,19 @@ Evaluation:
         LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    TargetCameras: # 評価対象のカメラの種類をキーに、カメラの番号を値として記述する
+      cam_front: 0
+      cam_front_right: 1
   PerceptionEvaluationConfig:
-    camera_type: cam_front # /perception/object_recognition/detection/rois0に出力されるカメラのタイプを指定する。
-    camera_mapping: # 現状は1台にしか対応してないのでここは使用されない。今後の拡張用
-      camera0: cam_front
-      camera1: cam_front_right
-      camera2: cam_back_right
-      camera3: cam_back
-      camera4: cam_back_left
-      camera5: cam_front_left
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
       target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル
+      ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
       center_distance_thresholds: [100, 200] # 中心間距離マッチング時の閾値。カメラ画像上のピクセルで指定する
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
   CriticalObjectFilterConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価対象ラベル名
+    ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
   PerceptionPassFailConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike]
     matching_threshold_list: null

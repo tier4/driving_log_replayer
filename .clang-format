@@ -4,6 +4,7 @@ BasedOnStyle: Google
 
 AccessModifierOffset: -2
 AlignAfterOpenBracket: AlwaysBreak
+AllowShortFunctionsOnASingleLine: InlineOnly
 BraceWrapping:
   AfterClass: true
   AfterFunction: true
@@ -31,6 +32,9 @@ IncludeCategories:
     CaseSensitive: true
   # Message headers
   - Regex: .*_msgs/.*
+    Priority: 3
+    CaseSensitive: true
+  - Regex: .*_srvs/.*
     Priority: 3
     CaseSensitive: true
   # Other Package headers
