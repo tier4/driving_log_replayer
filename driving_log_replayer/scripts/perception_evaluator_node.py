@@ -57,25 +57,6 @@ from visualization_msgs.msg import MarkerArray
 import yaml
 
 
-def get_frame_id(task: str) -> str:
-    if task == "detection":
-        frame_id = "base_link"
-    elif task == "tracking":
-        frame_id = "map"
-    else:
-        raise ValueError(f"Unexpected evaluation task: {task}")
-    return frame_id
-
-
-def get_perception_msg_type(evaluation_task: str):
-    if evaluation_task == "detection":
-        return DetectedObjects
-    elif evaluation_task == "tracking":
-        return TrackedObjects
-    else:
-        raise ValueError(f"Unexpected evaluation task: {evaluation_task}")
-
-
 def get_label(classification: ObjectClassification) -> str:
     if classification.label == ObjectClassification.UNKNOWN:
         return "unknown"
@@ -239,7 +220,7 @@ class PerceptionEvaluator(Node):
         f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
         evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
-        frame_id = get_frame_id(evaluation_task)
+        frame_id, msg_type = self.get_frame_id_and_msg_type(evaluation_task)
         self.__frame_id = FrameID.from_value(frame_id)
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
@@ -260,6 +241,7 @@ class PerceptionEvaluator(Node):
             CriticalObjectFilterConfig(
                 evaluator_config=evaluation_config,
                 target_labels=c_cfg["target_labels"],
+                ignore_attributes=c_cfg["ignore_attributes"],
                 max_x_position_list=c_cfg["max_x_position_list"],
                 max_y_position_list=c_cfg["max_y_position_list"],
                 max_distance_list=c_cfg["max_distance_list"],
@@ -274,10 +256,11 @@ class PerceptionEvaluator(Node):
             evaluator_config=evaluation_config,
             target_labels=f_cfg["target_labels"],
             matching_threshold_list=f_cfg["matching_threshold_list"],
+            confidence_threshold_list=f_cfg["confidence_threshold_list"],
         )
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
         self.__sub_perception = self.create_subscription(
-            get_perception_msg_type(evaluation_task),
+            msg_type,
             "/perception/object_recognition/" + evaluation_task + "/objects",
             self.perception_cb,
             1,
@@ -298,6 +281,17 @@ class PerceptionEvaluator(Node):
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
         self.__skip_counter = 0
+
+    def get_frame_id_and_msg_type(
+        self, evaluation_task: str
+    ) -> Tuple[str, Union[DetectedObjects, TrackedObjects]]:
+        if evaluation_task == "detection":
+            return "base_link", DetectedObjects
+        elif evaluation_task == "tracking":
+            return "map", TrackedObjects
+        else:
+            self.get_logger().error(f"Unexpected evaluation task: {evaluation_task}")
+            rclpy.shutdown()
 
     def timer_cb(self):
         self.__current_time = self.get_clock().now().to_msg()
@@ -340,7 +334,7 @@ class PerceptionEvaluator(Node):
                 perception_object.classification
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                label=get_label(most_probable_classification)
+                name=get_label(most_probable_classification)
             )
 
             uuid = None

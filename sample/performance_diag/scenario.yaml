@@ -9,7 +9,7 @@ Evaluation:
   UseCaseName: performance_diag
   UseCaseFormatVersion: 1.0.0
   LaunchLocalization: false # If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.
-  InitialPose: null # Specifies the initial pose; only works when LaunchLocalization is enabled.
+  InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed. This key only works when LaunchLocalization is enabled.
   Conditions:
     LiDAR:
       Visibility:

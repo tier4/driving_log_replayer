@@ -88,6 +88,7 @@ Published topics:
 
 autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
 
+- perception: false
 - planning: false
 - control: false
 

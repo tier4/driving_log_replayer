@@ -32,10 +32,7 @@ def generate_launch_description():
         perception_mode="camera_lidar_fusion",
     )
     rviz_node = driving_log_replayer.launch_common.get_rviz("perception.rviz")
-    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
-        "perception_2d", python_node=True
-    )
-    evaluator_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(evaluator_node)
+    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("perception_2d")
 
     play_cmd = [
         "ros2",
@@ -76,13 +73,5 @@ def generate_launch_description():
 
     return launch.LaunchDescription(
         launch_arguments
-        + [
-            rviz_node,
-            autoware_launch,
-            evaluator_node,
-            player_normal,
-            player_remap,
-            recorder,
-            evaluator_shutdown,
-        ]
+        + [rviz_node, autoware_launch, evaluator_node, player_normal, player_remap, recorder]
     )

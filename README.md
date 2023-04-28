@@ -1,10 +1,10 @@
-# Driving Log Replayer for ROS2 Autoware.Universe
+# Driving Log Replayer for ROS 2 Autoware.Universe
 
 Driving Log Replayer is a ROS package that evaluates the functionality of Autoware.Universe
 
 ## Requirements
 
-- ROS2 galactic / humble
+- ROS 2 galactic / humble
 - [Python 3.8 / 3.10](https://www.python.org/)
 - [pipx](https://pipxproject.github.io/pipx/)
   - **Please do not install pipx using apt**

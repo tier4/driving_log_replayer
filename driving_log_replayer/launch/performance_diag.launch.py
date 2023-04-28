@@ -32,10 +32,8 @@ def generate_launch_description():
     rviz_node = driving_log_replayer.launch_common.get_rviz("autoware.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
         "performance_diag",
-        python_node=True,
         addition_parameter={"localization": LaunchConfiguration("localization")},
     )
-    evaluator_shutdown = driving_log_replayer.launch_common.get_evaluator_shutdown(evaluator_node)
 
     play_cmd = [
         "ros2",
@@ -70,13 +68,5 @@ def generate_launch_description():
     )
     return launch.LaunchDescription(
         launch_arguments
-        + [
-            rviz_node,
-            autoware_launch,
-            evaluator_node,
-            recorder,
-            player_normal,
-            player_remap,
-            evaluator_shutdown,
-        ]
+        + [rviz_node, autoware_launch, evaluator_node, recorder, player_normal, player_remap]
     )

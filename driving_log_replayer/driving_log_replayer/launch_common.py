@@ -130,10 +130,9 @@ def get_autoware_launch(
     return autoware_launch
 
 
-def get_rviz(rviz_config_name: str, package_name: str = "driving_log_replayer"):
-    # if you use plugin package set package_name
+def get_rviz(rviz_config_name: str):
     rviz_config_dir = os.path.join(
-        get_package_share_directory(package_name), "config", rviz_config_name
+        get_package_share_directory("driving_log_replayer"), "config", rviz_config_name
     )
     rviz_node = Node(
         package="rviz2",
@@ -149,9 +148,8 @@ def get_rviz(rviz_config_name: str, package_name: str = "driving_log_replayer"):
 
 def get_evaluator_node(
     usecase_name: str,
-    package_name: str = "driving_log_replayer",
     addition_parameter=None,
-    python_node=False,
+    python_node=True,
 ):
     params = {
         "use_sim_time": True,
@@ -168,26 +166,15 @@ def get_evaluator_node(
         node_name += ".py"
 
     evaluator_node = Node(
-        package=package_name,
+        package="driving_log_replayer",
         namespace="/driving_log_replayer",
         executable=node_name,
         output="screen",
         name=usecase_name + "_evaluator",
         parameters=[params],
+        on_exit=launch.actions.Shutdown(),
     )
     return evaluator_node
-
-
-def get_evaluator_shutdown(target_node):
-    return launch.actions.RegisterEventHandler(
-        event_handler=launch.event_handlers.OnProcessExit(
-            target_action=target_node,
-            on_exit=[
-                launch.actions.LogInfo(msg="shutdown launch"),
-                launch.actions.EmitEvent(event=launch.events.Shutdown()),
-            ],
-        )
-    )
 
 
 def get_recorder(record_config_name: str, record_topics: list):
@@ -249,7 +236,6 @@ def get_player(additional_argument=None):
 
 def get_evaluator_container(
     usecase_name: str,
-    package_name: str = "driving_log_replayer",
     addition_parameter=None,
 ):
     params = {
@@ -263,7 +249,7 @@ def get_evaluator_container(
         params.update(addition_parameter)
 
     evaluator_node = ComposableNode(
-        package=package_name,
+        package="driving_log_replayer",
         plugin="driving_log_replayer::" + snake_to_pascal(usecase_name) + "EvaluatorComponent",
         namespace="/driving_log_replayer",
         name=usecase_name + "_evaluator",
@@ -287,7 +273,7 @@ def add_container_argument(launch_arguments: list):
         DeclareLaunchArgument(
             "use_intra_process",
             default_value="false",
-            description="use ROS2 component container communication",
+            description="use ROS 2 component container communication",
         )
     )
     return launch_arguments

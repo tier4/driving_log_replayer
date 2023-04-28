@@ -2,6 +2,51 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.6 (2023-04-25)
+------------------
+* feat: use on_exit delete event handler
+* Contributors: Hayato Mizushima
+
+1.3.5 (2023-04-20)
+------------------
+* feat: tracking2d evaluation (`#142 <https://github.com/tier4/driving_log_replayer/issues/142>`_)
+  closes: `#141 <https://github.com/tier4/driving_log_replayer/issues/141>`_
+* Revert "feat: add shutdown"
+  This reverts commit e2928caf26950efccace6194dc2be48823643e30.
+* Revert "feat: check if input polygon is clockwise"
+  This reverts commit ca994e709d811816a547ed1185b2b8806fc91611.
+* feat: add shutdown
+* feat: check if input polygon is clockwise
+* Contributors: Hayato Mizushima
+
+1.3.4 (2023-04-17)
+------------------
+* feat: update linter and formatter settings
+* docs: update sample scenario
+* Contributors: Hayato Mizushima
+
+1.3.3 (2023-04-03)
+------------------
+* feat(diag): delete fit map height service call
+* Contributors: Hayato Mizushima
+
+1.3.2 (2023-03-30)
+------------------
+* chore: fix result.jsonl msg format
+* Contributors: Hayato Mizushima
+
+1.3.1 (2023-03-28)
+------------------
+* fix: disable perception in localization launch (`#132 <https://github.com/tier4/driving_log_replayer/issues/132>`_)
+  closes: `#131 <https://github.com/tier4/driving_log_replayer/issues/131>`_
+* Contributors: Hayato Mizushima
+
+1.3.0 (2023-03-24)
+------------------
+* feat: delete fit_map_height service call (`#129 <https://github.com/tier4/driving_log_replayer/issues/129>`_)
+  closes: `#128 <https://github.com/tier4/driving_log_replayer/issues/128>`_
+* Contributors: Hayato Mizushima
+
 1.2.0 (2023-03-23)
 ------------------
 * feat: `#104 <https://github.com/tier4/driving_log_replayer/issues/104>`_ 2d perception (`#122 <https://github.com/tier4/driving_log_replayer/issues/122>`_)
