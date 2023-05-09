@@ -279,7 +279,7 @@ class Perception2DEvaluator(Node):
             )  # wall timer
         except KeyError:
             # Immediate termination if the scenario does not contain the required items and is incompatible.
-            self.get_logger().error("Scenario format erorr.")
+            self.get_logger().error("Scenario format error.")
             rclpy.shutdown()
 
     def get_topic_name(self, evaluation_task: str, camera_no: int) -> str:

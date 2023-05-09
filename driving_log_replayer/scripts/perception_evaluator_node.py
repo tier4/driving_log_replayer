@@ -286,7 +286,7 @@ class PerceptionEvaluator(Node):
             self.__skip_counter = 0
         except KeyError:
             # Immediate termination if the scenario does not contain the required items and is incompatible.
-            self.get_logger().error("Scenario format erorr.")
+            self.get_logger().error("Scenario format error.")
             rclpy.shutdown()
 
     def get_frame_id_and_msg_type(
