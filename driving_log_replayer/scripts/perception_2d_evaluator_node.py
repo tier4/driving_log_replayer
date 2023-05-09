@@ -205,75 +205,82 @@ class Perception2DEvaluator(Node):
             "perception_eval_log"
         ).as_posix()
 
-        self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-        self.__result = Perception2DResult(self.__condition)
+        try:
+            self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
+            self.__result = Perception2DResult(self.__condition)
 
-        self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), self.__condition
-        )
+            self.__result_writer = ResultWriter(
+                self.__result_json_path, self.get_clock(), self.__condition
+            )
 
-        p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
-        c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
-        f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
+            p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
+            c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
+            f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
-        evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
 
-        self.__camera_type_dict = self.__condition["TargetCameras"]
-        if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
-            self.get_logger().error("camera_types is not appropriate.")
-            rclpy.shutdown()
+            self.__camera_type_dict = self.__condition["TargetCameras"]
+            if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
+                self.get_logger().error("camera_types is not appropriate.")
+                rclpy.shutdown()
 
-        evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
-            dataset_paths=self.__t4_dataset_paths,
-            frame_id=list(self.__camera_type_dict.keys()),
-            merge_similar_labels=False,
-            result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
-            evaluation_config_dict=p_cfg["evaluation_config_dict"],
-            label_prefix="autoware",
-            load_raw_data=False,
-        )
-        _ = configure_logger(
-            log_file_directory=evaluation_config.log_directory,
-            console_log_level=logging.INFO,
-            file_log_level=logging.INFO,
-        )
-        # どれを注目物体とするかのparam
-        self.__critical_object_filter_config: CriticalObjectFilterConfig = (
-            CriticalObjectFilterConfig(
+            evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
+                dataset_paths=self.__t4_dataset_paths,
+                frame_id=list(self.__camera_type_dict.keys()),
+                merge_similar_labels=False,
+                result_root_directory=os.path.join(
+                    self.__perception_eval_log_path, "result", "{TIME}"
+                ),
+                evaluation_config_dict=p_cfg["evaluation_config_dict"],
+                label_prefix="autoware",
+                load_raw_data=False,
+            )
+            _ = configure_logger(
+                log_file_directory=evaluation_config.log_directory,
+                console_log_level=logging.INFO,
+                file_log_level=logging.INFO,
+            )
+            # どれを注目物体とするかのparam
+            self.__critical_object_filter_config: CriticalObjectFilterConfig = (
+                CriticalObjectFilterConfig(
+                    evaluator_config=evaluation_config,
+                    ignore_attributes=c_cfg["ignore_attributes"],
+                    target_labels=c_cfg["target_labels"],
+                )
+            )
+            # Pass fail を決めるパラメータ
+            self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
                 evaluator_config=evaluation_config,
-                ignore_attributes=c_cfg["ignore_attributes"],
-                target_labels=c_cfg["target_labels"],
+                target_labels=f_cfg["target_labels"],
+                matching_threshold_list=f_cfg["matching_threshold_list"],
             )
-        )
-        # Pass fail を決めるパラメータ
-        self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
-            evaluator_config=evaluation_config,
-            target_labels=f_cfg["target_labels"],
-            matching_threshold_list=f_cfg["matching_threshold_list"],
-        )
-        self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
+            self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
 
-        self.__subscribers = {}
-        self.__skip_counter = {}
-        for camera_type, camera_no in self.__camera_type_dict.items():
-            self.__subscribers[camera_type] = self.create_subscription(
-                DetectedObjectsWithFeature,
-                self.get_topic_name(evaluation_task, camera_no),
-                lambda msg, local_type=camera_type: self.detected_objs_cb(msg, local_type),
-                1,
-            )
-            self.__skip_counter[camera_type] = 0
+            self.__subscribers = {}
+            self.__skip_counter = {}
+            for camera_type, camera_no in self.__camera_type_dict.items():
+                self.__subscribers[camera_type] = self.create_subscription(
+                    DetectedObjectsWithFeature,
+                    self.get_topic_name(evaluation_task, camera_no),
+                    lambda msg, local_type=camera_type: self.detected_objs_cb(msg, local_type),
+                    1,
+                )
+                self.__skip_counter[camera_type] = 0
 
-        self.__current_time = Time().to_msg()
-        self.__prev_time = Time().to_msg()
+            self.__current_time = Time().to_msg()
+            self.__prev_time = Time().to_msg()
 
-        self.__counter = 0
-        self.__timer = self.create_timer(
-            1.0,
-            self.timer_cb,
-            callback_group=self.__timer_group,
-            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
-        )  # wall timer
+            self.__counter = 0
+            self.__timer = self.create_timer(
+                1.0,
+                self.timer_cb,
+                callback_group=self.__timer_group,
+                clock=Clock(clock_type=ClockType.SYSTEM_TIME),
+            )  # wall timer
+        except KeyError:
+            # Immediate termination if the scenario does not contain the required items and is incompatible.
+            self.get_logger().error("Scenario format erorr.")
+            rclpy.shutdown()
 
     def get_topic_name(self, evaluation_task: str, camera_no: int) -> str:
         if evaluation_task == "detection2d":
