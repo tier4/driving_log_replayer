@@ -208,79 +208,86 @@ class PerceptionEvaluator(Node):
             "perception_eval_log"
         ).as_posix()
 
-        self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-        self.__result = PerceptionResult(self.__condition)
+        try:
+            self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
+            self.__result = PerceptionResult(self.__condition)
 
-        self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), self.__condition
-        )
-
-        p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
-        c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
-        f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
-
-        evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
-        frame_id, msg_type = self.get_frame_id_and_msg_type(evaluation_task)
-        self.__frame_id = FrameID.from_value(frame_id)
-
-        evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
-            dataset_paths=self.__t4_dataset_paths,
-            frame_id=frame_id,
-            merge_similar_labels=False,
-            result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
-            evaluation_config_dict=p_cfg["evaluation_config_dict"],
-            load_raw_data=False,
-        )
-        _ = configure_logger(
-            log_file_directory=evaluation_config.log_directory,
-            console_log_level=logging.INFO,
-            file_log_level=logging.INFO,
-        )
-        # どれを注目物体とするかのparam
-        self.__critical_object_filter_config: CriticalObjectFilterConfig = (
-            CriticalObjectFilterConfig(
-                evaluator_config=evaluation_config,
-                target_labels=c_cfg["target_labels"],
-                ignore_attributes=c_cfg["ignore_attributes"],
-                max_x_position_list=c_cfg["max_x_position_list"],
-                max_y_position_list=c_cfg["max_y_position_list"],
-                max_distance_list=c_cfg["max_distance_list"],
-                min_distance_list=c_cfg["min_distance_list"],
-                min_point_numbers=c_cfg["min_point_numbers"],
-                confidence_threshold_list=c_cfg["confidence_threshold_list"],
-                target_uuids=c_cfg["target_uuids"],
+            self.__result_writer = ResultWriter(
+                self.__result_json_path, self.get_clock(), self.__condition
             )
-        )
-        # Pass fail を決めるパラメータ
-        self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
-            evaluator_config=evaluation_config,
-            target_labels=f_cfg["target_labels"],
-            matching_threshold_list=f_cfg["matching_threshold_list"],
-            confidence_threshold_list=f_cfg["confidence_threshold_list"],
-        )
-        self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
-        self.__sub_perception = self.create_subscription(
-            msg_type,
-            "/perception/object_recognition/" + evaluation_task + "/objects",
-            self.perception_cb,
-            1,
-        )
-        self.__pub_marker_ground_truth = self.create_publisher(
-            MarkerArray, "marker/ground_truth", 1
-        )
-        self.__pub_marker_results = self.create_publisher(MarkerArray, "marker/results", 1)
 
-        self.__current_time = Time().to_msg()
-        self.__prev_time = Time().to_msg()
+            p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
+            c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
+            f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
-        self.__counter = 0
-        self.__timer = self.create_timer(
-            1.0,
-            self.timer_cb,
-            callback_group=self.__timer_group,
-            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
-        )  # wall timer
-        self.__skip_counter = 0
+            evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            frame_id, msg_type = self.get_frame_id_and_msg_type(evaluation_task)
+            self.__frame_id = FrameID.from_value(frame_id)
+
+            evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
+                dataset_paths=self.__t4_dataset_paths,
+                frame_id=frame_id,
+                merge_similar_labels=False,
+                result_root_directory=os.path.join(
+                    self.__perception_eval_log_path, "result", "{TIME}"
+                ),
+                evaluation_config_dict=p_cfg["evaluation_config_dict"],
+                load_raw_data=False,
+            )
+            _ = configure_logger(
+                log_file_directory=evaluation_config.log_directory,
+                console_log_level=logging.INFO,
+                file_log_level=logging.INFO,
+            )
+            # どれを注目物体とするかのparam
+            self.__critical_object_filter_config: CriticalObjectFilterConfig = (
+                CriticalObjectFilterConfig(
+                    evaluator_config=evaluation_config,
+                    target_labels=c_cfg["target_labels"],
+                    ignore_attributes=c_cfg["ignore_attributes"],
+                    max_x_position_list=c_cfg["max_x_position_list"],
+                    max_y_position_list=c_cfg["max_y_position_list"],
+                    max_distance_list=c_cfg["max_distance_list"],
+                    min_distance_list=c_cfg["min_distance_list"],
+                    min_point_numbers=c_cfg["min_point_numbers"],
+                    confidence_threshold_list=c_cfg["confidence_threshold_list"],
+                    target_uuids=c_cfg["target_uuids"],
+                )
+            )
+            # Pass fail を決めるパラメータ
+            self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
+                evaluator_config=evaluation_config,
+                target_labels=f_cfg["target_labels"],
+                matching_threshold_list=f_cfg["matching_threshold_list"],
+                confidence_threshold_list=f_cfg["confidence_threshold_list"],
+            )
+            self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
+            self.__sub_perception = self.create_subscription(
+                msg_type,
+                "/perception/object_recognition/" + evaluation_task + "/objects",
+                self.perception_cb,
+                1,
+            )
+            self.__pub_marker_ground_truth = self.create_publisher(
+                MarkerArray, "marker/ground_truth", 1
+            )
+            self.__pub_marker_results = self.create_publisher(MarkerArray, "marker/results", 1)
+
+            self.__current_time = Time().to_msg()
+            self.__prev_time = Time().to_msg()
+
+            self.__counter = 0
+            self.__timer = self.create_timer(
+                1.0,
+                self.timer_cb,
+                callback_group=self.__timer_group,
+                clock=Clock(clock_type=ClockType.SYSTEM_TIME),
+            )  # wall timer
+            self.__skip_counter = 0
+        except KeyError:
+            # Immediate termination if the scenario does not contain the required items and is incompatible.
+            self.get_logger().error("Scenario format error.")
+            rclpy.shutdown()
 
     def get_frame_id_and_msg_type(
         self, evaluation_task: str

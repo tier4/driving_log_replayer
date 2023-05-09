@@ -172,65 +172,72 @@ class TrafficLightEvaluator(Node):
             "perception_eval_log"
         ).as_posix()
 
-        self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-        self.__result = TrafficLightResult(self.__condition)
+        try:
+            self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
+            self.__result = TrafficLightResult(self.__condition)
 
-        self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), self.__condition
-        )
-
-        p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
-        c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
-        f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
-
-        self.__camera_type = p_cfg["camera_type"]
-
-        evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
-            dataset_paths=self.__t4_dataset_paths,
-            frame_id=self.__camera_type,
-            merge_similar_labels=False,
-            result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
-            evaluation_config_dict=p_cfg["evaluation_config_dict"],
-            label_prefix="traffic_light",
-            load_raw_data=False,
-        )
-        _ = configure_logger(
-            log_file_directory=evaluation_config.log_directory,
-            console_log_level=logging.INFO,
-            file_log_level=logging.INFO,
-        )
-        # どれを注目物体とするかのparam
-        self.__critical_object_filter_config: CriticalObjectFilterConfig = (
-            CriticalObjectFilterConfig(
-                evaluator_config=evaluation_config,
-                target_labels=c_cfg["target_labels"],
+            self.__result_writer = ResultWriter(
+                self.__result_json_path, self.get_clock(), self.__condition
             )
-        )
-        # Pass fail を決めるパラメータ
-        self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
-            evaluator_config=evaluation_config,
-            target_labels=f_cfg["target_labels"],
-            matching_threshold_list=f_cfg["matching_threshold_list"],
-        )
-        self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
-        self.__sub_traffic_signals = self.create_subscription(
-            TrafficSignalArray,
-            "/perception/traffic_light_recognition/traffic_signals",
-            self.traffic_signals_cb,
-            1,
-        )
 
-        self.__current_time = Time().to_msg()
-        self.__prev_time = Time().to_msg()
+            p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
+            c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
+            f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
-        self.__counter = 0
-        self.__timer = self.create_timer(
-            1.0,
-            self.timer_cb,
-            callback_group=self.__timer_group,
-            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
-        )  # wall timer
-        self.__skip_counter = 0
+            self.__camera_type = p_cfg["camera_type"]
+
+            evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
+                dataset_paths=self.__t4_dataset_paths,
+                frame_id=self.__camera_type,
+                merge_similar_labels=False,
+                result_root_directory=os.path.join(
+                    self.__perception_eval_log_path, "result", "{TIME}"
+                ),
+                evaluation_config_dict=p_cfg["evaluation_config_dict"],
+                label_prefix="traffic_light",
+                load_raw_data=False,
+            )
+            _ = configure_logger(
+                log_file_directory=evaluation_config.log_directory,
+                console_log_level=logging.INFO,
+                file_log_level=logging.INFO,
+            )
+            # どれを注目物体とするかのparam
+            self.__critical_object_filter_config: CriticalObjectFilterConfig = (
+                CriticalObjectFilterConfig(
+                    evaluator_config=evaluation_config,
+                    target_labels=c_cfg["target_labels"],
+                )
+            )
+            # Pass fail を決めるパラメータ
+            self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
+                evaluator_config=evaluation_config,
+                target_labels=f_cfg["target_labels"],
+                matching_threshold_list=f_cfg["matching_threshold_list"],
+            )
+            self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
+            self.__sub_traffic_signals = self.create_subscription(
+                TrafficSignalArray,
+                "/perception/traffic_light_recognition/traffic_signals",
+                self.traffic_signals_cb,
+                1,
+            )
+
+            self.__current_time = Time().to_msg()
+            self.__prev_time = Time().to_msg()
+
+            self.__counter = 0
+            self.__timer = self.create_timer(
+                1.0,
+                self.timer_cb,
+                callback_group=self.__timer_group,
+                clock=Clock(clock_type=ClockType.SYSTEM_TIME),
+            )  # wall timer
+            self.__skip_counter = 0
+        except KeyError:
+            # Immediate termination if the scenario does not contain the required items and is incompatible.
+            self.get_logger().error("Scenario format error.")
+            rclpy.shutdown()
 
     def timer_cb(self):
         self.__current_time = self.get_clock().now().to_msg()
