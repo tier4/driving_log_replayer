@@ -217,6 +217,7 @@ class LocalizationEvaluator(Node):
         self.__initial_pose = set_initial_pose(
             self.__scenario_yaml_obj["Evaluation"]["InitialPose"]
         )
+        self.__initial_pose_running = False
         self.__initial_pose_success = False
 
         self.__current_time = Time().to_msg()
@@ -343,7 +344,15 @@ class LocalizationEvaluator(Node):
         self.__current_time = self.get_clock().now().to_msg()
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self.__current_time.sec > 0:
-            if self.__initial_pose is not None and not self.__initial_pose_success:
+            if (
+                self.__initial_pose is not None
+                and not self.__initial_pose_success
+                and not self.__initial_pose_running
+            ):
+                self.get_logger().error(
+                    f"call initial_pose time: {self.__current_time.sec}.{self.__current_time.nanosec}"
+                )
+                self.__initial_pose_running = True
                 self.__initial_pose.header.stamp = self.__current_time
                 future_init_pose = self.__initial_pose_client.call_async(
                     InitializeLocalization.Request(pose=[self.__initial_pose])
@@ -363,6 +372,8 @@ class LocalizationEvaluator(Node):
         if result is not None:
             res_status: ResponseStatus = result.status
             self.__initial_pose_success = res_status.success
+            self.__initial_pose_running = False
+            self.get_logger().error(f"initial_pose_success: {self.__initial_pose_success}")
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
 
