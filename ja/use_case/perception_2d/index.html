@@ -17,7 +17,7 @@
         <link rel="next" href="../performance_diag/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
     
     
       
@@ -25,10 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.ded33207.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.85bb2934.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a6bdf11c.min.css">
       
       
 
@@ -1060,7 +1060,6 @@
 <h1 id="_1">認識機能の評価(カメラ)<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
 <p>Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。</p>
 <p>perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。</p>
-<p>現状、カメラの台数は 1 台にしか対応していない。</p>
 <h2 id="_2">事前準備<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
 <h3 id="_3">モデルの変換<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
 <p>perception では、機械学習の学習済みモデルを使用する。
@@ -1137,40 +1136,15 @@ index<span class="w"> </span>b697b1f50..b9cb53102<span class="w"> </span><span c
 <span class="w">     </span>&lt;param<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;nms_threshold&quot;</span><span class="w"> </span><span class="nv">value</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>var<span class="w"> </span>nms_threshold<span class="k">)</span><span class="s2">&quot;</span>/&gt;
 <span class="w">     </span>&lt;param<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;model_path&quot;</span><span class="w"> </span><span class="nv">value</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>var<span class="w"> </span>model_path<span class="k">)</span><span class="s2">/</span><span class="k">$(</span>var<span class="w"> </span>model_name<span class="k">)</span><span class="s2">.onnx&quot;</span>/&gt;
 </code></pre></div>
-<p>現状だと 0 番のカメラしか評価できないので、他のカメラを評価したい場合は、カメラの番号を入れ替える。以下の例は 0 と 3 を入れ替える例</p>
-<div class="highlight"><pre><span></span><code>---<span class="w"> </span>a/launch/tier4_perception_launch/launch/perception.launch.xml
-+++<span class="w"> </span>b/launch/tier4_perception_launch/launch/perception.launch.xml
-@@<span class="w"> </span>-17,14<span class="w"> </span>+17,14<span class="w"> </span>@@
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;input/pointcloud&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/lidar/concatenated/pointcloud&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;The topic will be used in the detection module&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;mode&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;camera_lidar_fusion&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;options: `camera_lidar_radar_fusion`, `camera_lidar_fusion`, `lidar_radar_fusion`, `lidar` or `radar`&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;lidar_detection_model&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;centerpoint&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;options: `centerpoint`, `apollo`, `pointpainting`, `clustering`&quot;</span>/&gt;
--<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw0&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera0/image_rect_color&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;image raw topic name&quot;</span>/&gt;
--<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info0&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera0/camera_info&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;camera info topic name&quot;</span>/&gt;
-+<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw0&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera3/image_rect_color&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;image raw topic name&quot;</span>/&gt;
-+<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info0&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera3/camera_info&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;camera info topic name&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw1&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera1/image_rect_color&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info1&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera1/camera_info&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw2&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera2/image_rect_color&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info2&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera2/camera_info&quot;</span>/&gt;
--<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw3&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera3/image_rect_color&quot;</span>/&gt;
--<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info3&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera3/camera_info&quot;</span>/&gt;
-+<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw3&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera0/image_rect_color&quot;</span>/&gt;
-+<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info3&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera0/camera_info&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw4&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera4/image_rect_color&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info4&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera4/camera_info&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw5&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera5/image_rect_color&quot;</span>/&gt;
-@@<span class="w"> </span>-33,7<span class="w"> </span>+33,7<span class="w"> </span>@@
-</code></pre></div>
 <h2 id="_4">評価方法<a class="headerlink" href="#_4" title="Permanent link">#</a></h2>
 <p><code>perception.launch_2d.py</code> を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。</p>
 <ol>
 <li>launch で評価ノード(<code>perception_2d_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
 <li>bag から出力されたセンサーデータを autoware が受け取って、カメラデータを出力し、perception モジュールが認識を行う</li>
-<li>評価ノードが/perception/object_recognition/detection{/tracked}/rois0 を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
+<li>評価ノードが/perception/object_recognition/detection{/tracked}/rois{camera_no} を subscribe して、コールバックで perception_eval の関数を用いて評価し結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
-<p>注：現状 perception_eval がカメラ一台の評価にしか対応していないので、rois0 を指定しているが、複数台カメラの同時評価に対応できるようになれば rois1 以降も使用して複数カメラの評価に対応させる。</p>
 <h2 id="_5">評価結果<a class="headerlink" href="#_5" title="Permanent link">#</a></h2>
 <p>topic の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
 <h3 id="_6">正常<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
@@ -1192,11 +1166,11 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </thead>
 <tbody>
 <tr>
-<td>/perception/object_recognition/detection/rois0</td>
+<td>/perception/object_recognition/detection/rois{camera_no}</td>
 <td>tier4_perception_msgs/msg/DetectedObjectsWithFeature</td>
 </tr>
 <tr>
-<td>/perception/object_recognition/detection/tracked/rois0</td>
+<td>/perception/object_recognition/detection/tracked/rois{camera_no}</td>
 <td>tier4_perception_msgs/msg/DetectedObjectsWithFeature</td>
 </tr>
 </tbody>
@@ -1394,6 +1368,7 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 <p>各フレームのフォーマット</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;CameraType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;評価したカメラ&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;評価に使用したt4_datasetのフレーム番号&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;PassFail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1523,7 +1498,7 @@ pickle ファイルに記録した object をすべて読み込み、dataset の
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.51198bba.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>

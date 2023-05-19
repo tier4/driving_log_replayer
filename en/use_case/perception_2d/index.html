@@ -17,7 +17,7 @@
         <link rel="next" href="../performance_diag/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
     
     
       
@@ -25,10 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.ded33207.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.85bb2934.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a6bdf11c.min.css">
       
       
 
@@ -1060,7 +1060,6 @@
 <h1 id="evaluate-perceptioncamera">Evaluate perception(Camera)<a class="headerlink" href="#evaluate-perceptioncamera" title="Permanent link">#</a></h1>
 <p>The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.</p>
 <p>Run the perception module and pass the output perception topic to the evaluation library for evaluation.</p>
-<p>Currently, only one camera is supported.</p>
 <h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
 <h3 id="model-conversion">Model conversion<a class="headerlink" href="#model-conversion" title="Permanent link">#</a></h3>
 <p>In perception evaluation, machine learning pre-trained models are used.
@@ -1136,37 +1135,13 @@ index<span class="w"> </span>b697b1f50..b9cb53102<span class="w"> </span><span c
 <span class="w">     </span>&lt;param<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;nms_threshold&quot;</span><span class="w"> </span><span class="nv">value</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>var<span class="w"> </span>nms_threshold<span class="k">)</span><span class="s2">&quot;</span>/&gt;
 <span class="w">     </span>&lt;param<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;model_path&quot;</span><span class="w"> </span><span class="nv">value</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>var<span class="w"> </span>model_path<span class="k">)</span><span class="s2">/</span><span class="k">$(</span>var<span class="w"> </span>model_name<span class="k">)</span><span class="s2">.onnx&quot;</span>/&gt;
 </code></pre></div>
-<p>Currently, only camera No.0 can be evaluated, so if you want to evaluate other cameras, swap the camera numbers. The following example shows how to swap 0 and 3</p>
-<div class="highlight"><pre><span></span><code>---<span class="w"> </span>a/launch/tier4_perception_launch/launch/perception.launch.xml
-+++<span class="w"> </span>b/launch/tier4_perception_launch/launch/perception.launch.xml
-@@<span class="w"> </span>-17,14<span class="w"> </span>+17,14<span class="w"> </span>@@
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;input/pointcloud&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/lidar/concatenated/pointcloud&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;The topic will be used in the detection module&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;mode&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;camera_lidar_fusion&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;options: `camera_lidar_radar_fusion`, `camera_lidar_fusion`, `lidar_radar_fusion`, `lidar` or `radar`&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;lidar_detection_model&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;centerpoint&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;options: `centerpoint`, `apollo`, `pointpainting`, `clustering`&quot;</span>/&gt;
--<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw0&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera0/image_rect_color&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;image raw topic name&quot;</span>/&gt;
--<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info0&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera0/camera_info&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;camera info topic name&quot;</span>/&gt;
-+<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw0&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera3/image_rect_color&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;image raw topic name&quot;</span>/&gt;
-+<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info0&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera3/camera_info&quot;</span><span class="w"> </span><span class="nv">description</span><span class="o">=</span><span class="s2">&quot;camera info topic name&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw1&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera1/image_rect_color&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info1&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera1/camera_info&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw2&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera2/image_rect_color&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info2&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera2/camera_info&quot;</span>/&gt;
--<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw3&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera3/image_rect_color&quot;</span>/&gt;
--<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info3&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera3/camera_info&quot;</span>/&gt;
-+<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw3&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera0/image_rect_color&quot;</span>/&gt;
-+<span class="w">  </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info3&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera0/camera_info&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw4&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera4/image_rect_color&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;camera_info4&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera4/camera_info&quot;</span>/&gt;
-<span class="w">   </span>&lt;arg<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;image_raw5&quot;</span><span class="w"> </span><span class="nv">default</span><span class="o">=</span><span class="s2">&quot;/sensing/camera/camera5/image_rect_color&quot;</span>/&gt;
-@@<span class="w"> </span>-33,7<span class="w"> </span>+33,7<span class="w"> </span>@@
-</code></pre></div>
 <h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
 <p>The perception_2d evaluation is executed by launching the <code>perception_2d.launch.py</code> file.
 Launching the file executes the following steps:</p>
 <ol>
 <li>Execute launch of evaluation node (<code>perception_2d_evaluator_node</code>), <code>logging_simulator.launch</code> file and <code>ros2 bag play</code> command</li>
 <li>Autoware receives sensor data output from input rosbag and outputs camera, and the perception module performs recognition.</li>
-<li>The evaluation node subscribes to <code>/perception/object_recognition/detection{/detected}/rois0</code> and evaluates data. The result is dumped into a file.</li>
+<li>The evaluation node subscribes to <code>/perception/object_recognition/detection{/detected}/rois{camera_no}</code> and evaluates data. The result is dumped into a file.</li>
 <li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
 <h2 id="evaluation-results">Evaluation results<a class="headerlink" href="#evaluation-results" title="Permanent link">#</a></h2>
@@ -1190,11 +1165,11 @@ Launching the file executes the following steps:</p>
 </thead>
 <tbody>
 <tr>
-<td>/perception/object_recognition/detection/rois0</td>
+<td>/perception/object_recognition/detection/rois{camera_no}</td>
 <td>tier4_perception_msgs/msg/DetectedObjectsWithFeature</td>
 </tr>
 <tr>
-<td>/perception/object_recognition/detection/tracked/rois0</td>
+<td>/perception/object_recognition/detection/tracked/rois{camera_no}</td>
 <td>tier4_perception_msgs/msg/DetectedObjectsWithFeature</td>
 </tr>
 </tbody>
@@ -1390,6 +1365,7 @@ Only the final line has a different format from the other lines since the final 
 <p>Format of each frame:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;CameraType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Evaluated camera&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frame number of t4_dataset used for evaluation&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;PassFail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1519,7 +1495,7 @@ The dataset evaluation can be performed by reading all the objects recorded in t
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.51198bba.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>
