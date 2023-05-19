@@ -349,9 +349,9 @@ class LocalizationEvaluator(Node):
                 and not self.__initial_pose_success
                 and not self.__initial_pose_running
             ):
-                self.get_logger().error(
-                    f"call initial_pose time: {self.__current_time.sec}.{self.__current_time.nanosec}"
-                )
+                # self.get_logger().error(
+                #     f"call initial_pose time: {self.__current_time.sec}.{self.__current_time.nanosec}"
+                # )
                 self.__initial_pose_running = True
                 self.__initial_pose.header.stamp = self.__current_time
                 future_init_pose = self.__initial_pose_client.call_async(
@@ -373,7 +373,7 @@ class LocalizationEvaluator(Node):
             res_status: ResponseStatus = result.status
             self.__initial_pose_success = res_status.success
             self.__initial_pose_running = False
-            self.get_logger().error(f"initial_pose_success: {self.__initial_pose_success}")
+            # self.get_logger().error(f"initial_pose_success: {self.__initial_pose_success}")
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
 
