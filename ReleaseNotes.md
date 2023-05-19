@@ -10,7 +10,7 @@ Minor Tweak, Bug fix
 | `perception_2d`                            | target camera   | support multi camera             | [#148](https://github.com/tier4/driving_log_replayer/pull/148) | RT4-4195 | [hayato-m126](https://github.com/hayato-m126) |
 | `obstacle_segmentation`                    | scenario format | check if input polygon clockwise | [#153](https://github.com/tier4/driving_log_replayer/pull/153) | RT4-4162 | [hayato-m126](https://github.com/hayato-m126) |
 | `perception, perception_2d, traffic_light` | scenario format | check scenario format            | [#155](https://github.com/tier4/driving_log_replayer/pull/155) | -        | [hayato-m126](https://github.com/hayato-m126) |
-| `localization, perfomance_diag`            | initial pose    | fix call initial pose service    | [#157](https://github.com/tier4/driving_log_replayer/pull/157) | RT4-4961 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization, performance_diag`            | initial pose    | fix call initial pose service    | [#157](https://github.com/tier4/driving_log_replayer/pull/157) | RT4-4961 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.3.6
 
