@@ -109,6 +109,7 @@ The following example shows the topic list available in evaluation input rosbag 
 | Topic name                                           | Data type                                    |
 | ---------------------------------------------------- | -------------------------------------------- |
 | /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /localization/kinematic_state                        | nav_msgs/msg/Odometry                        |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
@@ -123,6 +124,7 @@ The vehicle topics can be included instead of CAN.
 
 | Topic name                                           | Data type                                           |
 | ---------------------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state                        | nav_msgs/msg/Odometry                               |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
