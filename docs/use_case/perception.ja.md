@@ -114,6 +114,7 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 | topic 名                                             | データ型                                     |
 | ---------------------------------------------------- | -------------------------------------------- |
 | /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /localization/kinematic_state                        | nav_msgs/msg/Odometry                        |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
@@ -128,6 +129,7 @@ CAN の代わりに vehicle の topic を含めても良い。
 
 | topic 名                                             | データ型                                            |
 | ---------------------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state                        | nav_msgs/msg/Odometry                               |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
