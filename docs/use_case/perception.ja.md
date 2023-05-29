@@ -271,7 +271,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離"
+            "nn_plane": "最近傍面の距離"
           },
           "rms": {
             "x": "x座標",
@@ -281,7 +281,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離"
+            "nn_plane": "最近傍面の距離"
           },
           "std": {
             "x": "x座標",
@@ -291,7 +291,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離"
+            "nn_plane": "最近傍面の距離"
           },
           "max": {
             "x": "x座標",
@@ -301,7 +301,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離"
+            "nn_plane": "最近傍面の距離"
           },
           "min": {
             "x": "x座標",
@@ -311,7 +311,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離"
+            "nn_plane": "最近傍面の距離"
           }
         },
         "label0": "label0の誤差メトリクス"
