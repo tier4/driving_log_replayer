@@ -17,7 +17,7 @@
         <link rel="next" href="../obstacle_segmentation/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
     
     
       
@@ -1452,6 +1452,7 @@ The following example shows the topic list available in evaluation input rosbag 
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
 <p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.yaml">sample</a>.</p>
 <h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json">sample</a>.</p>
 <p>Since localization evaluates both convergence and confidence of the localization, each line contains the result of either convergence or confidence.
 The result is <code>true</code> if both convergence and confidence are evaluated correctly. Otherwise, the output is set to <code>false</code>.</p>
 <p>Examples of each evaluation are described below.
@@ -1480,8 +1481,20 @@ The result is <code>true</code> if both convergence and confidence are evaluated
 <span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;Value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of NVTL or TP&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;Reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered.&quot;</span>
+<span class="w">          </span><span class="nt">&quot;Value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;stamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">&quot;sec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sec of stamp&quot;</span><span class="p">,</span>
+<span class="w">              </span><span class="nt">&quot;nanosec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nanosec of stamp&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of NVTL or TP&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;Reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;stamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">&quot;sec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sec of stamp&quot;</span><span class="p">,</span>
+<span class="w">              </span><span class="nt">&quot;nanosec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nanosec of stamp&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered.&quot;</span>
+<span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>

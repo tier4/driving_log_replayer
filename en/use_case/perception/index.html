@@ -17,7 +17,7 @@
         <link rel="next" href="../performance_diag/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
     
     
       
@@ -1329,6 +1329,10 @@ The following example shows the topic list available in evaluation input rosbag 
 <td>can_msgs/msg/Frame</td>
 </tr>
 <tr>
+<td>/localization/kinematic_state</td>
+<td>nav_msgs/msg/Odometry</td>
+</tr>
+<tr>
 <td>/sensing/camera/camera*/camera_info</td>
 <td>sensor_msgs/msg/CameraInfo</td>
 </tr>
@@ -1375,6 +1379,10 @@ The following example shows the topic list available in evaluation input rosbag 
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>/localization/kinematic_state</td>
+<td>nav_msgs/msg/Odometry</td>
+</tr>
 <tr>
 <td>/sensing/camera/camera*/camera_info</td>
 <td>sensor_msgs/msg/CameraInfo</td>
@@ -1458,6 +1466,7 @@ Use case evaluation is performed on a single dataset, while database evaluation 
 Also, it is necessary to set whether or not to activate the sensing module.</p>
 <p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/scenario.yaml">sample</a>.</p>
 <h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/result.json">sample</a>.</p>
 <p>The evaluation results by <a href="https://github.com/tier4/autoware_perception_evaluation">perception_eval</a> under the conditions specified in the scenario are output for each frame.
 Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.</p>
 <p>The format of each frame and the metrics format are shown below.
@@ -1485,14 +1494,116 @@ Only the final line has a different format from the other lines since the final 
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;FinalScore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;Score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TP rate of the label&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FP rate of the label&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of the label&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP value of the label&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH value of the label&quot;</span>
+<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TP rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TP rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TP rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FP rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FP rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FP rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;AP(Center Distance)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(Center Distance) rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(Center Distance) rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(Center Distance) rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;APH(Center Distance)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(Center Distance) rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(Center Distance) rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(Center Distance) rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;AP(IoU 2D)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(IoU 2D) rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(IoU 2D) rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(IoU 2D) rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;APH(IoU 2D)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(IoU 2D) rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(IoU 2D) rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(IoU 2D) rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;AP(IoU 3D)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(IoU 3D) rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(IoU 3D) rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(IoU 3D) rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;APH(IoU 3D)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(IoU 3D) rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(IoU 3D) rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(IoU 3D) rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;AP(Plane Distance)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(Plane Distance) rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(Plane Distance) rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(Plane Distance) rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;APH(Plane Distance)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(Plane Distance) rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(Plane Distance) rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APH(Plane Distance) rate of label1&quot;</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;Error&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error metrics for the label&quot;</span>
+<span class="w">        </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;average&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;yaw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yaw&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;width&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vx&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;nn_plane&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nearest neighbor plane distance&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;rms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;yaw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yaw&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;width&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vx&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;nn_plane&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nearest neighbor plane distance&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;std&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;yaw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yaw&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;width&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vx&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;nn_plane&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nearest neighbor plane distance&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;yaw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yaw&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;width&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vx&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;nn_plane&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nearest neighbor plane distance&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;y&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y position&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;yaw&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;yaw&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;length&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;width&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;width&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vx&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;vy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y velocity&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;nn_plane&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nearest neighbor plane distance&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error metrics for the label0&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
