@@ -2,6 +2,34 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.9 (2023-05-29)
+------------------
+* feat: apply ShutdownOnce (`#163 <https://github.com/tier4/driving_log_replayer/issues/163>`_)
+  closes: `#162 <https://github.com/tier4/driving_log_replayer/issues/162>`_
+* Contributors: Hayato Mizushima
+
+1.3.8 (2023-05-29)
+------------------
+* docs: update document
+* Contributors: Hayato Mizushima
+
+1.3.7 (2023-05-19)
+------------------
+* fix: `#156 <https://github.com/tier4/driving_log_replayer/issues/156>`_ initialpose service call (`#157 <https://github.com/tier4/driving_log_replayer/issues/157>`_)
+  closes: `#156 <https://github.com/tier4/driving_log_replayer/issues/156>`_
+* fix: Handling incompatible scenario (`#155 <https://github.com/tier4/driving_log_replayer/issues/155>`_)
+* fix: typo
+* fix: Handling incompatible scenario
+* feat: check if input polygon clockwise (`#153 <https://github.com/tier4/driving_log_replayer/issues/153>`_)
+  closes `#143 <https://github.com/tier4/driving_log_replayer/issues/143>`_
+* feat: `#147 <https://github.com/tier4/driving_log_replayer/issues/147>`_ perception 2d support multi camera (`#148 <https://github.com/tier4/driving_log_replayer/issues/148>`_)
+  Co-authored-by: Kotaro Uetake <60615504+ktro2828@users.noreply.github.com>
+  closes: `#147 <https://github.com/tier4/driving_log_replayer/issues/147>`_
+* feat: `#145 <https://github.com/tier4/driving_log_replayer/issues/145>`_ perception support ignore attributes (`#146 <https://github.com/tier4/driving_log_replayer/issues/146>`_)
+  Co-authored-by: Kotaro Uetake <60615504+ktro2828@users.noreply.github.com>
+  closes: `#145 <https://github.com/tier4/driving_log_replayer/issues/145>`_
+* Contributors: Hayato Mizushima
+
 1.3.6 (2023-04-25)
 ------------------
 * feat: use on_exit delete event handler

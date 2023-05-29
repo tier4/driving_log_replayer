@@ -1,5 +1,34 @@
 # Release Notes
 
+## Version 1.3.9
+
+Minor Tweak
+
+| Module | Feature | Brief summary      | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `ALL`  | launch  | apply ShutdownOnce | [#163](https://github.com/tier4/driving_log_replayer/pull/163) | RT4-4690 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.3.8
+
+Minor Tweak
+
+| Module                     | Feature       | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
+| -------------------------- | ------------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, localization` | documentation | update result json format | [#161](https://github.com/tier4/driving_log_replayer/pull/161) | RT4-5057 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`               | documentation | update bag topic          | [#160](https://github.com/tier4/driving_log_replayer/pull/160) | -        | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.3.7
+
+Minor Tweak, Bug fix
+
+| Module                                     | Feature         | Brief summary                    | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | --------------- | -------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, perception_2d`                | label attribute | support ignore attributes        | [#146](https://github.com/tier4/driving_log_replayer/pull/146) | RT4-4195 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception_2d`                            | target camera   | support multi camera             | [#148](https://github.com/tier4/driving_log_replayer/pull/148) | RT4-4195 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation`                    | scenario format | check if input polygon clockwise | [#153](https://github.com/tier4/driving_log_replayer/pull/153) | RT4-4162 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | scenario format | check scenario format            | [#155](https://github.com/tier4/driving_log_replayer/pull/155) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `localization, performance_diag`           | initial pose    | fix call initial pose service    | [#157](https://github.com/tier4/driving_log_replayer/pull/157) | RT4-4961 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.6
 
 Minor Tweak

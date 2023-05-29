@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import driving_log_replayer.launch_common
+from driving_log_replayer.shutdown_once import ShutdownOnce
 import launch
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -35,7 +36,7 @@ def generate_launch_description():
         output="screen",
         name="obstacle_segmentation_sub",
         parameters=[{"use_sim_time": True, "scenario_path": LaunchConfiguration("scenario_path")}],
-        on_exit=launch.actions.Shutdown(),
+        on_exit=ShutdownOnce(),
     )
     player = driving_log_replayer.launch_common.get_player(
         additional_argument=[
