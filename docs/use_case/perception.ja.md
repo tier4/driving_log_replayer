@@ -169,6 +169,8 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### 評価結果フォーマット
 
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/result.json)参照
+
 perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
 全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。
 
@@ -203,14 +205,116 @@ perception では、シナリオに指定した条件で perception_eval が評�
   "Frame": {
     "FinalScore": {
       "Score": {
-        "TP": "ラベルのTP率",
-        "FP": "ラベルのFP率",
-        "FN": "ラベルのFN率",
-        "AP": "ラベルのAP値",
-        "APH": "ラベルのAPH値"
+        "TP": {
+          "ALL": "すべてのラベルのTP率",
+          "label0": "label0のTP率",
+          "label1": "label1のTP率"
+        },
+        "FP": {
+          "ALL": "すべてのラベルのFP率",
+          "label0": "label0のFP率",
+          "label1": "label1のFP率"
+        },
+        "FN": {
+          "ALL": "すべてのラベルのFN率",
+          "label0": "label0のFN率",
+          "label1": "label1のFN率"
+        },
+        "AP(Center Distance)": {
+          "ALL": "すべてのラベルのAP率(Center Distance)",
+          "label0": "label0のAP率(Center Distance)",
+          "label1": "label1のAP率(Center Distance)"
+        },
+        "APH(Center Distance)": {
+          "ALL": "すべてのラベルのAPH率(Center Distance)",
+          "label0": "label0のAPH率(Center Distance)",
+          "label1": "label1のAPH率(Center Distance)"
+        },
+        "AP(IoU 2D)": {
+          "ALL": "すべてのラベルのAP率(IoU 2D)",
+          "label0": "label0のAP率(IoU 2D)",
+          "label1": "label1のAP率(IoU 2D)"
+        },
+        "APH(IoU 2D)": {
+          "ALL": "すべてのラベルのAPH率(IoU 2D)",
+          "label0": "label0のAPH率(IoU 2D)",
+          "label1": "label1のAPH率(IoU 2D)"
+        },
+        "AP(IoU 3D)": {
+          "ALL": "すべてのラベルのAP率(IoU 3D)",
+          "label0": "label0のAP率(IoU 3D)",
+          "label1": "label1のAP率(IoU 3D)"
+        },
+        "APH(IoU 3D)": {
+          "ALL": "すべてのラベルのAPH率(IoU 3D)",
+          "label0": "label0のAPH率(IoU 3D)",
+          "label1": "label1のAPH率(IoU 3D)"
+        },
+        "AP(Plane Distance)": {
+          "ALL": "すべてのラベルのAP率(Plane Distance)",
+          "label0": "label0のAP率(Plane Distance)",
+          "label1": "label1のAP率(Plane Distance)"
+        },
+        "APH(Plane Distance)": {
+          "ALL": "すべてのラベルのAPH率(Plane Distance)",
+          "label0": "label0のAPH率(Plane Distance)",
+          "label1": "label1のAPH率(Plane Distance)"
+        }
       },
       "Error": {
-        "ラベル": "ラベルの誤差メトリクス"
+        "ALL": {
+          "average": {
+            "x": "x座標",
+            "y": "y座標",
+            "yaw": "ヨー角",
+            "length": "長さ",
+            "width": "幅",
+            "vx": "x方向の速度",
+            "vy": "y方向の速度",
+            "nn_plane": "最近傍点の距離"
+          },
+          "rms": {
+            "x": "x座標",
+            "y": "y座標",
+            "yaw": "ヨー角",
+            "length": "長さ",
+            "width": "幅",
+            "vx": "x方向の速度",
+            "vy": "y方向の速度",
+            "nn_plane": "最近傍点の距離"
+          },
+          "std": {
+            "x": "x座標",
+            "y": "y座標",
+            "yaw": "ヨー角",
+            "length": "長さ",
+            "width": "幅",
+            "vx": "x方向の速度",
+            "vy": "y方向の速度",
+            "nn_plane": "最近傍点の距離"
+          },
+          "max": {
+            "x": "x座標",
+            "y": "y座標",
+            "yaw": "ヨー角",
+            "length": "長さ",
+            "width": "幅",
+            "vx": "x方向の速度",
+            "vy": "y方向の速度",
+            "nn_plane": "最近傍点の距離"
+          },
+          "min": {
+            "x": "x座標",
+            "y": "y座標",
+            "yaw": "ヨー角",
+            "length": "長さ",
+            "width": "幅",
+            "vx": "x方向の速度",
+            "vy": "y方向の速度",
+            "nn_plane": "最近傍点の距離"
+          }
+        },
+        "label0": "label0の誤差メトリクス"
       }
     }
   }

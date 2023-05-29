@@ -145,6 +145,8 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### 評価結果フォーマット
 
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json)参照
+
 localization では、収束性と信頼度の 2 つを評価しているので、行毎に収束性または信頼度のどちらかの結果が入っている。
 Result は収束性と信頼度両方のパスしていれば true でそれ以外は false 失敗となる。
 
@@ -180,8 +182,20 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
       "Result": "Success or Fail",
       "Info": [
         {
-          "Value": "NVTL or TPの値",
-          "Reference": "評価に使用しなかった尤度。参考値。ValueがNVTLならTPが入る"
+          "Value": {
+            "stamp": {
+              "sec": "stampの秒",
+              "nanosec": "stampのnano秒"
+            },
+            "data": "NVTL or TPの値"
+          },
+          "Reference": {
+            "stamp": {
+              "sec": "stampの秒",
+              "nanosec": "stampのnano秒"
+            },
+            "data": "評価に使用しなかった尤度。参考値。ValueがNVTLならTPが入る"
+          }
         }
       ]
     }

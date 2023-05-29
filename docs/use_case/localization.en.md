@@ -144,6 +144,8 @@ See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/loca
 
 ### Evaluation Result Format
 
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json).
+
 Since localization evaluates both convergence and confidence of the localization, each line contains the result of either convergence or confidence.
 The result is `true` if both convergence and confidence are evaluated correctly. Otherwise, the output is set to `false`.
 
@@ -179,8 +181,20 @@ Reliability Result example:
       "Result": "Success or Fail",
       "Info": [
         {
-          "Value": "Value of NVTL or TP",
-          "Reference": "Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered."
+          "Value": {
+            "stamp": {
+              "sec": "sec of stamp",
+              "nanosec": "nanosec of stamp"
+            },
+            "data": "Value of NVTL or TP"
+          },
+          "Reference": {
+            "stamp": {
+              "sec": "sec of stamp",
+              "nanosec": "nanosec of stamp"
+            },
+            "data": "Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered."
+          }
         }
       ]
     }
