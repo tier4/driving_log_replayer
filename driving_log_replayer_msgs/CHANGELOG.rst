@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.9 (2023-05-29)
+------------------
 * feat: apply ShutdownOnce (`#163 <https://github.com/tier4/driving_log_replayer/issues/163>`_)
   closes: `#162 <https://github.com/tier4/driving_log_replayer/issues/162>`_
 * Contributors: Hayato Mizushima
