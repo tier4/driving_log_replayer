@@ -5467,7 +5467,7 @@
         "Result": "Success",
         "Info": [
           {
-            "LateralDistance": 8.614846555461903e-05,
+            "LateralDistance": 8.614846555461903e-5,
             "HorizontalDistance": 0.0028499593713182773,
             "ExeTimeMs": 2.0290000438690186,
             "IterationNum": 2
@@ -8019,7 +8019,7 @@
         "Result": "Success",
         "Info": [
           {
-            "LateralDistance": 1.3265661881118641e-06,
+            "LateralDistance": 1.3265661881118641e-6,
             "HorizontalDistance": 0.002599648383339959,
             "ExeTimeMs": 3.009000062942505,
             "IterationNum": 2

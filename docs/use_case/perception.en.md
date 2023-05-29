@@ -201,58 +201,58 @@ Metrics Data Format:
         "TP": {
           "ALL": "TP rate for all labels",
           "label0": "TP rate of label0",
-          "label1": "TP rate of label1",
+          "label1": "TP rate of label1"
         },
         "FP": {
           "ALL": "FP rate for all labels",
           "label0": "FP rate of label0",
-          "label1": "FP rate of label1",
+          "label1": "FP rate of label1"
         },
         "FN": {
           "ALL": "FN rate for all labels",
           "label0": "FN rate of label0",
-          "label1": "FN rate of label1",
+          "label1": "FN rate of label1"
         },
         "AP(Center Distance)": {
           "ALL": "AP(Center Distance) rate for all labels",
           "label0": "AP(Center Distance) rate of label0",
-          "label1": "AP(Center Distance) rate of label1",
+          "label1": "AP(Center Distance) rate of label1"
         },
-        "APH(Center Distance)":  {
+        "APH(Center Distance)": {
           "ALL": "APH(Center Distance) rate for all labels",
           "label0": "APH(Center Distance) rate of label0",
-          "label1": "APH(Center Distance) rate of label1",
+          "label1": "APH(Center Distance) rate of label1"
         },
         "AP(IoU 2D)": {
           "ALL": "AP(IoU 2D) rate for all labels",
           "label0": "AP(IoU 2D) rate of label0",
-          "label1": "AP(IoU 2D) rate of label1",
+          "label1": "AP(IoU 2D) rate of label1"
         },
         "APH(IoU 2D)": {
           "ALL": "APH(IoU 2D) rate for all labels",
           "label0": "APH(IoU 2D) rate of label0",
-          "label1": "APH(IoU 2D) rate of label1",
+          "label1": "APH(IoU 2D) rate of label1"
         },
         "AP(IoU 3D)": {
           "ALL": "AP(IoU 3D) rate for all labels",
           "label0": "AP(IoU 3D) rate of label0",
-          "label1": "AP(IoU 3D) rate of label1",
+          "label1": "AP(IoU 3D) rate of label1"
         },
         "APH(IoU 3D)": {
           "ALL": "APH(IoU 3D) rate for all labels",
           "label0": "APH(IoU 3D) rate of label0",
-          "label1": "APH(IoU 3D) rate of label1",
+          "label1": "APH(IoU 3D) rate of label1"
         },
         "AP(Plane Distance)": {
           "ALL": "AP(Plane Distance) rate for all labels",
           "label0": "AP(Plane Distance) rate of label0",
-          "label1": "AP(Plane Distance) rate of label1",
+          "label1": "AP(Plane Distance) rate of label1"
         },
         "APH(Plane Distance)": {
           "ALL": "APH(Plane Distance) rate for all labels",
           "label0": "APH(Plane Distance) rate of label0",
-          "label1": "APH(Plane Distance) rate of label1",
-        },
+          "label1": "APH(Plane Distance) rate of label1"
+        }
       },
       "Error": {
         "ALL": {
@@ -264,7 +264,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance",
+            "nn_plane": "Nearest neighbor distance"
           },
           "rms": {
             "x": "x position",
@@ -274,7 +274,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance",
+            "nn_plane": "Nearest neighbor distance"
           },
           "std": {
             "x": "x position",
@@ -284,7 +284,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance",
+            "nn_plane": "Nearest neighbor distance"
           },
           "max": {
             "x": "x position",
@@ -294,7 +294,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance",
+            "nn_plane": "Nearest neighbor distance"
           },
           "min": {
             "x": "x position",
@@ -304,8 +304,8 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance",
-          },
+            "nn_plane": "Nearest neighbor distance"
+          }
         },
         "label0": "Error metrics for the label0"
       }

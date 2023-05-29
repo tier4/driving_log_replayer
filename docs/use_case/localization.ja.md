@@ -185,14 +185,14 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
           "Value": {
             "stamp": {
               "sec": "stampの秒",
-              "nanosec": "stampのnano秒",
+              "nanosec": "stampのnano秒"
             },
-            "data": "NVTL or TPの値",
+            "data": "NVTL or TPの値"
           },
           "Reference": {
             "stamp": {
               "sec": "stampの秒",
-              "nanosec": "stampのnano秒",
+              "nanosec": "stampのnano秒"
             },
             "data": "評価に使用しなかった尤度。参考値。ValueがNVTLならTPが入る"
           }

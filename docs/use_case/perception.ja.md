@@ -206,58 +206,58 @@ perception では、シナリオに指定した条件で perception_eval が評�
         "TP": {
           "ALL": "すべてのラベルのTP率",
           "label0": "label0のTP率",
-          "label1": "label1のTP率",
+          "label1": "label1のTP率"
         },
         "FP": {
           "ALL": "すべてのラベルのFP率",
           "label0": "label0のFP率",
-          "label1": "label1のFP率",
+          "label1": "label1のFP率"
         },
         "FN": {
           "ALL": "すべてのラベルのFN率",
           "label0": "label0のFN率",
-          "label1": "label1のFN率",
+          "label1": "label1のFN率"
         },
         "AP(Center Distance)": {
           "ALL": "すべてのラベルのAP率(Center Distance)",
           "label0": "label0のAP率(Center Distance)",
-          "label1": "label1のAP率(Center Distance)",
+          "label1": "label1のAP率(Center Distance)"
         },
         "APH(Center Distance)": {
           "ALL": "すべてのラベルのAPH率(Center Distance)",
           "label0": "label0のAPH率(Center Distance)",
-          "label1": "label1のAPH率(Center Distance)",
+          "label1": "label1のAPH率(Center Distance)"
         },
         "AP(IoU 2D)": {
           "ALL": "すべてのラベルのAP率(IoU 2D)",
           "label0": "label0のAP率(IoU 2D)",
-          "label1": "label1のAP率(IoU 2D)",
+          "label1": "label1のAP率(IoU 2D)"
         },
         "APH(IoU 2D)": {
           "ALL": "すべてのラベルのAPH率(IoU 2D)",
           "label0": "label0のAPH率(IoU 2D)",
-          "label1": "label1のAPH率(IoU 2D)",
+          "label1": "label1のAPH率(IoU 2D)"
         },
         "AP(IoU 3D)": {
           "ALL": "すべてのラベルのAP率(IoU 3D)",
           "label0": "label0のAP率(IoU 3D)",
-          "label1": "label1のAP率(IoU 3D)",
+          "label1": "label1のAP率(IoU 3D)"
         },
         "APH(IoU 3D)": {
           "ALL": "すべてのラベルのAPH率(IoU 3D)",
           "label0": "label0のAPH率(IoU 3D)",
-          "label1": "label1のAPH率(IoU 3D)",
+          "label1": "label1のAPH率(IoU 3D)"
         },
         "AP(Plane Distance)": {
           "ALL": "すべてのラベルのAP率(Plane Distance)",
           "label0": "label0のAP率(Plane Distance)",
-          "label1": "label1のAP率(Plane Distance)",
+          "label1": "label1のAP率(Plane Distance)"
         },
         "APH(Plane Distance)": {
           "ALL": "すべてのラベルのAPH率(Plane Distance)",
           "label0": "label0のAPH率(Plane Distance)",
-          "label1": "label1のAPH率(Plane Distance)",
-        },
+          "label1": "label1のAPH率(Plane Distance)"
+        }
       },
       "Error": {
         "ALL": {
@@ -269,7 +269,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離",
+            "nn_plane": "最近傍点の距離"
           },
           "rms": {
             "x": "x座標",
@@ -279,7 +279,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離",
+            "nn_plane": "最近傍点の距離"
           },
           "std": {
             "x": "x座標",
@@ -289,7 +289,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離",
+            "nn_plane": "最近傍点の距離"
           },
           "max": {
             "x": "x座標",
@@ -299,7 +299,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離",
+            "nn_plane": "最近傍点の距離"
           },
           "min": {
             "x": "x座標",
@@ -309,8 +309,8 @@ perception では、シナリオに指定した条件で perception_eval が評�
             "width": "幅",
             "vx": "x方向の速度",
             "vy": "y方向の速度",
-            "nn_plane": "最近傍点の距離",
-          },
+            "nn_plane": "最近傍点の距離"
+          }
         },
         "label0": "label0の誤差メトリクス"
       }

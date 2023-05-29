@@ -184,14 +184,14 @@ Reliability Result example:
           "Value": {
             "stamp": {
               "sec": "sec of stamp",
-              "nanosec": "nanosec of stamp",
+              "nanosec": "nanosec of stamp"
             },
-            "data": "Value of NVTL or TP",
+            "data": "Value of NVTL or TP"
           },
           "Reference": {
             "stamp": {
               "sec": "sec of stamp",
-              "nanosec": "nanosec of stamp",
+              "nanosec": "nanosec of stamp"
             },
             "data": "Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered."
           }
