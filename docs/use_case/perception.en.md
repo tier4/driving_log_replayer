@@ -164,6 +164,8 @@ See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perc
 
 ### Evaluation Result Format
 
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/result.json).
+
 The evaluation results by [perception_eval](https://github.com/tier4/autoware_perception_evaluation) under the conditions specified in the scenario are output for each frame.
 Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.
 
