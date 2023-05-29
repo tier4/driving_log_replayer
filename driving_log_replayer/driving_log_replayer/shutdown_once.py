@@ -25,7 +25,7 @@ from launch.actions import EmitEvent
 from launch.events import Shutdown as ShutdownEvent
 from launch.events.process import ProcessExited
 from launch.frontend import Entity
-from launch.frontend import expose_action
+from launch.frontend import expose_action  # noqa
 from launch.frontend import Parser
 from launch.launch_context import LaunchContext
 
