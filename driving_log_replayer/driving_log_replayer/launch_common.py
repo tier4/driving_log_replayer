@@ -16,6 +16,7 @@ import os
 from string import capwords
 
 from ament_index_python.packages import get_package_share_directory
+from driving_log_replayer.shutdown_once import ShutdownOnce
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
@@ -172,7 +173,7 @@ def get_evaluator_node(
         output="screen",
         name=usecase_name + "_evaluator",
         parameters=[params],
-        on_exit=launch.actions.Shutdown(),
+        on_exit=ShutdownOnce(),
     )
     return evaluator_node
 
