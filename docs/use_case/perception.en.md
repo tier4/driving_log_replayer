@@ -266,7 +266,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance"
+            "nn_plane": "Nearest neighbor plane distance"
           },
           "rms": {
             "x": "x position",
@@ -276,7 +276,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance"
+            "nn_plane": "Nearest neighbor plane distance"
           },
           "std": {
             "x": "x position",
@@ -286,7 +286,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance"
+            "nn_plane": "Nearest neighbor plane distance"
           },
           "max": {
             "x": "x position",
@@ -296,7 +296,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance"
+            "nn_plane": "Nearest neighbor plane distance"
           },
           "min": {
             "x": "x position",
@@ -306,7 +306,7 @@ Metrics Data Format:
             "width": "width",
             "vx": "x velocity",
             "vy": "y velocity",
-            "nn_plane": "Nearest neighbor distance"
+            "nn_plane": "Nearest neighbor plane distance"
           }
         },
         "label0": "Error metrics for the label0"

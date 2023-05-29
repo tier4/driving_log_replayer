@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.3.8
+
+Minor Tweak
+
+| Module                     | Feature       | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
+| -------------------------- | ------------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, localization` | documentation | update result json format | [#161](https://github.com/tier4/driving_log_replayer/pull/161) | RT4-5057 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`               | documentation | update bag topic          | [#160](https://github.com/tier4/driving_log_replayer/pull/160) | -        | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.7
 
 Minor Tweak, Bug fix
