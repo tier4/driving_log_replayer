@@ -6,7 +6,7 @@ Minor Tweak
 
 | Module                     | Feature       | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
 | -------------------------- | ------------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
-| `ALL` | launch | apply ShutdownOne | [#163](https://github.com/tier4/driving_log_replayer/pull/163) | RT4-4690 | [hayato-m126](https://github.com/hayato-m126) |
+| `ALL` | launch | apply ShutdownOnce | [#163](https://github.com/tier4/driving_log_replayer/pull/163) | RT4-4690 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.3.8
 
