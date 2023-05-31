@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.10 (2023-05-31)
+-------------------
 * fix: link
 * Contributors: Makoto Tokunaga
 
