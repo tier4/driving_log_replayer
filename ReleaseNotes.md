@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.10
+
+Minor Tweak
+
+| Module | Feature       | Brief summary | Pull request                                                   | Jira | Contributor                               |
+| ------ | ------------- | ------------- | -------------------------------------------------------------- | ---- | ----------------------------------------- |
+| `ALL`  | documentation | fix link      | [#165](https://github.com/tier4/driving_log_replayer/pull/165) | -    | [vios-fish](https://github.com/vios-fish) |
+
 ## Version 1.3.9
 
 Minor Tweak
