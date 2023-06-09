@@ -32,6 +32,7 @@ import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
+from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.status import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
@@ -48,10 +49,12 @@ from rclpy.clock import Clock
 from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
+from rclpy.time import Duration
 from rclpy.time import Time
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_ros import Buffer
+from tf2_ros import TransformException
 from tf2_ros import TransformListener
 from visualization_msgs.msg import MarkerArray
 import yaml
@@ -369,7 +372,13 @@ class PerceptionEvaluator(Node):
         return estimated_objects
 
     def perception_cb(self, msg: Union[DetectedObjects, TrackedObjects]):
-        map_to_baselink = self.__tf_buffer.lookup_transform("map", "base_link", msg.header.stamp)
+        try:
+            map_to_baselink = self.__tf_buffer.lookup_transform(
+                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
+            )
+        except TransformException as ex:
+            self.get_logger().info(f"Could not transform map to baselink: {ex}")
+            map_to_baselink = TransformStamped()
         # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得

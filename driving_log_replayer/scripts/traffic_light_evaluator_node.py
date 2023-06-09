@@ -28,6 +28,7 @@ import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
+from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
@@ -43,9 +44,11 @@ from rclpy.clock import Clock
 from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
+from rclpy.time import Duration
 from rclpy.time import Time
 from std_msgs.msg import Header
 from tf2_ros import Buffer
+from tf2_ros import TransformException
 from tf2_ros import TransformListener
 import yaml
 
@@ -289,7 +292,13 @@ class TrafficLightEvaluator(Node):
         return estimated_objects
 
     def traffic_signals_cb(self, msg: TrafficSignalArray):
-        map_to_baselink = self.__tf_buffer.lookup_transform("map", "base_link", msg.header.stamp)
+        try:
+            map_to_baselink = self.__tf_buffer.lookup_transform(
+                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
+            )
+        except TransformException as ex:
+            self.get_logger().info(f"Could not transform map to baselink: {ex}")
+            map_to_baselink = TransformStamped()
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)

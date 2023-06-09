@@ -26,6 +26,7 @@ from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import TransformStamped
 from nav_msgs.msg import Odometry
 import numpy as np
 import rclpy
@@ -38,6 +39,7 @@ from rclpy.time import Duration
 from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
 from tf2_ros import Buffer
+from tf2_ros import TransformException
 from tf2_ros import TransformListener
 from tf_transformations import euler_from_quaternion
 from tier4_debug_msgs.msg import Float32Stamped
@@ -301,9 +303,13 @@ class LocalizationEvaluator(Node):
         if not (self.__converged and self.__reliability_method == "TP"):
             # convergedかつTP評価で評価する
             return
-        map_to_baselink = self.__tf_buffer.lookup_transform(
-            "map", "base_link", msg.stamp, Duration(seconds=0.5)
-        )
+        try:
+            map_to_baselink = self.__tf_buffer.lookup_transform(
+                "map", "base_link", msg.stamp, Duration(seconds=0.5)
+            )
+        except TransformException as ex:
+            self.get_logger().info(f"Could not transform map to baselink: {ex}")
+            map_to_baselink = TransformStamped()
         self.__result.add_reliability_frame(
             msg, transform_stamped_with_euler_angle(map_to_baselink), self.__latest_nvtl
         )
@@ -316,9 +322,13 @@ class LocalizationEvaluator(Node):
         if not (self.__converged and self.__reliability_method == "NVTL"):
             # convergedかつNVTL評価で評価する
             return
-        map_to_baselink = self.__tf_buffer.lookup_transform(
-            "map", "base_link", msg.stamp, Duration(seconds=0.5)
-        )
+        try:
+            map_to_baselink = self.__tf_buffer.lookup_transform(
+                "map", "base_link", msg.stamp, Duration(seconds=0.5)
+            )
+        except TransformException as ex:
+            self.get_logger().info(f"Could not transform map to baselink: {ex}")
+            map_to_baselink = TransformStamped()
         self.__result.add_reliability_frame(
             msg, transform_stamped_with_euler_angle(map_to_baselink), self.__latest_tp
         )
@@ -327,9 +337,13 @@ class LocalizationEvaluator(Node):
     def pose_cb(self, msg: PoseStamped):
         if not self.__converged:
             return
-        map_to_baselink = self.__tf_buffer.lookup_transform(
-            "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
-        )
+        try:
+            map_to_baselink = self.__tf_buffer.lookup_transform(
+                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
+            )
+        except TransformException as ex:
+            self.get_logger().info(f"Could not transform map to baselink: {ex}")
+            map_to_baselink = TransformStamped()
         msg_lateral_distance = self.__result.add_convergence_frame(
             msg,
             transform_stamped_with_euler_angle(map_to_baselink),
