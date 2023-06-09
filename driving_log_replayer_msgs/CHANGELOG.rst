@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: catch transform exception (`#169 <https://github.com/tier4/driving_log_replayer/issues/169>`_)
+  closes: `#168 <https://github.com/tier4/driving_log_replayer/issues/168>`_
+* Contributors: Hayato Mizushima
+
 1.3.10 (2023-05-31)
 -------------------
 * fix: link

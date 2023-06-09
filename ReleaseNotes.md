@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.3.11
+
+Bug fix, Minor Tweak
+
+| Module                     | Feature        | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
+| -------------------------- | -------------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization, perception` | error handling | catch transform exception | [#169](https://github.com/tier4/driving_log_replayer/pull/169) | RT4-5289 | [hayato-m126](https://github.com/hayato-m126) |
+| `ALL`                      | cli            | support scenario.yml      | [#167](https://github.com/tier4/driving_log_replayer/pull/167) | RT4-4995 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.10
 
 Minor Tweak
