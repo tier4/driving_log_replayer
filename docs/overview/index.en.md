@@ -45,5 +45,5 @@ The details of the node's operation are shown in the figure below.
    2. Refer to the [format definition](../result_format/index.md) section of this document for description contents.
 4. If the node should test obstacle_segmentation or perception stacks, please annotate with an annotation tool that supports conversion to t4_dataset.
    1. [Deepen.AI](https://www.deepen.ai/) is available.
-   2. By adding conversion functionality to [perception_datase](https://github.com/tier4/tier4_perception_dataset), it becomes possible to use other annotation tools as well.
+   2. By adding conversion functionality to [perception_dataset](https://github.com/tier4/tier4_perception_dataset), it becomes possible to use other annotation tools as well.
 5. Perform the evaluation.
