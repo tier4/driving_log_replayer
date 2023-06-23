@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* docs: t4_dataset conversion tool
+* Contributors: Hayato Mizushima
+
 1.3.11 (2023-06-09)
 -------------------
 * fix: catch transform exception (`#169 <https://github.com/tier4/driving_log_replayer/issues/169>`_)

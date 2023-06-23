@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.12
+
+Documentation
+
+| Module                              | Feature       | Brief summary                                  | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------------------- | ------------- | ---------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, obstacle_segmentation` | documentation | add description of t4_dataset conversion tools | [#171](https://github.com/tier4/driving_log_replayer/pull/171) | RT1-2597 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.11
 
 Bug fix, Minor Tweak
