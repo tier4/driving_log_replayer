@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.12 (2023-06-23)
+-------------------
 * docs: t4_dataset conversion tool
 * Contributors: Hayato Mizushima
 
