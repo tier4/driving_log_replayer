@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.13
+
+Bug fix
+
+| Module         | Feature  | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| -------------- | -------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization` | scenario | fill z value to initial pose | [#173](https://github.com/tier4/driving_log_replayer/pull/173) | RT4-5532 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.12
 
 Documentation

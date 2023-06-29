@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: localization scenario
+* Contributors: Hayato Mizushima
+
 1.3.12 (2023-06-23)
 -------------------
 * docs: t4_dataset conversion tool
