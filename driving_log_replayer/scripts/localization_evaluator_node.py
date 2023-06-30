@@ -281,17 +281,18 @@ class LocalizationEvaluator(Node):
             self.iteration_num_cb,
             1,
         )
+
         # service client
         self.__initial_pose_client = self.create_client(
             InitializeLocalization, "/api/localization/initialize"
         )
         self.__map_fit_client = self.create_client(
-            PoseWithCovarianceStamped, "/localization/util/fit_map_height"
+            PoseWithCovarianceStamped, "/map/map_height_fitter/service"
         )
         while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("service not available, waiting again...")
+            self.get_logger().warning("initial pose service not available, waiting again...")
         while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("service not available, waiting again...")
+            self.get_logger().warning("map height fitter service not available, waiting again...")
 
     def ekf_pose_cb(self, msg: Odometry):
         self.__latest_ekf_pose = msg
