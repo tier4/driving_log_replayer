@@ -40,5 +40,5 @@ def generate_launch_description():
 
     return launch.LaunchDescription(
         launch_arguments
-        + [rviz_node, fitter_launch, autoware_launch, evaluator_node, recorder, player]
+        + [rviz_node, autoware_launch, fitter_launch, evaluator_node, recorder, player]
     )
