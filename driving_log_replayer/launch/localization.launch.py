@@ -36,7 +36,10 @@ def generate_launch_description():
             "/driving_log_replayer/localization/lateral_distance",
         ],
     )
+    topic_monitor = driving_log_replayer.launch_common.get_topic_state_monitor_launch(
+        "localization_topics.yaml"
+    )
 
     return launch.LaunchDescription(
-        launch_arguments + [rviz_node, autoware_launch, evaluator_node, recorder, player]
+        launch_arguments + [rviz_node, autoware_launch, evaluator_node, recorder, player, topic_monitor]
     )
