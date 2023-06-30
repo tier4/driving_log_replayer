@@ -248,10 +248,10 @@ def get_topic_state_monitor_launch(topic_monitor_config: str):
         topic_monitor_config,
     )
     component_state_monitor_launch = launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(component_state_monitor_launch_file),
-        launch_arguments={
-            "file": topic_monitor_config_path
-        }.items()
+        launch.launch_description_sources.AnyLaunchDescriptionSource(
+            component_state_monitor_launch_file
+        ),
+        launch_arguments={"file": topic_monitor_config_path}.items(),
     )
     return component_state_monitor_launch
 
