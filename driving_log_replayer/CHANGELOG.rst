@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.13 (2023-06-30)
+-------------------
 * fix: localization scenario
 * Contributors: Hayato Mizushima
 
