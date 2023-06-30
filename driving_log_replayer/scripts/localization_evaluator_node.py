@@ -44,6 +44,7 @@ from tf2_ros import TransformListener
 from tf_transformations import euler_from_quaternion
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
+from tier4_localization_msgs.srv import PoseWithCovarianceStamped
 import yaml
 
 
@@ -284,7 +285,12 @@ class LocalizationEvaluator(Node):
         self.__initial_pose_client = self.create_client(
             InitializeLocalization, "/api/localization/initialize"
         )
+        self.__map_fit_client = self.create_client(
+            PoseWithCovarianceStamped, "/localization/util/fit_map_height"
+        )
         while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("service not available, waiting again...")
+        while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warning("service not available, waiting again...")
 
     def ekf_pose_cb(self, msg: Odometry):
@@ -368,10 +374,10 @@ class LocalizationEvaluator(Node):
                 # )
                 self.__initial_pose_running = True
                 self.__initial_pose.header.stamp = self.__current_time
-                future_init_pose = self.__initial_pose_client.call_async(
-                    InitializeLocalization.Request(pose=[self.__initial_pose])
+                future_map_fit = self.__map_fit_client.call_async(
+                    PoseWithCovarianceStamped.Request(pose_with_covariance=self.__initial_pose)
                 )
-                future_init_pose.add_done_callback(self.initial_pose_cb)
+                future_map_fit.add_done_callback(self.map_fit_cb)
             if self.__current_time == self.__prev_time:
                 self.__counter += 1
             else:
@@ -380,6 +386,19 @@ class LocalizationEvaluator(Node):
             if self.__counter >= 5:
                 self.__result_writer.close()
                 rclpy.shutdown()
+
+    def map_fit_cb(self, future):
+        result = future.result()
+        if result is not None:
+            if result.success:
+                # result.pose_with_covarianceに補正済みデータが入っている
+                # 補正済みデータでinitialposeを投げる
+                future_init_pose = self.__initial_pose_client.call_async(
+                    InitializeLocalization.Request(pose=[result.pose_with_covariance])
+                )
+                future_init_pose.add_done_callback(self.initial_pose_cb)
+        else:
+            self.get_logger().error(f"Exception for service: {future.exception()}")
 
     def initial_pose_cb(self, future):
         result = future.result()
