@@ -370,7 +370,7 @@ class LocalizationEvaluator(Node):
                 and not self.__initial_pose_success
                 and not self.__initial_pose_running
             ):
-                self.get_logger().error(
+                self.get_logger().info(
                     f"call initial_pose time: {self.__current_time.sec}.{self.__current_time.nanosec}"
                 )
                 self.__initial_pose_running = True
