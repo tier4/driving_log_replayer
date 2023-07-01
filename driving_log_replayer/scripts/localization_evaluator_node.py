@@ -395,32 +395,38 @@ class LocalizationEvaluator(Node):
                 # result.pose_with_covarianceに補正済みデータが入っている
                 # 補正済みデータでinitialposeを投げる
                 # debug result.pose_with_convariance
-                self.get_logger().error(
-                    f"corrected_pose_with_covariance.pose.position.x: {result.pose_with_covariance.pose.pose.position.x}"
-                )
-                self.get_logger().error(
-                    f"corrected_pose_with_covariance.pose.position.y: {result.pose_with_covariance.pose.pose.position.y}"
-                )
-                self.get_logger().error(
-                    f"corrected_pose_with_covariance.pose.position.z: {result.pose_with_covariance.pose.pose.position.z}"
-                )
-                self.get_logger().error(
-                    f"corrected_pose_with_covariance.pose.orientation.x: {result.pose_with_covariance.pose.pose.orientation.x}"
-                )
-                self.get_logger().error(
-                    f"corrected_pose_with_covariance.pose.orientation.y: {result.pose_with_covariance.pose.pose.orientation.y}"
-                )
-                self.get_logger().error(
-                    f"corrected_pose_with_covariance.pose.orientation.z: {result.pose_with_covariance.pose.pose.orientation.z}"
-                )
-                self.get_logger().error(
-                    f"corrected_pose_with_covariance.pose.orientation.w: {result.pose_with_covariance.pose.pose.orientation.w}"
-                )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.x: {result.pose_with_covariance.pose.pose.position.x}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.y: {result.pose_with_covariance.pose.pose.position.y}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.z: {result.pose_with_covariance.pose.pose.position.z}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.x: {result.pose_with_covariance.pose.pose.orientation.x}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.y: {result.pose_with_covariance.pose.pose.orientation.y}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.z: {result.pose_with_covariance.pose.pose.orientation.z}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.w: {result.pose_with_covariance.pose.pose.orientation.w}"
+                # )
                 future_init_pose = self.__initial_pose_client.call_async(
                     InitializeLocalization.Request(pose=[result.pose_with_covariance])
                 )
                 future_init_pose.add_done_callback(self.initial_pose_cb)
+            else:
+                # free self.__initial_pose_running when the service call fails
+                self.__initial_pose_running = False
+                self.get_logger().warn("map_height_height service result is fail")
         else:
+            # free self.__initial_pose_running when the service call fails
+            self.__initial_pose_running = False
             self.get_logger().error(f"Exception for service: {future.exception()}")
 
     def initial_pose_cb(self, future):
@@ -428,10 +434,13 @@ class LocalizationEvaluator(Node):
         if result is not None:
             res_status: ResponseStatus = result.status
             self.__initial_pose_success = res_status.success
-            self.__initial_pose_running = False
-            self.get_logger().error(f"initial_pose_success: {self.__initial_pose_success}")
+            self.get_logger().info(
+                f"initial_pose_success: {self.__initial_pose_success}"
+            )  # debug msg
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
+        # free self.__initial_pose_running
+        self.__initial_pose_running = False
 
 
 def main(args=None):
