@@ -394,7 +394,7 @@ class LocalizationEvaluator(Node):
             if result.success:
                 # result.pose_with_covarianceに補正済みデータが入っている
                 # 補正済みデータでinitialposeを投げる
-                # debug result.pose_with_convariance
+                # debug result.pose_with_covariance
                 # self.get_logger().error(
                 #     f"corrected_pose_with_covariance.pose.position.x: {result.pose_with_covariance.pose.pose.position.x}"
                 # )
