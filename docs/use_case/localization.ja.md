@@ -37,8 +37,6 @@ launch を立ち上げると以下のことが実行され、評価される。
 - /localization/pose_estimator/pose_with_covariance
 
 これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。
-同パッケージが出力する `/diagnostics_agg` の中から、当該トピックに関する情報を抽出する。
-最新の情報が `Timeout` または `NotReceived` の場合はFailとし、それ以外の場合はPassとする。
 
 
 ## 評価結果
@@ -69,7 +67,8 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ### 可用性正常
 
-aaaa
+Component State Monitorが出力する `/diagnostics_agg` の中から、監視トピックに関する情報を抽出する。
+最新の情報におけるStatusが `Timeout` または `NotReceived` 以外の場合、正常であると判断する。
 
 ### 可用性異常
 

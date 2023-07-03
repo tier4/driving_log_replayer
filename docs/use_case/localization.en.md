@@ -35,7 +35,7 @@ Evaluate whether the following output is being output regularly:
 
 - `/localization/pose_estimator/pose_with_covariance`
 
-This is accomplished by indirectly using a package within Autoware called Component State Monitor. Information related to this topic is extracted from `/diagnostics_agg` which this package outputs. If the most recent information is Timeout or NotReceived, it is considered as Fail, otherwise, it is considered as Pass.
+This is accomplished by indirectly using a package within Autoware called Component State Monitor.
 
 ## Evaluation Result
 
@@ -62,6 +62,15 @@ The lateral distance calculated in the step 1 is published as `/driving_log_repl
 ### Convergence Error
 
 The convergence evaluation output is marked as `Error` when conditions for `Convergence Normal` are not met.
+
+### NDT Availability Normal
+
+Information related to the monitored topic is extracted from `/diagnostics_agg` which Component State Monitor outputs. If the most recent information NOT Timeout nor NotReceived, it is considered as pass.
+
+### NDT Availability Error
+
+The NDT availability evaluation output is marked as `Error` when conditions for `NDT Availability Normal` are not met.
+
 
 ## Topic name and data type used by evaluation node
 
