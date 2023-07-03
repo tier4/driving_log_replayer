@@ -370,10 +370,13 @@ class PerformanceDiagEvaluator(Node):
         self.__map_fit_client = self.create_client(
             PoseWithCovarianceStamped, "/map/map_height_fitter/service"
         )
-        while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("initial pose service not available, waiting again...")
-        while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("map height fitter service not available, waiting again...")
+        if self.__launch_localization:
+            while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
+                self.get_logger().warning("initial pose service not available, waiting again...")
+            while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
+                self.get_logger().warning(
+                    "map height fitter service not available, waiting again..."
+                )
 
         self.__timer = self.create_timer(
             1.0,
