@@ -31,6 +31,7 @@ Convergence evaluation is based on the following topics:
 However, evaluation of convergence will be started after NDT convergence, and convergence is determined by /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
 
 ### Availability of NDT
+
 Evaluate whether the following output is being output regularly:
 
 - `/localization/pose_estimator/pose`
@@ -72,7 +73,6 @@ Information related to the monitored topic is extracted from `/diagnostics_agg` 
 ### NDT Availability Error
 
 The NDT availability evaluation output is marked as `Error` when conditions for `NDT Availability Normal` are not met.
-
 
 ## Topic name and data type used by evaluation node
 

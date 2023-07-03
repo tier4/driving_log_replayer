@@ -40,7 +40,6 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 - /diagnostics_agg
 
-
 ## 評価結果
 
 topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
