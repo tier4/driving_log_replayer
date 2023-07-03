@@ -46,5 +46,5 @@
     test case 1 / 1 : use case: sample
     --------------------------------------------------
     TestResult: Passed
-    Passed: Convergence: 246 / 247 -> 99.60% Reliability: NVTL Sequential NG Count: 0 (Total Test: 248)
+    Passed: Convergence (Passed): 163 / 166 -> 98.19%, Reliability (Passed): NVTL Sequential NG Count: 0 (Total Test: 177), NDT Availability (Passed): NDT available
    ```
