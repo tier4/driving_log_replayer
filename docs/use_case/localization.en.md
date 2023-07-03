@@ -33,9 +33,11 @@ However, evaluation of convergence will be started after NDT convergence, and co
 ### Availability of NDT
 Evaluate whether the following output is being output regularly:
 
-- `/localization/pose_estimator/pose_with_covariance`
+- `/localization/pose_estimator/pose`
 
-This is accomplished by indirectly using a package within Autoware called Component State Monitor.
+This is accomplished by indirectly using a package within Autoware called Component State Monitor. The evaluator subscribes the following topic for the information:
+
+- `/diagnostics_agg`
 
 ## Evaluation Result
 
@@ -78,6 +80,7 @@ Subscribed topics:
 
 | Topic name                                                           | Data type                             |
 | -------------------------------------------------------------------- | ------------------------------------- |
+| /diagnostics_agg                                                     | diagnostic_msgs::msg::DiagnosticArray |
 | /localization/pose_estimator/transform_probability                   | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/pose                                    | geometry_msgs::msg::PoseStamped       |

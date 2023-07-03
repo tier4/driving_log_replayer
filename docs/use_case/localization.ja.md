@@ -34,9 +34,11 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 下記の出力が定期的に出力されているかどうかを評価する。
 
-- /localization/pose_estimator/pose_with_covariance
+- /localization/pose_estimator/pose
 
-これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。
+これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。本ツールは、下記のトピックを監視することによってその情報を取得する。
+
+- /diagnostics_agg
 
 
 ## 評価結果
