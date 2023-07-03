@@ -17,7 +17,7 @@
         <link rel="next" href="../obstacle_segmentation/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -802,6 +802,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#availability-of-ndt" class="md-nav__link">
+    Availability of NDT
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -839,6 +846,20 @@
           <li class="md-nav__item">
   <a href="#convergence-error" class="md-nav__link">
     Convergence Error
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ndt-availability-normal" class="md-nav__link">
+    NDT Availability Normal
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ndt-availability-error" class="md-nav__link">
+    NDT Availability Error
   </a>
   
 </li>
@@ -1075,6 +1096,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#availability-of-ndt" class="md-nav__link">
+    Availability of NDT
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1112,6 +1140,20 @@
           <li class="md-nav__item">
   <a href="#convergence-error" class="md-nav__link">
     Convergence Error
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ndt-availability-normal" class="md-nav__link">
+    NDT Availability Normal
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ndt-availability-error" class="md-nav__link">
+    NDT Availability Error
   </a>
   
 </li>
@@ -1239,6 +1281,15 @@ Launching the file executes the following steps:</p>
 <li><code>/localization/pose_twist_fusion_filter/pose</code></li>
 </ul>
 <p>However, evaluation of convergence will be started after NDT convergence, and convergence is determined by /localization/pose_estimator/transform_probability &gt; 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood &gt; 0.</p>
+<h3 id="availability-of-ndt">Availability of NDT<a class="headerlink" href="#availability-of-ndt" title="Permanent link">#</a></h3>
+<p>Evaluate whether the following output is being output regularly:</p>
+<ul>
+<li><code>/localization/pose_estimator/pose</code></li>
+</ul>
+<p>This is accomplished by indirectly using a package within Autoware called Component State Monitor. The evaluator subscribes the following topic for the information:</p>
+<ul>
+<li><code>/diagnostics_agg</code></li>
+</ul>
 <h2 id="evaluation-result">Evaluation Result<a class="headerlink" href="#evaluation-result" title="Permanent link">#</a></h2>
 <p>The results are calculated for each subscription. The format and available states are described below.</p>
 <h3 id="reliability-normal">Reliability Normal<a class="headerlink" href="#reliability-normal" title="Permanent link">#</a></h3>
@@ -1255,6 +1306,10 @@ Launching the file executes the following steps:</p>
 <p>The lateral distance calculated in the step 1 is published as <code>/driving_log_replayer/localization/lateral_distance</code>.</p>
 <h3 id="convergence-error">Convergence Error<a class="headerlink" href="#convergence-error" title="Permanent link">#</a></h3>
 <p>The convergence evaluation output is marked as <code>Error</code> when conditions for <code>Convergence Normal</code> are not met.</p>
+<h3 id="ndt-availability-normal">NDT Availability Normal<a class="headerlink" href="#ndt-availability-normal" title="Permanent link">#</a></h3>
+<p>Information related to the monitored topic is extracted from <code>/diagnostics_agg</code> which Component State Monitor outputs. If the most recent information NOT Timeout nor NotReceived, it is considered as pass.</p>
+<h3 id="ndt-availability-error">NDT Availability Error<a class="headerlink" href="#ndt-availability-error" title="Permanent link">#</a></h3>
+<p>The NDT availability evaluation output is marked as <code>Error</code> when conditions for <code>NDT Availability Normal</code> are not met.</p>
 <h2 id="topic-name-and-data-type-used-by-evaluation-node">Topic name and data type used by evaluation node<a class="headerlink" href="#topic-name-and-data-type-used-by-evaluation-node" title="Permanent link">#</a></h2>
 <p>Subscribed topics:</p>
 <table>
@@ -1265,6 +1320,10 @@ Launching the file executes the following steps:</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>/diagnostics_agg</td>
+<td>diagnostic_msgs::msg::DiagnosticArray</td>
+</tr>
 <tr>
 <td>/localization/pose_estimator/transform_probability</td>
 <td>tier4_debug_msgs::msg::Float32Stamped</td>
@@ -1585,10 +1644,10 @@ The result is <code>true</code> if both convergence and confidence are evaluated
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.b425cdc4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>
