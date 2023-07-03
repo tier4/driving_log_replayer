@@ -30,6 +30,15 @@ Convergence evaluation is based on the following topics:
 
 However, evaluation of convergence will be started after NDT convergence, and convergence is determined by /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
 
+### Availability of NDT
+Evaluate whether the following output is being output regularly:
+
+- `/localization/pose_estimator/pose`
+
+This is accomplished by indirectly using a package within Autoware called Component State Monitor. The evaluator subscribes the following topic for the information:
+
+- `/diagnostics_agg`
+
 ## Evaluation Result
 
 The results are calculated for each subscription. The format and available states are described below.
@@ -56,12 +65,22 @@ The lateral distance calculated in the step 1 is published as `/driving_log_repl
 
 The convergence evaluation output is marked as `Error` when conditions for `Convergence Normal` are not met.
 
+### NDT Availability Normal
+
+Information related to the monitored topic is extracted from `/diagnostics_agg` which Component State Monitor outputs. If the most recent information NOT Timeout nor NotReceived, it is considered as pass.
+
+### NDT Availability Error
+
+The NDT availability evaluation output is marked as `Error` when conditions for `NDT Availability Normal` are not met.
+
+
 ## Topic name and data type used by evaluation node
 
 Subscribed topics:
 
 | Topic name                                                           | Data type                             |
 | -------------------------------------------------------------------- | ------------------------------------- |
+| /diagnostics_agg                                                     | diagnostic_msgs::msg::DiagnosticArray |
 | /localization/pose_estimator/transform_probability                   | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/pose                                    | geometry_msgs::msg::PoseStamped       |
