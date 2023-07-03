@@ -227,13 +227,6 @@ class LocalizationEvaluator(Node):
         self.__prev_time = Time().to_msg()
         self.__counter = 0
 
-        self.__timer = self.create_timer(
-            1.0,
-            self.timer_cb,
-            callback_group=self.__timer_group,
-            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
-        )  # wall timer
-
         self.__pub_lateral_distance = self.create_publisher(
             Float64, "localization/lateral_distance", 1
         )
@@ -256,6 +249,13 @@ class LocalizationEvaluator(Node):
             self.get_logger().warning("initial pose service not available, waiting again...")
         while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warning("map height fitter service not available, waiting again...")
+
+        self.__timer = self.create_timer(
+            1.0,
+            self.timer_cb,
+            callback_group=self.__timer_group,
+            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
+        )  # wall timer
 
         self.__sub_tp = self.create_subscription(
             Float32Stamped,
