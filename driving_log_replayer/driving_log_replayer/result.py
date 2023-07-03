@@ -15,9 +15,9 @@
 # limitations under the License.
 
 import os
-import pickle
 from typing import Dict
 
+from perception_eval.util.file import dump_to_pkl
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
 import simplejson as json
@@ -90,7 +90,7 @@ class PickleWriter:
         self._pickle_file = open(os.path.expandvars(out_pkl_path), "wb")
 
     def dump(self, write_object):
-        pickle.dump(write_object, self._pickle_file)
+        dump_to_pkl(write_object, self._pickle_file)
         self.close()
 
     def close(self):
