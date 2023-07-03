@@ -24,6 +24,7 @@ from driving_log_replayer.node_common import set_initial_pose
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
+from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import TransformStamped
@@ -88,21 +89,31 @@ class LocalizationResult(ResultBase):
         self.__reliability_total = 0
         self.__reliability_msg = "NotTested"
         self.__reliability_result = True
+        # availability
+        self.__ndt_availability_condition: Dict = condition["NDTAvailability"]
+        self.__ndt_availability_msg = "NotTested"
+        self.__ndt_availability_result = True
 
     def update(self):
-        summary_str = f"Convergence: {self.__convergence_msg} Reliability: {self.__reliability_msg}"
-        if self.__convergence_result and self.__reliability_result:
+        if self.__convergence_result:
+            convergence_summary = f"Convergence (Passed): {self.__convergence_msg}"
+        else:
+            convergence_summary = f"Convergence (Failed): {self.__convergence_msg}"
+        if self.__reliability_result:
+            reliability_summary = f"Reliability (Passed): {self.__reliability_msg}"
+        else:
+            reliability_summary = f"Reliability (Failed): {self.__reliability_msg}"
+        if self.__ndt_availability_result:
+            ndt_availability_summary = f"NDTAvailability (Passed): {self.__ndt_availability_msg}"
+        else:
+            ndt_availability_summary = f"NDTAvailability (Failed): {self.__ndt_availability_msg}"
+        summary_str = f"{convergence_summary}, {reliability_summary}, {ndt_availability_summary}"
+        if self.__convergence_result and self.__reliability_result and self.__ndt_availability_result:
             self._success = True
             self._summary = f"Passed: {summary_str}"
-        elif self.__convergence_result and not self.__reliability_result:
+        else:
             self._success = False
-            self._summary = f"ReliabilityError: {summary_str}"
-        elif not self.__convergence_result and self.__reliability_result:
-            self._success = False
-            self._summary = f"ConvergenceError: {summary_str}"
-        elif not self.__convergence_result and not self.__reliability_result:
-            self._success = False
-            self._summary = f"ConvergenceAndReliabilityError: {summary_str}"
+            self._summary = f"Failed: {summary_str}"
 
     def add_reliability_frame(
         self, msg: Float32Stamped, map_to_baselink: Dict, reference: Float32Stamped
@@ -179,6 +190,33 @@ class LocalizationResult(ResultBase):
         self._frame = out_frame
         self.update()
         return msg_lateral_dist
+
+    def add_ndt_availability_frame(self, msg: DiagnosticArray):
+        # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
+        for diag_status in msg.status:
+            if diag_status.name != "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_pose: localization_topic_status":
+                continue
+            values = {value.key: value.value for value in diag_status.values}
+            # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
+            # On the basis of this assumption, we only consider the latest diagnostics received.
+            if values['status'] == 'OK':
+                self.__ndt_availability_msg = "NDT received"
+                self.__ndt_availability_result = True
+            elif values['status'] == 'NotReceived':
+                self.__ndt_availability_msg = "NDT not received"
+                self.__ndt_availability_result = False
+            elif values['status'] == 'Timeout':
+                self.__ndt_availability_msg = "NDT timeout"
+                self.__ndt_availability_result = False
+            elif values['status'] == 'WarnRate':
+                self.__ndt_availability_msg = "NDT received"
+                self.__ndt_availability_result = True
+            elif values['status'] == 'ErrorRate':
+                self.__ndt_availability_msg = "NDT received"
+                self.__ndt_availability_result = True
+            else:
+                raise NotImplementedError
+        self.update()
 
 
 class LocalizationEvaluator(Node):
@@ -278,6 +316,12 @@ class LocalizationEvaluator(Node):
             Int32Stamped,
             "/localization/pose_estimator/iteration_num",
             self.iteration_num_cb,
+            1,
+        )
+        self.__sub_diagnostics_agg = self.create_subscription(
+            DiagnosticArray,
+            "/diagnostics_agg",
+            self.diagnostics_cb,
             1,
         )
         # service client
@@ -390,6 +434,10 @@ class LocalizationEvaluator(Node):
             # self.get_logger().error(f"initial_pose_success: {self.__initial_pose_success}")
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
+
+    def diagnostics_cb(self, msg: DiagnosticArray):
+        self.__result.add_ndt_availability_frame(msg)
+        self.__result_writer.write(self.__result)
 
 
 def main(args=None):
