@@ -19,7 +19,7 @@ Evaluation:
       AllowableLikelihood: 2.3 # この値以上なら信頼度は正常とみなす
       NGCount: 10 # 信頼度異常が連続でこの回数続いたら信頼度評価失敗とみなす
     NDTAvailability:
-      FailStatus: ["Timeout", "NotReceived"] # エラーとみなすStatusのリスト
+      FailStatus: [Timeout, NotReceived] # エラーとみなすStatusのリスト
   InitialPose: # 初期位置を指定する。nullと記述するとGNSSによる初期位置推定を行う
     position:
       x: 3836.5478515625

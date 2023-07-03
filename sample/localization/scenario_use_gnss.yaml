@@ -19,5 +19,5 @@ Evaluation:
       AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
       NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
     NDTAvailability:
-      FailStatus: ["Timeout", "NotReceived"] # A list of status that will be handled as error. NOTE: Only the latest status will be used for evaluation
+      FailStatus: [Timeout, NotReceived] # A list of status that will be handled as error. NOTE: Only the latest status will be used for evaluation
   InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
