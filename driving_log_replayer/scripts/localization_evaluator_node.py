@@ -90,7 +90,7 @@ class LocalizationResult(ResultBase):
         self.__reliability_msg = "NotTested"
         self.__reliability_result = True
         # availability
-        self.__ndt_availability_condition: Dict = condition["NDTAvailability"]
+        self.__ndt_availability_error_status_list = ["Timeout", "NotReceived"]
         self.__ndt_availability_msg = "NotTested"
         self.__ndt_availability_result = True
 
@@ -207,7 +207,7 @@ class LocalizationResult(ResultBase):
             # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
             # On the basis of this assumption, we only consider the latest diagnostics received.
             # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
-            if values["status"] in self.__ndt_availability_condition["FailStatus"]:
+            if values["status"] in self.__ndt_availability_error_status_list:
                 self.__ndt_availability_msg = "NDT not available"
                 self.__ndt_availability_result = False
             else:
