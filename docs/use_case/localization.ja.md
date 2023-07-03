@@ -32,9 +32,14 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 ### NDT の可用性
 
-- /diagnostics_agg
+下記の出力が定期的に出力されているかどうかを評価する。
 
-ここ書いてほしい
+- /localization/pose_estimator/pose_with_covariance
+
+これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。
+同パッケージが出力する `/diagnostics_agg` の中から、当該トピックに関する情報を抽出する。
+最新の情報が `Timeout` または `NotReceived` の場合はFailとし、それ以外の場合はPassとする。
+
 
 ## 評価結果
 
