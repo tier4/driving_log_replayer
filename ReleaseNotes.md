@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.14
+
+Minor Tweak
+
+| Module         | Feature       | Brief summary        | Pull request                                                   | Jira     | Contributor                           |
+| -------------- | ------------- | -------------------- | -------------------------------------------------------------- | -------- | ------------------------------------- |
+| `localization` | state monitor | add ndt availability | [#178](https://github.com/tier4/driving_log_replayer/pull/178) | RT4-5570 | [kminoda](https://github.com/kminoda) |
+
 ## Version 1.3.13
 
 Bug fix
