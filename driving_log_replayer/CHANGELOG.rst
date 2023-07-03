@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.14 (2023-07-03)
+-------------------
 * feat(localization): add component_state_monitor in localization scenario (`#178 <https://github.com/tier4/driving_log_replayer/issues/178>`_)
   Co-authored-by: kminoda <kminoda@users.noreply.github.com>
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
