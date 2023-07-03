@@ -112,7 +112,7 @@ class TestScriptGenerator:
             map_path = os.path.expandvars(scenario_yaml_obj["LocalMapPath"])
             if not os.path.exists(map_path):
                 termcolor.cprint(
-                    "map: " + map_path + " used in scenario: " + scenario_root + " is not exist ",
+                    "map: " + map_path + " used in scenario: " + scenario_root + " does not exist ",
                     "red",
                 )
                 return None
@@ -217,7 +217,7 @@ class TestScriptGenerator:
             if map_path != "":
                 if not os.path.exists(map_path):
                     termcolor.cprint(
-                        "map: " + map_path + " used in dataset: " + key + " is not exist ",
+                        "map: " + map_path + " used in dataset: " + key + " does not exist ",
                         "red",
                     )
                     continue
@@ -227,7 +227,7 @@ class TestScriptGenerator:
 
             if not os.path.exists(t4_dataset_path):
                 termcolor.cprint(
-                    f"t4_dataset: {key} is not exist",
+                    f"t4_dataset: {key} does not exist",
                     "red",
                 )
                 continue
