@@ -131,6 +131,19 @@ def get_autoware_launch(
     return autoware_launch
 
 
+def get_map_height_fitter():
+    # map_height_fitter launch
+    fitter_launch_file = os.path.join(
+        get_package_share_directory("map_height_fitter"),
+        "launch",
+        "map_height_fitter.launch.xml",
+    )
+    fitter_launch = launch.actions.IncludeLaunchDescription(
+        launch.launch_description_sources.AnyLaunchDescriptionSource(fitter_launch_file),
+    )
+    return fitter_launch
+
+
 def get_rviz(rviz_config_name: str):
     rviz_config_dir = os.path.join(
         get_package_share_directory("driving_log_replayer"), "config", rviz_config_name
