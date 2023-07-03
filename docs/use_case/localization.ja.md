@@ -30,6 +30,12 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 ただし収束性は NDT が収束してから評価開始とし、収束の判定は/localization/pose_estimator/transform_probability > 0 もしくは /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0 を用いる。
 
+### NDT の可用性
+
+- /diagnostics_agg
+
+ここ書いてほしい
+
 ## 評価結果
 
 topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
@@ -56,12 +62,21 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 収束正常の条件を満たさない場合
 
+### 可用性正常
+
+aaaa
+
+### 可用性異常
+
+可用性正常の条件を満たさない場合
+
 ## 評価ノードが使用する Topic 名とデータ型
 
 Subscribed topics:
 
 | topic 名                                                             | データ型                              |
 | -------------------------------------------------------------------- | ------------------------------------- |
+| /diagnostics_agg                                                     | diagnostic_msgs::msg::DiagnosticArray |
 | /localization/pose_estimator/transform_probability                   | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/pose                                    | geometry_msgs::msg::PoseStamped       |
