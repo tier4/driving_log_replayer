@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.15 (2023-07-04)
+-------------------
 * ci: add tier4 cspell-dicts
 * Contributors: Hayato Mizushima
 
