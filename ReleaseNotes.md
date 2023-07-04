@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.15
+
+Minor Tweak
+
+| Module | Feature | Brief summary          | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------- | ---------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | ci      | add tier4 cspell-dicts | [#182](https://github.com/tier4/driving_log_replayer/pull/182) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.14
 
 Minor Tweak

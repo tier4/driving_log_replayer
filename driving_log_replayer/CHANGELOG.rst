@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* ci: add tier4 cspell-dicts
+* Contributors: Hayato Mizushima
+
 1.3.14 (2023-07-03)
 -------------------
 * feat(localization): add component_state_monitor in localization scenario (`#178 <https://github.com/tier4/driving_log_replayer/issues/178>`_)
