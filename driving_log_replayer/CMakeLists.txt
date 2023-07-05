@@ -14,6 +14,13 @@ if(${tf2_geometry_msgs_VERSION} VERSION_LESS 0.18.0)
     USE_TF2_GEOMETRY_MSGS_DEPRECATED_HEADER
   )
 endif()
+# Workaround for lanelet2-core@1.2.1
+if(TARGET lanelet2_core::lanelet2_core)
+  get_target_property(lanelet2_core_INCLUDE_DIRECTORIES lanelet2_core::lanelet2_core INTERFACE_INCLUDE_DIRECTORIES)
+  include_directories(SYSTEM
+    ${lanelet2_core_INCLUDE_DIRECTORIES}
+  )
+endif()
 rclcpp_components_register_node(obstacle_segmentation_evaluator_component
   PLUGIN "driving_log_replayer::ObstacleSegmentationEvaluatorComponent"
   EXECUTABLE obstacle_segmentation_evaluator_node

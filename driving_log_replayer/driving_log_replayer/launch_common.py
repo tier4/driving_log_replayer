@@ -235,6 +235,30 @@ def get_player(additional_argument=None):
     )
 
 
+def get_topic_state_monitor_launch(topic_monitor_config: str):
+    # component_state_monitor launch
+    component_state_monitor_launch_file = os.path.join(
+        get_package_share_directory("component_state_monitor"),
+        "launch",
+        "component_state_monitor.launch.py",
+    )
+    topic_monitor_config_path = os.path.join(
+        get_package_share_directory("driving_log_replayer"),
+        "config",
+        topic_monitor_config,
+    )
+    component_state_monitor_launch = launch.actions.IncludeLaunchDescription(
+        launch.launch_description_sources.AnyLaunchDescriptionSource(
+            component_state_monitor_launch_file
+        ),
+        launch_arguments={
+            "file": topic_monitor_config_path,
+            "mode": "logging_simulation",
+        }.items(),
+    )
+    return component_state_monitor_launch
+
+
 def get_evaluator_container(
     usecase_name: str,
     addition_parameter=None,
