@@ -33,6 +33,7 @@ However, evaluation of convergence will be started after NDT convergence, and co
 ### Availability of NDT
 
 We also evaluate whether the output of `ndt_scan_matcher` is available. This is mainly useful for detecting some cases where NDT is not capable of publishing the appropriate outputs, for example due to:
+
 - failure in `pointcloud_preprocessor` due to runtime error (which would result in inavailability of LiDAR scan inputs for `ndt_scan_matcher`)
 - failure in `ndt_scan_matcher` due to runtime error
 
