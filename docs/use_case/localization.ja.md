@@ -34,8 +34,8 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 本項目では、NDTのか要請を評価するために用意されている。これは、具体的には、下記のようなケースを検知することを目的とする。
 
-- Runtime errorにより `pointcloud_preprocessor` が落ちている（これにより、 `ndt_scan_matcher` へのLiDARスキャンが送信されなくなる）
-- Runtime errorにより `ndt_scan_matcher` が落ちている
+- Runtime error等により `pointcloud_preprocessor` が落ちている（これにより、 `ndt_scan_matcher` へのLiDARスキャンが送信されなくなる）
+- Runtime error等により `ndt_scan_matcher` が落ちている
 
 そのために、本項目では下記の出力が定期的に出力されているかどうかを評価する。
 
