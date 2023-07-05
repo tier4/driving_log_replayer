@@ -16,6 +16,7 @@
 
 
 import os
+import statistics
 from typing import Dict
 
 from autoware_adapi_v1_msgs.msg import ResponseStatus
@@ -89,6 +90,7 @@ class LocalizationResult(ResultBase):
         self.__reliability_total = 0
         self.__reliability_msg = "NotTested"
         self.__reliability_result = True
+        self.__reliability_list = []
         # availability
         self.__ndt_availability_error_status_list = ["Timeout", "NotReceived"]
         self.__ndt_availability_msg = "NotTested"
@@ -125,8 +127,11 @@ class LocalizationResult(ResultBase):
         self.__reliability_total += 1
         out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
 
+        reliability_value = msg.data
+        self.__reliability_list.append(reliability_value)
+
         if self.__reliability_result:
-            if msg.data >= self.__reliability_condition["AllowableLikelihood"]:
+            if reliability_value >= self.__reliability_condition["AllowableLikelihood"]:
                 self.__reliability_ng_seq = 0
             else:
                 self.__reliability_ng_seq += 1
@@ -144,7 +149,7 @@ class LocalizationResult(ResultBase):
                 }
             ],
         }
-        self.__reliability_msg = f"{self.__reliability_condition['Method']} Sequential NG Count: {self.__reliability_ng_seq} (Total Test: {self.__reliability_total})"
+        self.__reliability_msg = f"{self.__reliability_condition['Method']} Sequential NG Count: {self.__reliability_ng_seq} (Total Test: {self.__reliability_total}, Average: {statistics.mean(self.__reliability_list)}, StdDev: {statistics.pstdev(self.__reliability_list)})"
         self._frame = out_frame
         self.update()
 
