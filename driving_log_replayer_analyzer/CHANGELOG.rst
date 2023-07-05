@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat(localization): add likelihood avarage and std dev
+* Contributors: Hayato Mizushima
+
 1.3.15 (2023-07-04)
 -------------------
 * ci: add tier4 cspell-dicts
