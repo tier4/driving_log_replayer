@@ -1265,7 +1265,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <ol>
 <li>launch で評価ノード(<code>localization_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
 <li>bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う</li>
-<li>評価ノードが topic を subscribe して、NDT の信頼度、収束性が基準を満たしているかを判定して結果をファイルに記録する</li>
+<li>評価ノードが topic を subscribe して、NDT の信頼度、収束性、可用性が基準を満たしているかを判定して結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
 <h3 id="ndt">NDT の信頼度<a class="headerlink" href="#ndt" title="Permanent link">#</a></h3>
@@ -1282,14 +1282,20 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </ul>
 <p>ただし収束性は NDT が収束してから評価開始とし、収束の判定は/localization/pose_estimator/transform_probability &gt; 0 もしくは /localization/pose_estimator/nearest_voxel_transformation_likelihood &gt; 0 を用いる。</p>
 <h3 id="ndt_2">NDT の可用性<a class="headerlink" href="#ndt_2" title="Permanent link">#</a></h3>
-<p>下記の出力が定期的に出力されているかどうかを評価する。</p>
+<p>本項目では、NDTの可用性を評価するために用意されている。これは、具体的には、下記のようなケースを検知することを目的とする。</p>
 <ul>
-<li>/localization/pose_estimator/pose</li>
+<li>Runtime error等により <code>pointcloud_preprocessor</code> が落ちている（これにより、 <code>ndt_scan_matcher</code> へのLiDARスキャンが送信されなくなる）</li>
+<li>Runtime error等により <code>ndt_scan_matcher</code> が落ちている</li>
+</ul>
+<p>そのために、本項目では下記の出力が定期的に出力されているかどうかを評価する。</p>
+<ul>
+<li>/localization/pose_estimator/exe_time_ms</li>
 </ul>
 <p>これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。本ツールは、下記のトピックを監視することによってその情報を取得する。</p>
 <ul>
 <li>/diagnostics_agg</li>
 </ul>
+<p>なお、NDTの出力トピックの中で <code>/localization/pose_estimator/exe_time_ms</code> が選ばれたのは、「トピックに定期的にメッセージが出力されている」ことを確認することで上記に述べた失敗を判定することができるからである。例えば <code>/localization/pose_estimator/pose</code> は今回の監視トピックとして適さない。何故ならば、同トピックはNVTLやTPなどのスコアが低い場合も出力されないので、出力を監視するだけでは、その原因が上記失敗であるかとうかを判定することが難しいからである。</p>
 <h2 id="_3">評価結果<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <p>topic の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
 <h3 id="_4">信頼度正常<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>

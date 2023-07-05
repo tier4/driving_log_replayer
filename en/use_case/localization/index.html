@@ -1265,7 +1265,7 @@ Launching the file executes the following steps:</p>
 <ol>
 <li>Execute launch of evaluation node (<code>localization_evaluator_node</code>), <code>logging_simulator.launch</code> file and <code>ros2 bag play</code> command</li>
 <li>Autoware receives sensor data input from previously prepared rosbag and performs localization estimation</li>
-<li>Evaluation node subscribes to Autoware's output topics, determines whether NDT reliability and convergence meet the criteria, and dumps the results to a file</li>
+<li>Evaluation node subscribes to Autoware's output topics, determines whether NDT reliability, convergence, and availability meet the criteria, and dumps the results to a file</li>
 <li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
 <h3 id="reliability-of-ndt">Reliability of NDT<a class="headerlink" href="#reliability-of-ndt" title="Permanent link">#</a></h3>
@@ -1282,14 +1282,21 @@ Launching the file executes the following steps:</p>
 </ul>
 <p>However, evaluation of convergence will be started after NDT convergence, and convergence is determined by /localization/pose_estimator/transform_probability &gt; 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood &gt; 0.</p>
 <h3 id="availability-of-ndt">Availability of NDT<a class="headerlink" href="#availability-of-ndt" title="Permanent link">#</a></h3>
-<p>Evaluate whether the following output is being output regularly:</p>
+<p>We also evaluate whether the output of <code>ndt_scan_matcher</code> is available. This is mainly useful for detecting some cases where NDT is not capable of publishing the appropriate outputs, for example due to:</p>
 <ul>
-<li><code>/localization/pose_estimator/pose</code></li>
+<li>failure in <code>pointcloud_preprocessor</code> due to runtime error (which would result in unavailability of LiDAR scan inputs for <code>ndt_scan_matcher</code>)</li>
+<li>failure in <code>ndt_scan_matcher</code> due to runtime error</li>
+</ul>
+<p>Here we evaluate whether the following output is being output regularly:</p>
+<ul>
+<li><code>/localization/pose_estimator/exe_time_ms</code></li>
 </ul>
 <p>This is accomplished by indirectly using a package within Autoware called Component State Monitor. The evaluator subscribes the following topic for the information:</p>
 <ul>
 <li><code>/diagnostics_agg</code></li>
 </ul>
+<p>The reason why <code>/localization/pose_estimator/exe_time_ms</code> was chosen from the output topics of NDT is that it is possible to detect the aforementioned failure by confirming that messages are being output to the topic regularly.
+For example, <code>/localization/pose_estimator/pose</code> is not suitable as a monitoring topic this time. This is because the topic may not output if the score of NVTL or TP is low, and it is difficult to isolate the cause to the failure by just monitoring the output.</p>
 <h2 id="evaluation-result">Evaluation Result<a class="headerlink" href="#evaluation-result" title="Permanent link">#</a></h2>
 <p>The results are calculated for each subscription. The format and available states are described below.</p>
 <h3 id="reliability-normal">Reliability Normal<a class="headerlink" href="#reliability-normal" title="Permanent link">#</a></h3>
