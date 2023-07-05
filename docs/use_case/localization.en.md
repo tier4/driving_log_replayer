@@ -11,7 +11,7 @@ Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`localization_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
 2. Autoware receives sensor data input from previously prepared rosbag and performs localization estimation
-3. Evaluation node subscribes to Autoware's output topics, determines whether NDT reliability and convergence meet the criteria, and dumps the results to a file
+3. Evaluation node subscribes to Autoware's output topics, determines whether NDT reliability, convergence, and availability meet the criteria, and dumps the results to a file
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ### Reliability of NDT
@@ -32,13 +32,21 @@ However, evaluation of convergence will be started after NDT convergence, and co
 
 ### Availability of NDT
 
-Evaluate whether the following output is being output regularly:
+We also evaluate whether the output of `ndt_scan_matcher` is available. This is mainly useful for detecting some cases where NDT is not capable of publishing the appropriate outputs, for example due to:
 
-- `/localization/pose_estimator/pose`
+- failure in `pointcloud_preprocessor` due to runtime error (which would result in unavailability of LiDAR scan inputs for `ndt_scan_matcher`)
+- failure in `ndt_scan_matcher` due to runtime error
+
+Here we evaluate whether the following output is being output regularly:
+
+- `/localization/pose_estimator/exe_time_ms`
 
 This is accomplished by indirectly using a package within Autoware called Component State Monitor. The evaluator subscribes the following topic for the information:
 
 - `/diagnostics_agg`
+
+The reason why `/localization/pose_estimator/exe_time_ms` was chosen from the output topics of NDT is that it is possible to detect the aforementioned failure by confirming that messages are being output to the topic regularly.
+For example, `/localization/pose_estimator/pose` is not suitable as a monitoring topic this time. This is because the topic may not output if the score of NVTL or TP is low, and it is difficult to isolate the cause to the failure by just monitoring the output.
 
 ## Evaluation Result
 

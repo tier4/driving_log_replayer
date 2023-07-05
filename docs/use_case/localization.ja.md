@@ -11,7 +11,7 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`localization_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う
-3. 評価ノードが topic を subscribe して、NDT の信頼度、収束性が基準を満たしているかを判定して結果をファイルに記録する
+3. 評価ノードが topic を subscribe して、NDT の信頼度、収束性、可用性が基準を満たしているかを判定して結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 ### NDT の信頼度
@@ -32,13 +32,20 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 ### NDT の可用性
 
-下記の出力が定期的に出力されているかどうかを評価する。
+本項目では、NDTの可用性を評価するために用意されている。これは、具体的には、下記のようなケースを検知することを目的とする。
 
-- /localization/pose_estimator/pose
+- Runtime error等により `pointcloud_preprocessor` が落ちている（これにより、 `ndt_scan_matcher` へのLiDARスキャンが送信されなくなる）
+- Runtime error等により `ndt_scan_matcher` が落ちている
+
+そのために、本項目では下記の出力が定期的に出力されているかどうかを評価する。
+
+- /localization/pose_estimator/exe_time_ms
 
 これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。本ツールは、下記のトピックを監視することによってその情報を取得する。
 
 - /diagnostics_agg
+
+なお、NDTの出力トピックの中で `/localization/pose_estimator/exe_time_ms` が選ばれたのは、「トピックに定期的にメッセージが出力されている」ことを確認することで上記に述べた失敗を判定することができるからである。例えば `/localization/pose_estimator/pose` は今回の監視トピックとして適さない。何故ならば、同トピックはNVTLやTPなどのスコアが低い場合も出力されないので、出力を監視するだけでは、その原因が上記失敗であるかとうかを判定することが難しいからである。
 
 ## 評価結果
 
