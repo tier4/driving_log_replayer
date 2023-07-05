@@ -200,7 +200,7 @@ class LocalizationResult(ResultBase):
         for diag_status in msg.status:
             if (
                 diag_status.name
-                != "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_pose: localization_topic_status"
+                != "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
             ):
                 continue
             values = {value.key: value.value for value in diag_status.values}
