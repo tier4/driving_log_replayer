@@ -2,6 +2,39 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.15 (2023-07-04)
+-------------------
+* ci: add tier4 cspell-dicts
+* Contributors: Hayato Mizushima
+
+1.3.14 (2023-07-03)
+-------------------
+* feat(localization): add component_state_monitor in localization scenario (`#178 <https://github.com/tier4/driving_log_replayer/issues/178>`_)
+  Co-authored-by: kminoda <kminoda@users.noreply.github.com>
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: kminoda
+
+1.3.13 (2023-06-30)
+-------------------
+* fix: localization scenario
+* Contributors: Hayato Mizushima
+
+1.3.12 (2023-06-23)
+-------------------
+* docs: t4_dataset conversion tool
+* Contributors: Hayato Mizushima
+
+1.3.11 (2023-06-09)
+-------------------
+* fix: catch transform exception (`#169 <https://github.com/tier4/driving_log_replayer/issues/169>`_)
+  closes: `#168 <https://github.com/tier4/driving_log_replayer/issues/168>`_
+* Contributors: Hayato Mizushima
+
+1.3.10 (2023-05-31)
+-------------------
+* fix: link
+* Contributors: Makoto Tokunaga
+
 1.3.9 (2023-05-29)
 ------------------
 * feat: apply ShutdownOnce (`#163 <https://github.com/tier4/driving_log_replayer/issues/163>`_)

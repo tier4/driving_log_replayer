@@ -73,38 +73,46 @@ class TestScriptGenerator:
         scenario_output_dir = os.path.join(self.__output_directory, scenario_root.name)
         os.makedirs(scenario_output_dir)
         scenario_path = scenario_root.joinpath("scenario.yaml")
-        if scenario_path.exists():
-            with open(scenario_path) as scenario_file:
-                scenario_yaml_obj = yaml.safe_load(scenario_file)
-                if scenario_yaml_obj["Evaluation"]["UseCaseName"] in [
-                    "perception",
-                    "obstacle_segmentation",
-                    "perception_2d",
-                    "traffic_light",
-                ]:
-                    return self.__create_launch_command_with_t4_dataset(
-                        scenario_root.as_posix(), scenario_output_dir, scenario_yaml_obj
-                    )
-                else:
-                    return self.__create_launch_command(
-                        scenario_root.as_posix(), scenario_output_dir, scenario_yaml_obj
-                    )
-        else:
+        if not scenario_path.exists():
+            scenario_path = scenario_root.joinpath("scenario.yml")
+        if not scenario_path.exists():
             termcolor.cprint(
                 scenario_path.as_posix() + " does not exist.",
                 "red",
             )
             return None
 
+        with open(scenario_path) as scenario_file:
+            scenario_yaml_obj = yaml.safe_load(scenario_file)
+            if scenario_yaml_obj["Evaluation"]["UseCaseName"] in [
+                "perception",
+                "obstacle_segmentation",
+                "perception_2d",
+                "traffic_light",
+            ]:
+                return self.__create_launch_command_with_t4_dataset(
+                    scenario_root.as_posix(),
+                    scenario_path.name,
+                    scenario_output_dir,
+                    scenario_yaml_obj,
+                )
+            else:
+                return self.__create_launch_command(
+                    scenario_root.as_posix(),
+                    scenario_path.name,
+                    scenario_output_dir,
+                    scenario_yaml_obj,
+                )
+
     def __create_launch_command(
-        self, scenario_root: str, scenario_output_dir: str, scenario_yaml_obj
+        self, scenario_root: str, scenario_name: str, scenario_output_dir: str, scenario_yaml_obj
     ) -> Optional[str]:
         map_path = ""
         if "LocalMapPath" in scenario_yaml_obj:
             map_path = os.path.expandvars(scenario_yaml_obj["LocalMapPath"])
             if not os.path.exists(map_path):
                 termcolor.cprint(
-                    "map: " + map_path + " used in scenario: " + scenario_root + " is not exist ",
+                    "map: " + map_path + " used in scenario: " + scenario_root + " does not exist ",
                     "red",
                 )
                 return None
@@ -126,7 +134,7 @@ class TestScriptGenerator:
         use_case_name = scenario_yaml_obj["Evaluation"]["UseCaseName"]
         launch_base_command = f"ros2 launch driving_log_replayer {use_case_name}.launch.py"
         # evaluation component args
-        launch_args = " scenario_path:=" + os.path.join(scenario_root, "scenario.yaml")
+        launch_args = " scenario_path:=" + os.path.join(scenario_root, scenario_name)
         launch_args += " result_json_path:=" + os.path.join(scenario_output_dir, "result.json")
 
         # ros2 bag play args
@@ -181,10 +189,10 @@ class TestScriptGenerator:
         return launch_command
 
     def __create_launch_command_with_t4_dataset(
-        self, scenario_root: str, scenario_output_dir: str, scenario_yaml_obj
+        self, scenario_root: str, scenario_name: str, scenario_output_dir: str, scenario_yaml_obj
     ) -> Optional[str]:
         launch_command_for_all_dataset = ""
-        scenario_path = os.path.join(scenario_root, "scenario.yaml")
+        scenario_path = os.path.join(scenario_root, scenario_name)
         t4_dataset_base_path = os.path.join(scenario_root, "t4_dataset")
         t4_datasets = scenario_yaml_obj["Evaluation"]["Datasets"]
         is_database_evaluation = True if len(t4_datasets) > 1 else False
@@ -209,7 +217,7 @@ class TestScriptGenerator:
             if map_path != "":
                 if not os.path.exists(map_path):
                     termcolor.cprint(
-                        "map: " + map_path + " used in dataset: " + key + " is not exist ",
+                        "map: " + map_path + " used in dataset: " + key + " does not exist ",
                         "red",
                     )
                     continue
@@ -219,7 +227,7 @@ class TestScriptGenerator:
 
             if not os.path.exists(t4_dataset_path):
                 termcolor.cprint(
-                    f"t4_dataset: {key} is not exist",
+                    f"t4_dataset: {key} does not exist",
                     "red",
                 )
                 continue
