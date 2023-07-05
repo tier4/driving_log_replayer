@@ -149,7 +149,7 @@ class LocalizationResult(ResultBase):
                 }
             ],
         }
-        self.__reliability_msg = f"{self.__reliability_condition['Method']} Sequential NG Count: {self.__reliability_ng_seq} (Total Test: {self.__reliability_total}, Average: {statistics.mean(self.__reliability_list)}, StdDev: {statistics.pstdev(self.__reliability_list)})"
+        self.__reliability_msg = f"{self.__reliability_condition['Method']} Sequential NG Count: {self.__reliability_ng_seq} (Total Test: {self.__reliability_total}, Average: {statistics.mean(self.__reliability_list):.5f}, StdDev: {statistics.pstdev(self.__reliability_list):.5f})"
         self._frame = out_frame
         self.update()
 
