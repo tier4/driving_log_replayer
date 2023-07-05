@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.16 (2023-07-05)
+-------------------
 * fix(localization): update NDT availability monitoring topic (`#187 <https://github.com/tier4/driving_log_replayer/issues/187>`_)
   Co-authored-by: kminoda <kminoda@users.noreply.github.com>
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
