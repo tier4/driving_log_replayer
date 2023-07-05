@@ -4,8 +4,13 @@ Changelog for package driving_log_replayer_msgs
 
 Forthcoming
 -----------
-* feat(localization): add likelihood avarage and std dev
-* Contributors: Hayato Mizushima
+* fix(localization): update NDT availability monitoring topic (`#187 <https://github.com/tier4/driving_log_replayer/issues/187>`_)
+  Co-authored-by: kminoda <kminoda@users.noreply.github.com>
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* feat: localization likelihood average std_dev (`#184 <https://github.com/tier4/driving_log_replayer/issues/184>`_)
+  Co-authored-by: kminoda <44218668+kminoda@users.noreply.github.com>
+* fix: colcon build error (`#185 <https://github.com/tier4/driving_log_replayer/issues/185>`_)
+* Contributors: Hayato Mizushima, kminoda
 
 1.3.15 (2023-07-04)
 -------------------

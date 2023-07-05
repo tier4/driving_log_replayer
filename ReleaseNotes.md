@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.3.16
+
+Bug fix, Minor Tweak
+
+| Module                  | Feature          | Brief summary                         | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ---------------- | ------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | CMake            | fix build error due to lanelet2       | [#185](https://github.com/tier4/driving_log_replayer/pull/185) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `localization`          | summary          | add average and std_dev of likelihood | [#184](https://github.com/tier4/driving_log_replayer/pull/184) | RT4-5584 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization`          | NDT availability | update monitoring topic               | [#187](https://github.com/tier4/driving_log_replayer/pull/187) | RT4-5570 | [kminoda](https://github.com/kminoda)         |
+
 ## Version 1.3.15
 
 Minor Tweak
