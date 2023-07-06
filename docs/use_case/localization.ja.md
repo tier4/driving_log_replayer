@@ -45,16 +45,6 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 なお、NDTの出力トピックの中で `/localization/pose_estimator/exe_time_ms` が選ばれたのは、「トピックに定期的にメッセージが出力されている」ことを確認することで上記に述べた失敗を判定することができるからである。例えば `/localization/pose_estimator/pose` は今回の監視トピックとして適さない。何故ならば、同トピックはNVTLやTPなどのスコアが低い場合も出力されないので、出力を監視するだけでは、その原因が上記失敗であるかとうかを判定することが難しいからである。
 
-### NDT の可用性
-
-下記の出力が定期的に出力されているかどうかを評価する。
-
-- /localization/pose_estimator/pose
-
-これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。本ツールは、下記のトピックを監視することによってその情報を取得する。
-
-- /diagnostics_agg
-
 ## 評価結果
 
 topic の subscribe 1 回につき、以下に記述する判定結果が出力される。

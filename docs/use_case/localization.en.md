@@ -46,16 +46,6 @@ This is accomplished by indirectly using a package within Autoware called Compon
 The reason why `/localization/pose_estimator/exe_time_ms` was chosen from the output topics of NDT is that it is possible to detect the aforementioned failure by confirming that messages are being output to the topic regularly.
 For example, `/localization/pose_estimator/pose` is not suitable as a monitoring topic this time. This is because the topic may not output if the score of NVTL or TP is low, and it is difficult to isolate the cause to the failure by just monitoring the output.
 
-### Availability of NDT
-
-Evaluate whether the following output is being output regularly:
-
-- `/localization/pose_estimator/pose`
-
-This is accomplished by indirectly using a package within Autoware called Component State Monitor. The evaluator subscribes the following topic for the information:
-
-- `/diagnostics_agg`
-
 ## Evaluation Result
 
 The results are calculated for each subscription. The format and available states are described below.
