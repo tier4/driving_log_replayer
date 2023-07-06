@@ -1,5 +1,33 @@
 # Release Notes
 
+## Version 1.4.0
+
+Major change
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/4128).
+
+| Module             | Feature      | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------ | ------------ | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization`     | initial pose | use map_height_fitter to correct z value | [#176](https://github.com/tier4/driving_log_replayer/pull/176) | RT4-5532 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag` | initial pose | use map_height_fitter to correct z value | [#179](https://github.com/tier4/driving_log_replayer/pull/179) | RT4-5532 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.3.17
+
+Minor Tweak
+
+| Module         | Feature              | Brief summary                                  | Pull request                                                   | Jira     | Contributor                                   |
+| -------------- | -------------------- | ---------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization` | evaluation condition | delete converged condition to start evaluation | [#193](https://github.com/tier4/driving_log_replayer/pull/193) | RT4-5630 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.3.16
+
+Bug fix, Minor Tweak
+
+| Module                  | Feature          | Brief summary                         | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ---------------- | ------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | CMake            | fix build error due to lanelet2       | [#185](https://github.com/tier4/driving_log_replayer/pull/185) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `localization`          | summary          | add average and std_dev of likelihood | [#184](https://github.com/tier4/driving_log_replayer/pull/184) | RT4-5584 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization`          | NDT availability | update monitoring topic               | [#187](https://github.com/tier4/driving_log_replayer/pull/187) | RT4-5570 | [kminoda](https://github.com/kminoda)         |
+
 ## Version 1.3.15
 
 Minor Tweak

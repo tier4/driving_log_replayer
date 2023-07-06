@@ -26,6 +26,9 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     launch_arguments.append(DeclareLaunchArgument("localization", default_value="false"))
+    fitter_launch = driving_log_replayer.launch_common.get_map_height_fitter(
+        launch_service=LaunchConfiguration("localization")
+    )
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
         localization=LaunchConfiguration("localization")
     )
@@ -68,5 +71,13 @@ def generate_launch_description():
     )
     return launch.LaunchDescription(
         launch_arguments
-        + [rviz_node, autoware_launch, evaluator_node, recorder, player_normal, player_remap]
+        + [
+            rviz_node,
+            autoware_launch,
+            fitter_launch,
+            evaluator_node,
+            recorder,
+            player_normal,
+            player_remap,
+        ]
     )
