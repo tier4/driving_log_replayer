@@ -83,18 +83,18 @@ class LocalizationResult(ResultBase):
         self.__convergence_total = 0
         self.__convergence_success = 0
         self.__convergence_msg = "NotTested"
-        self.__convergence_result = True
+        self.__convergence_result = False
         # reliability
         self.__reliability_condition: Dict = condition["Reliability"]
         self.__reliability_ng_seq = 0
         self.__reliability_total = 0
         self.__reliability_msg = "NotTested"
-        self.__reliability_result = True
+        self.__reliability_result = False
         self.__reliability_list = []
         # availability
         self.__ndt_availability_error_status_list = ["Timeout", "NotReceived"]
         self.__ndt_availability_msg = "NotTested"
-        self.__ndt_availability_result = True
+        self.__ndt_availability_result = False
 
     def update(self):
         if self.__convergence_result:
