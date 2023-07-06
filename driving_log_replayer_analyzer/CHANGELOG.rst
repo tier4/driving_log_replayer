@@ -2,6 +2,28 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.4.0 (2023-07-06)
+------------------
+* feat: map height fitter for diag (`#179 <https://github.com/tier4/driving_log_replayer/issues/179>`_)
+* feat: `#175 <https://github.com/tier4/driving_log_replayer/issues/175>`_ map height fitter (`#176 <https://github.com/tier4/driving_log_replayer/issues/176>`_)
+  closes: `#175 <https://github.com/tier4/driving_log_replayer/issues/175>`_
+* Contributors: Hayato Mizushima
+
+1.3.17 (2023-07-06)
+-------------------
+* feat: `#192 <https://github.com/tier4/driving_log_replayer/issues/192>`_ delete converged condition to start evaluation (`#193 <https://github.com/tier4/driving_log_replayer/issues/193>`_)
+* Contributors: Hayato Mizushima
+
+1.3.16 (2023-07-05)
+-------------------
+* fix(localization): update NDT availability monitoring topic (`#187 <https://github.com/tier4/driving_log_replayer/issues/187>`_)
+  Co-authored-by: kminoda <kminoda@users.noreply.github.com>
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* feat: localization likelihood average std_dev (`#184 <https://github.com/tier4/driving_log_replayer/issues/184>`_)
+  Co-authored-by: kminoda <44218668+kminoda@users.noreply.github.com>
+* fix: colcon build error (`#185 <https://github.com/tier4/driving_log_replayer/issues/185>`_)
+* Contributors: Hayato Mizushima, kminoda
+
 1.3.15 (2023-07-04)
 -------------------
 * ci: add tier4 cspell-dicts
