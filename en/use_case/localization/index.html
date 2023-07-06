@@ -1280,7 +1280,6 @@ Launching the file executes the following steps:</p>
 <li><code>/localization/pose_estimator/pose</code></li>
 <li><code>/localization/pose_twist_fusion_filter/pose</code></li>
 </ul>
-<p>However, evaluation of convergence will be started after NDT convergence, and convergence is determined by /localization/pose_estimator/transform_probability &gt; 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood &gt; 0.</p>
 <h3 id="availability-of-ndt">Availability of NDT<a class="headerlink" href="#availability-of-ndt" title="Permanent link">#</a></h3>
 <p>We also evaluate whether the output of <code>ndt_scan_matcher</code> is available. This is mainly useful for detecting some cases where NDT is not capable of publishing the appropriate outputs, for example due to:</p>
 <ul>
