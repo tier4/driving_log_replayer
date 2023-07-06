@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.3.17
+
+Minor Tweak
+
+| Module         | Feature              | Brief summary                                  | Pull request                                                   | Jira     | Contributor                                   |
+| -------------- | -------------------- | ---------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization` | evaluation condition | delete converged condition to start evaluation | [#193](https://github.com/tier4/driving_log_replayer/pull/193) | RT4-5630 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.16
 
 Bug fix, Minor Tweak
