@@ -28,8 +28,6 @@ Convergence evaluation is based on the following topics:
 - `/localization/pose_estimator/pose`
 - `/localization/pose_twist_fusion_filter/pose`
 
-However, evaluation of convergence will be started after NDT convergence, and convergence is determined by /localization/pose_estimator/transform_probability > 0 or /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0.
-
 ### Availability of NDT
 
 We also evaluate whether the output of `ndt_scan_matcher` is available. This is mainly useful for detecting some cases where NDT is not capable of publishing the appropriate outputs, for example due to:

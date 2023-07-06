@@ -277,7 +277,6 @@ class LocalizationEvaluator(Node):
             Float64, "localization/lateral_distance", 1
         )
 
-        self.__converged = False
         self.__latest_ekf_pose: Odometry = Odometry()
         self.__latest_exe_time: Float32Stamped = Float32Stamped()
         self.__latest_iteration_num: Int32Stamped = Int32Stamped()
@@ -344,10 +343,8 @@ class LocalizationEvaluator(Node):
 
     def tp_cb(self, msg: Float32Stamped):
         self.__latest_tp = msg
-        if self.__latest_tp.data > 0:
-            self.__converged = True
-        if not (self.__converged and self.__reliability_method == "TP"):
-            # convergedかつTP評価で評価する
+        if not self.__reliability_method == "TP":
+            # evaluates when reliability_method is TP
             return
         try:
             map_to_baselink = self.__tf_buffer.lookup_transform(
@@ -363,10 +360,8 @@ class LocalizationEvaluator(Node):
 
     def nvtl_cb(self, msg: Float32Stamped):
         self.__latest_nvtl = msg
-        if self.__latest_nvtl.data > 0:
-            self.__converged = True
-        if not (self.__converged and self.__reliability_method == "NVTL"):
-            # convergedかつNVTL評価で評価する
+        if not self.__reliability_method == "NVTL":
+            # evaluates when reliability_method is NVTL
             return
         try:
             map_to_baselink = self.__tf_buffer.lookup_transform(
@@ -381,8 +376,6 @@ class LocalizationEvaluator(Node):
         self.__result_writer.write(self.__result)
 
     def pose_cb(self, msg: PoseStamped):
-        if not self.__converged:
-            return
         try:
             map_to_baselink = self.__tf_buffer.lookup_transform(
                 "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
