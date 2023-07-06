@@ -28,8 +28,6 @@ launch を立ち上げると以下のことが実行され、評価される。
 - /localization/pose_estimator/pose
 - /localization/pose_twist_fusion_filter/pose
 
-ただし収束性は NDT が収束してから評価開始とし、収束の判定は/localization/pose_estimator/transform_probability > 0 もしくは /localization/pose_estimator/nearest_voxel_transformation_likelihood > 0 を用いる。
-
 ### NDT の可用性
 
 本項目では、NDTの可用性を評価するために用意されている。これは、具体的には、下記のようなケースを検知することを目的とする。
