@@ -46,6 +46,7 @@ from tf2_ros import TransformListener
 from tf_transformations import euler_from_quaternion
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
+from tier4_localization_msgs.srv import PoseWithCovarianceStamped
 import yaml
 
 
@@ -266,13 +267,6 @@ class LocalizationEvaluator(Node):
         self.__prev_time = Time().to_msg()
         self.__counter = 0
 
-        self.__timer = self.create_timer(
-            1.0,
-            self.timer_cb,
-            callback_group=self.__timer_group,
-            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
-        )  # wall timer
-
         self.__pub_lateral_distance = self.create_publisher(
             Float64, "localization/lateral_distance", 1
         )
@@ -282,6 +276,25 @@ class LocalizationEvaluator(Node):
         self.__latest_iteration_num: Int32Stamped = Int32Stamped()
         self.__latest_tp: Float32Stamped = Float32Stamped()
         self.__latest_nvtl: Float32Stamped = Float32Stamped()
+
+        # service client
+        self.__initial_pose_client = self.create_client(
+            InitializeLocalization, "/api/localization/initialize"
+        )
+        self.__map_fit_client = self.create_client(
+            PoseWithCovarianceStamped, "/map/map_height_fitter/service"
+        )
+        while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("initial pose service not available, waiting again...")
+        while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("map height fitter service not available, waiting again...")
+
+        self.__timer = self.create_timer(
+            1.0,
+            self.timer_cb,
+            callback_group=self.__timer_group,
+            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
+        )  # wall timer
 
         self.__sub_tp = self.create_subscription(
             Float32Stamped,
@@ -325,12 +338,6 @@ class LocalizationEvaluator(Node):
             self.diagnostics_cb,
             1,
         )
-        # service client
-        self.__initial_pose_client = self.create_client(
-            InitializeLocalization, "/api/localization/initialize"
-        )
-        while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("service not available, waiting again...")
 
     def ekf_pose_cb(self, msg: Odometry):
         self.__latest_ekf_pose = msg
@@ -402,15 +409,15 @@ class LocalizationEvaluator(Node):
                 and not self.__initial_pose_success
                 and not self.__initial_pose_running
             ):
-                # self.get_logger().error(
-                #     f"call initial_pose time: {self.__current_time.sec}.{self.__current_time.nanosec}"
-                # )
+                self.get_logger().info(
+                    f"call initial_pose time: {self.__current_time.sec}.{self.__current_time.nanosec}"
+                )
                 self.__initial_pose_running = True
                 self.__initial_pose.header.stamp = self.__current_time
-                future_init_pose = self.__initial_pose_client.call_async(
-                    InitializeLocalization.Request(pose=[self.__initial_pose])
+                future_map_fit = self.__map_fit_client.call_async(
+                    PoseWithCovarianceStamped.Request(pose_with_covariance=self.__initial_pose)
                 )
-                future_init_pose.add_done_callback(self.initial_pose_cb)
+                future_map_fit.add_done_callback(self.map_fit_cb)
             if self.__current_time == self.__prev_time:
                 self.__counter += 1
             else:
@@ -420,15 +427,59 @@ class LocalizationEvaluator(Node):
                 self.__result_writer.close()
                 rclpy.shutdown()
 
+    def map_fit_cb(self, future):
+        result = future.result()
+        if result is not None:
+            if result.success:
+                # result.pose_with_covarianceに補正済みデータが入っている
+                # 補正済みデータでinitialposeを投げる
+                # debug result.pose_with_covariance
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.x: {result.pose_with_covariance.pose.pose.position.x}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.y: {result.pose_with_covariance.pose.pose.position.y}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.z: {result.pose_with_covariance.pose.pose.position.z}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.x: {result.pose_with_covariance.pose.pose.orientation.x}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.y: {result.pose_with_covariance.pose.pose.orientation.y}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.z: {result.pose_with_covariance.pose.pose.orientation.z}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.w: {result.pose_with_covariance.pose.pose.orientation.w}"
+                # )
+                future_init_pose = self.__initial_pose_client.call_async(
+                    InitializeLocalization.Request(pose=[result.pose_with_covariance])
+                )
+                future_init_pose.add_done_callback(self.initial_pose_cb)
+            else:
+                # free self.__initial_pose_running when the service call fails
+                self.__initial_pose_running = False
+                self.get_logger().warn("map_height_height service result is fail")
+        else:
+            # free self.__initial_pose_running when the service call fails
+            self.__initial_pose_running = False
+            self.get_logger().error(f"Exception for service: {future.exception()}")
+
     def initial_pose_cb(self, future):
         result = future.result()
         if result is not None:
             res_status: ResponseStatus = result.status
             self.__initial_pose_success = res_status.success
-            self.__initial_pose_running = False
-            # self.get_logger().error(f"initial_pose_success: {self.__initial_pose_success}")
+            self.get_logger().info(
+                f"initial_pose_success: {self.__initial_pose_success}"
+            )  # debug msg
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
+        # free self.__initial_pose_running
+        self.__initial_pose_running = False
 
     def diagnostics_cb(self, msg: DiagnosticArray):
         self.__result.add_ndt_availability_frame(msg)

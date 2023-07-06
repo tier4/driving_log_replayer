@@ -18,6 +18,7 @@ import launch
 
 def generate_launch_description():
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
+    fitter_launch = driving_log_replayer.launch_common.get_map_height_fitter(launch_service="true")
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(perception="false")
     rviz_node = driving_log_replayer.launch_common.get_rviz("localization.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("localization")
@@ -42,5 +43,13 @@ def generate_launch_description():
 
     return launch.LaunchDescription(
         launch_arguments
-        + [rviz_node, autoware_launch, evaluator_node, recorder, player, topic_monitor]
+        + [
+            rviz_node,
+            autoware_launch,
+            fitter_launch,
+            evaluator_node,
+            recorder,
+            player,
+            topic_monitor,
+        ]
     )

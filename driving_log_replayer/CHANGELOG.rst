@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: map height fitter for diag (`#179 <https://github.com/tier4/driving_log_replayer/issues/179>`_)
+* feat: `#175 <https://github.com/tier4/driving_log_replayer/issues/175>`_ map height fitter (`#176 <https://github.com/tier4/driving_log_replayer/issues/176>`_)
+  closes: `#175 <https://github.com/tier4/driving_log_replayer/issues/175>`_
+* Contributors: Hayato Mizushima
+
 1.3.17 (2023-07-06)
 -------------------
 * feat: `#192 <https://github.com/tier4/driving_log_replayer/issues/192>`_ delete converged condition to start evaluation (`#193 <https://github.com/tier4/driving_log_replayer/issues/193>`_)
