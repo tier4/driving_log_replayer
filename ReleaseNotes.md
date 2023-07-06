@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.4.0
+
+Major change
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/4128).
+
+| Module             | Feature      | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------ | ------------ | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization`     | initial pose | use map_height_fitter to correct z value | [#176](https://github.com/tier4/driving_log_replayer/pull/176) | RT4-5532 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag` | initial pose | use map_height_fitter to correct z value | [#179](https://github.com/tier4/driving_log_replayer/pull/179) | RT4-5532 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.3.17
 
 Minor Tweak
