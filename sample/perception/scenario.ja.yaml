@@ -18,6 +18,9 @@ Evaluation:
       evaluation_task: detection # detection/tracking ここで指定したobjectsを評価する
       target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
       ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
+      label_prefix: "autoware"
+      merge_similar_labels: true
+      allow_matching_unknown: true
       max_x_position: 102.4 # 評価対象 object の最大 x 位置
       max_y_position: 102.4 # 評価対象 object の最大 y 位置
       max_distance: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
@@ -43,6 +46,3 @@ Evaluation:
     target_labels: [car, bicycle, pedestrian, motorbike]
     matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
     confidence_threshold_list: null
-  LabelParam:
-    allow_matching_unknown: true
-    merge_similar_labels: true

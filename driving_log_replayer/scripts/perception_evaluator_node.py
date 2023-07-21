@@ -33,7 +33,6 @@ from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
-from perception_eval.common.label import LabelParam
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.shape import Shape
 from perception_eval.common.shape import ShapeType
@@ -225,18 +224,10 @@ class PerceptionEvaluator(Node):
             p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
             c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
-            l_param = self.__scenario_yaml_obj["Evaluation"]["LabelParam"]
 
             evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
             frame_id, msg_type = self.get_frame_id_and_msg_type(evaluation_task)
             self.__frame_id = FrameID.from_value(frame_id)
-
-            label_param = LabelParam(
-                label_prefix="autoware",
-                merge_similar_labels=l_param["merge_similar_labels"],
-                allow_matching_unknown=l_param["allow_matching_unknown"],
-                count_label_number=True,
-            )
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
@@ -245,7 +236,6 @@ class PerceptionEvaluator(Node):
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
                 evaluation_config_dict=p_cfg["evaluation_config_dict"],
-                label_param=label_param,
                 load_raw_data=False,
             )
             _ = configure_logger(

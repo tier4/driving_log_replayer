@@ -18,6 +18,9 @@ Evaluation:
     evaluation_config_dict:
       evaluation_task: classification2d # Currently only classification2 is supported. Future extensions will support detection2d.
       target_labels: [green, red, yellow, unknown] # evaluation target. refer https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#trafficlightlabel
+      label_prefix: "traffic_light"
+      merge_similar_labels: true
+      allow_matching_unknown: true
       center_distance_thresholds: [100, 200] # Threshold for center-to-center distance [pixel] matching
       iou_2d_thresholds: [0.5] # Threshold for 2D IoU
   CriticalObjectFilterConfig:
@@ -25,6 +28,4 @@ Evaluation:
   PerceptionPassFailConfig:
     target_labels: [green, red, yellow, unknown]
     matching_threshold_list: null # Only used in detection2d
-  LabelParam:
-    allow_matching_unknown: true
-    merge_similar_labels: true
+

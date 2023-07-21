@@ -29,7 +29,6 @@ from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
-from perception_eval.common.label import LabelParam
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
@@ -187,16 +186,8 @@ class TrafficLightEvaluator(Node):
             p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
             c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
-            l_param = self.__scenario_yaml_obj["Evaluation"]["LabelParam"]
 
             self.__camera_type = p_cfg["camera_type"]
-
-            label_param = LabelParam(
-                label_prefix="autoware",
-                merge_similar_labels=l_param["merge_similar_labels"],
-                allow_matching_unknown=l_param["allow_matching_unknown"],
-                count_label_number=True,
-            )
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
@@ -205,7 +196,6 @@ class TrafficLightEvaluator(Node):
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
                 evaluation_config_dict=p_cfg["evaluation_config_dict"],
-                label_param=label_param,
                 load_raw_data=False,
             )
             _ = configure_logger(
