@@ -29,3 +29,6 @@ Evaluation:
   PerceptionPassFailConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike]
     matching_threshold_list: null
+  LabelParam:
+    allow_matching_unknown: true
+    merge_similar_labels: true

@@ -33,7 +33,10 @@ from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
+from perception_eval.common.label import LabelParam
 from perception_eval.common.object import DynamicObject
+from perception_eval.common.shape import Shape
+from perception_eval.common.shape import ShapeType
 from perception_eval.common.status import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
@@ -222,19 +225,27 @@ class PerceptionEvaluator(Node):
             p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
             c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
+            l_param = self.__scenario_yaml_obj["Evaluation"]["LabelParam"]
 
             evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
             frame_id, msg_type = self.get_frame_id_and_msg_type(evaluation_task)
             self.__frame_id = FrameID.from_value(frame_id)
 
+            label_param = LabelParam(
+                label_prefix="autoware",
+                merge_similar_labels=l_param["merge_similar_labels"],
+                allow_matching_unknown=l_param["allow_matching_unknown"],
+                count_label_number=True,
+            )
+
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
                 frame_id=frame_id,
-                merge_similar_labels=False,
                 result_root_directory=os.path.join(
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
                 evaluation_config_dict=p_cfg["evaluation_config_dict"],
+                label_param=label_param,
                 load_raw_data=False,
             )
             _ = configure_logger(
@@ -351,6 +362,10 @@ class PerceptionEvaluator(Node):
             if isinstance(perception_object, TrackedObject):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
 
+            shape_type = (
+                ShapeType.BOUNDING_BOX if perception_object.shape.type == 0 else ShapeType.POLYGON
+            )
+
             estimated_object = DynamicObject(
                 unix_time=unix_time,
                 frame_id=self.__frame_id,
@@ -360,7 +375,17 @@ class PerceptionEvaluator(Node):
                 orientation=eval_conversions.orientation_from_ros_msg(
                     perception_object.kinematics.pose_with_covariance.pose.orientation
                 ),
-                size=eval_conversions.dimensions_from_ros_msg(perception_object.shape.dimensions),
+                shape=Shape(
+                    shape_type=shape_type,
+                    size=eval_conversions.dimensions_from_ros_msg(
+                        perception_object.shape.dimensions
+                    ),
+                    footprint=eval_conversions.footprint_from_ros_msg(
+                        perception_object.shape.footprint
+                    )
+                    if shape_type == ShapeType.BOUNDING_BOX
+                    else None,
+                ),
                 velocity=eval_conversions.velocity_from_ros_msg(
                     perception_object.kinematics.twist_with_covariance.twist.linear
                 ),

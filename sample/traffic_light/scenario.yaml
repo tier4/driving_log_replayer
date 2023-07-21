@@ -25,3 +25,6 @@ Evaluation:
   PerceptionPassFailConfig:
     target_labels: [green, red, yellow, unknown]
     matching_threshold_list: null # Only used in detection2d
+  LabelParam:
+    allow_matching_unknown: true
+    merge_similar_labels: true

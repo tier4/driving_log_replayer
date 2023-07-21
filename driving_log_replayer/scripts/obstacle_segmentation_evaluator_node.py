@@ -37,6 +37,7 @@ from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
+from perception_eval.common.label import LabelParam
 from perception_eval.common.object import DynamicObject
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
@@ -455,12 +456,17 @@ class ObstacleSegmentationEvaluator(Node):
 
         e_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
 
+        label_param = LabelParam(
+            label_prefix="autoware",  # Prefix of label name ... ("autoware", "traffic_light")
+            count_label_number=True,  # A flag if count the number of each label as debug
+        )
+
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
             frame_id="base_link",
-            merge_similar_labels=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
             evaluation_config_dict=e_cfg["evaluation_config_dict"],
+            label_param=label_param,
             load_raw_data=False,
         )
 
