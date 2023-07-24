@@ -370,12 +370,14 @@ class PerceptionEvaluator(Node):
                     size=eval_conversions.dimensions_from_ros_msg(
                         perception_object.shape.dimensions
                     ),
-                    footprint=eval_conversions.footprint_from_ros_msg(
-                        perception_object.shape.footprint
-                    )
-                    if shape_type == ShapeType.BOUNDING_BOX
-                    else None,
+                    footprint=None,
                 ),
+                #     footprint=eval_conversions.footprint_from_ros_msg(
+                #         perception_object.shape.footprint
+                #     )
+                #     if shape_type == ShapeType.BOUNDING_BOX
+                #     else None,
+                # ),
                 velocity=eval_conversions.velocity_from_ros_msg(
                     perception_object.kinematics.twist_with_covariance.twist.linear
                 ),
