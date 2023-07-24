@@ -454,7 +454,7 @@ class ObstacleSegmentationEvaluator(Node):
         )
 
         e_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
-        e_cfg["label_prefix"] = "autoware"  # Add a fixed value setting
+        e_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"  # Add a fixed value setting
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
