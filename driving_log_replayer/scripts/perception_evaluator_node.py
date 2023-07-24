@@ -226,6 +226,8 @@ class PerceptionEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            p_cfg["label_prefix"] = "autoware"  # Add a fixed value setting
+
             frame_id, msg_type = self.get_frame_id_and_msg_type(evaluation_task)
             self.__frame_id = FrameID.from_value(frame_id)
 
