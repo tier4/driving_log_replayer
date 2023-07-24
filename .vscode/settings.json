@@ -15,7 +15,6 @@
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
-  "editor.defaultFormatter": "ms-python.black-formatter",
   "[python]": {
     "editor.tabSize": 4,
     "editor.formatOnType": false,
