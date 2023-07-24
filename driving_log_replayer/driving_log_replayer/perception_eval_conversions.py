@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from typing import List
-from typing import Optional
 from typing import Tuple
 from typing import Union
 
