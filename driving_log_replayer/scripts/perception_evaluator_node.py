@@ -353,8 +353,9 @@ class PerceptionEvaluator(Node):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
 
             shape_type = (
-                ShapeType.BOUNDING_BOX if perception_object.shape.type == 0 else ShapeType.POLYGON
+                ShapeType.POLYGON if perception_object.shape.type == 2 else ShapeType.BOUNDING_BOX
             )
+            # self.get_logger().error(f"shape_type: {shape_type}")
 
             estimated_object = DynamicObject(
                 unix_time=unix_time,
