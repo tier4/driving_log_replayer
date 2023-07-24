@@ -18,7 +18,7 @@ Evaluation:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here
       target_labels: [car, bicycle, pedestrian, motorbike] # evaluation label
       ignore_attributes: [cycle_state.without_rider] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
-      label_prefix: "autoware"
+      label_prefix: autoware
       merge_similar_labels: true
       allow_matching_unknown: true
       max_x_position: 102.4 # Maximum x position of object to be evaluated

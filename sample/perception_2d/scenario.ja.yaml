@@ -21,7 +21,7 @@ Evaluation:
       evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
       target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル
       ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
-      label_prefix: "autoware"
+      label_prefix: autoware
       merge_similar_labels: true
       allow_matching_unknown: true
       center_distance_thresholds: [100, 200] # 中心間距離マッチング時の閾値。カメラ画像上のピクセルで指定する
