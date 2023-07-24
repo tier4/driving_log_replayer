@@ -221,6 +221,9 @@ class Perception2DEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            p_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "autoware"  # Add a fixed value setting
 
             self.__camera_type_dict = self.__condition["TargetCameras"]
             if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:

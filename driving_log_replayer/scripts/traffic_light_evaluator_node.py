@@ -188,6 +188,9 @@ class TrafficLightEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             self.__camera_type = p_cfg["camera_type"]
+            p_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "traffic_light"  # Add a fixed value setting
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
