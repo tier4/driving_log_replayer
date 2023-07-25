@@ -278,7 +278,7 @@ class TrafficLightEvaluator(Node):
         for signal in signals:
             most_probable_light = get_most_probable_signal(signal.lights)
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                label=get_label(most_probable_light)
+                name=get_label(most_probable_light)
             )
 
             estimated_object = DynamicObject2D(
