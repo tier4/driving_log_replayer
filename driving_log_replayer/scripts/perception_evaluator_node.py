@@ -361,7 +361,6 @@ class PerceptionEvaluator(Node):
                 self.get_logger().warn("shape_type: Cylinder detected")
             elif perception_object.shape.type == 2:
                 shape_type = ShapeType.POLYGON
-            # self.get_logger().error(f"shape_type: {shape_type}")
 
             estimated_object = DynamicObject(
                 unix_time=unix_time,
