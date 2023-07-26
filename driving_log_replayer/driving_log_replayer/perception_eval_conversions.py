@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from typing import List
+from typing import Optional
 from typing import Tuple
 from typing import Union
 
@@ -54,10 +55,18 @@ def velocity_from_ros_msg(ros_velocity: Vector3) -> Tuple[float, float, float]:
     return (ros_velocity.x, ros_velocity.y, ros_velocity.z)
 
 
-def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Polygon:
+def footprint_from_ros_msg(ros_footprint: RosPolygon, shape_type_num: int) -> Optional[Polygon]:
+    if shape_type_num == 2:
+        # polygon
+        return None
     coords = []
     for ros_point in ros_footprint.points:
-        coords.append((ros_point.x, ros_point.y, ros_point.z))
+        if shape_type_num == 0:
+            # bbox
+            coords.append((ros_point.x, ros_point.y, ros_point.z))
+        elif shape_type_num == 1:
+            # cylinder
+            coords.append((ros_point.x, ros_point.x, ros_point.z))
     return Polygon(coords)
 
 

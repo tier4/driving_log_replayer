@@ -357,9 +357,10 @@ class PerceptionEvaluator(Node):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
 
             shape_type = ShapeType.BOUNDING_BOX
-            if perception_object.shape.type == 1:
+            shape_type_num = perception_object.shape.type
+            if shape_type_num == 1:
                 self.get_logger().warn("shape_type: Cylinder detected")
-            elif perception_object.shape.type == 2:
+            elif shape_type_num == 2:
                 shape_type = ShapeType.POLYGON
 
             estimated_object = DynamicObject(
@@ -377,10 +378,8 @@ class PerceptionEvaluator(Node):
                         perception_object.shape.dimensions
                     ),
                     footprint=eval_conversions.footprint_from_ros_msg(
-                        perception_object.shape.footprint
-                    )
-                    if shape_type == ShapeType.POLYGON
-                    else None,
+                        perception_object.shape.footprint, shape_type_num
+                    ),
                 ),
                 velocity=eval_conversions.velocity_from_ros_msg(
                     perception_object.kinematics.twist_with_covariance.twist.linear
