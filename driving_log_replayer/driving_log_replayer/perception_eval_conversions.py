@@ -47,8 +47,14 @@ def orientation_from_ros_msg(ros_orientation: RosQuaternion) -> Quaternion:
     return Quaternion(ros_orientation.w, ros_orientation.x, ros_orientation.y, ros_orientation.z)
 
 
-def dimensions_from_ros_msg(ros_dimensions: Vector3) -> Tuple[float, float, float]:
-    return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
+def dimensions_from_ros_msg(
+    ros_dimensions: Vector3, shape_type_num: int
+) -> Tuple[float, float, float]:
+    if shape_type_num == 1:
+        # cylinder
+        return (ros_dimensions.x, ros_dimensions.x, ros_dimensions.z)
+    else:
+        return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
 
 
 def velocity_from_ros_msg(ros_velocity: Vector3) -> Tuple[float, float, float]:
