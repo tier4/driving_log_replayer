@@ -5,7 +5,7 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
-  UseCaseFormatVersion: 0.4.0
+  UseCaseFormatVersion: 0.5.0
   Datasets:
     - sample_dataset:
         VehicleId: default # Specify VehicleId for each data set.
