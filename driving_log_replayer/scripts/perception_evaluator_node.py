@@ -299,6 +299,8 @@ class PerceptionEvaluator(Node):
             return "base_link", DetectedObjects
         elif evaluation_task == "tracking":
             return "map", TrackedObjects
+        elif evaluation_task == "fp_validation":
+            return "base_link", DetectedObjects
         else:
             self.get_logger().error(f"Unexpected evaluation task: {evaluation_task}")
             rclpy.shutdown()
