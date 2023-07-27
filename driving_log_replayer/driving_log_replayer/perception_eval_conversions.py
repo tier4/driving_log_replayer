@@ -68,7 +68,7 @@ def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
     if coords:
         return Polygon(coords)
     else:
-        # footrpint.points of bounding_box and cylinder are empty, so return None
+        # footprint.points of bounding_box and cylinder are empty, so return None
         return None
 
 
