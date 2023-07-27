@@ -224,7 +224,7 @@ class PerceptionEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
-            frame_id, msg_type = self.get_frame_id_and_msg_type(evaluation_task)
+            frame_id, msg_type, topic_ns = self.get_frame_id_and_msg_type(evaluation_task)
             self.__frame_id = FrameID.from_value(frame_id)
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
@@ -267,7 +267,7 @@ class PerceptionEvaluator(Node):
             self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
             self.__sub_perception = self.create_subscription(
                 msg_type,
-                "/perception/object_recognition/" + evaluation_task + "/objects",
+                "/perception/object_recognition/" + topic_ns + "/objects",
                 self.perception_cb,
                 1,
             )
@@ -294,13 +294,11 @@ class PerceptionEvaluator(Node):
 
     def get_frame_id_and_msg_type(
         self, evaluation_task: str
-    ) -> Tuple[str, Union[DetectedObjects, TrackedObjects]]:
-        if evaluation_task == "detection":
-            return "base_link", DetectedObjects
+    ) -> Tuple[str, Union[DetectedObjects, TrackedObjects], str]:
+        if evaluation_task in ["detection", "fp_validation"]:
+            return "base_link", DetectedObjects, "detection"
         elif evaluation_task == "tracking":
-            return "map", TrackedObjects
-        elif evaluation_task == "fp_validation":
-            return "base_link", DetectedObjects
+            return "map", TrackedObjects, "tracking"
         else:
             self.get_logger().error(f"Unexpected evaluation task: {evaluation_task}")
             rclpy.shutdown()
