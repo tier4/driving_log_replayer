@@ -332,9 +332,7 @@ class PerceptionEvaluator(Node):
                 score_dict = score_df.to_dict()
             if error_df is not None:
                 error_dict = (
-                    error_df.groupby(level=0)
-                    .apply(lambda df: df.xs(df.name).to_dict())
-                    .to_dict()
+                    error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
                 )
             final_metrics = {"Score": score_dict, "Error": error_dict}
             self.__result.add_final_metrics(final_metrics)
@@ -419,7 +417,12 @@ class PerceptionEvaluator(Node):
             self.__pub_marker_results.publish(marker_results)
 
     def get_final_result(self) -> MetricsScore:
-        num_critical_fail: int = sum([frame_result.pass_fail_result.get_num_fail() for frame_result in self.__evaluator.frame_results])
+        num_critical_fail: int = sum(
+            [
+                frame_result.pass_fail_result.get_num_fail()
+                for frame_result in self.__evaluator.frame_results
+            ]
+        )
         logging.info(f"Number of fails for critical objects: {num_critical_fail}")
 
         # scene metrics score
