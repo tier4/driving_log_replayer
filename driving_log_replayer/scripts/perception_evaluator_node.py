@@ -35,7 +35,9 @@ from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.schema import FrameID
+from perception_eval.common.status import get_scene_rates
 from perception_eval.config import PerceptionEvaluationConfig
+from perception_eval.evaluation import get_object_status
 from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
@@ -223,8 +225,8 @@ class PerceptionEvaluator(Node):
             c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
-            evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
-            frame_id, msg_type, topic_ns = self.get_frame_id_and_msg_type(evaluation_task)
+            self.__evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            frame_id, msg_type, topic_ns = self.get_frame_id_and_msg_type()
             self.__frame_id = FrameID.from_value(frame_id)
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
@@ -292,15 +294,13 @@ class PerceptionEvaluator(Node):
             self.get_logger().error("Scenario format error.")
             rclpy.shutdown()
 
-    def get_frame_id_and_msg_type(
-        self, evaluation_task: str
-    ) -> Tuple[str, Union[DetectedObjects, TrackedObjects], str]:
-        if evaluation_task in ["detection", "fp_validation"]:
+    def get_frame_id_and_msg_type(self) -> Tuple[str, Union[DetectedObjects, TrackedObjects], str]:
+        if self.__evaluation_task in ["detection", "fp_validation"]:
             return "base_link", DetectedObjects, "detection"
-        elif evaluation_task == "tracking":
+        elif self.__evaluation_task == "tracking":
             return "map", TrackedObjects, "tracking"
         else:
-            self.get_logger().error(f"Unexpected evaluation task: {evaluation_task}")
+            self.get_logger().error(f"Unexpected evaluation task: {self.__evaluation_task}")
             rclpy.shutdown()
 
     def timer_cb(self):
@@ -313,27 +313,33 @@ class PerceptionEvaluator(Node):
                 self.__counter = 0
             self.__prev_time = self.__current_time
             if self.__counter >= 5:
-                self.__pickle_writer = PickleWriter(self.__pkl_path)
-                self.__pickle_writer.dump(self.__evaluator.frame_results)
-                self.get_final_result()
-                analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
-                analyzer.add(self.__evaluator.frame_results)
-                score_df, error_df = analyzer.analyze()
-                score_dict = {}
-                error_dict = {}
-                if score_df is not None:
-                    score_dict = score_df.to_dict()
-                if error_df is not None:
-                    error_dict = (
-                        error_df.groupby(level=0)
-                        .apply(lambda df: df.xs(df.name).to_dict())
-                        .to_dict()
-                    )
-                final_metrics = {"Score": score_dict, "Error": error_dict}
-                self.__result.add_final_metrics(final_metrics)
-                self.__result_writer.write(self.__result)
-                self.__result_writer.close()
+                self.write_log()
                 rclpy.shutdown()
+
+    def write_log(self):
+        self.__pickle_writer = PickleWriter(self.__pkl_path)
+        self.__pickle_writer.dump(self.__evaluator.frame_results)
+        if self.__evaluation_task == "fp_validation":
+            self.display_status_rates()
+        else:
+            self.get_final_result()
+            score_dict = {}
+            error_dict = {}
+            analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
+            analyzer.add(self.__evaluator.frame_results)
+            score_df, error_df = analyzer.analyze()
+            if score_df is not None:
+                score_dict = score_df.to_dict()
+            if error_df is not None:
+                error_dict = (
+                    error_df.groupby(level=0)
+                    .apply(lambda df: df.xs(df.name).to_dict())
+                    .to_dict()
+                )
+            final_metrics = {"Score": score_dict, "Error": error_dict}
+            self.__result.add_final_metrics(final_metrics)
+            self.__result_writer.write(self.__result)
+        self.__result_writer.close()
 
     def list_dynamic_object_from_ros_msg(
         self, unix_time: int, objects: Union[List[DetectedObject], List[TrackedObject]]
@@ -413,11 +419,42 @@ class PerceptionEvaluator(Node):
             self.__pub_marker_results.publish(marker_results)
 
     def get_final_result(self) -> MetricsScore:
-        final_metric_score = self.__evaluator.get_scene_result()
+        num_critical_fail: int = sum([frame_result.pass_fail_result.get_num_fail() for frame_result in self.__evaluator.frame_results])
+        logging.info(f"Number of fails for critical objects: {num_critical_fail}")
 
-        # final result
+        # scene metrics score
+        final_metric_score = self.__evaluator.get_scene_result()
         logging.info(f"final metrics result {final_metric_score}")
         return final_metric_score
+
+    def display_status_rates(self) -> None:
+        status_list = get_object_status(self.__evaluator.frame_results)
+        for status_info in status_list:
+            tp_rate, fp_rate, tn_rate, fn_rate = status_info.get_status_rates()
+            # display
+            logging.info(
+                f"uuid: {status_info.uuid}, "
+                # display TP/FP/TN/FN rates per frames
+                f"TP: {tp_rate.rate:0.3f}, "
+                f"FP: {fp_rate.rate:0.3f}, "
+                f"TN: {tn_rate.rate:0.3f}, "
+                f"FN: {fn_rate.rate:0.3f}\n"
+                # display total or TP/FP/TN/FN frame numbers
+                f"Total: {status_info.total_frame_nums}, "
+                f"TP: {status_info.tp_frame_nums}, "
+                f"FP: {status_info.fp_frame_nums}, "
+                f"TN: {status_info.tn_frame_nums}, "
+                f"FN: {status_info.fn_frame_nums}",
+            )
+
+        scene_tp_rate, scene_fp_rate, scene_tn_rate, scene_fn_rate = get_scene_rates(status_list)
+        logging.info(
+            "[scene]"
+            f"TP: {scene_tp_rate}, "
+            f"FP: {scene_fp_rate}, "
+            f"TN: {scene_tn_rate}, "
+            f"FN: {scene_fn_rate}"
+        )
 
 
 def main(args=None):
