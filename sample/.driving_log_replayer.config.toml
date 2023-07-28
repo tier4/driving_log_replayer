@@ -8,6 +8,11 @@ data_directory = "$HOME/driving_log_replayer_data/localization"
 output_directory = "$HOME/driving_log_replayer_output/localization"
 autoware_path = "$HOME/autoware"
 
+[yabloc]
+data_directory = "$HOME/driving_log_replayer_data/yabloc"
+output_directory = "$HOME/driving_log_replayer_output/yabloc"
+autoware_path = "$HOME/ghq/github.com/autowarefoundation/autoware"
+
 [obstacle_segmentation]
 data_directory = "$HOME/driving_log_replayer_data/obstacle_segmentation"
 output_directory = "$HOME/driving_log_replayer_output/obstacle_segmentation"
