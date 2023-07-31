@@ -43,8 +43,8 @@
    The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
 
    ```bash
-   test case 1 / 1 : use case: sample
-   --------------------------------------------------
-   TestResult: Passed
-   Passed: YabLoc Availability (Passed): OK
+    test case 1 / 1 : use case: sample
+    --------------------------------------------------
+    TestResult: Passed
+    Passed: Convergence (Passed): 281 / 281 -> 100.00%, Reliability (Passed): NVTL Sequential NG Count: 0 (Total Test: 283, Average: 2.476907772225963, StdDev: 0.042055602266257264), NDT Availability (Passed): NDT available
    ```
