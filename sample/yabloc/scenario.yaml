@@ -8,8 +8,6 @@ LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: yabloc
   UseCaseFormatVersion: 1.2.0
-  Conditions:
-    dummy_param: 1.0
   InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
     position:
       x: 81377.53125
