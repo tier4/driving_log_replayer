@@ -28,7 +28,7 @@ Information related to the monitored topic is extracted from `/diagnostics` whic
 
 ### YabLoc Availability Error
 
-The NDT availability evaluation output is marked as `Error` when conditions for `NDT Availability Normal` are not met.
+The YabLoc availability evaluation output is marked as `Error` when conditions for `YabLoc Availability Normal` are not met.
 
 ## Topic name and data type used by evaluation node
 
