@@ -41,8 +41,6 @@
    driving_log_replayer simulation run -p yabloc --rate 0.5
    ```
 
-   ![yabloc](images/yabloc.png)
-
 2. Check the results
 
    Results are displayed in the terminal like below.
