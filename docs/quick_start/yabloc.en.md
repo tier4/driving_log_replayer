@@ -9,10 +9,16 @@
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/yabloc/scenario.yaml ~/driving_log_replayer_data/yabloc/sample
    ```
 
-2. Copy bag file from dataset
-   # TODO!!!!!!!!!!!!!!!!!!!!!!!!
+2. Download bag file
+   Download a rosbag from [Google Drive Link](https://drive.google.com/file/d/1UqULyfidxcA5JidfHWAsSqNy8itampAX/view).
+   After that, execute following commands:
+
    ```bash
-   cp -r ~/driving_log_replayer_data/sample_dataset/input_bag ~/driving_log_replayer_data/yabloc/sample
+   unzstd yabloc_autoware_test_made_in_awsim_0.db3.zst
+   mkdir input_bag
+   mv yabloc_autoware_test_made_in_awsim_0.db3 input_bag
+   ros2 bag reindex input_bag -s sqlite3
+   mv input_bag ~/driving_log_replayer_data/yabloc/sample
    ```
 
 3. Filter and slice bag
@@ -20,6 +26,8 @@
    ```bash
    source ~/autoware/install/setup.bash
    cd ~/driving_log_replayer_data/yabloc/sample
+   ros2 bag filter input_bag -o filtered_bag -x "/clock"
+   ros2 bag slice filtered_bag -o sliced_bag -e 580
    rm -rf input_bag
    rm -rf filtered_bag
    mv sliced_bag input_bag
@@ -38,6 +46,10 @@
 2. Check the results
 
    Results are displayed in the terminal like below.
-   The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
 
-   # TODO!!!!!!!!!!!!!!
+   ```bash
+   test case 1 / 1 : use case: sample
+   --------------------------------------------------
+   TestResult: Passed
+   Passed: YabLoc Availability (Passed): OK
+   ```
