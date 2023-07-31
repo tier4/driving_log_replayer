@@ -16,22 +16,21 @@
 
 
 import os
-from typing import Dict
-from autoware_adapi_v1_msgs.srv import InitializeLocalization
+
 from autoware_adapi_v1_msgs.msg import ResponseStatus
+from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from diagnostic_msgs.msg import DiagnosticArray
 from driving_log_replayer.node_common import set_initial_pose
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 import rclpy
-from rclpy.time import Time
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
+from rclpy.time import Time
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped
-
 import yaml
 
 
@@ -44,11 +43,15 @@ class YabLocResult(ResultBase):
 
     def update(self):
         if self.__yabloc_availability_result:
-            yabloc_availability_summary = f"YabLoc Availability (Passed): {self.__yabloc_availability_msg}"
+            yabloc_availability_summary = (
+                f"YabLoc Availability (Passed): {self.__yabloc_availability_msg}"
+            )
         else:
-            yabloc_availability_summary = f"YabLoc Availability (Failed): {self.__yabloc_availability_msg}"
+            yabloc_availability_summary = (
+                f"YabLoc Availability (Failed): {self.__yabloc_availability_msg}"
+            )
         summary_str = f"{yabloc_availability_summary}"
-        if (self.__yabloc_availability_result):
+        if self.__yabloc_availability_result:
             self._success = True
             self._summary = f"Passed: {summary_str}"
         else:
@@ -58,7 +61,7 @@ class YabLocResult(ResultBase):
     def add_yabloc_availability_frame(self, msg: DiagnosticArray):
         for diag_status in msg.status:
             out_frame = {"Ego": {}}
-            if (diag_status.name != "yabloc_monitor: yabloc_status"):
+            if diag_status.name != "yabloc_monitor: yabloc_status":
                 continue
             values = {value.key: value.value for value in diag_status.values}
             self.__yabloc_availability_result = values["Availability"] == "OK"
@@ -69,6 +72,7 @@ class YabLocResult(ResultBase):
             }
             self._frame = out_frame
             self.update()
+
 
 class YabLocEvaluator(Node):
     def __init__(self):
@@ -90,9 +94,7 @@ class YabLocEvaluator(Node):
 
         self.__result = YabLocResult()
 
-        self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), dict()
-        )
+        self.__result_writer = ResultWriter(self.__result_json_path, self.get_clock(), {})
 
         self.__initial_pose = set_initial_pose(
             self.__scenario_yaml_obj["Evaluation"]["InitialPose"]
@@ -214,6 +216,7 @@ class YabLocEvaluator(Node):
             self.get_logger().error(f"Exception for service: {future.exception()}")
         # free self.__initial_pose_running
         self.__initial_pose_running = False
+
 
 def main(args=None):
     rclpy.init(args=args)

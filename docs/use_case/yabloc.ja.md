@@ -2,7 +2,6 @@
 
 Autoware のYabLoc自己位置推定が安定して動作しているかを評価する。
 
-
 ## 評価方法
 
 `yabloc.launch.py` を使用して評価する。
@@ -12,7 +11,6 @@ launch を立ち上げると以下のことが実行され、評価される。
 2. bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う
 3. 評価ノードが topic を subscribe して、各基準を満たしているかを判定して結果をファイルに記録する
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
-
 
 ### YabLoc の可用性
 
@@ -46,16 +44,15 @@ YabLoc Monitorが出力する `/diagnostics` の中から、監視トピック�
 
 Subscribed topics:
 
-| Topic name                                                           | Data type                             |
-| -------------------------------------------------------------------- | ------------------------------------- |
-| /diagnostics                                                         | diagnostic_msgs::msg::DiagnosticArray |
+| Topic name   | Data type                             |
+| ------------ | ------------------------------------- |
+| /diagnostics | diagnostic_msgs::msg::DiagnosticArray |
 
 Published topics:
 
-| Topic name                                          | Data type                        |
-| --------------------------------------------------- | -------------------------------- |
-| N/A | N/A |
-
+| Topic name | Data type |
+| ---------- | --------- |
+| N/A        | N/A       |
 
 ## 評価ノードが使用する Service 名とデータ型
 
@@ -77,13 +74,12 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 ### 入力 rosbag に含まれるべき topic
 
-| topic 名 | データ型                |
-| ---------------------------------- | -------------------------------------------- |
-| /sensing/camera/traffic_light/camera_info                | sensor_msgs/msg/CameraInfo                           |
-| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage |
-| /sensing/imu/tamagawa/imu_raw    | sensor_msgs/msg/Imu                   |
-| /vehicle/status/velocity_status         | autoware_auto_vehicle_msgs/msg/VelocityReport                        |
-
+| topic 名                                           | データ型                                      |
+| -------------------------------------------------- | --------------------------------------------- |
+| /sensing/camera/traffic_light/camera_info          | sensor_msgs/msg/CameraInfo                    |
+| /sensing/camera/traffic_light/image_raw/compressed | sensor_msgs/msg/CompressedImage               |
+| /sensing/imu/tamagawa/imu_raw                      | sensor_msgs/msg/Imu                           |
+| /vehicle/status/velocity_status                    | autoware_auto_vehicle_msgs/msg/VelocityReport |
 
 ### 入力 rosbag に含まれてはいけない topic
 

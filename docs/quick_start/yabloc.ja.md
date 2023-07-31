@@ -33,7 +33,6 @@
    mv sliced_bag input_bag
    ```
 
-
 ## 実行方法
 
 1. シミュレーションの実行
