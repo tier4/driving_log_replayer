@@ -17,14 +17,21 @@
 
 import os
 from typing import Dict
-
+from autoware_adapi_v1_msgs.srv import InitializeLocalization
+from autoware_adapi_v1_msgs.msg import ResponseStatus
 from diagnostic_msgs.msg import DiagnosticArray
 from driving_log_replayer.node_common import set_initial_pose
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 import rclpy
+from rclpy.time import Time
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
+from rclpy.clock import Clock
+from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
+from tier4_localization_msgs.srv import PoseWithCovarianceStamped
+
 import yaml
 
 
@@ -54,13 +61,16 @@ class YabLocResult(ResultBase):
                 continue
             values = {value.key: value.value for value in diag_status.values}
             self.__yabloc_availability_result = values["Availability"] == "OK"
-
+            self.__yabloc_availability_msg = values["Availability"]
+            self.update()
 
 class YabLocEvaluator(Node):
     def __init__(self):
         super().__init__("yabloc_evaluator")
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
+
+        self.__timer_group = MutuallyExclusiveCallbackGroup()
 
         scenario_path = os.path.expandvars(
             self.get_parameter("scenario_path").get_parameter_value().string_value
@@ -72,13 +82,40 @@ class YabLocEvaluator(Node):
             self.get_parameter("result_json_path").get_parameter_value().string_value
         )
 
+        self.__result = YabLocResult()
+
         self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), Dict()
+            self.__result_json_path, self.get_clock(), dict()
         )
 
-        _ = set_initial_pose(
+        self.__initial_pose = set_initial_pose(
             self.__scenario_yaml_obj["Evaluation"]["InitialPose"]
         )
+        self.__initial_pose_running = False
+        self.__initial_pose_success = False
+
+        self.__current_time = Time().to_msg()
+        self.__prev_time = Time().to_msg()
+        self.__counter = 0
+
+        # service client
+        self.__initial_pose_client = self.create_client(
+            InitializeLocalization, "/api/localization/initialize"
+        )
+        self.__map_fit_client = self.create_client(
+            PoseWithCovarianceStamped, "/map/map_height_fitter/service"
+        )
+        while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("initial pose service not available, waiting again...")
+        while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("map height fitter service not available, waiting again...")
+
+        self.__timer = self.create_timer(
+            1.0,
+            self.timer_cb,
+            callback_group=self.__timer_group,
+            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
+        )  # wall timer
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
@@ -90,6 +127,87 @@ class YabLocEvaluator(Node):
     def diagnostics_cb(self, msg: DiagnosticArray):
         self.__result.add_yabloc_availability_frame(msg)
         self.__result_writer.write(self.__result)
+
+    def timer_cb(self) -> None:
+        self.__current_time = self.get_clock().now().to_msg()
+        # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
+        if self.__current_time.sec > 0:
+            if (
+                self.__initial_pose is not None
+                and not self.__initial_pose_success
+                and not self.__initial_pose_running
+            ):
+                self.get_logger().info(
+                    f"call initial_pose time: {self.__current_time.sec}.{self.__current_time.nanosec}"
+                )
+                self.__initial_pose_running = True
+                self.__initial_pose.header.stamp = self.__current_time
+                future_map_fit = self.__map_fit_client.call_async(
+                    PoseWithCovarianceStamped.Request(pose_with_covariance=self.__initial_pose)
+                )
+                future_map_fit.add_done_callback(self.map_fit_cb)
+            if self.__current_time == self.__prev_time:
+                self.__counter += 1
+            else:
+                self.__counter = 0
+            self.__prev_time = self.__current_time
+            if self.__counter >= 5:
+                self.__result_writer.close()
+                rclpy.shutdown()
+
+    def map_fit_cb(self, future):
+        result = future.result()
+        if result is not None:
+            if result.success:
+                # result.pose_with_covarianceに補正済みデータが入っている
+                # 補正済みデータでinitialposeを投げる
+                # debug result.pose_with_covariance
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.x: {result.pose_with_covariance.pose.pose.position.x}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.y: {result.pose_with_covariance.pose.pose.position.y}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.position.z: {result.pose_with_covariance.pose.pose.position.z}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.x: {result.pose_with_covariance.pose.pose.orientation.x}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.y: {result.pose_with_covariance.pose.pose.orientation.y}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.z: {result.pose_with_covariance.pose.pose.orientation.z}"
+                # )
+                # self.get_logger().error(
+                #     f"corrected_pose_with_covariance.pose.orientation.w: {result.pose_with_covariance.pose.pose.orientation.w}"
+                # )
+                future_init_pose = self.__initial_pose_client.call_async(
+                    InitializeLocalization.Request(pose=[result.pose_with_covariance])
+                )
+                future_init_pose.add_done_callback(self.initial_pose_cb)
+            else:
+                # free self.__initial_pose_running when the service call fails
+                self.__initial_pose_running = False
+                self.get_logger().warn("map_height_height service result is fail")
+        else:
+            # free self.__initial_pose_running when the service call fails
+            self.__initial_pose_running = False
+            self.get_logger().error(f"Exception for service: {future.exception()}")
+
+    def initial_pose_cb(self, future):
+        result = future.result()
+        if result is not None:
+            res_status: ResponseStatus = result.status
+            self.__initial_pose_success = res_status.success
+            self.get_logger().info(
+                f"initial_pose_success: {self.__initial_pose_success}"
+            )  # debug msg
+        else:
+            self.get_logger().error(f"Exception for service: {future.exception()}")
+        # free self.__initial_pose_running
+        self.__initial_pose_running = False
 
 def main(args=None):
     rclpy.init(args=args)
