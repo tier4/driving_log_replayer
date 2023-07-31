@@ -70,9 +70,10 @@ The following example shows the topic list available in evaluation input rosbag.
 | Topic name                         | Data type                                    |
 | ---------------------------------- | -------------------------------------------- |
 | /sensing/camera/traffic_light/camera_info                | sensor_msgs/msg/CameraInfo                           |
-| /sensing/camera/traffic_light/camera_info   | sensor_msgs/msg/CompressedImage |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage |
 | /sensing/imu/tamagawa/imu_raw    | sensor_msgs/msg/Imu                   |
 | /vehicle/status/velocity_status         | autoware_auto_vehicle_msgs/msg/VelocityReport                        |
+
 
 
 ### Topics that must NOT be included in the input rosbag
@@ -89,63 +90,23 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.yaml).
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/yabloc/scenario.yaml).
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json).
-
-Since localization evaluates both convergence and confidence of the localization, each line contains the result of either convergence or confidence.
-The result is `true` if both convergence and confidence are evaluated correctly. Otherwise, the output is set to `false`.
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/yabloc/result.json).
 
 Examples of each evaluation are described below.
 **NOTE: common part of the result file format, which has already been explained, is omitted.**
 
-Convergence Result example:
+Availability Result example:
 
 ```json
 {
   "Frame": {
-    "Convergence": {
+    "Availability": {
       "Result": "Success or Fail",
-      "Info": [
-        {
-          "LateralDistance": "Lateral distance between ndt and ekf pose",
-          "HorizontalDistance": "Horizontal distance between ndt and ekf. Reference value",
-          "ExeTimeMs": "Time taken to calculate ndt",
-          "IterationNum": "Number of recalculations of ndt"
-        }
-      ]
-    }
-  }
-}
-```
-
-Reliability Result example:
-
-```json
-{
-  "Frame": {
-    "Reliability": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "Value": {
-            "stamp": {
-              "sec": "sec of stamp",
-              "nanosec": "nanosec of stamp"
-            },
-            "data": "Value of NVTL or TP"
-          },
-          "Reference": {
-            "stamp": {
-              "sec": "sec of stamp",
-              "nanosec": "nanosec of stamp"
-            },
-            "data": "Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered."
-          }
-        }
-      ]
+      "Info": []
     }
   }
 }

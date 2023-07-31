@@ -77,10 +77,10 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 ### 入力 rosbag に含まれるべき topic
 
-| Topic name                         | Data type                                    |
+| topic 名 | データ型                |
 | ---------------------------------- | -------------------------------------------- |
 | /sensing/camera/traffic_light/camera_info                | sensor_msgs/msg/CameraInfo                           |
-| /sensing/camera/traffic_light/camera_info   | sensor_msgs/msg/CompressedImage |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage |
 | /sensing/imu/tamagawa/imu_raw    | sensor_msgs/msg/Imu                   |
 | /vehicle/status/velocity_status         | autoware_auto_vehicle_msgs/msg/VelocityReport                        |
 
@@ -99,63 +99,23 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.ja.yaml)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/yabloc/scenario.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json)参照
-
-localization では、収束性と信頼度の 2 つを評価しているので、行毎に収束性または信頼度のどちらかの結果が入っている。
-Result は収束性と信頼度両方のパスしていれば true でそれ以外は false 失敗となる。
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/yabloc/result.json)参照
 
 以下に、それぞれの評価の例を記述する。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
 
-収束性の結果(Frame の中に Convergence 項目がある場合)
+Availabilityの結果(Frame の中に Availability 項目がある場合)
 
 ```json
 {
   "Frame": {
-    "Convergence": {
+    "Availability": {
       "Result": "Success or Fail",
-      "Info": [
-        {
-          "LateralDistance": "ndtとekfのposeの横方距離",
-          "HorizontalDistance": "ndtとekfの水平距離。参考値",
-          "ExeTimeMs": "ndtの計算にかかった時間",
-          "IterationNum": "ndtの再計算回数"
-        }
-      ]
-    }
-  }
-}
-```
-
-信頼度の結果(Frame に Reliability の項目がある場合)
-
-```json
-{
-  "Frame": {
-    "Reliability": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "Value": {
-            "stamp": {
-              "sec": "stampの秒",
-              "nanosec": "stampのnano秒"
-            },
-            "data": "NVTL or TPの値"
-          },
-          "Reference": {
-            "stamp": {
-              "sec": "stampの秒",
-              "nanosec": "stampのnano秒"
-            },
-            "data": "評価に使用しなかった尤度。参考値。ValueがNVTLならTPが入る"
-          }
-        }
-      ]
+      "Info": []
     }
   }
 }

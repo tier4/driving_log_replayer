@@ -57,11 +57,17 @@ class YabLocResult(ResultBase):
 
     def add_yabloc_availability_frame(self, msg: DiagnosticArray):
         for diag_status in msg.status:
+            out_frame = {"Ego": {}}
             if (diag_status.name != "yabloc_monitor: yabloc_status"):
                 continue
             values = {value.key: value.value for value in diag_status.values}
             self.__yabloc_availability_result = values["Availability"] == "OK"
             self.__yabloc_availability_msg = values["Availability"]
+            out_frame["Availability"] = {
+                "Result": "Success" if self.__yabloc_availability_result else "Fail",
+                "Info": [],
+            }
+            self._frame = out_frame
             self.update()
 
 class YabLocEvaluator(Node):
