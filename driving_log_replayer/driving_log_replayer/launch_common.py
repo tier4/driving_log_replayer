@@ -102,6 +102,8 @@ def get_autoware_launch(
     control="false",
     scenario_simulation="false",
     perception_mode="lidar",
+    pose_source="ndt",
+    twist_source="gyro_odom",
 ):
     # autoware launch
     autoware_launch_file = os.path.join(
@@ -124,6 +126,8 @@ def get_autoware_launch(
             "control": control,
             "scenario_simulation": scenario_simulation,
             "perception_mode": perception_mode,
+            "pose_source": pose_source,
+            "twist_source": twist_source,
             "rviz": "false",
         }.items(),
         condition=IfCondition(LaunchConfiguration("with_autoware")),

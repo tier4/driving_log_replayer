@@ -40,6 +40,7 @@ install(PROGRAMS
   scripts/obstacle_segmentation_evaluator_node.py
   scripts/performance_diag_evaluator_node.py
   scripts/localization_evaluator_node.py
+  scripts/yabloc_evaluator_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
