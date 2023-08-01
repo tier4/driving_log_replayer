@@ -17,7 +17,7 @@
         <link rel="next" href="../result_format/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+      <meta name="generator" content="mkdocs-1.5.1, mkdocs-material-9.1.21">
     
     
       
@@ -25,7 +25,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.eebd395e.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
@@ -407,6 +407,8 @@
         
           
         
+          
+        
       
       
         <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -457,6 +459,20 @@
     <li class="md-nav__item">
       <a href="../quick_start/localization/" class="md-nav__link">
         自己位置推定機能の評価
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick_start/yabloc/" class="md-nav__link">
+        YabLoc自己位置推定機能の評価
       </a>
     </li>
   
@@ -719,6 +735,8 @@
         
           
         
+          
+        
       
       
         
@@ -749,6 +767,20 @@
     <li class="md-nav__item">
       <a href="../use_case/localization/" class="md-nav__link">
         自己位置推定の評価
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../use_case/yabloc/" class="md-nav__link">
+        YabLoc自己位置推定の評価
       </a>
     </li>
   
@@ -1009,7 +1041,7 @@
 <h2 id="_3">フォーマット<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <p>基本構造は以下の通り。各キーの詳細は以下で記述する。</p>
 <h3 id="2xx">2.x.x フォーマット<a class="headerlink" href="#2xx" title="Permanent link">#</a></h3>
-<p><code>localization</code> と <code>performance_diag</code> で使用する。</p>
+<p><code>localization</code> と <code>performance_diag</code> と <code>yabloc</code> で使用する。</p>
 <div class="highlight"><pre><span></span><code><span class="nt">ScenarioFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.x.x</span>
 <span class="nt">ScenarioName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">ScenarioDescription</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
@@ -1041,7 +1073,7 @@
 </code></pre></div>
 <h3 id="scenarioformatversion">ScenarioFormatVersion<a class="headerlink" href="#scenarioformatversion" title="Permanent link">#</a></h3>
 <p>シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。</p>
-<p><code>localization</code> と <code>performance_diag</code> は 2.x.x 系を使用する。2.x.x の最新バージョンは 2.2.0
+<p><code>localization</code> と <code>performance_diag</code> と <code>yabloc</code> は 2.x.x 系を使用する。2.x.x の最新バージョンは 2.2.0
 <code>perception</code> と <code>obstacle_segmentation</code> は 3.x.x 系を使用する。3.x.x の最新バージョンは 3.0.0</p>
 <p>フォーマットの更新の度にマイナーバージョンを更新する。</p>
 <h3 id="scenarioname">ScenarioName<a class="headerlink" href="#scenarioname" title="Permanent link">#</a></h3>
