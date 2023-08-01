@@ -25,7 +25,7 @@ The basic structure is as follows. Details of each key are described below.
 
 ### 2.x.x Format
 
-For `localization`, `performance_diag`, and `yabloc` evaluation scenarios
+For `localization`, `performance_diag`, `yabloc`, and `eagleye` evaluation scenarios
 
 ```yaml
 ScenarioFormatVersion: 2.x.x
@@ -67,7 +67,7 @@ Evaluation:
 
 Describe the version information of the scenario format. Use the semantic version.
 
-`localization`, `performance_diag`, and `yabloc` scenarios use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
+`localization`, `performance_diag`, `yabloc` and `eagleye` scenarios use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
 `perception` and `obstacle_segmentation` scenarios use 3.x.x series. The latest version of 3.x.x is 3.0.0
 
 Minor versions are updated each time the format is updated.

@@ -41,6 +41,7 @@ install(PROGRAMS
   scripts/performance_diag_evaluator_node.py
   scripts/localization_evaluator_node.py
   scripts/yabloc_evaluator_node.py
+  scripts/eagleye_evaluator_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

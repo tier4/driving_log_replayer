@@ -1,0 +1,11 @@
+ScenarioFormatVersion: 2.1.0
+ScenarioName: sample_eagleye
+ScenarioDescription: sample_eagleye
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+VehicleId: default
+LocalMapPath: $HOME/autoware_map/sample-map-planning
+Evaluation:
+  UseCaseName: eagleye
+  UseCaseFormatVersion: 0.1.0
+  InitialPose: Null

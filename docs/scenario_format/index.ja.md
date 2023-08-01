@@ -25,7 +25,7 @@ driving_log_replayer で用いるシナリオのフォーマットについて�
 
 ### 2.x.x フォーマット
 
-`localization` と `performance_diag` と `yabloc` で使用する。
+`localization`、 `performance_diag`、 `yabloc`、 `eagleye` で使用する。
 
 ```yaml
 ScenarioFormatVersion: 2.x.x
