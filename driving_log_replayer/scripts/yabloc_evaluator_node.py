@@ -167,30 +167,6 @@ class YabLocEvaluator(Node):
         result = future.result()
         if result is not None:
             if result.success:
-                # result.pose_with_covarianceに補正済みデータが入っている
-                # 補正済みデータでinitialposeを投げる
-                # debug result.pose_with_covariance
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.position.x: {result.pose_with_covariance.pose.pose.position.x}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.position.y: {result.pose_with_covariance.pose.pose.position.y}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.position.z: {result.pose_with_covariance.pose.pose.position.z}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.orientation.x: {result.pose_with_covariance.pose.pose.orientation.x}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.orientation.y: {result.pose_with_covariance.pose.pose.orientation.y}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.orientation.z: {result.pose_with_covariance.pose.pose.orientation.z}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.orientation.w: {result.pose_with_covariance.pose.pose.orientation.w}"
-                # )
                 future_init_pose = self.__initial_pose_client.call_async(
                     InitializeLocalization.Request(pose=[result.pose_with_covariance])
                 )
