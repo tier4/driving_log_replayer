@@ -30,4 +30,4 @@ Evaluation:
     ignore_attributes: [cycle_state.without_rider] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
   PerceptionPassFailConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike]
-    matching_threshold_list: matching_threshold_list: [0.5, 0.5, 0.5, 0.5]
+    matching_threshold_list: [0.5, 0.5, 0.5, 0.5]
