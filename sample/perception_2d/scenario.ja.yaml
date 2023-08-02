@@ -19,15 +19,15 @@ Evaluation:
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # 現時点ではdetection2dにしか対応していない。今後の拡張でtracking2dにも対応予定
-      target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル
-      ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
-      merge_similar_labels: false # 類似のラベルをマージするか https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#%E9%A1%9E%E4%BC%BC%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8
-      allow_matching_unknown: true # ラベルがunknownのオブジェクトとマッチングさせるか
       center_distance_thresholds: [100, 200] # 中心間距離マッチング時の閾値。カメラ画像上のピクセルで指定する
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
+      target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価ラベル
+      ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
+      allow_matching_unknown: true # ラベルがunknownのオブジェクトとマッチングさせるか
+      merge_similar_labels: false # 類似のラベルをマージするか https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#%E9%A1%9E%E4%BC%BC%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8
   CriticalObjectFilterConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike] # 評価対象ラベル名
     ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
   PerceptionPassFailConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike]
-    matching_threshold_list: null
+    matching_threshold_list: [0.5, 0.5, 0.5, 0.5]

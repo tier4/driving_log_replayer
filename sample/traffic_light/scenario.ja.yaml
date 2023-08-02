@@ -20,10 +20,9 @@ Evaluation:
       target_labels: [green, red, yellow, unknown] # 評価ラベル 指定可能なラベルは以下を参照。https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#trafficlightlabel
       merge_similar_labels: false # 類似のラベルをマージするか https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#%E9%A1%9E%E4%BC%BC%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8
       allow_matching_unknown: true # ラベルがunknownのオブジェクトとマッチングさせるか
-      center_distance_thresholds: [100, 200] # 中心間距離マッチング時の閾値。カメラ画像上のピクセルで指定する
-      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
   CriticalObjectFilterConfig:
     target_labels: [green, red, yellow, unknown]
+    ignore_attributes: null # perception_2d でのみ使用される
   PerceptionPassFailConfig:
     target_labels: [green, red, yellow, unknown]
-    matching_threshold_list: null # detection2dでのみ使用される
+    matching_threshold_list: null # perception_2d でのみ使用される
