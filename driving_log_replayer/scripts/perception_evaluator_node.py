@@ -254,7 +254,7 @@ class PerceptionEvaluator(Node):
                 CriticalObjectFilterConfig(
                     evaluator_config=evaluation_config,
                     target_labels=c_cfg["target_labels"],
-                    ignore_attributes=c_cfg("ignore_attributes", None),
+                    ignore_attributes=c_cfg.get("ignore_attributes", None),
                     max_x_position_list=c_cfg.get("max_x_position_list", None),
                     max_y_position_list=c_cfg.get("max_y_position_list", None),
                     max_distance_list=c_cfg.get("max_distance_list", None),
