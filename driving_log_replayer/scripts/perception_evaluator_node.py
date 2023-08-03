@@ -254,22 +254,22 @@ class PerceptionEvaluator(Node):
                 CriticalObjectFilterConfig(
                     evaluator_config=evaluation_config,
                     target_labels=c_cfg["target_labels"],
-                    ignore_attributes=c_cfg["ignore_attributes"],
-                    max_x_position_list=c_cfg["max_x_position_list"],
-                    max_y_position_list=c_cfg["max_y_position_list"],
-                    max_distance_list=c_cfg["max_distance_list"],
-                    min_distance_list=c_cfg["min_distance_list"],
-                    min_point_numbers=c_cfg["min_point_numbers"],
-                    confidence_threshold_list=c_cfg["confidence_threshold_list"],
-                    target_uuids=c_cfg["target_uuids"],
+                    ignore_attributes=c_cfg("ignore_attributes", None),
+                    max_x_position_list=c_cfg.get("max_x_position_list", None),
+                    max_y_position_list=c_cfg.get("max_y_position_list", None),
+                    max_distance_list=c_cfg.get("max_distance_list", None),
+                    min_distance_list=c_cfg.get("min_distance_list", None),
+                    min_point_numbers=c_cfg.get("min_point_numbers", None),
+                    confidence_threshold_list=c_cfg.get("confidence_threshold_list", None),
+                    target_uuids=c_cfg.get("target_uuids", None),
                 )
             )
             # Pass fail を決めるパラメータ
             self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
                 evaluator_config=evaluation_config,
                 target_labels=f_cfg["target_labels"],
-                matching_threshold_list=f_cfg["matching_threshold_list"],
-                confidence_threshold_list=f_cfg["confidence_threshold_list"],
+                matching_threshold_list=f_cfg.get("matching_threshold_list", None),
+                confidence_threshold_list=f_cfg.get("confidence_threshold_list", None),
             )
             self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
             self.__sub_perception = self.create_subscription(

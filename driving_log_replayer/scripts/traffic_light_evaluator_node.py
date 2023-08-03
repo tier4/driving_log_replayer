@@ -191,6 +191,9 @@ class TrafficLightEvaluator(Node):
             p_cfg["evaluation_config_dict"][
                 "label_prefix"
             ] = "traffic_light"  # Add a fixed value setting
+            p_cfg["evaluation_config_dict"][
+                "count_label_number"
+            ] = True  # Add a fixed value setting
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
@@ -217,7 +220,6 @@ class TrafficLightEvaluator(Node):
             self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
                 evaluator_config=evaluation_config,
                 target_labels=f_cfg["target_labels"],
-                matching_threshold_list=f_cfg["matching_threshold_list"],
             )
             self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
             self.__sub_traffic_signals = self.create_subscription(

@@ -224,6 +224,9 @@ class Perception2DEvaluator(Node):
             p_cfg["evaluation_config_dict"][
                 "label_prefix"
             ] = "autoware"  # Add a fixed value setting
+            p_cfg["evaluation_config_dict"][
+                "count_label_number"
+            ] = True  # Add a fixed value setting
 
             self.__camera_type_dict = self.__condition["TargetCameras"]
             if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
