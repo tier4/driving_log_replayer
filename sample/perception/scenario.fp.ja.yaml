@@ -29,4 +29,3 @@ Evaluation:
   PerceptionPassFailConfig: # Pass fail を決める config
     target_labels: [car, bicycle, pedestrian, motorbike]
     matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
-
