@@ -35,6 +35,8 @@ from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.schema import FrameID
+from perception_eval.common.shape import Shape
+from perception_eval.common.shape import ShapeType
 from perception_eval.common.status import get_scene_rates
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import get_object_status
@@ -226,13 +228,16 @@ class PerceptionEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             self.__evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            p_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "autoware"  # Add a fixed value setting
+
             frame_id, msg_type, topic_ns = self.get_frame_id_and_msg_type()
             self.__frame_id = FrameID.from_value(frame_id)
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
                 frame_id=frame_id,
-                merge_similar_labels=False,
                 result_root_directory=os.path.join(
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
@@ -355,6 +360,11 @@ class PerceptionEvaluator(Node):
             if isinstance(perception_object, TrackedObject):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
 
+            shape_type = ShapeType.BOUNDING_BOX
+            shape_type_num = perception_object.shape.type
+            if shape_type_num == 2:
+                shape_type = ShapeType.POLYGON
+
             estimated_object = DynamicObject(
                 unix_time=unix_time,
                 frame_id=self.__frame_id,
@@ -364,7 +374,15 @@ class PerceptionEvaluator(Node):
                 orientation=eval_conversions.orientation_from_ros_msg(
                     perception_object.kinematics.pose_with_covariance.pose.orientation
                 ),
-                size=eval_conversions.dimensions_from_ros_msg(perception_object.shape.dimensions),
+                shape=Shape(
+                    shape_type=shape_type,
+                    size=eval_conversions.dimensions_from_ros_msg(
+                        perception_object.shape.dimensions, shape_type_num
+                    ),
+                    footprint=eval_conversions.footprint_from_ros_msg(
+                        perception_object.shape.footprint
+                    ),
+                ),
                 velocity=eval_conversions.velocity_from_ros_msg(
                     perception_object.kinematics.twist_with_covariance.twist.linear
                 ),

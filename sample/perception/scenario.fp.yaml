@@ -1,6 +1,6 @@
 ScenarioFormatVersion: 3.0.0
-ScenarioName: perception_use_bag_concat_data
-ScenarioDescription: sensing_module_off_and_use_pointcloud_in_the_rosbag
+ScenarioName: fp_sample
+ScenarioDescription: fp_sample
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
@@ -16,6 +16,7 @@ Evaluation:
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here
+      max_matchable_radii: [5.0]
       target_labels: [car, bicycle, pedestrian, motorbike] # evaluation label
       ignore_attributes: [cycle_state.without_rider] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
       merge_similar_labels: false # Whether or not to merge similar labels https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/label.md#merge-similar-labels-option

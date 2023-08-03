@@ -221,6 +221,9 @@ class Perception2DEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            p_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "autoware"  # Add a fixed value setting
 
             self.__camera_type_dict = self.__condition["TargetCameras"]
             if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
@@ -230,12 +233,10 @@ class Perception2DEvaluator(Node):
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
                 frame_id=list(self.__camera_type_dict.keys()),
-                merge_similar_labels=False,
                 result_root_directory=os.path.join(
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
                 evaluation_config_dict=p_cfg["evaluation_config_dict"],
-                label_prefix="autoware",
                 load_raw_data=False,
             )
             _ = configure_logger(

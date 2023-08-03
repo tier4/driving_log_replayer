@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from typing import List
+from typing import Optional
 from typing import Tuple
 from typing import Union
 
 from geometry_msgs.msg import Point
+from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
@@ -26,6 +28,7 @@ from perception_eval.evaluation.result.object_result import DynamicObjectWithPer
 from perception_eval.evaluation.result.perception_pass_fail_result import PassFailResult
 from pyquaternion.quaternion import Quaternion
 from rclpy.time import Duration
+from shapely.geometry import Polygon
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from visualization_msgs.msg import Marker
@@ -44,12 +47,29 @@ def orientation_from_ros_msg(ros_orientation: RosQuaternion) -> Quaternion:
     return Quaternion(ros_orientation.w, ros_orientation.x, ros_orientation.y, ros_orientation.z)
 
 
-def dimensions_from_ros_msg(ros_dimensions: Vector3) -> Tuple[float, float, float]:
-    return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
+def dimensions_from_ros_msg(
+    ros_dimensions: Vector3, shape_type_num: int
+) -> Tuple[float, float, float]:
+    if shape_type_num == 1:
+        # cylinder
+        return (ros_dimensions.x, ros_dimensions.x, ros_dimensions.z)
+    else:
+        return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
 
 
 def velocity_from_ros_msg(ros_velocity: Vector3) -> Tuple[float, float, float]:
     return (ros_velocity.x, ros_velocity.y, ros_velocity.z)
+
+
+def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
+    coords = []
+    for ros_point in ros_footprint.points:
+        coords.append((ros_point.x, ros_point.y, ros_point.z))
+    if coords:
+        return Polygon(coords)
+    else:
+        # footprint.points of bounding_box and cylinder are empty, so return None
+        return None
 
 
 def uuid_from_ros_msg(ros_uuid) -> str:

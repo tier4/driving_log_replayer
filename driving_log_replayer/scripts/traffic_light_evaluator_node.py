@@ -188,16 +188,17 @@ class TrafficLightEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             self.__camera_type = p_cfg["camera_type"]
+            p_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "traffic_light"  # Add a fixed value setting
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
                 frame_id=self.__camera_type,
-                merge_similar_labels=False,
                 result_root_directory=os.path.join(
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
                 evaluation_config_dict=p_cfg["evaluation_config_dict"],
-                label_prefix="traffic_light",
                 load_raw_data=False,
             )
             _ = configure_logger(
@@ -277,7 +278,7 @@ class TrafficLightEvaluator(Node):
         for signal in signals:
             most_probable_light = get_most_probable_signal(signal.lights)
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                label=get_label(most_probable_light)
+                name=get_label(most_probable_light)
             )
 
             estimated_object = DynamicObject2D(

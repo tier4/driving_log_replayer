@@ -1,11 +1,11 @@
 ScenarioFormatVersion: 3.0.0
-ScenarioName: perception_use_bag_concat_data
-ScenarioDescription: sensing_module_off_and_use_pointcloud_in_the_rosbag
+ScenarioName: fp_sample
+ScenarioDescription: fp_sample
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
-  UseCaseFormatVersion: 0.4.0
+  UseCaseFormatVersion: 0.5.0
   Datasets:
     - sample_dataset:
         VehicleId: default # データセット毎にVehicleIdを指定する
@@ -16,9 +16,11 @@ Evaluation:
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: fp_validation # detection/tracking/fp_validation ここで指定したobjectsを評価する
-      max_matchable_radii: [5.0, 3.0, 3.0, 3.0]
+      max_matchable_radii: [5.0]
       target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
       ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
+      merge_similar_labels: false # Whether or not to merge similar labels https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/label.md#merge-similar-labels-option
+      allow_matching_unknown: true # Whether or not to match objects whose labels are unknown
       max_x_position: 102.4 # 評価対象 object の最大 x 位置
       max_y_position: 102.4 # 評価対象 object の最大 y 位置
       max_distance: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
