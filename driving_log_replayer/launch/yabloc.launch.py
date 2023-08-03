@@ -34,7 +34,7 @@ def generate_launch_description():
             "/localization/kinematic_state",
             "/localization/util/downsample/pointcloud",
             "/localization/pose_estimator/points_aligned",
-            "/diagnostics"
+            "/diagnostics",
         ],
     )
 
