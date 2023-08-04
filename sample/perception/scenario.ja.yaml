@@ -17,31 +17,32 @@ Evaluation:
     evaluation_config_dict:
       evaluation_task: detection # detection/tracking ここで指定したobjectsを評価する
       target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
-      ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
-      merge_similar_labels: false # 類似のラベルをマージするか https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#%E9%A1%9E%E4%BC%BC%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8
-      allow_matching_unknown: true # ラベルがunknownのオブジェクトとマッチングさせるか
       max_x_position: 102.4 # 評価対象 object の最大 x 位置
       max_y_position: 102.4 # 評価対象 object の最大 y 位置
-      max_distance: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-      min_distance: null # 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
-      min_point_numbers: [0, 0, 0, 0] # ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価
-      confidence_threshold: null # 評価対象の estimated object の confidence の閾値
-      target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
+      # max_distance: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
+      # min_distance: null # 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
+      # confidence_threshold: null # 評価対象の estimated object の confidence の閾値
+      # target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
+      max_matchable_radii: [5.0, 3.0, 3.0, 3.0]
+      merge_similar_labels: false # 類似のラベルをマージするか https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#%E9%A1%9E%E4%BC%BC%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8
+      allow_matching_unknown: true # ラベルがunknownのオブジェクトとマッチングさせるか
+      ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
       center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # 中心間距離マッチング時の閾値
       plane_distance_thresholds: [2.0, 30.0] # 平面距離マッチング時の閾値
       iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
       iou_3d_thresholds: [0.5] # 3D IoU マッチング時の閾値
+      min_point_numbers: [0, 0, 0, 0] # ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価
   CriticalObjectFilterConfig: # 必ず検出できてほしいオブジェクトに対する config
     target_labels: [car, bicycle, pedestrian, motorbike]
     ignore_attributes: [cycle_state.without_rider]
     max_x_position_list: [30.0, 30.0, 30.0, 30.0]
     max_y_position_list: [30.0, 30.0, 30.0, 30.0]
-    max_distance_list: null
-    min_distance_list: null
-    min_point_numbers: [0, 0, 0, 0]
-    confidence_threshold_list: null
-    target_uuids: null
+    # max_distance_list: null
+    # min_distance_list: null
+    # min_point_numbers: [0, 0, 0, 0]
+    # confidence_threshold_list: null
+    # target_uuids: null
   PerceptionPassFailConfig: # Pass fail を決める config
     target_labels: [car, bicycle, pedestrian, motorbike]
     matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
-    confidence_threshold_list: null
+    # confidence_threshold_list: null
