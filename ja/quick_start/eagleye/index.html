@@ -8,20 +8,20 @@
       
       
       
-        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/quick_start/obstacle_segmentation/">
+        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/quick_start/eagleye/">
       
       
-        <link rel="prev" href="../yabloc/">
+        <link rel="prev" href="../../overview/setup/">
       
       
-        <link rel="next" href="../perception/">
+        <link rel="next" href="../installation/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
       
-        <title>Obstacle Segmentation の評価 - Driving Log Replayer Documentation</title>
+        <title>Eagleye自己位置推定機能の評価 - Driving Log Replayer Documentation</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#obstacle-segmentation" class="md-skip">
+        <a href="#eagleye" class="md-skip">
           コンテンツにスキップ
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Obstacle Segmentation の評価
+              Eagleye自己位置推定機能の評価
             
           </span>
         </div>
@@ -483,59 +483,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Obstacle Segmentation の評価
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../obstacle_segmentation/" class="md-nav__link">
         Obstacle Segmentation の評価
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目次">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目次
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    準備
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    実行方法
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -966,28 +918,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目次
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    準備
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    実行方法
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1004,41 +934,8 @@
   
 
 
-<h1 id="obstacle-segmentation">Obstacle Segmentation の評価<a class="headerlink" href="#obstacle-segmentation" title="Permanent link">#</a></h1>
-<h2 id="_1">準備<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<ol>
-<li>
-<p>サンプルのシナリオのコピー</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/driving_log_replayer_data/obstacle_segmentation/sample
-cp<span class="w"> </span>-r<span class="w"> </span>~/autoware/src/simulator/driving_log_replayer/sample/obstacle_segmentation/scenario.yaml<span class="w"> </span>~/driving_log_replayer_data/obstacle_segmentation/sample
-</code></pre></div>
-</li>
-<li>
-<p>サンプルのデータセットのコピー</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/driving_log_replayer_data/obstacle_segmentation/sample/t4_dataset
-cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/sample_dataset<span class="w"> </span>~/driving_log_replayer_data/obstacle_segmentation/sample/t4_dataset
-</code></pre></div>
-</li>
-</ol>
-<h2 id="_2">実行方法<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<ol>
-<li>
-<p>シミュレーションの実行</p>
-<div class="highlight"><pre><span></span><code>driving_log_replayer<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>obstacle_segmentation<span class="w"> </span>--rate<span class="w"> </span><span class="m">0</span>.5
-</code></pre></div>
-<p><img alt="obstacle_segmentation" src="../images/obstacle_segmentation.png" /></p>
-</li>
-<li>
-<p>結果の確認</p>
-<p>以下のような結果がターミナルに表示されます。
- PC の性能や CPU の負荷状況によってテスト回数が若干異なることがありますが、多少の差は問題ありません。</p>
-<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>/<span class="w"> </span><span class="m">1</span><span class="w"> </span>:<span class="w"> </span>use<span class="w"> </span><span class="k">case</span>:<span class="w"> </span>sample_dataset
-<span class="w"> </span>--------------------------------------------------
-<span class="w"> </span>TestResult:<span class="w"> </span>Failed
-<span class="w"> </span>Detection<span class="w"> </span>Failed:<span class="w"> </span>detection:<span class="w"> </span><span class="m">557</span><span class="w"> </span>/<span class="w"> </span><span class="m">681</span><span class="w"> </span>-&gt;<span class="w"> </span><span class="m">81</span>.79%<span class="w"> </span>detection_warn:<span class="w"> </span><span class="m">0</span><span class="w"> </span>non_detection:<span class="w"> </span><span class="m">681</span><span class="w"> </span>/<span class="w"> </span><span class="m">681</span><span class="w"> </span>-&gt;<span class="w"> </span><span class="m">100</span>.00%
-</code></pre></div>
-</li>
-</ol>
+<h1 id="eagleye">Eagleye自己位置推定機能の評価<a class="headerlink" href="#eagleye" title="Permanent link">#</a></h1>
+<p>autowarefoundation-autoware では、現在、Eagleye自己位置推定機能の評価はできません。</p>
 
 
 
@@ -1065,7 +962,7 @@ cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/
       <nav class="md-footer__inner md-grid" aria-label="フッター" >
         
           
-          <a href="../yabloc/" class="md-footer__link md-footer__link--prev" aria-label="前: YabLoc自己位置推定機能の評価" rel="prev">
+          <a href="../../overview/setup/" class="md-footer__link md-footer__link--prev" aria-label="前: 設定" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1074,20 +971,20 @@ cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/
                 前
               </span>
               <div class="md-ellipsis">
-                YabLoc自己位置推定機能の評価
+                設定
               </div>
             </div>
           </a>
         
         
           
-          <a href="../perception/" class="md-footer__link md-footer__link--next" aria-label="次: 認識機能の評価" rel="next">
+          <a href="../installation/" class="md-footer__link md-footer__link--next" aria-label="次: インストール" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 次
               </span>
               <div class="md-ellipsis">
-                認識機能の評価
+                インストール
               </div>
             </div>
             <div class="md-footer__button md-icon">

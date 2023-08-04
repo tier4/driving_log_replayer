@@ -17,7 +17,7 @@
         <link rel="next" href="../result_format/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.1, mkdocs-material-9.1.21">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
       
@@ -763,6 +763,8 @@
         
           
         
+          
+        
       
       
         
@@ -807,6 +809,20 @@
     <li class="md-nav__item">
       <a href="../use_case/yabloc/" class="md-nav__link">
         Evaluate YabLoc estimation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../use_case/eagleye/" class="md-nav__link">
+        Evaluate Eagleye estimation
       </a>
     </li>
   
@@ -1067,7 +1083,7 @@ Time:<span class="w"> </span>s
 <h2 id="format">Format<a class="headerlink" href="#format" title="Permanent link">#</a></h2>
 <p>The basic structure is as follows. Details of each key are described below.</p>
 <h3 id="2xx-format">2.x.x Format<a class="headerlink" href="#2xx-format" title="Permanent link">#</a></h3>
-<p>For <code>localization</code>, <code>performance_diag</code>, and <code>yabloc</code> evaluation scenarios</p>
+<p>For <code>localization</code>, <code>performance_diag</code>, <code>yabloc</code>, and <code>eagleye</code> evaluation scenarios</p>
 <div class="highlight"><pre><span></span><code><span class="nt">ScenarioFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.x.x</span>
 <span class="nt">ScenarioName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">ScenarioDescription</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
@@ -1099,7 +1115,7 @@ Time:<span class="w"> </span>s
 </code></pre></div>
 <h3 id="scenarioformatversion">ScenarioFormatVersion<a class="headerlink" href="#scenarioformatversion" title="Permanent link">#</a></h3>
 <p>Describe the version information of the scenario format. Use the semantic version.</p>
-<p><code>localization</code>, <code>performance_diag</code>, and <code>yabloc</code> scenarios use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
+<p><code>localization</code>, <code>performance_diag</code>, <code>yabloc</code> and <code>eagleye</code> scenarios use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
 <code>perception</code> and <code>obstacle_segmentation</code> scenarios use 3.x.x series. The latest version of 3.x.x is 3.0.0</p>
 <p>Minor versions are updated each time the format is updated.</p>
 <h3 id="scenarioname">ScenarioName<a class="headerlink" href="#scenarioname" title="Permanent link">#</a></h3>

@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="ja" class="no-js">
+<html lang="en" class="no-js">
   <head>
     
       <meta charset="utf-8">
@@ -8,20 +8,20 @@
       
       
       
-        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/quick_start/obstacle_segmentation/">
+        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/en/quick_start/eagleye/">
       
       
-        <link rel="prev" href="../yabloc/">
+        <link rel="prev" href="../../overview/setup/">
       
       
-        <link rel="next" href="../perception/">
+        <link rel="next" href="../installation/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
     
     
       
-        <title>Obstacle Segmentation の評価 - Driving Log Replayer Documentation</title>
+        <title>Eagleye Evaluation - Driving Log Replayer Documentation</title>
       
     
     
@@ -73,8 +73,8 @@
     <div data-md-component="skip">
       
         
-        <a href="#obstacle-segmentation" class="md-skip">
-          コンテンツにスキップ
+        <a href="#eagleye-evaluation" class="md-skip">
+          Skip to content
         </a>
       
     </div>
@@ -92,7 +92,7 @@
   
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+  <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../../" title="Driving Log Replayer Documentation" class="md-header__button md-logo" aria-label="Driving Log Replayer Documentation" data-md-component="logo">
       
   
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Obstacle Segmentation の評価
+              Eagleye Evaluation
             
           </span>
         </div>
@@ -154,14 +154,14 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
-      <nav class="md-search__options" aria-label="検索">
+      <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -171,7 +171,7 @@
       <div class="md-search__scrollwrap" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
-            検索を初期化
+            Initializing search
           </div>
           <ol class="md-search-result__list" role="presentation"></ol>
         </div>
@@ -182,7 +182,7 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/tier4/driving_log_replayer" title="リポジトリへ" class="md-source" data-md-component="source">
+        <a href="https://github.com/tier4/driving_log_replayer" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -197,7 +197,7 @@
   
     
       
-<nav class="md-tabs" aria-label="タブ" data-md-component="tabs">
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
       
@@ -208,7 +208,7 @@
 
   <li class="md-tabs__item">
     <a href="../../" class="md-tabs__link">
-      Driving Log Replayer ドキュメント
+      Driving Log Replayer Documentation
     </a>
   </li>
 
@@ -336,7 +336,7 @@
   
 
 
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="ナビゲーション" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../../" title="Driving Log Replayer Documentation" class="md-nav__button md-logo" aria-label="Driving Log Replayer Documentation" data-md-component="logo">
       
@@ -348,7 +348,7 @@
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/tier4/driving_log_replayer" title="リポジトリへ" class="md-source" data-md-component="source">
+      <a href="https://github.com/tier4/driving_log_replayer" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -370,7 +370,7 @@
   
     <li class="md-nav__item">
       <a href="../../" class="md-nav__link">
-        Driving Log Replayer ドキュメント
+        Driving Log Replayer Documentation
       </a>
     </li>
   
@@ -430,7 +430,7 @@
   
     <li class="md-nav__item">
       <a href="../installation/" class="md-nav__link">
-        インストール
+        Installation
       </a>
     </li>
   
@@ -444,7 +444,7 @@
   
     <li class="md-nav__item">
       <a href="../setup/" class="md-nav__link">
-        設定
+        Setup
       </a>
     </li>
   
@@ -458,7 +458,7 @@
   
     <li class="md-nav__item">
       <a href="../localization/" class="md-nav__link">
-        自己位置推定機能の評価
+        Localization Evaluation
       </a>
     </li>
   
@@ -472,7 +472,7 @@
   
     <li class="md-nav__item">
       <a href="../yabloc/" class="md-nav__link">
-        YabLoc自己位置推定機能の評価
+        YabLoc Evaluation
       </a>
     </li>
   
@@ -483,59 +483,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Obstacle Segmentation の評価
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        Obstacle Segmentation の評価
+    <li class="md-nav__item">
+      <a href="../obstacle_segmentation/" class="md-nav__link">
+        Obstacle Segmentation Evaluation
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目次">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目次
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    準備
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    実行方法
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -548,7 +500,7 @@
   
     <li class="md-nav__item">
       <a href="../perception/" class="md-nav__link">
-        認識機能の評価
+        Perception Evaluation
       </a>
     </li>
   
@@ -562,7 +514,7 @@
   
     <li class="md-nav__item">
       <a href="../performance_diag/" class="md-nav__link">
-        診断機能の評価
+        Performance Diag Evaluation
       </a>
     </li>
   
@@ -631,7 +583,7 @@
   
     <li class="md-nav__item">
       <a href="../../overview/setup/" class="md-nav__link">
-        設定
+        Setup
       </a>
     </li>
   
@@ -645,7 +597,7 @@
   
     <li class="md-nav__item">
       <a href="../../overview/command/" class="md-nav__link">
-        コマンド
+        Command
       </a>
     </li>
   
@@ -816,7 +768,7 @@
   
     <li class="md-nav__item">
       <a href="../../use_case/localization/" class="md-nav__link">
-        自己位置推定の評価
+        Evaluate self-localization estimation
       </a>
     </li>
   
@@ -830,7 +782,7 @@
   
     <li class="md-nav__item">
       <a href="../../use_case/yabloc/" class="md-nav__link">
-        YabLoc自己位置推定の評価
+        Evaluate YabLoc estimation
       </a>
     </li>
   
@@ -844,7 +796,7 @@
   
     <li class="md-nav__item">
       <a href="../../use_case/eagleye/" class="md-nav__link">
-        Eagleye自己位置推定の評価
+        Evaluate Eagleye estimation
       </a>
     </li>
   
@@ -858,7 +810,7 @@
   
     <li class="md-nav__item">
       <a href="../../use_case/obstacle_segmentation/" class="md-nav__link">
-        点群生成の評価
+        Evaluate point cloud generation
       </a>
     </li>
   
@@ -872,7 +824,7 @@
   
     <li class="md-nav__item">
       <a href="../../use_case/perception/" class="md-nav__link">
-        認識機能の評価(LiDAR)
+        Evaluate perception(LiDAR)
       </a>
     </li>
   
@@ -886,7 +838,7 @@
   
     <li class="md-nav__item">
       <a href="../../use_case/performance_diag/" class="md-nav__link">
-        診断機能の評価
+        Evaluate diagnostics
       </a>
     </li>
   
@@ -959,34 +911,12 @@
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="目次">
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
   
     
   
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目次
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    準備
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    実行方法
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -1004,41 +934,8 @@
   
 
 
-<h1 id="obstacle-segmentation">Obstacle Segmentation の評価<a class="headerlink" href="#obstacle-segmentation" title="Permanent link">#</a></h1>
-<h2 id="_1">準備<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
-<ol>
-<li>
-<p>サンプルのシナリオのコピー</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/driving_log_replayer_data/obstacle_segmentation/sample
-cp<span class="w"> </span>-r<span class="w"> </span>~/autoware/src/simulator/driving_log_replayer/sample/obstacle_segmentation/scenario.yaml<span class="w"> </span>~/driving_log_replayer_data/obstacle_segmentation/sample
-</code></pre></div>
-</li>
-<li>
-<p>サンプルのデータセットのコピー</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/driving_log_replayer_data/obstacle_segmentation/sample/t4_dataset
-cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/sample_dataset<span class="w"> </span>~/driving_log_replayer_data/obstacle_segmentation/sample/t4_dataset
-</code></pre></div>
-</li>
-</ol>
-<h2 id="_2">実行方法<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<ol>
-<li>
-<p>シミュレーションの実行</p>
-<div class="highlight"><pre><span></span><code>driving_log_replayer<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>obstacle_segmentation<span class="w"> </span>--rate<span class="w"> </span><span class="m">0</span>.5
-</code></pre></div>
-<p><img alt="obstacle_segmentation" src="../images/obstacle_segmentation.png" /></p>
-</li>
-<li>
-<p>結果の確認</p>
-<p>以下のような結果がターミナルに表示されます。
- PC の性能や CPU の負荷状況によってテスト回数が若干異なることがありますが、多少の差は問題ありません。</p>
-<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>/<span class="w"> </span><span class="m">1</span><span class="w"> </span>:<span class="w"> </span>use<span class="w"> </span><span class="k">case</span>:<span class="w"> </span>sample_dataset
-<span class="w"> </span>--------------------------------------------------
-<span class="w"> </span>TestResult:<span class="w"> </span>Failed
-<span class="w"> </span>Detection<span class="w"> </span>Failed:<span class="w"> </span>detection:<span class="w"> </span><span class="m">557</span><span class="w"> </span>/<span class="w"> </span><span class="m">681</span><span class="w"> </span>-&gt;<span class="w"> </span><span class="m">81</span>.79%<span class="w"> </span>detection_warn:<span class="w"> </span><span class="m">0</span><span class="w"> </span>non_detection:<span class="w"> </span><span class="m">681</span><span class="w"> </span>/<span class="w"> </span><span class="m">681</span><span class="w"> </span>-&gt;<span class="w"> </span><span class="m">100</span>.00%
-</code></pre></div>
-</li>
-</ol>
+<h1 id="eagleye-evaluation">Eagleye Evaluation<a class="headerlink" href="#eagleye-evaluation" title="Permanent link">#</a></h1>
+<p>Eagleye diag evaluation is currently not available with autowarefoundation-autoware.</p>
 
 
 
@@ -1053,7 +950,7 @@ cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-            ページトップへ戻る
+            Back to top
           </button>
         
       </main>
@@ -1062,32 +959,32 @@ cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/
   
     
       
-      <nav class="md-footer__inner md-grid" aria-label="フッター" >
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../yabloc/" class="md-footer__link md-footer__link--prev" aria-label="前: YabLoc自己位置推定機能の評価" rel="prev">
+          <a href="../../overview/setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Setup" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
             <div class="md-footer__title">
               <span class="md-footer__direction">
-                前
+                Previous
               </span>
               <div class="md-ellipsis">
-                YabLoc自己位置推定機能の評価
+                Setup
               </div>
             </div>
           </a>
         
         
           
-          <a href="../perception/" class="md-footer__link md-footer__link--next" aria-label="次: 認識機能の評価" rel="next">
+          <a href="../installation/" class="md-footer__link md-footer__link--next" aria-label="Next: Installation" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
-                次
+                Next
               </span>
               <div class="md-ellipsis">
-                認識機能の評価
+                Installation
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1123,7 +1020,7 @@ cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
       <script src="../../../assets/javascripts/bundle.220ee61c.min.js"></script>
