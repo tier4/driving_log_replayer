@@ -2,6 +2,18 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: update sample scenario and set None if dict key is not found (`#204 <https://github.com/tier4/driving_log_replayer/issues/204>`_)
+* feat: add eagleye evaluation (`#203 <https://github.com/tier4/driving_log_replayer/issues/203>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* feat: support multiple object shapes (`#198 <https://github.com/tier4/driving_log_replayer/issues/198>`_)
+  Co-authored-by: ktro2828 <kotaro.uetake@tier4.jp>
+  Co-authored-by: ktro2828 <ktro2828@users.noreply.github.com>
+  Co-authored-by: Kotaro Uetake <60615504+ktro2828@users.noreply.github.com>
+* feat: `#199 <https://github.com/tier4/driving_log_replayer/issues/199>`_ perception fp validation (`#200 <https://github.com/tier4/driving_log_replayer/issues/200>`_)
+* Contributors: Hayato Mizushima, kminoda
+
 1.4.1 (2023-08-01)
 ------------------
 * feat: add yabloc scenario (`#201 <https://github.com/tier4/driving_log_replayer/issues/201>`_)
