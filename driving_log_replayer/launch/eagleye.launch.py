@@ -20,10 +20,10 @@ def generate_launch_description():
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     fitter_launch = driving_log_replayer.launch_common.get_map_height_fitter(launch_service="true")
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
-        perception="false", pose_source="yabloc"
+        perception="false", pose_source="eagleye", twist_source="eagleye"
     )
     rviz_node = driving_log_replayer.launch_common.get_rviz("localization.rviz")
-    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("yabloc")
+    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("eagleye")
     player = driving_log_replayer.launch_common.get_player()
     recorder = driving_log_replayer.launch_common.get_recorder(
         "localization.qos.yaml",

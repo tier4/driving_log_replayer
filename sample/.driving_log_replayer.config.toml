@@ -13,6 +13,11 @@ data_directory = "$HOME/driving_log_replayer_data/yabloc"
 output_directory = "$HOME/driving_log_replayer_output/yabloc"
 autoware_path = "$HOME/autoware"
 
+[eagleye]
+data_directory = "$HOME/driving_log_replayer_data/eagleye"
+output_directory = "$HOME/driving_log_replayer_output/eagleye"
+autoware_path = "$HOME/autoware"
+
 [obstacle_segmentation]
 data_directory = "$HOME/driving_log_replayer_data/obstacle_segmentation"
 output_directory = "$HOME/driving_log_replayer_output/obstacle_segmentation"
