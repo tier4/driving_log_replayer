@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.0 (2023-08-07)
+------------------
 * feat: update sample scenario and set None if dict key is not found (`#204 <https://github.com/tier4/driving_log_replayer/issues/204>`_)
 * feat: add eagleye evaluation (`#203 <https://github.com/tier4/driving_log_replayer/issues/203>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
