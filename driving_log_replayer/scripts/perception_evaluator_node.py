@@ -325,7 +325,9 @@ class PerceptionEvaluator(Node):
         self.__pickle_writer = PickleWriter(self.__pkl_path)
         self.__pickle_writer.dump(self.__evaluator.frame_results)
         if self.__evaluation_task == "fp_validation":
-            self.display_status_rates()
+            final_metrics = self.get_fp_result()
+            self.__result.add_final_metrics(final_metrics)
+            self.__result_writer.write(self.__result)
         else:
             self.get_final_result()
             score_dict = {}
@@ -448,8 +450,9 @@ class PerceptionEvaluator(Node):
         logging.info(f"final metrics result {final_metric_score}")
         return final_metric_score
 
-    def display_status_rates(self) -> None:
+    def get_fp_result(self) -> Dict:
         status_list = get_object_status(self.__evaluator.frame_results)
+        gt_status = {}
         for status_info in status_list:
             tp_rate, fp_rate, tn_rate, fn_rate = status_info.get_status_rates()
             # display
@@ -467,6 +470,21 @@ class PerceptionEvaluator(Node):
                 f"TN: {status_info.tn_frame_nums}, "
                 f"FN: {status_info.fn_frame_nums}",
             )
+            gt_status[status_info.uuid] = {
+                "rate": {
+                    "TP": tp_rate.rate,
+                    "FP": fp_rate.rate,
+                    "TN": tn_rate.rate,
+                    "FN": fn_rate.rate,
+                },
+                "frame_nums": {
+                    "total": status_info.total_frame_nums,
+                    "TP": status_info.tp_frame_nums,
+                    "FP": status_info.fp_frame_nums,
+                    "TN": status_info.tn_frame_nums,
+                    "FN": status_info.fn_frame_nums,
+                },
+            }
 
         scene_tp_rate, scene_fp_rate, scene_tn_rate, scene_fn_rate = get_scene_rates(status_list)
         logging.info(
@@ -476,6 +494,15 @@ class PerceptionEvaluator(Node):
             f"TN: {scene_tn_rate}, "
             f"FN: {scene_fn_rate}"
         )
+        return {
+            "GroundTruthStatus": gt_status,
+            "Scene": {
+                "TP": scene_tp_rate,
+                "FP": scene_fp_rate,
+                "TN": scene_tn_rate,
+                "FN": scene_fn_rate,
+            },
+        }
 
 
 def main(args=None):
