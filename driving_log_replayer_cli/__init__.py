@@ -1,6 +1,7 @@
 from importlib.metadata import version
 
 import click
+
 from driving_log_replayer_cli.configuration import configuration
 from driving_log_replayer_cli.simulation import simulation
 
@@ -30,7 +31,8 @@ def print_version(ctx, param, value):
     "--version", "-v", is_flag=True, callback=print_version, expose_value=False, is_eager=True
 )
 def cmd():
-    """Command line tool to use driving_log_replayer.
+    """
+    Command line tool to use driving_log_replayer.
 
     https://github.com/tier4/driving_log_replayer
     """

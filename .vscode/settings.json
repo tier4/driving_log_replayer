@@ -12,16 +12,15 @@
     "editor.defaultFormatter": "ms-vscode.cpptools"
   },
   "editor.formatOnSave": false,
-  "python.linting.enabled": true,
-  "python.linting.pylintEnabled": false,
-  "python.linting.flake8Enabled": true,
   "[python]": {
     "editor.tabSize": 4,
     "editor.formatOnType": false,
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.fixAll": true,
+      "source.organizeImports": true,
+      "source.organizeImports.ruff": true
     },
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
