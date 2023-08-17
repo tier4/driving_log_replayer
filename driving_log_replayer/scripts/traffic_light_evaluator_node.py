@@ -23,11 +23,6 @@ from typing import List
 from autoware_auto_perception_msgs.msg import TrafficLight
 from autoware_auto_perception_msgs.msg import TrafficSignal
 from autoware_auto_perception_msgs.msg import TrafficSignalArray
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import PickleWriter
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
@@ -51,6 +46,12 @@ from tf2_ros import Buffer
 from tf2_ros import TransformException
 from tf2_ros import TransformListener
 import yaml
+
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.result import PickleWriter
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
 
 
 def get_label(light: TrafficLight) -> str:

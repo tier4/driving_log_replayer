@@ -20,13 +20,14 @@ import sys
 from typing import Dict
 from typing import List
 
+import pandas as pd
+import simplejson as json
+
 from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
 from driving_log_replayer_analyzer.config.obstacle_segmentation import FpDistance
 from driving_log_replayer_analyzer.data import DistType
 from driving_log_replayer_analyzer.data import Position
 from driving_log_replayer_analyzer.data import Stamp
-import pandas as pd
-import simplejson as json
 
 
 def fail_3_times_in_a_row(data: List) -> List:

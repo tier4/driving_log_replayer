@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import driving_log_replayer.launch_common
 import launch
+
+import driving_log_replayer.launch_common
 
 
 def generate_launch_description():

@@ -16,7 +16,6 @@ import os
 from string import capwords
 
 from ament_index_python.packages import get_package_share_directory
-from driving_log_replayer.shutdown_once import ShutdownOnce
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
@@ -27,6 +26,8 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
+
+from driving_log_replayer.shutdown_once import ShutdownOnce
 
 
 def get_driving_log_replayer_common_argument():

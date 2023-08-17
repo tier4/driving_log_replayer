@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import click
+
 from driving_log_replayer_analyzer.analysis import analysis
 
 from . import __version__

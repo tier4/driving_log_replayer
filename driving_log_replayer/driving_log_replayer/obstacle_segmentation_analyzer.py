@@ -19,13 +19,14 @@ from typing import Dict
 from typing import Tuple
 
 from ament_index_python.packages import get_package_share_directory
+import yaml
+
 from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
 from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
 from driving_log_replayer_analyzer.data import DistType
 from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
 from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
 from driving_log_replayer_analyzer.plot import PlotBase
-import yaml
 
 
 def default_config_path() -> Path:

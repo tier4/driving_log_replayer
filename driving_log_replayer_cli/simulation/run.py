@@ -1,10 +1,11 @@
 import os
 import subprocess
 
+import termcolor
+
 from driving_log_replayer_cli.simulation.generate import TestScriptGenerator
 from driving_log_replayer_cli.simulation.result import convert
 from driving_log_replayer_cli.simulation.result import display
-import termcolor
 
 
 class DrivingLogReplayerTestRunner:

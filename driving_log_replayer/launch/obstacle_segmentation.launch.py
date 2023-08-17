@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import driving_log_replayer.launch_common
-from driving_log_replayer.shutdown_once import ShutdownOnce
 import launch
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+
+import driving_log_replayer.launch_common
+from driving_log_replayer.shutdown_once import ShutdownOnce
 
 
 def generate_launch_description():
