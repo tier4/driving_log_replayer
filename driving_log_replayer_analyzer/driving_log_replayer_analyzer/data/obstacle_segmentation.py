@@ -42,14 +42,14 @@ def fail_3_times_in_a_row(data: List) -> List:
     -------
         list: Inputと同じ形式のlist。2項目目の0 or 1が変更される。
     """
-    WINDOW = 3
+    window = 3
 
     df = pd.DataFrame(data, columns=["Dist", "Val", "Result"])
 
     # 距離順にソート
     df.sort_values("Dist", ascending=True, inplace=True)
     df.reset_index(inplace=True, drop=True)
-    df["Val"] = df["Val"].rolling(WINDOW, min_periods=1).max()
+    df["Val"] = df["Val"].rolling(window, min_periods=1).max()
 
     return df.to_numpy().tolist()
 
