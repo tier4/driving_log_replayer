@@ -97,7 +97,11 @@ class TrafficLightResult(ResultBase):
             self._summary = f"Failed: {summary_str}"
 
     def add_frame(
-        self, frame: PerceptionFrameResult, skip: int, header: Header, map_to_baselink: Dict
+        self,
+        frame: PerceptionFrameResult,
+        skip: int,
+        header: Header,  # noqa
+        map_to_baselink: Dict,
     ):
         self.__total += 1
         has_objects = True
