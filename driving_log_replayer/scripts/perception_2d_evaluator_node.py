@@ -230,7 +230,7 @@ class Perception2DEvaluator(Node):
             ] = True  # Add a fixed value setting
 
             self.__camera_type_dict = self.__condition["TargetCameras"]
-            if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
+            if isinstance(self.__camera_type_dict, str) or len(self.__camera_type_dict) == 0:
                 self.get_logger().error("camera_types is not appropriate.")
                 rclpy.shutdown()
 
