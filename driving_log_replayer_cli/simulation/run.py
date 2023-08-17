@@ -51,7 +51,7 @@ def run(
     autoware_path: str,
     rate: float,
     delay: float,
-    output_json: bool = True,
+    output_json: bool,
 ):
     DrivingLogReplayerTestRunner(
         os.path.expandvars(data_directory),
