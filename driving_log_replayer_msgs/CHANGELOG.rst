@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.1 (2023-08-17)
+------------------
 * feat: use ruff linter (`#208 <https://github.com/tier4/driving_log_replayer/issues/208>`_)
 * fix: store fp result in result.jsonl (`#206 <https://github.com/tier4/driving_log_replayer/issues/206>`_)
 * Contributors: Hayato Mizushima
