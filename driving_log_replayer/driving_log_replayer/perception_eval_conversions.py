@@ -73,9 +73,11 @@ def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
 
 
 def uuid_from_ros_msg(ros_uuid) -> str:
-    """Convert uuid from unique_identifier_msgs.msg.UUID to string.
+    """
+    Convert uuid from unique_identifier_msgs.msg.UUID to string.
 
     Args:
+    ----
         ros_uuid (np.ndarray): (16,) in uint8
     Returns:
         uuid (str)
@@ -137,7 +139,7 @@ def dynamic_objects_to_ros_points(
     color: ColorRGBA,
     namespace: str,
     marker_id: int,
-    tp_gt: bool = False,
+    tp_gt: bool,
 ):
     p_marker = Marker()
     p_marker.header = header
@@ -177,7 +179,9 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
     if objs := pass_fail.tp_object_results:
         # estimated obj
         c_tp_est = ColorRGBA(r=0.0, g=0.0, b=1.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_tp_est, "tp_est", 0)
+        marker = dynamic_objects_to_ros_points(
+            objs, header, scale, c_tp_est, "tp_est", 0, tp_gt=False
+        )
         marker_results.markers.append(marker)
     if objs := pass_fail.tp_object_results:
         # ground truth obj
@@ -186,10 +190,10 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
         marker_results.markers.append(marker)
     if objs := pass_fail.fp_object_results:
         c_fp = ColorRGBA(r=0.0, g=1.0, b=1.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fp, "fp", 0)
+        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fp, "fp", 0, tp_gt=False)
         marker_results.markers.append(marker)
     if objs := pass_fail.fn_objects:
         c_fn = ColorRGBA(r=1.0, g=0.5, b=0.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fn, "fn", 0)
+        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fn, "fn", 0, tp_gt=False)
         marker_results.markers.append(marker)
     return marker_results

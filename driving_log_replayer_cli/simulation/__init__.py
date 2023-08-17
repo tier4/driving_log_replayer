@@ -2,6 +2,7 @@ import datetime
 import os
 
 import click
+
 from driving_log_replayer_cli.core.config import load_config
 from driving_log_replayer_cli.simulation.result import convert
 from driving_log_replayer_cli.simulation.result import display

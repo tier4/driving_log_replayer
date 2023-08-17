@@ -23,17 +23,6 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
-from driving_log_replayer.node_common import get_goal_pose_from_t4_dataset
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-from driving_log_replayer.obstacle_segmentation_analyzer import default_config_path
-from driving_log_replayer.obstacle_segmentation_analyzer import get_graph_data
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
-from driving_log_replayer_analyzer.data import convert_str_to_dist_type
-from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from perception_eval.common.dataset import FrameGroundTruth
@@ -61,6 +50,18 @@ from tier4_api_msgs.msg import AwapiAutowareStatus
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 import yaml
+
+from driving_log_replayer.node_common import get_goal_pose_from_t4_dataset
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+from driving_log_replayer.obstacle_segmentation_analyzer import default_config_path
+from driving_log_replayer.obstacle_segmentation_analyzer import get_graph_data
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
+from driving_log_replayer_analyzer.data import convert_str_to_dist_type
+from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
+from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
+from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 
 
 def get_box_marker(

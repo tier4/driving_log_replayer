@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Optional
 
 import click
+
 from driving_log_replayer_analyzer.analysis.obstacle_segmentation import visualize as os_vis
 from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 

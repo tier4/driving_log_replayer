@@ -21,7 +21,7 @@ class BirdViewPlot(PlotBase):
     FIGURE_SIZE = 800
     MARGIN = 3.0
 
-    def set_scale(self, scale, origin: bool = True):
+    def set_scale(self, scale, origin: bool = True):  # noqa
         if scale == "auto":
             if origin:
                 # 原点が中央になるように調整
@@ -76,9 +76,11 @@ class BirdViewPlot(PlotBase):
         xlabel: str = "",
         ylabel: str = "",
     ):
-        """Plotを作成して保存する.
+        """
+        Plotを作成して保存する.
 
         Args:
+        ----
             path (Path): 保存先。拡張子はpng
             title (str, optional): タイトル. Defaults to "".
             xlabel (str, optional): x軸のラベル. Defaults to "".
@@ -112,11 +114,13 @@ class BirdViewPlot(PlotBase):
         title: str = "",
         xlabel: str = "",
         ylabel: str = "",
-        origin: bool = True,
+        origin: bool = True,  # noqa
     ):
-        """Plotを作成して保存する.
+        """
+        Plotを作成して保存する.
 
         Args:
+        ----
             path (Path): 保存先。拡張子はpng
             title (str, optional): タイトル. Defaults to "".
             xlabel (str, optional): x軸のラベル. Defaults to "".

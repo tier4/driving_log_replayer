@@ -17,7 +17,7 @@ from importlib.metadata import version
 
 try:
     __version__ = version("driving_log_replayer_cli")
-except Exception:
+except Exception:  # noqa
     __version__ = "0.0.0"
 
 

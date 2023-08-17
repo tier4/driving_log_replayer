@@ -59,10 +59,9 @@ def main():
         help="path of the scenario to load evaluator settings",
     )
     args = parser.parse_args()
-    database_result = PerceptionLoadDatabaseResult(
+    PerceptionLoadDatabaseResult(
         os.path.expandvars(args.result_root_directory), os.path.expandvars(args.scenario_path)
     )
-    database_result
 
 
 if __name__ == "__main__":

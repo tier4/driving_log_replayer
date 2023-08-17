@@ -14,9 +14,10 @@
 
 import os
 from string import capwords
+from typing import Dict
+from typing import Optional
 
 from ament_index_python.packages import get_package_share_directory
-from driving_log_replayer.shutdown_once import ShutdownOnce
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
@@ -28,9 +29,12 @@ from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import Node
 from launch_ros.descriptions import ComposableNode
 
+from driving_log_replayer.shutdown_once import ShutdownOnce
+
 
 def get_driving_log_replayer_common_argument():
-    """Set and return launch argument.
+    """
+    Set and return launch argument.
 
     with_autoware
     rviz
@@ -167,8 +171,7 @@ def get_rviz(rviz_config_name: str):
 
 def get_evaluator_node(
     usecase_name: str,
-    addition_parameter=None,
-    python_node=True,
+    addition_parameter: Optional[Dict] = None,
 ):
     params = {
         "use_sim_time": True,
@@ -180,9 +183,7 @@ def get_evaluator_node(
     if addition_parameter is not None and type(addition_parameter) == dict:
         params.update(addition_parameter)
 
-    node_name = usecase_name + "_evaluator_node"
-    if python_node:
-        node_name += ".py"
+    node_name = usecase_name + "_evaluator_node.py"
 
     evaluator_node = Node(
         package="driving_log_replayer",

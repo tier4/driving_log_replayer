@@ -1,4 +1,5 @@
 import click
+
 from driving_log_replayer_cli.core.config import Config
 from driving_log_replayer_cli.core.config import save_config
 

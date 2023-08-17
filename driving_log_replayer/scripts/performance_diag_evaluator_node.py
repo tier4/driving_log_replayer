@@ -26,10 +26,6 @@ from autoware_adapi_v1_msgs.msg import ResponseStatus
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
-from driving_log_replayer.node_common import set_initial_pose
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import TransformStamped
@@ -47,6 +43,11 @@ from tf2_ros import TransformException
 from tf2_ros import TransformListener
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped
 import yaml
+
+from driving_log_replayer.node_common import set_initial_pose
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
 
 REGEX_VISIBILITY_DIAG_NAME = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
 BLOCKAGE_DIAG_BASE_NAME = (
@@ -307,7 +308,7 @@ class PerformanceDiagEvaluator(Node):
         super().__init__("performance_diag_evaluator")
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
-        self.declare_parameter("localization", False)
+        self.declare_parameter("localization", False)  # noqa
 
         self.__timer_group = MutuallyExclusiveCallbackGroup()
         self.__tf_buffer = Buffer()

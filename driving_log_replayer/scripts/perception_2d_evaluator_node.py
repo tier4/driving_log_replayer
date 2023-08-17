@@ -21,11 +21,6 @@ from typing import Dict
 from typing import List
 
 from autoware_auto_perception_msgs.msg import ObjectClassification
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import PickleWriter
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
@@ -51,6 +46,12 @@ from tf2_ros import TransformListener
 from tier4_perception_msgs.msg import DetectedObjectsWithFeature
 from tier4_perception_msgs.msg import DetectedObjectWithFeature
 import yaml
+
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.result import PickleWriter
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
 
 
 def get_label(classification: ObjectClassification) -> str:
@@ -121,7 +122,7 @@ class Perception2DResult(ResultBase):
         self,
         frame: PerceptionFrameResult,
         skip: int,
-        header: Header,
+        header: Header,  # noqa
         map_to_baselink: Dict,
         camera_type: str,
     ):
@@ -229,7 +230,7 @@ class Perception2DEvaluator(Node):
             ] = True  # Add a fixed value setting
 
             self.__camera_type_dict = self.__condition["TargetCameras"]
-            if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
+            if isinstance(self.__camera_type_dict, str) or len(self.__camera_type_dict) == 0:
                 self.get_logger().error("camera_types is not appropriate.")
                 rclpy.shutdown()
 

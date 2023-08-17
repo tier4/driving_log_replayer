@@ -14,13 +14,14 @@
 
 import copy
 
-import driving_log_replayer.launch_common
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
+
+import driving_log_replayer.launch_common
 
 
 def generate_launch_description():

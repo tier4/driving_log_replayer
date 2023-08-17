@@ -1,10 +1,11 @@
 import os
 import subprocess
 
+import termcolor
+
 from driving_log_replayer_cli.simulation.generate import TestScriptGenerator
 from driving_log_replayer_cli.simulation.result import convert
 from driving_log_replayer_cli.simulation.result import display
-import termcolor
 
 
 class DrivingLogReplayerTestRunner:
@@ -50,7 +51,7 @@ def run(
     autoware_path: str,
     rate: float,
     delay: float,
-    output_json: bool = True,
+    output_json: bool,
 ):
     DrivingLogReplayerTestRunner(
         os.path.expandvars(data_directory),
