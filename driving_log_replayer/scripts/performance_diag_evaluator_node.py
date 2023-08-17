@@ -308,7 +308,7 @@ class PerformanceDiagEvaluator(Node):
         super().__init__("performance_diag_evaluator")
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
-        self.declare_parameter("localization", False)
+        self.declare_parameter("localization", False)  # noqa
 
         self.__timer_group = MutuallyExclusiveCallbackGroup()
         self.__tf_buffer = Buffer()

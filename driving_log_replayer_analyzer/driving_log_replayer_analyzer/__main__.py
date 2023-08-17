@@ -21,7 +21,7 @@ from . import __version__
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
-def print_version(ctx, param, value):
+def print_version(ctx, param, value):  # noqa
     if not value or ctx.resilient_parsing:
         return
     click.echo(__version__)

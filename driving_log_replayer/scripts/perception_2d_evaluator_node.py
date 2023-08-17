@@ -122,7 +122,7 @@ class Perception2DResult(ResultBase):
         self,
         frame: PerceptionFrameResult,
         skip: int,
-        header: Header,
+        header: Header,  # noqa
         map_to_baselink: Dict,
         camera_type: str,
     ):

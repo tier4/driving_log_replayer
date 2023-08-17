@@ -18,7 +18,7 @@ from . import PlotBase
 
 
 class LinePlot(PlotBase):
-    def plot(self, title="", xlabel="", ylabel="", use_boolean_tick=False):
+    def plot(self, title="", xlabel="", ylabel="", use_boolean_tick=False):  # noqa
         self._fig = px.line(
             self._df,
             x="x",
