@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "driving_log_replayer_cli"
-version = "1.5.0"
+version = "1.5.1"
 description = "command line tool for driving_log_replayer"
 authors = [
   "Hayato Mizushima <hayato.mizushima@tier4.jp>",
