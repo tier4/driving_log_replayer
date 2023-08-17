@@ -14,6 +14,8 @@
 
 import os
 from string import capwords
+from typing import Dict
+from typing import Optional
 
 from ament_index_python.packages import get_package_share_directory
 import launch
@@ -169,8 +171,7 @@ def get_rviz(rviz_config_name: str):
 
 def get_evaluator_node(
     usecase_name: str,
-    addition_parameter=None,
-    python_node=True,
+    addition_parameter: Optional[Dict] = None,
 ):
     params = {
         "use_sim_time": True,
@@ -182,9 +183,7 @@ def get_evaluator_node(
     if addition_parameter is not None and type(addition_parameter) == dict:
         params.update(addition_parameter)
 
-    node_name = usecase_name + "_evaluator_node"
-    if python_node:
-        node_name += ".py"
+    node_name = usecase_name + "_evaluator_node.py"
 
     evaluator_node = Node(
         package="driving_log_replayer",
