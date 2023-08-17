@@ -246,7 +246,7 @@ class LocalizationEvaluator(Node):
         self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
 
         self.__reliability_method = self.__condition["Reliability"]["Method"]
-        if not (self.__reliability_method in ["TP", "NVTL"]):
+        if self.__reliability_method not in ["TP", "NVTL"]:
             self.get_logger().error(
                 f"Reliability Method {self.__reliability_method} is not defined."
             )
