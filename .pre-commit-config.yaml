@@ -37,7 +37,6 @@ repos:
   - repo: https://github.com/tier4/pre-commit-hooks-ros
     rev: v0.8.0
     hooks:
-      - id: flake8-ros
       - id: prettier-xacro
       - id: prettier-launch-xml
       - id: prettier-package-xml
