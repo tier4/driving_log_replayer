@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.5.1
+
+Breaking change
+
+| Module       | Feature           | Brief summary                   | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | ----------------- | ------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception` | fp validation log | store fp result in result.jsonl | [#206](https://github.com/tier4/driving_log_replayer/pull/206) | RT4-5559 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`        | `library`         | update python library version   | [#207](https://github.com/tier4/driving_log_replayer/pull/207) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `all`        | `linter`          | use `ruff` linter               | [#208](https://github.com/tier4/driving_log_replayer/pull/208) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.5.0
 
 Breaking change

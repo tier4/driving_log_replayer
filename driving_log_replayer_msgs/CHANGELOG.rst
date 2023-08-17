@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: use ruff linter (`#208 <https://github.com/tier4/driving_log_replayer/issues/208>`_)
+* fix: store fp result in result.jsonl (`#206 <https://github.com/tier4/driving_log_replayer/issues/206>`_)
+* Contributors: Hayato Mizushima
+
 1.5.0 (2023-08-07)
 ------------------
 * feat: update sample scenario and set None if dict key is not found (`#204 <https://github.com/tier4/driving_log_replayer/issues/204>`_)
