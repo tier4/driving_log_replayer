@@ -30,7 +30,8 @@ from launch_ros.descriptions import ComposableNode
 
 
 def get_driving_log_replayer_common_argument():
-    """Set and return launch argument.
+    """
+    Set and return launch argument.
 
     with_autoware
     rviz

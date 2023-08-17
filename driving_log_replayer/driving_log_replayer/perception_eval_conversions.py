@@ -73,9 +73,11 @@ def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
 
 
 def uuid_from_ros_msg(ros_uuid) -> str:
-    """Convert uuid from unique_identifier_msgs.msg.UUID to string.
+    """
+    Convert uuid from unique_identifier_msgs.msg.UUID to string.
 
     Args:
+    ----
         ros_uuid (np.ndarray): (16,) in uint8
     Returns:
         uuid (str)

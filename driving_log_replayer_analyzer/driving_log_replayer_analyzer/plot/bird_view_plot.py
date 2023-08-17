@@ -76,9 +76,11 @@ class BirdViewPlot(PlotBase):
         xlabel: str = "",
         ylabel: str = "",
     ):
-        """Plotを作成して保存する.
+        """
+        Plotを作成して保存する.
 
         Args:
+        ----
             path (Path): 保存先。拡張子はpng
             title (str, optional): タイトル. Defaults to "".
             xlabel (str, optional): x軸のラベル. Defaults to "".
@@ -114,9 +116,11 @@ class BirdViewPlot(PlotBase):
         ylabel: str = "",
         origin: bool = True,
     ):
-        """Plotを作成して保存する.
+        """
+        Plotを作成して保存する.
 
         Args:
+        ----
             path (Path): 保存先。拡張子はpng
             title (str, optional): タイトル. Defaults to "".
             xlabel (str, optional): x軸のラベル. Defaults to "".
