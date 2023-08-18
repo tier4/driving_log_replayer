@@ -74,9 +74,9 @@ class PerceptionEvaluatorPickle:
         number_use_case_fail_object: int = 0
         for frame_results in self.__evaluator.frame_results:
             number_use_case_fail_object += frame_results.pass_fail_result.get_fail_object_num()
-        logging.info(f"final use case fail object: {number_use_case_fail_object}")
+        logging.info("final use case fail object: %d", number_use_case_fail_object)
         final_metric_score = self.__evaluator.get_scene_result()
-        logging.info(f"final metrics result {final_metric_score}")
+        logging.info("final metrics result %s", final_metric_score)
         analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
         analyzer.add(self.__evaluator.frame_results)
         score_df, error_df = analyzer.analyze()

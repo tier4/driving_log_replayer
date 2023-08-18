@@ -73,7 +73,7 @@ class ObstacleSegmentationEvaluatorPickle:
         num_use_case_fail: int = 0
         for frame_results in self.__evaluator.frame_results:
             num_use_case_fail += len(frame_results.detection_fail_results)
-        logging.warning(f"{num_use_case_fail} fail results.")
+        logging.warning("%d fail results.", num_use_case_fail)
 
 
 def main():

@@ -296,7 +296,7 @@ class Perception2DEvaluator(Node):
         elif evaluation_task == "tracking2d":
             return f"/perception/object_recognition/detection/tracked/rois{camera_no}"
         else:
-            self.get_logger.error(f"invalid evaluation_task {evaluation_task}")
+            self.get_logger.error("invalid evaluation_task %s", evaluation_task)
             rclpy.shutdown()
 
     def timer_cb(self):
@@ -397,7 +397,7 @@ class Perception2DEvaluator(Node):
         final_metric_score = self.__evaluator.get_scene_result()
 
         # final result
-        logging.info(f"final metrics result {final_metric_score}")
+        logging.info("final metrics result %s", final_metric_score)
         return final_metric_score
 
 
