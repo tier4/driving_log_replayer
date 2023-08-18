@@ -32,7 +32,8 @@ def convert_str_to_dist_type(dist_type_str: str) -> DistType:
     elif dist_type_str == "euclidean":
         return DistType.EUCLID
     else:
-        raise RuntimeError("Unknown distance type.")
+        error_msg = "Unknown distance type."
+        raise RuntimeError(error_msg)  # EM101
 
 
 @dataclass
@@ -76,7 +77,8 @@ class Position:
             except IndexError:
                 pass
         else:
-            raise NotImplementedError("Input data should be a dict or list.")
+            error_msg = "Input data should be a dict or list."
+            raise NotImplementedError(error_msg)  # EM101
 
     def validate(self):
         return self.x is not None and self.y is not None and self.z is not None
