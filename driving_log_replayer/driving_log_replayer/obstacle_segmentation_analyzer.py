@@ -76,4 +76,4 @@ def get_graph_data(
     for data in parser.get_pointcloud_points_per_uuid():
         pointcloud_numpoints_plot.add_data(data, legend=data[0][2])
 
-    return detection_dist_plot._df.to_dict(), pointcloud_numpoints_plot._df.to_dict()
+    return detection_dist_plot.to_dict(), pointcloud_numpoints_plot.to_dict()

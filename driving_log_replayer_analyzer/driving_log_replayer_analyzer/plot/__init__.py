@@ -73,3 +73,6 @@ class PlotBase:
             self._fig.update_xaxes(range=[xy_range["x"][0], xy_range["x"][1]])
         if "y" in xy_range.keys():
             self._fig.update_yaxes(range=[xy_range["y"][0], xy_range["y"][1]])
+
+    def to_dict(self) -> Dict:
+        return self._df.to_dict()
