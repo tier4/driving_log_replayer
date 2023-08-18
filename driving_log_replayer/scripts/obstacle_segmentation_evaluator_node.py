@@ -181,17 +181,14 @@ def get_sensing_frame_config(
                 target_uuids.append(uuid)
     if target_uuids == []:
         return False, None
-    else:
-        e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"][
-            "evaluation_config_dict"
-        ]
-        sensing_frame_config = SensingFrameConfig(
-            target_uuids=target_uuids,
-            box_scale_0m=e_conf["box_scale_0m"],
-            box_scale_100m=e_conf["box_scale_100m"],
-            min_points_threshold=e_conf["min_points_threshold"],
-        )
-        return True, sensing_frame_config
+    e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]["evaluation_config_dict"]
+    sensing_frame_config = SensingFrameConfig(
+        target_uuids=target_uuids,
+        box_scale_0m=e_conf["box_scale_0m"],
+        box_scale_100m=e_conf["box_scale_100m"],
+        min_points_threshold=e_conf["min_points_threshold"],
+    )
+    return True, sensing_frame_config
 
 
 class ObstacleSegmentationResult(ResultBase):

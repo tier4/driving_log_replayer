@@ -66,8 +66,7 @@ def get_diag_value(diag_status: DiagnosticStatus, key_name: str) -> str:
 
 def trim_lidar_name(diag_name: str) -> str:
     remove_prefix = diag_name.replace(f"{BLOCKAGE_DIAG_BASE_NAME} ", "")
-    remove_suffix = remove_prefix.replace(": blockage_validation", "")
-    return remove_suffix
+    return remove_prefix.replace(": blockage_validation", "")
 
 
 class PerformanceDiagResult(ResultBase):

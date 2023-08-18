@@ -57,12 +57,11 @@ from driving_log_replayer.result import ResultWriter
 def get_label(light: TrafficLight) -> str:
     if light.color == TrafficLight.RED:
         return "red"
-    elif light.color == TrafficLight.AMBER:
+    if light.color == TrafficLight.AMBER:
         return "yellow"
-    elif light.color == TrafficLight.GREEN:
+    if light.color == TrafficLight.GREEN:
         return "green"
-    else:
-        return "unknown"
+    return "unknown"
 
 
 def get_most_probable_signal(

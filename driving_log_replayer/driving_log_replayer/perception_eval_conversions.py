@@ -53,8 +53,7 @@ def dimensions_from_ros_msg(
     if shape_type_num == 1:
         # cylinder
         return (ros_dimensions.x, ros_dimensions.x, ros_dimensions.z)
-    else:
-        return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
+    return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
 
 
 def velocity_from_ros_msg(ros_velocity: Vector3) -> Tuple[float, float, float]:
@@ -67,9 +66,8 @@ def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
         coords.append((ros_point.x, ros_point.y, ros_point.z))
     if coords:
         return Polygon(coords)
-    else:
-        # footprint.points of bounding_box and cylinder are empty, so return None
-        return None
+    # footprint.points of bounding_box and cylinder are empty, so return None
+    return None
 
 
 def uuid_from_ros_msg(ros_uuid) -> str:

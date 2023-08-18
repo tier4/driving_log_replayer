@@ -27,13 +27,12 @@ class DistType(Enum):
 def convert_str_to_dist_type(dist_type_str: str) -> DistType:
     if dist_type_str == "front":
         return DistType.Y
-    elif dist_type_str == "side":
+    if dist_type_str == "side":
         return DistType.X
-    elif dist_type_str == "euclidean":
+    if dist_type_str == "euclidean":
         return DistType.EUCLID
-    else:
-        error_msg = "Unknown distance type."
-        raise RuntimeError(error_msg)  # EM101
+    error_msg = "Unknown distance type."
+    raise RuntimeError(error_msg)  # EM101
 
 
 @dataclass
@@ -87,12 +86,10 @@ class Position:
         if self.validate():
             if dist_type == DistType.X:
                 return abs(self.x)
-            elif dist_type == DistType.Y:
+            if dist_type == DistType.Y:
                 return abs(self.y)
-            else:
-                return math.hypot(self.x, self.y)
-        else:
-            return None
+            return math.hypot(self.x, self.y)
+        return None
 
     def add_overhang(self, val: float):
         self.y = self.y + val
