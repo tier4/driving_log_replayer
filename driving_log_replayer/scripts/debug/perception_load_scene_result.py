@@ -66,7 +66,8 @@ class PerceptionEvaluatorPickle:
         elif task == "tracking":
             frame_id = "map"
         else:
-            raise ValueError(f"Unexpected evaluation task: {task}")
+            error_msg = f"Unexpected evaluation task: {task}"
+            raise ValueError(error_msg)  # EM102
         return frame_id
 
     def get_final_result(self) -> MetricsScore:
