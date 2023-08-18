@@ -38,7 +38,6 @@ def cmd():
 
     https://github.com/tier4/driving_log_replayer
     """
-    pass
 
 
 cmd.add_command(analysis)

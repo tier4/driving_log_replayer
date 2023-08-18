@@ -14,7 +14,6 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 @click.group(context_settings=CONTEXT_SETTINGS)
 def simulation():
     """Run simulation and check simulation log."""
-    pass
 
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
