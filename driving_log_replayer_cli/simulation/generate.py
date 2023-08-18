@@ -36,8 +36,7 @@ class TestScriptGenerator:
         return self.__script_path
 
     def run(self):
-        is_executable = self.__create_script()
-        return is_executable
+        return self.__create_script()
 
     def __create_script(self) -> bool:
         if Path(self.__output_directory).exists():
@@ -65,8 +64,7 @@ class TestScriptGenerator:
             with open(self.script_path, "w") as f:
                 f.write(generated_cmd)
             return True
-        else:
-            return False
+        return False
 
     def __parse_scenario(self, scenario_directory: str) -> Optional[str]:
         scenario_root = Path(scenario_directory)
@@ -96,13 +94,12 @@ class TestScriptGenerator:
                     scenario_output_dir,
                     scenario_yaml_obj,
                 )
-            else:
-                return self.__create_launch_command(
-                    scenario_root.as_posix(),
-                    scenario_path.name,
-                    scenario_output_dir,
-                    scenario_yaml_obj,
-                )
+            return self.__create_launch_command(
+                scenario_root.as_posix(),
+                scenario_path.name,
+                scenario_output_dir,
+                scenario_yaml_obj,
+            )
 
     def __create_launch_command(
         self, scenario_root: str, scenario_name: str, scenario_output_dir: str, scenario_yaml_obj

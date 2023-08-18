@@ -19,6 +19,7 @@ import os
 from pathlib import Path
 from typing import Dict
 from typing import List
+from typing import Optional
 from typing import Tuple
 from typing import Union
 
@@ -68,27 +69,26 @@ from driving_log_replayer.result import ResultWriter
 def get_label(classification: ObjectClassification) -> str:
     if classification.label == ObjectClassification.UNKNOWN:
         return "unknown"
-    elif classification.label == ObjectClassification.CAR:
+    if classification.label == ObjectClassification.CAR:
         return "car"
-    elif classification.label == ObjectClassification.TRUCK:
+    if classification.label == ObjectClassification.TRUCK:
         return "truck"
-    elif classification.label == ObjectClassification.BUS:
+    if classification.label == ObjectClassification.BUS:
         return "bus"
-    elif classification.label == ObjectClassification.TRAILER:
+    if classification.label == ObjectClassification.TRAILER:
         # not implemented in iv
         return "trailer"
-    elif classification.label == ObjectClassification.MOTORCYCLE:
+    if classification.label == ObjectClassification.MOTORCYCLE:
         # iv: motorbike, auto: motorbike
         return "motorbike"
-    elif classification.label == ObjectClassification.BICYCLE:
+    if classification.label == ObjectClassification.BICYCLE:
         return "bicycle"
-    elif classification.label == ObjectClassification.PEDESTRIAN:
+    if classification.label == ObjectClassification.PEDESTRIAN:
         return "pedestrian"
     # not implemented in auto
     # elif classification.label == ObjectClassification.ANIMAL:
     #     return "animal"
-    else:
-        return "other"
+    return "other"
 
 
 def get_most_probable_classification(
@@ -300,14 +300,16 @@ class PerceptionEvaluator(Node):
             self.get_logger().error("Scenario format error.")
             rclpy.shutdown()
 
-    def get_frame_id_and_msg_type(self) -> Tuple[str, Union[DetectedObjects, TrackedObjects], str]:
+    def get_frame_id_and_msg_type(
+        self,
+    ) -> Optional[Tuple[str, Union[DetectedObjects, TrackedObjects], str]]:
         if self.__evaluation_task in ["detection", "fp_validation"]:
             return "base_link", DetectedObjects, "detection"
-        elif self.__evaluation_task == "tracking":
+        if self.__evaluation_task == "tracking":
             return "map", TrackedObjects, "tracking"
-        else:
-            self.get_logger().error(f"Unexpected evaluation task: {self.__evaluation_task}")
-            rclpy.shutdown()
+        self.get_logger().error(f"Unexpected evaluation task: {self.__evaluation_task}")
+        rclpy.shutdown()
+        return None
 
     def timer_cb(self):
         self.__current_time = self.get_clock().now().to_msg()

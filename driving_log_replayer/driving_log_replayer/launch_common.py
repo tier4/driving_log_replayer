@@ -115,7 +115,7 @@ def get_autoware_launch(
         "launch",
         "logging_simulator.launch.xml",
     )
-    autoware_launch = launch.actions.IncludeLaunchDescription(
+    return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(autoware_launch_file),
         launch_arguments={
             "map_path": LaunchConfiguration("map_path"),
@@ -136,7 +136,6 @@ def get_autoware_launch(
         }.items(),
         condition=IfCondition(LaunchConfiguration("with_autoware")),
     )
-    return autoware_launch
 
 
 def get_map_height_fitter(launch_service="true"):
@@ -146,18 +145,17 @@ def get_map_height_fitter(launch_service="true"):
         "launch",
         "map_height_fitter.launch.xml",
     )
-    fitter_launch = launch.actions.IncludeLaunchDescription(
+    return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(fitter_launch_file),
         condition=IfCondition(launch_service),
     )
-    return fitter_launch
 
 
 def get_rviz(rviz_config_name: str):
     rviz_config_dir = os.path.join(
         get_package_share_directory("driving_log_replayer"), "config", rviz_config_name
     )
-    rviz_node = Node(
+    return Node(
         package="rviz2",
         executable="rviz2",
         name="rviz2",
@@ -166,7 +164,6 @@ def get_rviz(rviz_config_name: str):
         output="screen",
         condition=IfCondition(LaunchConfiguration("rviz")),
     )
-    return rviz_node
 
 
 def get_evaluator_node(
@@ -185,7 +182,7 @@ def get_evaluator_node(
 
     node_name = usecase_name + "_evaluator_node.py"
 
-    evaluator_node = Node(
+    return Node(
         package="driving_log_replayer",
         namespace="/driving_log_replayer",
         executable=node_name,
@@ -194,7 +191,6 @@ def get_evaluator_node(
         parameters=[params],
         on_exit=ShutdownOnce(),
     )
-    return evaluator_node
 
 
 def get_recorder(record_config_name: str, record_topics: list):
@@ -266,7 +262,7 @@ def get_topic_state_monitor_launch(topic_monitor_config: str):
         "config",
         topic_monitor_config,
     )
-    component_state_monitor_launch = launch.actions.IncludeLaunchDescription(
+    return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(
             component_state_monitor_launch_file
         ),
@@ -275,7 +271,6 @@ def get_topic_state_monitor_launch(topic_monitor_config: str):
             "mode": "logging_simulation",
         }.items(),
     )
-    return component_state_monitor_launch
 
 
 def get_evaluator_container(
@@ -300,7 +295,7 @@ def get_evaluator_container(
         parameters=[params],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
-    evaluator_container = ComposableNodeContainer(
+    return ComposableNodeContainer(
         name="DrivingLogReplayer" + snake_to_pascal(usecase_name) + "EvaluatorContainer",
         namespace="",
         package="rclcpp_components",
@@ -308,7 +303,6 @@ def get_evaluator_container(
         composable_node_descriptions=[evaluator_node],
         output="screen",
     )
-    return evaluator_container
 
 
 def add_container_argument(launch_arguments: list):
@@ -340,5 +334,4 @@ def get_container_configuration():
 
 def snake_to_pascal(snake_str: str):
     pascal = capwords(snake_str.replace("_", " "))
-    pascal = pascal.replace(" ", "")
-    return pascal
+    return pascal.replace(" ", "")

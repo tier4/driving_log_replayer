@@ -52,18 +52,13 @@ class ShutdownOnce(EmitEvent):
         """Execute the action."""
         if ShutdownOnce.shutdown_called:
             return
-        else:
-            ShutdownOnce.shutdown_called = True
-            try:
-                event = context.locals.event
-            except AttributeError:
-                event = None
-
-            if isinstance(event, ProcessExited):
-                _logger.info(
-                    "process[{}] was required: shutting down launched system".format(
-                        event.process_name
-                    )
-                )
-
-            super().execute(context)
+        ShutdownOnce.shutdown_called = True
+        try:
+            event = context.locals.event
+        except AttributeError:
+            event = None
+        if isinstance(event, ProcessExited):
+            _logger.info(
+                "process[{}] was required: shutting down launched system".format(event.process_name)
+            )
+        super().execute(context)
