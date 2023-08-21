@@ -14,7 +14,7 @@ class DrivingLogReplayerResultViewer:
     def output(self):
         print("--------------------------------------------------")
         self.__result_json_dict = {}
-        with open(self.__result_path, "r") as jsonl_file:
+        with open(self.__result_path) as jsonl_file:
             last_line = jsonl_file.readlines()[-1]
             try:
                 self.__result_json_dict = json.loads(last_line)
@@ -41,7 +41,7 @@ class DrivingLogReplayerResultConverter:
         if output_file_path.exists():
             # termcolor.cprint("A json file already exists. Skip convert", "yellow")
             return
-        with open(self.__result_path, "r") as jsonl_file:
+        with open(self.__result_path) as jsonl_file:
             result_dict = [json.loads(line) for line in jsonl_file]
             with open(output_file_path, "w") as out_file:
                 json.dump(result_dict, out_file)
