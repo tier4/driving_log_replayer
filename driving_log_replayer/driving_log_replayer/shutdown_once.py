@@ -36,7 +36,7 @@ class ShutdownOnce(EmitEvent):
     shutdown_called = False
     """Action that shuts down a launched system by emitting Shutdown when executed."""
 
-    def __init__(self, *, reason: Text = "reason not given", **kwargs):
+    def __init__(self, *, reason: str = "reason not given", **kwargs):
         super().__init__(event=ShutdownEvent(reason=reason), **kwargs)
 
     @classmethod
@@ -59,6 +59,6 @@ class ShutdownOnce(EmitEvent):
             event = None
         if isinstance(event, ProcessExited):
             _logger.info(
-                "process[{}] was required: shutting down launched system".format(event.process_name)
+                f"process[{event.process_name}] was required: shutting down launched system"
             )
         super().execute(context)
