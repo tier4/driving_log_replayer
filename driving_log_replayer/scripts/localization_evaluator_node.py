@@ -18,8 +18,8 @@
 import os
 import statistics
 from typing import Dict
+from typing import TYPE_CHECKING
 
-from autoware_adapi_v1_msgs.msg import ResponseStatus
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
@@ -49,6 +49,9 @@ from driving_log_replayer.node_common import set_initial_pose
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
+
+if TYPE_CHECKING:
+    from autoware_adapi_v1_msgs.msg import ResponseStatus
 
 
 def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry):

@@ -16,8 +16,8 @@
 
 
 import os
+from typing import TYPE_CHECKING
 
-from autoware_adapi_v1_msgs.msg import ResponseStatus
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
@@ -34,6 +34,9 @@ import yaml
 from driving_log_replayer.node_common import set_initial_pose
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
+
+if TYPE_CHECKING:
+    from autoware_adapi_v1_msgs.msg import ResponseStatus
 
 
 class EagleyeResult(ResultBase):
