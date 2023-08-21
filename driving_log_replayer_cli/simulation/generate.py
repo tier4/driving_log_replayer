@@ -192,7 +192,7 @@ class TestScriptGenerator:
         scenario_path = os.path.join(scenario_root, scenario_name)
         t4_dataset_base_path = os.path.join(scenario_root, "t4_dataset")
         t4_datasets = scenario_yaml_obj["Evaluation"]["Datasets"]
-        is_database_evaluation = True if len(t4_datasets) > 1 else False
+        is_database_evaluation = bool(len(t4_datasets) > 1)
         for dataset in t4_datasets:
             # get dataset_id
             key = next(iter(dataset))
