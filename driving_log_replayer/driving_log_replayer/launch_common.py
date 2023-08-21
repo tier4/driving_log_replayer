@@ -194,20 +194,20 @@ def get_evaluator_node(
 
 
 def get_recorder(record_config_name: str, record_topics: list):
-    record_cmd = (
-        ["ros2", "bag", "record"]
-        + record_topics
-        + [
-            "-o",
-            LaunchConfiguration("result_bag_path"),
-            "--qos-profile-overrides-path",
-            os.path.join(
-                get_package_share_directory("driving_log_replayer"),
-                "config",
-                record_config_name,
-            ),
-        ]
-    )
+    record_cmd = [
+        "ros2",
+        "bag",
+        "record",
+        *record_topics,
+        "-o",
+        LaunchConfiguration("result_bag_path"),
+        "--qos-profile-overrides-path",
+        os.path.join(
+            get_package_share_directory("driving_log_replayer"),
+            "config",
+            record_config_name,
+        ),
+    ]
     return ExecuteProcess(cmd=record_cmd)
 
 

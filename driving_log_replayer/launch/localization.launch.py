@@ -43,8 +43,8 @@ def generate_launch_description():
     )
 
     return launch.LaunchDescription(
-        launch_arguments
-        + [
+        [
+            *launch_arguments,
             rviz_node,
             autoware_launch,
             fitter_launch,

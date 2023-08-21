@@ -71,6 +71,13 @@ def generate_launch_description():
     )
 
     return launch.LaunchDescription(
-        launch_arguments
-        + [rviz_node, autoware_launch, evaluator_node, player_normal, player_remap, recorder]
+        [
+            *launch_arguments,
+            rviz_node,
+            autoware_launch,
+            evaluator_node,
+            player_normal,
+            player_remap,
+            recorder,
+        ]
     )

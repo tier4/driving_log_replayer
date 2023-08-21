@@ -360,7 +360,7 @@ class ObstacleSegmentationResult(ResultBase):
                     dist_dict[f"{i}-{i+1}"] = np.count_nonzero(
                         (i <= dist_array) & (dist_array < i + 1)
                     )
-                # NonDetectionは結果はInfoに入るのは１個しかないがDetectionに合わせてlistにしておく
+                # NonDetectionは結果はInfoに入るのは1個しかないがDetectionに合わせてlistにしておく
                 info.append(
                     {
                         "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
