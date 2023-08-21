@@ -2,6 +2,18 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: handle 2d evaluation task error (`#218 <https://github.com/tier4/driving_log_replayer/issues/218>`_)
+* refactor: apply ruff specific RUF rules (`#217 <https://github.com/tier4/driving_log_replayer/issues/217>`_)
+* refactor: apply simplify SIM rules (`#216 <https://github.com/tier4/driving_log_replayer/issues/216>`_)
+* refactor: apply pyupgrade (`#215 <https://github.com/tier4/driving_log_replayer/issues/215>`_)
+* refactor: apply type checking TCH rules (`#214 <https://github.com/tier4/driving_log_replayer/issues/214>`_)
+* refactor: apply private-member-access slf rules
+* refactor: apply return ret rules (`#213 <https://github.com/tier4/driving_log_replayer/issues/213>`_)
+* refactor: apply errmsg em rules (`#211 <https://github.com/tier4/driving_log_replayer/issues/211>`_)
+* Contributors: Hayato Mizushima
+
 1.5.1 (2023-08-17)
 ------------------
 * feat: use ruff linter (`#208 <https://github.com/tier4/driving_log_replayer/issues/208>`_)

@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 1.5.2
+
+Minor Tweak
+
+| Module          | Feature          | Brief summary                  | Pull request                                                   | Jira     | Contributor                                   |
+| --------------- | ---------------- | ------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`           | `linter`         | apply `ruff` linter EM rules   | [#211](https://github.com/tier4/driving_log_replayer/pull/211) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter PIE rules  | [#212](https://github.com/tier4/driving_log_replayer/pull/212) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter RET rules  | [#213](https://github.com/tier4/driving_log_replayer/pull/213) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter SLF rules  | -                                                              | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter TCH rules  | [#214](https://github.com/tier4/driving_log_replayer/pull/214) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter UP rules   | [#215](https://github.com/tier4/driving_log_replayer/pull/215) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter SIM rules  | [#216](https://github.com/tier4/driving_log_replayer/pull/216) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter RUF        | [#217](https://github.com/tier4/driving_log_replayer/pull/217) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception_2d` | `error_handling` | handle invalid evaluation task | [#218](https://github.com/tier4/driving_log_replayer/pull/218) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.5.1
 
 Breaking change
