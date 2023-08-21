@@ -120,12 +120,12 @@ class NonDetection:
 class DetectionInfo:
     uuid: str = None
     short_uuid: str = None
-    annotation_position: Position
+    annotation_position: Position = Position()  # noqa
     annotation_distance: float = None
     annotation_stamp: float = None
     pointcloud_numpoints: int = None
     pointcloud_nearest_distance: float = None
-    pointcloud_nearest_position: Position
+    pointcloud_nearest_position: Position = Position()  # noqa
     pointcloud_stamp: float = None
 
 
