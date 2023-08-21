@@ -211,7 +211,7 @@ class JsonlParser:
         self._modify_center_from_baselink_to_overhang(config.overhang_from_baselink)
 
     def _read_jsonl_results(self, path: Path):
-        with open(path, "r") as f:
+        with open(path) as f:
             lines = f.read().splitlines()
 
         previous_dist = sys.float_info.max
