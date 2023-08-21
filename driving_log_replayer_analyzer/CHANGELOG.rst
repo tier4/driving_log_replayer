@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.2 (2023-08-21)
+------------------
 * fix: handle 2d evaluation task error (`#218 <https://github.com/tier4/driving_log_replayer/issues/218>`_)
 * refactor: apply ruff specific RUF rules (`#217 <https://github.com/tier4/driving_log_replayer/issues/217>`_)
 * refactor: apply simplify SIM rules (`#216 <https://github.com/tier4/driving_log_replayer/issues/216>`_)
