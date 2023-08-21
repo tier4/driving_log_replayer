@@ -267,12 +267,9 @@ class Perception2DEvaluator(Node):
             self.__subscribers = {}
             self.__skip_counter = {}
             for camera_type, camera_no in self.__camera_type_dict.items():
-                sub_topic_name = self.get_topic_name(evaluation_task, camera_no)
-                if sub_topic_name is None:
-                    rclpy.shutdown()
                 self.__subscribers[camera_type] = self.create_subscription(
                     DetectedObjectsWithFeature,
-                    sub_topic_name,
+                    self.get_topic_name(evaluation_task, camera_no),
                     lambda msg, local_type=camera_type: self.detected_objs_cb(msg, local_type),
                     1,
                 )
@@ -299,6 +296,7 @@ class Perception2DEvaluator(Node):
         if evaluation_task == "tracking2d":
             return f"/perception/object_recognition/detection/tracked/rois{camera_no}"
         self.get_logger.error(f"invalid evaluation_task {evaluation_task}")
+        rclpy.shutdown()
         return None
 
     def timer_cb(self):
