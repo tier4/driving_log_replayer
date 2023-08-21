@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import csv
 import dataclasses
 from dataclasses import dataclass
@@ -71,10 +72,8 @@ class Frame:
     frame_name: int = -1
 
     def __init__(self, json_dict: Dict) -> None:
-        try:
+        with contextlib.suppress(KeyError, IndexError):
             self.frame_name = int(json_dict["Frame"]["FrameName"])
-        except (KeyError, IndexError):
-            pass
 
 
 @dataclass
@@ -170,7 +169,7 @@ class Summary:
         pass
 
     def update_condition(self, json_dict: Dict) -> None:
-        if "Condition" in json_dict.keys():
+        if "Condition" in json_dict:
             try:
                 self.detection_pass_rate = json_dict["Condition"]["Detection"]["PassRate"]
             except (KeyError, TypeError):

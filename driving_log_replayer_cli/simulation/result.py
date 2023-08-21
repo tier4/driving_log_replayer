@@ -1,3 +1,4 @@
+import contextlib
 import glob
 import os
 from pathlib import Path
@@ -16,10 +17,8 @@ class DrivingLogReplayerResultViewer:
         self.__result_json_dict = {}
         with open(self.__result_path) as jsonl_file:
             last_line = jsonl_file.readlines()[-1]
-            try:
+            with contextlib.suppress(json.JSONDecodeError):
                 self.__result_json_dict = json.loads(last_line)
-            except json.JSONDecodeError:
-                pass
         if self.__result_json_dict:
             # dict is not empty
             if self.__result_json_dict["Result"]["Success"]:

@@ -69,9 +69,9 @@ class PlotBase:
             self._fig.update_yaxes(dtick=y)
 
     def set_xy_range(self, xy_range: dict):
-        if "x" in xy_range.keys():
+        if "x" in xy_range:
             self._fig.update_xaxes(range=[xy_range["x"][0], xy_range["x"][1]])
-        if "y" in xy_range.keys():
+        if "y" in xy_range:
             self._fig.update_yaxes(range=[xy_range["y"][0], xy_range["y"][1]])
 
     def to_dict(self) -> Dict:

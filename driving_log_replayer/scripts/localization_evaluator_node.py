@@ -140,8 +140,8 @@ class LocalizationResult(ResultBase):
                 self.__reliability_ng_seq = 0
             else:
                 self.__reliability_ng_seq += 1
-        self.__reliability_result = (
-            True if self.__reliability_ng_seq < self.__reliability_condition["NGCount"] else False
+        self.__reliability_result = bool(
+            self.__reliability_ng_seq < self.__reliability_condition["NGCount"]
         )
         success = "Success" if self.__reliability_result else "Fail"
 
@@ -354,7 +354,7 @@ class LocalizationEvaluator(Node):
 
     def tp_cb(self, msg: Float32Stamped):
         self.__latest_tp = msg
-        if not self.__reliability_method == "TP":
+        if self.__reliability_method != "TP":
             # evaluates when reliability_method is TP
             return
         try:
@@ -371,7 +371,7 @@ class LocalizationEvaluator(Node):
 
     def nvtl_cb(self, msg: Float32Stamped):
         self.__latest_nvtl = msg
-        if not self.__reliability_method == "NVTL":
+        if self.__reliability_method != "NVTL":
             # evaluates when reliability_method is NVTL
             return
         try:
