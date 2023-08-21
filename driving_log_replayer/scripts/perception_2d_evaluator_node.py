@@ -234,6 +234,10 @@ class Perception2DEvaluator(Node):
                 self.get_logger().error("camera_types is not appropriate.")
                 rclpy.shutdown()
 
+            if evaluation_task not in ["detection2d", "tracking2d"]:
+                self.get_logger().error(f"invalid evaluation task {evaluation_task}.")
+                rclpy.shutdown()
+
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
                 frame_id=list(self.__camera_type_dict.keys()),
