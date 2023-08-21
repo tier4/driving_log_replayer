@@ -15,6 +15,7 @@
 from pathlib import Path
 from typing import Dict
 from typing import List
+from typing import Optional
 
 import pandas as pd
 
@@ -62,7 +63,7 @@ class PlotBase:
         hover_list.remove("color")
         return hover_list
 
-    def set_tick_span(self, x: float = None, y: float = None):
+    def set_tick_span(self, x: Optional[float] = None, y: Optional[float] = None):
         if x is not None:
             self._fig.update_xaxes(dtick=x)
         if y is not None:

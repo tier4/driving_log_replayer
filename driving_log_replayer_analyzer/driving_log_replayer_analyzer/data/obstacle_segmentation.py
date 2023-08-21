@@ -120,12 +120,12 @@ class NonDetection:
 class DetectionInfo:
     uuid: str = None
     short_uuid: str = None
-    annotation_position: Position = Position()
+    annotation_position: Position = Position()  # noqa
     annotation_distance: float = None
     annotation_stamp: float = None
     pointcloud_numpoints: int = None
     pointcloud_nearest_distance: float = None
-    pointcloud_nearest_position: Position = Position()
+    pointcloud_nearest_position: Position = Position()  # noqa
     pointcloud_stamp: float = None
 
 
@@ -217,7 +217,7 @@ class JsonlParser:
         for line in lines:
             json_dict = json.loads(line)
 
-            # tmp: 片側から車両が来るケースにおいて、自車の前（距離が最短となるとき）を通過後のデータは使わない
+            # tmp: 片側から車両が来るケースにおいて、自車の前(距離が最短となるとき)を通過後のデータは使わない
             try:
                 position = Position(
                     json_dict["Frame"]["Detection"]["Info"][0]["Annotation"]["Position"]["position"]
@@ -366,11 +366,11 @@ class JsonlParser:
 
     def get_pointcloud_points_per_uuid(self) -> List:
         """
-        Detectionで検出した自車～Annotation BB内の最近傍PCの距離ごとの検知点群数のリストを返す.
+        Detectionで検出した自車からAnnotation BB内の最近傍PCの距離ごとの検知点群数のリストを返す.
 
         Returns
         -------
-            list: UUIDごとの自車～Annotation BB内の最近傍PCの距離ごとの検知点群数のリスト
+            list: UUIDごとの自車からAnnotation BB内の最近傍PCの距離ごとの検知点群数のリスト
         """
         tmp = []
         for frame in self.detection:
@@ -387,11 +387,11 @@ class JsonlParser:
 
     def get_annotation_and_pointcloud_distance(self) -> List:
         """
-        自車～Annotation BBの最近傍点と検知点群の最近傍点との距離差.
+        自車からAnnotation BBの最近傍点と検知点群の最近傍点との距離差.
 
         Returns
         -------
-            list: UUIDごとの自車～Annotation BBの最近傍点と検知点群の最近傍点との距離差
+            list: UUIDごとの自車からAnnotation BBの最近傍点と検知点群の最近傍点との距離差
         """
         tmp = []
         for frame in self.detection:

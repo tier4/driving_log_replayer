@@ -71,8 +71,8 @@ def generate_launch_description():
         "^/clock$|^/tf$|/perception/obstacle_segmentation/pointcloud|/sensing/lidar/concatenated/pointcloud|^/diagnostics$|^/diagnostics_agg$|^/driving_log_replayer/.*|^/sensing/lidar/.*/blockage_diag/debug/blockage_mask_image$",
     )
     return launch.LaunchDescription(
-        launch_arguments
-        + [
+        [
+            *launch_arguments,
             rviz_node,
             autoware_launch,
             fitter_launch,
