@@ -19,7 +19,6 @@
 """Module for the Shutdown action."""
 
 import logging
-from typing import Text
 
 from launch.actions import EmitEvent
 from launch.events import Shutdown as ShutdownEvent
