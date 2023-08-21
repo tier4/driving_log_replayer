@@ -22,10 +22,10 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
+from typing import TYPE_CHECKING
 
 from geometry_msgs.msg import PoseStamped
 import numpy as np
-from perception_eval.common.dataset import FrameGroundTruth
 from perception_eval.common.object import DynamicObject
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
@@ -62,6 +62,9 @@ from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
+
+if TYPE_CHECKING:
+    from perception_eval.common.dataset import FrameGroundTruth
 
 
 def get_box_marker(

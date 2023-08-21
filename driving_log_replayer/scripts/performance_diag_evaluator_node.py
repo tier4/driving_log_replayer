@@ -21,8 +21,8 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
+from typing import TYPE_CHECKING
 
-from autoware_adapi_v1_msgs.msg import ResponseStatus
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
@@ -48,6 +48,9 @@ from driving_log_replayer.node_common import set_initial_pose
 from driving_log_replayer.node_common import transform_stamped_with_euler_angle
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
+
+if TYPE_CHECKING:
+    from autoware_adapi_v1_msgs.msg import ResponseStatus
 
 REGEX_VISIBILITY_DIAG_NAME = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
 BLOCKAGE_DIAG_BASE_NAME = (
