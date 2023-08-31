@@ -55,7 +55,6 @@ plugins:
       reconfigure_material: true
       reconfigure_search: true
 
-
 markdown_extensions:
   - attr_list
   - admonition
