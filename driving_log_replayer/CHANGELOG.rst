@@ -6,6 +6,7 @@ Forthcoming
 -----------
 * chore: update pyproject.toml
 * docs: add eagleye tutorial
+* Contributors: Hayato Mizushima, kminoda
 
 1.5.2 (2023-08-21)
 ------------------
