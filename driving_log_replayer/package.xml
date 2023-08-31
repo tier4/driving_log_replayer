@@ -5,8 +5,8 @@
   <version>1.5.2</version>
   <description>The driving_log_replayer package</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
-  <maintainer email="keisuke.shima@tier4.jp">Keisuke Shima</maintainer>
   <maintainer email="koji.minoda@tier4.jp">Koji Minoda</maintainer>
+  <maintainer email="keisuke.shima@tier4.jp">Keisuke Shima</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>

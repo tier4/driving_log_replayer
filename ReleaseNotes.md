@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.5.3
+
+Minor Tweak
+
+| Module    | Feature         | Brief summary          | Pull request                                                   | Jira | Contributor                                   |
+| --------- | --------------- | ---------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `cli`     | `poetry`        | update pyproject.toml  | [#220](https://github.com/tier4/driving_log_replayer/pull/220) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `eagleye` | `documentation` | add `eagleye` tutorial | [#222](https://github.com/tier4/driving_log_replayer/pull/222) | -    | [kminoda](https://github.com/kminoda)         |
+
 ## Version 1.5.2
 
 Minor Tweak
