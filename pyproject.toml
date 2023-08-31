@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "driving_log_replayer_cli"
-version = "1.5.2"
+version = "1.5.3"
 description = "command line tool for driving_log_replayer"
 authors = [
   "Hayato Mizushima <hayato.mizushima@tier4.jp>",
-  "Keisuke Shima <keisuke.shima@tier4.jp>",
   "Koji Minoda <koji.minoda@tier4.jp>",
+  "Keisuke Shima <keisuke.shima@tier4.jp>",
 ]
 readme = "README.md"
 license = "Apache-2.0"
