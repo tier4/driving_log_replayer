@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.3 (2023-08-31)
+------------------
 * chore: update pyproject.toml
 * docs: add eagleye tutorial
 * Contributors: Hayato Mizushima, kminoda
