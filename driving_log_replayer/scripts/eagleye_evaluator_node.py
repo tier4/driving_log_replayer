@@ -114,10 +114,10 @@ class EagleyeEvaluator(DLREvaluator):
                 self._initial_pose_running = True
                 self._initial_pose.header.stamp = self._current_time
                 future_map_fit = self._map_fit_client.call_async(
-                    PoseWithCovarianceStamped.Request(pose_with_covariance=self.__initial_pose)
+                    PoseWithCovarianceStamped.Request(pose_with_covariance=self._initial_pose)
                 )
                 future_map_fit.add_done_callback(self.map_fit_cb)
-            if self._current_time == self.__prev_time:
+            if self._current_time == self._prev_time:
                 self._clock_stop_counter += 1
             else:
                 self._clock_stop_counter = 0
