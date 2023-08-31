@@ -20,6 +20,7 @@ from typing import TYPE_CHECKING
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 import rclpy
+from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped
 import yaml
@@ -76,7 +77,7 @@ class EagleyeEvaluator(DLREvaluator):
         super().__init__(name)
 
         self.__result = EagleyeResult()
-        self.__result_writer = ResultWriter(self.__result_json_path, self.get_clock(), {})
+        self.__result_writer = ResultWriter(self._result_json_path, self.get_clock(), {})
 
         self._scenario_yaml_obj = None
         with open(self._scenario_path) as scenario_file:
@@ -111,8 +112,8 @@ class EagleyeEvaluator(DLREvaluator):
                     f"call initial_pose time: {self._current_time.sec}.{self._current_time.nanosec}"
                 )
                 self._initial_pose_running = True
-                self._initial_pose.header.stamp = self.__current_time
-                future_map_fit = self.__map_fit_client.call_async(
+                self._initial_pose.header.stamp = self._current_time
+                future_map_fit = self._map_fit_client.call_async(
                     PoseWithCovarianceStamped.Request(pose_with_covariance=self.__initial_pose)
                 )
                 future_map_fit.add_done_callback(self.map_fit_cb)
@@ -126,6 +127,15 @@ class EagleyeEvaluator(DLREvaluator):
                 rclpy.shutdown()
 
 
-if __name__ == "__main__":
+def main(args=None):
+    rclpy.init(args=args)
+    executor = MultiThreadedExecutor()
     evaluator = EagleyeEvaluator("eagleye_evaluator")
-    evaluator.run()
+    executor.add_node(evaluator)
+    executor.spin()
+    evaluator.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()
