@@ -35,7 +35,7 @@ from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
 import simplejson as json
 from tf_transformations import euler_from_quaternion
-from tier4_localization_msgs.srv import PoseWithCovarianceStamped
+from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 
 if TYPE_CHECKING:
     from autoware_adapi_v1_msgs.msg import ResponseStatus
@@ -77,7 +77,7 @@ class DLREvaluator(Node, ABC):
             InitializeLocalization, "/api/localization/initialize"
         )
         self._map_fit_client = self.create_client(
-            PoseWithCovarianceStamped, "/map/map_height_fitter/service"
+            PoseWithCovarianceStampedSrv, "/map/map_height_fitter/service"
         )
 
         while not self._initial_pose_client.wait_for_service(timeout_sec=1.0):
