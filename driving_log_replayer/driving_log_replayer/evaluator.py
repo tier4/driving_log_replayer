@@ -42,6 +42,8 @@ if TYPE_CHECKING:
 
 
 class DLREvaluator(Node, ABC):
+    COUNT_SHUTDOWN_NODE = 5
+
     def __init__(self, name: str) -> None:
         super().__init__(name)
         self.declare_parameter("scenario_path", "")
@@ -57,6 +59,7 @@ class DLREvaluator(Node, ABC):
         self._current_time = Time().to_msg()
         self._prev_time = Time().to_msg()
         self._clock_stop_counter = 0
+        self._initial_pose = None
 
         self._timer_group = MutuallyExclusiveCallbackGroup()
         self._timer = self.create_timer(
@@ -66,11 +69,22 @@ class DLREvaluator(Node, ABC):
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
 
-    @abstractclassmethod
-    def timer_cb(self):
-        raise NotImplementedError
+    def timer_cb(self) -> None:
+        self._current_time = self.get_clock().now().to_msg()
+        # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
+        if self._current_time.sec > 0:
+            if self._initial_pose is not None:
+                self.call_initialpose_service()
+            if self._current_time == self._prev_time:
+                self._clock_stop_counter += 1
+            else:
+                self._clock_stop_counter = 0
+            self._prev_time = self._current_time
+            if self._clock_stop_counter >= DLREvaluator.COUNT_SHUTDOWN_NODE:
+                self._result_writer.close()
+                rclpy.shutdown()
 
-    def start_initial_pose(self):
+    def start_initialpose_service(self):
         self._initial_pose_running = False
         self._initial_pose_success = False
         self._initial_pose_client = self.create_client(
@@ -84,6 +98,18 @@ class DLREvaluator(Node, ABC):
             self.get_logger().warning("initial pose service not available, waiting again...")
         while not self._map_fit_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warning("map height fitter service not available, waiting again...")
+
+    def call_initialpose_service(self) -> None:
+        if not self._initial_pose_success and not self._initial_pose_running:
+            self.get_logger().info(
+                f"call initial_pose time: {self._current_time.sec}.{self._current_time.nanosec}"
+            )
+            self._initial_pose_running = True
+            self._initial_pose.header.stamp = self._current_time
+            future_map_fit = self._map_fit_client.call_async(
+                PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose)
+            )
+            future_map_fit.add_done_callback(self.map_fit_cb)
 
     def map_fit_cb(self, future):
         result = future.result()
