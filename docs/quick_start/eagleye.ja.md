@@ -15,7 +15,7 @@
 
 3. bagデータをdownloadする
 
-   ROSBAGをダウンロードしてください： [Google Drive Link](https://drive.google.com/file/d/1Zgv9eP0j2hAgTj7pW8n-YaECPQGGQjO2/view).
+   ROSBAGをダウンロードしてください： [Google Drive Link](https://drive.google.com/file/d/1Zgv9eP0j2hAgTj7pW8n-YaECPQGGQjO2/view)。
    その後、下記のコマンドで解答してください。
 
    ```bash
