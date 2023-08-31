@@ -43,7 +43,7 @@ if TYPE_CHECKING:
 
 class DLREvaluator(Node, ABC):
     def __init__(self, name: str) -> None:
-        super().__init__("name_fixed")
+        super().__init__(name)
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
 
@@ -65,6 +65,10 @@ class DLREvaluator(Node, ABC):
             callback_group=self._timer_group,
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
+
+    @abstractclassmethod
+    def timer_cb(self):
+        raise NotImplementedError
 
     def start_initial_pose(self):
         self._initial_pose_running = False
@@ -110,15 +114,6 @@ class DLREvaluator(Node, ABC):
             self.get_logger().error(f"Exception for service: {future.exception()}")
         # free self._initial_pose_running
         self._initial_pose_running = False
-
-    def run(self, name: str, args=None) -> None:
-        rclpy.init(args=args)
-        executor = MultiThreadedExecutor()
-        evaluator = DLREvaluator(name)
-        executor.add_node(evaluator)
-        executor.spin()
-        evaluator.destroy_node()
-        rclpy.shutdown()
 
     @classmethod
     def get_goal_pose_from_t4_dataset(cls, dataset_path: str) -> PoseStamped:
