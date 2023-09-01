@@ -47,7 +47,7 @@ class EagleyeResult(ResultBase):
             self._success = False
             self._summary = f"Failed: {summary_str}"
 
-    def add_eagleye_availability_frame(self, msg: DiagnosticArray):
+    def set_frame(self, msg: DiagnosticArray):
         for diag_status in msg.status:
             out_frame = {"Ego": {}}
             if diag_status.name != "monitor: eagleye_enu_absolute_pos_interpolate":
@@ -77,7 +77,7 @@ class EagleyeEvaluator(DLREvaluator):
         )
 
     def diagnostics_cb(self, msg: DiagnosticArray):
-        self.__result.add_eagleye_availability_frame(msg)
+        self.__result.set_frame(msg)
         self.__result_writer.write(self.__result)
 
 

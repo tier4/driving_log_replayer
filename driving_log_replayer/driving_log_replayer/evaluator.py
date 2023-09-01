@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from abc import ABC
-from abc import abstractclassmethod
+from abc import abstractmethod
 import os
 from os.path import expandvars
 from typing import Dict
