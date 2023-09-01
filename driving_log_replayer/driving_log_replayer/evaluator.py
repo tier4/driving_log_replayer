@@ -36,6 +36,7 @@ from rosidl_runtime_py import message_to_ordereddict
 import simplejson as json
 from tf_transformations import euler_from_quaternion
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
+import yaml
 
 if TYPE_CHECKING:
     from autoware_adapi_v1_msgs.msg import ResponseStatus
@@ -56,10 +57,22 @@ class DLREvaluator(Node, ABC):
             self.get_parameter("result_json_path").get_parameter_value().string_value
         )
 
+        self._scenario_yaml_obj = None
+        try:
+            with open(self._scenario_path) as scenario_file:
+                self._scenario_yaml_obj = yaml.safe_load(scenario_file)
+        except (FileNotFoundError, PermissionError, yaml.YAMLError) as e:
+            self.get_logger().error(f"An error occurred while loading the scenario. {e}")
+            rclpy.shutdown()
+
+        self._initial_pose = DLREvaluator.set_initial_pose(
+            self._scenario_yaml_obj["Evaluation"].get("InitialPose", None)
+        )
+        self.start_initialpose_service()
+
         self._current_time = Time().to_msg()
         self._prev_time = Time().to_msg()
         self._clock_stop_counter = 0
-        self._initial_pose = None
 
         self._timer_group = MutuallyExclusiveCallbackGroup()
         self._timer = self.create_timer(
@@ -84,7 +97,9 @@ class DLREvaluator(Node, ABC):
                 self._result_writer.close()
                 rclpy.shutdown()
 
-    def start_initialpose_service(self):
+    def start_initialpose_service(self) -> None:
+        if self._initial_pose is None:
+            return
         self._initial_pose_running = False
         self._initial_pose_success = False
         self._initial_pose_client = self.create_client(
@@ -178,6 +193,8 @@ class DLREvaluator(Node, ABC):
 
     @classmethod
     def set_initial_pose(cls, initial_pose: Optional[Dict]) -> Optional[PoseWithCovarianceStamped]:
+        if initial_pose is None:
+            return None
         try:
             ros_init_pose = PoseWithCovarianceStamped()
             ros_init_pose.header.frame_id = "map"
@@ -229,8 +246,9 @@ class DLREvaluator(Node, ABC):
                 ]
             )
         except KeyError:
-            ros_init_pose: Optional[PoseWithCovarianceStamped] = None
-        return ros_init_pose
+            return None
+        else:
+            return ros_init_pose
 
 
 def evaluator_main(func):
