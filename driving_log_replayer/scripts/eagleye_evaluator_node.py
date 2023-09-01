@@ -16,7 +16,6 @@
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
-import yaml
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
@@ -69,15 +68,6 @@ class EagleyeEvaluator(DLREvaluator):
 
         self.__result = EagleyeResult()
         self.__result_writer = ResultWriter(self._result_json_path, self.get_clock(), {})
-
-        self._scenario_yaml_obj = None
-        with open(self._scenario_path) as scenario_file:
-            self._scenario_yaml_obj = yaml.safe_load(scenario_file)
-
-        self._initial_pose = DLREvaluator.set_initial_pose(
-            self._scenario_yaml_obj["Evaluation"]["InitialPose"]
-        )
-        self.start_initialpose_service()
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
