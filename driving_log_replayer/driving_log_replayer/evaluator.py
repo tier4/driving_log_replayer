@@ -231,3 +231,16 @@ class DLREvaluator(Node, ABC):
         except KeyError:
             ros_init_pose: Optional[PoseWithCovarianceStamped] = None
         return ros_init_pose
+
+
+def evaluator_main(func):
+    def wrapper():
+        rclpy.init()
+        executor = MultiThreadedExecutor()
+        evaluator = func()
+        executor.add_node(evaluator)
+        executor.spin()
+        evaluator.destroy_node()
+        rclpy.shutdown()
+
+    return wrapper
