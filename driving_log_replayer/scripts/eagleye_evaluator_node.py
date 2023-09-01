@@ -16,11 +16,10 @@
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
-import rclpy
-from rclpy.executors import MultiThreadedExecutor
 import yaml
 
 from driving_log_replayer.evaluator import DLREvaluator
+from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.result import ResultWriter
 
@@ -92,14 +91,9 @@ class EagleyeEvaluator(DLREvaluator):
         self.__result_writer.write(self.__result)
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    executor = MultiThreadedExecutor()
-    evaluator = EagleyeEvaluator("eagleye_evaluator")
-    executor.add_node(evaluator)
-    executor.spin()
-    evaluator.destroy_node()
-    rclpy.shutdown()
+@evaluator_main
+def main():
+    return EagleyeEvaluator("eagleye_evaluator")
 
 
 if __name__ == "__main__":
