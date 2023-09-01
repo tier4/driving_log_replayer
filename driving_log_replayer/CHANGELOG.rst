@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.4 (2023-09-01)
+------------------
 * chore: update mkdocs i18n setting
 * docs: fix eagleye downlaod link
 * Contributors: Hayato Mizushima, kminoda
