@@ -15,7 +15,7 @@
    Store it in `$HOME/autoware_map/awsim-shinjuku` as defined in the sample scenario.yaml.
 
 3. Download bag file
-   Download a rosbag from [Google Drive Link](https://drive.google.com/file/d/1fr91COHOhxdfTubj4FqXSEcFNTR-qo4U/view?usp=drive_link).
+   Download a rosbag from [Google Drive Link](https://drive.google.com/file/d/1Zgv9eP0j2hAgTj7pW8n-YaECPQGGQjO2/view).
    After that, execute following commands:
 
    ```bash
