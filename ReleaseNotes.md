@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.5.4
+
+Minor Tweak
+
+| Module    | Feature         | Brief summary                   | Pull request                                                   | Jira | Contributor                                   |
+| --------- | --------------- | ------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`     | `documentation` | update mkdocs i18n setting      | [#224](https://github.com/tier4/driving_log_replayer/pull/224) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `eagleye` | `documentation` | fix `eagleye` bag download link | [#225](https://github.com/tier4/driving_log_replayer/pull/225) | -    | [kminoda](https://github.com/kminoda)         |
+
 ## Version 1.5.3
 
 Minor Tweak

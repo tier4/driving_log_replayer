@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: update mkdocs i18n setting
+* docs: fix eagleye downlaod link
+* Contributors: Hayato Mizushima, kminoda
+
 1.5.3 (2023-08-31)
 ------------------
 * chore: update pyproject.toml
