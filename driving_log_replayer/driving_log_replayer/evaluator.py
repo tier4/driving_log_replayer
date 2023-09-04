@@ -34,6 +34,8 @@ from rclpy.node import Node
 from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
 import simplejson as json
+from tf2_ros import Buffer
+from tf2_ros import TransformListener
 from tf_transformations import euler_from_quaternion
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 import yaml
@@ -64,6 +66,9 @@ class DLREvaluator(Node, ABC):
         except (FileNotFoundError, PermissionError, yaml.YAMLError) as e:
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
             rclpy.shutdown()
+
+        self._tf_buffer = Buffer()
+        self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
         self._initial_pose = DLREvaluator.set_initial_pose(
             self._scenario_yaml_obj["Evaluation"].get("InitialPose", None)
