@@ -20,7 +20,6 @@ from diagnostic_msgs.msg import DiagnosticStatus
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 
 
 class EagleyeResult(ResultBase):
@@ -68,7 +67,6 @@ class EagleyeEvaluator(DLREvaluator):
         self.check_scenario()
 
         self.__result = EagleyeResult()
-        self.__result_writer = ResultWriter(self._result_json_path, self.get_clock(), {})
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
@@ -82,7 +80,7 @@ class EagleyeEvaluator(DLREvaluator):
 
     def diagnostics_cb(self, msg: DiagnosticArray):
         self.__result.set_frame(msg)
-        self.__result_writer.write(self.__result)
+        self._result_writer.write(self.__result)
 
 
 @evaluator_main
