@@ -65,6 +65,7 @@ class EagleyeResult(ResultBase):
 class EagleyeEvaluator(DLREvaluator):
     def __init__(self, name: str):
         super().__init__(name)
+        self.check_scenario()
 
         self.__result = EagleyeResult()
         self.__result_writer = ResultWriter(self._result_json_path, self.get_clock(), {})
@@ -75,6 +76,9 @@ class EagleyeEvaluator(DLREvaluator):
             self.diagnostics_cb,
             1,
         )
+
+    def check_scenario(self) -> None:
+        pass
 
     def diagnostics_cb(self, msg: DiagnosticArray):
         self.__result.set_frame(msg)
