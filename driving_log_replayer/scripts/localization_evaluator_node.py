@@ -15,6 +15,7 @@
 # limitations under the License.
 
 
+from functools import singledispatchmethod
 import statistics
 from typing import Dict
 
@@ -109,7 +110,12 @@ class LocalizationResult(ResultBase):
             self._success = False
             self._summary = f"Failed: {summary_str}"
 
-    def add_reliability_frame(
+    @singledispatchmethod
+    def set_frame(self, msg):
+        pass
+
+    @set_frame.register
+    def set_reliability_frame(
         self, msg: Float32Stamped, map_to_baselink: Dict, reference: Float32Stamped
     ):
         self.__reliability_total += 1
@@ -141,7 +147,8 @@ class LocalizationResult(ResultBase):
         self._frame = out_frame
         self.update()
 
-    def add_convergence_frame(
+    @set_frame.register
+    def set_convergence_frame(
         self,
         msg: PoseStamped,
         map_to_baselink: Dict,
@@ -188,7 +195,8 @@ class LocalizationResult(ResultBase):
         self.update()
         return msg_lateral_dist
 
-    def add_ndt_availability_frame(self, msg: DiagnosticArray):
+    @set_frame.register
+    def set_ndt_availability_frame(self, msg: DiagnosticArray):
         # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
         for diag_status in msg.status:
             if (
@@ -302,7 +310,7 @@ class LocalizationEvaluator(DLREvaluator):
         except TransformException as ex:
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
             map_to_baselink = TransformStamped()
-        self.__result.add_reliability_frame(
+        self.__result.set_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_nvtl,
@@ -321,7 +329,7 @@ class LocalizationEvaluator(DLREvaluator):
         except TransformException as ex:
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
             map_to_baselink = TransformStamped()
-        self.__result.add_reliability_frame(
+        self.__result.set_frame(
             msg, DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink), self.__latest_tp
         )
         self._result_writer.write(self.__result)
@@ -334,7 +342,7 @@ class LocalizationEvaluator(DLREvaluator):
         except TransformException as ex:
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
             map_to_baselink = TransformStamped()
-        msg_lateral_distance = self.__result.add_convergence_frame(
+        msg_lateral_distance = self.__result.set_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_ekf_pose,
@@ -345,7 +353,7 @@ class LocalizationEvaluator(DLREvaluator):
         self._result_writer.write(self.__result)
 
     def diagnostics_cb(self, msg: DiagnosticArray):
-        self.__result.add_ndt_availability_frame(msg)
+        self.__result.set_frame(msg)
         self._result_writer.write(self.__result)
 
 
