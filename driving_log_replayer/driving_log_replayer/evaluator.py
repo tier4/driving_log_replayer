@@ -69,7 +69,10 @@ class DLREvaluator(Node, ABC):
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
             rclpy.shutdown()
 
-        self._result_writer = ResultWriter(self._result_json_path, self.get_clock(), {})
+        self._condition = self._scenario_yaml_obj["Evaluation"].get("Conditions", {})
+        self._result_writer = ResultWriter(
+            self._result_json_path, self.get_clock(), self._condition
+        )
 
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
