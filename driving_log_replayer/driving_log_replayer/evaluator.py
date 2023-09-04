@@ -156,6 +156,12 @@ class DLREvaluator(Node, ABC):
         # free self._initial_pose_running
         self._initial_pose_running = False
 
+    @abstractmethod
+    def check_scenario(self) -> None:
+        """Check self._scenario_yaml_obj and if has error shutdown."""
+        if self._scenario_yaml_obj is None:
+            rclpy.shutdown()
+
     @classmethod
     def get_goal_pose_from_t4_dataset(cls, dataset_path: str) -> PoseStamped:
         ego_pose_json_path = os.path.join(dataset_path, "annotation", "ego_pose.json")
