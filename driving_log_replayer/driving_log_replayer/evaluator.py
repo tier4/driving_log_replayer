@@ -40,6 +40,8 @@ from tf_transformations import euler_from_quaternion
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 import yaml
 
+from driving_log_replayer.result import ResultWriter
+
 if TYPE_CHECKING:
     from autoware_adapi_v1_msgs.msg import ResponseStatus
 
@@ -66,6 +68,8 @@ class DLREvaluator(Node, ABC):
         except (FileNotFoundError, PermissionError, yaml.YAMLError) as e:
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
             rclpy.shutdown()
+
+        self._result_writer = ResultWriter(self._result_json_path, self.get_clock(), {})
 
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
