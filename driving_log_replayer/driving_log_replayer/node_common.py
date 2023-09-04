@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Copyright (c) 2022 TIER IV.inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +27,7 @@ from tf_transformations import euler_from_quaternion
 
 def get_goal_pose_from_t4_dataset(dataset_path: str) -> PoseStamped:
     ego_pose_json_path = os.path.join(dataset_path, "annotation", "ego_pose.json")
-    with open(ego_pose_json_path, "r") as ego_pose_file:
+    with open(ego_pose_json_path) as ego_pose_file:
         ego_pose_json = json.load(ego_pose_file)
         last_ego_pose = ego_pose_json[-1]
         goal_pose = PoseStamped()

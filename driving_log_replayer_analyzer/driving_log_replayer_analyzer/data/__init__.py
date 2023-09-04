@@ -27,12 +27,12 @@ class DistType(Enum):
 def convert_str_to_dist_type(dist_type_str: str) -> DistType:
     if dist_type_str == "front":
         return DistType.Y
-    elif dist_type_str == "side":
+    if dist_type_str == "side":
         return DistType.X
-    elif dist_type_str == "euclidean":
+    if dist_type_str == "euclidean":
         return DistType.EUCLID
-    else:
-        raise RuntimeError("Unknown distance type.")
+    error_msg = "Unknown distance type."
+    raise RuntimeError(error_msg)  # EM101
 
 
 @dataclass
@@ -57,7 +57,7 @@ class Position:
     y: float = None  # vehicle front
     z: float = None
 
-    def __init__(self, data: Dict = {}) -> None:
+    def __init__(self, data: Dict = {}) -> None:  # noqa
         self.try_parse_dict(data)
 
     def try_parse_dict(self, data):
@@ -76,7 +76,8 @@ class Position:
             except IndexError:
                 pass
         else:
-            raise NotImplementedError("Input data should be a dict or list.")
+            error_msg = "Input data should be a dict or list."
+            raise NotImplementedError(error_msg)  # EM101
 
     def validate(self):
         return self.x is not None and self.y is not None and self.z is not None
@@ -85,12 +86,10 @@ class Position:
         if self.validate():
             if dist_type == DistType.X:
                 return abs(self.x)
-            elif dist_type == DistType.Y:
+            if dist_type == DistType.Y:
                 return abs(self.y)
-            else:
-                return math.hypot(self.x, self.y)
-        else:
-            return None
+            return math.hypot(self.x, self.y)
+        return None
 
     def add_overhang(self, val: float):
         self.y = self.y + val

@@ -21,15 +21,11 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
+from typing import TYPE_CHECKING
 
-from autoware_adapi_v1_msgs.msg import ResponseStatus
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
-from driving_log_replayer.node_common import set_initial_pose
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import TransformStamped
@@ -48,6 +44,14 @@ from tf2_ros import TransformListener
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped
 import yaml
 
+from driving_log_replayer.node_common import set_initial_pose
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
+
+if TYPE_CHECKING:
+    from autoware_adapi_v1_msgs.msg import ResponseStatus
+
 REGEX_VISIBILITY_DIAG_NAME = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
 BLOCKAGE_DIAG_BASE_NAME = (
     "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar"
@@ -65,8 +69,7 @@ def get_diag_value(diag_status: DiagnosticStatus, key_name: str) -> str:
 
 def trim_lidar_name(diag_name: str) -> str:
     remove_prefix = diag_name.replace(f"{BLOCKAGE_DIAG_BASE_NAME} ", "")
-    remove_suffix = remove_prefix.replace(": blockage_validation", "")
-    return remove_suffix
+    return remove_prefix.replace(": blockage_validation", "")
 
 
 class PerformanceDiagResult(ResultBase):
@@ -307,7 +310,7 @@ class PerformanceDiagEvaluator(Node):
         super().__init__("performance_diag_evaluator")
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
-        self.declare_parameter("localization", False)
+        self.declare_parameter("localization", False)  # noqa
 
         self.__timer_group = MutuallyExclusiveCallbackGroup()
         self.__tf_buffer = Buffer()
@@ -320,7 +323,7 @@ class PerformanceDiagEvaluator(Node):
             self.get_parameter("scenario_path").get_parameter_value().bool_value
         )
         self.__scenario_yaml_obj = None
-        with open(scenario_path, "r") as scenario_file:
+        with open(scenario_path) as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
         self.__result_json_path = os.path.expandvars(
             self.get_parameter("result_json_path").get_parameter_value().string_value

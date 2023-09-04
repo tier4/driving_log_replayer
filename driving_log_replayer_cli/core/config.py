@@ -35,9 +35,10 @@ def load_config(profile: str, filepath: Optional[str] = None) -> Config:
     config_data = _load_from_file(filepath)
 
     if profile not in config_data:
-        from driving_log_replayer_cli.core.exception import UserException
+        from driving_log_replayer_cli.core.exception import UserError
 
-        raise UserException(f"Not found profile: {profile}")
+        error_msg = f"Not found profile: {profile}"
+        raise UserError(error_msg)  # EM102
 
     return Config(**config_data[profile])
 
@@ -86,9 +87,10 @@ def remove_config(profile: str, filepath: Optional[str] = None) -> Config:
     config_data = _load_from_file(filepath)
 
     if profile not in config_data:
-        from driving_log_replayer_cli.core.exception import UserException
+        from driving_log_replayer_cli.core.exception import UserError
 
-        raise UserException(f"Not found profile: {profile}")
+        error_msg = f"Not found profile: {profile}"
+        raise UserError(error_msg)  # EM102
 
     config = config_data[profile]
     del config_data[profile]
@@ -102,9 +104,10 @@ def _load_from_file(filepath: str) -> Dict[str, Dict]:
     from os.path import exists
 
     if not exists(filepath):
-        from driving_log_replayer_cli.core.exception import UserException
+        from driving_log_replayer_cli.core.exception import UserError
 
-        raise UserException("Configuration file is not found.")
+        error_msg = "Configuration file is not found."
+        raise UserError(error_msg)  # EM101
 
     with open(filepath) as fp:
         return toml.load(fp)

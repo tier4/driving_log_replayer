@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Copyright (c) 2022 TIER IV.inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,7 +41,7 @@ class ResultWriter:
     def __init__(self, result_json_path: str, ros_clock: Clock, condition: Dict):
         # 拡張子を書き換える
         result_file = os.path.splitext(os.path.expandvars(result_json_path))[0] + ".jsonl"
-        self._result_file = open(result_file, "w")
+        self._result_file = open(result_file, "w")  # noqa
         self._ros_clock = ros_clock
         self._system_clock = Clock(clock_type=ClockType.SYSTEM_TIME)
         self.write_condition(condition)
@@ -87,7 +85,7 @@ class ResultWriter:
 
 class PickleWriter:
     def __init__(self, out_pkl_path: str):
-        self._pickle_file = open(os.path.expandvars(out_pkl_path), "wb")
+        self._pickle_file = open(os.path.expandvars(out_pkl_path), "wb")  # noqa
 
     def dump(self, write_object):
         pickle.dump(write_object, self._pickle_file)

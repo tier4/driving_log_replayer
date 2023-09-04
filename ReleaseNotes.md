@@ -1,5 +1,68 @@
 # Release Notes
 
+## Version 1.5.4
+
+Minor Tweak
+
+| Module    | Feature         | Brief summary                   | Pull request                                                   | Jira | Contributor                                   |
+| --------- | --------------- | ------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`     | `documentation` | update mkdocs i18n setting      | [#224](https://github.com/tier4/driving_log_replayer/pull/224) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `eagleye` | `documentation` | fix `eagleye` bag download link | [#225](https://github.com/tier4/driving_log_replayer/pull/225) | -    | [kminoda](https://github.com/kminoda)         |
+
+## Version 1.5.3
+
+Minor Tweak
+
+| Module    | Feature         | Brief summary          | Pull request                                                   | Jira | Contributor                                   |
+| --------- | --------------- | ---------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `cli`     | `poetry`        | update pyproject.toml  | [#220](https://github.com/tier4/driving_log_replayer/pull/220) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `eagleye` | `documentation` | add `eagleye` tutorial | [#222](https://github.com/tier4/driving_log_replayer/pull/222) | -    | [kminoda](https://github.com/kminoda)         |
+
+## Version 1.5.2
+
+Minor Tweak
+
+| Module          | Feature          | Brief summary                  | Pull request                                                   | Jira     | Contributor                                   |
+| --------------- | ---------------- | ------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`           | `linter`         | apply `ruff` linter EM rules   | [#211](https://github.com/tier4/driving_log_replayer/pull/211) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter PIE rules  | [#212](https://github.com/tier4/driving_log_replayer/pull/212) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter RET rules  | [#213](https://github.com/tier4/driving_log_replayer/pull/213) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter SLF rules  | -                                                              | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter TCH rules  | [#214](https://github.com/tier4/driving_log_replayer/pull/214) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter UP rules   | [#215](https://github.com/tier4/driving_log_replayer/pull/215) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter SIM rules  | [#216](https://github.com/tier4/driving_log_replayer/pull/216) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`           | `linter`         | apply `ruff` linter RUF        | [#217](https://github.com/tier4/driving_log_replayer/pull/217) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception_2d` | `error_handling` | handle invalid evaluation task | [#218](https://github.com/tier4/driving_log_replayer/pull/218) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.5.1
+
+Breaking change
+
+| Module       | Feature           | Brief summary                   | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | ----------------- | ------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception` | fp validation log | store fp result in result.jsonl | [#206](https://github.com/tier4/driving_log_replayer/pull/206) | RT4-5559 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`        | `library`         | update python library version   | [#207](https://github.com/tier4/driving_log_replayer/pull/207) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `all`        | `linter`          | use `ruff` linter               | [#208](https://github.com/tier4/driving_log_replayer/pull/208) | RT4-6363 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.5.0
+
+Breaking change
+
+| Module                                     | Feature         | Brief summary            | Pull request                                                   | Jira                                           | Contributor                                   |
+| ------------------------------------------ | --------------- | ------------------------ | -------------------------------------------------------------- | ---------------------------------------------- | --------------------------------------------- |
+| `perception`                               | `fp validation` | add `fp validation` mode | [#200](https://github.com/tier4/driving_log_replayer/pull/200) | RT4-5559                                       | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | `object shape`  | support `unknown` label  | [#198](https://github.com/tier4/driving_log_replayer/pull/198) | RT4-5880                                       | [hayato-m126](https://github.com/hayato-m126) |
+| `eagleye`                                  | `eagleye`       | add `eagleye` evaluation | [#203](https://github.com/tier4/driving_log_replayer/pull/203) | RT1-3254 [kminoda](https://github.com/kminoda) |
+| `perception, perception_2d, traffic_light` | `scenario`      | update `sample scenario` | [#204](https://github.com/tier4/driving_log_replayer/pull/204) | RT4-6041                                       | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.4.1
+
+Major change
+
+| Module   | Feature  | Brief summary           | Pull request                                                   | Jira     | Contributor                           |
+| -------- | -------- | ----------------------- | -------------------------------------------------------------- | -------- | ------------------------------------- |
+| `yabloc` | `yabloc` | add `yabloc` evaluation | [#201](https://github.com/tier4/driving_log_replayer/pull/201) | RT1-3255 | [kminoda](https://github.com/kminoda) |
+
 ## Version 1.4.0
 
 Major change

@@ -2,6 +2,54 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.5.4 (2023-09-01)
+------------------
+* chore: update mkdocs i18n setting
+* docs: fix eagleye downlaod link
+* Contributors: Hayato Mizushima, kminoda
+
+1.5.3 (2023-08-31)
+------------------
+* chore: update pyproject.toml
+* docs: add eagleye tutorial
+* Contributors: Hayato Mizushima, kminoda
+
+1.5.2 (2023-08-21)
+------------------
+* fix: handle 2d evaluation task error (`#218 <https://github.com/tier4/driving_log_replayer/issues/218>`_)
+* refactor: apply ruff specific RUF rules (`#217 <https://github.com/tier4/driving_log_replayer/issues/217>`_)
+* refactor: apply simplify SIM rules (`#216 <https://github.com/tier4/driving_log_replayer/issues/216>`_)
+* refactor: apply pyupgrade (`#215 <https://github.com/tier4/driving_log_replayer/issues/215>`_)
+* refactor: apply type checking TCH rules (`#214 <https://github.com/tier4/driving_log_replayer/issues/214>`_)
+* refactor: apply private-member-access slf rules
+* refactor: apply return ret rules (`#213 <https://github.com/tier4/driving_log_replayer/issues/213>`_)
+* refactor: apply errmsg em rules (`#211 <https://github.com/tier4/driving_log_replayer/issues/211>`_)
+* Contributors: Hayato Mizushima
+
+1.5.1 (2023-08-17)
+------------------
+* feat: use ruff linter (`#208 <https://github.com/tier4/driving_log_replayer/issues/208>`_)
+* fix: store fp result in result.jsonl (`#206 <https://github.com/tier4/driving_log_replayer/issues/206>`_)
+* Contributors: Hayato Mizushima
+
+1.5.0 (2023-08-07)
+------------------
+* feat: update sample scenario and set None if dict key is not found (`#204 <https://github.com/tier4/driving_log_replayer/issues/204>`_)
+* feat: add eagleye evaluation (`#203 <https://github.com/tier4/driving_log_replayer/issues/203>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* feat: support multiple object shapes (`#198 <https://github.com/tier4/driving_log_replayer/issues/198>`_)
+  Co-authored-by: ktro2828 <kotaro.uetake@tier4.jp>
+  Co-authored-by: ktro2828 <ktro2828@users.noreply.github.com>
+  Co-authored-by: Kotaro Uetake <60615504+ktro2828@users.noreply.github.com>
+* feat: `#199 <https://github.com/tier4/driving_log_replayer/issues/199>`_ perception fp validation (`#200 <https://github.com/tier4/driving_log_replayer/issues/200>`_)
+* Contributors: Hayato Mizushima, kminoda
+
+1.4.1 (2023-08-01)
+------------------
+* feat: add yabloc scenario (`#201 <https://github.com/tier4/driving_log_replayer/issues/201>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: kminoda
+
 1.4.0 (2023-07-06)
 ------------------
 * feat: map height fitter for diag (`#179 <https://github.com/tier4/driving_log_replayer/issues/179>`_)

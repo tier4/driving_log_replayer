@@ -23,11 +23,6 @@ from typing import List
 from autoware_auto_perception_msgs.msg import TrafficLight
 from autoware_auto_perception_msgs.msg import TrafficSignal
 from autoware_auto_perception_msgs.msg import TrafficSignalArray
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import PickleWriter
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
@@ -52,16 +47,21 @@ from tf2_ros import TransformException
 from tf2_ros import TransformListener
 import yaml
 
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.result import PickleWriter
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
+
 
 def get_label(light: TrafficLight) -> str:
     if light.color == TrafficLight.RED:
         return "red"
-    elif light.color == TrafficLight.AMBER:
+    if light.color == TrafficLight.AMBER:
         return "yellow"
-    elif light.color == TrafficLight.GREEN:
+    if light.color == TrafficLight.GREEN:
         return "green"
-    else:
-        return "unknown"
+    return "unknown"
 
 
 def get_most_probable_signal(
@@ -96,7 +96,11 @@ class TrafficLightResult(ResultBase):
             self._summary = f"Failed: {summary_str}"
 
     def add_frame(
-        self, frame: PerceptionFrameResult, skip: int, header: Header, map_to_baselink: Dict
+        self,
+        frame: PerceptionFrameResult,
+        skip: int,
+        header: Header,  # noqa
+        map_to_baselink: Dict,
     ):
         self.__total += 1
         has_objects = True
@@ -153,7 +157,7 @@ class TrafficLightEvaluator(Node):
             self.get_parameter("scenario_path").get_parameter_value().string_value
         )
         self.__scenario_yaml_obj = None
-        with open(scenario_path, "r") as scenario_file:
+        with open(scenario_path) as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
         self.__result_json_path = os.path.expandvars(
             self.get_parameter("result_json_path").get_parameter_value().string_value
@@ -188,16 +192,20 @@ class TrafficLightEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             self.__camera_type = p_cfg["camera_type"]
+            p_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "traffic_light"  # Add a fixed value setting
+            p_cfg["evaluation_config_dict"][
+                "count_label_number"
+            ] = True  # Add a fixed value setting
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
                 frame_id=self.__camera_type,
-                merge_similar_labels=False,
                 result_root_directory=os.path.join(
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
                 evaluation_config_dict=p_cfg["evaluation_config_dict"],
-                label_prefix="traffic_light",
                 load_raw_data=False,
             )
             _ = configure_logger(
@@ -216,7 +224,6 @@ class TrafficLightEvaluator(Node):
             self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
                 evaluator_config=evaluation_config,
                 target_labels=f_cfg["target_labels"],
-                matching_threshold_list=f_cfg["matching_threshold_list"],
             )
             self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
             self.__sub_traffic_signals = self.create_subscription(
@@ -277,7 +284,7 @@ class TrafficLightEvaluator(Node):
         for signal in signals:
             most_probable_light = get_most_probable_signal(signal.lights)
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                label=get_label(most_probable_light)
+                name=get_label(most_probable_light)
             )
 
             estimated_object = DynamicObject2D(

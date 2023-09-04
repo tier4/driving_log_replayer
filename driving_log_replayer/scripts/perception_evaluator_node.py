@@ -19,6 +19,7 @@ import os
 from pathlib import Path
 from typing import Dict
 from typing import List
+from typing import Optional
 from typing import Tuple
 from typing import Union
 
@@ -27,15 +28,14 @@ from autoware_auto_perception_msgs.msg import DetectedObjects
 from autoware_auto_perception_msgs.msg import ObjectClassification
 from autoware_auto_perception_msgs.msg import TrackedObject
 from autoware_auto_perception_msgs.msg import TrackedObjects
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import PickleWriter
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object import DynamicObject
-from perception_eval.common.status import FrameID
+from perception_eval.common.schema import FrameID
+from perception_eval.common.shape import Shape
+from perception_eval.common.shape import ShapeType
+from perception_eval.common.status import get_scene_rates
 from perception_eval.config import PerceptionEvaluationConfig
+from perception_eval.evaluation import get_object_status
 from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
@@ -59,31 +59,36 @@ from tf2_ros import TransformListener
 from visualization_msgs.msg import MarkerArray
 import yaml
 
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.result import PickleWriter
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
+
 
 def get_label(classification: ObjectClassification) -> str:
     if classification.label == ObjectClassification.UNKNOWN:
         return "unknown"
-    elif classification.label == ObjectClassification.CAR:
+    if classification.label == ObjectClassification.CAR:
         return "car"
-    elif classification.label == ObjectClassification.TRUCK:
+    if classification.label == ObjectClassification.TRUCK:
         return "truck"
-    elif classification.label == ObjectClassification.BUS:
+    if classification.label == ObjectClassification.BUS:
         return "bus"
-    elif classification.label == ObjectClassification.TRAILER:
+    if classification.label == ObjectClassification.TRAILER:
         # not implemented in iv
         return "trailer"
-    elif classification.label == ObjectClassification.MOTORCYCLE:
+    if classification.label == ObjectClassification.MOTORCYCLE:
         # iv: motorbike, auto: motorbike
         return "motorbike"
-    elif classification.label == ObjectClassification.BICYCLE:
+    if classification.label == ObjectClassification.BICYCLE:
         return "bicycle"
-    elif classification.label == ObjectClassification.PEDESTRIAN:
+    if classification.label == ObjectClassification.PEDESTRIAN:
         return "pedestrian"
     # not implemented in auto
     # elif classification.label == ObjectClassification.ANIMAL:
     #     return "animal"
-    else:
-        return "other"
+    return "other"
 
 
 def get_most_probable_classification(
@@ -189,7 +194,7 @@ class PerceptionEvaluator(Node):
             self.get_parameter("scenario_path").get_parameter_value().string_value
         )
         self.__scenario_yaml_obj = None
-        with open(scenario_path, "r") as scenario_file:
+        with open(scenario_path) as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
         self.__result_json_path = os.path.expandvars(
             self.get_parameter("result_json_path").get_parameter_value().string_value
@@ -223,14 +228,17 @@ class PerceptionEvaluator(Node):
             c_cfg = self.__scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
-            evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
-            frame_id, msg_type = self.get_frame_id_and_msg_type(evaluation_task)
+            self.__evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            p_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "autoware"  # Add a fixed value setting
+
+            frame_id, msg_type, topic_ns = self.get_frame_id_and_msg_type()
             self.__frame_id = FrameID.from_value(frame_id)
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
                 frame_id=frame_id,
-                merge_similar_labels=False,
                 result_root_directory=os.path.join(
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
@@ -247,27 +255,27 @@ class PerceptionEvaluator(Node):
                 CriticalObjectFilterConfig(
                     evaluator_config=evaluation_config,
                     target_labels=c_cfg["target_labels"],
-                    ignore_attributes=c_cfg["ignore_attributes"],
-                    max_x_position_list=c_cfg["max_x_position_list"],
-                    max_y_position_list=c_cfg["max_y_position_list"],
-                    max_distance_list=c_cfg["max_distance_list"],
-                    min_distance_list=c_cfg["min_distance_list"],
-                    min_point_numbers=c_cfg["min_point_numbers"],
-                    confidence_threshold_list=c_cfg["confidence_threshold_list"],
-                    target_uuids=c_cfg["target_uuids"],
+                    ignore_attributes=c_cfg.get("ignore_attributes", None),
+                    max_x_position_list=c_cfg.get("max_x_position_list", None),
+                    max_y_position_list=c_cfg.get("max_y_position_list", None),
+                    max_distance_list=c_cfg.get("max_distance_list", None),
+                    min_distance_list=c_cfg.get("min_distance_list", None),
+                    min_point_numbers=c_cfg.get("min_point_numbers", None),
+                    confidence_threshold_list=c_cfg.get("confidence_threshold_list", None),
+                    target_uuids=c_cfg.get("target_uuids", None),
                 )
             )
             # Pass fail を決めるパラメータ
             self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
                 evaluator_config=evaluation_config,
                 target_labels=f_cfg["target_labels"],
-                matching_threshold_list=f_cfg["matching_threshold_list"],
-                confidence_threshold_list=f_cfg["confidence_threshold_list"],
+                matching_threshold_list=f_cfg.get("matching_threshold_list", None),
+                confidence_threshold_list=f_cfg.get("confidence_threshold_list", None),
             )
             self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
             self.__sub_perception = self.create_subscription(
                 msg_type,
-                "/perception/object_recognition/" + evaluation_task + "/objects",
+                "/perception/object_recognition/" + topic_ns + "/objects",
                 self.perception_cb,
                 1,
             )
@@ -293,15 +301,15 @@ class PerceptionEvaluator(Node):
             rclpy.shutdown()
 
     def get_frame_id_and_msg_type(
-        self, evaluation_task: str
-    ) -> Tuple[str, Union[DetectedObjects, TrackedObjects]]:
-        if evaluation_task == "detection":
-            return "base_link", DetectedObjects
-        elif evaluation_task == "tracking":
-            return "map", TrackedObjects
-        else:
-            self.get_logger().error(f"Unexpected evaluation task: {evaluation_task}")
-            rclpy.shutdown()
+        self,
+    ) -> Optional[Tuple[str, Union[DetectedObjects, TrackedObjects], str]]:
+        if self.__evaluation_task in ["detection", "fp_validation"]:
+            return "base_link", DetectedObjects, "detection"
+        if self.__evaluation_task == "tracking":
+            return "map", TrackedObjects, "tracking"
+        self.get_logger().error(f"Unexpected evaluation task: {self.__evaluation_task}")
+        rclpy.shutdown()
+        return None
 
     def timer_cb(self):
         self.__current_time = self.get_clock().now().to_msg()
@@ -313,27 +321,33 @@ class PerceptionEvaluator(Node):
                 self.__counter = 0
             self.__prev_time = self.__current_time
             if self.__counter >= 5:
-                self.__pickle_writer = PickleWriter(self.__pkl_path)
-                self.__pickle_writer.dump(self.__evaluator.frame_results)
-                self.get_final_result()
-                analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
-                analyzer.add(self.__evaluator.frame_results)
-                score_df, error_df = analyzer.analyze()
-                score_dict = {}
-                error_dict = {}
-                if score_df is not None:
-                    score_dict = score_df.to_dict()
-                if error_df is not None:
-                    error_dict = (
-                        error_df.groupby(level=0)
-                        .apply(lambda df: df.xs(df.name).to_dict())
-                        .to_dict()
-                    )
-                final_metrics = {"Score": score_dict, "Error": error_dict}
-                self.__result.add_final_metrics(final_metrics)
-                self.__result_writer.write(self.__result)
-                self.__result_writer.close()
+                self.write_log()
                 rclpy.shutdown()
+
+    def write_log(self):
+        self.__pickle_writer = PickleWriter(self.__pkl_path)
+        self.__pickle_writer.dump(self.__evaluator.frame_results)
+        if self.__evaluation_task == "fp_validation":
+            final_metrics = self.get_fp_result()
+            self.__result.add_final_metrics(final_metrics)
+            self.__result_writer.write(self.__result)
+        else:
+            self.get_final_result()
+            score_dict = {}
+            error_dict = {}
+            analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
+            analyzer.add(self.__evaluator.frame_results)
+            score_df, error_df = analyzer.analyze()
+            if score_df is not None:
+                score_dict = score_df.to_dict()
+            if error_df is not None:
+                error_dict = (
+                    error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
+                )
+            final_metrics = {"Score": score_dict, "Error": error_dict}
+            self.__result.add_final_metrics(final_metrics)
+            self.__result_writer.write(self.__result)
+        self.__result_writer.close()
 
     def list_dynamic_object_from_ros_msg(
         self, unix_time: int, objects: Union[List[DetectedObject], List[TrackedObject]]
@@ -351,6 +365,11 @@ class PerceptionEvaluator(Node):
             if isinstance(perception_object, TrackedObject):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
 
+            shape_type = ShapeType.BOUNDING_BOX
+            shape_type_num = perception_object.shape.type
+            if shape_type_num == 2:
+                shape_type = ShapeType.POLYGON
+
             estimated_object = DynamicObject(
                 unix_time=unix_time,
                 frame_id=self.__frame_id,
@@ -360,7 +379,15 @@ class PerceptionEvaluator(Node):
                 orientation=eval_conversions.orientation_from_ros_msg(
                     perception_object.kinematics.pose_with_covariance.pose.orientation
                 ),
-                size=eval_conversions.dimensions_from_ros_msg(perception_object.shape.dimensions),
+                shape=Shape(
+                    shape_type=shape_type,
+                    size=eval_conversions.dimensions_from_ros_msg(
+                        perception_object.shape.dimensions, shape_type_num
+                    ),
+                    footprint=eval_conversions.footprint_from_ros_msg(
+                        perception_object.shape.footprint
+                    ),
+                ),
                 velocity=eval_conversions.velocity_from_ros_msg(
                     perception_object.kinematics.twist_with_covariance.twist.linear
                 ),
@@ -413,11 +440,72 @@ class PerceptionEvaluator(Node):
             self.__pub_marker_results.publish(marker_results)
 
     def get_final_result(self) -> MetricsScore:
-        final_metric_score = self.__evaluator.get_scene_result()
+        num_critical_fail: int = sum(
+            [
+                frame_result.pass_fail_result.get_num_fail()
+                for frame_result in self.__evaluator.frame_results
+            ]
+        )
+        logging.info(f"Number of fails for critical objects: {num_critical_fail}")
 
-        # final result
+        # scene metrics score
+        final_metric_score = self.__evaluator.get_scene_result()
         logging.info(f"final metrics result {final_metric_score}")
         return final_metric_score
+
+    def get_fp_result(self) -> Dict:
+        status_list = get_object_status(self.__evaluator.frame_results)
+        gt_status = {}
+        for status_info in status_list:
+            tp_rate, fp_rate, tn_rate, fn_rate = status_info.get_status_rates()
+            # display
+            logging.info(
+                f"uuid: {status_info.uuid}, "
+                # display TP/FP/TN/FN rates per frames
+                f"TP: {tp_rate.rate:0.3f}, "
+                f"FP: {fp_rate.rate:0.3f}, "
+                f"TN: {tn_rate.rate:0.3f}, "
+                f"FN: {fn_rate.rate:0.3f}\n"
+                # display total or TP/FP/TN/FN frame numbers
+                f"Total: {status_info.total_frame_nums}, "
+                f"TP: {status_info.tp_frame_nums}, "
+                f"FP: {status_info.fp_frame_nums}, "
+                f"TN: {status_info.tn_frame_nums}, "
+                f"FN: {status_info.fn_frame_nums}",
+            )
+            gt_status[status_info.uuid] = {
+                "rate": {
+                    "TP": tp_rate.rate,
+                    "FP": fp_rate.rate,
+                    "TN": tn_rate.rate,
+                    "FN": fn_rate.rate,
+                },
+                "frame_nums": {
+                    "total": status_info.total_frame_nums,
+                    "TP": status_info.tp_frame_nums,
+                    "FP": status_info.fp_frame_nums,
+                    "TN": status_info.tn_frame_nums,
+                    "FN": status_info.fn_frame_nums,
+                },
+            }
+
+        scene_tp_rate, scene_fp_rate, scene_tn_rate, scene_fn_rate = get_scene_rates(status_list)
+        logging.info(
+            "[scene]"
+            f"TP: {scene_tp_rate}, "
+            f"FP: {scene_fp_rate}, "
+            f"TN: {scene_tn_rate}, "
+            f"FN: {scene_fn_rate}"
+        )
+        return {
+            "GroundTruthStatus": gt_status,
+            "Scene": {
+                "TP": scene_tp_rate,
+                "FP": scene_fp_rate,
+                "TN": scene_tn_rate,
+                "FN": scene_fn_rate,
+            },
+        }
 
 
 def main(args=None):

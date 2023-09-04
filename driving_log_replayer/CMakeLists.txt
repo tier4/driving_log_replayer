@@ -39,6 +39,8 @@ install(PROGRAMS
   scripts/traffic_light_evaluator_node.py
   scripts/obstacle_segmentation_evaluator_node.py
   scripts/performance_diag_evaluator_node.py
+  scripts/yabloc_evaluator_node.py
+  scripts/eagleye_evaluator_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

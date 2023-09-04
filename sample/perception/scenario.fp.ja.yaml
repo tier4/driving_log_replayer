@@ -1,0 +1,31 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: fp_sample
+ScenarioDescription: fp_sample
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: perception
+  UseCaseFormatVersion: 0.5.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default # データセット毎にVehicleIdを指定する
+        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する。falseの場合はbag中にあるconcatenated/pointcloudを使用する
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
+  Conditions:
+    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+  PerceptionEvaluationConfig:
+    evaluation_config_dict:
+      evaluation_task: fp_validation # detection/tracking/fp_validation ここで指定したobjectsを評価する
+      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
+      max_x_position: 102.4 # 評価対象 object の最大 x 位置
+      max_y_position: 102.4 # 評価対象 object の最大 y 位置
+      max_matchable_radii: [5.0, 3.0, 3.0, 3.0]
+      merge_similar_labels: false # Whether or not to merge similar labels https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/label.md#merge-similar-labels-option
+      allow_matching_unknown: true # Whether or not to match objects whose labels are unknown
+  CriticalObjectFilterConfig: # 必ず検出できてほしいオブジェクトに対する config
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    max_x_position_list: [100.0, 100.0, 100.0, 100.0]
+    max_y_position_list: [100.0, 100.0, 100.0, 100.0]
+  PerceptionPassFailConfig: # Pass fail を決める config
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値

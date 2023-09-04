@@ -1,11 +1,13 @@
 [tool.poetry]
 name = "driving_log_replayer_cli"
-version = "1.4.0"
+version = "1.5.4"
 description = "command line tool for driving_log_replayer"
 authors = [
   "Hayato Mizushima <hayato.mizushima@tier4.jp>",
+  "Koji Minoda <koji.minoda@tier4.jp>",
   "Keisuke Shima <keisuke.shima@tier4.jp>",
 ]
+readme = "README.md"
 license = "Apache-2.0"
 packages = [
   { include = "driving_log_replayer_cli"},
@@ -21,26 +23,43 @@ driving_log_replayer = "driving_log_replayer_cli:main"
 driving_log_replayer_analyzer = "driving_log_replayer_analyzer:main"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-termcolor = "^1.1.0"
-natsort = "^7.1.1"
-PyYAML = "^5.4.1"
+python = "^3.8.1"
+termcolor = "^2.3.0"
+natsort = "^8.4.0"
+PyYAML = "^6.0.1"
 toml = "^0.10.2"
-click = "^8.0.3"
-pandas = "^1.5.2"
-plotly = "^5.11.0"
+click = "^8.1.6"
+pandas = "^2.0.3"
+plotly = "^5.16.0"
 kaleido = "0.2.1"
-simplejson = "^3.18.3"
+simplejson = "^3.19.1"
 
-[tool.poetry.dev-dependencies]
-black = "^22.3.0"
-flake8 = "^4.0.1"
-pep8-naming = "^0.12.1"
-isort = "^5.10.1"
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+ruff = "^0.0.285"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line_length = 100
+
+[tool.ruff]
+line-length = 100
+show-source = true
+# https://beta.ruff.rs/docs/rules/
+# select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+# "G", "S", "T", "ANN", "COM", "DJ", "DTZ", "ERA", "INP", "PD", "PGH", "PL", "PTH"
+select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "ARG", "BLE", "EM", "EXE", "FBT", "ICN", "ISC", "NPY", "PIE", "PT", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+ignore = ["D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417", "E203", "E501", "Q000", "S108", "FBT001", "S602", "C901"]
+fixable=["D", "I", "EXE", "PIE"]
+
+[tool.ruff.isort]
+# https://pycqa.github.io/isort/docs/configuration/options.html#default-section
+force-sort-within-sections = true
+known-third-party = ["launch", "yaml"]
+force-single-line = true
+# https://beta.ruff.rs/docs/settings/#isort-relative-imports-order
+relative-imports-order = "closest-to-furthest"
+order-by-type = false

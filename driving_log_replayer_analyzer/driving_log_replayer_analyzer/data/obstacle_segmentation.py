@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import csv
 import dataclasses
 from dataclasses import dataclass
@@ -20,32 +21,36 @@ import sys
 from typing import Dict
 from typing import List
 
+import pandas as pd
+import simplejson as json
+
 from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
 from driving_log_replayer_analyzer.config.obstacle_segmentation import FpDistance
 from driving_log_replayer_analyzer.data import DistType
 from driving_log_replayer_analyzer.data import Position
 from driving_log_replayer_analyzer.data import Stamp
-import pandas as pd
-import simplejson as json
 
 
 def fail_3_times_in_a_row(data: List) -> List:
-    """対象点から近いほうの点3点から、連続して3点Failしている点をFailとする変換を行う.
+    """
+    対象点から近いほうの点3点から、連続して3点Failしている点をFailとする変換を行う.
 
     Args:
+    ----
         data (list): [距離, 0 or 1, Success or Fail]
 
     Returns:
+    -------
         list: Inputと同じ形式のlist。2項目目の0 or 1が変更される。
     """
-    WINDOW = 3
+    window = 3
 
     df = pd.DataFrame(data, columns=["Dist", "Val", "Result"])
 
     # 距離順にソート
     df.sort_values("Dist", ascending=True, inplace=True)
     df.reset_index(inplace=True, drop=True)
-    df["Val"] = df["Val"].rolling(WINDOW, min_periods=1).max()
+    df["Val"] = df["Val"].rolling(window, min_periods=1).max()
 
     return df.to_numpy().tolist()
 
@@ -67,10 +72,8 @@ class Frame:
     frame_name: int = -1
 
     def __init__(self, json_dict: Dict) -> None:
-        try:
+        with contextlib.suppress(KeyError, IndexError):
             self.frame_name = int(json_dict["Frame"]["FrameName"])
-        except (KeyError, IndexError):
-            pass
 
 
 @dataclass
@@ -117,12 +120,12 @@ class NonDetection:
 class DetectionInfo:
     uuid: str = None
     short_uuid: str = None
-    annotation_position: Position = Position()
+    annotation_position: Position = Position()  # noqa
     annotation_distance: float = None
     annotation_stamp: float = None
     pointcloud_numpoints: int = None
     pointcloud_nearest_distance: float = None
-    pointcloud_nearest_position: Position = Position()
+    pointcloud_nearest_position: Position = Position()  # noqa
     pointcloud_stamp: float = None
 
 
@@ -166,7 +169,7 @@ class Summary:
         pass
 
     def update_condition(self, json_dict: Dict) -> None:
-        if "Condition" in json_dict.keys():
+        if "Condition" in json_dict:
             try:
                 self.detection_pass_rate = json_dict["Condition"]["Detection"]["PassRate"]
             except (KeyError, TypeError):
@@ -207,14 +210,14 @@ class JsonlParser:
         self._modify_center_from_baselink_to_overhang(config.overhang_from_baselink)
 
     def _read_jsonl_results(self, path: Path):
-        with open(path, "r") as f:
+        with open(path) as f:
             lines = f.read().splitlines()
 
         previous_dist = sys.float_info.max
         for line in lines:
             json_dict = json.loads(line)
 
-            # tmp: 片側から車両が来るケースにおいて、自車の前（距離が最短となるとき）を通過後のデータは使わない
+            # tmp: 片側から車両が来るケースにおいて、自車の前(距離が最短となるとき)を通過後のデータは使わない
             try:
                 position = Position(
                     json_dict["Frame"]["Detection"]["Info"][0]["Annotation"]["Position"]["position"]
@@ -253,7 +256,8 @@ class JsonlParser:
                 record.ego_position.add_overhang(overhang)
 
     def export_to_csv(self, output_path: Path):
-        """データをCSV出力する。暫定的に必要なデータのみ出力する.
+        """
+        データをCSV出力する。暫定的に必要なデータのみ出力する.
 
         TODO: detection: List[Detection]の形式を変えて、detection.py内部でリストを保持するように変更する。合わせてこの関数も移動。
         """
@@ -310,9 +314,11 @@ class JsonlParser:
         return ret
 
     def get_bb_distance(self) -> List:
-        """自車を基準としたBBの最近傍点の距離とResult.
+        """
+        自車を基準としたBBの最近傍点の距離とResult.
 
-        Returns:
+        Returns
+        -------
             list: 距離と結果を含むリスト
         """
         ret = []
@@ -359,10 +365,12 @@ class JsonlParser:
         return ret
 
     def get_pointcloud_points_per_uuid(self) -> List:
-        """Detectionで検出した自車～Annotation BB内の最近傍PCの距離ごとの検知点群数のリストを返す.
+        """
+        Detectionで検出した自車からAnnotation BB内の最近傍PCの距離ごとの検知点群数のリストを返す.
 
-        Returns:
-            list: UUIDごとの自車～Annotation BB内の最近傍PCの距離ごとの検知点群数のリスト
+        Returns
+        -------
+            list: UUIDごとの自車からAnnotation BB内の最近傍PCの距離ごとの検知点群数のリスト
         """
         tmp = []
         for frame in self.detection:
@@ -378,10 +386,12 @@ class JsonlParser:
         return self._split_list_per_uuid(tmp)
 
     def get_annotation_and_pointcloud_distance(self) -> List:
-        """自車～Annotation BBの最近傍点と検知点群の最近傍点との距離差.
+        """
+        自車からAnnotation BBの最近傍点と検知点群の最近傍点との距離差.
 
-        Returns:
-            list: UUIDごとの自車～Annotation BBの最近傍点と検知点群の最近傍点との距離差
+        Returns
+        -------
+            list: UUIDごとの自車からAnnotation BBの最近傍点と検知点群の最近傍点との距離差
         """
         tmp = []
         for frame in self.detection:
@@ -404,9 +414,11 @@ class JsonlParser:
         return self._split_list_per_uuid(tmp)
 
     def get_non_detection_frame_points(self, fp_dist: FpDistance) -> List:
-        """Non detection評価のフレームごとの点群数の累積を計算する.
+        """
+        Non detection評価のフレームごとの点群数の累積を計算する.
 
-        Returns:
+        Returns
+        -------
             list: フレームと点群数の累積数、ポップアップ表示用に使用する距離毎のFP数
         """
         ret = []
@@ -425,9 +437,11 @@ class JsonlParser:
         return ret
 
     def get_non_detection_position(self, fp_dist: FpDistance) -> List:
-        """自車の位置とNon detectionのNumPointsのリストを作成する.
+        """
+        自車の位置とNon detectionのNumPointsのリストを作成する.
 
-        Returns:
+        Returns
+        -------
             list: 自車の位置(x,y)とNon detectionのNumPoints、ポップアップ表示用に使用する距離毎のFP数
         """
         ret = []

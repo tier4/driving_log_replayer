@@ -41,7 +41,7 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type:
     bird_view_plot.add_data(parser.get_bb_position())
     bird_view_plot.add_data(parser.get_pointcloud_position())
     bird_view_plot.plot(
-        title="車両先端～Annotation BoundingBox(BB)の中心点(x,y)とDetectionのPass/Fail",
+        title="車両先端からAnnotation BoundingBox(BB)の中心点(x,y)とDetectionのPass/Fail",
         xlabel="y[m]",
         ylabel="x[m]",
     )
@@ -78,7 +78,7 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type:
     for data in parser.get_pointcloud_points_per_uuid():
         pointcloud_numpoints_plot.add_data(data, legend=data[0][2])
     pointcloud_numpoints_plot.plot(
-        title="車両先端～Annotation BB内のPointCloud最近傍点の距離ごとの検知点群数",
+        title="車両先端からAnnotation BB内のPointCloud最近傍点の距離ごとの検知点群数",
         xlabel="距離[m]",
         ylabel="検知点群数",
     )
@@ -90,7 +90,7 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type:
     for data in parser.get_annotation_and_pointcloud_distance():
         pointcloud_diff_plot.add_data(data, legend=data[0][2])
     pointcloud_diff_plot.plot(
-        title="車両先端～Annotation BBの最近傍点と検知点群の最近傍点との距離差",
+        title="車両先端からAnnotation BBの最近傍点と検知点群の最近傍点との距離差",
         xlabel="車両先端~Annotation BBの最近傍点の距離[m]",
         ylabel="Pointcloudの最近傍点とAnnotation BBの距離差[m]",
     )

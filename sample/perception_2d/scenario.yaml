@@ -5,7 +5,7 @@ SensorModel: aip_x2
 VehicleModel: gsm8
 Evaluation:
   UseCaseName: perception_2d
-  UseCaseFormatVersion: 0.1.0
+  UseCaseFormatVersion: 0.2.0
   Datasets:
     - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
         VehicleId: ps1/20210620/CAL_000015 # Specify VehicleId for each data set.
@@ -19,13 +19,15 @@ Evaluation:
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection2d # detection2d # At present, only detection2d is supported. tracking2d will be supported in future extensions.
-      target_labels: [car, truck, bicycle, pedestrian, motorbike] # evaluation label
-      ignore_attributes: [cycle_state.without_rider] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
       center_distance_thresholds: [100, 200] # Threshold for center-to-center distance [pixel] matching
       iou_2d_thresholds: [0.5] # Threshold for 2D IoU
+      target_labels: [car, truck, bicycle, pedestrian, motorbike] # evaluation label
+      ignore_attributes: [cycle_state.without_rider] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
+      allow_matching_unknown: true # Whether or not to match objects whose labels are unknown
+      merge_similar_labels: false # Whether or not to merge similar labels https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/label.md#merge-similar-labels-option
   CriticalObjectFilterConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike]
     ignore_attributes: [cycle_state.without_rider] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
   PerceptionPassFailConfig:
     target_labels: [car, truck, bicycle, pedestrian, motorbike]
-    matching_threshold_list: null
+    matching_threshold_list: [0.5, 0.5, 0.5, 0.5]

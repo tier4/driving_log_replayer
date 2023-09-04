@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from typing import List
+from typing import Optional
 from typing import Tuple
 from typing import Union
 
 from geometry_msgs.msg import Point
+from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
@@ -26,6 +28,7 @@ from perception_eval.evaluation.result.object_result import DynamicObjectWithPer
 from perception_eval.evaluation.result.perception_pass_fail_result import PassFailResult
 from pyquaternion.quaternion import Quaternion
 from rclpy.time import Duration
+from shapely.geometry import Polygon
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from visualization_msgs.msg import Marker
@@ -44,7 +47,12 @@ def orientation_from_ros_msg(ros_orientation: RosQuaternion) -> Quaternion:
     return Quaternion(ros_orientation.w, ros_orientation.x, ros_orientation.y, ros_orientation.z)
 
 
-def dimensions_from_ros_msg(ros_dimensions: Vector3) -> Tuple[float, float, float]:
+def dimensions_from_ros_msg(
+    ros_dimensions: Vector3, shape_type_num: int
+) -> Tuple[float, float, float]:
+    if shape_type_num == 1:
+        # cylinder
+        return (ros_dimensions.x, ros_dimensions.x, ros_dimensions.z)
     return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
 
 
@@ -52,10 +60,22 @@ def velocity_from_ros_msg(ros_velocity: Vector3) -> Tuple[float, float, float]:
     return (ros_velocity.x, ros_velocity.y, ros_velocity.z)
 
 
+def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
+    coords = []
+    for ros_point in ros_footprint.points:
+        coords.append((ros_point.x, ros_point.y, ros_point.z))
+    if coords:
+        return Polygon(coords)
+    # footprint.points of bounding_box and cylinder are empty, so return None
+    return None
+
+
 def uuid_from_ros_msg(ros_uuid) -> str:
-    """Convert uuid from unique_identifier_msgs.msg.UUID to string.
+    """
+    Convert uuid from unique_identifier_msgs.msg.UUID to string.
 
     Args:
+    ----
         ros_uuid (np.ndarray): (16,) in uint8
     Returns:
         uuid (str)
@@ -117,7 +137,7 @@ def dynamic_objects_to_ros_points(
     color: ColorRGBA,
     namespace: str,
     marker_id: int,
-    tp_gt: bool = False,
+    tp_gt: bool,
 ):
     p_marker = Marker()
     p_marker.header = header
@@ -157,7 +177,9 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
     if objs := pass_fail.tp_object_results:
         # estimated obj
         c_tp_est = ColorRGBA(r=0.0, g=0.0, b=1.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_tp_est, "tp_est", 0)
+        marker = dynamic_objects_to_ros_points(
+            objs, header, scale, c_tp_est, "tp_est", 0, tp_gt=False
+        )
         marker_results.markers.append(marker)
     if objs := pass_fail.tp_object_results:
         # ground truth obj
@@ -166,10 +188,10 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
         marker_results.markers.append(marker)
     if objs := pass_fail.fp_object_results:
         c_fp = ColorRGBA(r=0.0, g=1.0, b=1.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fp, "fp", 0)
+        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fp, "fp", 0, tp_gt=False)
         marker_results.markers.append(marker)
     if objs := pass_fail.fn_objects:
         c_fn = ColorRGBA(r=1.0, g=0.5, b=0.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fn, "fn", 0)
+        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fn, "fn", 0, tp_gt=False)
         marker_results.markers.append(marker)
     return marker_results

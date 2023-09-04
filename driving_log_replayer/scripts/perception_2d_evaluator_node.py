@@ -19,13 +19,9 @@ import os
 from pathlib import Path
 from typing import Dict
 from typing import List
+from typing import Optional
 
 from autoware_auto_perception_msgs.msg import ObjectClassification
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import PickleWriter
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
@@ -52,31 +48,36 @@ from tier4_perception_msgs.msg import DetectedObjectsWithFeature
 from tier4_perception_msgs.msg import DetectedObjectWithFeature
 import yaml
 
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.result import PickleWriter
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
+
 
 def get_label(classification: ObjectClassification) -> str:
     if classification.label == ObjectClassification.UNKNOWN:
         return "unknown"
-    elif classification.label == ObjectClassification.CAR:
+    if classification.label == ObjectClassification.CAR:
         return "car"
-    elif classification.label == ObjectClassification.TRUCK:
+    if classification.label == ObjectClassification.TRUCK:
         return "truck"
-    elif classification.label == ObjectClassification.BUS:
+    if classification.label == ObjectClassification.BUS:
         return "bus"
-    elif classification.label == ObjectClassification.TRAILER:
+    if classification.label == ObjectClassification.TRAILER:
         # not implemented in iv
         return "trailer"
-    elif classification.label == ObjectClassification.MOTORCYCLE:
+    if classification.label == ObjectClassification.MOTORCYCLE:
         # iv: motorbike, auto: motorbike
         return "motorbike"
-    elif classification.label == ObjectClassification.BICYCLE:
+    if classification.label == ObjectClassification.BICYCLE:
         return "bicycle"
-    elif classification.label == ObjectClassification.PEDESTRIAN:
+    if classification.label == ObjectClassification.PEDESTRIAN:
         return "pedestrian"
     # not implemented in auto
     # elif classification.label == ObjectClassification.ANIMAL:
     #     return "animal"
-    else:
-        return "other"
+    return "other"
 
 
 def get_most_probable_classification(
@@ -100,7 +101,7 @@ class Perception2DResult(ResultBase):
         self.__total = {}
         self.__result = {}
         self.__msg = {}
-        for camera_type in self.__target_cameras.keys():
+        for camera_type in self.__target_cameras:
             self.__success[camera_type] = 0
             self.__total[camera_type] = 0
             self.__result[camera_type] = True
@@ -121,7 +122,7 @@ class Perception2DResult(ResultBase):
         self,
         frame: PerceptionFrameResult,
         skip: int,
-        header: Header,
+        header: Header,  # noqa
         map_to_baselink: Dict,
         camera_type: str,
     ):
@@ -186,7 +187,7 @@ class Perception2DEvaluator(Node):
             self.get_parameter("scenario_path").get_parameter_value().string_value
         )
         self.__scenario_yaml_obj = None
-        with open(scenario_path, "r") as scenario_file:
+        with open(scenario_path) as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
         self.__result_json_path = os.path.expandvars(
             self.get_parameter("result_json_path").get_parameter_value().string_value
@@ -221,21 +222,29 @@ class Perception2DEvaluator(Node):
             f_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
 
             evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
+            p_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "autoware"  # Add a fixed value setting
+            p_cfg["evaluation_config_dict"][
+                "count_label_number"
+            ] = True  # Add a fixed value setting
 
             self.__camera_type_dict = self.__condition["TargetCameras"]
-            if type(self.__camera_type_dict) == str or len(self.__camera_type_dict) == 0:
+            if isinstance(self.__camera_type_dict, str) or len(self.__camera_type_dict) == 0:
                 self.get_logger().error("camera_types is not appropriate.")
+                rclpy.shutdown()
+
+            if evaluation_task not in ["detection2d", "tracking2d"]:
+                self.get_logger().error(f"invalid evaluation task {evaluation_task}.")
                 rclpy.shutdown()
 
             evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
                 dataset_paths=self.__t4_dataset_paths,
                 frame_id=list(self.__camera_type_dict.keys()),
-                merge_similar_labels=False,
                 result_root_directory=os.path.join(
                     self.__perception_eval_log_path, "result", "{TIME}"
                 ),
                 evaluation_config_dict=p_cfg["evaluation_config_dict"],
-                label_prefix="autoware",
                 load_raw_data=False,
             )
             _ = configure_logger(
@@ -285,14 +294,14 @@ class Perception2DEvaluator(Node):
             self.get_logger().error("Scenario format error.")
             rclpy.shutdown()
 
-    def get_topic_name(self, evaluation_task: str, camera_no: int) -> str:
+    def get_topic_name(self, evaluation_task: str, camera_no: int) -> Optional[str]:
         if evaluation_task == "detection2d":
             return f"/perception/object_recognition/detection/rois{camera_no}"
-        elif evaluation_task == "tracking2d":
+        if evaluation_task == "tracking2d":
             return f"/perception/object_recognition/detection/tracked/rois{camera_no}"
-        else:
-            self.get_logger.error(f"invalid evaluation_task {evaluation_task}")
-            rclpy.shutdown()
+        self.get_logger.error(f"invalid evaluation_task {evaluation_task}")
+        rclpy.shutdown()
+        return None
 
     def timer_cb(self):
         self.__current_time = self.get_clock().now().to_msg()

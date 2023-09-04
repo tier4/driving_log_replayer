@@ -22,21 +22,10 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Tuple
+from typing import TYPE_CHECKING
 
-from driving_log_replayer.node_common import get_goal_pose_from_t4_dataset
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
-from driving_log_replayer.obstacle_segmentation_analyzer import default_config_path
-from driving_log_replayer.obstacle_segmentation_analyzer import get_graph_data
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
-from driving_log_replayer_analyzer.data import convert_str_to_dist_type
-from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 from geometry_msgs.msg import PoseStamped
 import numpy as np
-from perception_eval.common.dataset import FrameGroundTruth
 from perception_eval.common.object import DynamicObject
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
@@ -61,6 +50,21 @@ from tier4_api_msgs.msg import AwapiAutowareStatus
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 import yaml
+
+from driving_log_replayer.node_common import get_goal_pose_from_t4_dataset
+from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+from driving_log_replayer.obstacle_segmentation_analyzer import default_config_path
+from driving_log_replayer.obstacle_segmentation_analyzer import get_graph_data
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import ResultWriter
+from driving_log_replayer_analyzer.data import convert_str_to_dist_type
+from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
+from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
+from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
+
+if TYPE_CHECKING:
+    from perception_eval.common.dataset import FrameGroundTruth
 
 
 def get_box_marker(
@@ -180,17 +184,14 @@ def get_sensing_frame_config(
                 target_uuids.append(uuid)
     if target_uuids == []:
         return False, None
-    else:
-        e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"][
-            "evaluation_config_dict"
-        ]
-        sensing_frame_config = SensingFrameConfig(
-            target_uuids=target_uuids,
-            box_scale_0m=e_conf["box_scale_0m"],
-            box_scale_100m=e_conf["box_scale_100m"],
-            min_points_threshold=e_conf["min_points_threshold"],
-        )
-        return True, sensing_frame_config
+    e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]["evaluation_config_dict"]
+    sensing_frame_config = SensingFrameConfig(
+        target_uuids=target_uuids,
+        box_scale_0m=e_conf["box_scale_0m"],
+        box_scale_100m=e_conf["box_scale_100m"],
+        min_points_threshold=e_conf["min_points_threshold"],
+    )
+    return True, sensing_frame_config
 
 
 class ObstacleSegmentationResult(ResultBase):
@@ -359,7 +360,7 @@ class ObstacleSegmentationResult(ResultBase):
                     dist_dict[f"{i}-{i+1}"] = np.count_nonzero(
                         (i <= dist_array) & (dist_array < i + 1)
                     )
-                # NonDetectionは結果はInfoに入るのは１個しかないがDetectionに合わせてlistにしておく
+                # NonDetectionは結果はInfoに入るのは1個しかないがDetectionに合わせてlistにしておく
                 info.append(
                     {
                         "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
@@ -428,7 +429,7 @@ class ObstacleSegmentationEvaluator(Node):
             self.get_parameter("scenario_path").get_parameter_value().string_value
         )
         self.__scenario_yaml_obj = None
-        with open(scenario_path, "r") as scenario_file:
+        with open(scenario_path) as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
         self.__result_json_path = os.path.expandvars(
             self.get_parameter("result_json_path").get_parameter_value().string_value
@@ -454,11 +455,11 @@ class ObstacleSegmentationEvaluator(Node):
         )
 
         e_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
+        e_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"  # Add a fixed value setting
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
             frame_id="base_link",
-            merge_similar_labels=False,
             result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
             evaluation_config_dict=e_cfg["evaluation_config_dict"],
             load_raw_data=False,

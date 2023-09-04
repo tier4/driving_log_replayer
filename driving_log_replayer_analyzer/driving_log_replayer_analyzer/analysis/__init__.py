@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Optional
 
 import click
+
 from driving_log_replayer_analyzer.analysis.obstacle_segmentation import visualize as os_vis
 from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 
@@ -26,7 +27,6 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 @click.group(context_settings=CONTEXT_SETTINGS)
 def analysis():
     """Run analysis of the use case."""
-    pass
 
 
 @analysis.command(context_settings=CONTEXT_SETTINGS)

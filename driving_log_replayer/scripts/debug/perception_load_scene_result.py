@@ -33,7 +33,7 @@ class PerceptionEvaluatorPickle:
         self.__loaded_frame_results = None
         self.__t4_dataset_paths = [os.path.expandvars(t4_dataset_path)]
         self.__perception_eval_log_path = log_path
-        with open(scenario_path, "r") as scenario_file:
+        with open(scenario_path) as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
 
         with open(pickle_path, "rb") as pickle_file:
@@ -66,7 +66,8 @@ class PerceptionEvaluatorPickle:
         elif task == "tracking":
             frame_id = "map"
         else:
-            raise ValueError(f"Unexpected evaluation task: {task}")
+            error_msg = f"Unexpected evaluation task: {task}"
+            raise ValueError(error_msg)  # EM102
         return frame_id
 
     def get_final_result(self) -> MetricsScore:

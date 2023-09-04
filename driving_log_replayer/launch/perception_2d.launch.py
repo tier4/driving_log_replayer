@@ -14,13 +14,14 @@
 
 import copy
 
-import driving_log_replayer.launch_common
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
+
+import driving_log_replayer.launch_common
 
 
 def generate_launch_description():
@@ -72,6 +73,13 @@ def generate_launch_description():
     )
 
     return launch.LaunchDescription(
-        launch_arguments
-        + [rviz_node, autoware_launch, evaluator_node, player_normal, player_remap, recorder]
+        [
+            *launch_arguments,
+            rviz_node,
+            autoware_launch,
+            evaluator_node,
+            player_normal,
+            player_remap,
+            recorder,
+        ]
     )

@@ -3,6 +3,10 @@ nav:
   - index.ja.md
   - localization.en.md
   - localization.ja.md
+  - yabloc.en.md
+  - yabloc.ja.md
+  - eagleye.en.md
+  - eagleye.ja.md
   - obstacle_segmentation.en.md
   - obstacle_segmentation.ja.md
   - perception.en.md

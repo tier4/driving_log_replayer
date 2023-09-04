@@ -19,13 +19,14 @@ from typing import Dict
 from typing import Tuple
 
 from ament_index_python.packages import get_package_share_directory
+import yaml
+
 from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
 from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
 from driving_log_replayer_analyzer.data import DistType
 from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
 from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
 from driving_log_replayer_analyzer.plot import PlotBase
-import yaml
 
 
 def default_config_path() -> Path:
@@ -75,4 +76,4 @@ def get_graph_data(
     for data in parser.get_pointcloud_points_per_uuid():
         pointcloud_numpoints_plot.add_data(data, legend=data[0][2])
 
-    return detection_dist_plot._df.to_dict(), pointcloud_numpoints_plot._df.to_dict()
+    return detection_dist_plot.to_dict(), pointcloud_numpoints_plot.to_dict()
