@@ -27,9 +27,7 @@ import numpy as np
 import rclpy
 from rclpy.time import Duration
 from rosidl_runtime_py import message_to_ordereddict
-from tf2_ros import Buffer
 from tf2_ros import TransformException
-from tf2_ros import TransformListener
 from tf_transformations import euler_from_quaternion
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
@@ -37,7 +35,6 @@ from tier4_debug_msgs.msg import Int32Stamped
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 
 
 def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry):
@@ -217,15 +214,7 @@ class LocalizationEvaluator(DLREvaluator):
         super().__init__(name)
         self.check_scenario()
 
-        self.__tf_buffer = Buffer()
-        self.__tf_listener = TransformListener(self.__tf_buffer, self, spin_thread=True)
-
-        self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-
-        self.__result = LocalizationResult(self.__condition)
-        self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), self.__condition
-        )
+        self.__result = LocalizationResult(self._condition)
 
         self.__pub_lateral_distance = self.create_publisher(
             Float64, "localization/lateral_distance", 1
@@ -281,11 +270,15 @@ class LocalizationEvaluator(DLREvaluator):
         )
 
     def check_scenario(self) -> None:
-        self.__reliability_method = self.__condition["Reliability"]["Method"]
-        if self.__reliability_method not in ["TP", "NVTL"]:
-            self.get_logger().error(
-                f"Reliability Method {self.__reliability_method} is not defined."
-            )
+        try:
+            self.__reliability_method = self._condition["Reliability"]["Method"]
+            if self.__reliability_method not in ["TP", "NVTL"]:
+                self.get_logger().error(
+                    f"Reliability Method {self.__reliability_method} is not defined."
+                )
+                rclpy.shutdown()
+        except KeyError:
+            self.get_logger().error("Scenario format error")
             rclpy.shutdown()
 
     def ekf_pose_cb(self, msg: Odometry):
@@ -303,16 +296,18 @@ class LocalizationEvaluator(DLREvaluator):
             # evaluates when reliability_method is TP
             return
         try:
-            map_to_baselink = self.__tf_buffer.lookup_transform(
+            map_to_baselink = self._tf_buffer.lookup_transform(
                 "map", "base_link", msg.stamp, Duration(seconds=0.5)
             )
         except TransformException as ex:
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
             map_to_baselink = TransformStamped()
         self.__result.add_reliability_frame(
-            msg, transform_stamped_with_euler_angle(map_to_baselink), self.__latest_nvtl
+            msg,
+            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+            self.__latest_nvtl,
         )
-        self.__result_writer.write(self.__result)
+        self._result_writer.write(self.__result)
 
     def nvtl_cb(self, msg: Float32Stamped):
         self.__latest_nvtl = msg
@@ -320,20 +315,20 @@ class LocalizationEvaluator(DLREvaluator):
             # evaluates when reliability_method is NVTL
             return
         try:
-            map_to_baselink = self.__tf_buffer.lookup_transform(
+            map_to_baselink = self._tf_buffer.lookup_transform(
                 "map", "base_link", msg.stamp, Duration(seconds=0.5)
             )
         except TransformException as ex:
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
             map_to_baselink = TransformStamped()
         self.__result.add_reliability_frame(
-            msg, transform_stamped_with_euler_angle(map_to_baselink), self.__latest_tp
+            msg, DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink), self.__latest_tp
         )
-        self.__result_writer.write(self.__result)
+        self._result_writer.write(self.__result)
 
     def pose_cb(self, msg: PoseStamped):
         try:
-            map_to_baselink = self.__tf_buffer.lookup_transform(
+            map_to_baselink = self._tf_buffer.lookup_transform(
                 "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
             )
         except TransformException as ex:
@@ -341,17 +336,17 @@ class LocalizationEvaluator(DLREvaluator):
             map_to_baselink = TransformStamped()
         msg_lateral_distance = self.__result.add_convergence_frame(
             msg,
-            transform_stamped_with_euler_angle(map_to_baselink),
+            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_ekf_pose,
             self.__latest_exe_time,
             self.__latest_iteration_num,
         )
         self.__pub_lateral_distance.publish(msg_lateral_distance)
-        self.__result_writer.write(self.__result)
+        self._result_writer.write(self.__result)
 
     def diagnostics_cb(self, msg: DiagnosticArray):
         self.__result.add_ndt_availability_frame(msg)
-        self.__result_writer.write(self.__result)
+        self._result_writer.write(self.__result)
 
 
 @evaluator_main
