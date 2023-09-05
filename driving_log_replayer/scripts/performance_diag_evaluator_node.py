@@ -291,6 +291,7 @@ class PerformanceDiagResult(ResultBase):
 class PerformanceDiagEvaluator(DLREvaluator):
     def __init__(self, name: str):
         super().__init__(name)
+        self.check_scenario()
         self.__result = PerformanceDiagResult(self._condition)
 
         self.__pub_visibility_value = self.create_publisher(Float64, "visibility/value", 1)
@@ -319,6 +320,9 @@ class PerformanceDiagEvaluator(DLREvaluator):
             self.diag_cb,
             1,
         )
+
+    def check_scenario(self) -> None:
+        pass
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
         # self.get_logger().error(
@@ -356,7 +360,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
         for k, v in msg_blockage_levels.items():
             if v is not None:
                 self.__pub_blockage_levels[k].publish(v)
-        self.__result_writer.write(self.__result)
+        self._result_writer.write(self.__result)
 
 
 @evaluator_main
