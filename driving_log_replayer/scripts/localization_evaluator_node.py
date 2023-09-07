@@ -303,13 +303,7 @@ class LocalizationEvaluator(DLREvaluator):
         if self.__reliability_method != "TP":
             # evaluates when reliability_method is TP
             return
-        try:
-            map_to_baselink = self._tf_buffer.lookup_transform(
-                "map", "base_link", msg.stamp, Duration(seconds=0.5)
-            )
-        except TransformException as ex:
-            self.get_logger().info(f"Could not transform map to baselink: {ex}")
-            map_to_baselink = TransformStamped()
+        map_to_baselink = self.lookup_transform(msg.stamp)
         self.__result.set_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
@@ -322,26 +316,14 @@ class LocalizationEvaluator(DLREvaluator):
         if self.__reliability_method != "NVTL":
             # evaluates when reliability_method is NVTL
             return
-        try:
-            map_to_baselink = self._tf_buffer.lookup_transform(
-                "map", "base_link", msg.stamp, Duration(seconds=0.5)
-            )
-        except TransformException as ex:
-            self.get_logger().info(f"Could not transform map to baselink: {ex}")
-            map_to_baselink = TransformStamped()
+        map_to_baselink = self.lookup_transform(msg.stamp)
         self.__result.set_frame(
             msg, DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink), self.__latest_tp
         )
         self._result_writer.write(self.__result)
 
     def pose_cb(self, msg: PoseStamped):
-        try:
-            map_to_baselink = self._tf_buffer.lookup_transform(
-                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
-            )
-        except TransformException as ex:
-            self.get_logger().info(f"Could not transform map to baselink: {ex}")
-            map_to_baselink = TransformStamped()
+        map_to_baselink = self.lookup_transform(msg.header.stamp)
         msg_lateral_distance = self.__result.set_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),

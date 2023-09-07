@@ -331,13 +331,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
         if msg.header == self.__diag_header_prev:
             return
         self.__diag_header_prev = msg.header
-        try:
-            map_to_baselink = self._tf_buffer.lookup_transform(
-                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
-            )
-        except TransformException as ex:
-            self.get_logger().info(f"Could not transform map to baselink: {ex}")
-            map_to_baselink = TransformStamped()
+        map_to_baselink = self.lookup_transform(msg.header.stamp)
         (
             msg_visibility_value,
             msg_visibility_level,

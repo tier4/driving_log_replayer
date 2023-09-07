@@ -291,13 +291,7 @@ class PerceptionEvaluator(DLREvaluator):
         return estimated_objects
 
     def perception_cb(self, msg: Union[DetectedObjects, TrackedObjects]):
-        try:
-            map_to_baselink = self._tf_buffer.lookup_transform(
-                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
-            )
-        except TransformException as ex:
-            self.get_logger().info(f"Could not transform map to baselink: {ex}")
-            map_to_baselink = TransformStamped()
+        map_to_baselink = self.lookup_transform(msg.header.stamp)
         # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
