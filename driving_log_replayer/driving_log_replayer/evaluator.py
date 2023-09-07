@@ -18,10 +18,12 @@ import os
 from os.path import expandvars
 from pathlib import Path
 from typing import Dict
+from typing import List
 from typing import Optional
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
+from autoware_auto_perception_msgs.msg import ObjectClassification
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from geometry_msgs.msg import TransformStamped
@@ -287,6 +289,41 @@ class DLREvaluator(Node, ABC):
             return None
         else:
             return ros_init_pose
+
+    @classmethod
+    def get_perception_label_str(cls, classification: ObjectClassification) -> str:
+        if classification.label == ObjectClassification.UNKNOWN:
+            return "unknown"
+        if classification.label == ObjectClassification.CAR:
+            return "car"
+        if classification.label == ObjectClassification.TRUCK:
+            return "truck"
+        if classification.label == ObjectClassification.BUS:
+            return "bus"
+        if classification.label == ObjectClassification.TRAILER:
+            # not implemented in iv
+            return "trailer"
+        if classification.label == ObjectClassification.MOTORCYCLE:
+            # iv: motorbike, auto: motorbike
+            return "motorbike"
+        if classification.label == ObjectClassification.BICYCLE:
+            return "bicycle"
+        if classification.label == ObjectClassification.PEDESTRIAN:
+            return "pedestrian"
+        return "other"
+
+    @classmethod
+    def get_most_probable_classification(
+        cls,
+        array_classification: List[ObjectClassification],
+    ) -> ObjectClassification:
+        highest_probability = 0.0
+        highest_classification = None
+        for classification in array_classification:
+            if classification.probability >= highest_probability:
+                highest_probability = classification.probability
+                highest_classification = classification
+        return highest_classification
 
 
 def evaluator_main(func):
