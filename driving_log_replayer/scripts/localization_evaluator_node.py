@@ -22,13 +22,10 @@ from typing import Dict
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
-from geometry_msgs.msg import TransformStamped
 from nav_msgs.msg import Odometry
 import numpy as np
 import rclpy
-from rclpy.time import Duration
 from rosidl_runtime_py import message_to_ordereddict
-from tf2_ros import TransformException
 from tf_transformations import euler_from_quaternion
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped

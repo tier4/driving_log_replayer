@@ -25,10 +25,7 @@ from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
-from geometry_msgs.msg import TransformStamped
-from rclpy.time import Duration
 from std_msgs.msg import Header
-from tf2_ros import TransformException
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main

@@ -25,7 +25,6 @@ from autoware_auto_perception_msgs.msg import DetectedObject
 from autoware_auto_perception_msgs.msg import DetectedObjects
 from autoware_auto_perception_msgs.msg import TrackedObject
 from autoware_auto_perception_msgs.msg import TrackedObjects
-from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.schema import FrameID
 from perception_eval.common.shape import Shape
@@ -41,10 +40,8 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer3D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from rclpy.time import Duration
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
-from tf2_ros import TransformException
 from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.evaluator import DLREvaluator
