@@ -14,9 +14,11 @@
 
 from abc import ABC
 from abc import abstractmethod
+from collections.abc import Callable
 import os
 from os.path import expandvars
 from pathlib import Path
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -47,6 +49,7 @@ from tf_transformations import euler_from_quaternion
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 import yaml
 
+from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultWriter
 
 if TYPE_CHECKING:
@@ -118,10 +121,17 @@ class DLREvaluator(Node, ABC):
             "perception_eval_log"
         ).as_posix()
 
-    def timer_cb(self, *, write_metrics_func=None) -> None:
+    def timer_cb(
+        self,
+        *,
+        register_startup_func: Optional[Callable] = None,
+        register_shutdown_func: Optional[Callable] = None,
+    ) -> None:
         self._current_time = self.get_clock().now().to_msg()
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self._current_time.sec > 0:
+            if register_startup_func is not None:
+                register_startup_func()
             if self._initial_pose is not None:
                 self.call_initialpose_service()
             if self._current_time == self._prev_time:
@@ -130,8 +140,8 @@ class DLREvaluator(Node, ABC):
                 self._clock_stop_counter = 0
             self._prev_time = self._current_time
             if self._clock_stop_counter >= DLREvaluator.COUNT_SHUTDOWN_NODE:
-                if write_metrics_func is not None:
-                    write_metrics_func()
+                if register_shutdown_func is not None:
+                    register_shutdown_func()
                 self._result_writer.close()
                 rclpy.shutdown()
 
@@ -202,6 +212,9 @@ class DLREvaluator(Node, ABC):
         except TransformException as ex:
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
             return TransformStamped()
+
+    def save_pkl(self, save_object: Any):
+        PickleWriter(self._pkl_path, save_object)
 
     @abstractmethod
     def check_scenario(self) -> None:

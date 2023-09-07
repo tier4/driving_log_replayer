@@ -34,12 +34,6 @@ from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithS
 from perception_eval.manager import SensingEvaluationManager
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
-from rclpy.clock import Clock
-from rclpy.clock import ClockType
-from rclpy.executors import MultiThreadedExecutor
-from rclpy.node import Node
-from rclpy.time import Time
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
@@ -49,15 +43,13 @@ from std_msgs.msg import Header
 from tier4_api_msgs.msg import AwapiAutowareStatus
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
-import yaml
 
-from driving_log_replayer.node_common import get_goal_pose_from_t4_dataset
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+from driving_log_replayer.evaluator import DLREvaluator
+from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.obstacle_segmentation_analyzer import default_config_path
 from driving_log_replayer.obstacle_segmentation_analyzer import get_graph_data
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
@@ -368,7 +360,7 @@ class ObstacleSegmentationResult(ResultBase):
                 )
         return {"Result": result, "Info": info}, ros_pcd, graph_non_detection
 
-    def add_frame(
+    def set_frame(
         self,
         frame: SensingFrameResult,
         skip: int,
@@ -414,45 +406,21 @@ class ObstacleSegmentationResult(ResultBase):
         )
 
 
-class ObstacleSegmentationEvaluator(Node):
-    def __init__(self):
-        super().__init__("obstacle_segmentation_evaluator")
-        self.declare_parameter("scenario_path", "")
-        self.declare_parameter("result_json_path", "")
-        self.declare_parameter("t4_dataset_path", "")
-        self.declare_parameter("result_archive_path", "")
+class ObstacleSegmentationEvaluator(DLREvaluator):
+    COUNT_FINISH_PUB_GOAL_POSE = 5
+
+    def __init__(self, name: str):
+        super().__init__(name)
+        self.check_scenario()
+        self.use_t4_dataset()
+
         self.declare_parameter("vehicle_model", "")
-
-        self.__timer_group = MutuallyExclusiveCallbackGroup()
-
-        scenario_path = os.path.expandvars(
-            self.get_parameter("scenario_path").get_parameter_value().string_value
-        )
-        self.__scenario_yaml_obj = None
-        with open(scenario_path) as scenario_file:
-            self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
-        self.__result_json_path = os.path.expandvars(
-            self.get_parameter("result_json_path").get_parameter_value().string_value
-        )
-        self.__t4_dataset_paths = [
-            os.path.expandvars(
-                self.get_parameter("t4_dataset_path").get_parameter_value().string_value
-            )
-        ]
         self.__vehicle_model = (
             self.get_parameter("vehicle_model").get_parameter_value().string_value
         )
-        self.__perception_eval_log_path = os.path.join(
-            os.path.dirname(self.__result_json_path), "perception_eval_log"
-        )
-        # read setting from scenario yaml
-        self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-        self.__result = ObstacleSegmentationResult(self.__condition)
+        self.__result = ObstacleSegmentationResult(self._condition)
         self.__goal_pose_counter = 0
         self.__goal_pose = get_goal_pose_from_t4_dataset(self.__t4_dataset_paths[0])
-        self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), self.__condition
-        )
 
         e_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
         e_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"  # Add a fixed value setting
@@ -506,40 +474,22 @@ class ObstacleSegmentationEvaluator(Node):
         self.__pub_graph_non_detection = self.create_publisher(
             ObstacleSegmentationMarker, "graph/non_detection", 1
         )
-
-        self.__current_time = Time().to_msg()
-        self.__prev_time = Time().to_msg()
-
-        self.__shutdown_counter = 0
-        self.__timer = self.create_timer(
-            1.0,
-            self.timer_cb,
-            callback_group=self.__timer_group,
-            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
-        )  # wall timer
         self.__skip_counter = 0
 
     def timer_cb(self):
-        self.__current_time = self.get_clock().now().to_msg()
-        # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
-        if self.__current_time.sec > 0:
-            self.__goal_pose_counter = self.__goal_pose_counter + 1
-            if self.__goal_pose_counter <= 5:
-                self.__goal_pose.header.stamp = self.__current_time
-                self.__pub_goal_pose.publish(self.__goal_pose)
-            if self.__current_time == self.__prev_time:
-                self.__shutdown_counter += 1
-            else:
-                self.__shutdown_counter = 0
-            self.__prev_time = self.__current_time
-            if self.__shutdown_counter >= 5:
-                # self.save_pkl()
-                self.write_graph_data()
-                rclpy.shutdown()
+        super().timer_cb(
+            register_startup_func=self.call_goal_pose, register_shutdown_func=self.write_graph_data
+        )
+
+    def publish_goal_pose(self) -> None:
+        if self.__goal_pose_counter < ObstacleSegmentationEvaluator.COUNT_FINISH_PUB_GOAL_POSE:
+            self.__goal_pose_counter += 1
+            self.__goal_pose.header.stamp = self._current_time
+            self.__pub_goal_pose.publish(self.__goal_pose)
 
     def write_graph_data(self):
         # jsonlを一旦閉じて開きなおす
-        self.__result_writer.close()
+        self._result_writer.close()
         jsonl_file_path = Path(
             os.path.splitext(os.path.expandvars(self.__result_json_path))[0] + ".jsonl"
         )
@@ -565,15 +515,6 @@ class ObstacleSegmentationEvaluator(Node):
                 jsonl_file.write(str_last_line)
             except json.JSONDecodeError:
                 pass
-            jsonl_file.close()
-
-    def save_pkl(self):
-        # for debug
-        from driving_log_replayer.result import PickleWriter
-
-        self.__pkl_path = os.path.join(os.path.dirname(self.__result_json_path), "frame.pkl")
-        self.__pickle_writer = PickleWriter(self.__pkl_path)
-        self.__pickle_writer.dump(self.__evaluator.frame_results)
 
     def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput):
         self.__pub_marker_non_detection.publish(msg.marker_array)
@@ -624,7 +565,7 @@ class ObstacleSegmentationEvaluator(Node):
             ) = self.__result.add_frame(
                 frame_result,
                 self.__skip_counter,
-                transform_stamped_with_euler_angle(msg.map_to_baselink),
+                DLREvaluator.transform_stamped_with_euler_angle(msg.map_to_baselink),
                 self.__latest_stop_reasons,
                 msg.topic_rate,
                 pcd_header,
@@ -660,14 +601,9 @@ class ObstacleSegmentationEvaluator(Node):
                     self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    executor = MultiThreadedExecutor()
-    obstacle_segmentation_evaluator = ObstacleSegmentationEvaluator()
-    executor.add_node(obstacle_segmentation_evaluator)
-    executor.spin()
-    obstacle_segmentation_evaluator.destroy_node()
-    rclpy.shutdown()
+@evaluator_main
+def main():
+    return ObstacleSegmentationEvaluator("obstacle_segmentation_evaluator")
 
 
 if __name__ == "__main__":

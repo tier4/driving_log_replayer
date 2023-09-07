@@ -47,7 +47,6 @@ from visualization_msgs.msg import MarkerArray
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
 
 
@@ -212,11 +211,10 @@ class PerceptionEvaluator(DLREvaluator):
         return False
 
     def timer_cb(self):
-        super().timer_cb(write_metrics_func=self.write_metrics)
+        super().timer_cb(register_shutdown_func=self.write_metrics)
 
     def write_metrics(self):
-        self.__pickle_writer = PickleWriter(self._pkl_path)
-        self.__pickle_writer.dump(self.__evaluator.frame_results)
+        self.save_pkl(self.__evaluator.frame_results)
         if self.__evaluation_task == "fp_validation":
             final_metrics = self.get_fp_result()
             self.__result.set_final_metrics(final_metrics)
