@@ -256,7 +256,7 @@ class Perception2DEvaluator(DLREvaluator):
     def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str):
         # self.get_logger().error(f"{camera_type} callback")
         try:
-            map_to_baselink = self.__tf_buffer.lookup_transform(
+            map_to_baselink = self._tf_buffer.lookup_transform(
                 "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
             )
         except TransformException as ex:
