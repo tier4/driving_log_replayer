@@ -110,10 +110,10 @@ class TrafficLightEvaluator(DLREvaluator):
         self.check_scenario()
         self.use_t4_dataset()
 
-        self.__result = TrafficLightResult(self.__condition)
+        self.__result = TrafficLightResult(self._condition)
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
-            dataset_paths=self.__t4_dataset_paths,
+            dataset_paths=self._t4_dataset_paths,
             frame_id=self.__camera_type,
             result_root_directory=os.path.join(self._perception_eval_log_path, "result", "{TIME}"),
             evaluation_config_dict=self.__p_cfg["evaluation_config_dict"],
