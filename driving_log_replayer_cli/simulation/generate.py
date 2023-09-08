@@ -32,10 +32,10 @@ class TestScriptGenerator:
         subprocess.run(update_latest_dir, shell=True)
 
     @property
-    def script_path(self):
+    def script_path(self) -> str:
         return self.__script_path
 
-    def run(self):
+    def run(self) -> bool:
         return self.__create_script()
 
     def __create_script(self) -> bool:
@@ -102,7 +102,11 @@ class TestScriptGenerator:
             )
 
     def __create_launch_command(
-        self, scenario_root: str, scenario_name: str, scenario_output_dir: str, scenario_yaml_obj
+        self,
+        scenario_root: str,
+        scenario_name: str,
+        scenario_output_dir: str,
+        scenario_yaml_obj: dict,
     ) -> Optional[str]:
         map_path = ""
         if "LocalMapPath" in scenario_yaml_obj:
@@ -186,7 +190,11 @@ class TestScriptGenerator:
         return launch_command
 
     def __create_launch_command_with_t4_dataset(
-        self, scenario_root: str, scenario_name: str, scenario_output_dir: str, scenario_yaml_obj
+        self,
+        scenario_root: str,
+        scenario_name: str,
+        scenario_output_dir: str,
+        scenario_yaml_obj: dict,
     ) -> Optional[str]:
         launch_command_for_all_dataset = ""
         scenario_path = os.path.join(scenario_root, scenario_name)

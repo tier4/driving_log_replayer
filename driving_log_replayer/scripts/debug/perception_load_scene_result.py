@@ -94,7 +94,7 @@ class PerceptionEvaluatorPickle:
         return final_metric_score
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-p", "--pickle", required=True, help="path of the pickle file to load scene_result"

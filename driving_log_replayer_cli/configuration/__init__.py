@@ -7,7 +7,7 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
-def configuration():
+def configuration() -> None:
     """Command to setup driving_log_replayer config file."""
 
 
@@ -22,7 +22,9 @@ def configuration():
     default="default",
     help="profile name in config file default value is default",
 )
-def register(data_directory: str, output_directory: str, autoware_path: str, profile_name: str):
+def register(
+    data_directory: str, output_directory: str, autoware_path: str, profile_name: str
+) -> None:
     """Create profile in driving_log_replayer config file."""
     config = Config(
         data_directory=data_directory,

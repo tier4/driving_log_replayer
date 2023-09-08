@@ -21,5 +21,5 @@ except Exception:  # noqa
     __version__ = "0.0.0"
 
 
-def main():
+def main() -> None:
     from . import __main__  # noqa

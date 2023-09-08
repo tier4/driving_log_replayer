@@ -23,7 +23,7 @@ from driving_log_replayer_analyzer.plot.line_plot import LinePlot
 from driving_log_replayer_analyzer.plot.scatter_plot import ScatterPlot
 
 
-def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type: DistType):
+def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type: DistType) -> None:
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード

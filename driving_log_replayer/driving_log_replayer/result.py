@@ -16,7 +16,6 @@ from abc import ABC
 from abc import abstractmethod
 import os
 import pickle
-from typing import Any
 from typing import Dict
 
 from rclpy.clock import Clock
@@ -44,7 +43,7 @@ class ResultBase(ABC):
         """Update success and summary."""
 
     @abstractmethod
-    def set_frame(self, msg) -> None:
+    def set_frame(self) -> None:
         """Set the result of one frame from the subscribe ros message."""
 
 
@@ -58,15 +57,15 @@ class ResultWriter:
         self.write_condition(condition)
         self.write_header()
 
-    def close(self):
+    def close(self) -> None:
         self._result_file.close()
 
-    def write_condition(self, condition: Dict):
+    def write_condition(self, condition: Dict) -> None:
         dict_condition = {"Condition": condition}
         str_condition = json.dumps(dict_condition, ignore_nan=True) + "\n"
         self._result_file.write(str_condition)
 
-    def write_header(self):
+    def write_header(self) -> None:
         system_time = self._system_clock.now()
         dict_header = {
             "Result": {"Success": False, "Summary": "NoData"},
@@ -76,7 +75,7 @@ class ResultWriter:
         str_header = json.dumps(dict_header, ignore_nan=True) + "\n"
         self._result_file.write(str_header)
 
-    def write(self, result: ResultBase):
+    def write(self, result: ResultBase) -> None:
         system_time = self._system_clock.now()
         time_dict = {"System": system_time.nanoseconds / pow(10, 9)}
         if self._ros_clock.ros_time_is_active:
@@ -95,6 +94,6 @@ class ResultWriter:
 
 
 class PickleWriter:
-    def __init__(self, out_pkl_path: str, write_object: Any) -> None:
+    def __init__(self, out_pkl_path: str, write_object) -> None:  # noqa
         with open(os.path.expandvars(out_pkl_path), "wb") as pkl_file:
             pickle.dump(write_object, pkl_file)

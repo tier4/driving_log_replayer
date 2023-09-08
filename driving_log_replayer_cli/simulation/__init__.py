@@ -12,7 +12,7 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
-def simulation():
+def simulation() -> None:
     """Run simulation and check simulation log."""
 
 
@@ -21,7 +21,7 @@ def simulation():
 @click.option("--rate", "-r", default=1.0)
 @click.option("--delay", "-d", default=10.0)
 @click.option("--no-json", is_flag=True, help="Do not convert jsonl files to json")
-def run(profile: str, rate: float, delay: float, no_json: bool):
+def run(profile: str, rate: float, delay: float, no_json: bool) -> None:
     """Run simulation using data_directory and show result."""
     config = load_config(profile)
     output_dir_by_time = os.path.join(
@@ -35,13 +35,13 @@ def run(profile: str, rate: float, delay: float, no_json: bool):
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("output_directory", type=str)
-def show_result(output_directory: str):
+def show_result(output_directory: str) -> None:
     """Show summary of simulation results in output_directory."""
     display(output_directory)
 
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
 @click.argument("output_directory", type=str)
-def convert_result(output_directory: str):
+def convert_result(output_directory: str) -> None:
     """Convert result.jsonl to result.json in output_directory."""
     convert(output_directory)

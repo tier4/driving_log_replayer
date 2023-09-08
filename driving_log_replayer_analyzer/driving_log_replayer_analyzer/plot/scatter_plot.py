@@ -18,7 +18,7 @@ from . import PlotBase
 
 
 class ScatterPlot(PlotBase):
-    def plot(self, title="", xlabel="", ylabel=""):
+    def plot(self, title: str = "", xlabel: str = "", ylabel: str = "") -> None:
         self._fig = px.scatter(
             self._df,
             x="x",
@@ -32,7 +32,7 @@ class ScatterPlot(PlotBase):
         )
         self._fig.update_traces(marker=dict(size=4), selector=dict(mode="markers"))  # noqa: C408
 
-    def plot_with_hover(self, title="", xlabel="", ylabel=""):
+    def plot_with_hover(self, title: str = "", xlabel: str = "", ylabel: str = "") -> None:
         # hover dataをdfから抽出
         hover_list = self._get_hover_column()
 
@@ -50,11 +50,11 @@ class ScatterPlot(PlotBase):
         )
         self._fig.update_traces(marker=dict(size=4), selector=dict(mode="markers"))  # noqa: C408
 
-    def use_boolean_tick(self):
+    def use_boolean_tick(self) -> None:
         self._fig.update_yaxes(range=[-0.066, 1.066])
         self._fig.update_layout(
             yaxis=dict(tickmode="array", tickvals=[0, 1], ticktext=["False", "True"])  # noqa: C408
         )
 
-    def add_vert_line(self, dist: float):
+    def add_vert_line(self, dist: float) -> None:
         self._fig.add_vline(x=dist, line_width=3, line_dash="dash", line_color="green")

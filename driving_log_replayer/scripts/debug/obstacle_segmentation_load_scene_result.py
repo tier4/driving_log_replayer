@@ -59,7 +59,7 @@ class ObstacleSegmentationEvaluatorPickle:
         self.__evaluator.frame_results = self.__loaded_frame_results
         self.debug_frames()
 
-    def debug_frames(self):
+    def debug_frames(self) -> None:
         for result in self.__evaluator.frame_results:
             print(f"FrameName: {result.frame_name}")
             dist_array = np.array([])
@@ -78,7 +78,7 @@ class ObstacleSegmentationEvaluatorPickle:
         logging.warning(f"{num_use_case_fail} fail results.")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-p", "--pickle", required=True, help="path of the pickle file to load scene_result"

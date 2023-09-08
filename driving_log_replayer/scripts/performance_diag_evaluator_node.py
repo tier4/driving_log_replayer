@@ -72,7 +72,7 @@ class PerformanceDiagResult(ResultBase):
             self.__blockage_lidar_success[k] = 0
             self.__blockage_lidar_result[k] = True
 
-    def update(self):
+    def update(self) -> None:
         if self.__visibility_result:
             visibility_summary = f"Visibility (Passed): {self.__visibility_msg}"
         else:
@@ -249,7 +249,7 @@ class PerformanceDiagResult(ResultBase):
         info.append(info_dict)
         return {"Result": result, "Info": info}, msg_sky_ratio, msg_ground_ratio, msg_level
 
-    def update_blockage(self):
+    def update_blockage(self) -> None:
         self.__blockage_result = True
         self.__blockage_msg = ""
         for lidar_name, v in self.__blockage_lidar_result.items():

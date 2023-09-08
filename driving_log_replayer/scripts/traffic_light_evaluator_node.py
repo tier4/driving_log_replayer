@@ -46,7 +46,7 @@ class TrafficLightResult(ResultBase):
         self.__success = 0
         self.__total = 0
 
-    def update(self):
+    def update(self) -> None:
         test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
         success = test_rate >= self.__pass_rate
         summary_str = f"{self.__success} / {self.__total } -> {test_rate:.2f}%"
@@ -64,7 +64,7 @@ class TrafficLightResult(ResultBase):
         skip: int,
         header: Header,  # noqa
         map_to_baselink: Dict,
-    ):
+    ) -> None:
         self.__total += 1
         has_objects = True
         if (
@@ -99,7 +99,7 @@ class TrafficLightResult(ResultBase):
         self._frame = out_frame
         self.update()
 
-    def set_final_metrics(self, final_metrics: Dict):
+    def set_final_metrics(self, final_metrics: Dict) -> None:
         self._frame = {"FinalScore": final_metrics}
 
 
@@ -169,10 +169,10 @@ class TrafficLightEvaluator(DLREvaluator):
             return False
         return True
 
-    def timer_cb(self):
+    def timer_cb(self) -> None:
         super().timer_cb(register_shutdown_func=self.write_metrics)
 
-    def write_metrics(self):
+    def write_metrics(self) -> None:
         self.save_pkl(self.__evaluator.frame_results)
         self.get_final_result()
         score_dict = {}
@@ -209,7 +209,7 @@ class TrafficLightEvaluator(DLREvaluator):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def traffic_signals_cb(self, msg: TrafficSignalArray):
+    def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)

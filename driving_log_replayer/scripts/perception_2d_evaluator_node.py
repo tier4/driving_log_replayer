@@ -54,7 +54,7 @@ class Perception2DResult(ResultBase):
             self.__result[camera_type] = True
             self.__msg[camera_type] = "NotTested"
 
-    def update(self):
+    def update(self) -> None:
         summary_str = ""
         for camera_type, eval_msg in self.__msg.items():
             summary_str += f" {camera_type}: {eval_msg}"
@@ -72,7 +72,7 @@ class Perception2DResult(ResultBase):
         header: Header,  # noqa
         map_to_baselink: Dict,
         camera_type: str,
-    ):
+    ) -> None:
         self.__total[camera_type] += 1
         has_objects = True
         if (
@@ -114,7 +114,7 @@ class Perception2DResult(ResultBase):
         self._frame = out_frame
         self.update()
 
-    def set_final_metrics(self, final_metrics: Dict):
+    def set_final_metrics(self, final_metrics: Dict) -> None:
         self._frame = {"FinalScore": final_metrics}
 
 
@@ -247,7 +247,7 @@ class Perception2DEvaluator(DLREvaluator):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str):
+    def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得

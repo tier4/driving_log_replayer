@@ -52,7 +52,7 @@ def run(
     rate: float,
     delay: float,
     output_json: bool,
-):
+) -> None:
     DrivingLogReplayerTestRunner(
         os.path.expandvars(data_directory),
         os.path.expandvars(output_directory),

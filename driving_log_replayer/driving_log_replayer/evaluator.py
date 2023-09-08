@@ -18,7 +18,6 @@ from collections.abc import Callable
 import os
 from os.path import expandvars
 from pathlib import Path
-from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -174,7 +173,7 @@ class DLREvaluator(Node, ABC):
             )
             future_map_fit.add_done_callback(self.map_fit_cb)
 
-    def map_fit_cb(self, future):
+    def map_fit_cb(self, future) -> None:  # noqa
         result = future.result()
         if result is not None:
             if result.success:
@@ -191,7 +190,7 @@ class DLREvaluator(Node, ABC):
             self._initial_pose_running = False
             self.get_logger().error(f"Exception for service: {future.exception()}")
 
-    def initial_pose_cb(self, future):
+    def initial_pose_cb(self, future) -> None:  # noqa
         result = future.result()
         if result is not None:
             res_status: ResponseStatus = result.status
@@ -213,7 +212,7 @@ class DLREvaluator(Node, ABC):
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
             return TransformStamped()
 
-    def save_pkl(self, save_object: Any):
+    def save_pkl(self, save_object) -> None:  # noqa
         PickleWriter(self._pkl_path, save_object)
 
     @abstractmethod
@@ -367,8 +366,8 @@ class DLREvaluator(Node, ABC):
         return highest_light
 
 
-def evaluator_main(func):
-    def wrapper():
+def evaluator_main(func: Callable) -> Callable:
+    def wrapper() -> None:
         rclpy.init()
         executor = MultiThreadedExecutor()
         evaluator = func()

@@ -202,7 +202,7 @@ class ObstacleSegmentationResult(ResultBase):
         self.__non_detection_msg = "NotTested"
         self.__non_detection_result = True
 
-    def update(self):
+    def update(self) -> None:
         summary_str = f"Detection: {self.__detection_msg} NonDetection: {self.__non_detection_msg}"
         if self.__detection_result and self.__non_detection_result:
             self._success = True
@@ -482,7 +482,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             self.get_logger().error("Scenario format error.")
             rclpy.shutdown()
 
-    def timer_cb(self):
+    def timer_cb(self) -> None:
         super().timer_cb(
             register_loop_func=self.publish_goal_pose, register_shutdown_func=self.write_graph_data
         )
@@ -493,7 +493,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             self.__goal_pose.header.stamp = self._current_time
             self.__pub_goal_pose.publish(self.__goal_pose)
 
-    def write_graph_data(self):
+    def write_graph_data(self) -> None:
         # jsonlを一旦閉じて開きなおす
         self._result_writer.close()
         jsonl_file_path = Path(
@@ -521,7 +521,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             except json.JSONDecodeError:
                 pass
 
-    def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput):
+    def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput) -> None:
         self.__pub_marker_non_detection.publish(msg.marker_array)
         pcd_header = msg.pointcloud.header
         unix_time: int = eval_conversions.unix_time_from_ros_msg(pcd_header)

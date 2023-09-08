@@ -35,11 +35,11 @@ class ShutdownOnce(EmitEvent):
     shutdown_called = False
     """Action that shuts down a launched system by emitting Shutdown when executed."""
 
-    def __init__(self, *, reason: str = "reason not given", **kwargs) -> None:
+    def __init__(self, *, reason: str = "reason not given", **kwargs) -> None:  # noqa
         super().__init__(event=ShutdownEvent(reason=reason), **kwargs)
 
     @classmethod
-    def parse(cls, entity: Entity, parser: Parser):
+    def parse(cls, entity: Entity, parser: Parser):  # noqa
         """Return `Shutdown` action and kwargs for constructing it."""
         _, kwargs = super().parse(entity, parser)
         reason = entity.get_attr("reason", optional=True)
@@ -47,7 +47,7 @@ class ShutdownOnce(EmitEvent):
             kwargs["reason"] = parser.parse_substitution(reason)
         return cls, kwargs
 
-    def execute(self, context: LaunchContext):
+    def execute(self, context: LaunchContext) -> None:
         """Execute the action."""
         if ShutdownOnce.shutdown_called:
             return

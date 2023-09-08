@@ -29,7 +29,7 @@ class YabLocResult(ResultBase):
         self.__yabloc_availability_result = False
         self.__yabloc_availability_msg = "NotTested"
 
-    def update(self):
+    def update(self) -> None:
         if self.__yabloc_availability_result:
             yabloc_availability_summary = (
                 f"YabLoc Availability (Passed): {self.__yabloc_availability_msg}"
@@ -46,7 +46,7 @@ class YabLocResult(ResultBase):
             self._success = False
             self._summary = f"Failed: {summary_str}"
 
-    def set_frame(self, msg: DiagnosticArray):
+    def set_frame(self, msg: DiagnosticArray) -> None:
         for diag_status in msg.status:
             out_frame = {"Ego": {}}
             if diag_status.name != "yabloc_monitor: yabloc_status":
@@ -79,7 +79,7 @@ class YabLocEvaluator(DLREvaluator):
     def check_scenario(self) -> None:
         pass
 
-    def diagnostics_cb(self, msg: DiagnosticArray):
+    def diagnostics_cb(self, msg: DiagnosticArray) -> None:
         self.__result.set_frame(msg)
         self._result_writer.write(self.__result)
 

@@ -24,7 +24,7 @@ from launch.substitutions import LaunchConfiguration
 import driving_log_replayer.launch_common
 
 
-def generate_launch_description():
+def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     launch_arguments.append(DeclareLaunchArgument("sensing", default_value="false"))
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
