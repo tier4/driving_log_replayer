@@ -85,7 +85,7 @@ class YabLocEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return YabLocEvaluator("yabloc_evaluator")
 
 

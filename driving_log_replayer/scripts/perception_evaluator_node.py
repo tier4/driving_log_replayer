@@ -392,7 +392,7 @@ class PerceptionEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return PerceptionEvaluator("perception_evaluator")
 
 

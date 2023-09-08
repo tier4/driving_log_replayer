@@ -203,10 +203,10 @@ class Perception2DEvaluator(DLREvaluator):
             return f"/perception/object_recognition/detection/rois{camera_no}"
         return f"/perception/object_recognition/detection/tracked/rois{camera_no}"  # tracking2d
 
-    def timer_cb(self):
+    def timer_cb(self) -> None:
         super().timer_cb(register_shutdown_func=self.write_metrics)
 
-    def write_metrics(self):
+    def write_metrics(self) -> None:
         self.save_pkl(self.__evaluator.frame_results)
         self.get_final_result()
         score_dict = {}
@@ -289,7 +289,7 @@ class Perception2DEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return Perception2DEvaluator("perception_2d_evaluator")
 
 

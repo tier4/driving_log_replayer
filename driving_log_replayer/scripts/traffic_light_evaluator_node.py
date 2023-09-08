@@ -245,7 +245,7 @@ class TrafficLightEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return TrafficLightEvaluator("traffic_light_evaluator")
 
 

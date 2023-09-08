@@ -357,7 +357,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return PerformanceDiagEvaluator("performance_diag_evaluator")
 
 

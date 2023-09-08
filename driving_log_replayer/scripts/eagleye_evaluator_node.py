@@ -84,7 +84,7 @@ class EagleyeEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return EagleyeEvaluator("eagleye_evaluator")
 
 

@@ -595,7 +595,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         if graph_non_detection is not None:
             self.__pub_graph_non_detection.publish(graph_non_detection)
 
-    def awapi_status_cb(self, msg: AwapiAutowareStatus):
+    def awapi_status_cb(self, msg: AwapiAutowareStatus) -> None:
         self.__latest_stop_reasons = []
         if reasons := msg.stop_reason.stop_reasons:
             for msg_reason in reasons:
@@ -605,7 +605,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return ObstacleSegmentationEvaluator("obstacle_segmentation_evaluator")
 
 

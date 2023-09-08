@@ -60,7 +60,7 @@ class Position:
     def __init__(self, data: Dict = {}) -> None:  # noqa
         self.try_parse_dict(data)
 
-    def try_parse_dict(self, data):
+    def try_parse_dict(self, data) -> None:
         if isinstance(data, dict):
             try:
                 self.y = data["x"]
@@ -91,8 +91,8 @@ class Position:
             return math.hypot(self.x, self.y)
         return None
 
-    def add_overhang(self, val: float):
+    def add_overhang(self, val: float) -> None:
         self.y = self.y + val
 
-    def sub_overhang(self, val: float):
+    def sub_overhang(self, val: float) -> None:
         self.y = self.y - val

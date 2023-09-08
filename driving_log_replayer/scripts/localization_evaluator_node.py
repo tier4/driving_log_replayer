@@ -337,7 +337,7 @@ class LocalizationEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return LocalizationEvaluator("localization_evaluator")
 
 
