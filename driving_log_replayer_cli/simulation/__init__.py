@@ -25,11 +25,17 @@ def run(profile: str, rate: float, delay: float, no_json: bool) -> None:
     """Run simulation using data_directory and show result."""
     config = load_config(profile)
     output_dir_by_time = os.path.join(
-        config.output_directory, datetime.datetime.now().strftime("%Y-%m%d-%H%M%S")
+        config.output_directory,
+        datetime.datetime.now().strftime("%Y-%m%d-%H%M%S"),
     )
     print(output_dir_by_time)
     sim_run(
-        config.data_directory, output_dir_by_time, config.autoware_path, rate, delay, not no_json
+        config.data_directory,
+        output_dir_by_time,
+        config.autoware_path,
+        rate,
+        delay,
+        not no_json,
     )
 
 

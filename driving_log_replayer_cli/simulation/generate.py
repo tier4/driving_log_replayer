@@ -129,7 +129,8 @@ class TestScriptGenerator:
         annotation_bag = Path(scenario_root).joinpath("annotation_bag")
         if need_annotation and not annotation_bag.exists():
             termcolor.cprint(
-                "annotation_bag file" + annotation_bag.as_posix() + " does not exist.", "red"
+                "annotation_bag file" + annotation_bag.as_posix() + " does not exist.",
+                "red",
             )
             return None
 
@@ -154,7 +155,7 @@ class TestScriptGenerator:
             launch_args += " annotation_bag:=" + annotation_bag.as_posix()
             if "RecordRate" in scenario_yaml_obj["Annotation"]:
                 launch_args += " annotation_record_rate:=" + str(
-                    scenario_yaml_obj["Annotation"]["RecordRate"]
+                    scenario_yaml_obj["Annotation"]["RecordRate"],
                 )
 
         # logging_simulator.launch args
@@ -166,13 +167,14 @@ class TestScriptGenerator:
         # diag launch localization
         if scenario_yaml_obj["Evaluation"]["UseCaseName"] == "performance_diag":
             launch_args += " localization:=" + str(
-                scenario_yaml_obj["Evaluation"]["LaunchLocalization"]
+                scenario_yaml_obj["Evaluation"]["LaunchLocalization"],
             )
         if scenario_yaml_obj["Evaluation"]["UseCaseName"] == "obstacle_detection":
             launch_planning = scenario_yaml_obj["Evaluation"].get("LaunchPlanning", False)
             launch_args += " planning:=" + str(launch_planning)
             target_pointcloud = scenario_yaml_obj["Evaluation"]["Conditions"].get(
-                "TargetPointCloud", "/perception/obstacle_segmentation/pointcloud"
+                "TargetPointCloud",
+                "/perception/obstacle_segmentation/pointcloud",
             )
             launch_args += " target_pointcloud:=" + target_pointcloud
         launch_command = launch_base_command + launch_args
@@ -244,7 +246,8 @@ class TestScriptGenerator:
 
             launch_args = " scenario_path:=" + scenario_path
             launch_args += " result_json_path:=" + os.path.join(
-                output_dir_per_dataset, "result.json"
+                output_dir_per_dataset,
+                "result.json",
             )
 
             # ros2 bag play args
@@ -266,7 +269,8 @@ class TestScriptGenerator:
             # t4_dataset
             launch_args += " t4_dataset_path:=" + t4_dataset_path
             launch_args += " result_archive_path:=" + os.path.join(
-                output_dir_per_dataset, "result_archive"
+                output_dir_per_dataset,
+                "result_archive",
             )
             launch_args += " sensing:=" + launch_sensing
             launch_command = launch_base_command + launch_args + "\n"

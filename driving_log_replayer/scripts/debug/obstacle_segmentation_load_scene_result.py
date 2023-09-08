@@ -28,7 +28,11 @@ import yaml
 
 class ObstacleSegmentationEvaluatorPickle:
     def __init__(
-        self, pickle_path: str, scenario_path: str, t4_dataset_path: str, log_path: str
+        self,
+        pickle_path: str,
+        scenario_path: str,
+        t4_dataset_path: str,
+        log_path: str,
     ) -> None:
         self.__scenario_yaml_obj = None
         self.__loaded_frame_results = None
@@ -81,10 +85,16 @@ class ObstacleSegmentationEvaluatorPickle:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-p", "--pickle", required=True, help="path of the pickle file to load scene_result"
+        "-p",
+        "--pickle",
+        required=True,
+        help="path of the pickle file to load scene_result",
     )
     parser.add_argument(
-        "-s", "--scenario", required=True, help="path of the scenario to load evaluator settings"
+        "-s",
+        "--scenario",
+        required=True,
+        help="path of the scenario to load evaluator settings",
     )
     parser.add_argument("-d", "--dataset", required=True, help="path of the t4_dataset")
     parser.add_argument("-l", "--log_path", required=True, help="perception_eval log path")

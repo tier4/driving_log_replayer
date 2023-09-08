@@ -39,7 +39,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         ],
     )
     topic_monitor = driving_log_replayer.launch_common.get_topic_state_monitor_launch(
-        "localization_topics.yaml"
+        "localization_topics.yaml",
     )
 
     return launch.LaunchDescription(
@@ -52,5 +52,5 @@ def generate_launch_description() -> launch.LaunchDescription:
             recorder,
             player,
             topic_monitor,
-        ]
+        ],
     )

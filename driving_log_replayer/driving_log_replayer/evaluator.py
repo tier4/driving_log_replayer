@@ -64,10 +64,10 @@ class DLREvaluator(Node, ABC):
         self.declare_parameter("result_json_path", "")
 
         self._scenario_path = expandvars(
-            self.get_parameter("scenario_path").get_parameter_value().string_value
+            self.get_parameter("scenario_path").get_parameter_value().string_value,
         )
         self._result_json_path = expandvars(
-            self.get_parameter("result_json_path").get_parameter_value().string_value
+            self.get_parameter("result_json_path").get_parameter_value().string_value,
         )
 
         self._scenario_yaml_obj = None
@@ -80,14 +80,16 @@ class DLREvaluator(Node, ABC):
 
         self._condition = self._scenario_yaml_obj["Evaluation"].get("Conditions", {})
         self._result_writer = ResultWriter(
-            self._result_json_path, self.get_clock(), self._condition
+            self._result_json_path,
+            self.get_clock(),
+            self._condition,
         )
 
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
         self._initial_pose = DLREvaluator.set_initial_pose(
-            self._scenario_yaml_obj["Evaluation"].get("InitialPose", None)
+            self._scenario_yaml_obj["Evaluation"].get("InitialPose", None),
         )
         self.start_initialpose_service()
 
@@ -108,16 +110,18 @@ class DLREvaluator(Node, ABC):
         self.declare_parameter("result_archive_path", "")
 
         result_archive_path = Path(
-            expandvars(self.get_parameter("result_archive_path").get_parameter_value().string_value)
+            expandvars(
+                self.get_parameter("result_archive_path").get_parameter_value().string_value,
+            ),
         )
         result_archive_path.mkdir(exist_ok=True)
 
         self._pkl_path = result_archive_path.joinpath("scene_result.pkl").as_posix()
         self._t4_dataset_paths = [
-            expandvars(self.get_parameter("t4_dataset_path").get_parameter_value().string_value)
+            expandvars(self.get_parameter("t4_dataset_path").get_parameter_value().string_value),
         ]
         self._perception_eval_log_path = result_archive_path.parent.joinpath(
-            "perception_eval_log"
+            "perception_eval_log",
         ).as_posix()
 
     def timer_cb(
@@ -150,10 +154,12 @@ class DLREvaluator(Node, ABC):
         self._initial_pose_running = False
         self._initial_pose_success = False
         self._initial_pose_client = self.create_client(
-            InitializeLocalization, "/api/localization/initialize"
+            InitializeLocalization,
+            "/api/localization/initialize",
         )
         self._map_fit_client = self.create_client(
-            PoseWithCovarianceStampedSrv, "/map/map_height_fitter/service"
+            PoseWithCovarianceStampedSrv,
+            "/map/map_height_fitter/service",
         )
 
         while not self._initial_pose_client.wait_for_service(timeout_sec=1.0):
@@ -164,12 +170,12 @@ class DLREvaluator(Node, ABC):
     def call_initialpose_service(self) -> None:
         if not self._initial_pose_success and not self._initial_pose_running:
             self.get_logger().info(
-                f"call initial_pose time: {self._current_time.sec}.{self._current_time.nanosec}"
+                f"call initial_pose time: {self._current_time.sec}.{self._current_time.nanosec}",
             )
             self._initial_pose_running = True
             self._initial_pose.header.stamp = self._current_time
             future_map_fit = self._map_fit_client.call_async(
-                PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose)
+                PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose),
             )
             future_map_fit.add_done_callback(self.map_fit_cb)
 
@@ -178,7 +184,7 @@ class DLREvaluator(Node, ABC):
         if result is not None:
             if result.success:
                 future_init_pose = self._initial_pose_client.call_async(
-                    InitializeLocalization.Request(pose=[result.pose_with_covariance])
+                    InitializeLocalization.Request(pose=[result.pose_with_covariance]),
                 )
                 future_init_pose.add_done_callback(self.initial_pose_cb)
             else:
@@ -196,7 +202,7 @@ class DLREvaluator(Node, ABC):
             res_status: ResponseStatus = result.status
             self._initial_pose_success = res_status.success
             self.get_logger().info(
-                f"initial_pose_success: {self._initial_pose_success}"
+                f"initial_pose_success: {self._initial_pose_success}",
             )  # debug msg
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
@@ -206,7 +212,10 @@ class DLREvaluator(Node, ABC):
     def lookup_transform(self, stamp: Stamp) -> TransformStamped:
         try:
             return self._tf_buffer.lookup_transform(
-                "map", "base_link", stamp, Duration(seconds=0.5)
+                "map",
+                "base_link",
+                stamp,
+                Duration(seconds=0.5),
             )
         except TransformException as ex:
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
@@ -247,7 +256,7 @@ class DLREvaluator(Node, ABC):
                 transform_stamped.transform.rotation.y,
                 transform_stamped.transform.rotation.z,
                 transform_stamped.transform.rotation.w,
-            ]
+            ],
         )
         tf_euler["rotation_euler"] = {
             "roll": euler_angle[0],
@@ -308,7 +317,7 @@ class DLREvaluator(Node, ABC):
                     0.0,
                     0.0,
                     0.06853892326654787,
-                ]
+                ],
             )
         except KeyError:
             return None

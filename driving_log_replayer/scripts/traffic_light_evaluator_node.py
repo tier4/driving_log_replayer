@@ -93,7 +93,7 @@ class TrafficLightResult(ResultBase):
                     "TP": len(frame.pass_fail_result.tp_object_results),
                     "FP": len(frame.pass_fail_result.fp_object_results),
                     "FN": len(frame.pass_fail_result.fn_objects),
-                }
+                },
             ],
         }
         self._frame = out_frame
@@ -189,13 +189,15 @@ class TrafficLightEvaluator(DLREvaluator):
         self._result_writer.write(self.__result)
 
     def list_dynamic_object_2d_from_ros_msg(
-        self, unix_time: int, signals: List[TrafficSignal]
+        self,
+        unix_time: int,
+        signals: List[TrafficSignal],
     ) -> List[DynamicObject2D]:
         estimated_objects: List[DynamicObject2D] = []
         for signal in signals:
             most_probable_light = DLREvaluator.get_most_probable_signal(signal.lights)
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                name=DLREvaluator.get_traffic_light_label_str(most_probable_light)
+                name=DLREvaluator.get_traffic_light_label_str(most_probable_light),
             )
 
             estimated_object = DynamicObject2D(
@@ -217,7 +219,8 @@ class TrafficLightEvaluator(DLREvaluator):
             self.__skip_counter += 1
         else:
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
-                unix_time, msg.signals
+                unix_time,
+                msg.signals,
             )
             ros_critical_ground_truth_objects = ground_truth_now_frame.objects
             frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(

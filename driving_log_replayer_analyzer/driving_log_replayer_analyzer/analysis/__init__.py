@@ -41,7 +41,10 @@ def analysis() -> None:
     help="Distance type to calculate threshold. Possible values are front(vehicle front direction), side(vehicle side direction) and euclidean distance",
 )
 def obstacle_segmentation(
-    input_jsonl: str, output_dir: Optional[str], config_yaml: Optional[str], dist_type: str
+    input_jsonl: str,
+    output_dir: Optional[str],
+    config_yaml: Optional[str],
+    dist_type: str,
 ) -> None:
     """Run obstacle_segmentation analysis."""
     p_input_jsonl = Path(os.path.expandvars(input_jsonl))

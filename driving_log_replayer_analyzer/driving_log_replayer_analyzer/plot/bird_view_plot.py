@@ -50,13 +50,13 @@ class BirdViewPlot(PlotBase):
                     range=[
                         self._get_min("x") - self.MARGIN,
                         self._get_min("x") + plot_range,
-                    ]
+                    ],
                 )
                 self._fig.update_yaxes(
                     range=[
                         self._get_min("y") - self.MARGIN,
                         self._get_min("y") + plot_range,
-                    ]
+                    ],
                 )
         else:  # noqa
             # specify axis

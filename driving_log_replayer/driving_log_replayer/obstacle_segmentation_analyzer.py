@@ -54,7 +54,11 @@ def update_config(config: Config, vehicle_model: str) -> Config:
 
 
 def get_graph_data(
-    input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path, dist_type: DistType
+    input_jsonl: Path,
+    vehicle_model: str,
+    output_dir: Path,
+    config_yaml: Path,
+    dist_type: DistType,
 ) -> Tuple[Dict, Dict]:
     output_dir.mkdir(exist_ok=True)
 

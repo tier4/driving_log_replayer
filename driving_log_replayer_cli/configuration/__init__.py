@@ -23,7 +23,10 @@ def configuration() -> None:
     help="profile name in config file default value is default",
 )
 def register(
-    data_directory: str, output_directory: str, autoware_path: str, profile_name: str
+    data_directory: str,
+    output_directory: str,
+    autoware_path: str,
+    profile_name: str,
 ) -> None:
     """Create profile in driving_log_replayer config file."""
     config = Config(
