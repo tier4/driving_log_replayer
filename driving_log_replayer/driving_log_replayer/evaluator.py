@@ -124,14 +124,14 @@ class DLREvaluator(Node, ABC):
     def timer_cb(
         self,
         *,
-        register_startup_func: Optional[Callable] = None,
+        register_loop_func: Optional[Callable] = None,
         register_shutdown_func: Optional[Callable] = None,
     ) -> None:
         self._current_time = self.get_clock().now().to_msg()
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self._current_time.sec > 0:
-            if register_startup_func is not None:
-                register_startup_func()
+            if register_loop_func is not None:
+                register_loop_func()
             if self._initial_pose is not None:
                 self.call_initialpose_service()
             if self._current_time == self._prev_time:
