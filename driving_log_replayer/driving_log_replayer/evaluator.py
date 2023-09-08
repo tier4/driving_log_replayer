@@ -318,25 +318,17 @@ class DLREvaluator(Node, ABC):
 
     @classmethod
     def get_perception_label_str(cls, classification: ObjectClassification) -> str:
-        if classification.label == ObjectClassification.UNKNOWN:
-            return "unknown"
-        if classification.label == ObjectClassification.CAR:
-            return "car"
-        if classification.label == ObjectClassification.TRUCK:
-            return "truck"
-        if classification.label == ObjectClassification.BUS:
-            return "bus"
-        if classification.label == ObjectClassification.TRAILER:
-            # not implemented in iv
-            return "trailer"
-        if classification.label == ObjectClassification.MOTORCYCLE:
-            # iv: motorbike, auto: motorbike
-            return "motorbike"
-        if classification.label == ObjectClassification.BICYCLE:
-            return "bicycle"
-        if classification.label == ObjectClassification.PEDESTRIAN:
-            return "pedestrian"
-        return "other"
+        label_str_dict = {
+            ObjectClassification.UNKNOWN: "unknown",
+            ObjectClassification.CAR: "car",
+            ObjectClassification.TRUCK: "truck",
+            ObjectClassification.BUS: "bus",
+            ObjectClassification.TRAILER: "trailer",
+            ObjectClassification.MOTORCYCLE: "motorbike",
+            ObjectClassification.BICYCLE: "bicycle",
+            ObjectClassification.PEDESTRIAN: "pedestrian",
+        }
+        return label_str_dict.get(classification.label, "other")
 
     @classmethod
     def get_most_probable_classification(
