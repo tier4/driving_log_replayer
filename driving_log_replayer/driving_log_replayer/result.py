@@ -16,6 +16,7 @@ from abc import ABC
 from abc import abstractmethod
 import os
 import pickle
+from typing import Any
 from typing import Dict
 
 from rclpy.clock import Clock
@@ -94,12 +95,6 @@ class ResultWriter:
 
 
 class PickleWriter:
-    def __init__(self, out_pkl_path: str):
-        self._pickle_file = open(os.path.expandvars(out_pkl_path), "wb")  # noqa
-
-    def dump(self, write_object):
-        pickle.dump(write_object, self._pickle_file)
-        self.close()
-
-    def close(self):
-        self._pickle_file.close()
+    def __init__(self, out_pkl_path: str, write_object: Any):
+        with open(os.path.expandvars(out_pkl_path), "wb") as pkl_file:
+            pickle.dump(write_object, pkl_file)
