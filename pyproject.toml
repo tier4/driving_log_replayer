@@ -50,8 +50,8 @@ line-length = 100
 show-source = true
 # https://beta.ruff.rs/docs/rules/
 # select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
-# "G", "S", "T", "ANN", "COM", "DJ", "DTZ", "ERA", "INP", "PD", "PGH", "PTH"
-select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "ARG", "BLE", "EM", "EXE", "FBT", "ICN", "ISC", "NPY", "PIE", "PT", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT", "PL", "ERA"]
+# "G", "S", "T", "ANN", "COM", "DJ", "DTZ"
+select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "ARG", "BLE", "EM", "ERA", "EXE", "FBT", "ICN", "ISC", "NPY", "PIE", "PL", "PT", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
 ignore = ["D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417", "E203", "E501", "Q000", "S108", "FBT001", "S602", "C901", "UP006", "UP007", "UP035", "PLR0913"]
 fixable=["D", "I", "EXE", "PIE"]
 
