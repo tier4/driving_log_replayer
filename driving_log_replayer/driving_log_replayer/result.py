@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from abc import ABC
+from abc import abstractmethod
 import os
 import pickle
+from typing import Any
 from typing import Dict
 
 from rclpy.clock import Clock
@@ -21,7 +24,7 @@ from rclpy.clock import ClockType
 import simplejson as json
 
 
-class ResultBase:
+class ResultBase(ABC):
     def __init__(self) -> None:
         self._success = False
         self._summary = "NoData"
@@ -35,6 +38,14 @@ class ResultBase:
 
     def frame(self) -> Dict:
         return self._frame
+
+    @abstractmethod
+    def update(self) -> None:
+        """Update success and summary."""
+
+    @abstractmethod
+    def set_frame(self, msg) -> None:
+        """Set the result of one frame from the subscribe ros message."""
 
 
 class ResultWriter:
@@ -84,12 +95,6 @@ class ResultWriter:
 
 
 class PickleWriter:
-    def __init__(self, out_pkl_path: str):
-        self._pickle_file = open(os.path.expandvars(out_pkl_path), "wb")  # noqa
-
-    def dump(self, write_object):
-        pickle.dump(write_object, self._pickle_file)
-        self.close()
-
-    def close(self):
-        self._pickle_file.close()
+    def __init__(self, out_pkl_path: str, write_object: Any):
+        with open(os.path.expandvars(out_pkl_path), "wb") as pkl_file:
+            pickle.dump(write_object, pkl_file)
