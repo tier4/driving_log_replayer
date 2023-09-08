@@ -23,7 +23,6 @@ from typing import Union
 
 from autoware_auto_perception_msgs.msg import DetectedObject
 from autoware_auto_perception_msgs.msg import DetectedObjects
-from autoware_auto_perception_msgs.msg import ObjectClassification
 from autoware_auto_perception_msgs.msg import TrackedObject
 from autoware_auto_perception_msgs.msg import TrackedObjects
 from geometry_msgs.msg import TransformStamped
@@ -53,43 +52,6 @@ from driving_log_replayer.evaluator import evaluator_main
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultBase
-
-
-def get_label(classification: ObjectClassification) -> str:
-    if classification.label == ObjectClassification.UNKNOWN:
-        return "unknown"
-    if classification.label == ObjectClassification.CAR:
-        return "car"
-    if classification.label == ObjectClassification.TRUCK:
-        return "truck"
-    if classification.label == ObjectClassification.BUS:
-        return "bus"
-    if classification.label == ObjectClassification.TRAILER:
-        # not implemented in iv
-        return "trailer"
-    if classification.label == ObjectClassification.MOTORCYCLE:
-        # iv: motorbike, auto: motorbike
-        return "motorbike"
-    if classification.label == ObjectClassification.BICYCLE:
-        return "bicycle"
-    if classification.label == ObjectClassification.PEDESTRIAN:
-        return "pedestrian"
-    # not implemented in auto
-    # elif classification.label == ObjectClassification.ANIMAL:
-    #     return "animal"
-    return "other"
-
-
-def get_most_probable_classification(
-    array_classification: List[ObjectClassification],
-) -> ObjectClassification:
-    highest_probability = 0.0
-    highest_classification = None
-    for classification in array_classification:
-        if classification.probability >= highest_probability:
-            highest_probability = classification.probability
-            highest_classification = classification
-    return highest_classification
 
 
 class PerceptionResult(ResultBase):
@@ -284,11 +246,11 @@ class PerceptionEvaluator(DLREvaluator):
     ) -> List[DynamicObject]:
         estimated_objects: List[DynamicObject] = []
         for perception_object in objects:
-            most_probable_classification = get_most_probable_classification(
+            most_probable_classification = DLREvaluator.get_most_probable_classification(
                 perception_object.classification
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                name=get_label(most_probable_classification)
+                name=DLREvaluator.get_perception_label_str(most_probable_classification)
             )
 
             uuid = None
