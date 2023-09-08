@@ -24,6 +24,8 @@ from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from autoware_auto_perception_msgs.msg import ObjectClassification
+from autoware_auto_perception_msgs.msg import TrafficLight
+from builtin_interfaces.msg import Time as Stamp
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from geometry_msgs.msg import TransformStamped
@@ -34,10 +36,12 @@ from rclpy.clock import Clock
 from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
+from rclpy.time import Duration
 from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
 import simplejson as json
 from tf2_ros import Buffer
+from tf2_ros import TransformException
 from tf2_ros import TransformListener
 from tf_transformations import euler_from_quaternion
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
@@ -190,6 +194,15 @@ class DLREvaluator(Node, ABC):
         # free self._initial_pose_running
         self._initial_pose_running = False
 
+    def lookup_transform(self, stamp: Stamp) -> TransformStamped:
+        try:
+            return self._tf_buffer.lookup_transform(
+                "map", "base_link", stamp, Duration(seconds=0.5)
+            )
+        except TransformException as ex:
+            self.get_logger().info(f"Could not transform map to baselink: {ex}")
+            return TransformStamped()
+
     @abstractmethod
     def check_scenario(self) -> None:
         """Check self._scenario_yaml_obj and if has error shutdown."""
@@ -324,6 +337,29 @@ class DLREvaluator(Node, ABC):
                 highest_probability = classification.probability
                 highest_classification = classification
         return highest_classification
+
+    @classmethod
+    def get_traffic_light_label_str(cls, light: TrafficLight) -> str:
+        if light.color == TrafficLight.RED:
+            return "red"
+        if light.color == TrafficLight.AMBER:
+            return "yellow"
+        if light.color == TrafficLight.GREEN:
+            return "green"
+        return "unknown"
+
+    @classmethod
+    def get_most_probable_signal(
+        cls,
+        lights: List[TrafficLight],
+    ) -> TrafficLight:
+        highest_probability = 0.0
+        highest_light = None
+        for light in lights:
+            if light.confidence >= highest_probability:
+                highest_probability = light.confidence
+                highest_light = light
+        return highest_light
 
 
 def evaluator_main(func):

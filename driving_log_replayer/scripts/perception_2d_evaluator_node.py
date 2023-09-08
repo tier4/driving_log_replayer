@@ -19,7 +19,6 @@ import os
 from typing import Dict
 from typing import List
 
-from geometry_msgs.msg import TransformStamped
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
@@ -30,9 +29,7 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from rclpy.time import Duration
 from std_msgs.msg import Header
-from tf2_ros import TransformException
 from tier4_perception_msgs.msg import DetectedObjectsWithFeature
 from tier4_perception_msgs.msg import DetectedObjectWithFeature
 
@@ -255,13 +252,7 @@ class Perception2DEvaluator(DLREvaluator):
 
     def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str):
         # self.get_logger().error(f"{camera_type} callback")
-        try:
-            map_to_baselink = self._tf_buffer.lookup_transform(
-                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
-            )
-        except TransformException as ex:
-            self.get_logger().info(f"Could not transform map to baselink: {ex}")
-            map_to_baselink = TransformStamped()
+        map_to_baselink = self.lookup_transform(msg.header.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
