@@ -2,6 +2,7 @@ import glob
 import os
 from pathlib import Path
 import subprocess
+from typing import Dict
 from typing import Optional
 
 from natsort import natsorted
@@ -106,7 +107,7 @@ class TestScriptGenerator:
         scenario_root: str,
         scenario_name: str,
         scenario_output_dir: str,
-        scenario_yaml_obj: dict,
+        scenario_yaml_obj: Dict,
     ) -> Optional[str]:
         map_path = ""
         if "LocalMapPath" in scenario_yaml_obj:
@@ -194,7 +195,7 @@ class TestScriptGenerator:
         scenario_root: str,
         scenario_name: str,
         scenario_output_dir: str,
-        scenario_yaml_obj: dict,
+        scenario_yaml_obj: Dict,
     ) -> Optional[str]:
         launch_command_for_all_dataset = ""
         scenario_path = os.path.join(scenario_root, scenario_name)
