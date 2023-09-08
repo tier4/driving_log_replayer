@@ -296,7 +296,7 @@ class JsonlParser:
                     )
         return ret
 
-    def get_pointcloud_position(self) -> list:
+    def get_pointcloud_position(self) -> List:
         """自車を基準としたアノテーションバウンディングボックス(BB)のPointCloudの最近傍点、ラベルとしてPointCloudを付与したリストを作成する."""
         ret = []
         for frame in self.detection:
@@ -333,7 +333,7 @@ class JsonlParser:
                     )
         return ret
 
-    def get_bb_dist_with_stamp(self) -> list:
+    def get_bb_dist_with_stamp(self) -> List:
         ret = []
         i = 0
         for detection, frame, stamp in zip(self.detection, self.frame, self.stamp):
