@@ -40,7 +40,7 @@ from driving_log_replayer.result import ResultBase
 
 
 class Perception2DResult(ResultBase):
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         self.__pass_rate = condition["PassRate"]
         self.__target_cameras = condition["TargetCameras"]
@@ -54,7 +54,7 @@ class Perception2DResult(ResultBase):
             self.__result[camera_type] = True
             self.__msg[camera_type] = "NotTested"
 
-    def update(self):
+    def update(self) -> None:
         summary_str = ""
         for camera_type, eval_msg in self.__msg.items():
             summary_str += f" {camera_type}: {eval_msg}"
@@ -72,7 +72,7 @@ class Perception2DResult(ResultBase):
         header: Header,  # noqa
         map_to_baselink: Dict,
         camera_type: str,
-    ):
+    ) -> None:
         self.__total[camera_type] += 1
         has_objects = True
         if (
@@ -114,12 +114,12 @@ class Perception2DResult(ResultBase):
         self._frame = out_frame
         self.update()
 
-    def set_final_metrics(self, final_metrics: Dict):
+    def set_final_metrics(self, final_metrics: Dict) -> None:
         self._frame = {"FinalScore": final_metrics}
 
 
 class Perception2DEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
         self.use_t4_dataset()
@@ -203,10 +203,10 @@ class Perception2DEvaluator(DLREvaluator):
             return f"/perception/object_recognition/detection/rois{camera_no}"
         return f"/perception/object_recognition/detection/tracked/rois{camera_no}"  # tracking2d
 
-    def timer_cb(self):
+    def timer_cb(self) -> None:
         super().timer_cb(register_shutdown_func=self.write_metrics)
 
-    def write_metrics(self):
+    def write_metrics(self) -> None:
         self.save_pkl(self.__evaluator.frame_results)
         self.get_final_result()
         score_dict = {}
@@ -247,7 +247,7 @@ class Perception2DEvaluator(DLREvaluator):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str):
+    def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得
@@ -289,7 +289,7 @@ class Perception2DEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return Perception2DEvaluator("perception_2d_evaluator")
 
 

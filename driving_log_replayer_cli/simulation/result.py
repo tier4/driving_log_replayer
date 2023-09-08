@@ -9,10 +9,10 @@ import termcolor
 
 
 class DrivingLogReplayerResultViewer:
-    def __init__(self, result_path):
+    def __init__(self, result_path: str) -> None:
         self.__result_path = result_path
 
-    def output(self):
+    def output(self) -> None:
         print("--------------------------------------------------")
         self.__result_json_dict = {}
         with open(self.__result_path) as jsonl_file:
@@ -32,10 +32,10 @@ class DrivingLogReplayerResultViewer:
 
 
 class DrivingLogReplayerResultConverter:
-    def __init__(self, result_path):
+    def __init__(self, result_path: str) -> None:
         self.__result_path = result_path
 
-    def convert(self):
+    def convert(self) -> None:
         output_file_path = Path(self.__result_path).parent.joinpath("result.json")
         if output_file_path.exists():
             return
@@ -45,7 +45,7 @@ class DrivingLogReplayerResultConverter:
                 json.dump(result_dict, out_file)
 
 
-def display(output_directory: str):
+def display(output_directory: str) -> None:
     regex = os.path.join(os.path.expandvars(output_directory), "**", "result.jsonl")
     result_paths = glob.glob(regex, recursive=True)
     number = 1
@@ -59,7 +59,7 @@ def display(output_directory: str):
         number = number + 1
 
 
-def convert(output_directory: str):
+def convert(output_directory: str) -> None:
     regex = os.path.join(os.path.expandvars(output_directory), "**", "result.jsonl")
     result_paths = glob.glob(regex, recursive=True)
     for result_path in natsorted(result_paths):

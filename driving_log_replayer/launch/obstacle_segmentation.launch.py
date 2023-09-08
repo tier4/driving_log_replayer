@@ -20,7 +20,7 @@ import driving_log_replayer.launch_common
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
 
-def generate_launch_description():
+def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
         planning="true", localization="false", control="true", scenario_simulation="true"

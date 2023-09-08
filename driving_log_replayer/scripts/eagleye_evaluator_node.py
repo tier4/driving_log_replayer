@@ -23,13 +23,13 @@ from driving_log_replayer.result import ResultBase
 
 
 class EagleyeResult(ResultBase):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         # availability
         self.__eagleye_availability_result = False
         self.__eagleye_availability_msg = "NotTested"
 
-    def update(self):
+    def update(self) -> None:
         if self.__eagleye_availability_result:
             eagleye_availability_summary = (
                 f"Eagleye Availability (Passed): {self.__eagleye_availability_msg}"
@@ -46,7 +46,7 @@ class EagleyeResult(ResultBase):
             self._success = False
             self._summary = f"Failed: {summary_str}"
 
-    def set_frame(self, msg: DiagnosticArray):
+    def set_frame(self, msg: DiagnosticArray) -> None:
         for diag_status in msg.status:
             out_frame = {"Ego": {}}
             if diag_status.name != "monitor: eagleye_enu_absolute_pos_interpolate":
@@ -62,7 +62,7 @@ class EagleyeResult(ResultBase):
 
 
 class EagleyeEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
 
@@ -78,13 +78,13 @@ class EagleyeEvaluator(DLREvaluator):
     def check_scenario(self) -> None:
         pass
 
-    def diagnostics_cb(self, msg: DiagnosticArray):
+    def diagnostics_cb(self, msg: DiagnosticArray) -> None:
         self.__result.set_frame(msg)
         self._result_writer.write(self.__result)
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return EagleyeEvaluator("eagleye_evaluator")
 
 

@@ -187,7 +187,7 @@ def get_sensing_frame_config(
 
 
 class ObstacleSegmentationResult(ResultBase):
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         self.__condition_detection: Optional[Dict] = condition.get("Detection", None)
         self.__condition_non_detection: Optional[Dict] = condition.get("NonDetection", None)
@@ -202,7 +202,7 @@ class ObstacleSegmentationResult(ResultBase):
         self.__non_detection_msg = "NotTested"
         self.__non_detection_result = True
 
-    def update(self):
+    def update(self) -> None:
         summary_str = f"Detection: {self.__detection_msg} NonDetection: {self.__non_detection_msg}"
         if self.__detection_result and self.__non_detection_result:
             self._success = True
@@ -408,7 +408,7 @@ class ObstacleSegmentationResult(ResultBase):
 class ObstacleSegmentationEvaluator(DLREvaluator):
     COUNT_FINISH_PUB_GOAL_POSE = 5
 
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
         self.use_t4_dataset()
@@ -482,7 +482,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             self.get_logger().error("Scenario format error.")
             rclpy.shutdown()
 
-    def timer_cb(self):
+    def timer_cb(self) -> None:
         super().timer_cb(
             register_loop_func=self.publish_goal_pose, register_shutdown_func=self.write_graph_data
         )
@@ -493,7 +493,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             self.__goal_pose.header.stamp = self._current_time
             self.__pub_goal_pose.publish(self.__goal_pose)
 
-    def write_graph_data(self):
+    def write_graph_data(self) -> None:
         # jsonlを一旦閉じて開きなおす
         self._result_writer.close()
         jsonl_file_path = Path(
@@ -521,7 +521,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             except json.JSONDecodeError:
                 pass
 
-    def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput):
+    def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput) -> None:
         self.__pub_marker_non_detection.publish(msg.marker_array)
         pcd_header = msg.pointcloud.header
         unix_time: int = eval_conversions.unix_time_from_ros_msg(pcd_header)
@@ -595,7 +595,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         if graph_non_detection is not None:
             self.__pub_graph_non_detection.publish(graph_non_detection)
 
-    def awapi_status_cb(self, msg: AwapiAutowareStatus):
+    def awapi_status_cb(self, msg: AwapiAutowareStatus) -> None:
         self.__latest_stop_reasons = []
         if reasons := msg.stop_reason.stop_reasons:
             for msg_reason in reasons:
@@ -605,7 +605,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return ObstacleSegmentationEvaluator("obstacle_segmentation_evaluator")
 
 

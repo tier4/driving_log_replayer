@@ -44,12 +44,12 @@ def load_config(profile: str, filepath: Optional[str] = None) -> Config:
 
 
 @overload
-def save_config(config: Config, profile: str, filepath: str):
+def save_config(config: Config, profile: str, filepath: str) -> None:
     ...
 
 
 @overload
-def save_config(config: Config, profile: str, filepath: None = None):
+def save_config(config: Config, profile: str, filepath: None = None) -> None:
     ...
 
 
@@ -113,7 +113,7 @@ def _load_from_file(filepath: str) -> Dict[str, Dict]:
         return toml.load(fp)
 
 
-def _save_as_file(data: Dict[str, Dict], filepath: str):
+def _save_as_file(data: Dict[str, Dict], filepath: str) -> None:
     from os import makedirs
     from os.path import dirname
 
@@ -129,7 +129,7 @@ def _save_as_file(data: Dict[str, Dict], filepath: str):
     chmod(filepath, S_IREAD | S_IWRITE)
 
 
-def _default_filepath():
+def _default_filepath() -> str:
     from os.path import expanduser
     from os.path import join
 

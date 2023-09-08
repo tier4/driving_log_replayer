@@ -53,7 +53,7 @@ def trim_lidar_name(diag_name: str) -> str:
 class PerformanceDiagResult(ResultBase):
     VALID_VALUE_THRESHOLD = 0.0
 
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         # visibility
         self.__visibility_condition: Dict = condition["LiDAR"]["Visibility"]
@@ -72,7 +72,7 @@ class PerformanceDiagResult(ResultBase):
             self.__blockage_lidar_success[k] = 0
             self.__blockage_lidar_result[k] = True
 
-    def update(self):
+    def update(self) -> None:
         if self.__visibility_result:
             visibility_summary = f"Visibility (Passed): {self.__visibility_msg}"
         else:
@@ -249,7 +249,7 @@ class PerformanceDiagResult(ResultBase):
         info.append(info_dict)
         return {"Result": result, "Info": info}, msg_sky_ratio, msg_ground_ratio, msg_level
 
-    def update_blockage(self):
+    def update_blockage(self) -> None:
         self.__blockage_result = True
         self.__blockage_msg = ""
         for lidar_name, v in self.__blockage_lidar_result.items():
@@ -291,7 +291,7 @@ class PerformanceDiagResult(ResultBase):
 
 
 class PerformanceDiagEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
         self.__result = PerformanceDiagResult(self._condition)
@@ -357,7 +357,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return PerformanceDiagEvaluator("performance_diag_evaluator")
 
 

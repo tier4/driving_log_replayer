@@ -75,7 +75,7 @@ class BirdViewPlot(PlotBase):
         title: str = "",
         xlabel: str = "",
         ylabel: str = "",
-    ):
+    ) -> None:
         """
         Plotを作成して保存する.
 
@@ -115,7 +115,7 @@ class BirdViewPlot(PlotBase):
         xlabel: str = "",
         ylabel: str = "",
         origin: bool = True,  # noqa
-    ):
+    ) -> None:
         """
         Plotを作成して保存する.
 

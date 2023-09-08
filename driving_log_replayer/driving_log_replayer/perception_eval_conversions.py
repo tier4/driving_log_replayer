@@ -22,6 +22,7 @@ from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
+import numpy as np
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.object import ObjectState
 from perception_eval.evaluation.result.object_result import DynamicObjectWithPerceptionResult
@@ -70,7 +71,7 @@ def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
     return None
 
 
-def uuid_from_ros_msg(ros_uuid) -> str:
+def uuid_from_ros_msg(ros_uuid: np.ndarray) -> str:
     """
     Convert uuid from unique_identifier_msgs.msg.UUID to string.
 
@@ -138,7 +139,7 @@ def dynamic_objects_to_ros_points(
     namespace: str,
     marker_id: int,
     tp_gt: bool,
-):
+) -> Marker:
     p_marker = Marker()
     p_marker.header = header
     p_marker.ns = namespace

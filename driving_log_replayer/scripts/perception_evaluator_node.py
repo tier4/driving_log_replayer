@@ -52,13 +52,13 @@ from driving_log_replayer.result import ResultBase
 
 
 class PerceptionResult(ResultBase):
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         self.__pass_rate = condition["PassRate"]
         self.__success = 0
         self.__total = 0
 
-    def update(self):
+    def update(self) -> None:
         test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
         success = test_rate >= self.__pass_rate
         summary_str = f"{self.__success} / {self.__total } -> {test_rate:.2f}%"
@@ -122,12 +122,12 @@ class PerceptionResult(ResultBase):
         self.update()
         return marker_ground_truth, marker_results
 
-    def set_final_metrics(self, final_metrics: Dict):
+    def set_final_metrics(self, final_metrics: Dict) -> None:
         self._frame = {"FinalScore": final_metrics}
 
 
 class PerceptionEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
         self.use_t4_dataset()
@@ -211,10 +211,10 @@ class PerceptionEvaluator(DLREvaluator):
         self.get_logger().error(f"Unexpected evaluation task: {self.__evaluation_task}")
         return False
 
-    def timer_cb(self):
+    def timer_cb(self) -> None:
         super().timer_cb(register_shutdown_func=self.write_metrics)
 
-    def write_metrics(self):
+    def write_metrics(self) -> None:
         self.save_pkl(self.__evaluator.frame_results)
         if self.__evaluation_task == "fp_validation":
             final_metrics = self.get_fp_result()
@@ -286,7 +286,7 @@ class PerceptionEvaluator(DLREvaluator):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def perception_cb(self, msg: Union[DetectedObjects, TrackedObjects]):
+    def perception_cb(self, msg: Union[DetectedObjects, TrackedObjects]) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
@@ -392,7 +392,7 @@ class PerceptionEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return PerceptionEvaluator("perception_evaluator")
 
 

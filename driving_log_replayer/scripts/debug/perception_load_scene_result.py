@@ -28,7 +28,9 @@ import yaml
 
 
 class PerceptionEvaluatorPickle:
-    def __init__(self, pickle_path: str, scenario_path: str, t4_dataset_path: str, log_path: str):
+    def __init__(
+        self, pickle_path: str, scenario_path: str, t4_dataset_path: str, log_path: str
+    ) -> None:
         self.__scenario_yaml_obj = None
         self.__loaded_frame_results = None
         self.__t4_dataset_paths = [os.path.expandvars(t4_dataset_path)]
@@ -92,7 +94,7 @@ class PerceptionEvaluatorPickle:
         return final_metric_score
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-p", "--pickle", required=True, help="path of the pickle file to load scene_result"

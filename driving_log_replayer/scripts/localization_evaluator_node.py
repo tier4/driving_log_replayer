@@ -35,7 +35,7 @@ from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.result import ResultBase
 
 
-def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry):
+def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> float:
     base_point = ndt_pose.pose.position
     _, _, yaw = euler_from_quaternion(
         [
@@ -53,7 +53,7 @@ def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry):
     return cross_vec[2]
 
 
-def calc_pose_horizontal_distance(ndt_pose: PoseStamped, ekf_pose: Odometry):
+def calc_pose_horizontal_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> float:
     ndt_x = ndt_pose.pose.position.x
     ndt_y = ndt_pose.pose.position.y
     ekf_x = ekf_pose.pose.pose.position.x
@@ -62,7 +62,7 @@ def calc_pose_horizontal_distance(ndt_pose: PoseStamped, ekf_pose: Odometry):
 
 
 class LocalizationResult(ResultBase):
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         # convergence
         self.__convergence_condition: Dict = condition["Convergence"]
@@ -82,7 +82,7 @@ class LocalizationResult(ResultBase):
         self.__ndt_availability_msg = "NotTested"
         self.__ndt_availability_result = True
 
-    def update(self):
+    def update(self) -> None:
         if self.__convergence_result:
             convergence_summary = f"Convergence (Passed): {self.__convergence_msg}"
         else:
@@ -108,13 +108,13 @@ class LocalizationResult(ResultBase):
             self._summary = f"Failed: {summary_str}"
 
     @singledispatchmethod
-    def set_frame(self, msg):
+    def set_frame(self) -> None:
         pass
 
     @set_frame.register
     def set_reliability_frame(
         self, msg: Float32Stamped, map_to_baselink: Dict, reference: Float32Stamped
-    ):
+    ) -> None:
         self.__reliability_total += 1
         out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
 
@@ -193,7 +193,7 @@ class LocalizationResult(ResultBase):
         return msg_lateral_dist
 
     @set_frame.register
-    def set_ndt_availability_frame(self, msg: DiagnosticArray):
+    def set_ndt_availability_frame(self, msg: DiagnosticArray) -> None:
         # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
         for diag_status in msg.status:
             if (
@@ -215,7 +215,7 @@ class LocalizationResult(ResultBase):
 
 
 class LocalizationEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
 
@@ -286,16 +286,16 @@ class LocalizationEvaluator(DLREvaluator):
             self.get_logger().error("Scenario format error")
             rclpy.shutdown()
 
-    def ekf_pose_cb(self, msg: Odometry):
+    def ekf_pose_cb(self, msg: Odometry) -> None:
         self.__latest_ekf_pose = msg
 
-    def exe_time_cb(self, msg: Float32Stamped):
+    def exe_time_cb(self, msg: Float32Stamped) -> None:
         self.__latest_exe_time = msg
 
-    def iteration_num_cb(self, msg: Int32Stamped):
+    def iteration_num_cb(self, msg: Int32Stamped) -> None:
         self.__latest_iteration_num = msg
 
-    def tp_cb(self, msg: Float32Stamped):
+    def tp_cb(self, msg: Float32Stamped) -> None:
         self.__latest_tp = msg
         if self.__reliability_method != "TP":
             # evaluates when reliability_method is TP
@@ -308,7 +308,7 @@ class LocalizationEvaluator(DLREvaluator):
         )
         self._result_writer.write(self.__result)
 
-    def nvtl_cb(self, msg: Float32Stamped):
+    def nvtl_cb(self, msg: Float32Stamped) -> None:
         self.__latest_nvtl = msg
         if self.__reliability_method != "NVTL":
             # evaluates when reliability_method is NVTL
@@ -319,7 +319,7 @@ class LocalizationEvaluator(DLREvaluator):
         )
         self._result_writer.write(self.__result)
 
-    def pose_cb(self, msg: PoseStamped):
+    def pose_cb(self, msg: PoseStamped) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         msg_lateral_distance = self.__result.set_frame(
             msg,
@@ -331,13 +331,13 @@ class LocalizationEvaluator(DLREvaluator):
         self.__pub_lateral_distance.publish(msg_lateral_distance)
         self._result_writer.write(self.__result)
 
-    def diagnostics_cb(self, msg: DiagnosticArray):
+    def diagnostics_cb(self, msg: DiagnosticArray) -> None:
         self.__result.set_frame(msg)
         self._result_writer.write(self.__result)
 
 
 @evaluator_main
-def main():
+def main() -> DLREvaluator:
     return LocalizationEvaluator("localization_evaluator")
 
 

@@ -177,14 +177,14 @@ class Summary:
             except (KeyError, TypeError):
                 self.non_detection_pass_rate = "N/A"
 
-    def update(self, parser):
+    def update(self, parser) -> None:  # noqa
         self._update_visible_range(parser.get_bb_distance())
 
-    def _update_visible_range(self, pass_fail_list: List):
+    def _update_visible_range(self, pass_fail_list: List) -> None:
         self.visible_range_one_frame = get_min_range(pass_fail_list)
         self.visible_range_three_frame = get_min_range(fail_3_times_in_a_row(pass_fail_list))
 
-    def save(self, path: Path):
+    def save(self, path: Path) -> None:
         with open(path.with_suffix(".json"), "w") as f:
             json.dump(dataclasses.asdict(self), f, indent=2)
             f.write("\n")
@@ -207,7 +207,7 @@ class JsonlParser:
         self._read_jsonl_results(filepath)
         self._modify_center_from_baselink_to_overhang(config.overhang_from_baselink)
 
-    def _read_jsonl_results(self, path: Path):
+    def _read_jsonl_results(self, path: Path) -> None:
         with open(path) as f:
             lines = f.read().splitlines()
 
@@ -235,7 +235,7 @@ class JsonlParser:
             self.detection.append(Detection(json_dict, self._dist_type))
             self.non_detection.append(NonDetection(json_dict))
 
-    def _modify_center_from_baselink_to_overhang(self, overhang: float):
+    def _modify_center_from_baselink_to_overhang(self, overhang: float) -> None:
         for record in self.detection:
             for detection_info in record.detection_info:
                 if detection_info.annotation_position.validate():
@@ -253,7 +253,7 @@ class JsonlParser:
             if record.ego_position.validate():
                 record.ego_position.add_overhang(overhang)
 
-    def export_to_csv(self, output_path: Path):
+    def export_to_csv(self, output_path: Path) -> None:
         """
         データをCSV出力する。暫定的に必要なデータのみ出力する.
 
@@ -296,7 +296,7 @@ class JsonlParser:
                     )
         return ret
 
-    def get_pointcloud_position(self) -> list:
+    def get_pointcloud_position(self) -> List:
         """自車を基準としたアノテーションバウンディングボックス(BB)のPointCloudの最近傍点、ラベルとしてPointCloudを付与したリストを作成する."""
         ret = []
         for frame in self.detection:
@@ -333,7 +333,7 @@ class JsonlParser:
                     )
         return ret
 
-    def get_bb_dist_with_stamp(self):
+    def get_bb_dist_with_stamp(self) -> List:
         ret = []
         i = 0
         for detection, frame, stamp in zip(self.detection, self.frame, self.stamp):

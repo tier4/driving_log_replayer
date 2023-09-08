@@ -25,7 +25,7 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
-def analysis():
+def analysis() -> None:
     """Run analysis of the use case."""
 
 
@@ -42,7 +42,7 @@ def analysis():
 )
 def obstacle_segmentation(
     input_jsonl: str, output_dir: Optional[str], config_yaml: Optional[str], dist_type: str
-):
+) -> None:
     """Run obstacle_segmentation analysis."""
     p_input_jsonl = Path(os.path.expandvars(input_jsonl))
     if output_dir is None:

@@ -47,7 +47,7 @@ class Stamp:
         except (KeyError, IndexError):
             pass
 
-    def validate(self):
+    def validate(self) -> bool:
         return self.timestamp_system > 0.0 and self.timestamp_ros > 0.0  # noqa
 
 
@@ -60,7 +60,7 @@ class Position:
     def __init__(self, data: Dict = {}) -> None:  # noqa
         self.try_parse_dict(data)
 
-    def try_parse_dict(self, data):
+    def try_parse_dict(self, data) -> None:  # noqa
         if isinstance(data, dict):
             try:
                 self.y = data["x"]
@@ -79,7 +79,7 @@ class Position:
             error_msg = "Input data should be a dict or list."
             raise NotImplementedError(error_msg)  # EM101
 
-    def validate(self):
+    def validate(self) -> bool:
         return self.x is not None and self.y is not None and self.z is not None
 
     def get_distance(self, dist_type: DistType) -> float:
@@ -91,8 +91,8 @@ class Position:
             return math.hypot(self.x, self.y)
         return None
 
-    def add_overhang(self, val: float):
+    def add_overhang(self, val: float) -> None:
         self.y = self.y + val
 
-    def sub_overhang(self, val: float):
+    def sub_overhang(self, val: float) -> None:
         self.y = self.y - val
