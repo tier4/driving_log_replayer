@@ -50,7 +50,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         [
             "--remap",
             "/sensing/lidar/concatenated/pointcloud:=/driving_log_replayer/concatenated/pointcloud",
-        ]
+        ],
     )
 
     player_normal = ExecuteProcess(
@@ -81,5 +81,5 @@ def generate_launch_description() -> launch.LaunchDescription:
             player_normal,
             player_remap,
             recorder,
-        ]
+        ],
     )

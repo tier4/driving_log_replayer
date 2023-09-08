@@ -54,10 +54,12 @@ def get_driving_log_replayer_common_argument() -> List:
     launch_arguments = []
 
     def add_launch_arg(
-        name: str, default_value: Optional[str] = None, description: str = ""
+        name: str,
+        default_value: Optional[str] = None,
+        description: str = "",
     ) -> None:
         launch_arguments.append(
-            DeclareLaunchArgument(name, default_value=default_value, description=description)
+            DeclareLaunchArgument(name, default_value=default_value, description=description),
         )
 
     add_launch_arg(
@@ -156,7 +158,9 @@ def get_map_height_fitter(launch_service: str = "true") -> launch.actions.Includ
 
 def get_rviz(rviz_config_name: str) -> Node:
     rviz_config_dir = os.path.join(
-        get_package_share_directory("driving_log_replayer"), "config", rviz_config_name
+        get_package_share_directory("driving_log_replayer"),
+        "config",
+        rviz_config_name,
     )
     return Node(
         package="rviz2",
@@ -269,7 +273,7 @@ def get_topic_state_monitor_launch(
     )
     return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(
-            component_state_monitor_launch_file
+            component_state_monitor_launch_file,
         ),
         launch_arguments={
             "file": topic_monitor_config_path,
@@ -317,7 +321,7 @@ def add_container_argument(launch_arguments: List) -> List:
             "use_intra_process",
             default_value="false",
             description="use ROS 2 component container communication",
-        )
+        ),
     )
     return launch_arguments
 

@@ -90,7 +90,8 @@ class PerformanceDiagResult(ResultBase):
             self._summary = f"Failed: {summary_str}"
 
     def summarize_diag_agg(
-        self, msg: DiagnosticArray
+        self,
+        msg: DiagnosticArray,
     ) -> Tuple[
         List[Dict],
         Optional[Float64],
@@ -139,7 +140,8 @@ class PerformanceDiagResult(ResultBase):
         )
 
     def summarize_visibility(
-        self, diag_status: DiagnosticStatus
+        self,
+        diag_status: DiagnosticStatus,
     ) -> Tuple[Dict, Optional[Float64], Optional[Byte]]:
         result = "Skipped"
         info = []
@@ -172,7 +174,7 @@ class PerformanceDiagResult(ResultBase):
                 {
                     "Level": int.from_bytes(diag_level, byteorder="little"),
                     "Visibility": visibility_value,
-                }
+                },
             )
             self.__visibility_msg = (
                 f"passed: {self.__visibility_success} / {self.__visibility_total}"
@@ -187,7 +189,8 @@ class PerformanceDiagResult(ResultBase):
         return {"Result": result, "Info": info}, msg_value, msg_level
 
     def summarize_blockage(
-        self, diag_status: DiagnosticStatus
+        self,
+        diag_status: DiagnosticStatus,
     ) -> Tuple[Dict, Optional[Float64], Optional[Float64], Optional[Byte]]:
         result = "Skipped"
         info = []
@@ -259,7 +262,9 @@ class PerformanceDiagResult(ResultBase):
                 self.__blockage_result = False
 
     def set_frame(
-        self, msg: DiagnosticArray, map_to_baselink: Dict
+        self,
+        msg: DiagnosticArray,
+        map_to_baselink: Dict,
     ) -> Tuple[
         Optional[Float64],
         Optional[Byte],
@@ -307,13 +312,19 @@ class PerformanceDiagEvaluator(DLREvaluator):
         for k, v in self._condition["LiDAR"]["Blockage"].items():
             if v["ScenarioType"] is not None:
                 self.__pub_blockage_sky_ratios[k] = self.create_publisher(
-                    Float64, f"blockage/{k}/sky/ratio", 1
+                    Float64,
+                    f"blockage/{k}/sky/ratio",
+                    1,
                 )
                 self.__pub_blockage_ground_ratios[k] = self.create_publisher(
-                    Float64, f"blockage/{k}/ground/ratio", 1
+                    Float64,
+                    f"blockage/{k}/ground/ratio",
+                    1,
                 )
                 self.__pub_blockage_levels[k] = self.create_publisher(
-                    Byte, f"blockage/{k}/level", 1
+                    Byte,
+                    f"blockage/{k}/level",
+                    1,
                 )
 
         self.__sub_diag = self.create_subscription(
@@ -338,7 +349,8 @@ class PerformanceDiagEvaluator(DLREvaluator):
             msg_blockage_ground_ratios,
             msg_blockage_levels,
         ) = self.__result.set_frame(
-            msg, DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink)
+            msg,
+            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
         )
         if msg_visibility_value is not None:
             self.__pub_visibility_value.publish(msg_visibility_value)

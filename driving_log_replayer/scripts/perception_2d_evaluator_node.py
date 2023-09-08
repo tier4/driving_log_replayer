@@ -108,7 +108,7 @@ class Perception2DResult(ResultBase):
                     "TP": len(frame.pass_fail_result.tp_object_results),
                     "FP": len(frame.pass_fail_result.fp_object_results),
                     "FN": len(frame.pass_fail_result.fn_objects),
-                }
+                },
             ],
         }
         self._frame = out_frame
@@ -223,15 +223,18 @@ class Perception2DEvaluator(DLREvaluator):
         self._result_writer.write(self.__result)
 
     def list_dynamic_object_2d_from_ros_msg(
-        self, unix_time: int, feature_objects: List[DetectedObjectWithFeature], camera_type: str
+        self,
+        unix_time: int,
+        feature_objects: List[DetectedObjectWithFeature],
+        camera_type: str,
     ) -> List[DynamicObject2D]:
         estimated_objects: List[DynamicObject2D] = []
         for perception_object in feature_objects:
             most_probable_classification = DLREvaluator.get_most_probable_classification(
-                perception_object.object.classification
+                perception_object.object.classification,
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                name=DLREvaluator.get_perception_label_str(most_probable_classification)
+                name=DLREvaluator.get_perception_label_str(most_probable_classification),
             )
             obj_roi = perception_object.feature.roi
             roi = obj_roi.x_offset, obj_roi.y_offset, obj_roi.width, obj_roi.height
@@ -256,7 +259,9 @@ class Perception2DEvaluator(DLREvaluator):
             self.__skip_counter[camera_type] += 1
         else:
             estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
-                unix_time, msg.feature_objects, camera_type
+                unix_time,
+                msg.feature_objects,
+                camera_type,
             )
             ros_critical_ground_truth_objects = ground_truth_now_frame.objects
             # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。

@@ -43,7 +43,7 @@ def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> flo
             ndt_pose.pose.orientation.y,
             ndt_pose.pose.orientation.z,
             ndt_pose.pose.orientation.w,
-        ]
+        ],
     )
     base_unit_vec = np.array([np.cos(yaw), np.sin(yaw), 0.0])
     dx = ekf_pose.pose.pose.position.x - base_point.x
@@ -113,7 +113,10 @@ class LocalizationResult(ResultBase):
 
     @set_frame.register
     def set_reliability_frame(
-        self, msg: Float32Stamped, map_to_baselink: Dict, reference: Float32Stamped
+        self,
+        msg: Float32Stamped,
+        map_to_baselink: Dict,
+        reference: Float32Stamped,
     ) -> None:
         self.__reliability_total += 1
         out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
@@ -127,7 +130,7 @@ class LocalizationResult(ResultBase):
             else:
                 self.__reliability_ng_seq += 1
         self.__reliability_result = bool(
-            self.__reliability_ng_seq < self.__reliability_condition["NGCount"]
+            self.__reliability_ng_seq < self.__reliability_condition["NGCount"],
         )
         success = "Success" if self.__reliability_result else "Fail"
 
@@ -137,7 +140,7 @@ class LocalizationResult(ResultBase):
                 {
                     "Value": message_to_ordereddict(msg),
                     "Reference": message_to_ordereddict(reference),
-                }
+                },
             ],
         }
         self.__reliability_msg = f"{self.__reliability_condition['Method']} Sequential NG Count: {self.__reliability_ng_seq} (Total Test: {self.__reliability_total}, Average: {statistics.mean(self.__reliability_list):.5f}, StdDev: {statistics.pstdev(self.__reliability_list):.5f})"
@@ -185,7 +188,7 @@ class LocalizationResult(ResultBase):
                     "HorizontalDistance": horizontal_dist,
                     "ExeTimeMs": exe_time_ms,
                     "IterationNum": iteration,
-                }
+                },
             ],
         }
         self._frame = out_frame
@@ -222,7 +225,9 @@ class LocalizationEvaluator(DLREvaluator):
         self.__result = LocalizationResult(self._condition)
 
         self.__pub_lateral_distance = self.create_publisher(
-            Float64, "localization/lateral_distance", 1
+            Float64,
+            "localization/lateral_distance",
+            1,
         )
 
         self.__latest_ekf_pose: Odometry = Odometry()
@@ -279,7 +284,7 @@ class LocalizationEvaluator(DLREvaluator):
             self.__reliability_method = self._condition["Reliability"]["Method"]
             if self.__reliability_method not in ["TP", "NVTL"]:
                 self.get_logger().error(
-                    f"Reliability Method {self.__reliability_method} is not defined."
+                    f"Reliability Method {self.__reliability_method} is not defined.",
                 )
                 rclpy.shutdown()
         except KeyError:
@@ -315,7 +320,9 @@ class LocalizationEvaluator(DLREvaluator):
             return
         map_to_baselink = self.lookup_transform(msg.stamp)
         self.__result.set_frame(
-            msg, DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink), self.__latest_tp
+            msg,
+            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+            self.__latest_tp,
         )
         self._result_writer.write(self.__result)
 

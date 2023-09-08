@@ -58,6 +58,6 @@ class ShutdownOnce(EmitEvent):
             event = None
         if isinstance(event, ProcessExited):
             _logger.info(
-                f"process[{event.process_name}] was required: shutting down launched system"
+                f"process[{event.process_name}] was required: shutting down launched system",
             )
         super().execute(context)

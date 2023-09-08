@@ -68,7 +68,12 @@ def get_box_marker(
 ) -> Tuple[Marker, Marker, Dict]:
     gt_state = ground_truth_obj.state
     bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
-        gt_state, header, namespace, marker_id, color, ground_truth_obj.uuid
+        gt_state,
+        header,
+        namespace,
+        marker_id,
+        color,
+        ground_truth_obj.uuid,
     )
     info_dict = {
         "Annotation": {
@@ -76,7 +81,7 @@ def get_box_marker(
             "Position": message_to_ordereddict(bbox.pose),
             "UUID": ground_truth_obj.uuid,
             "StampFloat": ground_truth_obj.unix_time / pow(10, 6),
-        }
+        },
     }
     return bbox, uuid, info_dict
 
@@ -128,7 +133,8 @@ def summarize_frame_container(
 
 
 def summarize_numpy_pointcloud(
-    list_pcd: List[np.ndarray], header: Header
+    list_pcd: List[np.ndarray],
+    header: Header,
 ) -> Tuple[PointCloud2, np.ndarray]:
     numpy_pcd = np.zeros(
         0,
@@ -153,7 +159,8 @@ def summarize_numpy_pointcloud(
 
 
 def get_sensing_frame_config(
-    pcd_header: Header, scenario_yaml_obj: Dict
+    pcd_header: Header,
+    scenario_yaml_obj: Dict,
 ) -> Tuple[bool, Optional[SensingFrameConfig]]:
     detection_config = scenario_yaml_obj["Evaluation"]["Conditions"].get("Detection", None)
     if detection_config is None:
@@ -218,7 +225,10 @@ class ObstacleSegmentationResult(ResultBase):
             self._summary = f"Detection and NonDetection Failed: {summary_str}"
 
     def summarize_detection(
-        self, frame_result: SensingFrameResult, topic_rate: bool, header: Header
+        self,
+        frame_result: SensingFrameResult,
+        topic_rate: bool,
+        header: Header,
     ) -> Tuple[
         Dict,
         Optional[MarkerArray],
@@ -315,7 +325,10 @@ class ObstacleSegmentationResult(ResultBase):
         return {"Result": result, "Info": info}, marker_array, pcd_detection, graph_detection
 
     def summarize_non_detection(
-        self, pcd_list: List[np.ndarray], topic_rate: bool, header: Header
+        self,
+        pcd_list: List[np.ndarray],
+        topic_rate: bool,
+        header: Header,
     ) -> Tuple[Dict, Optional[PointCloud2], Optional[ObstacleSegmentationMarker]]:
         result = "Skipped"
         info = []
@@ -349,13 +362,13 @@ class ObstacleSegmentationResult(ResultBase):
                 dist_dict = {}
                 for i in range(100):
                     dist_dict[f"{i}-{i+1}"] = np.count_nonzero(
-                        (i <= dist_array) & (dist_array < i + 1)
+                        (i <= dist_array) & (dist_array < i + 1),
                     )
                 # NonDetectionは結果はInfoに入るのは1個しかないがDetectionに合わせてlistにしておく
                 info.append(
                     {
                         "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
-                    }
+                    },
                 )
         return {"Result": result, "Info": info}, ros_pcd, graph_non_detection
 
@@ -455,20 +468,30 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         self.__pub_pcd_non_detection = self.create_publisher(PointCloud2, "pcd/non_detection", 1)
         self.__pub_marker_detection = self.create_publisher(MarkerArray, "marker/detection", 1)
         self.__pub_marker_non_detection = self.create_publisher(
-            MarkerArray, "marker/non_detection", 1
+            MarkerArray,
+            "marker/non_detection",
+            1,
         )
         self.__pub_goal_pose = self.create_publisher(
-            PoseStamped, "/planning/mission_planning/goal", 1
+            PoseStamped,
+            "/planning/mission_planning/goal",
+            1,
         )
         # for Autoware Evaluator visualization
         self.__pub_graph_topic_rate = self.create_publisher(
-            ObstacleSegmentationMarker, "graph/topic_rate", 1
+            ObstacleSegmentationMarker,
+            "graph/topic_rate",
+            1,
         )
         self.__pub_graph_detection = self.create_publisher(
-            ObstacleSegmentationMarkerArray, "graph/detection", 1
+            ObstacleSegmentationMarkerArray,
+            "graph/detection",
+            1,
         )
         self.__pub_graph_non_detection = self.create_publisher(
-            ObstacleSegmentationMarker, "graph/non_detection", 1
+            ObstacleSegmentationMarker,
+            "graph/non_detection",
+            1,
         )
         self.__skip_counter = 0
 
@@ -484,7 +507,8 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
 
     def timer_cb(self) -> None:
         super().timer_cb(
-            register_loop_func=self.publish_goal_pose, register_shutdown_func=self.write_graph_data
+            register_loop_func=self.publish_goal_pose,
+            register_shutdown_func=self.write_graph_data,
         )
 
     def publish_goal_pose(self) -> None:
@@ -497,7 +521,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         # jsonlを一旦閉じて開きなおす
         self._result_writer.close()
         jsonl_file_path = Path(
-            os.path.splitext(os.path.expandvars(self._result_json_path))[0] + ".jsonl"
+            os.path.splitext(os.path.expandvars(self._result_json_path))[0] + ".jsonl",
         )
         detection_dist, pointcloud_numpoints = get_graph_data(
             jsonl_file_path,
@@ -514,7 +538,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
                     "GraphData": {
                         "DetectionDist": detection_dist,
                         "PointcloudCount": pointcloud_numpoints,
-                    }
+                    },
                 }
                 str_last_line = json.dumps(last_line_dict, ignore_nan=True) + "\n"
                 jsonl_file.write(str_last_line)
@@ -534,7 +558,8 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             return
         # create sensing_frame_config
         frame_ok, sensing_frame_config = get_sensing_frame_config(
-            pcd_header, self._scenario_yaml_obj
+            pcd_header,
+            self._scenario_yaml_obj,
         )
         if not frame_ok:
             self.__skip_counter += 1

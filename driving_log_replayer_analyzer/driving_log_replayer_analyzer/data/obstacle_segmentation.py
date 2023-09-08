@@ -94,10 +94,10 @@ class NonDetection:
             self.result = json_dict["Frame"]["NonDetection"]["Result"]
             self.frame = int(json_dict["Frame"]["FrameName"])
             self.ego_position = Position(
-                json_dict["Frame"]["Ego"]["TransformStamped"]["transform"]["translation"]
+                json_dict["Frame"]["Ego"]["TransformStamped"]["transform"]["translation"],
             )
             self.pointcloud_points = float(
-                json_dict["Frame"]["NonDetection"]["Info"][0]["PointCloud"]["NumPoints"]
+                json_dict["Frame"]["NonDetection"]["Info"][0]["PointCloud"]["NumPoints"],
             )
             for distance_str, num_points in json_dict["Frame"]["NonDetection"]["Info"][0][
                 "PointCloud"
@@ -149,7 +149,7 @@ class Detection:
                 if di.pointcloud_numpoints > 0:
                     di.pointcloud_nearest_position = Position(info["PointCloud"]["Nearest"])
                     di.pointcloud_nearest_distance = di.pointcloud_nearest_position.get_distance(
-                        dist_type
+                        dist_type,
                     )
                 self.detection_info.append(di)
         except (KeyError, IndexError):
@@ -218,7 +218,9 @@ class JsonlParser:
             # tmp: 片側から車両が来るケースにおいて、自車の前(距離が最短となるとき)を通過後のデータは使わない
             try:
                 position = Position(
-                    json_dict["Frame"]["Detection"]["Info"][0]["Annotation"]["Position"]["position"]
+                    json_dict["Frame"]["Detection"]["Info"][0]["Annotation"]["Position"][
+                        "position"
+                    ],
                 )
                 if (
                     previous_dist < position.get_distance(self._dist_type)
@@ -292,7 +294,7 @@ class JsonlParser:
                             detection_info.annotation_position.x,
                             detection_info.annotation_position.y,
                             frame.result,
-                        ]
+                        ],
                     )
         return ret
 
@@ -307,7 +309,7 @@ class JsonlParser:
                             detection_info.pointcloud_nearest_position.x,
                             detection_info.pointcloud_nearest_position.y,
                             "PointCloud",
-                        ]
+                        ],
                     )
         return ret
 
@@ -329,7 +331,7 @@ class JsonlParser:
                             detection_info.annotation_distance,
                             y_val,
                             frame.result,
-                        ]
+                        ],
                     )
         return ret
 
@@ -348,7 +350,7 @@ class JsonlParser:
                             "timestamp_ros": stamp.timestamp_ros,
                             "annotation_stamp": detection_info.annotation_stamp,
                             "pointcloud_stamp": detection_info.pointcloud_stamp,
-                        }
+                        },
                     )
                 i = i + 1
         return ret
@@ -379,7 +381,7 @@ class JsonlParser:
                             detection_info.pointcloud_nearest_distance,
                             detection_info.pointcloud_numpoints,
                             detection_info.short_uuid,
-                        ]
+                        ],
                     )
         return self._split_list_per_uuid(tmp)
 
@@ -407,7 +409,7 @@ class JsonlParser:
                             detection_info.annotation_distance,
                             diff,
                             detection_info.short_uuid,
-                        ]
+                        ],
                     )
         return self._split_list_per_uuid(tmp)
 
@@ -430,7 +432,7 @@ class JsonlParser:
                     "近傍": frame.get_points_within_dist(fp_dist.near),
                     "中距離": frame.get_points_within_dist(fp_dist.medium),
                     "遠距離": frame.get_points_within_dist(fp_dist.far),
-                }
+                },
             )
         return ret
 
@@ -454,6 +456,6 @@ class JsonlParser:
                         "近傍": frame.get_points_within_dist(fp_dist.near),
                         "中距離": frame.get_points_within_dist(fp_dist.medium),
                         "遠距離": frame.get_points_within_dist(fp_dist.far),
-                    }
+                    },
                 )
         return ret

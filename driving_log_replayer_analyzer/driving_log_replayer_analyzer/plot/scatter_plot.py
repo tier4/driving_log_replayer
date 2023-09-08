@@ -53,7 +53,7 @@ class ScatterPlot(PlotBase):
     def use_boolean_tick(self) -> None:
         self._fig.update_yaxes(range=[-0.066, 1.066])
         self._fig.update_layout(
-            yaxis=dict(tickmode="array", tickvals=[0, 1], ticktext=["False", "True"])  # noqa: C408
+            yaxis=dict(tickmode="array", tickvals=[0, 1], ticktext=["False", "True"]),  # noqa: C408
         )
 
     def add_vert_line(self, dist: float) -> None:

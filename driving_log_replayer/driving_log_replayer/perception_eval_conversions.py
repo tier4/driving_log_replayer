@@ -49,7 +49,8 @@ def orientation_from_ros_msg(ros_orientation: RosQuaternion) -> Quaternion:
 
 
 def dimensions_from_ros_msg(
-    ros_dimensions: Vector3, shape_type_num: int
+    ros_dimensions: Vector3,
+    shape_type_num: int,
 ) -> Tuple[float, float, float]:
     if shape_type_num == 1:
         # cylinder
@@ -179,7 +180,13 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
         # estimated obj
         c_tp_est = ColorRGBA(r=0.0, g=0.0, b=1.0, a=1.0)
         marker = dynamic_objects_to_ros_points(
-            objs, header, scale, c_tp_est, "tp_est", 0, tp_gt=False
+            objs,
+            header,
+            scale,
+            c_tp_est,
+            "tp_est",
+            0,
+            tp_gt=False,
         )
         marker_results.markers.append(marker)
     if objs := pass_fail.tp_object_results:

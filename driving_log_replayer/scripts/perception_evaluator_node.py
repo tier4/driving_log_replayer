@@ -71,7 +71,11 @@ class PerceptionResult(ResultBase):
             self._summary = f"Failed: {summary_str}"
 
     def set_frame(
-        self, frame: PerceptionFrameResult, skip: int, header: Header, map_to_baselink: Dict
+        self,
+        frame: PerceptionFrameResult,
+        skip: int,
+        header: Header,
+        map_to_baselink: Dict,
     ) -> Tuple[MarkerArray, MarkerArray]:
         self.__total += 1
         has_objects = True
@@ -101,7 +105,7 @@ class PerceptionResult(ResultBase):
                     "TP": len(frame.pass_fail_result.tp_object_results),
                     "FP": len(frame.pass_fail_result.fp_object_results),
                     "FN": len(frame.pass_fail_result.fn_objects),
-                }
+                },
             ],
         }
         marker_ground_truth = MarkerArray()
@@ -109,13 +113,19 @@ class PerceptionResult(ResultBase):
 
         for cnt, obj in enumerate(frame.frame_ground_truth.objects, start=1):
             bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
-                obj.state, header, "ground_truth", cnt, color_success, obj.uuid
+                obj.state,
+                header,
+                "ground_truth",
+                cnt,
+                color_success,
+                obj.uuid,
             )
             marker_ground_truth.markers.append(bbox)
             marker_ground_truth.markers.append(uuid)
 
         marker_results = eval_conversions.pass_fail_result_to_ros_points_array(
-            frame.pass_fail_result, header
+            frame.pass_fail_result,
+            header,
         )
 
         self._frame = out_frame
@@ -177,7 +187,9 @@ class PerceptionEvaluator(DLREvaluator):
             1,
         )
         self.__pub_marker_ground_truth = self.create_publisher(
-            MarkerArray, "marker/ground_truth", 1
+            MarkerArray,
+            "marker/ground_truth",
+            1,
         )
         self.__pub_marker_results = self.create_publisher(MarkerArray, "marker/results", 1)
         self.__skip_counter = 0
@@ -238,15 +250,17 @@ class PerceptionEvaluator(DLREvaluator):
             self._result_writer.write(self.__result)
 
     def list_dynamic_object_from_ros_msg(
-        self, unix_time: int, objects: Union[List[DetectedObject], List[TrackedObject]]
+        self,
+        unix_time: int,
+        objects: Union[List[DetectedObject], List[TrackedObject]],
     ) -> List[DynamicObject]:
         estimated_objects: List[DynamicObject] = []
         for perception_object in objects:
             most_probable_classification = DLREvaluator.get_most_probable_classification(
-                perception_object.classification
+                perception_object.classification,
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                name=DLREvaluator.get_perception_label_str(most_probable_classification)
+                name=DLREvaluator.get_perception_label_str(most_probable_classification),
             )
 
             uuid = None
@@ -262,22 +276,23 @@ class PerceptionEvaluator(DLREvaluator):
                 unix_time=unix_time,
                 frame_id=self.__frame_id,
                 position=eval_conversions.position_from_ros_msg(
-                    perception_object.kinematics.pose_with_covariance.pose.position
+                    perception_object.kinematics.pose_with_covariance.pose.position,
                 ),
                 orientation=eval_conversions.orientation_from_ros_msg(
-                    perception_object.kinematics.pose_with_covariance.pose.orientation
+                    perception_object.kinematics.pose_with_covariance.pose.orientation,
                 ),
                 shape=Shape(
                     shape_type=shape_type,
                     size=eval_conversions.dimensions_from_ros_msg(
-                        perception_object.shape.dimensions, shape_type_num
+                        perception_object.shape.dimensions,
+                        shape_type_num,
                     ),
                     footprint=eval_conversions.footprint_from_ros_msg(
-                        perception_object.shape.footprint
+                        perception_object.shape.footprint,
                     ),
                 ),
                 velocity=eval_conversions.velocity_from_ros_msg(
-                    perception_object.kinematics.twist_with_covariance.twist.linear
+                    perception_object.kinematics.twist_with_covariance.twist.linear,
                 ),
                 semantic_score=most_probable_classification.probability,
                 semantic_label=label,
@@ -297,7 +312,8 @@ class PerceptionEvaluator(DLREvaluator):
             return
 
         estimated_objects: List[DynamicObject] = self.list_dynamic_object_from_ros_msg(
-            unix_time, msg.objects
+            unix_time,
+            msg.objects,
         )
         ros_critical_ground_truth_objects = ground_truth_now_frame.objects
         # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
@@ -327,7 +343,7 @@ class PerceptionEvaluator(DLREvaluator):
             [
                 frame_result.pass_fail_result.get_num_fail()
                 for frame_result in self.__evaluator.frame_results
-            ]
+            ],
         )
         logging.info(f"Number of fails for critical objects: {num_critical_fail}")
 
@@ -378,7 +394,7 @@ class PerceptionEvaluator(DLREvaluator):
             f"TP: {scene_tp_rate}, "
             f"FP: {scene_fp_rate}, "
             f"TN: {scene_tn_rate}, "
-            f"FN: {scene_fn_rate}"
+            f"FN: {scene_fn_rate}",
         )
         return {
             "GroundTruthStatus": gt_status,

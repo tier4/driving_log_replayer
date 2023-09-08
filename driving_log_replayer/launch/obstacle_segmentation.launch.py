@@ -23,7 +23,10 @@ from driving_log_replayer.shutdown_once import ShutdownOnce
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
-        planning="true", localization="false", control="true", scenario_simulation="true"
+        planning="true",
+        localization="false",
+        control="true",
+        scenario_simulation="true",
     )
     rviz_node = driving_log_replayer.launch_common.get_rviz("obstacle_segmentation.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
@@ -43,7 +46,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         additional_argument=[
             "--remap",
             "/sensing/lidar/concatenated/pointcloud:=/driving_log_replayer/unused_concatenated_pointcloud",
-        ]
+        ],
     )
 
     recorder = driving_log_replayer.launch_common.get_recorder(
@@ -74,5 +77,5 @@ def generate_launch_description() -> launch.LaunchDescription:
             evaluator_sub_node,
             player,
             recorder,
-        ]
+        ],
     )

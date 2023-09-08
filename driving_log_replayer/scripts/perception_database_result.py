@@ -60,7 +60,8 @@ def main() -> None:
     )
     args = parser.parse_args()
     PerceptionLoadDatabaseResult(
-        os.path.expandvars(args.result_root_directory), os.path.expandvars(args.scenario_path)
+        os.path.expandvars(args.result_root_directory),
+        os.path.expandvars(args.scenario_path),
     )
 
 
