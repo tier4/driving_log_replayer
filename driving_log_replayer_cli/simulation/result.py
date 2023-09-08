@@ -38,7 +38,6 @@ class DrivingLogReplayerResultConverter:
     def convert(self):
         output_file_path = Path(self.__result_path).parent.joinpath("result.json")
         if output_file_path.exists():
-            # termcolor.cprint("A json file already exists. Skip convert", "yellow")
             return
         with open(self.__result_path) as jsonl_file:
             result_dict = [json.loads(line) for line in jsonl_file]

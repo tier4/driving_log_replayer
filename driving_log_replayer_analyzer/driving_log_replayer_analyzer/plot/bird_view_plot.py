@@ -58,7 +58,7 @@ class BirdViewPlot(PlotBase):
                         self._get_min("y") + plot_range,
                     ]
                 )
-        else:
+        else:  # noqa
             # specify axis
             if origin:
                 self._fig.update_xaxes(range=[-scale, scale])

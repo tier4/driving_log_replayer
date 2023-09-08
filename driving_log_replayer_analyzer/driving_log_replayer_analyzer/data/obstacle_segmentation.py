@@ -151,8 +151,6 @@ class Detection:
                     di.pointcloud_nearest_distance = di.pointcloud_nearest_position.get_distance(
                         dist_type
                     )
-                # di.annotation_stamp = info["Annotation"]["StampFloat"]
-                # di.pointcloud_stamp = info["PointCloud"]["Stamp"]["sec"] + info["PointCloud"]["Stamp"]["nanosec"] * 1e-9
                 self.detection_info.append(di)
         except (KeyError, IndexError):
             print("Passed frame")
@@ -224,7 +222,7 @@ class JsonlParser:
                 )
                 if (
                     previous_dist < position.get_distance(self._dist_type)
-                    and position.get_distance(self._dist_type) < 5.0
+                    and position.get_distance(self._dist_type) < 5.0  # noqa
                 ):
                     break
                 previous_dist = position.get_distance(self._dist_type)

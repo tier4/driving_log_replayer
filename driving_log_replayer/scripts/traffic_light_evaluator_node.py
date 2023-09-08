@@ -162,8 +162,6 @@ class TrafficLightEvaluator(DLREvaluator):
             rclpy.shutdown()
         if not self.check_evaluation_task():
             rclpy.shutdown()
-        # if not self.check_camera_type():
-        #     rclpy.shutdown()
 
     def check_evaluation_task(self) -> bool:
         if self.__evaluation_task != "classification2d":

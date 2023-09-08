@@ -89,7 +89,6 @@ class PerceptionEvaluatorPickle:
             )
         print(score_dict)
         print(error_dict)
-        # self.__evaluator.visualizer.visualize_all(self.__evaluator.frame_results)
         return final_metric_score
 
 
