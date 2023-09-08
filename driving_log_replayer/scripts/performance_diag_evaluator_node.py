@@ -51,6 +51,8 @@ def trim_lidar_name(diag_name: str) -> str:
 
 
 class PerformanceDiagResult(ResultBase):
+    VALID_VALUE_THRESHOLD = 0.0
+
     def __init__(self, condition: Dict):
         super().__init__()
         # visibility
@@ -177,7 +179,7 @@ class PerformanceDiagResult(ResultBase):
             )
             # publishするmsgを作る
             float_value = float(visibility_value)
-            if float_value >= 0.0:
+            if float_value >= PerformanceDiagResult.VALID_VALUE_THRESHOLD:
                 msg_value = Float64()
                 msg_value.data = float_value
                 msg_level = Byte()
@@ -234,7 +236,10 @@ class PerformanceDiagResult(ResultBase):
             # publishするmsgを作る
             float_sky_ratio = float(sky_ratio)
             float_ground_ratio = float(ground_ratio)
-            if float_sky_ratio >= 0.0 and float_ground_ratio >= 0.0:
+            if (
+                float_sky_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
+                and float_ground_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
+            ):
                 msg_sky_ratio = Float64()
                 msg_sky_ratio.data = float_sky_ratio
                 msg_ground_ratio = Float64()
@@ -322,9 +327,6 @@ class PerformanceDiagEvaluator(DLREvaluator):
         pass
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
-        # self.get_logger().error(
-        #     f"diag cb time: {self.__current_time.sec}.{self.__current_time.nanosec}"
-        # )
         if msg.header == self.__diag_header_prev:
             return
         self.__diag_header_prev = msg.header

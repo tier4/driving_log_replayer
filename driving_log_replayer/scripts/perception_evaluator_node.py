@@ -23,6 +23,7 @@ from typing import Union
 
 from autoware_auto_perception_msgs.msg import DetectedObject
 from autoware_auto_perception_msgs.msg import DetectedObjects
+from autoware_auto_perception_msgs.msg import Shape as MsgShape
 from autoware_auto_perception_msgs.msg import TrackedObject
 from autoware_auto_perception_msgs.msg import TrackedObjects
 from perception_eval.common.object import DynamicObject
@@ -254,7 +255,7 @@ class PerceptionEvaluator(DLREvaluator):
 
             shape_type = ShapeType.BOUNDING_BOX
             shape_type_num = perception_object.shape.type
-            if shape_type_num == 2:
+            if shape_type_num == MsgShape.POLYGON:
                 shape_type = ShapeType.POLYGON
 
             estimated_object = DynamicObject(

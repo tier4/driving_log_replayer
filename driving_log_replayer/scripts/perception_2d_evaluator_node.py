@@ -248,7 +248,6 @@ class Perception2DEvaluator(DLREvaluator):
         return estimated_objects
 
     def detected_objs_cb(self, msg: DetectedObjectsWithFeature, camera_type: str):
-        # self.get_logger().error(f"{camera_type} callback")
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         # 現frameに対応するGround truthを取得

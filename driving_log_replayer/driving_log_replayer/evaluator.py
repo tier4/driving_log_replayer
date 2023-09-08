@@ -128,7 +128,7 @@ class DLREvaluator(Node, ABC):
         register_shutdown_func: Optional[Callable] = None,
     ) -> None:
         self._current_time = self.get_clock().now().to_msg()
-        # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
+        # to debug callback use: self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self._current_time.sec > 0:
             if register_loop_func is not None:
                 register_loop_func()

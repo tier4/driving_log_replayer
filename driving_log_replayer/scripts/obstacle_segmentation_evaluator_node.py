@@ -347,7 +347,6 @@ class ObstacleSegmentationResult(ResultBase):
             if result == "Fail":
                 # 詳細情報の追記を書く
                 dist_dict = {}
-                # print(dist_array)
                 for i in range(100):
                     dist_dict[f"{i}-{i+1}"] = np.count_nonzero(
                         (i <= dist_array) & (dist_array < i + 1)
@@ -500,7 +499,6 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         jsonl_file_path = Path(
             os.path.splitext(os.path.expandvars(self._result_json_path))[0] + ".jsonl"
         )
-        # self.get_logger().error(f"jsonl file: {jsonl_file_path}")
         detection_dist, pointcloud_numpoints = get_graph_data(
             jsonl_file_path,
             self.__vehicle_model,
@@ -601,7 +599,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         self.__latest_stop_reasons = []
         if reasons := msg.stop_reason.stop_reasons:
             for msg_reason in reasons:
-                # self.get_logger().error(f"stop_reason: {msg_reason.reason}")
+                # to debug reason use: self.get_logger().error(f"stop_reason: {msg_reason.reason}")
                 if msg_reason.reason == "ObstacleStop":
                     self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
 
