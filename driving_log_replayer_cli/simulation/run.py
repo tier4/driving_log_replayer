@@ -17,7 +17,7 @@ class DrivingLogReplayerTestRunner:
         rate: float,
         delay: float,
         output_json: bool,
-    ):
+    ) -> None:
         self.__data_directory = data_directory
         self.__output_directory = output_directory
         self.__autoware_path = autoware_path

@@ -187,7 +187,7 @@ def get_sensing_frame_config(
 
 
 class ObstacleSegmentationResult(ResultBase):
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         self.__condition_detection: Optional[Dict] = condition.get("Detection", None)
         self.__condition_non_detection: Optional[Dict] = condition.get("NonDetection", None)
@@ -408,7 +408,7 @@ class ObstacleSegmentationResult(ResultBase):
 class ObstacleSegmentationEvaluator(DLREvaluator):
     COUNT_FINISH_PUB_GOAL_POSE = 5
 
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
         self.use_t4_dataset()

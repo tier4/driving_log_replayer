@@ -53,7 +53,7 @@ def trim_lidar_name(diag_name: str) -> str:
 class PerformanceDiagResult(ResultBase):
     VALID_VALUE_THRESHOLD = 0.0
 
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         # visibility
         self.__visibility_condition: Dict = condition["LiDAR"]["Visibility"]
@@ -291,7 +291,7 @@ class PerformanceDiagResult(ResultBase):
 
 
 class PerformanceDiagEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
         self.__result = PerformanceDiagResult(self._condition)

@@ -9,7 +9,7 @@ import termcolor
 
 
 class DrivingLogReplayerResultViewer:
-    def __init__(self, result_path):
+    def __init__(self, result_path) -> None:
         self.__result_path = result_path
 
     def output(self):
@@ -32,7 +32,7 @@ class DrivingLogReplayerResultViewer:
 
 
 class DrivingLogReplayerResultConverter:
-    def __init__(self, result_path):
+    def __init__(self, result_path) -> None:
         self.__result_path = result_path
 
     def convert(self):

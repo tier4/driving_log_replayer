@@ -23,7 +23,7 @@ import simplejson as json
 
 
 class PerceptionLoadDatabaseResult:
-    def __init__(self, result_root_directory, scenario_path):
+    def __init__(self, result_root_directory, scenario_path) -> None:
         analyzer = PerceptionAnalyzer3D.from_scenario(
             result_root_directory,
             scenario_path,

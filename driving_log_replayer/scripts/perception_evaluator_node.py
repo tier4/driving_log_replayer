@@ -52,7 +52,7 @@ from driving_log_replayer.result import ResultBase
 
 
 class PerceptionResult(ResultBase):
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         self.__pass_rate = condition["PassRate"]
         self.__success = 0
@@ -127,7 +127,7 @@ class PerceptionResult(ResultBase):
 
 
 class PerceptionEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
         self.use_t4_dataset()

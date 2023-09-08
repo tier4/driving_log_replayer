@@ -23,7 +23,7 @@ from driving_log_replayer.result import ResultBase
 
 
 class EagleyeResult(ResultBase):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         # availability
         self.__eagleye_availability_result = False
@@ -62,7 +62,7 @@ class EagleyeResult(ResultBase):
 
 
 class EagleyeEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
 

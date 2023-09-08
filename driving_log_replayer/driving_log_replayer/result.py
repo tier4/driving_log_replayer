@@ -49,7 +49,7 @@ class ResultBase(ABC):
 
 
 class ResultWriter:
-    def __init__(self, result_json_path: str, ros_clock: Clock, condition: Dict):
+    def __init__(self, result_json_path: str, ros_clock: Clock, condition: Dict) -> None:
         # 拡張子を書き換える
         result_file = os.path.splitext(os.path.expandvars(result_json_path))[0] + ".jsonl"
         self._result_file = open(result_file, "w")  # noqa
@@ -95,6 +95,6 @@ class ResultWriter:
 
 
 class PickleWriter:
-    def __init__(self, out_pkl_path: str, write_object: Any):
+    def __init__(self, out_pkl_path: str, write_object: Any) -> None:
         with open(os.path.expandvars(out_pkl_path), "wb") as pkl_file:
             pickle.dump(write_object, pkl_file)

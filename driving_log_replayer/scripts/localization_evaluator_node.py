@@ -62,7 +62,7 @@ def calc_pose_horizontal_distance(ndt_pose: PoseStamped, ekf_pose: Odometry):
 
 
 class LocalizationResult(ResultBase):
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: Dict) -> None:
         super().__init__()
         # convergence
         self.__convergence_condition: Dict = condition["Convergence"]
@@ -215,7 +215,7 @@ class LocalizationResult(ResultBase):
 
 
 class LocalizationEvaluator(DLREvaluator):
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
 
