@@ -111,7 +111,7 @@ class DLREvaluator(Node, ABC):
 
         result_archive_path = Path(
             expandvars(
-                self.get_parameter("result_archive_path").get_parameter_value().string_value
+                self.get_parameter("result_archive_path").get_parameter_value().string_value,
             ),
         )
         result_archive_path.mkdir(exist_ok=True)
