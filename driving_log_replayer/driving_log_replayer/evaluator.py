@@ -16,6 +16,7 @@ from abc import ABC
 from abc import abstractmethod
 import os
 from os.path import expandvars
+from pathlib import Path
 from typing import Dict
 from typing import Optional
 from typing import TYPE_CHECKING
@@ -94,7 +95,24 @@ class DLREvaluator(Node, ABC):
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
 
-    def timer_cb(self) -> None:
+    def use_t4_dataset(self) -> None:
+        self.declare_parameter("t4_dataset_path", "")
+        self.declare_parameter("result_archive_path", "")
+
+        result_archive_path = Path(
+            expandvars(self.get_parameter("result_archive_path").get_parameter_value().string_value)
+        )
+        result_archive_path.mkdir(exist_ok=True)
+
+        self._pkl_path = result_archive_path.joinpath("scene_result.pkl").as_posix()
+        self._t4_dataset_paths = [
+            expandvars(self.get_parameter("t4_dataset_path").get_parameter_value().string_value)
+        ]
+        self._perception_eval_log_path = result_archive_path.parent.joinpath(
+            "perception_eval_log"
+        ).as_posix()
+
+    def timer_cb(self, *, write_metrics_func=None) -> None:
         self._current_time = self.get_clock().now().to_msg()
         # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
         if self._current_time.sec > 0:
@@ -106,6 +124,8 @@ class DLREvaluator(Node, ABC):
                 self._clock_stop_counter = 0
             self._prev_time = self._current_time
             if self._clock_stop_counter >= DLREvaluator.COUNT_SHUTDOWN_NODE:
+                if write_metrics_func is not None:
+                    write_metrics_func()
                 self._result_writer.close()
                 rclpy.shutdown()
 
