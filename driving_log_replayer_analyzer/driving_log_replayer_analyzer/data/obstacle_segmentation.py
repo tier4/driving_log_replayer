@@ -171,11 +171,11 @@ class Summary:
             try:
                 self.detection_pass_rate = json_dict["Condition"]["Detection"]["PassRate"]
             except (KeyError, TypeError):
-                self.detection_pass_rate = "N/A"
+                self.detection_pass_rate = "N/A"  # noqa
             try:
                 self.non_detection_pass_rate = json_dict["Condition"]["NonDetection"]["PassRate"]
             except (KeyError, TypeError):
-                self.non_detection_pass_rate = "N/A"
+                self.non_detection_pass_rate = "N/A"  # noqa
 
     def update(self, parser) -> None:  # noqa
         self._update_visible_range(parser.get_bb_distance())

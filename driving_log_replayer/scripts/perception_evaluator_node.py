@@ -345,11 +345,11 @@ class PerceptionEvaluator(DLREvaluator):
                 for frame_result in self.__evaluator.frame_results
             ],
         )
-        logging.info(f"Number of fails for critical objects: {num_critical_fail}")
+        logging.info("Number of fails for critical objects: %d", num_critical_fail)
 
         # scene metrics score
         final_metric_score = self.__evaluator.get_scene_result()
-        logging.info(f"final metrics result {final_metric_score}")
+        logging.info("final metrics result %s", final_metric_score)
         return final_metric_score
 
     def get_fp_result(self) -> Dict:
@@ -359,18 +359,17 @@ class PerceptionEvaluator(DLREvaluator):
             tp_rate, fp_rate, tn_rate, fn_rate = status_info.get_status_rates()
             # display
             logging.info(
-                f"uuid: {status_info.uuid}, "
-                # display TP/FP/TN/FN rates per frames
-                f"TP: {tp_rate.rate:0.3f}, "
-                f"FP: {fp_rate.rate:0.3f}, "
-                f"TN: {tn_rate.rate:0.3f}, "
-                f"FN: {fn_rate.rate:0.3f}\n"
-                # display total or TP/FP/TN/FN frame numbers
-                f"Total: {status_info.total_frame_nums}, "
-                f"TP: {status_info.tp_frame_nums}, "
-                f"FP: {status_info.fp_frame_nums}, "
-                f"TN: {status_info.tn_frame_nums}, "
-                f"FN: {status_info.fn_frame_nums}",
+                "uuid: %s, TP: %0.3f, FP: %0.3f, TN: %0.3f, FN: %0.3f\n Total: %s, TP: %s, FP: %s, TN: %s, FN: %s",
+                status_info.uuid,
+                tp_rate.rate,
+                fp_rate.rate,
+                tn_rate.rate,
+                fn_rate.rate,
+                status_info.total_frame_nums,
+                status_info.tp_frame_nums,
+                status_info.fp_frame_nums,
+                status_info.tn_frame_nums,
+                status_info.fn_frame_nums,
             )
             gt_status[status_info.uuid] = {
                 "rate": {
@@ -390,11 +389,11 @@ class PerceptionEvaluator(DLREvaluator):
 
         scene_tp_rate, scene_fp_rate, scene_tn_rate, scene_fn_rate = get_scene_rates(status_list)
         logging.info(
-            "[scene]"
-            f"TP: {scene_tp_rate}, "
-            f"FP: {scene_fp_rate}, "
-            f"TN: {scene_tn_rate}, "
-            f"FN: {scene_fn_rate}",
+            "[scene] TP: %f, FP: %f, TN: %f, FN: %f",
+            scene_tp_rate,
+            scene_fp_rate,
+            scene_tn_rate,
+            scene_fn_rate,
         )
         return {
             "GroundTruthStatus": gt_status,
