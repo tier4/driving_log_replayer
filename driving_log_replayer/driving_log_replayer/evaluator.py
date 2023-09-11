@@ -245,7 +245,7 @@ class DLREvaluator(Node, ABC):
             return goal_pose
 
     @classmethod
-    def transform_stamped_with_euler_angle(cls, transform_stamped: TransformStamped) -> Dict:
+    def transform_stamped_with_euler_angle(cls, transform_stamped: TransformStamped) -> dict:
         tf_euler = message_to_ordereddict(transform_stamped)
         euler_angle = euler_from_quaternion(
             [
