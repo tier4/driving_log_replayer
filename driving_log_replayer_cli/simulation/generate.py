@@ -189,7 +189,7 @@ class TestScriptGenerator:
             ndt_launch_args += " map_path:=" + map_path
             ndt_launch_args += " save_dir:=" + os.path.join(scenario_output_dir, "result_archive")
             launch_command += ndt_launch_base_command + ndt_launch_args
-        print("launch command generated! => " + launch_command)
+        print("launch command generated! => " + launch_command)  # noqa
         return launch_command
 
     def __create_launch_command_with_t4_dataset(
@@ -287,5 +287,5 @@ class TestScriptGenerator:
             database_result_command = f"python3 {database_result_script_path}"
             database_result_command += f" -s {scenario_path} -r {scenario_output_dir}\n"
             launch_command_for_all_dataset += database_result_command
-        print("launch command generated! => " + launch_command_for_all_dataset)
+        print("launch command generated! => " + launch_command_for_all_dataset)  # noqa
         return launch_command_for_all_dataset

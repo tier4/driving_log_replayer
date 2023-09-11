@@ -153,7 +153,7 @@ class Detection:
                     )
                 self.detection_info.append(di)
         except (KeyError, IndexError):
-            print("Passed frame")
+            print("Passed frame")  # noqa
 
 
 @dataclass

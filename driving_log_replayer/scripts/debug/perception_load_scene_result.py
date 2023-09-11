@@ -93,8 +93,8 @@ class PerceptionEvaluatorPickle:
             error_dict = (
                 error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
             )
-        print(score_dict)
-        print(error_dict)
+        print(score_dict)  # noqa
+        print(error_dict)  # noqa
         return final_metric_score
 
 

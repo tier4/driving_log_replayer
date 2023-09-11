@@ -16,6 +16,7 @@ class DrivingLogReplayerTestRunner:
         autoware_path: str,
         rate: float,
         delay: float,
+        *,
         output_json: bool,
     ) -> None:
         self.__data_directory = data_directory
@@ -42,7 +43,7 @@ class DrivingLogReplayerTestRunner:
             termcolor.cprint("<< show test result >>", "green")
             display(self.__output_directory)
         else:
-            print("aborted.")
+            print("aborted.")  # noqa
 
 
 def run(
@@ -51,6 +52,7 @@ def run(
     autoware_path: str,
     rate: float,
     delay: float,
+    *,
     output_json: bool,
 ) -> None:
     DrivingLogReplayerTestRunner(
@@ -59,5 +61,5 @@ def run(
         os.path.expandvars(autoware_path),
         rate,
         delay,
-        output_json,
+        output_json=output_json,
     )
