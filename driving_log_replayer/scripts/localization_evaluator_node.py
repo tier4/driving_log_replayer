@@ -17,7 +17,6 @@
 
 from functools import singledispatchmethod
 import statistics
-from typing import Dict
 
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
@@ -62,16 +61,16 @@ def calc_pose_horizontal_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> 
 
 
 class LocalizationResult(ResultBase):
-    def __init__(self, condition: Dict) -> None:
+    def __init__(self, condition: dict) -> None:
         super().__init__()
         # convergence
-        self.__convergence_condition: Dict = condition["Convergence"]
+        self.__convergence_condition: dict = condition["Convergence"]
         self.__convergence_total = 0
         self.__convergence_success = 0
         self.__convergence_msg = "NotTested"
         self.__convergence_result = True
         # reliability
-        self.__reliability_condition: Dict = condition["Reliability"]
+        self.__reliability_condition: dict = condition["Reliability"]
         self.__reliability_ng_seq = 0
         self.__reliability_total = 0
         self.__reliability_msg = "NotTested"
@@ -115,7 +114,7 @@ class LocalizationResult(ResultBase):
     def set_reliability_frame(
         self,
         msg: Float32Stamped,
-        map_to_baselink: Dict,
+        map_to_baselink: dict,
         reference: Float32Stamped,
     ) -> None:
         self.__reliability_total += 1
@@ -151,7 +150,7 @@ class LocalizationResult(ResultBase):
     def set_convergence_frame(
         self,
         msg: PoseStamped,
-        map_to_baselink: Dict,
+        map_to_baselink: dict,
         ekf_pose: Odometry,
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,

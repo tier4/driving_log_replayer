@@ -16,7 +16,6 @@ from abc import ABC
 from abc import abstractmethod
 import os
 import pickle
-from typing import Dict
 
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
@@ -35,7 +34,7 @@ class ResultBase(ABC):
     def summary(self) -> str:
         return self._summary
 
-    def frame(self) -> Dict:
+    def frame(self) -> dict:
         return self._frame
 
     @abstractmethod
@@ -48,7 +47,7 @@ class ResultBase(ABC):
 
 
 class ResultWriter:
-    def __init__(self, result_json_path: str, ros_clock: Clock, condition: Dict) -> None:
+    def __init__(self, result_json_path: str, ros_clock: Clock, condition: dict) -> None:
         # 拡張子を書き換える
         result_file = os.path.splitext(os.path.expandvars(result_json_path))[0] + ".jsonl"
         self._result_file = open(result_file, "w")  # noqa
@@ -60,7 +59,7 @@ class ResultWriter:
     def close(self) -> None:
         self._result_file.close()
 
-    def write_condition(self, condition: Dict) -> None:
+    def write_condition(self, condition: dict) -> None:
         dict_condition = {"Condition": condition}
         str_condition = json.dumps(dict_condition, ignore_nan=True) + "\n"
         self._result_file.write(str_condition)

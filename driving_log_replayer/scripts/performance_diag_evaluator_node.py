@@ -16,10 +16,6 @@
 
 
 import re
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Tuple
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
@@ -53,16 +49,16 @@ def trim_lidar_name(diag_name: str) -> str:
 class PerformanceDiagResult(ResultBase):
     VALID_VALUE_THRESHOLD = 0.0
 
-    def __init__(self, condition: Dict) -> None:
+    def __init__(self, condition: dict) -> None:
         super().__init__()
         # visibility
-        self.__visibility_condition: Dict = condition["LiDAR"]["Visibility"]
+        self.__visibility_condition: dict = condition["LiDAR"]["Visibility"]
         self.__visibility_total = 0
         self.__visibility_success = 0
         self.__visibility_msg = "NotTested"
         self.__visibility_result = True
         # blockage
-        self.__blockage_condition: Dict = condition["LiDAR"]["Blockage"]
+        self.__blockage_condition: dict = condition["LiDAR"]["Blockage"]
         self.__blockage_total = 0
         self.__blockage_msg = "NotTested"
         self.__blockage_result = True
@@ -92,13 +88,13 @@ class PerformanceDiagResult(ResultBase):
     def summarize_diag_agg(
         self,
         msg: DiagnosticArray,
-    ) -> Tuple[
-        List[Dict],
-        Optional[Float64],
-        Optional[Byte],
-        List[Dict],
-        Dict[str, Optional[Float64]],
-        Dict[str, Optional[Float64]],
+    ) -> tuple[
+        list[dict],
+        Float64 | None,
+        Byte | None,
+        list[dict],
+        dict[str, Float64 | None],
+        dict[str, Float64 | None],
     ]:
         visibility_results = []
         msg_visibility_value = None
@@ -142,7 +138,7 @@ class PerformanceDiagResult(ResultBase):
     def summarize_visibility(
         self,
         diag_status: DiagnosticStatus,
-    ) -> Tuple[Dict, Optional[Float64], Optional[Byte]]:
+    ) -> tuple[dict, Float64 | None, Byte | None]:
         result = "Skipped"
         info = []
         scenario_type = self.__visibility_condition["ScenarioType"]
@@ -191,7 +187,7 @@ class PerformanceDiagResult(ResultBase):
     def summarize_blockage(
         self,
         diag_status: DiagnosticStatus,
-    ) -> Tuple[Dict, Optional[Float64], Optional[Float64], Optional[Byte]]:
+    ) -> tuple[dict, Float64 | None, Float64 | None, Byte | None]:
         result = "Skipped"
         info = []
         lidar_name = trim_lidar_name(diag_status.name)
@@ -264,13 +260,13 @@ class PerformanceDiagResult(ResultBase):
     def set_frame(
         self,
         msg: DiagnosticArray,
-        map_to_baselink: Dict,
-    ) -> Tuple[
-        Optional[Float64],
-        Optional[Byte],
-        Dict[str, Optional[Float64]],
-        Dict[str, Optional[Float64]],
-        Dict[str, Optional[Byte]],
+        map_to_baselink: dict,
+    ) -> tuple[
+        Float64 | None,
+        Byte | None,
+        dict[str, Float64 | None],
+        dict[str, Float64 | None],
+        dict[str, Byte | None],
     ]:
         out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
         (

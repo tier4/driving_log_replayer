@@ -15,7 +15,6 @@
 from dataclasses import dataclass
 from enum import Enum
 import math
-from typing import Dict
 
 
 class DistType(Enum):
@@ -40,7 +39,7 @@ class Stamp:
     timestamp_system: float = -1.0
     timestamp_ros: float = -1.0
 
-    def __init__(self, json_dict: Dict) -> None:
+    def __init__(self, json_dict: dict) -> None:
         try:
             self.timestamp_system = json_dict["Stamp"]["System"]
             self.timestamp_ros = json_dict["Stamp"]["ROS"]
@@ -57,7 +56,7 @@ class Position:
     y: float = None  # vehicle front
     z: float = None
 
-    def __init__(self, data: Dict = {}) -> None:  # noqa
+    def __init__(self, data: dict = {}) -> None:  # noqa
         self.try_parse_dict(data)
 
     def try_parse_dict(self, data) -> None:  # noqa

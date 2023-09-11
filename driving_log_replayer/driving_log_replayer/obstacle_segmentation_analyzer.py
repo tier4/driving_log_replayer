@@ -15,8 +15,6 @@
 # limitations under the License.
 
 from pathlib import Path
-from typing import Dict
-from typing import Tuple
 
 from ament_index_python.packages import get_package_share_directory
 import yaml
@@ -59,7 +57,7 @@ def get_graph_data(
     output_dir: Path,
     config_yaml: Path,
     dist_type: DistType,
-) -> Tuple[Dict, Dict]:
+) -> tuple[dict, dict]:
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード

@@ -18,9 +18,6 @@ from collections.abc import Callable
 import os
 from os.path import expandvars
 from pathlib import Path
-from typing import Dict
-from typing import List
-from typing import Optional
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
@@ -127,8 +124,8 @@ class DLREvaluator(Node, ABC):
     def timer_cb(
         self,
         *,
-        register_loop_func: Optional[Callable] = None,
-        register_shutdown_func: Optional[Callable] = None,
+        register_loop_func: Callable | None = None,
+        register_shutdown_func: Callable | None = None,
     ) -> None:
         self._current_time = self.get_clock().now().to_msg()
         # to debug callback use: self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
@@ -266,7 +263,7 @@ class DLREvaluator(Node, ABC):
         return tf_euler
 
     @classmethod
-    def set_initial_pose(cls, initial_pose: Optional[Dict]) -> Optional[PoseWithCovarianceStamped]:
+    def set_initial_pose(cls, initial_pose: dict | None) -> PoseWithCovarianceStamped | None:
         if initial_pose is None:
             return None
         try:
@@ -341,7 +338,7 @@ class DLREvaluator(Node, ABC):
     @classmethod
     def get_most_probable_classification(
         cls,
-        array_classification: List[ObjectClassification],
+        array_classification: list[ObjectClassification],
     ) -> ObjectClassification:
         highest_probability = 0.0
         highest_classification = None
@@ -364,7 +361,7 @@ class DLREvaluator(Node, ABC):
     @classmethod
     def get_most_probable_signal(
         cls,
-        lights: List[TrafficLight],
+        lights: list[TrafficLight],
     ) -> TrafficLight:
         highest_probability = 0.0
         highest_light = None

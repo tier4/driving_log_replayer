@@ -16,8 +16,6 @@
 
 import logging
 import os
-from typing import Dict
-from typing import List
 
 from autoware_auto_perception_msgs.msg import TrafficSignal
 from autoware_auto_perception_msgs.msg import TrafficSignalArray
@@ -40,7 +38,7 @@ from driving_log_replayer.result import ResultBase
 
 
 class TrafficLightResult(ResultBase):
-    def __init__(self, condition: Dict) -> None:
+    def __init__(self, condition: dict) -> None:
         super().__init__()
         self.__pass_rate = condition["PassRate"]
         self.__success = 0
@@ -63,7 +61,7 @@ class TrafficLightResult(ResultBase):
         frame: PerceptionFrameResult,
         skip: int,
         header: Header,  # noqa
-        map_to_baselink: Dict,
+        map_to_baselink: dict,
     ) -> None:
         self.__total += 1
         has_objects = True
@@ -99,7 +97,7 @@ class TrafficLightResult(ResultBase):
         self._frame = out_frame
         self.update()
 
-    def set_final_metrics(self, final_metrics: Dict) -> None:
+    def set_final_metrics(self, final_metrics: dict) -> None:
         self._frame = {"FinalScore": final_metrics}
 
 
@@ -191,9 +189,9 @@ class TrafficLightEvaluator(DLREvaluator):
     def list_dynamic_object_2d_from_ros_msg(
         self,
         unix_time: int,
-        signals: List[TrafficSignal],
-    ) -> List[DynamicObject2D]:
-        estimated_objects: List[DynamicObject2D] = []
+        signals: list[TrafficSignal],
+    ) -> list[DynamicObject2D]:
+        estimated_objects: list[DynamicObject2D] = []
         for signal in signals:
             most_probable_light = DLREvaluator.get_most_probable_signal(signal.lights)
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
@@ -218,7 +216,7 @@ class TrafficLightEvaluator(DLREvaluator):
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
         else:
-            estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
+            estimated_objects: list[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
                 unix_time,
                 msg.signals,
             )
