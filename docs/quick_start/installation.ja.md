@@ -6,8 +6,8 @@
 
 - CPU amd64
 - Ubuntu 20.04 / 22.04
-- ROS galactic / humble
-- Python 3.8 / 3.10
+- ROS humble
+- Python 3.10
 - NVIDIA GPU (required if running perception)
 - [pipx](https://pypa.github.io/pipx/)
 - [zstd](https://github.com/facebook/zstd)
@@ -40,7 +40,6 @@
      simulator/vendor/ros2_numpy:
        type: git
        url: https://github.com/Box-Robotics/ros2_numpy.git
-       # version humble is available for both humble and galactic
        version: humble
      simulator/vendor/ros2bag_extensions:
        type: git
