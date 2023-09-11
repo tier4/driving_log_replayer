@@ -18,8 +18,6 @@ import dataclasses
 from dataclasses import dataclass
 from pathlib import Path
 import sys
-from typing import Dict
-from typing import List
 
 import pandas as pd
 import simplejson as json
@@ -31,7 +29,7 @@ from driving_log_replayer_analyzer.data import Position
 from driving_log_replayer_analyzer.data import Stamp
 
 
-def fail_3_times_in_a_row(data: List) -> List:
+def fail_3_times_in_a_row(data: list) -> list:
     """
     対象点から近いほうの点3点から、連続して3点Failしている点をFailとする変換を行う.
 
@@ -55,7 +53,7 @@ def fail_3_times_in_a_row(data: List) -> List:
     return df.to_numpy().tolist()
 
 
-def get_min_range(data: List) -> float:
+def get_min_range(data: list) -> float:
     df = pd.DataFrame(data, columns=["Dist", "Val", "Result"])
 
     # Val == 0はFail, 最初にFailした距離を探索する
@@ -71,7 +69,7 @@ def get_min_range(data: List) -> float:
 class Frame:
     frame_name: int = -1
 
-    def __init__(self, json_dict: Dict) -> None:
+    def __init__(self, json_dict: dict) -> None:
         with contextlib.suppress(KeyError, IndexError):
             self.frame_name = int(json_dict["Frame"]["FrameName"])
 
@@ -82,9 +80,9 @@ class NonDetection:
     frame: int
     ego_position: Position
     pointcloud_points: float
-    distance: Dict[int, int]
+    distance: dict[int, int]
 
-    def __init__(self, json_dict: Dict) -> None:
+    def __init__(self, json_dict: dict) -> None:
         self.result = ""
         self.frame = ""
         self.pointcloud_points = 0
@@ -132,9 +130,9 @@ class DetectionInfo:
 @dataclass
 class Detection:
     result: str
-    detection_info: List[DetectionInfo]
+    detection_info: list[DetectionInfo]
 
-    def __init__(self, json_dict: Dict, dist_type: DistType) -> None:
+    def __init__(self, json_dict: dict, dist_type: DistType) -> None:
         self.result = ""
         self.detection_info = []
         try:
@@ -166,7 +164,7 @@ class Summary:
     def __init__(self) -> None:
         pass
 
-    def update_condition(self, json_dict: Dict) -> None:
+    def update_condition(self, json_dict: dict) -> None:
         if "Condition" in json_dict:
             try:
                 self.detection_pass_rate = json_dict["Condition"]["Detection"]["PassRate"]
@@ -180,7 +178,7 @@ class Summary:
     def update(self, parser) -> None:  # noqa
         self._update_visible_range(parser.get_bb_distance())
 
-    def _update_visible_range(self, pass_fail_list: List) -> None:
+    def _update_visible_range(self, pass_fail_list: list) -> None:
         self.visible_range_one_frame = get_min_range(pass_fail_list)
         self.visible_range_three_frame = get_min_range(fail_3_times_in_a_row(pass_fail_list))
 
@@ -192,10 +190,10 @@ class Summary:
 
 class JsonlParser:
     summary: Summary
-    frame: List[Frame]
-    stamp: List[Stamp]
-    detection: List[Detection]
-    non_detection: List[NonDetection]
+    frame: list[Frame]
+    stamp: list[Stamp]
+    detection: list[Detection]
+    non_detection: list[NonDetection]
 
     def __init__(self, filepath: Path, config: Config, dist_type: str) -> None:
         self.summary = Summary()
@@ -270,7 +268,7 @@ class JsonlParser:
                 for frame in uuid_points:
                     writer.writerow([frame[2], frame[0], frame[1]])
 
-    def get_topic_rate(self) -> List:
+    def get_topic_rate(self) -> list:
         ret = []
         index = 1
         previous_time = self.stamp[0].timestamp_system
@@ -283,7 +281,7 @@ class JsonlParser:
             previous_time = frame.timestamp_system
         return ret
 
-    def get_bb_position(self) -> List:
+    def get_bb_position(self) -> list:
         """自車を基準としたアノテーションバウンディングボックス(BB)の中心点(x, y)とSuccess/Failのフレーム毎のリストを作成する."""
         ret = []
         for frame in self.detection:
@@ -298,7 +296,7 @@ class JsonlParser:
                     )
         return ret
 
-    def get_pointcloud_position(self) -> List:
+    def get_pointcloud_position(self) -> list:
         """自車を基準としたアノテーションバウンディングボックス(BB)のPointCloudの最近傍点、ラベルとしてPointCloudを付与したリストを作成する."""
         ret = []
         for frame in self.detection:
@@ -313,7 +311,7 @@ class JsonlParser:
                     )
         return ret
 
-    def get_bb_distance(self) -> List:
+    def get_bb_distance(self) -> list:
         """
         自車を基準としたBBの最近傍点の距離とResult.
 
@@ -335,7 +333,7 @@ class JsonlParser:
                     )
         return ret
 
-    def get_bb_dist_with_stamp(self) -> List:
+    def get_bb_dist_with_stamp(self) -> list:
         ret = []
         i = 0
         for detection, frame, stamp in zip(self.detection, self.frame, self.stamp):
@@ -355,7 +353,7 @@ class JsonlParser:
                 i = i + 1
         return ret
 
-    def _split_list_per_uuid(self, input_list: List) -> List:
+    def _split_list_per_uuid(self, input_list: list) -> list:
         # UUIDごとにリストを分割
         # UUIDの重複を削除したset
         uuid_set = set([x[2] for x in input_list])  # noqa: C403
@@ -364,7 +362,7 @@ class JsonlParser:
             ret.append([x for x in input_list if x[2] == uuid])
         return ret
 
-    def get_pointcloud_points_per_uuid(self) -> List:
+    def get_pointcloud_points_per_uuid(self) -> list:
         """
         Detectionで検出した自車からAnnotation BB内の最近傍PCの距離ごとの検知点群数のリストを返す.
 
@@ -385,7 +383,7 @@ class JsonlParser:
                     )
         return self._split_list_per_uuid(tmp)
 
-    def get_annotation_and_pointcloud_distance(self) -> List:
+    def get_annotation_and_pointcloud_distance(self) -> list:
         """
         自車からAnnotation BBの最近傍点と検知点群の最近傍点との距離差.
 
@@ -413,7 +411,7 @@ class JsonlParser:
                     )
         return self._split_list_per_uuid(tmp)
 
-    def get_non_detection_frame_points(self, fp_dist: FpDistance) -> List:
+    def get_non_detection_frame_points(self, fp_dist: FpDistance) -> list:
         """
         Non detection評価のフレームごとの点群数の累積を計算する.
 
@@ -436,7 +434,7 @@ class JsonlParser:
             )
         return ret
 
-    def get_non_detection_position(self, fp_dist: FpDistance) -> List:
+    def get_non_detection_position(self, fp_dist: FpDistance) -> list:
         """
         自車の位置とNon detectionのNumPointsのリストを作成する.
 

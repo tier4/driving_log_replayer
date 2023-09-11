@@ -16,10 +16,6 @@
 
 import logging
 import os
-from typing import Dict
-from typing import List
-from typing import Tuple
-from typing import Union
 
 from autoware_auto_perception_msgs.msg import DetectedObject
 from autoware_auto_perception_msgs.msg import DetectedObjects
@@ -52,7 +48,7 @@ from driving_log_replayer.result import ResultBase
 
 
 class PerceptionResult(ResultBase):
-    def __init__(self, condition: Dict) -> None:
+    def __init__(self, condition: dict) -> None:
         super().__init__()
         self.__pass_rate = condition["PassRate"]
         self.__success = 0
@@ -75,8 +71,8 @@ class PerceptionResult(ResultBase):
         frame: PerceptionFrameResult,
         skip: int,
         header: Header,
-        map_to_baselink: Dict,
-    ) -> Tuple[MarkerArray, MarkerArray]:
+        map_to_baselink: dict,
+    ) -> tuple[MarkerArray, MarkerArray]:
         self.__total += 1
         has_objects = True
         if (
@@ -132,7 +128,7 @@ class PerceptionResult(ResultBase):
         self.update()
         return marker_ground_truth, marker_results
 
-    def set_final_metrics(self, final_metrics: Dict) -> None:
+    def set_final_metrics(self, final_metrics: dict) -> None:
         self._frame = {"FinalScore": final_metrics}
 
 
@@ -252,9 +248,9 @@ class PerceptionEvaluator(DLREvaluator):
     def list_dynamic_object_from_ros_msg(
         self,
         unix_time: int,
-        objects: Union[List[DetectedObject], List[TrackedObject]],
-    ) -> List[DynamicObject]:
-        estimated_objects: List[DynamicObject] = []
+        objects: list[DetectedObject] | list[TrackedObject],
+    ) -> list[DynamicObject]:
+        estimated_objects: list[DynamicObject] = []
         for perception_object in objects:
             most_probable_classification = DLREvaluator.get_most_probable_classification(
                 perception_object.classification,
@@ -301,7 +297,7 @@ class PerceptionEvaluator(DLREvaluator):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def perception_cb(self, msg: Union[DetectedObjects, TrackedObjects]) -> None:
+    def perception_cb(self, msg: DetectedObjects | TrackedObjects) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
@@ -311,7 +307,7 @@ class PerceptionEvaluator(DLREvaluator):
             self.__skip_counter += 1
             return
 
-        estimated_objects: List[DynamicObject] = self.list_dynamic_object_from_ros_msg(
+        estimated_objects: list[DynamicObject] = self.list_dynamic_object_from_ros_msg(
             unix_time,
             msg.objects,
         )
@@ -352,7 +348,7 @@ class PerceptionEvaluator(DLREvaluator):
         logging.info("final metrics result %s", final_metric_score)
         return final_metric_score
 
-    def get_fp_result(self) -> Dict:
+    def get_fp_result(self) -> dict:
         status_list = get_object_status(self.__evaluator.frame_results)
         gt_status = {}
         for status_info in status_list:

@@ -2,8 +2,6 @@ import glob
 import os
 from pathlib import Path
 import subprocess
-from typing import Dict
-from typing import Optional
 
 from natsort import natsorted
 import termcolor
@@ -67,7 +65,7 @@ class TestScriptGenerator:
             return True
         return False
 
-    def __parse_scenario(self, scenario_directory: str) -> Optional[str]:
+    def __parse_scenario(self, scenario_directory: str) -> str | None:
         scenario_root = Path(scenario_directory)
         scenario_output_dir = os.path.join(self.__output_directory, scenario_root.name)
         os.makedirs(scenario_output_dir)
@@ -107,8 +105,8 @@ class TestScriptGenerator:
         scenario_root: str,
         scenario_name: str,
         scenario_output_dir: str,
-        scenario_yaml_obj: Dict,
-    ) -> Optional[str]:
+        scenario_yaml_obj: dict,
+    ) -> str | None:
         map_path = ""
         if "LocalMapPath" in scenario_yaml_obj:
             map_path = os.path.expandvars(scenario_yaml_obj["LocalMapPath"])
@@ -197,8 +195,8 @@ class TestScriptGenerator:
         scenario_root: str,
         scenario_name: str,
         scenario_output_dir: str,
-        scenario_yaml_obj: Dict,
-    ) -> Optional[str]:
+        scenario_yaml_obj: dict,
+    ) -> str | None:
         launch_command_for_all_dataset = ""
         scenario_path = os.path.join(scenario_root, scenario_name)
         t4_dataset_base_path = os.path.join(scenario_root, "t4_dataset")

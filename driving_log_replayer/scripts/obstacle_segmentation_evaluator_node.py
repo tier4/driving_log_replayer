@@ -18,10 +18,6 @@ import logging
 import os
 from pathlib import Path
 import sys
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Tuple
 from typing import TYPE_CHECKING
 
 from geometry_msgs.msg import PoseStamped
@@ -65,7 +61,7 @@ def get_box_marker(
     namespace: str,
     marker_id: int,
     color: ColorRGBA,
-) -> Tuple[Marker, Marker, Dict]:
+) -> tuple[Marker, Marker, dict]:
     gt_state = ground_truth_obj.state
     bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
         gt_state,
@@ -87,16 +83,16 @@ def get_box_marker(
 
 
 def summarize_frame_container(
-    container: List[DynamicObjectWithSensingResult],
+    container: list[DynamicObjectWithSensingResult],
     header: Header,
     color: ColorRGBA,
-    info: List,
+    info: list,
     counter: int,
     marker_array: MarkerArray,
     pcd: np.ndarray,
     graph_detection: ObstacleSegmentationMarkerArray,
     result_status: int,
-) -> Tuple[Dict, int, MarkerArray, np.ndarray, ObstacleSegmentationMarkerArray]:
+) -> tuple[dict, int, MarkerArray, np.ndarray, ObstacleSegmentationMarkerArray]:
     for result in container:
         pcd_result = np.zeros(
             result.inside_pointcloud_num,
@@ -133,9 +129,9 @@ def summarize_frame_container(
 
 
 def summarize_numpy_pointcloud(
-    list_pcd: List[np.ndarray],
+    list_pcd: list[np.ndarray],
     header: Header,
-) -> Tuple[PointCloud2, np.ndarray]:
+) -> tuple[PointCloud2, np.ndarray]:
     numpy_pcd = np.zeros(
         0,
         dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
@@ -160,8 +156,8 @@ def summarize_numpy_pointcloud(
 
 def get_sensing_frame_config(
     pcd_header: Header,
-    scenario_yaml_obj: Dict,
-) -> Tuple[bool, Optional[SensingFrameConfig]]:
+    scenario_yaml_obj: dict,
+) -> tuple[bool, SensingFrameConfig | None]:
     detection_config = scenario_yaml_obj["Evaluation"]["Conditions"].get("Detection", None)
     if detection_config is None:
         return True, None
@@ -172,8 +168,8 @@ def get_sensing_frame_config(
     for uuid_dict in bbox_conf:
         for uuid, v in uuid_dict.items():
             # uuid: str, v: Dict
-            start: Optional[float] = v.get("Start", None)
-            end: Optional[float] = v.get("End", None)
+            start: float | None = v.get("Start", None)
+            end: float | None = v.get("End", None)
             if start is None:
                 start = 0.0
             if end is None:
@@ -194,10 +190,10 @@ def get_sensing_frame_config(
 
 
 class ObstacleSegmentationResult(ResultBase):
-    def __init__(self, condition: Dict) -> None:
+    def __init__(self, condition: dict) -> None:
         super().__init__()
-        self.__condition_detection: Optional[Dict] = condition.get("Detection", None)
-        self.__condition_non_detection: Optional[Dict] = condition.get("NonDetection", None)
+        self.__condition_detection: dict | None = condition.get("Detection", None)
+        self.__condition_non_detection: dict | None = condition.get("NonDetection", None)
 
         self.__detection_total = 0
         self.__detection_success = 0
@@ -230,11 +226,11 @@ class ObstacleSegmentationResult(ResultBase):
         header: Header,
         *,
         topic_rate: bool,
-    ) -> Tuple[
-        Dict,
-        Optional[MarkerArray],
-        Optional[PointCloud2],
-        Optional[ObstacleSegmentationMarkerArray],
+    ) -> tuple[
+        dict,
+        MarkerArray | None,
+        PointCloud2 | None,
+        ObstacleSegmentationMarkerArray | None,
     ]:
         result = "Skipped"
         info = []
@@ -327,11 +323,11 @@ class ObstacleSegmentationResult(ResultBase):
 
     def summarize_non_detection(
         self,
-        pcd_list: List[np.ndarray],
+        pcd_list: list[np.ndarray],
         header: Header,
         *,
         topic_rate: bool,
-    ) -> Tuple[Dict, Optional[PointCloud2], Optional[ObstacleSegmentationMarker]]:
+    ) -> tuple[dict, PointCloud2 | None, ObstacleSegmentationMarker | None]:
         result = "Skipped"
         info = []
         ros_pcd = None
@@ -378,17 +374,17 @@ class ObstacleSegmentationResult(ResultBase):
         self,
         frame: SensingFrameResult,
         skip: int,
-        map_to_baselink: Dict,
-        stop_reasons: List[Dict],
+        map_to_baselink: dict,
+        stop_reasons: list[dict],
         header: Header,
         *,
         topic_rate: bool,
-    ) -> Tuple[
-        Optional[MarkerArray],
-        Optional[PointCloud2],
-        Optional[ObstacleSegmentationMarkerArray],
-        Optional[PointCloud2],
-        Optional[ObstacleSegmentationMarker],
+    ) -> tuple[
+        MarkerArray | None,
+        PointCloud2 | None,
+        ObstacleSegmentationMarkerArray | None,
+        PointCloud2 | None,
+        ObstacleSegmentationMarker | None,
     ]:
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
@@ -457,7 +453,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
 
         self.__evaluator = SensingEvaluationManager(evaluation_config=evaluation_config)
 
-        self.__latest_stop_reasons: List[Dict] = []
+        self.__latest_stop_reasons: list[dict] = []
         self.__sub_awapi_autoware_status = self.create_subscription(
             AwapiAutowareStatus,
             "/awapi/autoware/get/status",
@@ -577,9 +573,9 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         pointcloud[:, 1] = numpy_pcd["y"]
         pointcloud[:, 2] = numpy_pcd["z"]
 
-        non_detection_areas: List[List[Tuple[float, float, float]]] = []
+        non_detection_areas: list[list[tuple[float, float, float]]] = []
         for marker in msg.marker_array.markers:
-            non_detection_area: List[Tuple[float, float, float]] = []
+            non_detection_area: list[tuple[float, float, float]] = []
             for point in marker.points:
                 non_detection_area.append((point.x, point.y, point.z))
             non_detection_areas.append(non_detection_area)

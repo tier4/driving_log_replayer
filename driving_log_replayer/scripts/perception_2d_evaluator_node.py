@@ -16,8 +16,6 @@
 
 import logging
 import os
-from typing import Dict
-from typing import List
 
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
@@ -40,7 +38,7 @@ from driving_log_replayer.result import ResultBase
 
 
 class Perception2DResult(ResultBase):
-    def __init__(self, condition: Dict) -> None:
+    def __init__(self, condition: dict) -> None:
         super().__init__()
         self.__pass_rate = condition["PassRate"]
         self.__target_cameras = condition["TargetCameras"]
@@ -70,7 +68,7 @@ class Perception2DResult(ResultBase):
         frame: PerceptionFrameResult,
         skip: int,
         header: Header,  # noqa
-        map_to_baselink: Dict,
+        map_to_baselink: dict,
         camera_type: str,
     ) -> None:
         self.__total[camera_type] += 1
@@ -114,7 +112,7 @@ class Perception2DResult(ResultBase):
         self._frame = out_frame
         self.update()
 
-    def set_final_metrics(self, final_metrics: Dict) -> None:
+    def set_final_metrics(self, final_metrics: dict) -> None:
         self._frame = {"FinalScore": final_metrics}
 
 
@@ -225,10 +223,10 @@ class Perception2DEvaluator(DLREvaluator):
     def list_dynamic_object_2d_from_ros_msg(
         self,
         unix_time: int,
-        feature_objects: List[DetectedObjectWithFeature],
+        feature_objects: list[DetectedObjectWithFeature],
         camera_type: str,
-    ) -> List[DynamicObject2D]:
-        estimated_objects: List[DynamicObject2D] = []
+    ) -> list[DynamicObject2D]:
+        estimated_objects: list[DynamicObject2D] = []
         for perception_object in feature_objects:
             most_probable_classification = DLREvaluator.get_most_probable_classification(
                 perception_object.object.classification,
@@ -258,7 +256,7 @@ class Perception2DEvaluator(DLREvaluator):
         if ground_truth_now_frame is None:
             self.__skip_counter[camera_type] += 1
         else:
-            estimated_objects: List[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
+            estimated_objects: list[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
                 unix_time,
                 msg.feature_objects,
                 camera_type,

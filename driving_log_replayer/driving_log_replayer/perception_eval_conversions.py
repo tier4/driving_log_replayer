@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
-from typing import Optional
-from typing import Tuple
-from typing import Union
-
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
@@ -40,7 +35,7 @@ def unix_time_from_ros_msg(ros_header: Header) -> int:
     return ros_header.stamp.sec * pow(10, 6) + ros_header.stamp.nanosec // 1000
 
 
-def position_from_ros_msg(ros_position: Point) -> Tuple[int, int, int]:
+def position_from_ros_msg(ros_position: Point) -> tuple[int, int, int]:
     return (ros_position.x, ros_position.y, ros_position.z)
 
 
@@ -51,18 +46,18 @@ def orientation_from_ros_msg(ros_orientation: RosQuaternion) -> Quaternion:
 def dimensions_from_ros_msg(
     ros_dimensions: Vector3,
     shape_type_num: int,
-) -> Tuple[float, float, float]:
+) -> tuple[float, float, float]:
     if shape_type_num == 1:
         # cylinder
         return (ros_dimensions.x, ros_dimensions.x, ros_dimensions.z)
     return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
 
 
-def velocity_from_ros_msg(ros_velocity: Vector3) -> Tuple[float, float, float]:
+def velocity_from_ros_msg(ros_velocity: Vector3) -> tuple[float, float, float]:
     return (ros_velocity.x, ros_velocity.y, ros_velocity.z)
 
 
-def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
+def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Polygon | None:
     coords = []
     for ros_point in ros_footprint.points:
         coords.append((ros_point.x, ros_point.y, ros_point.z))
@@ -92,7 +87,7 @@ def object_state_to_ros_box_and_uuid(
     marker_id: int,
     color: ColorRGBA,
     text: str,
-) -> Tuple[Marker, Marker]:
+) -> tuple[Marker, Marker]:
     pose = Pose()
     pose.position.x = gt_state.position[0]
     pose.position.y = gt_state.position[1]
@@ -133,7 +128,7 @@ def object_state_to_ros_box_and_uuid(
 
 
 def dynamic_objects_to_ros_points(
-    container: Union[List[DynamicObjectWithPerceptionResult], List[DynamicObject]],
+    container: list[DynamicObjectWithPerceptionResult] | list[DynamicObject],
     header: Header,
     scale: Vector3,
     color: ColorRGBA,

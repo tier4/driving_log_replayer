@@ -14,7 +14,6 @@
 
 import os
 from pathlib import Path
-from typing import Optional
 
 import click
 
@@ -42,8 +41,8 @@ def analysis() -> None:
 )
 def obstacle_segmentation(
     input_jsonl: str,
-    output_dir: Optional[str],
-    config_yaml: Optional[str],
+    output_dir: str | None,
+    config_yaml: str | None,
     dist_type: str,
 ) -> None:
     """Run obstacle_segmentation analysis."""

@@ -14,9 +14,6 @@
 
 import os
 from string import capwords
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from ament_index_python.packages import get_package_share_directory
 import launch
@@ -33,7 +30,7 @@ from launch_ros.descriptions import ComposableNode
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
 
-def get_driving_log_replayer_common_argument() -> List:
+def get_driving_log_replayer_common_argument() -> list:
     """
     Set and return launch argument.
 
@@ -55,7 +52,7 @@ def get_driving_log_replayer_common_argument() -> List:
 
     def add_launch_arg(
         name: str,
-        default_value: Optional[str] = None,
+        default_value: str | None = None,
         description: str = "",
     ) -> None:
         launch_arguments.append(
@@ -171,7 +168,7 @@ def get_rviz(rviz_config_name: str) -> Node:
 
 def get_evaluator_node(
     usecase_name: str,
-    addition_parameter: Optional[Dict] = None,
+    addition_parameter: dict | None = None,
 ) -> Node:
     params = {
         "use_sim_time": True,
@@ -196,7 +193,7 @@ def get_evaluator_node(
     )
 
 
-def get_recorder(record_config_name: str, record_topics: List) -> ExecuteProcess:
+def get_recorder(record_config_name: str, record_topics: list) -> ExecuteProcess:
     record_cmd = [
         "ros2",
         "bag",
@@ -233,7 +230,7 @@ def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProces
     return ExecuteProcess(cmd=record_cmd)
 
 
-def get_player(additional_argument: Optional[List] = None) -> ExecuteProcess:
+def get_player(additional_argument: list | None = None) -> ExecuteProcess:
     play_cmd = [
         "ros2",
         "bag",
@@ -280,7 +277,7 @@ def get_topic_state_monitor_launch(
 
 def get_evaluator_container(
     usecase_name: str,
-    addition_parameter: Optional[Dict] = None,
+    addition_parameter: dict | None = None,
 ) -> ComposableNodeContainer:
     params = {
         "use_sim_time": True,
@@ -310,7 +307,7 @@ def get_evaluator_container(
     )
 
 
-def add_container_argument(launch_arguments: List) -> List:
+def add_container_argument(launch_arguments: list) -> list:
     launch_arguments.append(DeclareLaunchArgument("use_multithread", default_value="true"))
     launch_arguments.append(
         DeclareLaunchArgument(
