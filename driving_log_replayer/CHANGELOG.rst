@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.0 (2023-09-11)
+------------------
 * feat!: drop galactic support (`#242 <https://github.com/tier4/driving_log_replayer/issues/242>`_)
 * refactor: apply ruff rules (`#241 <https://github.com/tier4/driving_log_replayer/issues/241>`_)
 * refactor: apply ruff rules (`#240 <https://github.com/tier4/driving_log_replayer/issues/240>`_)
