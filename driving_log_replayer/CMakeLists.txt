@@ -8,12 +8,6 @@ autoware_package()
 ament_auto_add_library(obstacle_segmentation_evaluator_component SHARED
   src/obstacle_segmentation_evaluator_component.cpp
 )
-# workaround to allow deprecated header to build on both galactic and humble
-if(${tf2_geometry_msgs_VERSION} VERSION_LESS 0.18.0)
-  target_compile_definitions(obstacle_segmentation_evaluator_component PUBLIC
-    USE_TF2_GEOMETRY_MSGS_DEPRECATED_HEADER
-  )
-endif()
 # Workaround for lanelet2-core@1.2.1
 if(TARGET lanelet2_core::lanelet2_core)
   get_target_property(lanelet2_core_INCLUDE_DIRECTORIES lanelet2_core::lanelet2_core INTERFACE_INCLUDE_DIRECTORIES)
