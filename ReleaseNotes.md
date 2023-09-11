@@ -1,5 +1,26 @@
 # Release Notes
 
+## Version 1.6.0
+
+Breaking change
+End of support for ROS 2 galactic
+
+| Module                          | Feature          | Brief summary                  | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------- | ---------------- | ------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization, yabloc, eagleye` | refactoring      | refactor evaluator node        | [#228](https://github.com/tier4/driving_log_replayer/pull/228) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag`              | refactoring      | refactor evaluator node        | [#229](https://github.com/tier4/driving_log_replayer/pull/229) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`                    | refactoring      | refactor evaluator node        | [#230](https://github.com/tier4/driving_log_replayer/pull/230) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception_2d`                 | refactoring      | refactor evaluator node        | [#231](https://github.com/tier4/driving_log_replayer/pull/231) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`                 | refactoring      | refactor evaluator node        | [#232](https://github.com/tier4/driving_log_replayer/pull/232) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | refactoring      | refactor call lookup transform | [#233](https://github.com/tier4/driving_log_replayer/pull/233) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation`         | refactoring      | refactor evaluator node        | [#234](https://github.com/tier4/driving_log_replayer/pull/234) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply ruff linter rules        | [#237](https://github.com/tier4/driving_log_replayer/pull/237) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply type hint                | [#238](https://github.com/tier4/driving_log_replayer/pull/238) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply ruff linter rules        | [#239](https://github.com/tier4/driving_log_replayer/pull/239) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply ruff linter rules        | [#240](https://github.com/tier4/driving_log_replayer/pull/240) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply ruff linter rules        | [#241](https://github.com/tier4/driving_log_replayer/pull/241) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | CMake, type hint | drop galactic support          | [#242](https://github.com/tier4/driving_log_replayer/pull/242) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.5.4
 
 Minor Tweak

@@ -2,6 +2,29 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat!: drop galactic support (`#242 <https://github.com/tier4/driving_log_replayer/issues/242>`_)
+* refactor: apply ruff rules (`#241 <https://github.com/tier4/driving_log_replayer/issues/241>`_)
+* refactor: apply ruff rules (`#240 <https://github.com/tier4/driving_log_replayer/issues/240>`_)
+* refactor: comma (`#239 <https://github.com/tier4/driving_log_replayer/issues/239>`_)
+* refactor: type hint (`#238 <https://github.com/tier4/driving_log_replayer/issues/238>`_)
+* refactor: add type hint
+* refactor: add type hint to main method
+* fix: annotate void function
+* refactor: apply ruff rules (`#237 <https://github.com/tier4/driving_log_replayer/issues/237>`_)
+* fix: ERA
+* fix: PLR0911
+* refactor: evaluator abstract base class (`#236 <https://github.com/tier4/driving_log_replayer/issues/236>`_)
+* refactor: obstacle segmentation abc (`#234 <https://github.com/tier4/driving_log_replayer/issues/234>`_)
+* refactor: lookup transform (`#233 <https://github.com/tier4/driving_log_replayer/issues/233>`_)
+* refactor: traffic light abc (`#232 <https://github.com/tier4/driving_log_replayer/issues/232>`_)
+* refactor: 2d abc (`#231 <https://github.com/tier4/driving_log_replayer/issues/231>`_)
+* refactor: perception abc (`#230 <https://github.com/tier4/driving_log_replayer/issues/230>`_)
+* refactor: diag abc (`#229 <https://github.com/tier4/driving_log_replayer/issues/229>`_)
+* refactor: localization abstract base class (`#228 <https://github.com/tier4/driving_log_replayer/issues/228>`_)
+* Contributors: Hayato Mizushima
+
 1.5.4 (2023-09-01)
 ------------------
 * chore: update mkdocs i18n setting
