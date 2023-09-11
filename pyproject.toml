@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "driving_log_replayer_cli"
-version = "1.5.4"
+version = "1.6.0"
 description = "command line tool for driving_log_replayer"
 authors = [
   "Hayato Mizushima <hayato.mizushima@tier4.jp>",
@@ -23,20 +23,20 @@ driving_log_replayer = "driving_log_replayer_cli:main"
 driving_log_replayer_analyzer = "driving_log_replayer_analyzer:main"
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = "^3.10"
 termcolor = "^2.3.0"
 natsort = "^8.4.0"
-PyYAML = "^6.0.1"
+pyyaml = "^6.0.1"
 toml = "^0.10.2"
-click = "^8.1.6"
-pandas = "^2.0.3"
-plotly = "^5.16.0"
+click = "^8.1.7"
+pandas = "^2.1.0"
+plotly = "^5.16.1"
 kaleido = "0.2.1"
 simplejson = "^3.19.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.7.0"
-ruff = "^0.0.285"
+black = "^23.9.1"
+ruff = "^0.0.287"
 
 [build-system]
 requires = ["poetry-core"]
