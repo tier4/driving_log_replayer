@@ -21,8 +21,7 @@ def simulation() -> None:
 @click.option("--rate", "-r", default=1.0)
 @click.option("--delay", "-d", default=10.0)
 @click.option("--no-json", is_flag=True, help="Do not convert jsonl files to json")
-def run(profile: str, rate: float, delay: float, *, no_json: bool) -> None:
-    """Run simulation using data_directory and show result."""
+def run(profile: str, rate: float, delay: float, no_json: bool) -> None:  # noqa
     config = load_config(profile)
     output_dir_by_time = os.path.join(
         config.output_directory,

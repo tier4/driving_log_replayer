@@ -16,8 +16,7 @@ class DrivingLogReplayerTestRunner:
         autoware_path: str,
         rate: float,
         delay: float,
-        *,
-        output_json: bool,
+        output_json: bool,  # noqa
     ) -> None:
         self.__data_directory = data_directory
         self.__output_directory = output_directory
@@ -52,8 +51,7 @@ def run(
     autoware_path: str,
     rate: float,
     delay: float,
-    *,
-    output_json: bool,
+    output_json: bool,  # noqa
 ) -> None:
     DrivingLogReplayerTestRunner(
         os.path.expandvars(data_directory),
