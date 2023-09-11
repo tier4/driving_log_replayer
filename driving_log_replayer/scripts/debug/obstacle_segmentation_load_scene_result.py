@@ -65,13 +65,13 @@ class ObstacleSegmentationEvaluatorPickle:
 
     def debug_frames(self) -> None:
         for result in self.__evaluator.frame_results:
-            print(f"FrameName: {result.frame_name}")
+            print(f"FrameName: {result.frame_name}")  # noqa
             dist_array = np.array([])
             for pcd in result.pointcloud_failed_non_detection:
                 dists: np.ndarray = np.linalg.norm(pcd, ord=2, axis=1)
-                print(dists)
+                print(dists)  # noqa
                 dist_array = np.concatenate([dist_array, dists])
-            print(dist_array)
+            print(dist_array)  # noqa
 
     def get_final_result(self) -> None:
         """Output the evaluation results on the command line."""

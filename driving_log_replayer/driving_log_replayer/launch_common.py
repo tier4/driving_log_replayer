@@ -68,10 +68,9 @@ def get_driving_log_replayer_common_argument() -> List:
         description="Whether to launch autoware or not",
     )
     add_launch_arg("rviz", default_value="true", description="Whether to display rviz or not")
-    add_launch_arg("scenario_path", default_value="/tmp/scenario", description="scenario path")
+    add_launch_arg("scenario_path", description="scenario path")
     add_launch_arg(
         "result_json_path",
-        default_value="/tmp/result_json",
         description="result json save path",
     )
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
@@ -79,7 +78,6 @@ def get_driving_log_replayer_common_argument() -> List:
     add_launch_arg("input_bag", description="full path to the input bag")
     add_launch_arg(
         "result_bag_path",
-        default_value="/tmp/result_bag",
         description="result bag save path",
     )
     add_launch_arg("map_path", description="point cloud and lanelet2 map directory path")
@@ -90,13 +88,11 @@ def get_driving_log_replayer_common_argument() -> List:
     # additional argument
     add_launch_arg(
         "t4_dataset_path",
-        default_value="/tmp/t4_dataset",
         description="full path of t4_dataset",
     )
 
     add_launch_arg(
         "result_archive_path",
-        default_value="/tmp/result_archive",
         description="additional result file",
     )
 

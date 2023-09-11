@@ -227,8 +227,9 @@ class ObstacleSegmentationResult(ResultBase):
     def summarize_detection(
         self,
         frame_result: SensingFrameResult,
-        topic_rate: bool,
         header: Header,
+        *,
+        topic_rate: bool,
     ) -> Tuple[
         Dict,
         Optional[MarkerArray],
@@ -327,8 +328,9 @@ class ObstacleSegmentationResult(ResultBase):
     def summarize_non_detection(
         self,
         pcd_list: List[np.ndarray],
-        topic_rate: bool,
         header: Header,
+        *,
+        topic_rate: bool,
     ) -> Tuple[Dict, Optional[PointCloud2], Optional[ObstacleSegmentationMarker]]:
         result = "Skipped"
         info = []
@@ -378,8 +380,9 @@ class ObstacleSegmentationResult(ResultBase):
         skip: int,
         map_to_baselink: Dict,
         stop_reasons: List[Dict],
-        topic_rate: bool,
         header: Header,
+        *,
+        topic_rate: bool,
     ) -> Tuple[
         Optional[MarkerArray],
         Optional[PointCloud2],
@@ -397,12 +400,16 @@ class ObstacleSegmentationResult(ResultBase):
             marker_detection,
             pcd_detection,
             graph_detection,
-        ) = self.summarize_detection(frame, topic_rate, header)
+        ) = self.summarize_detection(frame, header, topic_rate=topic_rate)
         (
             out_frame["NonDetection"],
             pcd_non_detection,
             graph_non_detection,
-        ) = self.summarize_non_detection(frame.pointcloud_failed_non_detection, topic_rate, header)
+        ) = self.summarize_non_detection(
+            frame.pointcloud_failed_non_detection,
+            header,
+            topic_rate=topic_rate,
+        )
         out_frame["StopReasons"] = stop_reasons
         out_frame["TopicRate"] = str(topic_rate)
         # update current frame
@@ -597,8 +604,8 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             self.__skip_counter,
             DLREvaluator.transform_stamped_with_euler_angle(msg.map_to_baselink),
             self.__latest_stop_reasons,
-            msg.topic_rate,
             pcd_header,
+            topic_rate=msg.topic_rate,
         )
         self._result_writer.write(self.__result)
 

@@ -139,6 +139,7 @@ def dynamic_objects_to_ros_points(
     color: ColorRGBA,
     namespace: str,
     marker_id: int,
+    *,
     tp_gt: bool,
 ) -> Marker:
     p_marker = Marker()

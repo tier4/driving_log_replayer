@@ -13,7 +13,7 @@ class DrivingLogReplayerResultViewer:
         self.__result_path = result_path
 
     def output(self) -> None:
-        print("--------------------------------------------------")
+        print("--------------------------------------------------")  # noqa
         self.__result_json_dict = {}
         with open(self.__result_path) as jsonl_file:
             last_line = jsonl_file.readlines()[-1]
@@ -53,7 +53,7 @@ def display(output_directory: str) -> None:
     for result_path in natsorted(result_paths):
         result_path_obj = Path(result_path)
         log_directory = result_path_obj.parent
-        print(f"test case {number} / {total} : use case: {log_directory.name}")
+        print(f"test case {number} / {total} : use case: {log_directory.name}")  # noqa
         viewer = DrivingLogReplayerResultViewer(result_path_obj.as_posix())
         viewer.output()
         number = number + 1
