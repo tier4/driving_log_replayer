@@ -243,7 +243,7 @@ class TrafficLightEvaluator(DLREvaluator):
         final_metric_score = self.__evaluator.get_scene_result()
 
         # final result
-        logging.info(f"final metrics result {final_metric_score}")
+        logging.info("final metrics result %s", final_metric_score)
         return final_metric_score
 
 
