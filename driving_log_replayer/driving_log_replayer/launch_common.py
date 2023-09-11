@@ -22,6 +22,7 @@ from launch.actions import ExecuteProcess
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
+from launch.substitutions import PythonExpression
 from launch_ros.actions import Node
 
 from driving_log_replayer.shutdown_once import ShutdownOnce
@@ -206,6 +207,8 @@ def get_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
         "ros2",
         "bag",
         "record",
+        "-s",
+        "mcap",
         "-o",
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
@@ -216,12 +219,17 @@ def get_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
         ).as_posix(),
         "-e",
         allowlist,
+        "--use-sim-time",
     ]
 
 
 def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
     record_cmd = get_regex_record_cmd(record_config_name, allowlist)
-    return ExecuteProcess(cmd=record_cmd)
+    # Start after play to avoid time starting in UNIX epoch(1970-01-01-00:00:00)
+    return ExecuteProcess(
+        cmd=["sleep", PythonExpression([LaunchConfiguration("play_delay"), "+2.0"])],
+        on_exit=[ExecuteProcess(cmd=record_cmd)],
+    )
 
 
 def get_regex_recorders(

@@ -1,5 +1,8 @@
 # Driving Log Replayer for ROS 2 Autoware.Universe
 
+<b><font color="#FF0000">This branch is local use only, please do not use this branch in Autoware Evaluator</font></b>
+
+
 Driving Log Replayer is a ROS package that evaluates the functionality of Autoware.Universe
 
 ## Requirements
