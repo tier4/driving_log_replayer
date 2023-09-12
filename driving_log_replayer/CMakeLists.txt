@@ -23,6 +23,10 @@ rclcpp_components_register_node(obstacle_segmentation_evaluator_component
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+  find_package(ament_cmake_pytest)
+  ament_add_pytest_test(driving_log_replayer
+    test
+  )
 endif()
 
 ament_python_install_package(${PROJECT_NAME})
