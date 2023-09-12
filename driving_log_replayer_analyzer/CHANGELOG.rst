@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: restore default value (`#244 <https://github.com/tier4/driving_log_replayer/issues/244>`_)
+* Contributors: Hayato Mizushima
+
 1.6.0 (2023-09-11)
 ------------------
 * feat!: drop galactic support (`#242 <https://github.com/tier4/driving_log_replayer/issues/242>`_)
