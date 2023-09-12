@@ -81,7 +81,7 @@ class YabLocEvaluator(DLREvaluator):
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
         self.__result.set_frame(msg)
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
 
 @evaluator_main

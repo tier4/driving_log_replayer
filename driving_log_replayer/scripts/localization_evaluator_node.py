@@ -310,7 +310,7 @@ class LocalizationEvaluator(DLREvaluator):
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_nvtl,
         )
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
     def nvtl_cb(self, msg: Float32Stamped) -> None:
         self.__latest_nvtl = msg
@@ -323,7 +323,7 @@ class LocalizationEvaluator(DLREvaluator):
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_tp,
         )
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
     def pose_cb(self, msg: PoseStamped) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
@@ -335,11 +335,11 @@ class LocalizationEvaluator(DLREvaluator):
             self.__latest_iteration_num,
         )
         self.__pub_lateral_distance.publish(msg_lateral_distance)
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
         self.__result.set_frame(msg)
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
 
 @evaluator_main

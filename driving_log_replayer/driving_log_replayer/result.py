@@ -14,8 +14,10 @@
 
 from abc import ABC
 from abc import abstractmethod
-import os
+from os.path import expandvars
+from pathlib import Path
 import pickle
+from typing import Any
 
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
@@ -28,12 +30,15 @@ class ResultBase(ABC):
         self._summary = "NoData"
         self._frame = {}
 
+    @property
     def success(self) -> bool:
         return self._success
 
+    @property
     def summary(self) -> str:
         return self._summary
 
+    @property
     def frame(self) -> dict:
         return self._frame
 
@@ -48,33 +53,40 @@ class ResultBase(ABC):
 
 class ResultWriter:
     def __init__(self, result_json_path: str, ros_clock: Clock, condition: dict) -> None:
-        # 拡張子を書き換える
-        result_file = os.path.splitext(os.path.expandvars(result_json_path))[0] + ".jsonl"
-        self._result_file = open(result_file, "w")  # noqa
+        self.open_result_file(result_json_path)
         self._ros_clock = ros_clock
         self._system_clock = Clock(clock_type=ClockType.SYSTEM_TIME)
-        self.write_condition(condition)
-        self.write_header()
+        self.write_line({"Condition": condition})
+        self.write_line(self.get_header())
+
+    def open_result_file(self, result_json_path: str) -> None:
+        self._result_file = self.create_jsonl_path(result_json_path).open("w")
+
+    def create_jsonl_path(self, result_json_path: str) -> Path:
+        # For compatibility with previous versions.
+        # If a json file name is passed, replace it with the filename + jsonl
+        original_path = Path(expandvars(result_json_path))
+        return original_path.parent.joinpath(original_path.stem + ".jsonl")
 
     def close(self) -> None:
         self._result_file.close()
 
-    def write_condition(self, condition: dict) -> None:
-        dict_condition = {"Condition": condition}
-        str_condition = json.dumps(dict_condition, ignore_nan=True) + "\n"
-        self._result_file.write(str_condition)
+    def write_line(self, write_obj: Any) -> None:
+        str_record = json.dumps(write_obj, ignore_nan=True) + "\n"
+        self._result_file.write(str_record)
 
-    def write_header(self) -> None:
+    def write_result(self, result: ResultBase) -> None:
+        self.write_line(self.get_result(result))
+
+    def get_header(self) -> dict:
         system_time = self._system_clock.now()
-        dict_header = {
+        return {
             "Result": {"Success": False, "Summary": "NoData"},
             "Stamp": {"System": system_time.nanoseconds / pow(10, 9)},
             "Frame": {},
         }
-        str_header = json.dumps(dict_header, ignore_nan=True) + "\n"
-        self._result_file.write(str_header)
 
-    def write(self, result: ResultBase) -> None:
+    def get_result(self, result: ResultBase) -> dict:
         system_time = self._system_clock.now()
         time_dict = {"System": system_time.nanoseconds / pow(10, 9)}
         if self._ros_clock.ros_time_is_active:
@@ -83,16 +95,14 @@ class ResultWriter:
         else:
             time_dict["ROS"] = 0.0
 
-        dict_record = {
+        return {
             "Result": {"Success": result.success(), "Summary": result.summary()},
             "Stamp": time_dict,
             "Frame": result.frame(),
         }
-        str_record = json.dumps(dict_record, ignore_nan=True) + "\n"
-        self._result_file.write(str_record)
 
 
 class PickleWriter:
-    def __init__(self, out_pkl_path: str, write_object) -> None:  # noqa
-        with open(os.path.expandvars(out_pkl_path), "wb") as pkl_file:
+    def __init__(self, out_pkl_path: str, write_object: Any) -> None:
+        with Path.open(expandvars(out_pkl_path), "wb") as pkl_file:
             pickle.dump(write_object, pkl_file)
