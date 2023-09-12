@@ -85,11 +85,13 @@ def get_driving_log_replayer_common_argument() -> list:
     # additional argument
     add_launch_arg(
         "t4_dataset_path",
+        default_value="/opt/autoware/t4_dataset",
         description="full path of t4_dataset",
     )
 
     add_launch_arg(
         "result_archive_path",
+        default_value="/opt/autoware/result_archive",
         description="additional result file",
     )
 
