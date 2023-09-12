@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.1 (2023-09-12)
+------------------
 * fix: restore default value (`#244 <https://github.com/tier4/driving_log_replayer/issues/244>`_)
 * Contributors: Hayato Mizushima
 
