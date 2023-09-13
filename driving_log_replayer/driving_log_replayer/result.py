@@ -53,14 +53,16 @@ class ResultBase(ABC):
 
 class ResultWriter:
     def __init__(self, result_json_path: str, ros_clock: Clock, condition: dict) -> None:
-        self.open_result_file(result_json_path)
+        self._result_path = self.create_jsonl_path(result_json_path)
+        self._result_file = self._result_path.open("w")
         self._ros_clock = ros_clock
         self._system_clock = Clock(clock_type=ClockType.SYSTEM_TIME)
         self.write_line({"Condition": condition})
         self.write_line(self.get_header())
 
-    def open_result_file(self, result_json_path: str) -> None:
-        self._result_file = self.create_jsonl_path(result_json_path).open("w")
+    @property
+    def result_path(self) -> Path:
+        return self._result_path
 
     def create_jsonl_path(self, result_json_path: str) -> Path:
         # For compatibility with previous versions.
@@ -70,6 +72,9 @@ class ResultWriter:
 
     def close(self) -> None:
         self._result_file.close()
+
+    def delete_result_file(self) -> None:
+        self._result_path.unlink()
 
     def write_line(self, write_obj: Any) -> None:
         str_record = json.dumps(write_obj, ignore_nan=True) + "\n"
@@ -96,9 +101,9 @@ class ResultWriter:
             time_dict["ROS"] = 0.0
 
         return {
-            "Result": {"Success": result.success(), "Summary": result.summary()},
+            "Result": {"Success": result.success, "Summary": result.summary},
             "Stamp": time_dict,
-            "Frame": result.frame(),
+            "Frame": result.frame,
         }
 
 
