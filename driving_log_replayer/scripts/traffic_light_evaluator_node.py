@@ -184,7 +184,7 @@ class TrafficLightEvaluator(DLREvaluator):
             conf_mat_dict = conf_mat_df.to_dict()
         final_metrics = {"Score": score_dict, "ConfusionMatrix": conf_mat_dict}
         self.__result.set_final_metrics(final_metrics)
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
     def list_dynamic_object_2d_from_ros_msg(
         self,
@@ -235,7 +235,7 @@ class TrafficLightEvaluator(DLREvaluator):
                 msg.header,
                 DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             )
-            self._result_writer.write(self.__result)
+            self._result_writer.write_result(self.__result)
 
     def get_final_result(self) -> MetricsScore:
         final_metric_score = self.__evaluator.get_scene_result()

@@ -15,7 +15,6 @@
 from abc import ABC
 from abc import abstractmethod
 from collections.abc import Callable
-import os
 from os.path import expandvars
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -69,7 +68,7 @@ class DLREvaluator(Node, ABC):
 
         self._scenario_yaml_obj = None
         try:
-            with open(self._scenario_path) as scenario_file:
+            with Path(self._scenario_path).open() as scenario_file:
                 self._scenario_yaml_obj = yaml.safe_load(scenario_file)
         except (FileNotFoundError, PermissionError, yaml.YAMLError) as e:
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
@@ -229,8 +228,8 @@ class DLREvaluator(Node, ABC):
 
     @classmethod
     def get_goal_pose_from_t4_dataset(cls, dataset_path: str) -> PoseStamped:
-        ego_pose_json_path = os.path.join(dataset_path, "annotation", "ego_pose.json")
-        with open(ego_pose_json_path) as ego_pose_file:
+        ego_pose_json_path = Path(dataset_path).joinpath("annotation", "ego_pose.json")
+        with ego_pose_json_path.open() as ego_pose_file:
             ego_pose_json = json.load(ego_pose_file)
             last_ego_pose = ego_pose_json[-1]
             goal_pose = PoseStamped()

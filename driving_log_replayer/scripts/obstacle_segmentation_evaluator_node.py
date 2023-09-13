@@ -603,7 +603,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             pcd_header,
             topic_rate=msg.topic_rate,
         )
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
         topic_rate_data = ObstacleSegmentationMarker()
         topic_rate_data.header = msg.pointcloud.header

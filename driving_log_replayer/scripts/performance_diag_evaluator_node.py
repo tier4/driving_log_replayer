@@ -361,7 +361,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
         for k, v in msg_blockage_levels.items():
             if v is not None:
                 self.__pub_blockage_levels[k].publish(v)
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
 
 @evaluator_main

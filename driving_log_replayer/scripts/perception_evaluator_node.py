@@ -227,7 +227,7 @@ class PerceptionEvaluator(DLREvaluator):
         if self.__evaluation_task == "fp_validation":
             final_metrics = self.get_fp_result()
             self.__result.set_final_metrics(final_metrics)
-            self._result_writer.write(self.__result)
+            self._result_writer.write_result(self.__result)
         else:
             self.get_final_result()
             score_dict = {}
@@ -243,7 +243,7 @@ class PerceptionEvaluator(DLREvaluator):
                 )
             final_metrics = {"Score": score_dict, "Error": error_dict}
             self.__result.set_final_metrics(final_metrics)
-            self._result_writer.write(self.__result)
+            self._result_writer.write_result(self.__result)
 
     def list_dynamic_object_from_ros_msg(
         self,
@@ -330,7 +330,7 @@ class PerceptionEvaluator(DLREvaluator):
             msg.header,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
         )
-        self._result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
         self.__pub_marker_ground_truth.publish(marker_ground_truth)
         self.__pub_marker_results.publish(marker_results)
 
