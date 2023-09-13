@@ -109,5 +109,5 @@ class ResultWriter:
 
 class PickleWriter:
     def __init__(self, out_pkl_path: str, write_object: Any) -> None:
-        with Path.open(expandvars(out_pkl_path), "wb") as pkl_file:
+        with Path(expandvars(out_pkl_path)).open("wb") as pkl_file:
             pickle.dump(write_object, pkl_file)
