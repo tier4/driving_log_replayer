@@ -262,11 +262,11 @@ class JsonlParser:
         with open(output_path, "w") as f:
             writer = csv.writer(f)
             # header
-            writer.write_row(["UUID", "PC_Dist", "PC_NumPoints"])
+            writer.writerow(["UUID", "PC_Dist", "PC_NumPoints"])
             points_list = self.get_pointcloud_points_per_uuid()
             for uuid_points in points_list:
                 for frame in uuid_points:
-                    writer.write_row([frame[2], frame[0], frame[1]])
+                    writer.writerow([frame[2], frame[0], frame[1]])
 
     def get_topic_rate(self) -> list:
         ret = []
