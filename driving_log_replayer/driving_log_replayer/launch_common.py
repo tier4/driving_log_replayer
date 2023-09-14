@@ -321,7 +321,7 @@ def add_container_argument(launch_arguments: list) -> list:
     return launch_arguments
 
 
-def get_container_configuration():  # noqa
+def get_container_configuration() -> tuple[SetLaunchConfiguration, SetLaunchConfiguration]:
     set_container_executable = SetLaunchConfiguration(
         "container_executable",
         "component_container",

@@ -56,7 +56,9 @@ class Position:
     y: float = None  # vehicle front
     z: float = None
 
-    def __init__(self, data: dict = {}) -> None:  # noqa
+    def __init__(self, data: dict | None = None) -> None:
+        if data is None:
+            data = {}
         self.try_parse_dict(data)
 
     def try_parse_dict(self, data) -> None:  # noqa
