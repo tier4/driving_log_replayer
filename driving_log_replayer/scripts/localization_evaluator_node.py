@@ -110,7 +110,7 @@ class ConvergenceResult(AbilityResult):
         ):
             self.passed += 1
 
-        current_rate = self.success / self.total * 100.0
+        current_rate = self.passed / self.total * 100.0
         self.success = current_rate >= self.condition["PassRate"]
         self.summary = f"{self.ability_name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
 
@@ -127,7 +127,7 @@ class ConvergenceResult(AbilityResult):
                     },
                 ],
             },
-        }
+        }, msg_lateral_dist
 
 
 @dataclass
@@ -235,7 +235,7 @@ class LocalizationResult(ResultBase):
         map_to_baselink: dict,
         reference: Float32Stamped,
     ) -> None:
-        self._frame = self.__reliability.get_frame(msg, map_to_baselink, reference)
+        self._frame = self.__reliability.set_frame(msg, map_to_baselink, reference)
         self.update()
 
     @set_frame.register
