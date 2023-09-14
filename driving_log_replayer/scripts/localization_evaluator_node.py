@@ -14,9 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+from abc import ABC
+from abc import abstractmethod
+from dataclasses import dataclass
+from dataclasses import field
 from functools import singledispatchmethod
 import statistics
+from typing import ClassVar
 
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
@@ -60,45 +64,159 @@ def calc_pose_horizontal_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> 
     return np.sqrt(np.power(ndt_x - ekf_x, 2) + np.power(ndt_y - ekf_y, 2))
 
 
+@dataclass
+class AbilityResult(ABC):
+    ability_name: ClassVar[str] = "Ability"
+    condition: dict = field(default_factory=dict)
+    total: int = 0
+    summary: str = "NotTested"
+    success: bool = True
+
+    def success_str(self) -> str:
+        return "Success" if self.success else "Fail"
+
+    @abstractmethod
+    def set_frame(self) -> dict:
+        return {}
+
+
+@dataclass
+class ConvergenceResult(AbilityResult):
+    ability_name: ClassVar[str] = "Convergence"
+    passed: int = 0
+
+    def set_frame(
+        self,
+        msg: PoseStamped,
+        map_to_baselink: dict,
+        ekf_pose: Odometry,
+        exe_time: Float32Stamped,
+        iteration_num: Int32Stamped,
+    ) -> tuple[dict, Float64]:
+        self.total += 1
+        lateral_dist = calc_pose_lateral_distance(msg, ekf_pose)
+        horizontal_dist = calc_pose_horizontal_distance(msg, ekf_pose)
+
+        msg_lateral_dist = Float64()
+        msg_lateral_dist.data = lateral_dist
+
+        exe_time_ms = exe_time.data
+        iteration = iteration_num.data
+
+        if (
+            abs(lateral_dist) <= self.condition["AllowableDistance"]
+            and exe_time_ms <= self.condition["AllowableExeTimeMs"]
+            and iteration <= self.condition["AllowableIterationNum"]
+        ):
+            self.passed += 1
+
+        current_rate = self.success / self.total * 100.0
+        self.success = current_rate >= self.condition["PassRate"]
+        self.summary = f"{self.ability_name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
+
+        return {
+            "Ego": {"TransformStamped": map_to_baselink},
+            "Convergence": {
+                "Result": self.success_str(),
+                "Info": [
+                    {
+                        "LateralDistance": lateral_dist,
+                        "HorizontalDistance": horizontal_dist,
+                        "ExeTimeMs": exe_time_ms,
+                        "IterationNum": iteration,
+                    },
+                ],
+            },
+        }
+
+
+@dataclass
+class ReliabilityResult(AbilityResult):
+    ability_name: ClassVar[str] = "Reliability"
+    ng_seq: int = 0
+    received_data: list[float] = field(default_factory=list)
+
+    def set_frame(
+        self,
+        msg: Float32Stamped,
+        map_to_baselink: dict,
+        reference: Float32Stamped,
+    ) -> dict:
+        self.total += 1
+        self.received_data.append(msg.data)
+
+        # If the likelihood is lower than AllowableLikelihood for NGCount consecutive times, it is assumed to be a failure.
+        if self.success:
+            # Update nq_seq only while reliability.result is true
+            if msg.data >= self.condition["AllowableLikelihood"]:
+                self.ng_seq = 0
+            else:
+                self.ng_seq += 1
+        self.success = bool(
+            self.ng_seq < self.condition["NGCount"],
+        )
+
+        self.summary = f"{self.ability_name} ({self.success_str()}): {self.condition['Method']} Sequential NG Count: {self.ng_seq} (Total Test: {self.total}, Average: {statistics.mean(self.received_data):.5f}, StdDev: {statistics.pstdev(self.received_data):.5f})"
+        return {
+            "Ego": {"TransformStamped": map_to_baselink},
+            "Reliability": {
+                "Result": self.success_str(),
+                "Info": [
+                    {
+                        "Value": message_to_ordereddict(msg),
+                        "Reference": message_to_ordereddict(reference),
+                    },
+                ],
+            },
+        }
+
+
+@dataclass
+class AvailabilityResult(AbilityResult):
+    ability_name: ClassVar[str] = "NDT Availability"
+    target_diag_name: ClassVar[
+        str
+    ] = "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
+    error_status_list: ClassVar[list[str]] = ["Timeout", "NotReceived"]
+
+    def set_frame(self, msg: DiagnosticArray) -> dict:
+        # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
+        for diag_status in msg.status:
+            if diag_status.name != self.target_diag_name:
+                continue
+            values = {value.key: value.value for value in diag_status.values}
+            # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
+            # On the basis of this assumption, we only consider the latest diagnostics received.
+            # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
+            if values["status"] in self.error_status_list:
+                self.success = False
+                self.summary = f"{self.ability_name} ({self.success_str()}): NDT not available"
+            else:
+                self.success = True
+                self.summary = f"{self.ability_name} ({self.success_str()}): NDT available"
+        return {
+            "Availability": {
+                "Result": self.success_str(),
+                "Info": [
+                    {},
+                ],
+            },
+        }
+
+
 class LocalizationResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
-        # convergence
-        self.__convergence_condition: dict = condition["Convergence"]
-        self.__convergence_total = 0
-        self.__convergence_success = 0
-        self.__convergence_msg = "NotTested"
-        self.__convergence_result = True
-        # reliability
-        self.__reliability_condition: dict = condition["Reliability"]
-        self.__reliability_ng_seq = 0
-        self.__reliability_total = 0
-        self.__reliability_msg = "NotTested"
-        self.__reliability_result = True
-        self.__reliability_list = []
-        # availability
-        self.__ndt_availability_error_status_list = ["Timeout", "NotReceived"]
-        self.__ndt_availability_msg = "NotTested"
-        self.__ndt_availability_result = True
+        self.__convergence = ConvergenceResult(condition=condition["Convergence"])
+        self.__reliability = ReliabilityResult(condition=condition["Reliability"])
+        self.__availability = AvailabilityResult()
 
     def update(self) -> None:
-        if self.__convergence_result:
-            convergence_summary = f"Convergence (Passed): {self.__convergence_msg}"
-        else:
-            convergence_summary = f"Convergence (Failed): {self.__convergence_msg}"
-        if self.__reliability_result:
-            reliability_summary = f"Reliability (Passed): {self.__reliability_msg}"
-        else:
-            reliability_summary = f"Reliability (Failed): {self.__reliability_msg}"
-        if self.__ndt_availability_result:
-            ndt_availability_summary = f"NDT Availability (Passed): {self.__ndt_availability_msg}"
-        else:
-            ndt_availability_summary = f"NDT Availability (Failed): {self.__ndt_availability_msg}"
-        summary_str = f"{convergence_summary}, {reliability_summary}, {ndt_availability_summary}"
+        summary_str = f"{self.__convergence.summary}, {self.__reliability.summary}, {self.__availability.summary}"
         if (
-            self.__convergence_result
-            and self.__reliability_result
-            and self.__ndt_availability_result
+            self.__convergence.success
+            and self.__reliability.success
+            and self.__availability.success
         ):
             self._success = True
             self._summary = f"Passed: {summary_str}"
@@ -108,7 +226,7 @@ class LocalizationResult(ResultBase):
 
     @singledispatchmethod
     def set_frame(self) -> None:
-        pass
+        raise NotImplementedError
 
     @set_frame.register
     def set_reliability_frame(
@@ -117,33 +235,7 @@ class LocalizationResult(ResultBase):
         map_to_baselink: dict,
         reference: Float32Stamped,
     ) -> None:
-        self.__reliability_total += 1
-        out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
-
-        reliability_value = msg.data
-        self.__reliability_list.append(reliability_value)
-
-        if self.__reliability_result:
-            if reliability_value >= self.__reliability_condition["AllowableLikelihood"]:
-                self.__reliability_ng_seq = 0
-            else:
-                self.__reliability_ng_seq += 1
-        self.__reliability_result = bool(
-            self.__reliability_ng_seq < self.__reliability_condition["NGCount"],
-        )
-        success = "Success" if self.__reliability_result else "Fail"
-
-        out_frame["Reliability"] = {
-            "Result": success,
-            "Info": [
-                {
-                    "Value": message_to_ordereddict(msg),
-                    "Reference": message_to_ordereddict(reference),
-                },
-            ],
-        }
-        self.__reliability_msg = f"{self.__reliability_condition['Method']} Sequential NG Count: {self.__reliability_ng_seq} (Total Test: {self.__reliability_total}, Average: {statistics.mean(self.__reliability_list):.5f}, StdDev: {statistics.pstdev(self.__reliability_list):.5f})"
-        self._frame = out_frame
+        self._frame = self.__reliability.get_frame(msg, map_to_baselink, reference)
         self.update()
 
     @set_frame.register
@@ -155,64 +247,19 @@ class LocalizationResult(ResultBase):
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,
     ) -> Float64:
-        self.__convergence_total += 1
-        out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
-        lateral_dist = calc_pose_lateral_distance(msg, ekf_pose)
-        horizontal_dist = calc_pose_horizontal_distance(msg, ekf_pose)
-
-        msg_lateral_dist = Float64()
-        msg_lateral_dist.data = lateral_dist
-
-        exe_time_ms = exe_time.data
-        iteration = iteration_num.data
-
-        if (
-            abs(lateral_dist) <= self.__convergence_condition["AllowableDistance"]
-            and exe_time_ms <= self.__convergence_condition["AllowableExeTimeMs"]
-            and iteration <= self.__convergence_condition["AllowableIterationNum"]
-        ):
-            self.__convergence_success += 1
-
-        current_rate = self.__convergence_success / self.__convergence_total * 100.0
-        self.__convergence_result = current_rate >= self.__convergence_condition["PassRate"]
-        self.__convergence_msg = (
-            f"{self.__convergence_success} / {self.__convergence_total} -> {current_rate:.2f}%"
+        self._frame, msg_lateral_dist = self.__convergence.set_frame(
+            msg,
+            map_to_baselink,
+            ekf_pose,
+            exe_time,
+            iteration_num,
         )
-
-        out_frame["Convergence"] = {
-            "Result": "Success" if self.__convergence_result else "Fail",
-            "Info": [
-                {
-                    "LateralDistance": lateral_dist,
-                    "HorizontalDistance": horizontal_dist,
-                    "ExeTimeMs": exe_time_ms,
-                    "IterationNum": iteration,
-                },
-            ],
-        }
-        self._frame = out_frame
         self.update()
         return msg_lateral_dist
 
     @set_frame.register
     def set_ndt_availability_frame(self, msg: DiagnosticArray) -> None:
-        # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
-        for diag_status in msg.status:
-            if (
-                diag_status.name
-                != "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
-            ):
-                continue
-            values = {value.key: value.value for value in diag_status.values}
-            # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
-            # On the basis of this assumption, we only consider the latest diagnostics received.
-            # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
-            if values["status"] in self.__ndt_availability_error_status_list:
-                self.__ndt_availability_msg = "NDT not available"
-                self.__ndt_availability_result = False
-            else:
-                self.__ndt_availability_msg = "NDT available"
-                self.__ndt_availability_result = True
+        self._frame = self.__availability.set_frame(msg)
         self.update()
 
 
@@ -334,7 +381,7 @@ class LocalizationEvaluator(DLREvaluator):
             self.__latest_exe_time,
             self.__latest_iteration_num,
         )
-        self.__pub_lateral_distance.publish(msg_lateral_distance)
+        self.__pub_lateral_distance.publish(msg_lateral_distance)  # TODO: add integration test
         self._result_writer.write_result(self.__result)
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
