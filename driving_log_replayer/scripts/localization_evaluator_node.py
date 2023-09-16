@@ -180,10 +180,12 @@ class AvailabilityResult(AbilityResult):
     ERROR_STATUS_LIST: ClassVar[list[str]] = ["Timeout", "NotReceived"]
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
+        include_target_status = False
         # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
         for diag_status in msg.status:
             if diag_status.name != AvailabilityResult.TARGET_DIAG_NAME:
                 continue
+            include_target_status = True
             values = {value.key: value.value for value in diag_status.values}
             # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
             # On the basis of this assumption, we only consider the latest diagnostics received.
@@ -194,11 +196,20 @@ class AvailabilityResult(AbilityResult):
             else:
                 self.success = True
                 self.summary = f"{self.ability_name} ({self.success_str()}): NDT available"
+        if include_target_status:
+            return {
+                "Availability": {
+                    "Result": self.success_str(),
+                    "Info": [
+                        {},
+                    ],
+                },
+            }
         return {
             "Availability": {
-                "Result": self.success_str(),
+                "Result": "Fail",
                 "Info": [
-                    {},
+                    {"Reason": "diagnostics does not contain localization_topic_status"},
                 ],
             },
         }
