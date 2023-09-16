@@ -174,21 +174,21 @@ class ReliabilityResult(AbilityResult):
 @dataclass
 class AvailabilityResult(AbilityResult):
     ability_name: ClassVar[str] = "NDT Availability"
-    target_diag_name: ClassVar[
+    TARGET_DIAG_NAME: ClassVar[
         str
     ] = "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
-    error_status_list: ClassVar[list[str]] = ["Timeout", "NotReceived"]
+    ERROR_STATUS_LIST: ClassVar[list[str]] = ["Timeout", "NotReceived"]
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
         # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
         for diag_status in msg.status:
-            if diag_status.name != self.target_diag_name:
+            if diag_status.name != AvailabilityResult.TARGET_DIAG_NAME:
                 continue
             values = {value.key: value.value for value in diag_status.values}
             # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
             # On the basis of this assumption, we only consider the latest diagnostics received.
             # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
-            if values["status"] in self.error_status_list:
+            if values["status"] in AvailabilityResult.ERROR_STATUS_LIST:
                 self.success = False
                 self.summary = f"{self.ability_name} ({self.success_str()}): NDT not available"
             else:
@@ -267,14 +267,7 @@ class LocalizationEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name)
         self.check_scenario()
-
         self.__result = LocalizationResult(self._condition)
-
-        self.__pub_lateral_distance = self.create_publisher(
-            Float64,
-            "localization/lateral_distance",
-            1,
-        )
 
         self.__latest_ekf_pose: Odometry = Odometry()
         self.__latest_exe_time: Float32Stamped = Float32Stamped()
@@ -282,6 +275,11 @@ class LocalizationEvaluator(DLREvaluator):
         self.__latest_tp: Float32Stamped = Float32Stamped()
         self.__latest_nvtl: Float32Stamped = Float32Stamped()
 
+        self.__pub_lateral_distance = self.create_publisher(
+            Float64,
+            "localization/lateral_distance",
+            1,
+        )
         self.__sub_tp = self.create_subscription(
             Float32Stamped,
             "/localization/pose_estimator/transform_probability",
