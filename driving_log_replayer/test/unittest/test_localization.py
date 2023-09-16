@@ -18,9 +18,6 @@ from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 
 from driving_log_replayer.localization import AvailabilityResult
-from driving_log_replayer.localization import ConvergenceResult
-from driving_log_replayer.localization import LocalizationResult
-from driving_log_replayer.localization import ReliabilityResult
 
 
 def test_availability_success() -> None:
