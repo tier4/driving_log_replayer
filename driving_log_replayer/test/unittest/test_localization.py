@@ -27,7 +27,7 @@ def test_availability_success() -> None:
     )
     result = AvailabilityResult()
     frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success == True  # noqa
+    assert result.success is True
     assert result.summary == "NDT Availability (Success): NDT available"
     assert frame == {
         "Availability": {
@@ -46,7 +46,7 @@ def test_availability_fail() -> None:
     )
     result = AvailabilityResult()
     frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success == False  # noqa
+    assert result.success is False
     assert result.summary == "NDT Availability (Fail): NDT not available"
     assert frame == {
         "Availability": {
@@ -62,7 +62,7 @@ def test_availability_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_localization_diag_name")
     result = AvailabilityResult()
     frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success == True  # noqa
+    assert result.success is True
     assert result.summary == "NotTested"
     assert frame == {
         "Availability": {
