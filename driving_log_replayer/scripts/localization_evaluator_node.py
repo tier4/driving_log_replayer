@@ -24,6 +24,8 @@ from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
+from driving_log_replayer.localization import calc_pose_horizontal_distance
+from driving_log_replayer.localization import calc_pose_lateral_distance
 from driving_log_replayer.localization import LocalizationResult
 
 
@@ -137,9 +139,9 @@ class LocalizationEvaluator(DLREvaluator):
     def pose_cb(self, msg: PoseStamped) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         msg_lateral_distance = self.__result.set_frame(
-            msg,
+            calc_pose_lateral_distance(msg, self.__latest_ekf_pose),
+            calc_pose_horizontal_distance(msg, self.__latest_ekf_pose),
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
-            self.__latest_ekf_pose,
             self.__latest_exe_time,
             self.__latest_iteration_num,
         )

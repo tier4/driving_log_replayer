@@ -18,10 +18,13 @@ from builtin_interfaces.msg import Time
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
+from example_interfaces.msg import Float64
 import pytest
 from tier4_debug_msgs.msg import Float32Stamped
+from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.localization import AvailabilityResult
+from driving_log_replayer.localization import ConvergenceResult
 from driving_log_replayer.localization import ReliabilityResult
 
 
@@ -77,6 +80,76 @@ def test_availability_has_no_target_diag() -> None:
             ],
         },
     }
+
+
+@pytest.fixture()
+def create_convergence_result() -> ConvergenceResult:
+    return ConvergenceResult(
+        condition={
+            "AllowableDistance": 0.2,
+            "AllowableExeTimeMs": 100.0,
+            "AllowableIterationNum": 30,
+            "PassRate": 95.0,
+        },
+        total=99,
+        passed=94,
+    )
+
+
+def test_convergence_success(create_convergence_result: Callable) -> None:
+    result: ConvergenceResult = create_convergence_result
+    frame, pub_msg = result.set_frame(
+        0.1,
+        0.2,
+        {},
+        Float32Stamped(data=50.0),
+        Int32Stamped(data=10),
+    )
+    assert result.success is True
+    assert result.summary == "Convergence (Success): 95 / 100 -> 95.00%"
+    assert frame == {
+        "Ego": {"TransformStamped": {}},
+        "Convergence": {
+            "Result": "Success",
+            "Info": [
+                {
+                    "LateralDistance": 0.1,
+                    "HorizontalDistance": 0.2,
+                    "ExeTimeMs": 50.0,
+                    "IterationNum": 10,
+                },
+            ],
+        },
+    }
+    assert pub_msg == Float64(data=0.1)
+
+
+def test_convergence_fail(create_convergence_result: Callable) -> None:
+    result: ConvergenceResult = create_convergence_result
+    frame, pub_msg = result.set_frame(
+        0.3,
+        0.2,
+        {},
+        Float32Stamped(data=50.0),
+        Int32Stamped(data=10),
+    )
+    assert result.success is False
+    assert result.summary == "Convergence (Fail): 94 / 100 -> 94.00%"
+    assert frame == {
+        "Ego": {"TransformStamped": {}},
+        "Convergence": {
+            "Result": "Fail",
+            "Info": [
+                {
+                    "LateralDistance": 0.3,
+                    "HorizontalDistance": 0.2,
+                    "ExeTimeMs": 50.0,
+                    "IterationNum": 10,
+                },
+            ],
+        },
+    }
+    assert pub_msg == Float64(data=0.3)
 
 
 @pytest.fixture()
