@@ -19,6 +19,7 @@ from dataclasses import field
 from functools import singledispatchmethod
 import statistics
 from typing import ClassVar
+from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
@@ -30,6 +31,8 @@ from tf_transformations import euler_from_quaternion
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
+from driving_log_replayer.evaluator import InitialPoseConfig
+from driving_log_replayer.evaluator import ScenarioWithoutT4Dataset
 from driving_log_replayer.result import ResultBase
 
 
@@ -65,6 +68,40 @@ def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
     if method_name in ["TP", "NVTL"]:
         return method_name, ""
     return None, f"{method_name} is not valid reliability method"
+
+
+@dataclass(frozen=True)
+class ConvergenceConfig:
+    AllowableDistance: float
+    AllowableExeTimeMs: float
+    AllowableIterationNum: float
+    PassRate: float
+
+
+@dataclass(frozen=True)
+class ReliabilityConfig:
+    Method: Literal["NVTL", "TP"]
+    AllowableLikelihood: float
+    NGCount: float
+
+
+@dataclass(frozen=True)
+class LocalizationCondition:
+    Convergence: ConvergenceConfig
+    Reliability: ReliabilityConfig
+
+
+@dataclass(frozen=True)
+class LocalizationEvaluation:
+    UseCaseName: Literal["localization"]
+    UseCaseFormatVersion: Literal["1.2.0"]
+    Conditions: LocalizationCondition
+    InitialPose: InitialPoseConfig | None
+
+
+@dataclass(frozen=True)
+class LocalizationScenario(ScenarioWithoutT4Dataset):
+    Evaluation: LocalizationEvaluation
 
 
 @dataclass

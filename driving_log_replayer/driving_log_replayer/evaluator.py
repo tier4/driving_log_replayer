@@ -15,6 +15,7 @@
 from abc import ABC
 from abc import abstractmethod
 from collections.abc import Callable
+from dataclasses import dataclass
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
@@ -50,6 +51,43 @@ from driving_log_replayer.result import ResultWriter
 
 if TYPE_CHECKING:
     from autoware_adapi_v1_msgs.msg import ResponseStatus
+
+
+@dataclass(frozen=True)
+class PositionConfig:
+    x: float
+    y: float
+    z: float
+
+
+@dataclass(frozen=True)
+class OrientationConfig:
+    x: float
+    y: float
+    z: float
+    w: float
+
+
+@dataclass(frozen=True)
+class InitialPoseConfig:
+    position: PositionConfig
+    orientation: OrientationConfig
+
+
+@dataclass(frozen=True)
+class Scenario:
+    ScenarioFormatVersion: str
+    ScenarioName: str
+    ScenarioDescription: str
+    SensorModel: str
+    VehicleModel: str
+    Evaluation: dataclass
+
+
+@dataclass(frozen=True)
+class ScenarioWithoutT4Dataset(Scenario):
+    VehicleId: str
+    LocalMapPath: str
 
 
 class DLREvaluator(Node, ABC):
