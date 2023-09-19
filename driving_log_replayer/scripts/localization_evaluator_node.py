@@ -92,9 +92,8 @@ class LocalizationEvaluator(DLREvaluator):
 
     def check_scenario(self) -> None:
         try:
-            scenario = LocalizationScenario(**self._scenario_yaml_obj)
-            print(scenario)
-            self.__reliability_method = self._condition["Reliability"]["Method"]
+            scenario = LocalizationScenario(**self._scenario_yaml_obj)  # check scenario
+            self.__reliability_method = scenario.Evaluation["Conditions"]["Reliability"]["Method"]
         except TypeError:
             self.get_logger().error("Scenario Format Error")
             rclpy.shutdown()
