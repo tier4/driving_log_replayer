@@ -59,6 +59,14 @@ def calc_pose_horizontal_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> 
     return np.sqrt(np.power(ndt_x - ekf_x, 2) + np.power(ndt_y - ekf_y, 2))
 
 
+def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
+    if method_name is None:
+        return None, "Scenario format error"
+    if method_name in ["TP", "NVTL"]:
+        return method_name, ""
+    return None, f"{method_name} is not valid reliability method"
+
+
 @dataclass
 class AbilityResult(ABC):
     ability_name: ClassVar[str] = "Ability"
@@ -245,16 +253,16 @@ class LocalizationResult(ResultBase):
     @set_frame.register
     def set_convergence_frame(
         self,
-        msg: PoseStamped,
+        lateral_dist: float,
+        horizontal_dist: float,
         map_to_baselink: dict,
-        ekf_pose: Odometry,
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,
     ) -> Float64:
         self._frame, msg_lateral_dist = self.__convergence.set_frame(
-            msg,
+            lateral_dist,
+            horizontal_dist,
             map_to_baselink,
-            ekf_pose,
             exe_time,
             iteration_num,
         )

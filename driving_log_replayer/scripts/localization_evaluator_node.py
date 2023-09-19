@@ -26,6 +26,7 @@ from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.localization import calc_pose_horizontal_distance
 from driving_log_replayer.localization import calc_pose_lateral_distance
+from driving_log_replayer.localization import get_reliability_method
 from driving_log_replayer.localization import LocalizationResult
 
 
@@ -90,15 +91,11 @@ class LocalizationEvaluator(DLREvaluator):
         )
 
     def check_scenario(self) -> None:
-        try:
-            self.__reliability_method = self._condition["Reliability"]["Method"]
-            if self.__reliability_method not in ["TP", "NVTL"]:
-                self.get_logger().error(
-                    f"Reliability Method {self.__reliability_method} is not defined.",
-                )
-                rclpy.shutdown()
-        except KeyError:
-            self.get_logger().error("Scenario format error")
+        self.__reliability_method, error_msg = get_reliability_method(
+            self._condition.get("Reliability", {}).get("Method"),
+        )
+        if self.__reliability_method is None:
+            self.get_logger().error(error_msg)
             rclpy.shutdown()
 
     def ekf_pose_cb(self, msg: Odometry) -> None:

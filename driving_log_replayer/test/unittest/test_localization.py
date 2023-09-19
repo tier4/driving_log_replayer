@@ -25,6 +25,7 @@ from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.localization import AvailabilityResult
 from driving_log_replayer.localization import ConvergenceResult
+from driving_log_replayer.localization import get_reliability_method
 from driving_log_replayer.localization import ReliabilityResult
 
 
@@ -238,3 +239,21 @@ def test_reliability_fail(create_reliability_result: Callable) -> None:
             ],
         },
     }
+
+
+def test_get_reliability_method_success() -> None:
+    reliability_method, error_msg = get_reliability_method("NVTL")
+    assert reliability_method == "NVTL"
+    assert error_msg == ""
+
+
+def test_get_reliability_method_fail() -> None:
+    reliability_method, error_msg = get_reliability_method("invalid_method")
+    assert reliability_method is None
+    assert error_msg == "invalid_method is not valid reliability method"
+
+
+def test_get_reliability_method_scenario_format_error() -> None:
+    reliability_method, error_msg = get_reliability_method(None)
+    assert reliability_method is None
+    assert error_msg == "Scenario format error"
