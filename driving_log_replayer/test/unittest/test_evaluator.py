@@ -30,7 +30,6 @@ def create_sample_evaluator() -> DLREvaluator:
     return SampleEvaluator("sample_evaluator")
 
 
-"""なんか失敗するので一旦コメントアウト
 def test_transform_stamped_with_euler_angle() -> None:
     from builtin_interfaces.msg import Time
     from geometry_msgs.msg import Quaternion
@@ -53,34 +52,31 @@ def test_transform_stamped_with_euler_angle() -> None:
         ),
     )
     dict_tf_euler = {
-        "TransformStamped": {
-            "header": {
-                "stamp": {
-                    "sec": 123,
-                    "nanosec": 456,
-                },
-                "frame_id": "map",
+        "header": {
+            "stamp": {
+                "sec": 123,
+                "nanosec": 456,
             },
-            "child_frame_id": "base_link",
-            "transform": {
-                "translation": {
-                    "x": 3837.475624794553,
-                    "y": 73730.40550344331,
-                    "z": 19.638391309049716,
-                },
-                "rotation": {
-                    "x": 0.023889448655962233,
-                    "y": -0.006285222290687734,
-                    "z": 0.9756628880587501,
-                    "w": -0.21788005665624788,
-                },
+            "frame_id": "map",
+        },
+        "child_frame_id": "base_link",
+        "transform": {
+            "translation": {
+                "x": 3837.475624794553,
+                "y": 73730.40550344331,
+                "z": 19.638391309049716,
             },
-            "rotation_euler": {
-                "roll": -0.022698392435205317,
-                "pitch": -0.04389133881352741,
-                "yaw": -2.7016745033573883,
+            "rotation": {
+                "x": 0.023889448655962233,
+                "y": -0.006285222290687734,
+                "z": 0.9756628880587501,
+                "w": -0.21788005665624788,
             },
+        },
+        "rotation_euler": {
+            "roll": -0.022698392435205317,
+            "pitch": -0.04389133881352741,
+            "yaw": -2.7016745033573883,
         },
     }
     assert DLREvaluator.transform_stamped_with_euler_angle(tf) == dict_tf_euler
-"""
