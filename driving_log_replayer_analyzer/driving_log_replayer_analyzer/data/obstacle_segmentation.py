@@ -16,6 +16,7 @@ import contextlib
 import csv
 import dataclasses
 from dataclasses import dataclass
+from dataclasses import field
 from pathlib import Path
 import sys
 
@@ -118,12 +119,12 @@ class NonDetection:
 class DetectionInfo:
     uuid: str = None
     short_uuid: str = None
-    annotation_position: Position = Position()  # noqa
+    annotation_position: Position = field(default_factory=Position)
     annotation_distance: float = None
     annotation_stamp: float = None
     pointcloud_numpoints: int = None
     pointcloud_nearest_distance: float = None
-    pointcloud_nearest_position: Position = Position()  # noqa
+    pointcloud_nearest_position: Position = field(default_factory=Position)
     pointcloud_stamp: float = None
 
 

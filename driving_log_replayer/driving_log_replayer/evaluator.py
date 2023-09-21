@@ -17,6 +17,7 @@ from abc import abstractmethod
 from collections.abc import Callable
 from os.path import expandvars
 from pathlib import Path
+from typing import Any
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
@@ -217,7 +218,7 @@ class DLREvaluator(Node, ABC):
             self.get_logger().info(f"Could not transform map to baselink: {ex}")
             return TransformStamped()
 
-    def save_pkl(self, save_object) -> None:  # noqa
+    def save_pkl(self, save_object: Any) -> None:
         PickleWriter(self._pkl_path, save_object)
 
     @abstractmethod

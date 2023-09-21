@@ -14,6 +14,7 @@
 
   <build_depend>autoware_cmake</build_depend>
 
+  <depend>autoware_adapi_v1_msgs</depend>
   <depend>autoware_auto_mapping_msgs</depend>
   <depend>autoware_auto_perception_msgs</depend>
   <depend>diagnostic_msgs</depend>
@@ -31,12 +32,14 @@
   <depend>tf2_msgs</depend>
   <depend>tf2_ros</depend>
   <depend>tier4_debug_msgs</depend>
+  <depend>tier4_localization_msgs</depend>
   <depend>visualization_msgs</depend>
   <depend>yaml_cpp_vendor</depend>
 
   <exec_depend>autoware_launch</exec_depend>
   <exec_depend>driving_log_replayer_analyzer</exec_depend>
   <exec_depend>perception_eval</exec_depend>
+  <exec_depend>python-transforms3d-pip</exec_depend>
   <exec_depend>python3-pandas</exec_depend>
   <exec_depend>python3-simplejson</exec_depend>
   <exec_depend>python3-termcolor</exec_depend>
@@ -44,6 +47,7 @@
   <exec_depend>rclpy</exec_depend>
   <exec_depend>ros2_numpy</exec_depend>
   <exec_depend>rosidl_runtime_py</exec_depend>
+  <exec_depend>tf_transformations</exec_depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_cmake_pytest</test_depend>
