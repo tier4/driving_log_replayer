@@ -16,9 +16,12 @@ from abc import ABC
 from abc import abstractmethod
 from collections.abc import Callable
 from dataclasses import dataclass
+from dataclasses import Field
+from dataclasses import fields
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
+from typing import get_type_hints
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
@@ -53,14 +56,42 @@ if TYPE_CHECKING:
     from autoware_adapi_v1_msgs.msg import ResponseStatus
 
 
-@dataclass(frozen=True)
+@dataclass
+class RecursiveDataclass:
+    pass
+
+    @classmethod
+    def from_dict(cls, src: dict) -> "RecursiveDataclass":
+        kwargs = {}
+        field_dict: dict[str, Field] = {field.name: field for field in fields(cls)}
+        field_type_dict: dict[str, type] = get_type_hints(cls)
+        for src_key, src_value in src.items():
+            assert src_key in field_dict, "Invalid Data Structure"
+            field = field_dict[src_key]
+            field_type = field_type_dict[field.name]
+            if issubclass(field_type, RecursiveDataclass):
+                kwargs[src_key] = field_type.from_dict(src_value)
+            else:
+                kwargs[src_key] = src_value
+        return cls(**kwargs)
+
+
+class ScenarioFormatVersionError(Exception):
+    pass
+
+
+class UseCaseFormatVersionError(Exception):
+    pass
+
+
+@dataclass(RecursiveDataclass, frozen=True)
 class PositionConfig:
     x: float
     y: float
     z: float
 
 
-@dataclass(frozen=True)
+@dataclass(RecursiveDataclass, frozen=True)
 class OrientationConfig:
     x: float
     y: float
@@ -68,13 +99,13 @@ class OrientationConfig:
     w: float
 
 
-@dataclass(frozen=True)
+@dataclass(RecursiveDataclass, frozen=True)
 class InitialPoseConfig:
     position: PositionConfig
     orientation: OrientationConfig
 
 
-@dataclass(frozen=True)
+@dataclass(RecursiveDataclass, frozen=True)
 class Scenario:
     ScenarioFormatVersion: str
     ScenarioName: str
@@ -83,11 +114,19 @@ class Scenario:
     VehicleModel: str
     Evaluation: dataclass
 
+    def __post_init__(self) -> None:
+        if self.ScenarioFormatVersion != "3.0.0":
+            raise ScenarioFormatVersionError
 
-@dataclass(frozen=True)
+
+@dataclass(RecursiveDataclass, frozen=True)
 class ScenarioWithoutT4Dataset(Scenario):
     VehicleId: str
     LocalMapPath: str
+
+    def __post_init__(self) -> None:
+        if self.ScenarioFormatVersion != "2.2.0":
+            raise ScenarioFormatVersionError
 
 
 class DLREvaluator(Node, ABC):

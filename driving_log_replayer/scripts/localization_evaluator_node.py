@@ -24,10 +24,13 @@ from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
+from driving_log_replayer.evaluator import ScenarioFormatVersionError
+from driving_log_replayer.evaluator import UseCaseFormatVersionError
 from driving_log_replayer.localization import calc_pose_horizontal_distance
 from driving_log_replayer.localization import calc_pose_lateral_distance
 from driving_log_replayer.localization import LocalizationResult
 from driving_log_replayer.localization import LocalizationScenario
+from driving_log_replayer.localization import ReliabilityMethodError
 
 
 class LocalizationEvaluator(DLREvaluator):
@@ -92,10 +95,21 @@ class LocalizationEvaluator(DLREvaluator):
 
     def check_scenario(self) -> None:
         try:
-            scenario = LocalizationScenario(**self._scenario_yaml_obj)  # check scenario
-            self.__reliability_method = scenario.Evaluation["Conditions"]["Reliability"]["Method"]
+            scenario = LocalizationScenario.from_dict(self._scenario_yaml_obj)  # check scenario
+            print(scenario)
+            self.__reliability_method = scenario.Evaluation.Conditions.Reliability.Method
         except TypeError:
             self.get_logger().error("Scenario Format Error")
+            rclpy.shutdown()
+        # TODO except (ScenarioFormatVersionError, UseCaseFormatVersionError, ReliabilityMethodError) as e: somehow not work
+        except ScenarioFormatVersionError:
+            self.get_logger().error("ScenarioFormatVersionError")
+            rclpy.shutdown()
+        except UseCaseFormatVersionError:
+            self.get_logger().error("UseCaseFormatVersionError")
+            rclpy.shutdown()
+        except ReliabilityMethodError:
+            self.get_logger().error("ReliabilityMethodError")
             rclpy.shutdown()
 
     def ekf_pose_cb(self, msg: Odometry) -> None:

@@ -32,7 +32,9 @@ from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.evaluator import InitialPoseConfig
+from driving_log_replayer.evaluator import RecursiveDataclass
 from driving_log_replayer.evaluator import ScenarioWithoutT4Dataset
+from driving_log_replayer.evaluator import UseCaseFormatVersionError
 from driving_log_replayer.result import ResultBase
 
 
@@ -70,7 +72,7 @@ def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
     return None, f"{method_name} is not valid reliability method"
 
 
-@dataclass(frozen=True)
+@dataclass(RecursiveDataclass, frozen=True)
 class ConvergenceConfig:
     AllowableDistance: float
     AllowableExeTimeMs: float
@@ -78,29 +80,47 @@ class ConvergenceConfig:
     PassRate: float
 
 
-@dataclass(frozen=True)
+class ReliabilityMethodError(Exception):
+    pass
+
+
+@dataclass(RecursiveDataclass, frozen=True)
 class ReliabilityConfig:
-    Method: Literal["NVTL", "TP"]
+    RELIABILITY_METHOD: ClassVar[list[str]] = ["NVTL", "TP"]
+    Method: str
     AllowableLikelihood: float
     NGCount: float
 
+    def __post_init__(self) -> None:
+        if self.Method not in ReliabilityConfig.RELIABILITY_METHOD:
+            error_msg = f"Reliability Method must be one of the values in the following list {LocalizationEvaluation.RELIABILITY_METHOD}"
+            raise UseCaseFormatVersionError(error_msg)
 
-@dataclass(frozen=True)
+
+@dataclass(RecursiveDataclass, frozen=True)
 class LocalizationCondition:
     Convergence: ConvergenceConfig
     Reliability: ReliabilityConfig
 
 
-@dataclass(frozen=True)
+@dataclass(RecursiveDataclass, frozen=True)
 class LocalizationEvaluation:
-    UseCaseName: Literal["localization"]
-    UseCaseFormatVersion: Literal["1.2.0"]
+    CURRENT_USECASE_VERSION: ClassVar[str] = "1.2.0"
+    UseCaseName: str
+    UseCaseFormatVersion: str
     Conditions: LocalizationCondition
     InitialPose: InitialPoseConfig | None
 
+    def __post_init__(self) -> None:
+        if self.UseCaseFormatVersion != LocalizationEvaluation.CURRENT_USECASE_VERSION:
+            error_msg = (
+                f"UseCaseFormatVersion is not {LocalizationEvaluation.CURRENT_USECASE_VERSION}"
+            )
+            raise UseCaseFormatVersionError(error_msg)
+
 
 @dataclass(frozen=True)
-class LocalizationScenario(ScenarioWithoutT4Dataset):
+class LocalizationScenario(ScenarioWithoutT4Dataset, RecursiveDataclass):
     Evaluation: LocalizationEvaluation
 
 
