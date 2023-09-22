@@ -23,40 +23,34 @@ from driving_log_replayer.result import TopicResult
 
 @dataclass
 class AvailabilityResult(TopicResult):
-    name: ClassVar[str] = "NDT Availability"
+    name: ClassVar[str] = "Yabloc Availability"
     TARGET_DIAG_NAME: ClassVar[str] = "yabloc_monitor: yabloc_status"
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
         include_target_status = False
-        # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
         for diag_status in msg.status:
             if diag_status.name != AvailabilityResult.TARGET_DIAG_NAME:
                 continue
             include_target_status = True
             values = {value.key: value.value for value in diag_status.values}
-            # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
-            # On the basis of this assumption, we only consider the latest diagnostics received.
-            # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
-            if values["status"] in AvailabilityResult.ERROR_STATUS_LIST:
-                self.success = False
-                self.summary = f"{self.name} ({self.success_str()}): NDT not available"
-            else:
-                self.success = True
-                self.summary = f"{self.name} ({self.success_str()}): NDT available"
+            status_str = values.get("Availability", "Availability Key Not Found")  # avoid KeyError
+            self.success = status_str == "OK"
+            self.summary = f"{self.name} ({self.success_str()}): {status_str}"
+            break
         if include_target_status:
             return {
+                "Ego": {},
                 "Availability": {
                     "Result": self.success_str(),
-                    "Info": [
-                        {},
-                    ],
+                    "Info": [],
                 },
             }
         return {
+            "Ego": {},
             "Availability": {
-                "Result": "Fail",
+                "Result": "Warn",
                 "Info": [
-                    {"Reason": "diagnostics does not contain localization_topic_status"},
+                    {"Reason": "diagnostics does not contain yabloc_status"},
                 ],
             },
         }
@@ -66,21 +60,10 @@ class YabLocResult(ResultBase):
     def __init__(self) -> None:
         super().__init__()
         self.__availability = AvailabilityResult()
-        # availability
-        self.__yabloc_availability_result = False
-        self.__yabloc_availability_msg = "NotTested"
 
     def update(self) -> None:
-        if self.__yabloc_availability_result:
-            yabloc_availability_summary = (
-                f"YabLoc Availability (Passed): {self.__yabloc_availability_msg}"
-            )
-        else:
-            yabloc_availability_summary = (
-                f"YabLoc Availability (Failed): {self.__yabloc_availability_msg}"
-            )
-        summary_str = f"{yabloc_availability_summary}"
-        if self.__yabloc_availability_result:
+        summary_str = f"{self.__availability.summary}"
+        if self.__availability.success:
             self._success = True
             self._summary = f"Passed: {summary_str}"
         else:
@@ -88,16 +71,5 @@ class YabLocResult(ResultBase):
             self._summary = f"Failed: {summary_str}"
 
     def set_frame(self, msg: DiagnosticArray) -> None:
-        for diag_status in msg.status:
-            out_frame = {"Ego": {}}
-            if diag_status.name != "yabloc_monitor: yabloc_status":
-                continue
-            values = {value.key: value.value for value in diag_status.values}
-            self.__yabloc_availability_result = values["Availability"] == "OK"
-            self.__yabloc_availability_msg = values["Availability"]
-            out_frame["Availability"] = {
-                "Result": "Success" if self.__yabloc_availability_result else "Fail",
-                "Info": [],
-            }
-            self._frame = out_frame
-            self.update()
+        self._frame = self.__availability.set_frame(msg)
+        self.update()
