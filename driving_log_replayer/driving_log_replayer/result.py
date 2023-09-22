@@ -14,14 +14,33 @@
 
 from abc import ABC
 from abc import abstractmethod
+from dataclasses import dataclass
+from dataclasses import field
 from os.path import expandvars
 from pathlib import Path
 import pickle
 from typing import Any
+from typing import ClassVar
 
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
 import simplejson as json
+
+
+@dataclass
+class TopicResult(ABC):
+    name: ClassVar[str] = "This field should be overwritten"
+    condition: dict = field(default_factory=dict)
+    total: int = 0
+    summary: str = "NotTested"
+    success: bool = True
+
+    def success_str(self) -> str:
+        return "Success" if self.success else "Fail"
+
+    @abstractmethod
+    def set_frame(self) -> dict:
+        return {}
 
 
 class ResultBase(ABC):
