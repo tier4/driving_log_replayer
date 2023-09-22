@@ -69,6 +69,7 @@ def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
 @dataclass
 class ConvergenceResult(TopicResult):
     name: ClassVar[str] = "Convergence"
+    success: bool = True
     passed: int = 0
 
     def set_frame(
@@ -117,6 +118,7 @@ class ConvergenceResult(TopicResult):
 @dataclass
 class ReliabilityResult(TopicResult):
     name: ClassVar[str] = "Reliability"
+    success: bool = True
     ng_seq: int = 0
     received_data: list[float] = field(default_factory=list)
 
@@ -158,6 +160,7 @@ class ReliabilityResult(TopicResult):
 @dataclass
 class AvailabilityResult(TopicResult):
     name: ClassVar[str] = "NDT Availability"
+    success: bool = True
     TARGET_DIAG_NAME: ClassVar[
         str
     ] = "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"

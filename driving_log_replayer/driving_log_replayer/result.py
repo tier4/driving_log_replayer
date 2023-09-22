@@ -33,7 +33,7 @@ class TopicResult(ABC):
     condition: dict = field(default_factory=dict)
     total: int = 0
     summary: str = "NotTested"
-    success: bool = True
+    success: bool = False
 
     def success_str(self) -> str:
         return "Success" if self.success else "Fail"
