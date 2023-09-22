@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import ABC
-from abc import abstractmethod
 from dataclasses import dataclass
 from dataclasses import field
 from functools import singledispatchmethod
@@ -31,6 +29,7 @@ from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import TopicResult
 
 
 def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> float:
@@ -68,24 +67,8 @@ def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
 
 
 @dataclass
-class AbilityResult(ABC):
-    ability_name: ClassVar[str] = "Ability"
-    condition: dict = field(default_factory=dict)
-    total: int = 0
-    summary: str = "NotTested"
-    success: bool = True
-
-    def success_str(self) -> str:
-        return "Success" if self.success else "Fail"
-
-    @abstractmethod
-    def set_frame(self) -> dict:
-        return {}
-
-
-@dataclass
-class ConvergenceResult(AbilityResult):
-    ability_name: ClassVar[str] = "Convergence"
+class ConvergenceResult(TopicResult):
+    name: ClassVar[str] = "Convergence"
     passed: int = 0
 
     def set_frame(
@@ -113,7 +96,7 @@ class ConvergenceResult(AbilityResult):
 
         current_rate = self.passed / self.total * 100.0
         self.success = current_rate >= self.condition["PassRate"]
-        self.summary = f"{self.ability_name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
 
         return {
             "Ego": {"TransformStamped": map_to_baselink},
@@ -132,8 +115,8 @@ class ConvergenceResult(AbilityResult):
 
 
 @dataclass
-class ReliabilityResult(AbilityResult):
-    ability_name: ClassVar[str] = "Reliability"
+class ReliabilityResult(TopicResult):
+    name: ClassVar[str] = "Reliability"
     ng_seq: int = 0
     received_data: list[float] = field(default_factory=list)
 
@@ -157,7 +140,7 @@ class ReliabilityResult(AbilityResult):
             self.ng_seq < self.condition["NGCount"],
         )
 
-        self.summary = f"{self.ability_name} ({self.success_str()}): {self.condition['Method']} Sequential NG Count: {self.ng_seq} (Total Test: {self.total}, Average: {statistics.mean(self.received_data):.5f}, StdDev: {statistics.pstdev(self.received_data):.5f})"
+        self.summary = f"{self.name} ({self.success_str()}): {self.condition['Method']} Sequential NG Count: {self.ng_seq} (Total Test: {self.total}, Average: {statistics.mean(self.received_data):.5f}, StdDev: {statistics.pstdev(self.received_data):.5f})"
         return {
             "Ego": {"TransformStamped": map_to_baselink},
             "Reliability": {
@@ -173,8 +156,8 @@ class ReliabilityResult(AbilityResult):
 
 
 @dataclass
-class AvailabilityResult(AbilityResult):
-    ability_name: ClassVar[str] = "NDT Availability"
+class AvailabilityResult(TopicResult):
+    name: ClassVar[str] = "NDT Availability"
     TARGET_DIAG_NAME: ClassVar[
         str
     ] = "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
@@ -193,10 +176,10 @@ class AvailabilityResult(AbilityResult):
             # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
             if values["status"] in AvailabilityResult.ERROR_STATUS_LIST:
                 self.success = False
-                self.summary = f"{self.ability_name} ({self.success_str()}): NDT not available"
+                self.summary = f"{self.name} ({self.success_str()}): NDT not available"
             else:
                 self.success = True
-                self.summary = f"{self.ability_name} ({self.success_str()}): NDT available"
+                self.summary = f"{self.name} ({self.success_str()}): NDT available"
         if include_target_status:
             return {
                 "Availability": {
