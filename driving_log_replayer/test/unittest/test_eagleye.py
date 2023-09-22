@@ -14,7 +14,6 @@
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
-from diagnostic_msgs.msg import KeyValue
 
 from driving_log_replayer.eagleye import AvailabilityResult
 
