@@ -39,16 +39,35 @@ def test_availability_success() -> None:
     assert result.success is True
     assert result.summary == "NDT Availability (Success): NDT available"
     assert frame == {
+        "Ego": {},
         "Availability": {
             "Result": "Success",
-            "Info": [
-                {},
-            ],
+            "Info": [],
         },
     }
 
 
 def test_availability_fail() -> None:
+    status = DiagnosticStatus(
+        name=AvailabilityResult.TARGET_DIAG_NAME,
+        values=[
+            KeyValue(key="not_availability_status", value="test"),
+        ],
+    )
+    result = AvailabilityResult()
+    frame = result.set_frame(DiagnosticArray(status=[status]))
+    assert result.success is False
+    assert result.summary == "NDT Availability (Fail): NDT Availability Key Not Found"
+    assert frame == {
+        "Ego": {},
+        "Availability": {
+            "Result": "Fail",
+            "Info": [],
+        },
+    }
+
+
+def test_availability_fail_key_not_found() -> None:
     status = DiagnosticStatus(
         name=AvailabilityResult.TARGET_DIAG_NAME,
         values=[KeyValue(key="status", value=AvailabilityResult.ERROR_STATUS_LIST[0])],
@@ -58,11 +77,10 @@ def test_availability_fail() -> None:
     assert result.success is False
     assert result.summary == "NDT Availability (Fail): NDT not available"
     assert frame == {
+        "Ego": {},
         "Availability": {
             "Result": "Fail",
-            "Info": [
-                {},
-            ],
+            "Info": [],
         },
     }
 
@@ -74,8 +92,9 @@ def test_availability_has_no_target_diag() -> None:
     assert result.success is True
     assert result.summary == "NotTested"
     assert frame == {
+        "Ego": {},
         "Availability": {
-            "Result": "Fail",
+            "Result": "Warn",
             "Info": [
                 {"Reason": "diagnostics does not contain localization_topic_status"},
             ],

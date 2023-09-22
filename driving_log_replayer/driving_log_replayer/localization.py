@@ -177,24 +177,30 @@ class AvailabilityResult(TopicResult):
             # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
             # On the basis of this assumption, we only consider the latest diagnostics received.
             # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
-            if values["status"] in AvailabilityResult.ERROR_STATUS_LIST:
-                self.success = False
-                self.summary = f"{self.name} ({self.success_str()}): NDT not available"
+            status_str: str | None = values.get("status")
+            if status_str is not None:
+                if status_str in AvailabilityResult.ERROR_STATUS_LIST:
+                    self.success = False
+                    self.summary = f"{self.name} ({self.success_str()}): NDT not available"
+                else:
+                    self.success = True
+                    self.summary = f"{self.name} ({self.success_str()}): NDT available"
             else:
-                self.success = True
-                self.summary = f"{self.name} ({self.success_str()}): NDT available"
+                self.success = False
+                self.summary = f"{self.name} ({self.success_str()}): NDT Availability Key Not Found"
+            break
         if include_target_status:
             return {
+                "Ego": {},
                 "Availability": {
                     "Result": self.success_str(),
-                    "Info": [
-                        {},
-                    ],
+                    "Info": [],
                 },
             }
         return {
+            "Ego": {},
             "Availability": {
-                "Result": "Fail",
+                "Result": "Warn",
                 "Info": [
                     {"Reason": "diagnostics does not contain localization_topic_status"},
                 ],
