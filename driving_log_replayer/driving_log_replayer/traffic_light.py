@@ -12,30 +12,58 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import ClassVar
+
 from perception_eval.evaluation import PerceptionFrameResult
-from std_msgs.msg import Header
 
+from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import TopicResult
 
 
-class PerceptionResult(TopicResult):
-    passed = 0
-    threshold = 0.0
+class Perception(EvaluationItem):
+    name: ClassVar[str] = "Reliability"
+    pass_rate = 0.0
 
-    def set_frame(self, msg: PerceptionFrameResult) -> dict:
-        return {}
+    def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
+        self.total += 1
+        has_objects = True
+        success_str = "Fail"
+        if (
+            frame.pass_fail_result.tp_object_results == []
+            and frame.pass_fail_result.fp_object_results == []
+            and frame.pass_fail_result.fn_objects == []
+        ):
+            has_objects = False
+
+        if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects:
+            self.passed += 1
+            success_str = "Success"
+
+        return {
+            "Ego": {"TransformStamped": map_to_baselink},
+            "FrameName": frame.frame_name,
+            "FrameSkip": skip,
+            "PassFail": {
+                "Result": success_str,
+                "Info": [
+                    {
+                        "TP": len(frame.pass_fail_result.tp_object_results),
+                        "FP": len(frame.pass_fail_result.fp_object_results),
+                        "FN": len(frame.pass_fail_result.fn_objects),
+                    },
+                ],
+            },
+        }
 
 
 class TrafficLightResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
-        self.__perception = PerceptionResult(threshold=condition["PassRate"])
+        self.__perception = Perception(pass_rate=condition["PassRate"])
 
     def update(self) -> None:
         summary_str = f"{self.__perception.summary}"
-
-        if success:
+        if self.__perception.success:
             self._success = True
             self._summary = f"Passed: {summary_str}"
         else:
@@ -46,41 +74,9 @@ class TrafficLightResult(ResultBase):
         self,
         frame: PerceptionFrameResult,
         skip: int,
-        header: Header,  # noqa
         map_to_baselink: dict,
     ) -> None:
-        self.__total += 1
-        has_objects = True
-        if (
-            frame.pass_fail_result.tp_object_results == []
-            and frame.pass_fail_result.fp_object_results == []
-            and frame.pass_fail_result.fn_objects == []
-        ):
-            has_objects = False
-
-        success = (
-            "Success"
-            if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects
-            else "Fail"
-        )
-        if success == "Success":
-            self.__success += 1
-        out_frame = {
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
-        }
-        out_frame["PassFail"] = {
-            "Result": success,
-            "Info": [
-                {
-                    "TP": len(frame.pass_fail_result.tp_object_results),
-                    "FP": len(frame.pass_fail_result.fp_object_results),
-                    "FN": len(frame.pass_fail_result.fn_objects),
-                },
-            ],
-        }
-        self._frame = out_frame
+        self._frame = self.__perception.set_frame(frame, skip, map_to_baselink)
         self.update()
 
     def set_final_metrics(self, final_metrics: dict) -> None:
