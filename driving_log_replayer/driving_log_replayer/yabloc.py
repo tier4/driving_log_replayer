@@ -17,19 +17,19 @@ from typing import ClassVar
 
 from diagnostic_msgs.msg import DiagnosticArray
 
+from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import TopicResult
 
 
 @dataclass
-class AvailabilityResult(TopicResult):
+class Availability(EvaluationItem):
     name: ClassVar[str] = "Yabloc Availability"
     TARGET_DIAG_NAME: ClassVar[str] = "yabloc_monitor: yabloc_status"
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
         include_target_status = False
         for diag_status in msg.status:
-            if diag_status.name != AvailabilityResult.TARGET_DIAG_NAME:
+            if diag_status.name != Availability.TARGET_DIAG_NAME:
                 continue
             include_target_status = True
             values = {value.key: value.value for value in diag_status.values}
@@ -59,7 +59,7 @@ class AvailabilityResult(TopicResult):
 class YabLocResult(ResultBase):
     def __init__(self) -> None:
         super().__init__()
-        self.__availability = AvailabilityResult()
+        self.__availability = Availability()
 
     def update(self) -> None:
         summary_str = f"{self.__availability.summary}"

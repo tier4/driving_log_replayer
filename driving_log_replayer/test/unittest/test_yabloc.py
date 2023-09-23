@@ -16,15 +16,15 @@ from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 
-from driving_log_replayer.yabloc import AvailabilityResult
+from driving_log_replayer.yabloc import Availability
 
 
 def test_availability_success() -> None:
     status = DiagnosticStatus(
-        name=AvailabilityResult.TARGET_DIAG_NAME,
+        name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="Availability", value="OK")],
     )
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is True
     assert result.summary == "Yabloc Availability (Success): OK"
@@ -39,10 +39,10 @@ def test_availability_success() -> None:
 
 def test_availability_fail() -> None:
     status = DiagnosticStatus(
-        name=AvailabilityResult.TARGET_DIAG_NAME,
+        name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="Availability", value="NG")],
     )
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is False
     assert result.summary == "Yabloc Availability (Fail): NG"
@@ -57,10 +57,10 @@ def test_availability_fail() -> None:
 
 def test_availability_fail_key_not_found() -> None:
     status = DiagnosticStatus(
-        name=AvailabilityResult.TARGET_DIAG_NAME,
+        name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="Convergence", value="AnyValue")],
     )
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is False
     assert result.summary == "Yabloc Availability (Fail): Availability Key Not Found"
@@ -75,7 +75,7 @@ def test_availability_fail_key_not_found() -> None:
 
 def test_availability_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_yabloc_status")
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is False  # default value is False
     assert result.summary == "NotTested"
