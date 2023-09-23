@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import logging
-import os
+from pathlib import Path
 
 from autoware_auto_perception_msgs.msg import TrafficSignal
 from autoware_auto_perception_msgs.msg import TrafficSignalArray
@@ -29,76 +29,11 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from std_msgs.msg import Header
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import ResultBase
-
-
-class TrafficLightResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
-        super().__init__()
-        self.__pass_rate = condition["PassRate"]
-        self.__success = 0
-        self.__total = 0
-
-    def update(self) -> None:
-        test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
-        success = test_rate >= self.__pass_rate
-        summary_str = f"{self.__success} / {self.__total } -> {test_rate:.2f}%"
-
-        if success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
-
-    def set_frame(
-        self,
-        frame: PerceptionFrameResult,
-        skip: int,
-        header: Header,  # noqa
-        map_to_baselink: dict,
-    ) -> None:
-        self.__total += 1
-        has_objects = True
-        if (
-            frame.pass_fail_result.tp_object_results == []
-            and frame.pass_fail_result.fp_object_results == []
-            and frame.pass_fail_result.fn_objects == []
-        ):
-            has_objects = False
-
-        success = (
-            "Success"
-            if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects
-            else "Fail"
-        )
-        if success == "Success":
-            self.__success += 1
-        out_frame = {
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
-        }
-        out_frame["PassFail"] = {
-            "Result": success,
-            "Info": [
-                {
-                    "TP": len(frame.pass_fail_result.tp_object_results),
-                    "FP": len(frame.pass_fail_result.fp_object_results),
-                    "FN": len(frame.pass_fail_result.fn_objects),
-                },
-            ],
-        }
-        self._frame = out_frame
-        self.update()
-
-    def set_final_metrics(self, final_metrics: dict) -> None:
-        self._frame = {"FinalScore": final_metrics}
+from driving_log_replayer.traffic_light import TrafficLightResult
 
 
 class TrafficLightEvaluator(DLREvaluator):
@@ -112,7 +47,9 @@ class TrafficLightEvaluator(DLREvaluator):
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=self.__camera_type,
-            result_root_directory=os.path.join(self._perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=Path(self._perception_eval_log_path)
+            .joinpath("result", "{TIME}")
+            .as_posix(),
             evaluation_config_dict=self.__p_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )
