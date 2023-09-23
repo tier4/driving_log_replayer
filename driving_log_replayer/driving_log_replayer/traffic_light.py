@@ -21,13 +21,13 @@ from driving_log_replayer.result import ResultBase
 
 
 class Perception(EvaluationItem):
-    name: ClassVar[str] = "Reliability"
-    pass_rate = 0.0
+    name: ClassVar[str] = "Perception"
+    pass_rate: float
 
     def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
         self.total += 1
         has_objects = True
-        success_str = "Fail"
+        frame_success = "Fail"
         if (
             frame.pass_fail_result.tp_object_results == []
             and frame.pass_fail_result.fp_object_results == []
@@ -37,14 +37,17 @@ class Perception(EvaluationItem):
 
         if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects:
             self.passed += 1
-            success_str = "Success"
+            frame_success = "Success"
+
+        self.success = self.rate() >= self.pass_rate
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
             "PassFail": {
-                "Result": success_str,
+                "Result": frame_success,
                 "Info": [
                     {
                         "TP": len(frame.pass_fail_result.tp_object_results),
