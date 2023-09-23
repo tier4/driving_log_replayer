@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from dataclasses import dataclass
 from typing import ClassVar
 
 from perception_eval.evaluation import PerceptionFrameResult
@@ -20,9 +21,10 @@ from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 
 
+@dataclass
 class Perception(EvaluationItem):
     name: ClassVar[str] = "Perception"
-    pass_rate: float
+    pass_rate: float = 0.0
 
     def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
         self.total += 1
