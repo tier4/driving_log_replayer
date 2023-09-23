@@ -94,7 +94,7 @@ class Convergence(EvaluationItem):
         ):
             self.passed += 1
 
-        current_rate = self.passed / self.total * 100.0
+        current_rate = self.rate()
         self.success = current_rate >= self.condition["PassRate"]
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
 
