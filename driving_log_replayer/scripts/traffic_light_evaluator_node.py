@@ -169,7 +169,6 @@ class TrafficLightEvaluator(DLREvaluator):
             self.__result.set_frame(
                 frame_result,
                 self.__skip_counter,
-                msg.header,
                 DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             )
             self._result_writer.write_result(self.__result)
