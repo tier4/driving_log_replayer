@@ -28,15 +28,19 @@ import simplejson as json
 
 
 @dataclass
-class TopicResult(ABC):
+class EvaluationItem(ABC):
     name: ClassVar[str] = "This field should be overwritten"
     condition: dict = field(default_factory=dict)
     total: int = 0
+    passed: int = 0
     summary: str = "NotTested"
     success: bool = False
 
     def success_str(self) -> str:
         return "Success" if self.success else "Fail"
+
+    def rate(self) -> float:
+        return 0.0 if self.total == 0 else self.passed / self.total * 100.0
 
     @abstractmethod
     def set_frame(self) -> dict:
