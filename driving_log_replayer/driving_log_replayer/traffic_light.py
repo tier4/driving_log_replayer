@@ -16,19 +16,24 @@ from perception_eval.evaluation import PerceptionFrameResult
 from std_msgs.msg import Header
 
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.result import TopicResult
+
+
+class PerceptionResult(TopicResult):
+    passed = 0
+    threshold = 0.0
+
+    def set_frame(self, msg: PerceptionFrameResult) -> dict:
+        return {}
 
 
 class TrafficLightResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
-        self.__pass_rate = condition["PassRate"]
-        self.__success = 0
-        self.__total = 0
+        self.__perception = PerceptionResult(threshold=condition["PassRate"])
 
     def update(self) -> None:
-        test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
-        success = test_rate >= self.__pass_rate
-        summary_str = f"{self.__success} / {self.__total } -> {test_rate:.2f}%"
+        summary_str = f"{self.__perception.summary}"
 
         if success:
             self._success = True
