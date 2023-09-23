@@ -28,8 +28,8 @@ from tf_transformations import euler_from_quaternion
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
+from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import TopicResult
 
 
 def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> float:
@@ -67,10 +67,9 @@ def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
 
 
 @dataclass
-class ConvergenceResult(TopicResult):
+class Convergence(EvaluationItem):
     name: ClassVar[str] = "Convergence"
     success: bool = True
-    passed: int = 0
 
     def set_frame(
         self,
@@ -116,7 +115,7 @@ class ConvergenceResult(TopicResult):
 
 
 @dataclass
-class ReliabilityResult(TopicResult):
+class Reliability(EvaluationItem):
     name: ClassVar[str] = "Reliability"
     success: bool = True
     ng_seq: int = 0
@@ -158,7 +157,7 @@ class ReliabilityResult(TopicResult):
 
 
 @dataclass
-class AvailabilityResult(TopicResult):
+class Availability(EvaluationItem):
     name: ClassVar[str] = "NDT Availability"
     success: bool = True
     TARGET_DIAG_NAME: ClassVar[
@@ -170,7 +169,7 @@ class AvailabilityResult(TopicResult):
         include_target_status = False
         # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
         for diag_status in msg.status:
-            if diag_status.name != AvailabilityResult.TARGET_DIAG_NAME:
+            if diag_status.name != Availability.TARGET_DIAG_NAME:
                 continue
             include_target_status = True
             values = {value.key: value.value for value in diag_status.values}
@@ -179,7 +178,7 @@ class AvailabilityResult(TopicResult):
             # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
             status_str: str | None = values.get("status")
             if status_str is not None:
-                if status_str in AvailabilityResult.ERROR_STATUS_LIST:
+                if status_str in Availability.ERROR_STATUS_LIST:
                     self.success = False
                     self.summary = f"{self.name} ({self.success_str()}): NDT not available"
                 else:
@@ -211,9 +210,9 @@ class AvailabilityResult(TopicResult):
 class LocalizationResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
-        self.__convergence = ConvergenceResult(condition=condition["Convergence"])
-        self.__reliability = ReliabilityResult(condition=condition["Reliability"])
-        self.__availability = AvailabilityResult()
+        self.__convergence = Convergence(condition=condition["Convergence"])
+        self.__reliability = Reliability(condition=condition["Reliability"])
+        self.__availability = Availability()
 
     def update(self) -> None:
         summary_str = f"{self.__convergence.summary}, {self.__reliability.summary}, {self.__availability.summary}"

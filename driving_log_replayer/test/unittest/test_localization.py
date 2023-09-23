@@ -23,18 +23,18 @@ import pytest
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
-from driving_log_replayer.localization import AvailabilityResult
-from driving_log_replayer.localization import ConvergenceResult
+from driving_log_replayer.localization import Availability
+from driving_log_replayer.localization import Convergence
 from driving_log_replayer.localization import get_reliability_method
-from driving_log_replayer.localization import ReliabilityResult
+from driving_log_replayer.localization import Reliability
 
 
 def test_availability_success() -> None:
     status = DiagnosticStatus(
-        name=AvailabilityResult.TARGET_DIAG_NAME,
+        name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="status", value="OK")],
     )
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is True
     assert result.summary == "NDT Availability (Success): NDT available"
@@ -49,12 +49,12 @@ def test_availability_success() -> None:
 
 def test_availability_fail() -> None:
     status = DiagnosticStatus(
-        name=AvailabilityResult.TARGET_DIAG_NAME,
+        name=Availability.TARGET_DIAG_NAME,
         values=[
             KeyValue(key="not_availability_status", value="test"),
         ],
     )
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is False
     assert result.summary == "NDT Availability (Fail): NDT Availability Key Not Found"
@@ -69,10 +69,10 @@ def test_availability_fail() -> None:
 
 def test_availability_fail_key_not_found() -> None:
     status = DiagnosticStatus(
-        name=AvailabilityResult.TARGET_DIAG_NAME,
-        values=[KeyValue(key="status", value=AvailabilityResult.ERROR_STATUS_LIST[0])],
+        name=Availability.TARGET_DIAG_NAME,
+        values=[KeyValue(key="status", value=Availability.ERROR_STATUS_LIST[0])],
     )
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is False
     assert result.summary == "NDT Availability (Fail): NDT not available"
@@ -87,7 +87,7 @@ def test_availability_fail_key_not_found() -> None:
 
 def test_availability_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_localization_diag_name")
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is True
     assert result.summary == "NotTested"
@@ -103,8 +103,8 @@ def test_availability_has_no_target_diag() -> None:
 
 
 @pytest.fixture()
-def create_convergence_result() -> ConvergenceResult:
-    return ConvergenceResult(
+def create_convergence() -> Convergence:
+    return Convergence(
         condition={
             "AllowableDistance": 0.2,
             "AllowableExeTimeMs": 100.0,
@@ -116,8 +116,8 @@ def create_convergence_result() -> ConvergenceResult:
     )
 
 
-def test_convergence_success(create_convergence_result: Callable) -> None:
-    result: ConvergenceResult = create_convergence_result
+def test_convergence_success(create_convergence: Callable) -> None:
+    result: Convergence = create_convergence
     frame, pub_msg = result.set_frame(
         0.1,
         0.2,
@@ -144,8 +144,8 @@ def test_convergence_success(create_convergence_result: Callable) -> None:
     assert pub_msg == Float64(data=0.1)
 
 
-def test_convergence_fail(create_convergence_result: Callable) -> None:
-    result: ConvergenceResult = create_convergence_result
+def test_convergence_fail(create_convergence: Callable) -> None:
+    result: Convergence = create_convergence
     frame, pub_msg = result.set_frame(
         0.3,
         0.2,
@@ -173,8 +173,8 @@ def test_convergence_fail(create_convergence_result: Callable) -> None:
 
 
 @pytest.fixture()
-def create_reliability_result() -> ReliabilityResult:
-    return ReliabilityResult(
+def create_reliability() -> Reliability:
+    return Reliability(
         condition={"Method": "NVTL", "AllowableLikelihood": 2.3, "NGCount": 10},
         total=9,
         ng_seq=9,
@@ -182,8 +182,8 @@ def create_reliability_result() -> ReliabilityResult:
     )
 
 
-def test_reliability_success(create_reliability_result: Callable) -> None:
-    result: ReliabilityResult = create_reliability_result
+def test_reliability_success(create_reliability: Callable) -> None:
+    result: Reliability = create_reliability
     nvtl = Float32Stamped(stamp=Time(sec=123, nanosec=456), data=2.3)
     # The function to create dict of map_to_baselink is checked in the evaluator test.
     map_to_baselink = {}
@@ -221,8 +221,8 @@ def test_reliability_success(create_reliability_result: Callable) -> None:
     }
 
 
-def test_reliability_fail(create_reliability_result: Callable) -> None:
-    result: ReliabilityResult = create_reliability_result
+def test_reliability_fail(create_reliability: Callable) -> None:
+    result: Reliability = create_reliability
     nvtl = Float32Stamped(stamp=Time(sec=123, nanosec=456), data=2.0)
     # The function to create dict of map_to_baselink is checked in the evaluator test.
     map_to_baselink = {}
