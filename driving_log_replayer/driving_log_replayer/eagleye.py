@@ -18,12 +18,12 @@ from typing import ClassVar
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 
+from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import TopicResult
 
 
 @dataclass
-class AvailabilityResult(TopicResult):
+class Availability(EvaluationItem):
     name: ClassVar[str] = "Eagleye Availability"
     TARGET_DIAG_NAME: ClassVar[str] = "monitor: eagleye_enu_absolute_pos_interpolate"
 
@@ -31,7 +31,7 @@ class AvailabilityResult(TopicResult):
         include_target_status = False
         diag_status: DiagnosticStatus
         for diag_status in msg.status:
-            if diag_status.name != AvailabilityResult.TARGET_DIAG_NAME:
+            if diag_status.name != Availability.TARGET_DIAG_NAME:
                 continue
             include_target_status = True
             self.success = diag_status.level == DiagnosticStatus.OK
@@ -59,7 +59,7 @@ class AvailabilityResult(TopicResult):
 class EagleyeResult(ResultBase):
     def __init__(self) -> None:
         super().__init__()
-        self.__availability = AvailabilityResult()
+        self.__availability = Availability()
 
     def update(self) -> None:
         summary_str = f"{self.__availability.summary}"

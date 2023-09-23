@@ -15,16 +15,16 @@
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 
-from driving_log_replayer.eagleye import AvailabilityResult
+from driving_log_replayer.eagleye import Availability
 
 
 def test_availability_success() -> None:
     status = DiagnosticStatus(
-        name=AvailabilityResult.TARGET_DIAG_NAME,
+        name=Availability.TARGET_DIAG_NAME,
         level=DiagnosticStatus.OK,
         message="OK",
     )
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is True
     assert result.summary == "Eagleye Availability (Success): OK"
@@ -39,11 +39,11 @@ def test_availability_success() -> None:
 
 def test_availability_fail() -> None:
     status = DiagnosticStatus(
-        name=AvailabilityResult.TARGET_DIAG_NAME,
+        name=Availability.TARGET_DIAG_NAME,
         level=DiagnosticStatus.WARN,
         message="not subscribed or deadlock of more than 10 seconds",
     )
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is False
     assert (
@@ -61,7 +61,7 @@ def test_availability_fail() -> None:
 
 def test_availability_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_eagleye_status")
-    result = AvailabilityResult()
+    result = Availability()
     frame = result.set_frame(DiagnosticArray(status=[status]))
     assert result.success is False  # default value is False
     assert result.summary == "NotTested"
