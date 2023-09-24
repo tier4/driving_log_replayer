@@ -41,17 +41,15 @@ class Availability(EvaluationItem):
             return {
                 "Ego": {},
                 "Availability": {
-                    "Result": self.success_str(),
-                    "Info": [],
+                    "Result": {"Total": self.success_str(), "Frame": self.success_str()},
+                    "Info": {},
                 },
             }
         return {
             "Ego": {},
             "Availability": {
-                "Result": "Warn",
-                "Info": [
-                    {"Reason": "diagnostics does not contain yabloc_status"},
-                ],
+                "Result": {"Total": self.success_str(), "Frame": "Warn"},
+                "Info": {"Reason": "diagnostics does not contain yabloc_status"},
             },
         }
 

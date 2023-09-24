@@ -31,8 +31,8 @@ def test_availability_success() -> None:
     assert frame == {
         "Ego": {},
         "Availability": {
-            "Result": "Success",
-            "Info": [],
+            "Result": {"Total": "Success", "Frame": "Success"},
+            "Info": {},
         },
     }
 
@@ -49,8 +49,8 @@ def test_availability_fail() -> None:
     assert frame == {
         "Ego": {},
         "Availability": {
-            "Result": "Fail",
-            "Info": [],
+            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Info": {},
         },
     }
 
@@ -67,8 +67,8 @@ def test_availability_fail_key_not_found() -> None:
     assert frame == {
         "Ego": {},
         "Availability": {
-            "Result": "Fail",
-            "Info": [],
+            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Info": {},
         },
     }
 
@@ -82,9 +82,7 @@ def test_availability_has_no_target_diag() -> None:
     assert frame == {
         "Ego": {},
         "Availability": {
-            "Result": "Warn",
-            "Info": [
-                {"Reason": "diagnostics does not contain yabloc_status"},
-            ],
+            "Result": {"Total": "Fail", "Frame": "Warn"},
+            "Info": {"Reason": "diagnostics does not contain yabloc_status"},
         },
     }
