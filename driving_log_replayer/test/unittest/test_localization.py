@@ -41,8 +41,8 @@ def test_availability_success() -> None:
     assert frame == {
         "Ego": {},
         "Availability": {
-            "Result": "Success",
-            "Info": [],
+            "Result": {"Total": "Success", "Frame": "Success"},
+            "Info": {},
         },
     }
 
@@ -61,8 +61,8 @@ def test_availability_fail() -> None:
     assert frame == {
         "Ego": {},
         "Availability": {
-            "Result": "Fail",
-            "Info": [],
+            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Info": {},
         },
     }
 
@@ -79,8 +79,8 @@ def test_availability_fail_key_not_found() -> None:
     assert frame == {
         "Ego": {},
         "Availability": {
-            "Result": "Fail",
-            "Info": [],
+            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Info": {},
         },
     }
 
@@ -94,10 +94,8 @@ def test_availability_has_no_target_diag() -> None:
     assert frame == {
         "Ego": {},
         "Availability": {
-            "Result": "Warn",
-            "Info": [
-                {"Reason": "diagnostics does not contain localization_topic_status"},
-            ],
+            "Result": {"Total": "Success", "Frame": "Warn"},
+            "Info": {"Reason": "diagnostics does not contain localization_topic_status"},
         },
     }
 
@@ -130,15 +128,13 @@ def test_convergence_success(create_convergence: Callable) -> None:
     assert frame == {
         "Ego": {"TransformStamped": {}},
         "Convergence": {
-            "Result": "Success",
-            "Info": [
-                {
-                    "LateralDistance": 0.1,
-                    "HorizontalDistance": 0.2,
-                    "ExeTimeMs": 50.0,
-                    "IterationNum": 10,
-                },
-            ],
+            "Result": {"Total": "Success", "Frame": "Success"},
+            "Info": {
+                "LateralDistance": 0.1,
+                "HorizontalDistance": 0.2,
+                "ExeTimeMs": 50.0,
+                "IterationNum": 10,
+            },
         },
     }
     assert pub_msg == Float64(data=0.1)
@@ -158,15 +154,13 @@ def test_convergence_fail(create_convergence: Callable) -> None:
     assert frame == {
         "Ego": {"TransformStamped": {}},
         "Convergence": {
-            "Result": "Fail",
-            "Info": [
-                {
-                    "LateralDistance": 0.3,
-                    "HorizontalDistance": 0.2,
-                    "ExeTimeMs": 50.0,
-                    "IterationNum": 10,
-                },
-            ],
+            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Info": {
+                "LateralDistance": 0.3,
+                "HorizontalDistance": 0.2,
+                "ExeTimeMs": 50.0,
+                "IterationNum": 10,
+            },
         },
     }
     assert pub_msg == Float64(data=0.3)
@@ -198,25 +192,23 @@ def test_reliability_success(create_reliability: Callable) -> None:
     assert frame == {
         "Ego": {"TransformStamped": {}},
         "Reliability": {
-            "Result": "Success",
-            "Info": [
-                {
-                    "Value": {
-                        "stamp": {
-                            "sec": 123,
-                            "nanosec": 456,
-                        },
-                        "data": 2.3,
+            "Result": {"Total": "Success", "Frame": "Success"},
+            "Info": {
+                "Value": {
+                    "stamp": {
+                        "sec": 123,
+                        "nanosec": 456,
                     },
-                    "Reference": {
-                        "stamp": {
-                            "sec": 123,
-                            "nanosec": 123,
-                        },
-                        "data": 2.3,
-                    },
+                    "data": 2.3,
                 },
-            ],
+                "Reference": {
+                    "stamp": {
+                        "sec": 123,
+                        "nanosec": 123,
+                    },
+                    "data": 2.3,
+                },
+            },
         },
     }
 
@@ -237,25 +229,23 @@ def test_reliability_fail(create_reliability: Callable) -> None:
     assert frame == {
         "Ego": {"TransformStamped": {}},
         "Reliability": {
-            "Result": "Fail",
-            "Info": [
-                {
-                    "Value": {
-                        "stamp": {
-                            "sec": 123,
-                            "nanosec": 456,
-                        },
-                        "data": 2.0,
+            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Info": {
+                "Value": {
+                    "stamp": {
+                        "sec": 123,
+                        "nanosec": 456,
                     },
-                    "Reference": {
-                        "stamp": {
-                            "sec": 123,
-                            "nanosec": 123,
-                        },
-                        "data": 2.3,
-                    },
+                    "data": 2.0,
                 },
-            ],
+                "Reference": {
+                    "stamp": {
+                        "sec": 123,
+                        "nanosec": 123,
+                    },
+                    "data": 2.3,
+                },
+            },
         },
     }
 
