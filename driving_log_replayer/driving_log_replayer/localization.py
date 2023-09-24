@@ -80,6 +80,7 @@ class Convergence(EvaluationItem):
         iteration_num: Int32Stamped,
     ) -> tuple[dict, Float64]:
         self.total += 1
+        frame_success = "Fail"
 
         msg_lateral_dist = Float64()
         msg_lateral_dist.data = lateral_dist
@@ -93,6 +94,7 @@ class Convergence(EvaluationItem):
             and iteration <= self.condition["AllowableIterationNum"]
         ):
             self.passed += 1
+            frame_success = "Success"
 
         current_rate = self.rate()
         self.success = current_rate >= self.condition["PassRate"]
@@ -101,15 +103,13 @@ class Convergence(EvaluationItem):
         return {
             "Ego": {"TransformStamped": map_to_baselink},
             "Convergence": {
-                "Result": self.success_str(),
-                "Info": [
-                    {
-                        "LateralDistance": lateral_dist,
-                        "HorizontalDistance": horizontal_dist,
-                        "ExeTimeMs": exe_time_ms,
-                        "IterationNum": iteration,
-                    },
-                ],
+                "Result": {"Total": self.success_str(), "Frame": frame_success},
+                "Info": {
+                    "LateralDistance": lateral_dist,
+                    "HorizontalDistance": horizontal_dist,
+                    "ExeTimeMs": exe_time_ms,
+                    "IterationNum": iteration,
+                },
             },
         }, msg_lateral_dist
 
@@ -128,6 +128,7 @@ class Reliability(EvaluationItem):
         reference: Float32Stamped,
     ) -> dict:
         self.total += 1
+        frame_success = "Fail"
         self.received_data.append(msg.data)
 
         # If the likelihood is lower than AllowableLikelihood for NGCount consecutive times, it is assumed to be a failure.
@@ -135,23 +136,20 @@ class Reliability(EvaluationItem):
             # Update nq_seq only while reliability.result is true
             if msg.data >= self.condition["AllowableLikelihood"]:
                 self.ng_seq = 0
+                frame_success = "Success"
             else:
                 self.ng_seq += 1
-        self.success = bool(
-            self.ng_seq < self.condition["NGCount"],
-        )
+        self.success = bool(self.ng_seq < self.condition["NGCount"])
 
         self.summary = f"{self.name} ({self.success_str()}): {self.condition['Method']} Sequential NG Count: {self.ng_seq} (Total Test: {self.total}, Average: {statistics.mean(self.received_data):.5f}, StdDev: {statistics.pstdev(self.received_data):.5f})"
         return {
             "Ego": {"TransformStamped": map_to_baselink},
             "Reliability": {
-                "Result": self.success_str(),
-                "Info": [
-                    {
-                        "Value": message_to_ordereddict(msg),
-                        "Reference": message_to_ordereddict(reference),
-                    },
-                ],
+                "Result": {"Total": self.success_str(), "Frame": frame_success},
+                "Info": {
+                    "Value": message_to_ordereddict(msg),
+                    "Reference": message_to_ordereddict(reference),
+                },
             },
         }
 
@@ -192,17 +190,15 @@ class Availability(EvaluationItem):
             return {
                 "Ego": {},
                 "Availability": {
-                    "Result": self.success_str(),
-                    "Info": [],
+                    "Result": {"Total": self.success_str(), "Frame": self.success_str()},
+                    "Info": {},
                 },
             }
         return {
             "Ego": {},
             "Availability": {
-                "Result": "Warn",
-                "Info": [
-                    {"Reason": "diagnostics does not contain localization_topic_status"},
-                ],
+                "Result": {"Total": self.success_str(), "Frame": "Warn"},
+                "Info": {"Reason": "diagnostics does not contain localization_topic_status"},
             },
         }
 
