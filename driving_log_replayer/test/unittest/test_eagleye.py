@@ -24,11 +24,11 @@ def test_availability_success() -> None:
         level=DiagnosticStatus.OK,
         message="OK",
     )
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is True
-    assert result.summary == "Eagleye Availability (Success): OK"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "Eagleye Availability (Success): OK"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Success", "Frame": "Success"},
@@ -43,14 +43,14 @@ def test_availability_fail() -> None:
         level=DiagnosticStatus.WARN,
         message="not subscribed or deadlock of more than 10 seconds",
     )
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is False
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is False
     assert (
-        result.summary
+        evaluation_item.summary
         == "Eagleye Availability (Fail): not subscribed or deadlock of more than 10 seconds"
     )
-    assert frame == {
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
@@ -61,11 +61,11 @@ def test_availability_fail() -> None:
 
 def test_availability_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_eagleye_status")
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is False  # default value is False
-    assert result.summary == "NotTested"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is False  # default value is False
+    assert evaluation_item.summary == "NotTested"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Warn"},
