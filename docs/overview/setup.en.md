@@ -48,6 +48,11 @@ data_directory = "$HOME/driving_log_replayer_data/yabloc"
 output_directory = "$HOME/driving_log_replayer_output/yabloc"
 autoware_path = "$HOME/autoware"
 
+[ar_tag_based_localizer]
+data_directory = "$HOME/driving_log_replayer_data/ar_tag_based_localizer"
+output_directory = "$HOME/driving_log_replayer_output/ar_tag_based_localizer"
+autoware_path = "$HOME/autoware"
+
 [obstacle_segmentation]
 data_directory = "$HOME/driving_log_replayer_data/obstacle_segmentation"
 output_directory = "$HOME/driving_log_replayer_output/obstacle_segmentation"
