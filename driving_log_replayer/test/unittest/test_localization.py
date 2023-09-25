@@ -34,11 +34,11 @@ def test_availability_success() -> None:
         name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="status", value="OK")],
     )
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is True
-    assert result.summary == "NDT Availability (Success): NDT available"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "NDT Availability (Success): NDT available"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Success", "Frame": "Success"},
@@ -54,11 +54,11 @@ def test_availability_fail() -> None:
             KeyValue(key="not_availability_status", value="test"),
         ],
     )
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is False
-    assert result.summary == "NDT Availability (Fail): NDT Availability Key Not Found"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "NDT Availability (Fail): NDT Availability Key Not Found"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
@@ -72,11 +72,11 @@ def test_availability_fail_key_not_found() -> None:
         name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="status", value=Availability.ERROR_STATUS_LIST[0])],
     )
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is False
-    assert result.summary == "NDT Availability (Fail): NDT not available"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "NDT Availability (Fail): NDT not available"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
@@ -87,11 +87,11 @@ def test_availability_fail_key_not_found() -> None:
 
 def test_availability_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_localization_diag_name")
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is True
-    assert result.summary == "NotTested"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "NotTested"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Success", "Frame": "Warn"},
@@ -115,17 +115,17 @@ def create_convergence() -> Convergence:
 
 
 def test_convergence_success(create_convergence: Callable) -> None:
-    result: Convergence = create_convergence
-    frame, pub_msg = result.set_frame(
+    evaluation_item: Convergence = create_convergence
+    frame_dict, pub_msg = evaluation_item.set_frame(
         0.1,
         0.2,
         {},
         Float32Stamped(data=50.0),
         Int32Stamped(data=10),
     )
-    assert result.success is True
-    assert result.summary == "Convergence (Success): 95 / 100 -> 95.00%"
-    assert frame == {
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "Convergence (Success): 95 / 100 -> 95.00%"
+    assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "Convergence": {
             "Result": {"Total": "Success", "Frame": "Success"},
@@ -141,17 +141,17 @@ def test_convergence_success(create_convergence: Callable) -> None:
 
 
 def test_convergence_fail(create_convergence: Callable) -> None:
-    result: Convergence = create_convergence
-    frame, pub_msg = result.set_frame(
+    evaluation_item: Convergence = create_convergence
+    frame_dict, pub_msg = evaluation_item.set_frame(
         0.3,
         0.2,
         {},
         Float32Stamped(data=50.0),
         Int32Stamped(data=10),
     )
-    assert result.success is False
-    assert result.summary == "Convergence (Fail): 94 / 100 -> 94.00%"
-    assert frame == {
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "Convergence (Fail): 94 / 100 -> 94.00%"
+    assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "Convergence": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
@@ -177,19 +177,19 @@ def create_reliability() -> Reliability:
 
 
 def test_reliability_success(create_reliability: Callable) -> None:
-    result: Reliability = create_reliability
+    evaluation_item: Reliability = create_reliability
     nvtl = Float32Stamped(stamp=Time(sec=123, nanosec=456), data=2.3)
     # The function to create dict of map_to_baselink is checked in the evaluator test.
     map_to_baselink = {}
     tp = Float32Stamped(stamp=Time(sec=123, nanosec=123), data=2.3)
-    frame = result.set_frame(nvtl, map_to_baselink, tp)
-    assert result.success is True
+    frame_dict = evaluation_item.set_frame(nvtl, map_to_baselink, tp)
+    assert evaluation_item.success is True
     assert (
-        result.summary
+        evaluation_item.summary
         == "Reliability (Success): NVTL Sequential NG Count: 0 (Total Test: 10, Average: 1.58000, StdDev: 0.34293)"
     )
-    assert result.received_data == [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.3]
-    assert frame == {
+    assert evaluation_item.received_data == [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.3]
+    assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "Reliability": {
             "Result": {"Total": "Success", "Frame": "Success"},
@@ -214,19 +214,19 @@ def test_reliability_success(create_reliability: Callable) -> None:
 
 
 def test_reliability_fail(create_reliability: Callable) -> None:
-    result: Reliability = create_reliability
+    evaluation_item: Reliability = create_reliability
     nvtl = Float32Stamped(stamp=Time(sec=123, nanosec=456), data=2.0)
     # The function to create dict of map_to_baselink is checked in the evaluator test.
     map_to_baselink = {}
     tp = Float32Stamped(stamp=Time(sec=123, nanosec=123), data=2.3)
-    frame = result.set_frame(nvtl, map_to_baselink, tp)
-    assert result.success is False
+    frame_dict = evaluation_item.set_frame(nvtl, map_to_baselink, tp)
+    assert evaluation_item.success is False
     assert (
-        result.summary
+        evaluation_item.summary
         == "Reliability (Fail): NVTL Sequential NG Count: 10 (Total Test: 10, Average: 1.55000, StdDev: 0.28723)"
     )
-    assert result.received_data == [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
-    assert frame == {
+    assert evaluation_item.received_data == [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+    assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "Reliability": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
