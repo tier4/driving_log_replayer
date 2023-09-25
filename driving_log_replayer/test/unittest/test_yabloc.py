@@ -24,11 +24,11 @@ def test_availability_success() -> None:
         name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="Availability", value="OK")],
     )
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is True
-    assert result.summary == "Yabloc Availability (Success): OK"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "Yabloc Availability (Success): OK"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Success", "Frame": "Success"},
@@ -42,11 +42,11 @@ def test_availability_fail() -> None:
         name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="Availability", value="NG")],
     )
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is False
-    assert result.summary == "Yabloc Availability (Fail): NG"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "Yabloc Availability (Fail): NG"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
@@ -60,11 +60,11 @@ def test_availability_fail_key_not_found() -> None:
         name=Availability.TARGET_DIAG_NAME,
         values=[KeyValue(key="Convergence", value="AnyValue")],
     )
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is False
-    assert result.summary == "Yabloc Availability (Fail): Availability Key Not Found"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "Yabloc Availability (Fail): Availability Key Not Found"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
@@ -75,11 +75,11 @@ def test_availability_fail_key_not_found() -> None:
 
 def test_availability_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_yabloc_status")
-    result = Availability()
-    frame = result.set_frame(DiagnosticArray(status=[status]))
-    assert result.success is False  # default value is False
-    assert result.summary == "NotTested"
-    assert frame == {
+    evaluation_item = Availability()
+    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is False  # default value is False
+    assert evaluation_item.summary == "NotTested"
+    assert frame_dict == {
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Warn"},
