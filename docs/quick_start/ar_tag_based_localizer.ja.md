@@ -11,14 +11,11 @@
 
 2. サンプルのデータセットをコピー
 
-   [Google Drive Link](https://drive.google.com/file/d/1UqULyfidxcA5JidfHWAsSqNy8itampAX/view)からRosbagをダウンロードし、下記のコマンドを実行してください。
+   [Google Drive Link](https://drive.google.com/file/d/1uMVwQQFcfs8JOqfoA1FqfH_fLPwQ71jK/view)からRosbagをダウンロードし、下記のコマンドを実行してください。
 
    ```bash
-   unzstd ar_tag_based_localizer_autoware_test_made_in_awsim_0.db3.zst
-   mkdir input_bag
-   mv ar_tag_based_localizer_autoware_test_made_in_awsim_0.db3 input_bag
-   ros2 bag reindex input_bag -s sqlite3
-   mv input_bag ~/driving_log_replayer_data/ar_tag_based_localizer/sample
+   unzip sample_data_for_artag_awsim.zip
+   mv sample_data_for_artag_awsim/rosbag/ ~/driving_log_replayer_data/ar_tag_based_localizer/sample/input_bag
    ```
 
 3. 入力の bag ファイルのフィルタとスライス処理
