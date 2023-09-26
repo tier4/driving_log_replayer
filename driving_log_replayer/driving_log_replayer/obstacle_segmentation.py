@@ -207,7 +207,7 @@ class Detection(EvaluationItem):
 
         current_rate = self.rate()
         self.success = current_rate >= self.condition["PassRate"]
-        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}% (Warn: {self.warn})"
 
         # initialize
         marker_array = MarkerArray()
