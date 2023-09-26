@@ -24,7 +24,6 @@ from driving_log_replayer.result import ResultBase
 @dataclass
 class Perception(EvaluationItem):
     name: ClassVar[str] = "Perception"
-    pass_rate: float = 0.0
 
     def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
         self.total += 1
@@ -41,7 +40,7 @@ class Perception(EvaluationItem):
             self.passed += 1
             frame_success = "Success"
 
-        self.success = self.rate() >= self.pass_rate
+        self.success = self.rate() >= self.condition["PassRate"]
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
@@ -62,7 +61,7 @@ class Perception(EvaluationItem):
 class TrafficLightResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
-        self.__perception = Perception(pass_rate=condition["PassRate"])
+        self.__perception = Perception(condition=condition)
 
     def update(self) -> None:
         summary_str = f"{self.__perception.summary}"
