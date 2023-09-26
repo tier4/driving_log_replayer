@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import sys
+from typing import ClassVar
 
 import numpy as np
 from perception_eval.common.object import DynamicObject
@@ -28,6 +29,7 @@ from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 
 import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
@@ -167,38 +169,12 @@ def get_sensing_frame_config(
     return True, sensing_frame_config
 
 
-class ObstacleSegmentationResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
-        super().__init__()
-        self.__condition_detection: dict | None = condition.get("Detection", None)
-        self.__condition_non_detection: dict | None = condition.get("NonDetection", None)
+class Detection(EvaluationItem):
+    name: ClassVar[str] = "Detection"
+    success: bool = True
+    warn: int = 0
 
-        self.__detection_total = 0
-        self.__detection_success = 0
-        self.__detection_msg = "NotTested"
-        self.__detection_result = True
-        self.__detection_warn = 0
-        self.__non_detection_total = 0
-        self.__non_detection_success = 0
-        self.__non_detection_msg = "NotTested"
-        self.__non_detection_result = True
-
-    def update(self) -> None:
-        summary_str = f"Detection: {self.__detection_msg} NonDetection: {self.__non_detection_msg}"
-        if self.__detection_result and self.__non_detection_result:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        elif self.__detection_result and not self.__non_detection_result:
-            self._success = False
-            self._summary = f"NonDetection Failed: {summary_str}"
-        elif not self.__detection_result and self.__non_detection_result:
-            self._success = False
-            self._summary = f"Detection Failed: {summary_str}"
-        elif not self.__detection_result and not self.__non_detection_result:
-            self._success = False
-            self._summary = f"Detection and NonDetection Failed: {summary_str}"
-
-    def summarize_detection(
+    def set_frame(
         self,
         frame_result: SensingFrameResult,
         header: Header,
@@ -210,143 +186,169 @@ class ObstacleSegmentationResult(ResultBase):
         PointCloud2 | None,
         ObstacleSegmentationMarkerArray | None,
     ]:
-        result = "Skipped"
+        if self.condition is None:
+            return (
+                {"Result": {"Total": "Success", "Frame": "Invalid"}, "Info": {}},
+                None,
+                None,
+            )
+        self.total += 1
+        frame_success = "Fail"
+        if len(frame_result.detection_warning_results) != 0:
+            frame_success = "Warn"
+            self.warn += 1
+        elif (
+            len(frame_result.detection_fail_results) == 0
+            and len(frame_result.detection_success_results) != 0
+            and topic_rate
+        ):
+            frame_success = "Success"
+            self.passed += 1
+
+        current_rate = self.rate()
+        self.success = current_rate >= self.condition["PassRate"]
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
+
+        # initialize
+        marker_array = MarkerArray()
+        # create detection pcd
+        pcd = np.zeros(
+            0,
+            dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
+        )
+        counter = 0
+        graph_detection = ObstacleSegmentationMarkerArray()
+
+        color_success = (
+            ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
+            if frame_success == "Success"
+            else ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
+        )
         info = []
-        marker_array = None
-        pcd_detection = None
-        graph_detection = None
+        info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
+            frame_result.detection_success_results,
+            header,
+            color_success,
+            info,
+            counter,
+            marker_array,
+            pcd,
+            graph_detection,
+            ObstacleSegmentationMarker.OK
+            if frame_success == "Success"
+            else ObstacleSegmentationMarker.ERROR,
+        )
 
-        if self.__condition_detection is not None:
-            result = "Fail"
-            if len(frame_result.detection_warning_results) != 0:
-                result = "Warn"
-                self.__detection_warn += 1
-            else:
-                self.__detection_total += 1
-                # Failure if there is no point cloud and no success
-                if (
-                    len(frame_result.detection_fail_results) == 0
-                    and len(frame_result.detection_success_results) != 0
-                    and topic_rate
-                ):
-                    result = "Success"
-                    self.__detection_success += 1
+        color_fail = ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
+        info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
+            frame_result.detection_fail_results,
+            header,
+            color_fail,
+            info,
+            counter,
+            marker_array,
+            pcd,
+            graph_detection,
+            ObstacleSegmentationMarker.ERROR,
+        )
 
-            detection_rate = (
-                0.0
-                if self.__detection_total == 0
-                else self.__detection_success / self.__detection_total * 100.0
-            )
-            self.__detection_result = detection_rate >= self.__condition_detection["PassRate"]
-            self.__detection_msg = f"Detection: {self.__detection_success} / {self.__detection_total } -> {detection_rate:.2f}% (Warn: {self.__detection_warn})"
+        color_warn = ColorRGBA(r=1.0, g=0.65, b=0.0, a=0.3)
+        info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
+            frame_result.detection_warning_results,
+            header,
+            color_warn,
+            info,
+            counter,
+            marker_array,
+            pcd,
+            graph_detection,
+            ObstacleSegmentationMarker.WARN,
+        )
 
-            # initialize
-            marker_array = MarkerArray()
-            # create detection pcd
-            pcd = np.zeros(
-                0,
-                dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
-            )
-            counter = 0
-            graph_detection = ObstacleSegmentationMarkerArray()
+        pcd_detection = ros2_numpy.msgify(PointCloud2, pcd)
+        pcd_detection.header = header
+        return (
+            {"Result": {"Total": self.success_str(), "Frame": frame_success}, "Info": info},
+            marker_array,
+            pcd_detection,
+            graph_detection,
+        )
 
-            color_success = (
-                ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
-                if result == "Success"
-                else ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
-            )
-            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
-                frame_result.detection_success_results,
-                header,
-                color_success,
-                info,
-                counter,
-                marker_array,
-                pcd,
-                graph_detection,
-                ObstacleSegmentationMarker.OK
-                if result == "Success"
-                else ObstacleSegmentationMarker.ERROR,
-            )
 
-            color_fail = ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
-            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
-                frame_result.detection_fail_results,
-                header,
-                color_fail,
-                info,
-                counter,
-                marker_array,
-                pcd,
-                graph_detection,
-                ObstacleSegmentationMarker.ERROR,
-            )
+class NonDetection(EvaluationItem):
+    name: ClassVar[str] = "NonDetection"
+    success: bool = True
 
-            color_warn = ColorRGBA(r=1.0, g=0.65, b=0.0, a=0.3)
-            info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
-                frame_result.detection_warning_results,
-                header,
-                color_warn,
-                info,
-                counter,
-                marker_array,
-                pcd,
-                graph_detection,
-                ObstacleSegmentationMarker.WARN,
-            )
-
-            pcd_detection = ros2_numpy.msgify(PointCloud2, pcd)
-            pcd_detection.header = header
-        return {"Result": result, "Info": info}, marker_array, pcd_detection, graph_detection
-
-    def summarize_non_detection(
+    def set_frame(
         self,
         pcd_list: list[np.ndarray],
         header: Header,
         *,
         topic_rate: bool,
     ) -> tuple[dict, PointCloud2 | None, ObstacleSegmentationMarker | None]:
-        result = "Skipped"
-        info = []
-        ros_pcd = None
-        graph_non_detection = None
-
-        if self.__condition_non_detection is not None:
-            result = "Fail"
-            self.__non_detection_total += 1
-            if len(pcd_list) == 0 and topic_rate:
-                result = "Success"
-                self.__non_detection_success += 1
-            non_detection_rate = self.__non_detection_success / self.__non_detection_total * 100.0
-            self.__non_detection_result = (
-                non_detection_rate >= self.__condition_non_detection["PassRate"]
+        if self.condition is None:
+            return (
+                {"Result": {"Total": "Success", "Frame": "Invalid"}, "Info": {}},
+                None,
+                None,
             )
-            self.__non_detection_msg = f"NonDetection: {self.__non_detection_success} / {self.__non_detection_total} -> {non_detection_rate:.2f}%"
 
-            ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
-            graph_non_detection = ObstacleSegmentationMarker()
-            graph_non_detection.header = header
-            graph_non_detection.status = (
-                ObstacleSegmentationMarker.ERROR
-                if result == "Fail"
-                else ObstacleSegmentationMarker.OK
-            )
-            graph_non_detection.number_of_pointcloud = dist_array.shape[0]
+        self.total += 1
+        frame_success = "Fail"
+        if len(pcd_list) == 0 and topic_rate:
+            frame_success = "Success"
+            self.passed += 1
 
-            if result == "Fail":
-                # 詳細情報の追記を書く
-                dist_dict = {}
-                for i in range(100):
-                    dist_dict[f"{i}-{i+1}"] = np.count_nonzero(
-                        (i <= dist_array) & (dist_array < i + 1),
-                    )
-                # NonDetectionは結果はInfoに入るのは1個しかないがDetectionに合わせてlistにしておく
-                info.append(
-                    {
-                        "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
-                    },
+        current_rate = self.rate()
+        self.success = current_rate >= self.condition["PassRate"]
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
+
+        ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
+        graph_non_detection = ObstacleSegmentationMarker()
+        graph_non_detection.header = header
+        graph_non_detection.status = (
+            ObstacleSegmentationMarker.ERROR
+            if frame_success == "Fail"
+            else ObstacleSegmentationMarker.OK
+        )
+        graph_non_detection.number_of_pointcloud = dist_array.shape[0]
+
+        info = {}
+        if frame_success == "Fail":
+            # 詳細情報の追記を書く
+            dist_dict = {}
+            for i in range(100):
+                dist_dict[f"{i}-{i+1}"] = np.count_nonzero(
+                    (i <= dist_array) & (dist_array < i + 1),
                 )
-        return {"Result": result, "Info": info}, ros_pcd, graph_non_detection
+            info = {
+                "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
+            }
+
+        return (
+            {
+                "Result": {"Total": self.success_str(), "Frame": frame_success},
+                "Info": info,
+            },
+            ros_pcd,
+            graph_non_detection,
+        )
+
+
+class ObstacleSegmentationResult(ResultBase):
+    def __init__(self, condition: dict) -> None:
+        super().__init__()
+        self.__detection = Detection(condition=condition.get("Detection"))
+        self.__non_detection = NonDetection(condition=condition.get("NonDetection"))
+
+    def update(self) -> None:
+        summary_str = f"{self.__detection.summary} {self.__non_detection.summary}"
+        if self.__detection.success and self.__non_detection.success:
+            self._success = True
+            self._summary = f"Passed: {summary_str}"
+        else:
+            self._success = False
+            self._summary = f"Failed: {summary_str}"
 
     def set_frame(
         self,
@@ -374,12 +376,12 @@ class ObstacleSegmentationResult(ResultBase):
             marker_detection,
             pcd_detection,
             graph_detection,
-        ) = self.summarize_detection(frame, header, topic_rate=topic_rate)
+        ) = self.__detection.set_frame(frame, header, topic_rate=topic_rate)
         (
             out_frame["NonDetection"],
             pcd_non_detection,
             graph_non_detection,
-        ) = self.summarize_non_detection(
+        ) = self.__non_detection.set_frame(
             frame.pointcloud_failed_non_detection,
             header,
             topic_rate=topic_rate,
