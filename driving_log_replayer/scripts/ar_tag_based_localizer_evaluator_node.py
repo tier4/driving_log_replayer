@@ -46,7 +46,7 @@ class ArTagBasedLocalizerEvaluator(DLREvaluator):
 
 @evaluator_main
 def main() -> DLREvaluator:
-    return ArTagBasedLocalizerEvaluator("yabloc_evaluator")
+    return ArTagBasedLocalizerEvaluator("ar_tag_based_localizer_evaluator")
 
 
 if __name__ == "__main__":
