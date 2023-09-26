@@ -19,47 +19,7 @@ from diagnostic_msgs.msg import DiagnosticArray
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
-from driving_log_replayer.result import ResultBase
-
-
-class YabLocResult(ResultBase):
-    def __init__(self) -> None:
-        super().__init__()
-        # availability
-        self.__yabloc_availability_result = False
-        self.__yabloc_availability_msg = "NotTested"
-
-    def update(self) -> None:
-        if self.__yabloc_availability_result:
-            yabloc_availability_summary = (
-                f"YabLoc Availability (Passed): {self.__yabloc_availability_msg}"
-            )
-        else:
-            yabloc_availability_summary = (
-                f"YabLoc Availability (Failed): {self.__yabloc_availability_msg}"
-            )
-        summary_str = f"{yabloc_availability_summary}"
-        if self.__yabloc_availability_result:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
-
-    def set_frame(self, msg: DiagnosticArray) -> None:
-        for diag_status in msg.status:
-            out_frame = {"Ego": {}}
-            if diag_status.name != "yabloc_monitor: yabloc_status":
-                continue
-            values = {value.key: value.value for value in diag_status.values}
-            self.__yabloc_availability_result = values["Availability"] == "OK"
-            self.__yabloc_availability_msg = values["Availability"]
-            out_frame["Availability"] = {
-                "Result": "Success" if self.__yabloc_availability_result else "Fail",
-                "Info": [],
-            }
-            self._frame = out_frame
-            self.update()
+from driving_log_replayer.yabloc import YabLocResult
 
 
 class YabLocEvaluator(DLREvaluator):
