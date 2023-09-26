@@ -4,7 +4,7 @@ ScenarioDescription: sample_ar_tag_based_localizer
 SensorModel: awsim_sensor_kit
 VehicleModel: sample_vehicle
 VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
+LocalMapPath: $HOME/driving_log_replayer_data/ar_tag_based_localizer/sample/map
 Evaluation:
   UseCaseName: ar_tag_based_localizer
   UseCaseFormatVersion: 0.1.0

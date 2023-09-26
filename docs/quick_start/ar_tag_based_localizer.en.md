@@ -16,6 +16,7 @@
    ```bash
    unzip sample_data_for_artag_awsim.zip
    mv sample_data_for_artag_awsim/rosbag/ ~/driving_log_replayer_data/ar_tag_based_localizer/sample/input_bag
+   mv sample_data_for_artag_awsim ~/driving_log_replayer_data/ar_tag_based_localizer/sample/map
    ```
 
 3. Filter and slice bag
