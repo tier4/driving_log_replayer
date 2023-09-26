@@ -15,50 +15,10 @@
 # limitations under the License.
 
 from diagnostic_msgs.msg import DiagnosticArray
-from diagnostic_msgs.msg import DiagnosticStatus
 
+from driving_log_replayer.eagleye import EagleyeResult
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
-from driving_log_replayer.result import ResultBase
-
-
-class EagleyeResult(ResultBase):
-    def __init__(self) -> None:
-        super().__init__()
-        # availability
-        self.__eagleye_availability_result = False
-        self.__eagleye_availability_msg = "NotTested"
-
-    def update(self) -> None:
-        if self.__eagleye_availability_result:
-            eagleye_availability_summary = (
-                f"Eagleye Availability (Passed): {self.__eagleye_availability_msg}"
-            )
-        else:
-            eagleye_availability_summary = (
-                f"Eagleye Availability (Failed): {self.__eagleye_availability_msg}"
-            )
-        summary_str = f"{eagleye_availability_summary}"
-        if self.__eagleye_availability_result:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
-
-    def set_frame(self, msg: DiagnosticArray) -> None:
-        for diag_status in msg.status:
-            out_frame = {"Ego": {}}
-            if diag_status.name != "monitor: eagleye_enu_absolute_pos_interpolate":
-                continue
-            self.__eagleye_availability_result = diag_status.level == DiagnosticStatus.OK
-            self.__eagleye_availability_msg = diag_status.message
-            out_frame["Availability"] = {
-                "Result": "Success" if self.__eagleye_availability_result else "Fail",
-                "Info": [],
-            }
-            self._frame = out_frame
-            self.update()
 
 
 class EagleyeEvaluator(DLREvaluator):
