@@ -14,7 +14,7 @@ Launching the file executes the following steps:
 
 ### Availability of ArTagBasedLocalizer
 
-We use the output from `ar_tag_based_localizer_monitor` via `/diagnostics` to evaluate whether ArTagBasedLocalizer is available.
+We use the output from `ar_tag_based_localizer` via `/diagnostics` to evaluate whether ArTagBasedLocalizer is available.
 
 - `/diagnostics`
 
@@ -24,7 +24,8 @@ The results are calculated for each subscription. The format and available state
 
 ### ArTagBasedLocalizer Availability Normal
 
-Information related to the monitored topic is extracted from `/diagnostics` which Component State Monitor outputs. If the most recent information is "OK", it is considered as pass.
+Information related to the monitored topic is extracted from `/diagnostics` which Component State Monitor outputs.
+If the most recent information of "Number of Detected AR Tags" is greater than or equal to 0, it is considered as pass.
 
 ### ArTagBasedLocalizer Availability Error
 
@@ -73,6 +74,7 @@ The following example shows the topic list available in evaluation input rosbag.
 | /sensing/camera/traffic_light/image_raw/compressed | sensor_msgs/msg/CompressedImage               |
 | /sensing/imu/tamagawa/imu_raw                      | sensor_msgs/msg/Imu                           |
 | /vehicle/status/velocity_status                    | autoware_auto_vehicle_msgs/msg/VelocityReport |
+| /initialpose                                       | geometry_msgs/msg/PoseWithCovarianceStamped   |
 
 ### Topics that must NOT be included in the input rosbag
 

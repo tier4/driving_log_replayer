@@ -14,16 +14,9 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 ### ArTagBasedLocalizer の可用性
 
-本項目では、ArTagBasedLocalizerの可用性を評価するために用意されている。これは、具体的には、下記のようなケースを検知することを目的とする。
+本項目では、ArTagBasedLocalizerの可用性を評価するために用意されている。これは、なんらかの事情でノードが落ちるケースを検知することを目的とする。
 
-- Runtime error等により `image_processing` が落ちている
-- Runtime error等により `particle_filter` が落ちている
-
-そのために、本項目では下記の出力が定期的に出力されているかどうかを評価する。
-
-- /localization/pose_estimator/ar_tag_based_localizer/pf/pose
-
-これは、ArTagBasedLocalizer MonitorというAutoware内のパッケージを間接的に利用することによって実現される。本ツールは、下記のトピックを監視することによってその情報を取得する。
+本ツールは、下記のトピックを監視することによってその情報を取得する。
 
 - /diagnostics
 
@@ -34,7 +27,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 ### 可用性正常
 
 ArTagBasedLocalizer Monitorが出力する `/diagnostics` の中から、監視トピックに関する情報を抽出する。
-最新の情報におけるAvailabilityが `OK` である場合、正常であると判断する。
+最新の情報における`Number of Detected AR Tags`が0以上である場合、正常であると判断する。
 
 ### 可用性異常
 
@@ -80,6 +73,7 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 | /sensing/camera/traffic_light/image_raw/compressed | sensor_msgs/msg/CompressedImage               |
 | /sensing/imu/tamagawa/imu_raw                      | sensor_msgs/msg/Imu                           |
 | /vehicle/status/velocity_status                    | autoware_auto_vehicle_msgs/msg/VelocityReport |
+| /initialpose                                       | geometry_msgs/msg/PoseWithCovarianceStamped   |
 
 ### 入力 rosbag に含まれてはいけない topic
 
