@@ -1,8 +1,10 @@
-# Evaluate perception(LiDAR)
+# Evaluate perception
 
 The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.
 
 Run the perception module and pass the output perception topic to the evaluation library for evaluation.
+
+By default, it is launched with perception_mode = lidar, so if you want to target camera or radar, pass perception_mode to perception.launch.py to change it.
 
 ## Preparation
 
