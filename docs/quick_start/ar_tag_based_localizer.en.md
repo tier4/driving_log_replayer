@@ -51,5 +51,5 @@ It is good to cut it off at 126.5 seconds when the third AR tag is shown.
    test case 1 / 1 : use case: sample
    --------------------------------------------------
    TestResult: Passed
-   Passed: ArTagBasedLocalizer Availability (Passed): OK
+   Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags
    ```

@@ -50,5 +50,5 @@
    test case 1 / 1 : use case: sample
    --------------------------------------------------
    TestResult: Passed
-   Passed: ArTagBasedLocalizer Availability (Passed): OK
+   Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags
    ```
