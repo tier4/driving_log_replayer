@@ -172,8 +172,8 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 [サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json)参照
 
-localization では、収束性と信頼度の 2 つを評価しているので、行毎に収束性または信頼度のどちらかの結果が入っている。
-Result は収束性と信頼度両方のパスしていれば true でそれ以外は false 失敗となる。
+localization では、収束性、信頼度、可用性の 3 つを評価しているので、行毎に収束性、信頼度、可用性のいずれかの結果が入っている。
+Result は収束性、信頼度、可用性のすべてをパスしていれば true でそれ以外は false 失敗となる。
 
 以下に、それぞれの評価の例を記述する。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
@@ -182,17 +182,13 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
 
 ```json
 {
-  "Frame": {
-    "Convergence": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "LateralDistance": "ndtとekfのposeの横方距離",
-          "HorizontalDistance": "ndtとekfの水平距離。参考値",
-          "ExeTimeMs": "ndtの計算にかかった時間",
-          "IterationNum": "ndtの再計算回数"
-        }
-      ]
+  "Convergence": {
+    "Result": {"Total": "Success or Fail", "Frame": "Success or Fail"},
+    "Info": {
+      "LateralDistance": "ndtとekfのposeの横方距離",
+      "HorizontalDistance": "ndtとekfの水平距離。参考値",
+      "ExeTimeMs": "ndtの計算にかかった時間",
+      "IterationNum": "ndtの再計算回数"
     }
   }
 }
@@ -202,28 +198,35 @@ Result は収束性と信頼度両方のパスしていれば true でそれ以�
 
 ```json
 {
-  "Frame": {
-    "Reliability": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "Value": {
-            "stamp": {
-              "sec": "stampの秒",
-              "nanosec": "stampのnano秒"
-            },
-            "data": "NVTL or TPの値"
-          },
-          "Reference": {
-            "stamp": {
-              "sec": "stampの秒",
-              "nanosec": "stampのnano秒"
-            },
-            "data": "評価に使用しなかった尤度。参考値。ValueがNVTLならTPが入る"
-          }
-        }
-      ]
+  "Reliability": {
+    "Result": {"Total": "Success or Fail", "Frame": "Success or Fail"},
+    "Info": {
+      "Value": {
+        "stamp": {
+          "sec": "stampの秒",
+          "nanosec": "stampのnano秒"
+        },
+        "data": "NVTL or TPの値"
+      },
+      "Reference": {
+        "stamp": {
+          "sec": "stampの秒",
+          "nanosec": "stampのnano秒"
+        },
+        "data": "評価に使用しなかった尤度。参考値。ValueがNVTLならTPが入る"
+      }
     }
+  }
+}
+```
+
+可用性の結果(Frame の中に Availability 項目がある場合)
+
+```json
+{
+  "Availability": {
+   "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
+   "Info": {}
   }
 }
 ```
