@@ -106,7 +106,7 @@ Availability Result example:
   "Frame": {
     "Ego": {},
     "Availability": {
-      "Result": {"Total": "Success or Fail", "Frame": "Success, Fail, or Warn"},
+      "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
       "Info": {}
     }
   }

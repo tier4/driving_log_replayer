@@ -105,7 +105,7 @@ Availabilityの結果(Frame の中に Availability 項目がある場合)
   "Frame": {
     "Ego": {},
     "Availability": {
-      "Result": {"Total": "Success or Fail", "Frame": "Success, Fail, or Warn"},
+      "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
       "Info": {}
     }
   }
