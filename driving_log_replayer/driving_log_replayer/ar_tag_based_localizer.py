@@ -34,7 +34,6 @@ class Availability(EvaluationItem):
             include_target_status = True
             values = {value.key: value.value for value in diag_status.values}
             detection_count = int(values.get("Number of Detected AR Tags", "-1"))
-            print(f"Number of Detected AR Tags: {detection_count}")
 
             # If the number detected is greater than or equal to 0, it means that the system has worked properly.
             if detection_count >= 0:
