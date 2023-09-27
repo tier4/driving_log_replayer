@@ -101,12 +101,9 @@ Availabilityの結果(Frame の中に Availability 項目がある場合)
 
 ```json
 {
-  "Frame": {
-    "Ego": {},
-    "Availability": {
-      "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
-      "Info": {}
-    }
+  "Availability": {
+    "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
+    "Info": {}
   }
 }
 ```
