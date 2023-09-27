@@ -2,6 +2,22 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add ar_tag_based_localizer evaluation (`#258 <https://github.com/tier4/driving_log_replayer/issues/258>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* feat: eagleye test (`#253 <https://github.com/tier4/driving_log_replayer/issues/253>`_)
+* feat: yabloc test (`#252 <https://github.com/tier4/driving_log_replayer/issues/252>`_)
+* chore: update variable name (`#257 <https://github.com/tier4/driving_log_replayer/issues/257>`_)
+* feat: add frame success (`#256 <https://github.com/tier4/driving_log_replayer/issues/256>`_)
+* chore: evaluation item (`#254 <https://github.com/tier4/driving_log_replayer/issues/254>`_)
+* feat: update localization availability (`#251 <https://github.com/tier4/driving_log_replayer/issues/251>`_)
+* chore: change topic result success initial value (`#250 <https://github.com/tier4/driving_log_replayer/issues/250>`_)
+* feat: topic result (`#249 <https://github.com/tier4/driving_log_replayer/issues/249>`_)
+* feat: localization test (`#248 <https://github.com/tier4/driving_log_replayer/issues/248>`_)
+* feat: result test (`#246 <https://github.com/tier4/driving_log_replayer/issues/246>`_)
+* Contributors: Hayato Mizushima, SakodaShintaro
+
 1.6.1 (2023-09-12)
 ------------------
 * fix: restore default value (`#244 <https://github.com/tier4/driving_log_replayer/issues/244>`_)

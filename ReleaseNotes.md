@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 1.6.2
+
+Major change
+
+| Module                   | Feature                  | Brief summary                               | Pull request                                                   | Jira     | Contributor                                         |
+| ------------------------ | ------------------------ | ------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------------- |
+| `all`                    | test                     | add unit test for result class              | [#246](https://github.com/tier4/driving_log_replayer/pull/246) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization`           | test                     | add unit test for localization              | [#248](https://github.com/tier4/driving_log_replayer/pull/248) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization`           | log                      | add topic result class                      | [#249](https://github.com/tier4/driving_log_replayer/pull/249) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization`           | log                      | update initial value of TopicResult.success | [#250](https://github.com/tier4/driving_log_replayer/pull/250) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization`           | log, test                | update localization availability            | [#251](https://github.com/tier4/driving_log_replayer/pull/251) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `yabloc`                 | test                     | add yabloc unit test                        | [#252](https://github.com/tier4/driving_log_replayer/pull/252) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `eagleye`                | test                     | add eagleye unit test                       | [#253](https://github.com/tier4/driving_log_replayer/pull/253) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `all`                    | log                      | change TopicResult to EvaluationItem        | [#254](https://github.com/tier4/driving_log_replayer/pull/254) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `all`                    | log, test                | add frame_success                           | [#256](https://github.com/tier4/driving_log_replayer/pull/256) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `all`                    | test                     | update variable name                        | [#257](https://github.com/tier4/driving_log_replayer/pull/257) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `ar_tag_based_localizer` | `ar_tag_based_localizer` | add `ar_tag_based_localizer` evaluation     | [#258](https://github.com/tier4/driving_log_replayer/pull/258) | -        | [SakodaShintaro](https://github.com/SakodaShintaro) |
+| `all`                    | documentation            | update document                             | [#259](https://github.com/tier4/driving_log_replayer/pull/259) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+
 ## Version 1.6.1
 
 Bug fix
