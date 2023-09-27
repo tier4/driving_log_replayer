@@ -22,12 +22,12 @@ from driving_log_replayer.ar_tag_based_localizer import Availability
 def test_availability_success() -> None:
     status = DiagnosticStatus(
         name=Availability.TARGET_DIAG_NAME,
-        values=[KeyValue(key="Availability", value="OK")],
+        values=[KeyValue(key="Number of Detected AR Tags", value="1")],
     )
     evaluation_item = Availability()
     frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "ArTagBasedLocalizer Availability (Success): OK"
+    assert evaluation_item.summary == "ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
     assert frame_dict == {
         "Ego": {},
         "Availability": {
@@ -40,12 +40,12 @@ def test_availability_success() -> None:
 def test_availability_fail() -> None:
     status = DiagnosticStatus(
         name=Availability.TARGET_DIAG_NAME,
-        values=[KeyValue(key="Availability", value="NG")],
+        values=[KeyValue(key="Number of Detected AR Tags", value="-1")],
     )
     evaluation_item = Availability()
     frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "ArTagBasedLocalizer Availability (Fail): NG"
+    assert evaluation_item.summary == "ArTagBasedLocalizer Availability (Fail): Illegal value"
     assert frame_dict == {
         "Ego": {},
         "Availability": {
@@ -63,7 +63,7 @@ def test_availability_fail_key_not_found() -> None:
     evaluation_item = Availability()
     frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "ArTagBasedLocalizer Availability (Fail): Availability Key Not Found"
+    assert evaluation_item.summary == "ArTagBasedLocalizer Availability (Fail): Illegal value"
     assert frame_dict == {
         "Ego": {},
         "Availability": {
@@ -83,6 +83,6 @@ def test_availability_has_no_target_diag() -> None:
         "Ego": {},
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Warn"},
-            "Info": {"Reason": "diagnostics does not contain ar_tag_based_localizer_status"},
+            "Info": {"Reason": "diagnostics does not contain ar_tag_based_localizer"},
         },
     }

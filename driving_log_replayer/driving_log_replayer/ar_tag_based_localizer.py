@@ -24,7 +24,7 @@ from driving_log_replayer.result import ResultBase
 @dataclass
 class Availability(EvaluationItem):
     name: ClassVar[str] = "ArTagBasedLocalizer Availability"
-    TARGET_DIAG_NAME: ClassVar[str] = "ar_tag_based_localizer_monitor: ar_tag_based_localizer_status"
+    TARGET_DIAG_NAME: ClassVar[str] = "localization: ar_tag_based_localizer"
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
         include_target_status = False
@@ -33,9 +33,16 @@ class Availability(EvaluationItem):
                 continue
             include_target_status = True
             values = {value.key: value.value for value in diag_status.values}
-            status_str = values.get("Availability", "Availability Key Not Found")  # avoid KeyError
-            self.success = status_str == "OK"
-            self.summary = f"{self.name} ({self.success_str()}): {status_str}"
+            detection_count = int(values.get("Number of Detected AR Tags", "-1"))
+            print(f"Number of Detected AR Tags: {detection_count}")
+
+            # If the number detected is greater than or equal to 0, it means that the system has worked properly.
+            if detection_count >= 0:
+                self.success = True
+                self.summary = f"{self.name} ({self.success_str()}): Detected {detection_count} AR tags"
+            else:
+                self.success = False
+                self.summary = f"{self.name} ({self.success_str()}): Illegal value"
             break
         if include_target_status:
             return {
@@ -49,7 +56,7 @@ class Availability(EvaluationItem):
             "Ego": {},
             "Availability": {
                 "Result": {"Total": self.success_str(), "Frame": "Warn"},
-                "Info": {"Reason": "diagnostics does not contain ar_tag_based_localizer_status"},
+                "Info": {"Reason": "diagnostics does not contain ar_tag_based_localizer"},
             },
         }
 
