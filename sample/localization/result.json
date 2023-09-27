@@ -6928,7 +6928,7 @@
           "Frame": "Success"
         },
         "Info": {
-          "LateralDistance": 2.776543114858549e-06,
+          "LateralDistance": 2.776543114858549e-6,
           "HorizontalDistance": 0.005390385151701888,
           "ExeTimeMs": 2.186000108718872,
           "IterationNum": 2

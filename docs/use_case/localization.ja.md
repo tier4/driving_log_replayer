@@ -183,7 +183,7 @@ Result は収束性、信頼度、可用性のすべてをパスしていれば 
 ```json
 {
   "Convergence": {
-    "Result": {"Total": "Success or Fail", "Frame": "Success or Fail"},
+    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
     "Info": {
       "LateralDistance": "ndtとekfのposeの横方距離",
       "HorizontalDistance": "ndtとekfの水平距離。参考値",
@@ -199,7 +199,7 @@ Result は収束性、信頼度、可用性のすべてをパスしていれば 
 ```json
 {
   "Reliability": {
-    "Result": {"Total": "Success or Fail", "Frame": "Success or Fail"},
+    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
     "Info": {
       "Value": {
         "stamp": {
@@ -225,8 +225,8 @@ Result は収束性、信頼度、可用性のすべてをパスしていれば 
 ```json
 {
   "Availability": {
-   "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
-   "Info": {}
+    "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
+    "Info": {}
   }
 }
 ```

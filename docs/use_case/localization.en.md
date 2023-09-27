@@ -224,8 +224,8 @@ Availability Result example:
 ```json
 {
   "Availability": {
-   "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
-   "Info": {}
+    "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
+    "Info": {}
   }
 }
 ```
