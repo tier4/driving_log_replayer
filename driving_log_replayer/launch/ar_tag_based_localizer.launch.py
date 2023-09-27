@@ -32,10 +32,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         [
             "/clock",
             "/tf",
-            "/localization/pose_estimator/pose",
             "/localization/kinematic_state",
-            "/localization/util/downsample/pointcloud",
-            "/localization/pose_estimator/points_aligned",
             "/diagnostics",
         ],
     )
