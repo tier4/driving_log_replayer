@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.2 (2023-09-27)
+------------------
 * feat: add ar_tag_based_localizer evaluation (`#258 <https://github.com/tier4/driving_log_replayer/issues/258>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
 * feat: eagleye test (`#253 <https://github.com/tier4/driving_log_replayer/issues/253>`_)
