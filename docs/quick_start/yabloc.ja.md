@@ -11,7 +11,7 @@
 
 2. サンプルのデータセットをコピー
 
-   [Google Drive Link](https://drive.google.com/file/d/1UqULyfidxcA5JidfHWAsSqNy8itampAX/view)からRosbagをダウンロードし、下記のコマンドを実行してください。
+   [Google Drive Link](https://drive.google.com/file/d/1zKTGRH4lD-wptpOdNCgpiPfGRDP0XrUm/view)からRosbagをダウンロードし、下記のコマンドを実行してください。
 
    ```bash
    unzstd yabloc_autoware_test_made_in_awsim_0.db3.zst
