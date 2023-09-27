@@ -17,123 +17,41 @@
 
 from dataclasses import field
 import re
+from typing import ClassVar
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
+from diagnostic_msgs.msg import KeyValue
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 
-REGEX_VISIBILITY_DIAG_NAME = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
-BLOCKAGE_DIAG_BASE_NAME = (
-    "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar"
-)
-REGEX_BLOCKAGE_DIAG_NAME = BLOCKAGE_DIAG_BASE_NAME + ".*"
-
 
 def get_diag_value(diag_status: DiagnosticStatus, key_name: str) -> str:
+    key_value: KeyValue
     for key_value in diag_status.values:
         if key_value.key == key_name:
             return key_value.value
     return ""
 
 
-def trim_lidar_name(diag_name: str) -> str:
-    remove_prefix = diag_name.replace(f"{BLOCKAGE_DIAG_BASE_NAME} ", "")
-    return remove_prefix.replace(": blockage_validation", "")
-
-
 class Visibility(EvaluationItem):
     success = True
+    REGEX_VISIBILITY_DIAG_NAME: ClassVar[
+        str
+    ] = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
 
-
-class Blockage(EvaluationItem):
-    success = True
-    passed_sensor = field(default_factory=dict)
-    success_sensor = field(default_factory=dict)
-
-    def __post_init__(self) -> None:
-        for k in self.condition:
-            self.passed_sensor[k] = 0
-            self.success_sensor[k] = True
-
-
-class PerformanceDiagResult(ResultBase):
-    VALID_VALUE_THRESHOLD = 0.0
-
-    def __init__(self, condition: dict) -> None:
-        super().__init__()
-        self.__visibility = Visibility(condition=condition.get("LiDAR", {}).get("Visibility"))
-        self.__blockage = Blockage(condition=condition.get("LiDAR", {}).get("Blockage"))
-
-    def update(self) -> None:
-        if self.__visibility_result:
-            visibility_summary = f"Visibility (Passed): {self.__visibility_msg}"
-        else:
-            visibility_summary = f"Visibility (Failed): {self.__visibility_msg}"
-        if self.__blockage_result:
-            blockage_summary = f"Blockage (Passed): {self.__blockage_msg}"
-        else:
-            blockage_summary = f"Blockage (Failed): {self.__blockage_msg}"
-        summary_str = f"{visibility_summary}, {blockage_summary}"
-        if self.__visibility_result and self.__blockage_result:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = True
-            self._summary = f"Failed: {summary_str}"
-
-    def summarize_diag_agg(
-        self,
-        msg: DiagnosticArray,
-    ) -> tuple[
-        list[dict],
-        Float64 | None,
-        Byte | None,
-        list[dict],
-        dict[str, Float64 | None],
-        dict[str, Float64 | None],
-    ]:
-        visibility_results = []
-        msg_visibility_value = None
-        msg_visibility_level = None
-        blockage_results = []
-        msg_blockage_sky_ratios = {}
-        msg_blockage_ground_ratios = {}
-        msg_blockage_levels = {}
-        self.__visibility_total += 1
-        self.__blockage_total += 1
+    def set_frame(self, msg: DiagnosticArray) -> tuple[dict, Float64 | None, Byte | None]:
         for diag_status in msg.status:
-            if re.fullmatch(REGEX_VISIBILITY_DIAG_NAME, diag_status.name):
+            if re.fullmatch(Visibility.REGEX_VISIBILITY_DIAG_NAME, diag_status.name):
                 (
                     visibility_result,
                     msg_visibility_value,
                     msg_visibility_level,
                 ) = self.summarize_visibility(diag_status)
                 visibility_results.append(visibility_result)
-            elif re.fullmatch(REGEX_BLOCKAGE_DIAG_NAME, diag_status.name):
-                (
-                    blockage_result,
-                    msg_blockage_sky_ratio,
-                    msg_blockage_ground_ratio,
-                    msg_blockage_level,
-                ) = self.summarize_blockage(diag_status)
-                blockage_results.append(blockage_result)
-                lidar_name = trim_lidar_name(diag_status.name)
-                msg_blockage_sky_ratios[lidar_name] = msg_blockage_sky_ratio
-                msg_blockage_ground_ratios[lidar_name] = msg_blockage_ground_ratio
-                msg_blockage_levels[lidar_name] = msg_blockage_level
-        return (
-            visibility_results,
-            msg_visibility_value,
-            msg_visibility_level,
-            blockage_results,
-            msg_blockage_sky_ratios,
-            msg_blockage_ground_ratios,
-            msg_blockage_levels,
-        )
 
     def summarize_visibility(
         self,
@@ -184,13 +102,34 @@ class PerformanceDiagResult(ResultBase):
                 msg_level.data = diag_level
         return {"Result": result, "Info": info}, msg_value, msg_level
 
+
+class Blockage(EvaluationItem):
+    success = True
+    passed_sensors = field(default_factory=dict)
+    success_sensors = field(default_factory=dict)
+    BLOCKAGE_DIAG_BASE_NAME: ClassVar[
+        str
+    ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar"
+    REGEX_BLOCKAGE_DIAG_NAME: ClassVar[str] = BLOCKAGE_DIAG_BASE_NAME + ".*"
+
+    def __post_init__(self) -> None:
+        for k, v in self.condition.items():
+            if v.get("ScenarioType") is not None:
+                self.passed_sensors[k] = 0
+                self.success_sensors[k] = True
+
+    @classmethod
+    def trim_lidar_name(cls, diag_name: str) -> str:
+        remove_prefix = diag_name.replace(f"{Blockage.BLOCKAGE_DIAG_BASE_NAME} ", "")
+        return remove_prefix.replace(": blockage_validation", "")
+
     def summarize_blockage(
         self,
         diag_status: DiagnosticStatus,
     ) -> tuple[dict, Float64 | None, Float64 | None, Byte | None]:
         result = "Skipped"
         info = []
-        lidar_name = trim_lidar_name(diag_status.name)
+        lidar_name = Blockage.trim_lidar_name(diag_status.name)
         info_dict = {"Name": lidar_name}
         scenario_type = self.__blockage_condition[lidar_name]["ScenarioType"]
         msg_sky_ratio = None
@@ -257,6 +196,58 @@ class PerformanceDiagResult(ResultBase):
             if not v:
                 self.__blockage_result = False
 
+
+class PerformanceDiagResult(ResultBase):
+    VALID_VALUE_THRESHOLD = 0.0
+
+    def __init__(self, condition: dict) -> None:
+        super().__init__()
+        self.__visibility = Visibility(condition=condition.get("LiDAR", {}).get("Visibility"))
+        self.__blockage = Blockage(condition=condition.get("LiDAR", {}).get("Blockage"))
+
+    def update(self) -> None:
+        summary_str = f"{self.__visibility.summary}, {self.__blockage.summary}"
+        if self.__visibility.success and self.__blockage.success:
+            self._success = True
+            self._summary = f"Passed: {summary_str}"
+        else:
+            self._success = True
+            self._summary = f"Failed: {summary_str}"
+
+    def summarize_diag_agg(
+        self,
+        msg: DiagnosticArray,
+    ) -> tuple[
+        list[dict],
+        Float64 | None,
+        Byte | None,
+        list[dict],
+        dict[str, Float64 | None],
+        dict[str, Float64 | None],
+    ]:
+        self.__visibility_total += 1
+        self.__blockage_total += 1
+        for diag_status in msg.status:
+            if re.fullmatch(REGEX_VISIBILITY_DIAG_NAME, diag_status.name):
+                (
+                    visibility_result,
+                    msg_visibility_value,
+                    msg_visibility_level,
+                ) = self.summarize_visibility(diag_status)
+                visibility_results.append(visibility_result)
+            elif re.fullmatch(REGEX_BLOCKAGE_DIAG_NAME, diag_status.name):
+                (
+                    blockage_result,
+                    msg_blockage_sky_ratio,
+                    msg_blockage_ground_ratio,
+                    msg_blockage_level,
+                ) = self.summarize_blockage(diag_status)
+                blockage_results.append(blockage_result)
+                lidar_name = trim_lidar_name(diag_status.name)
+                msg_blockage_sky_ratios[lidar_name] = msg_blockage_sky_ratio
+                msg_blockage_ground_ratios[lidar_name] = msg_blockage_ground_ratio
+                msg_blockage_levels[lidar_name] = msg_blockage_level
+
     def set_frame(
         self,
         msg: DiagnosticArray,
@@ -273,13 +264,13 @@ class PerformanceDiagResult(ResultBase):
             out_frame["Visibility"],
             msg_visibility_value,
             msg_visibility_level,
+        ) = self.__visibility.set_frame(msg)
+        (
             out_frame["Blockage"],
             msg_blockage_sky_ratios,
             msg_blockage_ground_ratios,
             msg_blockage_levels,
-        ) = self.summarize_diag_agg(msg)
-        # blockageは全てのlidarの結果が出揃ったところで判定
-        self.update_blockage()
+        ) = self.__blockage.set_frame(msg)
         self._frame = out_frame
         self.update()
         return (
