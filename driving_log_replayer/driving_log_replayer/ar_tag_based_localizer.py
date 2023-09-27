@@ -39,7 +39,9 @@ class Availability(EvaluationItem):
             # If the number detected is greater than or equal to 0, it means that the system has worked properly.
             if detection_count >= 0:
                 self.success = True
-                self.summary = f"{self.name} ({self.success_str()}): Detected {detection_count} AR tags"
+                self.summary = (
+                    f"{self.name} ({self.success_str()}): Detected {detection_count} AR tags"
+                )
             else:
                 self.success = False
                 self.summary = f"{self.name} ({self.success_str()}): Illegal value"

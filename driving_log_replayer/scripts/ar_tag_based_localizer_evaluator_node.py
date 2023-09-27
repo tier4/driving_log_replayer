@@ -17,9 +17,9 @@
 
 from diagnostic_msgs.msg import DiagnosticArray
 
+from driving_log_replayer.ar_tag_based_localizer import ArTagBasedLocalizerResult
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
-from driving_log_replayer.ar_tag_based_localizer import ArTagBasedLocalizerResult
 
 
 class ArTagBasedLocalizerEvaluator(DLREvaluator):

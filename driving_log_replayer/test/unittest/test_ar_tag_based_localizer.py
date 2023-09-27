@@ -27,7 +27,9 @@ def test_availability_success() -> None:
     evaluation_item = Availability()
     frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    assert (
+        evaluation_item.summary == "ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    )
     assert frame_dict == {
         "Ego": {},
         "Availability": {
