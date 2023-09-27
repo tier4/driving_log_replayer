@@ -22,13 +22,13 @@
 3. 入力の bag ファイルのフィルタとスライス処理
 
 "/clock"トピックは削除する必要がある。
-また、デフォルトで準備されているrosbagファイルはAWSIMで生成したデータであり、タイムスタンプはStart:68.666, End:199.516の、約130秒のデータとなっている。
+また、デフォルトで準備されているrosbagファイルはAWSIMで生成したデータであり、タイムスタンプはStart:68.666, End:199.516の、約130秒のデータとなっている。長いので126.5秒の3つ目のARタグが映るところで切る。
 
    ```bash
    source ~/autoware/install/setup.bash
    cd ~/driving_log_replayer_data/ar_tag_based_localizer/sample
    ros2 bag filter input_bag -o filtered_bag -x "/clock"
-   ros2 bag slice filtered_bag -o sliced_bag -e 128
+   ros2 bag slice filtered_bag -o sliced_bag -e 126.5
    rm -rf input_bag
    rm -rf filtered_bag
    mv sliced_bag input_bag
