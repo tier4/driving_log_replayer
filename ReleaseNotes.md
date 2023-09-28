@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.6.4
+
+Document update
+
+| Module | Feature       | Brief summary                             | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------------- | ----------------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | documentation | fix mkdocs github actions library install | [#263](https://github.com/tier4/driving_log_replayer/pull/263) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.6.3
 
 Document update
