@@ -101,11 +101,9 @@ Availability Result example:
 
 ```json
 {
-  "Frame": {
-    "Availability": {
-      "Result": "Success or Fail",
-      "Info": []
-    }
+  "Availability": {
+    "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
+    "Info": {}
   }
 }
 ```

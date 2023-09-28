@@ -1,20 +1,20 @@
-# Evaluate Eagleye estimation
+# Evaluate ArTagBasedLocalizer estimation
 
-Evaluate whether Eagleye, a GNSS-IMU based map-less localization, is working stably.
+Evaluate whether Autoware's ArTagBasedLocalizer, a camera based pcd-less localization, is working stably.
 
 ## Evaluation method
 
-The localization's evaluation is executed by launching the `eagleye.launch.py` file.
+The localization's evaluation is executed by launching the `ar_tag_based_localizer.launch.py` file.
 Launching the file executes the following steps:
 
-1. Execute launch of evaluation node (`eagleye_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
+1. Execute launch of evaluation node (`ar_tag_based_localizer_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
 2. Autoware receives sensor data input from prepared rosbag and performs localization estimation
 3. Evaluation node subscribes to Autoware's output topics, determines whether the outputs meet the criteria, and outputs the results
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
-### Availability of Eagleye
+### Availability of ArTagBasedLocalizer
 
-We use the output from `eagleye_monitor` via `/diagnostics` to evaluate whether Eagleye is available.
+We use the output from `ar_tag_based_localizer` via `/diagnostics` to evaluate whether ArTagBasedLocalizer is available.
 
 - `/diagnostics`
 
@@ -22,13 +22,14 @@ We use the output from `eagleye_monitor` via `/diagnostics` to evaluate whether 
 
 The results are calculated for each subscription. The format and available states are described below.
 
-### Eagleye Availability Normal
+### ArTagBasedLocalizer Availability Normal
 
-Information related to the monitored topic is extracted from `/diagnostics` which Component State Monitor outputs. If the most recent information is "OK", it is considered as pass.
+Information related to the monitored topic is extracted from `/diagnostics` which Component State Monitor outputs.
+If the most recent information of "Number of Detected AR Tags" is greater than or equal to 0, it is considered as pass.
 
-### Eagleye Availability Error
+### ArTagBasedLocalizer Availability Error
 
-The Eagleye availability evaluation output is marked as `Error` when conditions for `Eagleye Availability Normal` are not met.
+The ArTagBasedLocalizer availability evaluation output is marked as `Error` when conditions for `ArTagBasedLocalizer Availability Normal` are not met.
 
 ## Topic name and data type used by evaluation node
 
@@ -67,12 +68,12 @@ State the information required to run the simulation.
 
 The following example shows the topic list available in evaluation input rosbag.
 
-| Topic name                      | Data type                                     |
-| ------------------------------- | --------------------------------------------- |
-| /sensing/gnss/ublox/nav_sat_fix | sensor_msgs/msg/NavSatFix                     |
-| /sensing/gnss/ublox/navpvt      | ublox_msgs/msg/NavPVT                         |
-| /sensing/imu/tamagawa/imu_raw   | sensor_msgs/msg/Imu                           |
-| /vehicle/status/velocity_status | autoware_auto_vehicle_msgs/msg/VelocityReport |
+| Topic name                                         | Data type                                     |
+| -------------------------------------------------- | --------------------------------------------- |
+| /sensing/camera/traffic_light/camera_info          | sensor_msgs/msg/CameraInfo                    |
+| /sensing/camera/traffic_light/image_raw/compressed | sensor_msgs/msg/CompressedImage               |
+| /sensing/imu/tamagawa/imu_raw                      | sensor_msgs/msg/Imu                           |
+| /vehicle/status/velocity_status                    | autoware_auto_vehicle_msgs/msg/VelocityReport |
 
 ### Topics that must NOT be included in the input rosbag
 
@@ -88,11 +89,11 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/eagleye/scenario.yaml).
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/ar_tag_based_localizer/scenario.yaml).
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/eagleye/result.json).
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/ar_tag_based_localizer/result.json).
 
 Examples of each evaluation are described below.
 **NOTE: common part of the result file format, which has already been explained, is omitted.**

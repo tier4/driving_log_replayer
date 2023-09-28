@@ -10,7 +10,7 @@
    ```
 
 2. Download bag file
-   Download a rosbag from [Google Drive Link](https://drive.google.com/file/d/1UqULyfidxcA5JidfHWAsSqNy8itampAX/view).
+   Download a rosbag from [Google Drive Link](https://drive.google.com/file/d/1zKTGRH4lD-wptpOdNCgpiPfGRDP0XrUm/view).
    After that, execute following commands:
 
    ```bash
