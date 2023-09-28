@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix(yabloc): fix rosbag url (`#261 <https://github.com/tier4/driving_log_replayer/issues/261>`_)
+* Contributors: kminoda
+
 1.6.2 (2023-09-27)
 ------------------
 * feat: add ar_tag_based_localizer evaluation (`#258 <https://github.com/tier4/driving_log_replayer/issues/258>`_)

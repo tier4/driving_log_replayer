@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.6.3
+
+Document update
+
+| Module   | Feature       | Brief summary         | Pull request                                                   | Jira | Contributor                           |
+| -------- | ------------- | --------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `yabloc` | documentation | fix yabloc rosbag url | [#261](https://github.com/tier4/driving_log_replayer/pull/261) | -    | [kminoda](https://github.com/kminoda) |
+
 ## Version 1.6.2
 
 Major change
