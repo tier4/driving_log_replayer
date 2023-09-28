@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.4 (2023-09-28)
+------------------
 * fix: mkdocs github actions library install
 * Contributors: Hayato Mizushima
 
