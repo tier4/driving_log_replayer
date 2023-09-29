@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.6.5
+
+Minor Tweak
+
+| Module | Feature              | Brief summary                                                          | Pull request                                                   | Jira | Contributor                                   |
+| ------ | -------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | Library installation | Install mkdocs library with poetry group docs                          | [#265](https://github.com/tier4/driving_log_replayer/pull/265) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | Library installation | Automatically install specific versions of libraries with colcon build | [#266](https://github.com/tier4/driving_log_replayer/pull/266) | -    | [ktro2828](https://github.com/ktro2828)       |
+
 ## Version 1.6.4
 
 Document update

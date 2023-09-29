@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: poetry add group docs (`#265 <https://github.com/tier4/driving_log_replayer/issues/265>`_)
+* build: add requirements and install operation to overwrite python libraries (`#266 <https://github.com/tier4/driving_log_replayer/issues/266>`_)
+* Contributors: Kotaro Uetake
+
 1.6.4 (2023-09-28)
 ------------------
 * fix: mkdocs github actions library install
