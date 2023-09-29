@@ -5,6 +5,9 @@ find_package(ament_cmake_python REQUIRED)
 find_package(autoware_cmake REQUIRED)
 autoware_package()
 
+set(ROS_REQUIREMENTS "${CMAKE_CURRENT_SOURCE_DIR}/../requirements.txt")
+execute_process(COMMAND bash -c "python3 -m pip install -r ${ROS_REQUIREMENTS}")
+
 ament_auto_add_library(obstacle_segmentation_evaluator_component SHARED
   src/obstacle_segmentation_evaluator_component.cpp
 )
