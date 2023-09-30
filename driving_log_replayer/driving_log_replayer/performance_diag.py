@@ -187,7 +187,7 @@ class Blockage(EvaluationItem):
                     self.passed_sensors[lidar_name] != self.total_sensors[lidar_name]
                 )
             rtn_dict[lidar_name] = {
-                "Result": {"Total": self.lidar_success_sensors(lidar_name), "Frame": frame_success},
+                "Result": {"Total": self.lidar_success_str(lidar_name), "Frame": frame_success},
                 "Info": {
                     "Level": int.from_bytes(
                         diag_level,
