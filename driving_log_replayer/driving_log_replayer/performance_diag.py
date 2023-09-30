@@ -27,6 +27,8 @@ from example_interfaces.msg import Float64
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 
+INVALID_FLOAT_VALUE = -99.9
+
 
 def get_diag_value(diag_status: DiagnosticStatus, key_name: str) -> str:
     key_value: KeyValue
@@ -34,6 +36,13 @@ def get_diag_value(diag_status: DiagnosticStatus, key_name: str) -> str:
         if key_value.key == key_name:
             return key_value.value
     return ""
+
+
+def parse_str_float(str_float: str) -> float:
+    try:
+        return float(str_float)
+    except ValueError:
+        return INVALID_FLOAT_VALUE
 
 
 @dataclass
@@ -78,7 +87,7 @@ class Visibility(EvaluationItem):
             self.summary = f"{self.name} ({self.success_str()}: {self.passed} / {self.total})"
             break
         if include_target_status:
-            float_value = float(visibility_value)
+            float_value = parse_str_float(visibility_value)
             valid_value = float_value >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
             return (
                 {
@@ -189,8 +198,8 @@ class Blockage(EvaluationItem):
                     "SkyBlockageCount": get_diag_value(diag_status, "sky_blockage_count"),
                 },
             }
-            float_sky_ratio = float(sky_ratio)
-            float_ground_ratio = float(ground_ratio)
+            float_sky_ratio = parse_str_float(sky_ratio)
+            float_ground_ratio = parse_str_float(ground_ratio)
             valid_ratio = (
                 float_sky_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
                 and float_ground_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
