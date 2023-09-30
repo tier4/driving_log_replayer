@@ -189,10 +189,7 @@ class Blockage(EvaluationItem):
             rtn_dict[lidar_name] = {
                 "Result": {"Total": self.sensor_success_str(lidar_name), "Frame": frame_success},
                 "Info": {
-                    "Level": int.from_bytes(
-                        diag_level,
-                        int.from_bytes(diag_level, byteorder="little"),
-                    ),
+                    "Level": int.from_bytes(diag_level, byteorder="little"),
                     "GroundBlockageRatio": ground_ratio,
                     "GroundBlockageCount": get_diag_value(diag_status, "ground_blockage_count"),
                     "SkyBlockageRatio": sky_ratio,
