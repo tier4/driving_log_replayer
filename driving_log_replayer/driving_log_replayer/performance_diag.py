@@ -95,10 +95,10 @@ class Visibility(EvaluationItem):
                     "Result": {"Total": self.success_str(), "Frame": frame_success},
                     "Info": {
                         "Level": int.from_bytes(diag_level, byteorder="little"),
-                        "Value": visibility_value,
+                        "Value": float_value,
                     },
                 },
-                Float64(data=float(visibility_value)) if valid_value else None,
+                Float64(data=float_value) if valid_value else None,
                 Byte(data=diag_level) if valid_value else None,
             )
         return (
@@ -186,22 +186,22 @@ class Blockage(EvaluationItem):
                 self.success_sensors[lidar_name] = (
                     self.passed_sensors[lidar_name] != self.total_sensors[lidar_name]
                 )
-            rtn_dict[lidar_name] = {
-                "Result": {"Total": self.sensor_success_str(lidar_name), "Frame": frame_success},
-                "Info": {
-                    "Level": int.from_bytes(diag_level, byteorder="little"),
-                    "GroundBlockageRatio": ground_ratio,
-                    "GroundBlockageCount": get_diag_value(diag_status, "ground_blockage_count"),
-                    "SkyBlockageRatio": sky_ratio,
-                    "SkyBlockageCount": get_diag_value(diag_status, "sky_blockage_count"),
-                },
-            }
             float_sky_ratio = parse_str_float(sky_ratio)
             float_ground_ratio = parse_str_float(ground_ratio)
             valid_ratio = (
                 float_sky_ratio >= Blockage.VALID_VALUE_THRESHOLD
                 and float_ground_ratio >= Blockage.VALID_VALUE_THRESHOLD
             )
+            rtn_dict[lidar_name] = {
+                "Result": {"Total": self.sensor_success_str(lidar_name), "Frame": frame_success},
+                "Info": {
+                    "Level": int.from_bytes(diag_level, byteorder="little"),
+                    "GroundBlockageRatio": float_sky_ratio,
+                    "GroundBlockageCount": get_diag_value(diag_status, "ground_blockage_count"),
+                    "SkyBlockageRatio": float_ground_ratio,
+                    "SkyBlockageCount": get_diag_value(diag_status, "sky_blockage_count"),
+                },
+            }
             rtn_sky_ratio[lidar_name] = Float64(data=float_sky_ratio) if valid_ratio else None
             rtn_ground_ratio[lidar_name] = Float64(data=float_ground_ratio) if valid_ratio else None
             rtn_level[lidar_name] = Byte(data=diag_level) if valid_ratio else None
