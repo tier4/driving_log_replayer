@@ -197,9 +197,11 @@ class Blockage(EvaluationItem):
                 "Info": {
                     "Level": int.from_bytes(diag_level, byteorder="little"),
                     "GroundBlockageRatio": float_sky_ratio,
-                    "GroundBlockageCount": get_diag_value(diag_status, "ground_blockage_count"),
+                    "GroundBlockageCount": int(
+                        get_diag_value(diag_status, "ground_blockage_count"),
+                    ),
                     "SkyBlockageRatio": float_ground_ratio,
-                    "SkyBlockageCount": get_diag_value(diag_status, "sky_blockage_count"),
+                    "SkyBlockageCount": int(get_diag_value(diag_status, "sky_blockage_count")),
                 },
             }
             rtn_sky_ratio[lidar_name] = Float64(data=float_sky_ratio) if valid_ratio else None
