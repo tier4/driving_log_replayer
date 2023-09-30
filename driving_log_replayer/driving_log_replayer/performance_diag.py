@@ -85,7 +85,7 @@ class Visibility(EvaluationItem):
                     frame_success = "Success"
                     self.passed += 1
                 self.success = self.passed == self.total
-            self.summary = f"{self.name} ({self.success_str()}: {self.passed} / {self.total})"
+            self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total}"
             break
         if include_target_status:
             float_value = parse_str_float(visibility_value)
@@ -227,7 +227,8 @@ class Blockage(EvaluationItem):
             if not v:
                 tmp_success = False
         self.success = tmp_success
-        self.summary = tmp_summary
+        tmp_success_str = "Success" if self.tmp_success else "Fail"
+        self.summary = f"Blockage ({tmp_success_str}): {tmp_summary}"
 
 
 class PerformanceDiagResult(ResultBase):
