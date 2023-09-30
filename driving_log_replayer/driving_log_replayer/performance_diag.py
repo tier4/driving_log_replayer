@@ -243,7 +243,7 @@ class PerformanceDiagResult(ResultBase):
             self._success = True
             self._summary = f"Passed: {summary_str}"
         else:
-            self._success = True
+            self._success = False
             self._summary = f"Failed: {summary_str}"
 
     def set_frame(
