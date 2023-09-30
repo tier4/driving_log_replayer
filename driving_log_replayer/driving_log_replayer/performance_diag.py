@@ -132,8 +132,8 @@ class Blockage(EvaluationItem):
                 self.total_sensors[k] = 0
                 self.success_sensors[k] = True
 
-    def lidar_success_str(self, lidar_name: str) -> str:
-        return "Success" if self.success_sensor[lidar_name] else "Fail"
+    def sensor_success_str(self, lidar_name: str) -> str:
+        return "Success" if self.success_sensors[lidar_name] else "Fail"
 
     @classmethod
     def trim_lidar_name(cls, diag_name: str) -> str:
@@ -187,7 +187,7 @@ class Blockage(EvaluationItem):
                     self.passed_sensors[lidar_name] != self.total_sensors[lidar_name]
                 )
             rtn_dict[lidar_name] = {
-                "Result": {"Total": self.lidar_success_str(lidar_name), "Frame": frame_success},
+                "Result": {"Total": self.sensor_success_str(lidar_name), "Frame": frame_success},
                 "Info": {
                     "Level": int.from_bytes(
                         diag_level,
