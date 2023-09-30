@@ -227,7 +227,7 @@ class Blockage(EvaluationItem):
             if not v:
                 tmp_success = False
         self.success = tmp_success
-        tmp_success_str = "Success" if self.tmp_success else "Fail"
+        tmp_success_str = "Success" if tmp_success else "Fail"
         self.summary = f"Blockage ({tmp_success_str}): {tmp_summary}"
 
 
