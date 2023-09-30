@@ -93,7 +93,7 @@ class Visibility(EvaluationItem):
             )
         return (
             {
-                "Result": {"Total": self.success_str(), "Frame": "Fail"},
+                "Result": {"Total": self.success_str(), "Frame": "Warn"},
                 "Info": {"Reason": "diagnostics does not contain visibility"},
             },
             None,
@@ -130,29 +130,31 @@ class Blockage(EvaluationItem):
         remove_prefix = diag_name.replace(f"{Blockage.BLOCKAGE_DIAG_BASE_NAME} ", "")
         return remove_prefix.replace(": blockage_validation", "")
 
-    def set_frame(
-        self,
-        msg: DiagnosticStatus,
-    ) -> tuple[dict, Float64 | None, Float64 | None, Byte | None]:
+    def set_frame(self, msg: DiagnosticStatus) -> tuple[dict, dict, dict, dict]:
         if not self.valid:
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
-                None,
-                None,
+                {},
+                {},
+                {},
             )
         include_target_status = False
         frame_success = "Fail"
         self.total += 1
         rtn_dict = {}
-        rtn_ratio = {}
+        rtn_sky_ratio = {}
+        rtn_ground_ratio = {}
         rtn_level = {}
         diag_status: DiagnosticStatus
         for diag_status in msg.status:
             if not re.fullmatch(Blockage.REGEX_BLOCKAGE_DIAG_NAME, diag_status.name):
                 continue
             lidar_name = Blockage.trim_lidar_name(diag_status.name)
-            frame_success = "Fail"
             scenario_type = self.condition[lidar_name]["ScenarioType"]
+            if scenario_type is None:
+                continue
+            include_target_status = True
+            frame_success = "Fail"
             self.total_sensors[lidar_name] += 1
             ground_ratio = get_diag_value(diag_status, "ground_blockage_ratio")
             sky_ratio = get_diag_value(diag_status, "sky_blockage_ratio")
@@ -193,18 +195,32 @@ class Blockage(EvaluationItem):
                 float_sky_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
                 and float_ground_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
             )
-            rtn_ratio[lidar_name] = Float64(data=float_sky_ratio) if valid_ratio else None
+            rtn_sky_ratio[lidar_name] = Float64(data=float_sky_ratio) if valid_ratio else None
+            rtn_ground_ratio[lidar_name] = Float64(data=float_ground_ratio) if valid_ratio else None
             rtn_level[lidar_name] = Byte(data=diag_level) if valid_ratio else None
-        return rtn_dict, rtn_ratio, rtn_level
+        self.update()
+        if include_target_status:
+            return rtn_dict, rtn_sky_ratio, rtn_ground_ratio, rtn_level
+        return (
+            {
+                "Result": {"Total": self.success_str(), "Frame": "Warn"},
+                "Info": {"Reason": "diagnostics does not contain blockage"},
+            },
+            {},
+            {},
+            {},
+        )
 
-    def update_blockage(self) -> None:
-        self.__blockage_result = True
-        self.__blockage_msg = ""
-        for lidar_name, v in self.__blockage_lidar_result.items():
-            self.__blockage_msg += f"{lidar_name}: {self.__blockage_lidar_success[lidar_name]} / {self.__blockage_total} "
+    def update(self) -> None:
+        tmp_success = True
+        tmp_summary = ""
+        for lidar_name, v in self.success_sensors:
+            tmp_summary += f"{lidar_name}: {self.passed_sensors[lidar_name]} / {self.total_sensors[lidar_name]} "
             # 1個でもFalseが入ってたらlidar試験全体がfalse
             if not v:
-                self.__blockage_result = False
+                tmp_success = False
+        self.success = tmp_success
+        self.summary = tmp_summary
 
 
 class PerformanceDiagResult(ResultBase):
@@ -229,9 +245,9 @@ class PerformanceDiagResult(ResultBase):
     ) -> tuple[
         Float64 | None,
         Byte | None,
-        dict[str, Float64 | None],
-        dict[str, Float64 | None],
-        dict[str, Byte | None],
+        dict[str, Float64],
+        dict[str, Float64],
+        dict[str, Byte],
     ]:
         out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
         (
