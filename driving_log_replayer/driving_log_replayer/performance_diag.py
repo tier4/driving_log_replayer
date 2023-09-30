@@ -52,6 +52,7 @@ class Visibility(EvaluationItem):
     REGEX_VISIBILITY_DIAG_NAME: ClassVar[
         str
     ] = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
+    VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
         self.scenario_type: str | None = self.condition.get("ScenarioType")
@@ -88,7 +89,7 @@ class Visibility(EvaluationItem):
             break
         if include_target_status:
             float_value = parse_str_float(visibility_value)
-            valid_value = float_value >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
+            valid_value = float_value >= Visibility.VALID_VALUE_THRESHOLD
             return (
                 {
                     "Result": {"Total": self.success_str(), "Frame": frame_success},
@@ -120,7 +121,7 @@ class Blockage(EvaluationItem):
         str
     ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar"
     REGEX_BLOCKAGE_DIAG_NAME: ClassVar[str] = BLOCKAGE_DIAG_BASE_NAME + ".*"
-    VALID_VALUE_THRESHOLD: float = 0.0
+    VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
         self.valid = False
@@ -201,8 +202,8 @@ class Blockage(EvaluationItem):
             float_sky_ratio = parse_str_float(sky_ratio)
             float_ground_ratio = parse_str_float(ground_ratio)
             valid_ratio = (
-                float_sky_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
-                and float_ground_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
+                float_sky_ratio >= Blockage.VALID_VALUE_THRESHOLD
+                and float_ground_ratio >= Blockage.VALID_VALUE_THRESHOLD
             )
             rtn_sky_ratio[lidar_name] = Float64(data=float_sky_ratio) if valid_ratio else None
             rtn_ground_ratio[lidar_name] = Float64(data=float_ground_ratio) if valid_ratio else None
