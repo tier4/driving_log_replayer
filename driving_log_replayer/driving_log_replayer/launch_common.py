@@ -14,8 +14,6 @@
 
 import os
 from string import capwords
-from typing import Dict
-from typing import Optional
 
 from ament_index_python.packages import get_package_share_directory
 import launch
@@ -32,7 +30,7 @@ from launch_ros.descriptions import ComposableNode
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
 
-def get_driving_log_replayer_common_argument():
+def get_driving_log_replayer_common_argument() -> list:
     """
     Set and return launch argument.
 
@@ -52,9 +50,13 @@ def get_driving_log_replayer_common_argument():
     """
     launch_arguments = []
 
-    def add_launch_arg(name: str, default_value=None, description=""):
+    def add_launch_arg(
+        name: str,
+        default_value: str | None = None,
+        description: str = "",
+    ) -> None:
         launch_arguments.append(
-            DeclareLaunchArgument(name, default_value=default_value, description=description)
+            DeclareLaunchArgument(name, default_value=default_value, description=description),
         )
 
     add_launch_arg(
@@ -63,10 +65,9 @@ def get_driving_log_replayer_common_argument():
         description="Whether to launch autoware or not",
     )
     add_launch_arg("rviz", default_value="true", description="Whether to display rviz or not")
-    add_launch_arg("scenario_path", default_value="/tmp/scenario", description="scenario path")
+    add_launch_arg("scenario_path", description="scenario path")
     add_launch_arg(
         "result_json_path",
-        default_value="/tmp/result_json",
         description="result json save path",
     )
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
@@ -74,7 +75,6 @@ def get_driving_log_replayer_common_argument():
     add_launch_arg("input_bag", description="full path to the input bag")
     add_launch_arg(
         "result_bag_path",
-        default_value="/tmp/result_bag",
         description="result bag save path",
     )
     add_launch_arg("map_path", description="point cloud and lanelet2 map directory path")
@@ -85,13 +85,13 @@ def get_driving_log_replayer_common_argument():
     # additional argument
     add_launch_arg(
         "t4_dataset_path",
-        default_value="/tmp/t4_dataset",
+        default_value="/opt/autoware/t4_dataset",
         description="full path of t4_dataset",
     )
 
     add_launch_arg(
         "result_archive_path",
-        default_value="/tmp/result_archive",
+        default_value="/opt/autoware/result_archive",
         description="additional result file",
     )
 
@@ -99,16 +99,16 @@ def get_driving_log_replayer_common_argument():
 
 
 def get_autoware_launch(
-    sensing="true",
-    localization="true",
-    perception="true",
-    planning="false",
-    control="false",
-    scenario_simulation="false",
-    perception_mode="lidar",
-    pose_source="ndt",
-    twist_source="gyro_odom",
-):
+    sensing: str = "true",
+    localization: str = "true",
+    perception: str = "true",
+    planning: str = "false",
+    control: str = "false",
+    scenario_simulation: str = "false",
+    perception_mode: str = "lidar",
+    pose_source: str = "ndt",
+    twist_source: str = "gyro_odom",
+) -> launch.actions.IncludeLaunchDescription:
     # autoware launch
     autoware_launch_file = os.path.join(
         get_package_share_directory("autoware_launch"),
@@ -138,7 +138,7 @@ def get_autoware_launch(
     )
 
 
-def get_map_height_fitter(launch_service="true"):
+def get_map_height_fitter(launch_service: str = "true") -> launch.actions.IncludeLaunchDescription:
     # map_height_fitter launch
     fitter_launch_file = os.path.join(
         get_package_share_directory("map_height_fitter"),
@@ -151,9 +151,11 @@ def get_map_height_fitter(launch_service="true"):
     )
 
 
-def get_rviz(rviz_config_name: str):
+def get_rviz(rviz_config_name: str) -> Node:
     rviz_config_dir = os.path.join(
-        get_package_share_directory("driving_log_replayer"), "config", rviz_config_name
+        get_package_share_directory("driving_log_replayer"),
+        "config",
+        rviz_config_name,
     )
     return Node(
         package="rviz2",
@@ -168,8 +170,8 @@ def get_rviz(rviz_config_name: str):
 
 def get_evaluator_node(
     usecase_name: str,
-    addition_parameter: Optional[Dict] = None,
-):
+    addition_parameter: dict | None = None,
+) -> Node:
     params = {
         "use_sim_time": True,
         "scenario_path": LaunchConfiguration("scenario_path"),
@@ -193,7 +195,7 @@ def get_evaluator_node(
     )
 
 
-def get_recorder(record_config_name: str, record_topics: list):
+def get_recorder(record_config_name: str, record_topics: list) -> ExecuteProcess:
     record_cmd = [
         "ros2",
         "bag",
@@ -211,7 +213,7 @@ def get_recorder(record_config_name: str, record_topics: list):
     return ExecuteProcess(cmd=record_cmd)
 
 
-def get_regex_recorder(record_config_name: str, allowlist: str):
+def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
     record_cmd = [
         "ros2",
         "bag",
@@ -230,7 +232,7 @@ def get_regex_recorder(record_config_name: str, allowlist: str):
     return ExecuteProcess(cmd=record_cmd)
 
 
-def get_player(additional_argument=None):
+def get_player(additional_argument: list | None = None) -> ExecuteProcess:
     play_cmd = [
         "ros2",
         "bag",
@@ -250,7 +252,9 @@ def get_player(additional_argument=None):
     )
 
 
-def get_topic_state_monitor_launch(topic_monitor_config: str):
+def get_topic_state_monitor_launch(
+    topic_monitor_config: str,
+) -> launch.actions.IncludeLaunchDescription:
     # component_state_monitor launch
     component_state_monitor_launch_file = os.path.join(
         get_package_share_directory("component_state_monitor"),
@@ -264,7 +268,7 @@ def get_topic_state_monitor_launch(topic_monitor_config: str):
     )
     return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(
-            component_state_monitor_launch_file
+            component_state_monitor_launch_file,
         ),
         launch_arguments={
             "file": topic_monitor_config_path,
@@ -275,8 +279,8 @@ def get_topic_state_monitor_launch(topic_monitor_config: str):
 
 def get_evaluator_container(
     usecase_name: str,
-    addition_parameter=None,
-):
+    addition_parameter: dict | None = None,
+) -> ComposableNodeContainer:
     params = {
         "use_sim_time": True,
         "scenario_path": LaunchConfiguration("scenario_path"),
@@ -305,19 +309,19 @@ def get_evaluator_container(
     )
 
 
-def add_container_argument(launch_arguments: list):
+def add_container_argument(launch_arguments: list) -> list:
     launch_arguments.append(DeclareLaunchArgument("use_multithread", default_value="true"))
     launch_arguments.append(
         DeclareLaunchArgument(
             "use_intra_process",
             default_value="false",
             description="use ROS 2 component container communication",
-        )
+        ),
     )
     return launch_arguments
 
 
-def get_container_configuration():
+def get_container_configuration() -> tuple[SetLaunchConfiguration, SetLaunchConfiguration]:
     set_container_executable = SetLaunchConfiguration(
         "container_executable",
         "component_container",
@@ -332,6 +336,6 @@ def get_container_configuration():
     return [set_container_executable, set_container_mt_executable]
 
 
-def snake_to_pascal(snake_str: str):
+def snake_to_pascal(snake_str: str) -> str:
     pascal = capwords(snake_str.replace("_", " "))
     return pascal.replace(" ", "")

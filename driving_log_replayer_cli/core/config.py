@@ -1,7 +1,5 @@
 from typing import Any
-from typing import Dict
 from typing import NamedTuple
-from typing import Optional
 from typing import overload
 
 import toml
@@ -14,7 +12,7 @@ class Config(NamedTuple):
     output_directory: str
     autoware_path: str
 
-    def as_dict(self) -> Dict[str, Any]:
+    def as_dict(self) -> dict[str, Any]:
         return self._asdict()
 
 
@@ -28,7 +26,7 @@ def load_config(profile: str, filepath: None = None) -> Config:
     ...
 
 
-def load_config(profile: str, filepath: Optional[str] = None) -> Config:
+def load_config(profile: str, filepath: str | None = None) -> Config:
     if filepath is None:
         filepath = _default_filepath()
 
@@ -44,16 +42,16 @@ def load_config(profile: str, filepath: Optional[str] = None) -> Config:
 
 
 @overload
-def save_config(config: Config, profile: str, filepath: str):
+def save_config(config: Config, profile: str, filepath: str) -> None:
     ...
 
 
 @overload
-def save_config(config: Config, profile: str, filepath: None = None):
+def save_config(config: Config, profile: str, filepath: None = None) -> None:
     ...
 
 
-def save_config(config: Config, profile: str, filepath: Optional[str] = None):
+def save_config(config: Config, profile: str, filepath: str | None = None):
     if filepath is None:
         filepath = _default_filepath()
 
@@ -80,7 +78,7 @@ def remove_config(profile: str, filepath: None = None) -> Config:
     ...
 
 
-def remove_config(profile: str, filepath: Optional[str] = None) -> Config:
+def remove_config(profile: str, filepath: str | None = None) -> Config:
     if filepath is None:
         filepath = _default_filepath()
 
@@ -100,7 +98,7 @@ def remove_config(profile: str, filepath: Optional[str] = None) -> Config:
     return Config(**config)
 
 
-def _load_from_file(filepath: str) -> Dict[str, Dict]:
+def _load_from_file(filepath: str) -> dict[str, dict]:
     from os.path import exists
 
     if not exists(filepath):
@@ -113,7 +111,7 @@ def _load_from_file(filepath: str) -> Dict[str, Dict]:
         return toml.load(fp)
 
 
-def _save_as_file(data: Dict[str, Dict], filepath: str):
+def _save_as_file(data: dict[str, dict], filepath: str) -> None:
     from os import makedirs
     from os.path import dirname
 
@@ -129,7 +127,7 @@ def _save_as_file(data: Dict[str, Dict], filepath: str):
     chmod(filepath, S_IREAD | S_IWRITE)
 
 
-def _default_filepath():
+def _default_filepath() -> str:
     from os.path import expanduser
     from os.path import join
 

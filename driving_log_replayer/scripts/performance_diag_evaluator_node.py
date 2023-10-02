@@ -15,42 +15,17 @@
 # limitations under the License.
 
 
-import os
 import re
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Tuple
-from typing import TYPE_CHECKING
 
-from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
-from geometry_msgs.msg import TransformStamped
-import rclpy
-from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
-from rclpy.clock import Clock
-from rclpy.clock import ClockType
-from rclpy.executors import MultiThreadedExecutor
-from rclpy.node import Node
-from rclpy.time import Duration
-from rclpy.time import Time
 from std_msgs.msg import Header
-from tf2_ros import Buffer
-from tf2_ros import TransformException
-from tf2_ros import TransformListener
-from tier4_localization_msgs.srv import PoseWithCovarianceStamped
-import yaml
 
-from driving_log_replayer.node_common import set_initial_pose
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+from driving_log_replayer.evaluator import DLREvaluator
+from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
-
-if TYPE_CHECKING:
-    from autoware_adapi_v1_msgs.msg import ResponseStatus
 
 REGEX_VISIBILITY_DIAG_NAME = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
 BLOCKAGE_DIAG_BASE_NAME = (
@@ -60,11 +35,10 @@ REGEX_BLOCKAGE_DIAG_NAME = BLOCKAGE_DIAG_BASE_NAME + ".*"
 
 
 def get_diag_value(diag_status: DiagnosticStatus, key_name: str) -> str:
-    diag_value = ""
     for key_value in diag_status.values:
         if key_value.key == key_name:
-            diag_value = key_value.value
-    return diag_value
+            return key_value.value
+    return ""
 
 
 def trim_lidar_name(diag_name: str) -> str:
@@ -73,16 +47,18 @@ def trim_lidar_name(diag_name: str) -> str:
 
 
 class PerformanceDiagResult(ResultBase):
-    def __init__(self, condition: Dict):
+    VALID_VALUE_THRESHOLD = 0.0
+
+    def __init__(self, condition: dict) -> None:
         super().__init__()
         # visibility
-        self.__visibility_condition: Dict = condition["LiDAR"]["Visibility"]
+        self.__visibility_condition: dict = condition["LiDAR"]["Visibility"]
         self.__visibility_total = 0
         self.__visibility_success = 0
         self.__visibility_msg = "NotTested"
         self.__visibility_result = True
         # blockage
-        self.__blockage_condition: Dict = condition["LiDAR"]["Blockage"]
+        self.__blockage_condition: dict = condition["LiDAR"]["Blockage"]
         self.__blockage_total = 0
         self.__blockage_msg = "NotTested"
         self.__blockage_result = True
@@ -92,30 +68,33 @@ class PerformanceDiagResult(ResultBase):
             self.__blockage_lidar_success[k] = 0
             self.__blockage_lidar_result[k] = True
 
-    def update(self):
-        summary_str = f"Visibility: {self.__visibility_msg} Blockage: {self.__blockage_msg}"
+    def update(self) -> None:
+        if self.__visibility_result:
+            visibility_summary = f"Visibility (Passed): {self.__visibility_msg}"
+        else:
+            visibility_summary = f"Visibility (Failed): {self.__visibility_msg}"
+        if self.__blockage_result:
+            blockage_summary = f"Blockage (Passed): {self.__blockage_msg}"
+        else:
+            blockage_summary = f"Blockage (Failed): {self.__blockage_msg}"
+        summary_str = f"{visibility_summary}, {blockage_summary}"
         if self.__visibility_result and self.__blockage_result:
             self._success = True
             self._summary = f"Passed: {summary_str}"
-        elif self.__visibility_result and not self.__blockage_result:
-            self._success = False
-            self._summary = f"BlockageError: {summary_str}"
-        elif not self.__visibility_result and self.__blockage_result:
-            self._success = False
-            self._summary = f"VisibilityError: {summary_str}"
-        elif not self.__visibility_result and not self.__blockage_result:
-            self._success = False
-            self._summary = f"VisibilityAndBlockageError: {summary_str}"
+        else:
+            self._success = True
+            self._summary = f"Failed: {summary_str}"
 
     def summarize_diag_agg(
-        self, msg: DiagnosticArray
-    ) -> Tuple[
-        List[Dict],
-        Optional[Float64],
-        Optional[Byte],
-        List[Dict],
-        Dict[str, Optional[Float64]],
-        Dict[str, Optional[Float64]],
+        self,
+        msg: DiagnosticArray,
+    ) -> tuple[
+        list[dict],
+        Float64 | None,
+        Byte | None,
+        list[dict],
+        dict[str, Float64 | None],
+        dict[str, Float64 | None],
     ]:
         visibility_results = []
         msg_visibility_value = None
@@ -157,8 +136,9 @@ class PerformanceDiagResult(ResultBase):
         )
 
     def summarize_visibility(
-        self, diag_status: DiagnosticStatus
-    ) -> Tuple[Dict, Optional[Float64], Optional[Byte]]:
+        self,
+        diag_status: DiagnosticStatus,
+    ) -> tuple[dict, Float64 | None, Byte | None]:
         result = "Skipped"
         info = []
         scenario_type = self.__visibility_condition["ScenarioType"]
@@ -190,14 +170,14 @@ class PerformanceDiagResult(ResultBase):
                 {
                     "Level": int.from_bytes(diag_level, byteorder="little"),
                     "Visibility": visibility_value,
-                }
+                },
             )
             self.__visibility_msg = (
                 f"passed: {self.__visibility_success} / {self.__visibility_total}"
             )
             # publishするmsgを作る
             float_value = float(visibility_value)
-            if float_value >= 0.0:
+            if float_value >= PerformanceDiagResult.VALID_VALUE_THRESHOLD:
                 msg_value = Float64()
                 msg_value.data = float_value
                 msg_level = Byte()
@@ -205,8 +185,9 @@ class PerformanceDiagResult(ResultBase):
         return {"Result": result, "Info": info}, msg_value, msg_level
 
     def summarize_blockage(
-        self, diag_status: DiagnosticStatus
-    ) -> Tuple[Dict, Optional[Float64], Optional[Float64], Optional[Byte]]:
+        self,
+        diag_status: DiagnosticStatus,
+    ) -> tuple[dict, Float64 | None, Float64 | None, Byte | None]:
         result = "Skipped"
         info = []
         lidar_name = trim_lidar_name(diag_status.name)
@@ -254,7 +235,10 @@ class PerformanceDiagResult(ResultBase):
             # publishするmsgを作る
             float_sky_ratio = float(sky_ratio)
             float_ground_ratio = float(ground_ratio)
-            if float_sky_ratio >= 0.0 and float_ground_ratio >= 0.0:
+            if (
+                float_sky_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
+                and float_ground_ratio >= PerformanceDiagResult.VALID_VALUE_THRESHOLD
+            ):
                 msg_sky_ratio = Float64()
                 msg_sky_ratio.data = float_sky_ratio
                 msg_ground_ratio = Float64()
@@ -264,7 +248,7 @@ class PerformanceDiagResult(ResultBase):
         info.append(info_dict)
         return {"Result": result, "Info": info}, msg_sky_ratio, msg_ground_ratio, msg_level
 
-    def update_blockage(self):
+    def update_blockage(self) -> None:
         self.__blockage_result = True
         self.__blockage_msg = ""
         for lidar_name, v in self.__blockage_lidar_result.items():
@@ -273,14 +257,16 @@ class PerformanceDiagResult(ResultBase):
             if not v:
                 self.__blockage_result = False
 
-    def add_frame(
-        self, msg: DiagnosticArray, map_to_baselink: Dict
-    ) -> Tuple[
-        Optional[Float64],
-        Optional[Byte],
-        Dict[str, Optional[Float64]],
-        Dict[str, Optional[Float64]],
-        Dict[str, Optional[Byte]],
+    def set_frame(
+        self,
+        msg: DiagnosticArray,
+        map_to_baselink: dict,
+    ) -> tuple[
+        Float64 | None,
+        Byte | None,
+        dict[str, Float64 | None],
+        dict[str, Float64 | None],
+        dict[str, Byte | None],
     ]:
         out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
         (
@@ -305,42 +291,11 @@ class PerformanceDiagResult(ResultBase):
         )
 
 
-class PerformanceDiagEvaluator(Node):
-    def __init__(self):
-        super().__init__("performance_diag_evaluator")
-        self.declare_parameter("scenario_path", "")
-        self.declare_parameter("result_json_path", "")
-        self.declare_parameter("localization", False)  # noqa
-
-        self.__timer_group = MutuallyExclusiveCallbackGroup()
-        self.__tf_buffer = Buffer()
-        self.__tf_listener = TransformListener(self.__tf_buffer, self, spin_thread=True)
-
-        scenario_path = os.path.expandvars(
-            self.get_parameter("scenario_path").get_parameter_value().string_value
-        )
-        self.__launch_localization = (
-            self.get_parameter("scenario_path").get_parameter_value().bool_value
-        )
-        self.__scenario_yaml_obj = None
-        with open(scenario_path) as scenario_file:
-            self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
-        self.__result_json_path = os.path.expandvars(
-            self.get_parameter("result_json_path").get_parameter_value().string_value
-        )
-
-        self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-        self.__result = PerformanceDiagResult(self.__condition)
-
-        self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), self.__condition
-        )
-
-        self.__initial_pose = set_initial_pose(
-            self.__scenario_yaml_obj["Evaluation"]["InitialPose"]
-        )
-        self.__initial_pose_running = False
-        self.__initial_pose_success = False
+class PerformanceDiagEvaluator(DLREvaluator):
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+        self.check_scenario()
+        self.__result = PerformanceDiagResult(self._condition)
 
         self.__pub_visibility_value = self.create_publisher(Float64, "visibility/value", 1)
         self.__pub_visibility_level = self.create_publisher(Byte, "visibility/level", 1)
@@ -348,45 +303,25 @@ class PerformanceDiagEvaluator(Node):
         self.__pub_blockage_ground_ratios = {}
         self.__pub_blockage_sky_ratios = {}
         self.__pub_blockage_levels = {}
+        self.__diag_header_prev = Header()
 
-        for k, v in self.__condition["LiDAR"]["Blockage"].items():
+        for k, v in self._condition["LiDAR"]["Blockage"].items():
             if v["ScenarioType"] is not None:
                 self.__pub_blockage_sky_ratios[k] = self.create_publisher(
-                    Float64, f"blockage/{k}/sky/ratio", 1
+                    Float64,
+                    f"blockage/{k}/sky/ratio",
+                    1,
                 )
                 self.__pub_blockage_ground_ratios[k] = self.create_publisher(
-                    Float64, f"blockage/{k}/ground/ratio", 1
+                    Float64,
+                    f"blockage/{k}/ground/ratio",
+                    1,
                 )
                 self.__pub_blockage_levels[k] = self.create_publisher(
-                    Byte, f"blockage/{k}/level", 1
+                    Byte,
+                    f"blockage/{k}/level",
+                    1,
                 )
-
-        self.__current_time = Time().to_msg()
-        self.__prev_time = Time().to_msg()
-        self.__diag_header_prev = Header()
-        self.__counter = 0
-
-        # service client
-        self.__initial_pose_client = self.create_client(
-            InitializeLocalization, "/api/localization/initialize"
-        )
-        self.__map_fit_client = self.create_client(
-            PoseWithCovarianceStamped, "/map/map_height_fitter/service"
-        )
-        if self.__launch_localization:
-            while not self.__initial_pose_client.wait_for_service(timeout_sec=1.0):
-                self.get_logger().warning("initial pose service not available, waiting again...")
-            while not self.__map_fit_client.wait_for_service(timeout_sec=1.0):
-                self.get_logger().warning(
-                    "map height fitter service not available, waiting again..."
-                )
-
-        self.__timer = self.create_timer(
-            1.0,
-            self.timer_cb,
-            callback_group=self.__timer_group,
-            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
-        )  # wall timer
 
         self.__sub_diag = self.create_subscription(
             DiagnosticArray,
@@ -395,109 +330,24 @@ class PerformanceDiagEvaluator(Node):
             1,
         )
 
-    def timer_cb(self) -> None:
-        self.__current_time = self.get_clock().now().to_msg()
-        # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
-        if self.__current_time.sec > 0:
-            if (
-                self.__launch_localization
-                and self.__initial_pose is not None
-                and not self.__initial_pose_success
-                and not self.__initial_pose_running
-            ):
-                self.get_logger().info(
-                    f"call initial_pose time: {self.__current_time.sec}.{self.__current_time.nanosec}"
-                )
-                self.__initial_pose_running = True
-                self.__initial_pose.header.stamp = self.__current_time
-                future_map_fit = self.__map_fit_client.call_async(
-                    PoseWithCovarianceStamped.Request(pose_with_covariance=self.__initial_pose)
-                )
-                future_map_fit.add_done_callback(self.map_fit_cb)
-            if self.__current_time == self.__prev_time:
-                self.__counter += 1
-            else:
-                self.__counter = 0
-            self.__prev_time = self.__current_time
-            if self.__counter >= 5:
-                self.__result_writer.close()
-                rclpy.shutdown()
-
-    def map_fit_cb(self, future):
-        result = future.result()
-        if result is not None:
-            if result.success:
-                # result.pose_with_covarianceに補正済みデータが入っている
-                # 補正済みデータでinitialposeを投げる
-                # debug result.pose_with_covariance
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.position.x: {result.pose_with_covariance.pose.pose.position.x}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.position.y: {result.pose_with_covariance.pose.pose.position.y}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.position.z: {result.pose_with_covariance.pose.pose.position.z}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.orientation.x: {result.pose_with_covariance.pose.pose.orientation.x}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.orientation.y: {result.pose_with_covariance.pose.pose.orientation.y}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.orientation.z: {result.pose_with_covariance.pose.pose.orientation.z}"
-                # )
-                # self.get_logger().error(
-                #     f"corrected_pose_with_covariance.pose.orientation.w: {result.pose_with_covariance.pose.pose.orientation.w}"
-                # )
-                future_init_pose = self.__initial_pose_client.call_async(
-                    InitializeLocalization.Request(pose=[result.pose_with_covariance])
-                )
-                future_init_pose.add_done_callback(self.initial_pose_cb)
-            else:
-                # free self.__initial_pose_running when the service call fails
-                self.__initial_pose_running = False
-                self.get_logger().warn("map_height_height service result is fail")
-        else:
-            # free self.__initial_pose_running when the service call fails
-            self.__initial_pose_running = False
-            self.get_logger().error(f"Exception for service: {future.exception()}")
-
-    def initial_pose_cb(self, future):
-        result = future.result()
-        if result is not None:
-            res_status: ResponseStatus = result.status
-            self.__initial_pose_success = res_status.success
-            self.get_logger().info(
-                f"initial_pose_success: {self.__initial_pose_success}"
-            )  # debug msg
-        else:
-            self.get_logger().error(f"Exception for service: {future.exception()}")
-        # free self.__initial_pose_running
-        self.__initial_pose_running = False
+    def check_scenario(self) -> None:
+        pass
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
-        # self.get_logger().error(
-        #     f"diag cb time: {self.__current_time.sec}.{self.__current_time.nanosec}"
-        # )
         if msg.header == self.__diag_header_prev:
             return
         self.__diag_header_prev = msg.header
-        try:
-            map_to_baselink = self.__tf_buffer.lookup_transform(
-                "map", "base_link", msg.header.stamp, Duration(seconds=0.5)
-            )
-        except TransformException as ex:
-            self.get_logger().info(f"Could not transform map to baselink: {ex}")
-            map_to_baselink = TransformStamped()
+        map_to_baselink = self.lookup_transform(msg.header.stamp)
         (
             msg_visibility_value,
             msg_visibility_level,
             msg_blockage_sky_ratios,
             msg_blockage_ground_ratios,
             msg_blockage_levels,
-        ) = self.__result.add_frame(msg, transform_stamped_with_euler_angle(map_to_baselink))
+        ) = self.__result.set_frame(
+            msg,
+            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+        )
         if msg_visibility_value is not None:
             self.__pub_visibility_value.publish(msg_visibility_value)
         if msg_visibility_level is not None:
@@ -511,17 +361,12 @@ class PerformanceDiagEvaluator(Node):
         for k, v in msg_blockage_levels.items():
             if v is not None:
                 self.__pub_blockage_levels[k].publish(v)
-        self.__result_writer.write(self.__result)
+        self._result_writer.write_result(self.__result)
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    executor = MultiThreadedExecutor()
-    performance_diag_evaluator = PerformanceDiagEvaluator()
-    executor.add_node(performance_diag_evaluator)
-    executor.spin()
-    performance_diag_evaluator.destroy_node()
-    rclpy.shutdown()
+@evaluator_main
+def main() -> DLREvaluator:
+    return PerformanceDiagEvaluator("performance_diag_evaluator")
 
 
 if __name__ == "__main__":

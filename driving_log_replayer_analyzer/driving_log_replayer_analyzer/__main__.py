@@ -30,9 +30,14 @@ def print_version(ctx, param, value):  # noqa
 
 @click.group(context_settings=CONTEXT_SETTINGS)
 @click.option(
-    "--version", "-v", is_flag=True, callback=print_version, expose_value=False, is_eager=True
+    "--version",
+    "-v",
+    is_flag=True,
+    callback=print_version,
+    expose_value=False,
+    is_eager=True,
 )
-def cmd():
+def cmd() -> None:
     """
     Command line tool to use driving_log_replayer.
 

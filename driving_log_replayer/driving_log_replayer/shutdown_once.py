@@ -19,6 +19,7 @@
 """Module for the Shutdown action."""
 
 import logging
+from typing import Any
 
 from launch.actions import EmitEvent
 from launch.events import Shutdown as ShutdownEvent
@@ -35,11 +36,11 @@ class ShutdownOnce(EmitEvent):
     shutdown_called = False
     """Action that shuts down a launched system by emitting Shutdown when executed."""
 
-    def __init__(self, *, reason: str = "reason not given", **kwargs):
+    def __init__(self, *, reason: str = "reason not given", **kwargs: Any) -> None:
         super().__init__(event=ShutdownEvent(reason=reason), **kwargs)
 
     @classmethod
-    def parse(cls, entity: Entity, parser: Parser):
+    def parse(cls, entity: Entity, parser: Parser) -> tuple["ShutdownOnce", Any]:
         """Return `Shutdown` action and kwargs for constructing it."""
         _, kwargs = super().parse(entity, parser)
         reason = entity.get_attr("reason", optional=True)
@@ -47,7 +48,7 @@ class ShutdownOnce(EmitEvent):
             kwargs["reason"] = parser.parse_substitution(reason)
         return cls, kwargs
 
-    def execute(self, context: LaunchContext):
+    def execute(self, context: LaunchContext) -> None:
         """Execute the action."""
         if ShutdownOnce.shutdown_called:
             return
@@ -58,6 +59,7 @@ class ShutdownOnce(EmitEvent):
             event = None
         if isinstance(event, ProcessExited):
             _logger.info(
-                f"process[{event.process_name}] was required: shutting down launched system"
+                "process[%s] was required: shutting down launched system",
+                event.process_name,
             )
         super().execute(context)

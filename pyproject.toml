@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "driving_log_replayer_cli"
-version = "1.5.4"
+version = "1.6.5"
 description = "command line tool for driving_log_replayer"
 authors = [
   "Hayato Mizushima <hayato.mizushima@tier4.jp>",
@@ -23,20 +23,27 @@ driving_log_replayer = "driving_log_replayer_cli:main"
 driving_log_replayer_analyzer = "driving_log_replayer_analyzer:main"
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = "^3.10"
 termcolor = "^2.3.0"
 natsort = "^8.4.0"
-PyYAML = "^6.0.1"
+pyyaml = "^6.0.1"
 toml = "^0.10.2"
-click = "^8.1.6"
-pandas = "^2.0.3"
-plotly = "^5.16.0"
+click = "^8.1.7"
+pandas = "^2.1.0"
+plotly = "^5.16.1"
 kaleido = "0.2.1"
 simplejson = "^3.19.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.7.0"
-ruff = "^0.0.285"
+black = "^23.9.1"
+ruff = "^0.0.287"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.4.2"
+mkdocs-awesome-pages-plugin = "^2.9.2"
+mkdocs-static-i18n = "^1.0.6"
+mdx-truly-sane-lists = "^1.3"
 
 [build-system]
 requires = ["poetry-core"]
@@ -49,11 +56,10 @@ line_length = 100
 line-length = 100
 show-source = true
 # https://beta.ruff.rs/docs/rules/
-# select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
-# "G", "S", "T", "ANN", "COM", "DJ", "DTZ", "ERA", "INP", "PD", "PGH", "PL", "PTH"
-select = ["A", "B", "C", "D", "E", "F", "I", "N", "Q", "W", "ARG", "BLE", "EM", "EXE", "FBT", "ICN", "ISC", "NPY", "PIE", "PT", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
-ignore = ["D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417", "E203", "E501", "Q000", "S108", "FBT001", "S602", "C901"]
-fixable=["D", "I", "EXE", "PIE"]
+select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "ISC", "NPY", "PGH", "PIE", "PL", "PT", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+# "INP", "PD", "PTH"
+ignore = ["Q000", "ANN101", "ANN102", "ANN401", "PGH004", "E501", "PLR0913", "S101", "S301", "S602", "SIM115", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417"]
+fixable=["D", "I", "ANN", "COM", "EXE", "PIE"]
 
 [tool.ruff.isort]
 # https://pycqa.github.io/isort/docs/configuration/options.html#default-section

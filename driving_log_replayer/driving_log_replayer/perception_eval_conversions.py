@@ -12,16 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
-from typing import Optional
-from typing import Tuple
-from typing import Union
-
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
+import numpy as np
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.object import ObjectState
 from perception_eval.evaluation.result.object_result import DynamicObjectWithPerceptionResult
@@ -39,7 +35,7 @@ def unix_time_from_ros_msg(ros_header: Header) -> int:
     return ros_header.stamp.sec * pow(10, 6) + ros_header.stamp.nanosec // 1000
 
 
-def position_from_ros_msg(ros_position: Point) -> Tuple[int, int, int]:
+def position_from_ros_msg(ros_position: Point) -> tuple[int, int, int]:
     return (ros_position.x, ros_position.y, ros_position.z)
 
 
@@ -48,19 +44,20 @@ def orientation_from_ros_msg(ros_orientation: RosQuaternion) -> Quaternion:
 
 
 def dimensions_from_ros_msg(
-    ros_dimensions: Vector3, shape_type_num: int
-) -> Tuple[float, float, float]:
+    ros_dimensions: Vector3,
+    shape_type_num: int,
+) -> tuple[float, float, float]:
     if shape_type_num == 1:
         # cylinder
         return (ros_dimensions.x, ros_dimensions.x, ros_dimensions.z)
     return (ros_dimensions.y, ros_dimensions.x, ros_dimensions.z)
 
 
-def velocity_from_ros_msg(ros_velocity: Vector3) -> Tuple[float, float, float]:
+def velocity_from_ros_msg(ros_velocity: Vector3) -> tuple[float, float, float]:
     return (ros_velocity.x, ros_velocity.y, ros_velocity.z)
 
 
-def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
+def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Polygon | None:
     coords = []
     for ros_point in ros_footprint.points:
         coords.append((ros_point.x, ros_point.y, ros_point.z))
@@ -70,7 +67,7 @@ def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Optional[Polygon]:
     return None
 
 
-def uuid_from_ros_msg(ros_uuid) -> str:
+def uuid_from_ros_msg(ros_uuid: np.ndarray) -> str:
     """
     Convert uuid from unique_identifier_msgs.msg.UUID to string.
 
@@ -90,7 +87,7 @@ def object_state_to_ros_box_and_uuid(
     marker_id: int,
     color: ColorRGBA,
     text: str,
-) -> Tuple[Marker, Marker]:
+) -> tuple[Marker, Marker]:
     pose = Pose()
     pose.position.x = gt_state.position[0]
     pose.position.y = gt_state.position[1]
@@ -131,14 +128,15 @@ def object_state_to_ros_box_and_uuid(
 
 
 def dynamic_objects_to_ros_points(
-    container: Union[List[DynamicObjectWithPerceptionResult], List[DynamicObject]],
+    container: list[DynamicObjectWithPerceptionResult] | list[DynamicObject],
     header: Header,
     scale: Vector3,
     color: ColorRGBA,
     namespace: str,
     marker_id: int,
+    *,
     tp_gt: bool,
-):
+) -> Marker:
     p_marker = Marker()
     p_marker.header = header
     p_marker.ns = namespace
@@ -178,7 +176,13 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
         # estimated obj
         c_tp_est = ColorRGBA(r=0.0, g=0.0, b=1.0, a=1.0)
         marker = dynamic_objects_to_ros_points(
-            objs, header, scale, c_tp_est, "tp_est", 0, tp_gt=False
+            objs,
+            header,
+            scale,
+            c_tp_est,
+            "tp_est",
+            0,
+            tp_gt=False,
         )
         marker_results.markers.append(marker)
     if objs := pass_fail.tp_object_results:

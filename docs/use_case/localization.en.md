@@ -171,8 +171,8 @@ See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/loca
 
 See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json).
 
-Since localization evaluates both convergence and confidence of the localization, each line contains the result of either convergence or confidence.
-The result is `true` if both convergence and confidence are evaluated correctly. Otherwise, the output is set to `false`.
+Since localization evaluates convergence, reliability, and availability, each line contains the result of convergence, reliability, or availability.
+The Result is `true` if convergence, reliability, and availability all pass, and `false` otherwise.
 
 Examples of each evaluation are described below.
 **NOTE: common part of the result file format, which has already been explained, is omitted.**
@@ -181,17 +181,13 @@ Convergence Result example:
 
 ```json
 {
-  "Frame": {
-    "Convergence": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "LateralDistance": "Lateral distance between ndt and ekf pose",
-          "HorizontalDistance": "Horizontal distance between ndt and ekf. Reference value",
-          "ExeTimeMs": "Time taken to calculate ndt",
-          "IterationNum": "Number of recalculations of ndt"
-        }
-      ]
+  "Convergence": {
+    "Result": "Success or Fail",
+    "Info": {
+      "LateralDistance": "Lateral distance between ndt and ekf pose",
+      "HorizontalDistance": "Horizontal distance between ndt and ekf. Reference value",
+      "ExeTimeMs": "Time taken to calculate ndt",
+      "IterationNum": "Number of recalculations of ndt"
     }
   }
 }
@@ -201,28 +197,35 @@ Reliability Result example:
 
 ```json
 {
-  "Frame": {
-    "Reliability": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "Value": {
-            "stamp": {
-              "sec": "sec of stamp",
-              "nanosec": "nanosec of stamp"
-            },
-            "data": "Value of NVTL or TP"
-          },
-          "Reference": {
-            "stamp": {
-              "sec": "sec of stamp",
-              "nanosec": "nanosec of stamp"
-            },
-            "data": "Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered."
-          }
-        }
-      ]
+  "Reliability": {
+    "Result": "Success or Fail",
+    "Info": {
+      "Value": {
+        "stamp": {
+          "sec": "sec of stamp",
+          "nanosec": "nanosec of stamp"
+        },
+        "data": "Value of NVTL or TP"
+      },
+      "Reference": {
+        "stamp": {
+          "sec": "sec of stamp",
+          "nanosec": "nanosec of stamp"
+        },
+        "data": "Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered."
+      }
     }
+  }
+}
+```
+
+Availability Result example:
+
+```json
+{
+  "Availability": {
+    "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
+    "Info": {}
   }
 }
 ```

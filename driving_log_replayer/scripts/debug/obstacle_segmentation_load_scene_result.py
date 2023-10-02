@@ -27,7 +27,13 @@ import yaml
 
 
 class ObstacleSegmentationEvaluatorPickle:
-    def __init__(self, pickle_path: str, scenario_path: str, t4_dataset_path: str, log_path: str):
+    def __init__(
+        self,
+        pickle_path: str,
+        scenario_path: str,
+        t4_dataset_path: str,
+        log_path: str,
+    ) -> None:
         self.__scenario_yaml_obj = None
         self.__loaded_frame_results = None
         self.__t4_dataset_paths = [os.path.expandvars(t4_dataset_path)]
@@ -57,15 +63,15 @@ class ObstacleSegmentationEvaluatorPickle:
         self.__evaluator.frame_results = self.__loaded_frame_results
         self.debug_frames()
 
-    def debug_frames(self):
+    def debug_frames(self) -> None:
         for result in self.__evaluator.frame_results:
-            print(f"FrameName: {result.frame_name}")
+            print(f"FrameName: {result.frame_name}")  # noqa
             dist_array = np.array([])
             for pcd in result.pointcloud_failed_non_detection:
                 dists: np.ndarray = np.linalg.norm(pcd, ord=2, axis=1)
-                print(dists)
+                print(dists)  # noqa
                 dist_array = np.concatenate([dist_array, dists])
-            print(dist_array)
+            print(dist_array)  # noqa
 
     def get_final_result(self) -> None:
         """Output the evaluation results on the command line."""
@@ -73,16 +79,22 @@ class ObstacleSegmentationEvaluatorPickle:
         num_use_case_fail: int = 0
         for frame_results in self.__evaluator.frame_results:
             num_use_case_fail += len(frame_results.detection_fail_results)
-        logging.warning(f"{num_use_case_fail} fail results.")
+        logging.warning("%d fail results.", num_use_case_fail)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-p", "--pickle", required=True, help="path of the pickle file to load scene_result"
+        "-p",
+        "--pickle",
+        required=True,
+        help="path of the pickle file to load scene_result",
     )
     parser.add_argument(
-        "-s", "--scenario", required=True, help="path of the scenario to load evaluator settings"
+        "-s",
+        "--scenario",
+        required=True,
+        help="path of the scenario to load evaluator settings",
     )
     parser.add_argument("-d", "--dataset", required=True, help="path of the t4_dataset")
     parser.add_argument("-l", "--log_path", required=True, help="perception_eval log path")

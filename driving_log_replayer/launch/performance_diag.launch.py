@@ -24,14 +24,14 @@ from launch.substitutions import LaunchConfiguration
 import driving_log_replayer.launch_common
 
 
-def generate_launch_description():
+def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
     launch_arguments.append(DeclareLaunchArgument("localization", default_value="false"))
     fitter_launch = driving_log_replayer.launch_common.get_map_height_fitter(
-        launch_service=LaunchConfiguration("localization")
+        launch_service=LaunchConfiguration("localization"),
     )
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
-        localization=LaunchConfiguration("localization")
+        localization=LaunchConfiguration("localization"),
     )
     rviz_node = driving_log_replayer.launch_common.get_rviz("autoware.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
@@ -80,5 +80,5 @@ def generate_launch_description():
             recorder,
             player_normal,
             player_remap,
-        ]
+        ],
     )

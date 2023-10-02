@@ -2,7 +2,6 @@ import glob
 import os
 from pathlib import Path
 import subprocess
-from typing import Optional
 
 from natsort import natsorted
 import termcolor
@@ -17,7 +16,7 @@ class TestScriptGenerator:
         autoware_path: str,
         rate: float,
         delay: float,
-    ):
+    ) -> None:
         self.__data_directory = data_directory
         self.__output_directory = output_directory
         self.__autoware_path = autoware_path
@@ -32,10 +31,10 @@ class TestScriptGenerator:
         subprocess.run(update_latest_dir, shell=True)
 
     @property
-    def script_path(self):
+    def script_path(self) -> str:
         return self.__script_path
 
-    def run(self):
+    def run(self) -> bool:
         return self.__create_script()
 
     def __create_script(self) -> bool:
@@ -66,7 +65,7 @@ class TestScriptGenerator:
             return True
         return False
 
-    def __parse_scenario(self, scenario_directory: str) -> Optional[str]:
+    def __parse_scenario(self, scenario_directory: str) -> str | None:
         scenario_root = Path(scenario_directory)
         scenario_output_dir = os.path.join(self.__output_directory, scenario_root.name)
         os.makedirs(scenario_output_dir)
@@ -102,8 +101,12 @@ class TestScriptGenerator:
             )
 
     def __create_launch_command(
-        self, scenario_root: str, scenario_name: str, scenario_output_dir: str, scenario_yaml_obj
-    ) -> Optional[str]:
+        self,
+        scenario_root: str,
+        scenario_name: str,
+        scenario_output_dir: str,
+        scenario_yaml_obj: dict,
+    ) -> str | None:
         map_path = ""
         if "LocalMapPath" in scenario_yaml_obj:
             map_path = os.path.expandvars(scenario_yaml_obj["LocalMapPath"])
@@ -124,7 +127,8 @@ class TestScriptGenerator:
         annotation_bag = Path(scenario_root).joinpath("annotation_bag")
         if need_annotation and not annotation_bag.exists():
             termcolor.cprint(
-                "annotation_bag file" + annotation_bag.as_posix() + " does not exist.", "red"
+                "annotation_bag file" + annotation_bag.as_posix() + " does not exist.",
+                "red",
             )
             return None
 
@@ -149,7 +153,7 @@ class TestScriptGenerator:
             launch_args += " annotation_bag:=" + annotation_bag.as_posix()
             if "RecordRate" in scenario_yaml_obj["Annotation"]:
                 launch_args += " annotation_record_rate:=" + str(
-                    scenario_yaml_obj["Annotation"]["RecordRate"]
+                    scenario_yaml_obj["Annotation"]["RecordRate"],
                 )
 
         # logging_simulator.launch args
@@ -161,13 +165,14 @@ class TestScriptGenerator:
         # diag launch localization
         if scenario_yaml_obj["Evaluation"]["UseCaseName"] == "performance_diag":
             launch_args += " localization:=" + str(
-                scenario_yaml_obj["Evaluation"]["LaunchLocalization"]
+                scenario_yaml_obj["Evaluation"]["LaunchLocalization"],
             )
         if scenario_yaml_obj["Evaluation"]["UseCaseName"] == "obstacle_detection":
             launch_planning = scenario_yaml_obj["Evaluation"].get("LaunchPlanning", False)
             launch_args += " planning:=" + str(launch_planning)
             target_pointcloud = scenario_yaml_obj["Evaluation"]["Conditions"].get(
-                "TargetPointCloud", "/perception/obstacle_segmentation/pointcloud"
+                "TargetPointCloud",
+                "/perception/obstacle_segmentation/pointcloud",
             )
             launch_args += " target_pointcloud:=" + target_pointcloud
         launch_command = launch_base_command + launch_args
@@ -182,12 +187,16 @@ class TestScriptGenerator:
             ndt_launch_args += " map_path:=" + map_path
             ndt_launch_args += " save_dir:=" + os.path.join(scenario_output_dir, "result_archive")
             launch_command += ndt_launch_base_command + ndt_launch_args
-        print("launch command generated! => " + launch_command)
+        print("launch command generated! => " + launch_command)  # noqa
         return launch_command
 
     def __create_launch_command_with_t4_dataset(
-        self, scenario_root: str, scenario_name: str, scenario_output_dir: str, scenario_yaml_obj
-    ) -> Optional[str]:
+        self,
+        scenario_root: str,
+        scenario_name: str,
+        scenario_output_dir: str,
+        scenario_yaml_obj: dict,
+    ) -> str | None:
         launch_command_for_all_dataset = ""
         scenario_path = os.path.join(scenario_root, scenario_name)
         t4_dataset_base_path = os.path.join(scenario_root, "t4_dataset")
@@ -235,7 +244,8 @@ class TestScriptGenerator:
 
             launch_args = " scenario_path:=" + scenario_path
             launch_args += " result_json_path:=" + os.path.join(
-                output_dir_per_dataset, "result.json"
+                output_dir_per_dataset,
+                "result.json",
             )
 
             # ros2 bag play args
@@ -257,7 +267,8 @@ class TestScriptGenerator:
             # t4_dataset
             launch_args += " t4_dataset_path:=" + t4_dataset_path
             launch_args += " result_archive_path:=" + os.path.join(
-                output_dir_per_dataset, "result_archive"
+                output_dir_per_dataset,
+                "result_archive",
             )
             launch_args += " sensing:=" + launch_sensing
             launch_command = launch_base_command + launch_args + "\n"
@@ -274,5 +285,5 @@ class TestScriptGenerator:
             database_result_command = f"python3 {database_result_script_path}"
             database_result_command += f" -s {scenario_path} -r {scenario_output_dir}\n"
             launch_command_for_all_dataset += database_result_command
-        print("launch command generated! => " + launch_command_for_all_dataset)
+        print("launch command generated! => " + launch_command_for_all_dataset)  # noqa
         return launch_command_for_all_dataset

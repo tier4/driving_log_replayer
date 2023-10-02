@@ -1,0 +1,1985 @@
+[
+  {
+    "Condition": {}
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "NoData"
+    },
+    "Stamp": {
+      "System": 1695776726.3567057
+    },
+    "Frame": {}
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.0575519,
+      "ROS": 68.696887055
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.0581245,
+      "ROS": 68.666716601
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.0588894,
+      "ROS": 68.666716601
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.0825374,
+      "ROS": 68.691576084
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.0923536,
+      "ROS": 68.701569853
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.1028535,
+      "ROS": 68.711608941
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.1224635,
+      "ROS": 68.731579993
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.1424499,
+      "ROS": 68.751570142
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.1631536,
+      "ROS": 68.771640069
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.1822624,
+      "ROS": 68.79157415
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.192502,
+      "ROS": 68.801572607
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.2027876,
+      "ROS": 68.811593528
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.2222736,
+      "ROS": 68.831528803
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.2421732,
+      "ROS": 68.851572689
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.2636662,
+      "ROS": 68.87158404
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.266445,
+      "ROS": 68.87158404
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.2694478,
+      "ROS": 68.876646121
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.2840958,
+      "ROS": 68.886852555
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.296006,
+      "ROS": 68.901628458
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.3009381,
+      "ROS": 68.906815128
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.3180099,
+      "ROS": 68.926617476
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.322295,
+      "ROS": 68.931624079
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.342299,
+      "ROS": 68.951620748
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.3637476,
+      "ROS": 68.97158667
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.3830602,
+      "ROS": 68.991580785
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.389336,
+      "ROS": 68.996597131
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.3938596,
+      "ROS": 69.001585511
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.4024506,
+      "ROS": 69.011581289
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.4250827,
+      "ROS": 69.031601862
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.4430885,
+      "ROS": 69.051581146
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.4632792,
+      "ROS": 69.071597994
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.4824817,
+      "ROS": 69.09158389
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.4884279,
+      "ROS": 69.096590815
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.4925966,
+      "ROS": 69.101580434
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.5024676,
+      "ROS": 69.111577765
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.5223312,
+      "ROS": 69.131583398
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.542214,
+      "ROS": 69.151578031
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.5626597,
+      "ROS": 69.171578684
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.5827382,
+      "ROS": 69.191598985
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.588492,
+      "ROS": 69.196586201
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.5926957,
+      "ROS": 69.201586302
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.602426,
+      "ROS": 69.211578662
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: NotTested"
+    },
+    "Stamp": {
+      "System": 1695776736.6228418,
+      "ROS": 69.231591821
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.6252367,
+      "ROS": 69.231591821
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.6423738,
+      "ROS": 69.251583634
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.6627054,
+      "ROS": 69.271540275
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.682513,
+      "ROS": 69.291591718
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.6924326,
+      "ROS": 69.301590291
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.6929226,
+      "ROS": 69.301590291
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.7022476,
+      "ROS": 69.311587306
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.722587,
+      "ROS": 69.331597117
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.7396255,
+      "ROS": 69.346650635
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.7426891,
+      "ROS": 69.351596019
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.7626376,
+      "ROS": 69.371589161
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.76308,
+      "ROS": 69.371589161
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.7827482,
+      "ROS": 69.39160056
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.7925606,
+      "ROS": 69.401596324
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.7930589,
+      "ROS": 69.401596324
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.8024828,
+      "ROS": 69.411598436
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.8224075,
+      "ROS": 69.431591457
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.8429024,
+      "ROS": 69.451629801
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.859938,
+      "ROS": 69.466606728
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.8627229,
+      "ROS": 69.471600041
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.8825862,
+      "ROS": 69.491596616
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.8926597,
+      "ROS": 69.50160397
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.8932855,
+      "ROS": 69.50160397
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.9028687,
+      "ROS": 69.511615766
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.9222903,
+      "ROS": 69.53159609
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.9427185,
+      "ROS": 69.551598192
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.9658628,
+      "ROS": 69.57363698
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.9708035,
+      "ROS": 69.576627934
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.974759,
+      "ROS": 69.581611059
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.9824934,
+      "ROS": 69.591602406
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.9930944,
+      "ROS": 69.601612305
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776736.9937809,
+      "ROS": 69.601612305
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0054975,
+      "ROS": 69.611616646
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0222633,
+      "ROS": 69.631598269
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.042527,
+      "ROS": 69.65159963
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0632567,
+      "ROS": 69.671611835
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0640194,
+      "ROS": 69.671611835
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0663574,
+      "ROS": 69.671611835
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0826445,
+      "ROS": 69.691605529
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0884986,
+      "ROS": 69.696601733
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0924785,
+      "ROS": 69.701607078
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.0933123,
+      "ROS": 69.701607078
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.1028812,
+      "ROS": 69.711604446
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.122737,
+      "ROS": 69.731601193
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.1424599,
+      "ROS": 69.751603507
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.1660998,
+      "ROS": 69.771604173
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 0 AR tags"
+    },
+    "Stamp": {
+      "System": 1695776737.1665132,
+      "ROS": 69.771604173
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Warn"
+        },
+        "Info": {
+          "Reason": "diagnostics does not contain ar_tag_based_localizer"
+        }
+      }
+    }
+  }
+]

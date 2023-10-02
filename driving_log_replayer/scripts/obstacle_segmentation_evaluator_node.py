@@ -18,10 +18,6 @@ import logging
 import os
 from pathlib import Path
 import sys
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Tuple
 from typing import TYPE_CHECKING
 
 from geometry_msgs.msg import PoseStamped
@@ -34,12 +30,6 @@ from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithS
 from perception_eval.manager import SensingEvaluationManager
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
-from rclpy.clock import Clock
-from rclpy.clock import ClockType
-from rclpy.executors import MultiThreadedExecutor
-from rclpy.node import Node
-from rclpy.time import Time
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
@@ -49,15 +39,13 @@ from std_msgs.msg import Header
 from tier4_api_msgs.msg import AwapiAutowareStatus
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
-import yaml
 
-from driving_log_replayer.node_common import get_goal_pose_from_t4_dataset
-from driving_log_replayer.node_common import transform_stamped_with_euler_angle
+from driving_log_replayer.evaluator import DLREvaluator
+from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.obstacle_segmentation_analyzer import default_config_path
 from driving_log_replayer.obstacle_segmentation_analyzer import get_graph_data
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.result import ResultWriter
 from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
@@ -73,10 +61,15 @@ def get_box_marker(
     namespace: str,
     marker_id: int,
     color: ColorRGBA,
-) -> Tuple[Marker, Marker, Dict]:
+) -> tuple[Marker, Marker, dict]:
     gt_state = ground_truth_obj.state
     bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
-        gt_state, header, namespace, marker_id, color, ground_truth_obj.uuid
+        gt_state,
+        header,
+        namespace,
+        marker_id,
+        color,
+        ground_truth_obj.uuid,
     )
     info_dict = {
         "Annotation": {
@@ -84,22 +77,22 @@ def get_box_marker(
             "Position": message_to_ordereddict(bbox.pose),
             "UUID": ground_truth_obj.uuid,
             "StampFloat": ground_truth_obj.unix_time / pow(10, 6),
-        }
+        },
     }
     return bbox, uuid, info_dict
 
 
 def summarize_frame_container(
-    container: List[DynamicObjectWithSensingResult],
+    container: list[DynamicObjectWithSensingResult],
     header: Header,
     color: ColorRGBA,
-    info: List,
+    info: list,
     counter: int,
     marker_array: MarkerArray,
     pcd: np.ndarray,
     graph_detection: ObstacleSegmentationMarkerArray,
     result_status: int,
-) -> Tuple[Dict, int, MarkerArray, np.ndarray, ObstacleSegmentationMarkerArray]:
+) -> tuple[dict, int, MarkerArray, np.ndarray, ObstacleSegmentationMarkerArray]:
     for result in container:
         pcd_result = np.zeros(
             result.inside_pointcloud_num,
@@ -136,8 +129,9 @@ def summarize_frame_container(
 
 
 def summarize_numpy_pointcloud(
-    list_pcd: List[np.ndarray], header: Header
-) -> Tuple[PointCloud2, np.ndarray]:
+    list_pcd: list[np.ndarray],
+    header: Header,
+) -> tuple[PointCloud2, np.ndarray]:
     numpy_pcd = np.zeros(
         0,
         dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
@@ -161,8 +155,9 @@ def summarize_numpy_pointcloud(
 
 
 def get_sensing_frame_config(
-    pcd_header: Header, scenario_yaml_obj: Dict
-) -> Tuple[bool, Optional[SensingFrameConfig]]:
+    pcd_header: Header,
+    scenario_yaml_obj: dict,
+) -> tuple[bool, SensingFrameConfig | None]:
     detection_config = scenario_yaml_obj["Evaluation"]["Conditions"].get("Detection", None)
     if detection_config is None:
         return True, None
@@ -173,8 +168,8 @@ def get_sensing_frame_config(
     for uuid_dict in bbox_conf:
         for uuid, v in uuid_dict.items():
             # uuid: str, v: Dict
-            start: Optional[float] = v.get("Start", None)
-            end: Optional[float] = v.get("End", None)
+            start: float | None = v.get("Start", None)
+            end: float | None = v.get("End", None)
             if start is None:
                 start = 0.0
             if end is None:
@@ -195,10 +190,10 @@ def get_sensing_frame_config(
 
 
 class ObstacleSegmentationResult(ResultBase):
-    def __init__(self, condition: Dict):
+    def __init__(self, condition: dict) -> None:
         super().__init__()
-        self.__condition_detection: Optional[Dict] = condition.get("Detection", None)
-        self.__condition_non_detection: Optional[Dict] = condition.get("NonDetection", None)
+        self.__condition_detection: dict | None = condition.get("Detection", None)
+        self.__condition_non_detection: dict | None = condition.get("NonDetection", None)
 
         self.__detection_total = 0
         self.__detection_success = 0
@@ -210,7 +205,7 @@ class ObstacleSegmentationResult(ResultBase):
         self.__non_detection_msg = "NotTested"
         self.__non_detection_result = True
 
-    def update(self):
+    def update(self) -> None:
         summary_str = f"Detection: {self.__detection_msg} NonDetection: {self.__non_detection_msg}"
         if self.__detection_result and self.__non_detection_result:
             self._success = True
@@ -226,12 +221,16 @@ class ObstacleSegmentationResult(ResultBase):
             self._summary = f"Detection and NonDetection Failed: {summary_str}"
 
     def summarize_detection(
-        self, frame_result: SensingFrameResult, topic_rate: bool, header: Header
-    ) -> Tuple[
-        Dict,
-        Optional[MarkerArray],
-        Optional[PointCloud2],
-        Optional[ObstacleSegmentationMarkerArray],
+        self,
+        frame_result: SensingFrameResult,
+        header: Header,
+        *,
+        topic_rate: bool,
+    ) -> tuple[
+        dict,
+        MarkerArray | None,
+        PointCloud2 | None,
+        ObstacleSegmentationMarkerArray | None,
     ]:
         result = "Skipped"
         info = []
@@ -323,8 +322,12 @@ class ObstacleSegmentationResult(ResultBase):
         return {"Result": result, "Info": info}, marker_array, pcd_detection, graph_detection
 
     def summarize_non_detection(
-        self, pcd_list: List[np.ndarray], topic_rate: bool, header: Header
-    ) -> Tuple[Dict, Optional[PointCloud2], Optional[ObstacleSegmentationMarker]]:
+        self,
+        pcd_list: list[np.ndarray],
+        header: Header,
+        *,
+        topic_rate: bool,
+    ) -> tuple[dict, PointCloud2 | None, ObstacleSegmentationMarker | None]:
         result = "Skipped"
         info = []
         ros_pcd = None
@@ -355,33 +358,33 @@ class ObstacleSegmentationResult(ResultBase):
             if result == "Fail":
                 # 詳細情報の追記を書く
                 dist_dict = {}
-                # print(dist_array)
                 for i in range(100):
                     dist_dict[f"{i}-{i+1}"] = np.count_nonzero(
-                        (i <= dist_array) & (dist_array < i + 1)
+                        (i <= dist_array) & (dist_array < i + 1),
                     )
                 # NonDetectionは結果はInfoに入るのは1個しかないがDetectionに合わせてlistにしておく
                 info.append(
                     {
                         "PointCloud": {"NumPoints": dist_array.shape[0], "Distance": dist_dict},
-                    }
+                    },
                 )
         return {"Result": result, "Info": info}, ros_pcd, graph_non_detection
 
-    def add_frame(
+    def set_frame(
         self,
         frame: SensingFrameResult,
         skip: int,
-        map_to_baselink: Dict,
-        stop_reasons: List[Dict],
-        topic_rate: bool,
+        map_to_baselink: dict,
+        stop_reasons: list[dict],
         header: Header,
-    ) -> Tuple[
-        Optional[MarkerArray],
-        Optional[PointCloud2],
-        Optional[ObstacleSegmentationMarkerArray],
-        Optional[PointCloud2],
-        Optional[ObstacleSegmentationMarker],
+        *,
+        topic_rate: bool,
+    ) -> tuple[
+        MarkerArray | None,
+        PointCloud2 | None,
+        ObstacleSegmentationMarkerArray | None,
+        PointCloud2 | None,
+        ObstacleSegmentationMarker | None,
     ]:
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
@@ -393,12 +396,16 @@ class ObstacleSegmentationResult(ResultBase):
             marker_detection,
             pcd_detection,
             graph_detection,
-        ) = self.summarize_detection(frame, topic_rate, header)
+        ) = self.summarize_detection(frame, header, topic_rate=topic_rate)
         (
             out_frame["NonDetection"],
             pcd_non_detection,
             graph_non_detection,
-        ) = self.summarize_non_detection(frame.pointcloud_failed_non_detection, topic_rate, header)
+        ) = self.summarize_non_detection(
+            frame.pointcloud_failed_non_detection,
+            header,
+            topic_rate=topic_rate,
+        )
         out_frame["StopReasons"] = stop_reasons
         out_frame["TopicRate"] = str(topic_rate)
         # update current frame
@@ -414,54 +421,27 @@ class ObstacleSegmentationResult(ResultBase):
         )
 
 
-class ObstacleSegmentationEvaluator(Node):
-    def __init__(self):
-        super().__init__("obstacle_segmentation_evaluator")
-        self.declare_parameter("scenario_path", "")
-        self.declare_parameter("result_json_path", "")
-        self.declare_parameter("t4_dataset_path", "")
-        self.declare_parameter("result_archive_path", "")
+class ObstacleSegmentationEvaluator(DLREvaluator):
+    COUNT_FINISH_PUB_GOAL_POSE = 5
+
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
+        self.check_scenario()
+        self.use_t4_dataset()
+
         self.declare_parameter("vehicle_model", "")
-
-        self.__timer_group = MutuallyExclusiveCallbackGroup()
-
-        scenario_path = os.path.expandvars(
-            self.get_parameter("scenario_path").get_parameter_value().string_value
-        )
-        self.__scenario_yaml_obj = None
-        with open(scenario_path) as scenario_file:
-            self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
-        self.__result_json_path = os.path.expandvars(
-            self.get_parameter("result_json_path").get_parameter_value().string_value
-        )
-        self.__t4_dataset_paths = [
-            os.path.expandvars(
-                self.get_parameter("t4_dataset_path").get_parameter_value().string_value
-            )
-        ]
         self.__vehicle_model = (
             self.get_parameter("vehicle_model").get_parameter_value().string_value
         )
-        self.__perception_eval_log_path = os.path.join(
-            os.path.dirname(self.__result_json_path), "perception_eval_log"
-        )
-        # read setting from scenario yaml
-        self.__condition = self.__scenario_yaml_obj["Evaluation"]["Conditions"]
-        self.__result = ObstacleSegmentationResult(self.__condition)
+        self.__result = ObstacleSegmentationResult(self._condition)
         self.__goal_pose_counter = 0
-        self.__goal_pose = get_goal_pose_from_t4_dataset(self.__t4_dataset_paths[0])
-        self.__result_writer = ResultWriter(
-            self.__result_json_path, self.get_clock(), self.__condition
-        )
-
-        e_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
-        e_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"  # Add a fixed value setting
+        self.__goal_pose = DLREvaluator.get_goal_pose_from_t4_dataset(self._t4_dataset_paths[0])
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
-            dataset_paths=self.__t4_dataset_paths,
+            dataset_paths=self._t4_dataset_paths,
             frame_id="base_link",
-            result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
-            evaluation_config_dict=e_cfg["evaluation_config_dict"],
+            result_root_directory=os.path.join(self._perception_eval_log_path, "result", "{TIME}"),
+            evaluation_config_dict=self.__s_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )
 
@@ -473,7 +453,7 @@ class ObstacleSegmentationEvaluator(Node):
 
         self.__evaluator = SensingEvaluationManager(evaluation_config=evaluation_config)
 
-        self.__latest_stop_reasons: List[Dict] = []
+        self.__latest_stop_reasons: list[dict] = []
         self.__sub_awapi_autoware_status = self.create_subscription(
             AwapiAutowareStatus,
             "/awapi/autoware/get/status",
@@ -491,59 +471,61 @@ class ObstacleSegmentationEvaluator(Node):
         self.__pub_pcd_non_detection = self.create_publisher(PointCloud2, "pcd/non_detection", 1)
         self.__pub_marker_detection = self.create_publisher(MarkerArray, "marker/detection", 1)
         self.__pub_marker_non_detection = self.create_publisher(
-            MarkerArray, "marker/non_detection", 1
+            MarkerArray,
+            "marker/non_detection",
+            1,
         )
         self.__pub_goal_pose = self.create_publisher(
-            PoseStamped, "/planning/mission_planning/goal", 1
+            PoseStamped,
+            "/planning/mission_planning/goal",
+            1,
         )
         # for Autoware Evaluator visualization
         self.__pub_graph_topic_rate = self.create_publisher(
-            ObstacleSegmentationMarker, "graph/topic_rate", 1
+            ObstacleSegmentationMarker,
+            "graph/topic_rate",
+            1,
         )
         self.__pub_graph_detection = self.create_publisher(
-            ObstacleSegmentationMarkerArray, "graph/detection", 1
+            ObstacleSegmentationMarkerArray,
+            "graph/detection",
+            1,
         )
         self.__pub_graph_non_detection = self.create_publisher(
-            ObstacleSegmentationMarker, "graph/non_detection", 1
+            ObstacleSegmentationMarker,
+            "graph/non_detection",
+            1,
         )
-
-        self.__current_time = Time().to_msg()
-        self.__prev_time = Time().to_msg()
-
-        self.__shutdown_counter = 0
-        self.__timer = self.create_timer(
-            1.0,
-            self.timer_cb,
-            callback_group=self.__timer_group,
-            clock=Clock(clock_type=ClockType.SYSTEM_TIME),
-        )  # wall timer
         self.__skip_counter = 0
 
-    def timer_cb(self):
-        self.__current_time = self.get_clock().now().to_msg()
-        # self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
-        if self.__current_time.sec > 0:
-            self.__goal_pose_counter = self.__goal_pose_counter + 1
-            if self.__goal_pose_counter <= 5:
-                self.__goal_pose.header.stamp = self.__current_time
-                self.__pub_goal_pose.publish(self.__goal_pose)
-            if self.__current_time == self.__prev_time:
-                self.__shutdown_counter += 1
-            else:
-                self.__shutdown_counter = 0
-            self.__prev_time = self.__current_time
-            if self.__shutdown_counter >= 5:
-                # self.save_pkl()
-                self.write_graph_data()
-                rclpy.shutdown()
+    def check_scenario(self) -> None:
+        try:
+            self.__s_cfg = self._scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
+            self.__s_cfg["evaluation_config_dict"][
+                "label_prefix"
+            ] = "autoware"  # Add a fixed value setting
+        except KeyError:
+            self.get_logger().error("Scenario format error.")
+            rclpy.shutdown()
 
-    def write_graph_data(self):
-        # jsonlを一旦閉じて開きなおす
-        self.__result_writer.close()
-        jsonl_file_path = Path(
-            os.path.splitext(os.path.expandvars(self.__result_json_path))[0] + ".jsonl"
+    def timer_cb(self) -> None:
+        super().timer_cb(
+            register_loop_func=self.publish_goal_pose,
+            register_shutdown_func=self.write_graph_data,
         )
-        # self.get_logger().error(f"jsonl file: {jsonl_file_path}")
+
+    def publish_goal_pose(self) -> None:
+        if self.__goal_pose_counter < ObstacleSegmentationEvaluator.COUNT_FINISH_PUB_GOAL_POSE:
+            self.__goal_pose_counter += 1
+            self.__goal_pose.header.stamp = self._current_time
+            self.__pub_goal_pose.publish(self.__goal_pose)
+
+    def write_graph_data(self) -> None:
+        # jsonlを一旦閉じて開きなおす
+        self._result_writer.close()
+        jsonl_file_path = Path(
+            os.path.splitext(os.path.expandvars(self._result_json_path))[0] + ".jsonl",
+        )
         detection_dist, pointcloud_numpoints = get_graph_data(
             jsonl_file_path,
             self.__vehicle_model,
@@ -559,23 +541,14 @@ class ObstacleSegmentationEvaluator(Node):
                     "GraphData": {
                         "DetectionDist": detection_dist,
                         "PointcloudCount": pointcloud_numpoints,
-                    }
+                    },
                 }
                 str_last_line = json.dumps(last_line_dict, ignore_nan=True) + "\n"
                 jsonl_file.write(str_last_line)
             except json.JSONDecodeError:
                 pass
-            jsonl_file.close()
 
-    def save_pkl(self):
-        # for debug
-        from driving_log_replayer.result import PickleWriter
-
-        self.__pkl_path = os.path.join(os.path.dirname(self.__result_json_path), "frame.pkl")
-        self.__pickle_writer = PickleWriter(self.__pkl_path)
-        self.__pickle_writer.dump(self.__evaluator.frame_results)
-
-    def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput):
+    def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput) -> None:
         self.__pub_marker_non_detection.publish(msg.marker_array)
         pcd_header = msg.pointcloud.header
         unix_time: int = eval_conversions.unix_time_from_ros_msg(pcd_header)
@@ -585,89 +558,83 @@ class ObstacleSegmentationEvaluator(Node):
         # Ground truthがない場合はスキップされたことを記録する
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
-        else:
-            # create sensing_frame_config
-            frame_ok, sensing_frame_config = get_sensing_frame_config(
-                pcd_header, self.__scenario_yaml_obj
-            )
-            if not frame_ok:
-                self.__skip_counter += 1
-                return
-            numpy_pcd = ros2_numpy.numpify(msg.pointcloud)
-            pointcloud = np.zeros((numpy_pcd.shape[0], 3))
-            pointcloud[:, 0] = numpy_pcd["x"]
-            pointcloud[:, 1] = numpy_pcd["y"]
-            pointcloud[:, 2] = numpy_pcd["z"]
+            return
+        # create sensing_frame_config
+        frame_ok, sensing_frame_config = get_sensing_frame_config(
+            pcd_header,
+            self._scenario_yaml_obj,
+        )
+        if not frame_ok:
+            self.__skip_counter += 1
+            return
+        numpy_pcd = ros2_numpy.numpify(msg.pointcloud)
+        pointcloud = np.zeros((numpy_pcd.shape[0], 3))
+        pointcloud[:, 0] = numpy_pcd["x"]
+        pointcloud[:, 1] = numpy_pcd["y"]
+        pointcloud[:, 2] = numpy_pcd["z"]
 
-            non_detection_areas: List[List[Tuple[float, float, float]]] = []
-            for marker in msg.marker_array.markers:
-                non_detection_area: List[Tuple[float, float, float]] = []
-                for point in marker.points:
-                    non_detection_area.append((point.x, point.y, point.z))
-                non_detection_areas.append(non_detection_area)
+        non_detection_areas: list[list[tuple[float, float, float]]] = []
+        for marker in msg.marker_array.markers:
+            non_detection_area: list[tuple[float, float, float]] = []
+            for point in marker.points:
+                non_detection_area.append((point.x, point.y, point.z))
+            non_detection_areas.append(non_detection_area)
 
-            frame_result: SensingFrameResult = self.__evaluator.add_frame_result(
-                unix_time=unix_time,
-                ground_truth_now_frame=ground_truth_now_frame,
-                pointcloud=pointcloud,
-                non_detection_areas=non_detection_areas,
-                sensing_frame_config=sensing_frame_config,
-            )
+        frame_result: SensingFrameResult = self.__evaluator.add_frame_result(
+            unix_time=unix_time,
+            ground_truth_now_frame=ground_truth_now_frame,
+            pointcloud=pointcloud,
+            non_detection_areas=non_detection_areas,
+            sensing_frame_config=sensing_frame_config,
+        )
 
-            # write result
-            (
-                marker_detection,
-                pcd_detection,
-                graph_detection,
-                pcd_non_detection,
-                graph_non_detection,
-            ) = self.__result.add_frame(
-                frame_result,
-                self.__skip_counter,
-                transform_stamped_with_euler_angle(msg.map_to_baselink),
-                self.__latest_stop_reasons,
-                msg.topic_rate,
-                pcd_header,
-            )
-            self.__result_writer.write(self.__result)
+        # write result
+        (
+            marker_detection,
+            pcd_detection,
+            graph_detection,
+            pcd_non_detection,
+            graph_non_detection,
+        ) = self.__result.set_frame(
+            frame_result,
+            self.__skip_counter,
+            DLREvaluator.transform_stamped_with_euler_angle(msg.map_to_baselink),
+            self.__latest_stop_reasons,
+            pcd_header,
+            topic_rate=msg.topic_rate,
+        )
+        self._result_writer.write_result(self.__result)
 
-            topic_rate_data = ObstacleSegmentationMarker()
-            topic_rate_data.header = msg.pointcloud.header
-            topic_rate_data.status = (
-                ObstacleSegmentationMarker.OK
-                if msg.topic_rate
-                else ObstacleSegmentationMarker.ERROR
-            )
-            self.__pub_graph_topic_rate.publish(topic_rate_data)
+        topic_rate_data = ObstacleSegmentationMarker()
+        topic_rate_data.header = msg.pointcloud.header
+        topic_rate_data.status = (
+            ObstacleSegmentationMarker.OK if msg.topic_rate else ObstacleSegmentationMarker.ERROR
+        )
+        self.__pub_graph_topic_rate.publish(topic_rate_data)
 
-            if marker_detection is not None:
-                self.__pub_marker_detection.publish(marker_detection)
-            if pcd_detection is not None:
-                self.__pub_pcd_detection.publish(pcd_detection)
-            if graph_detection is not None:
-                self.__pub_graph_detection.publish(graph_detection)
-            if pcd_non_detection is not None:
-                self.__pub_pcd_non_detection.publish(pcd_non_detection)
-            if graph_non_detection is not None:
-                self.__pub_graph_non_detection.publish(graph_non_detection)
+        if marker_detection is not None:
+            self.__pub_marker_detection.publish(marker_detection)
+        if pcd_detection is not None:
+            self.__pub_pcd_detection.publish(pcd_detection)
+        if graph_detection is not None:
+            self.__pub_graph_detection.publish(graph_detection)
+        if pcd_non_detection is not None:
+            self.__pub_pcd_non_detection.publish(pcd_non_detection)
+        if graph_non_detection is not None:
+            self.__pub_graph_non_detection.publish(graph_non_detection)
 
-    def awapi_status_cb(self, msg: AwapiAutowareStatus):
+    def awapi_status_cb(self, msg: AwapiAutowareStatus) -> None:
         self.__latest_stop_reasons = []
         if reasons := msg.stop_reason.stop_reasons:
             for msg_reason in reasons:
-                # self.get_logger().error(f"stop_reason: {msg_reason.reason}")
+                # to debug reason use: self.get_logger().error(f"stop_reason: {msg_reason.reason}")
                 if msg_reason.reason == "ObstacleStop":
                     self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    executor = MultiThreadedExecutor()
-    obstacle_segmentation_evaluator = ObstacleSegmentationEvaluator()
-    executor.add_node(obstacle_segmentation_evaluator)
-    executor.spin()
-    obstacle_segmentation_evaluator.destroy_node()
-    rclpy.shutdown()
+@evaluator_main
+def main() -> DLREvaluator:
+    return ObstacleSegmentationEvaluator("obstacle_segmentation_evaluator")
 
 
 if __name__ == "__main__":

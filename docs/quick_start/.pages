@@ -9,6 +9,8 @@ nav:
   - yabloc.ja.md
   - eagleye.en.md
   - eagleye.ja.md
+  - ar_tag_based_localizer.en.md
+  - ar_tag_based_localizer.ja.md
   - obstacle_segmentation.en.md
   - obstacle_segmentation.ja.md
   - perception.en.md

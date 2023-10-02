@@ -28,7 +28,13 @@ import yaml
 
 
 class PerceptionEvaluatorPickle:
-    def __init__(self, pickle_path: str, scenario_path: str, t4_dataset_path: str, log_path: str):
+    def __init__(
+        self,
+        pickle_path: str,
+        scenario_path: str,
+        t4_dataset_path: str,
+        log_path: str,
+    ) -> None:
         self.__scenario_yaml_obj = None
         self.__loaded_frame_results = None
         self.__t4_dataset_paths = [os.path.expandvars(t4_dataset_path)]
@@ -75,9 +81,9 @@ class PerceptionEvaluatorPickle:
         number_use_case_fail_object: int = 0
         for frame_results in self.__evaluator.frame_results:
             number_use_case_fail_object += frame_results.pass_fail_result.get_fail_object_num()
-        logging.info(f"final use case fail object: {number_use_case_fail_object}")
+        logging.info("final use case fail object: %d", number_use_case_fail_object)
         final_metric_score = self.__evaluator.get_scene_result()
-        logging.info(f"final metrics result {final_metric_score}")
+        logging.info("final metrics result %s", final_metric_score)
         analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
         analyzer.add(self.__evaluator.frame_results)
         score_df, error_df = analyzer.analyze()
@@ -87,19 +93,24 @@ class PerceptionEvaluatorPickle:
             error_dict = (
                 error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
             )
-        print(score_dict)
-        print(error_dict)
-        # self.__evaluator.visualizer.visualize_all(self.__evaluator.frame_results)
+        print(score_dict)  # noqa
+        print(error_dict)  # noqa
         return final_metric_score
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-p", "--pickle", required=True, help="path of the pickle file to load scene_result"
+        "-p",
+        "--pickle",
+        required=True,
+        help="path of the pickle file to load scene_result",
     )
     parser.add_argument(
-        "-s", "--scenario", required=True, help="path of the scenario to load evaluator settings"
+        "-s",
+        "--scenario",
+        required=True,
+        help="path of the scenario to load evaluator settings",
     )
     parser.add_argument("-d", "--dataset", required=True, help="path of the t4_dataset")
     parser.add_argument("-l", "--log_path", required=True, help="perception_eval log path")

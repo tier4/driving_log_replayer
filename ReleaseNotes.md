@@ -1,5 +1,78 @@
 # Release Notes
 
+## Version 1.6.5
+
+Minor Tweak
+
+| Module | Feature              | Brief summary                                                          | Pull request                                                   | Jira | Contributor                                   |
+| ------ | -------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | Library installation | Install mkdocs library with poetry group docs                          | [#265](https://github.com/tier4/driving_log_replayer/pull/265) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | Library installation | Automatically install specific versions of libraries with colcon build | [#266](https://github.com/tier4/driving_log_replayer/pull/266) | -    | [ktro2828](https://github.com/ktro2828)       |
+
+## Version 1.6.4
+
+Document update
+
+| Module | Feature       | Brief summary                             | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------------- | ----------------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | documentation | fix mkdocs github actions library install | [#263](https://github.com/tier4/driving_log_replayer/pull/263) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.6.3
+
+Document update
+
+| Module   | Feature       | Brief summary         | Pull request                                                   | Jira | Contributor                           |
+| -------- | ------------- | --------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `yabloc` | documentation | fix yabloc rosbag url | [#261](https://github.com/tier4/driving_log_replayer/pull/261) | -    | [kminoda](https://github.com/kminoda) |
+
+## Version 1.6.2
+
+Major change
+
+| Module                   | Feature                  | Brief summary                               | Pull request                                                   | Jira     | Contributor                                         |
+| ------------------------ | ------------------------ | ------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------------- |
+| `all`                    | test                     | add unit test for result class              | [#246](https://github.com/tier4/driving_log_replayer/pull/246) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization`           | test                     | add unit test for localization              | [#248](https://github.com/tier4/driving_log_replayer/pull/248) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization`           | log                      | add topic result class                      | [#249](https://github.com/tier4/driving_log_replayer/pull/249) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization`           | log                      | update initial value of TopicResult.success | [#250](https://github.com/tier4/driving_log_replayer/pull/250) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization`           | log, test                | update localization availability            | [#251](https://github.com/tier4/driving_log_replayer/pull/251) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `yabloc`                 | test                     | add yabloc unit test                        | [#252](https://github.com/tier4/driving_log_replayer/pull/252) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `eagleye`                | test                     | add eagleye unit test                       | [#253](https://github.com/tier4/driving_log_replayer/pull/253) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `all`                    | log                      | change TopicResult to EvaluationItem        | [#254](https://github.com/tier4/driving_log_replayer/pull/254) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `all`                    | log, test                | add frame_success                           | [#256](https://github.com/tier4/driving_log_replayer/pull/256) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `all`                    | test                     | update variable name                        | [#257](https://github.com/tier4/driving_log_replayer/pull/257) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+| `ar_tag_based_localizer` | `ar_tag_based_localizer` | add `ar_tag_based_localizer` evaluation     | [#258](https://github.com/tier4/driving_log_replayer/pull/258) | -        | [SakodaShintaro](https://github.com/SakodaShintaro) |
+| `all`                    | documentation            | update document                             | [#259](https://github.com/tier4/driving_log_replayer/pull/259) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126)       |
+
+## Version 1.6.1
+
+Bug fix
+
+| Module | Feature | Brief summary                             | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ----------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | launch  | fix restore launch argument default value | [#244](https://github.com/tier4/driving_log_replayer/pull/244) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.6.0
+
+Breaking change
+End of support for ROS 2 galactic
+
+| Module                          | Feature          | Brief summary                  | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------- | ---------------- | ------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization, yabloc, eagleye` | refactoring      | refactor evaluator node        | [#228](https://github.com/tier4/driving_log_replayer/pull/228) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag`              | refactoring      | refactor evaluator node        | [#229](https://github.com/tier4/driving_log_replayer/pull/229) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`                    | refactoring      | refactor evaluator node        | [#230](https://github.com/tier4/driving_log_replayer/pull/230) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception_2d`                 | refactoring      | refactor evaluator node        | [#231](https://github.com/tier4/driving_log_replayer/pull/231) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`                 | refactoring      | refactor evaluator node        | [#232](https://github.com/tier4/driving_log_replayer/pull/232) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | refactoring      | refactor call lookup transform | [#233](https://github.com/tier4/driving_log_replayer/pull/233) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation`         | refactoring      | refactor evaluator node        | [#234](https://github.com/tier4/driving_log_replayer/pull/234) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply ruff linter rules        | [#237](https://github.com/tier4/driving_log_replayer/pull/237) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply type hint                | [#238](https://github.com/tier4/driving_log_replayer/pull/238) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply ruff linter rules        | [#239](https://github.com/tier4/driving_log_replayer/pull/239) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply ruff linter rules        | [#240](https://github.com/tier4/driving_log_replayer/pull/240) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | linter           | apply ruff linter rules        | [#241](https://github.com/tier4/driving_log_replayer/pull/241) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                           | CMake, type hint | drop galactic support          | [#242](https://github.com/tier4/driving_log_replayer/pull/242) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.5.4
 
 Minor Tweak

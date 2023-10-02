@@ -50,15 +50,15 @@ class BirdViewPlot(PlotBase):
                     range=[
                         self._get_min("x") - self.MARGIN,
                         self._get_min("x") + plot_range,
-                    ]
+                    ],
                 )
                 self._fig.update_yaxes(
                     range=[
                         self._get_min("y") - self.MARGIN,
                         self._get_min("y") + plot_range,
-                    ]
+                    ],
                 )
-        else:
+        else:  # noqa
             # specify axis
             if origin:
                 self._fig.update_xaxes(range=[-scale, scale])
@@ -75,7 +75,7 @@ class BirdViewPlot(PlotBase):
         title: str = "",
         xlabel: str = "",
         ylabel: str = "",
-    ):
+    ) -> None:
         """
         Plotを作成して保存する.
 
@@ -115,7 +115,7 @@ class BirdViewPlot(PlotBase):
         xlabel: str = "",
         ylabel: str = "",
         origin: bool = True,  # noqa
-    ):
+    ) -> None:
         """
         Plotを作成して保存する.
 

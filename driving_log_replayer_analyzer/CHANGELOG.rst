@@ -2,6 +2,65 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.6.5 (2023-09-29)
+------------------
+* feat: poetry add group docs (`#265 <https://github.com/tier4/driving_log_replayer/issues/265>`_)
+* build: add requirements and install operation to overwrite python libraries (`#266 <https://github.com/tier4/driving_log_replayer/issues/266>`_)
+* Contributors: Kotaro Uetake
+
+1.6.4 (2023-09-28)
+------------------
+* fix: mkdocs github actions library install
+* Contributors: Hayato Mizushima
+
+1.6.3 (2023-09-28)
+------------------
+* fix(yabloc): fix rosbag url (`#261 <https://github.com/tier4/driving_log_replayer/issues/261>`_)
+* Contributors: kminoda
+
+1.6.2 (2023-09-27)
+------------------
+* feat: add ar_tag_based_localizer evaluation (`#258 <https://github.com/tier4/driving_log_replayer/issues/258>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* feat: eagleye test (`#253 <https://github.com/tier4/driving_log_replayer/issues/253>`_)
+* feat: yabloc test (`#252 <https://github.com/tier4/driving_log_replayer/issues/252>`_)
+* chore: update variable name (`#257 <https://github.com/tier4/driving_log_replayer/issues/257>`_)
+* feat: add frame success (`#256 <https://github.com/tier4/driving_log_replayer/issues/256>`_)
+* chore: evaluation item (`#254 <https://github.com/tier4/driving_log_replayer/issues/254>`_)
+* feat: update localization availability (`#251 <https://github.com/tier4/driving_log_replayer/issues/251>`_)
+* chore: change topic result success initial value (`#250 <https://github.com/tier4/driving_log_replayer/issues/250>`_)
+* feat: topic result (`#249 <https://github.com/tier4/driving_log_replayer/issues/249>`_)
+* feat: localization test (`#248 <https://github.com/tier4/driving_log_replayer/issues/248>`_)
+* feat: result test (`#246 <https://github.com/tier4/driving_log_replayer/issues/246>`_)
+* Contributors: Hayato Mizushima, SakodaShintaro
+1.6.1 (2023-09-12)
+------------------
+* fix: restore default value (`#244 <https://github.com/tier4/driving_log_replayer/issues/244>`_)
+* Contributors: Hayato Mizushima
+
+1.6.0 (2023-09-11)
+------------------
+* feat!: drop galactic support (`#242 <https://github.com/tier4/driving_log_replayer/issues/242>`_)
+* refactor: apply ruff rules (`#241 <https://github.com/tier4/driving_log_replayer/issues/241>`_)
+* refactor: apply ruff rules (`#240 <https://github.com/tier4/driving_log_replayer/issues/240>`_)
+* refactor: comma (`#239 <https://github.com/tier4/driving_log_replayer/issues/239>`_)
+* refactor: type hint (`#238 <https://github.com/tier4/driving_log_replayer/issues/238>`_)
+* refactor: add type hint
+* refactor: add type hint to main method
+* fix: annotate void function
+* refactor: apply ruff rules (`#237 <https://github.com/tier4/driving_log_replayer/issues/237>`_)
+* fix: ERA
+* fix: PLR0911
+* refactor: evaluator abstract base class (`#236 <https://github.com/tier4/driving_log_replayer/issues/236>`_)
+* refactor: obstacle segmentation abc (`#234 <https://github.com/tier4/driving_log_replayer/issues/234>`_)
+* refactor: lookup transform (`#233 <https://github.com/tier4/driving_log_replayer/issues/233>`_)
+* refactor: traffic light abc (`#232 <https://github.com/tier4/driving_log_replayer/issues/232>`_)
+* refactor: 2d abc (`#231 <https://github.com/tier4/driving_log_replayer/issues/231>`_)
+* refactor: perception abc (`#230 <https://github.com/tier4/driving_log_replayer/issues/230>`_)
+* refactor: diag abc (`#229 <https://github.com/tier4/driving_log_replayer/issues/229>`_)
+* refactor: localization abstract base class (`#228 <https://github.com/tier4/driving_log_replayer/issues/228>`_)
+* Contributors: Hayato Mizushima
+
 1.5.4 (2023-09-01)
 ------------------
 * chore: update mkdocs i18n setting

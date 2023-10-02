@@ -15,3 +15,7 @@ repositories:
     type: git
     url: https://github.com/autowarefoundation/autoware_common.git
     version: main
+  autoware/autoware_adapi_msgs:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_adapi_msgs.git
+    version: main

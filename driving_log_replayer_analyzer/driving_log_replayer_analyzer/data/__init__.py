@@ -15,7 +15,6 @@
 from dataclasses import dataclass
 from enum import Enum
 import math
-from typing import Dict
 
 
 class DistType(Enum):
@@ -40,15 +39,15 @@ class Stamp:
     timestamp_system: float = -1.0
     timestamp_ros: float = -1.0
 
-    def __init__(self, json_dict: Dict) -> None:
+    def __init__(self, json_dict: dict) -> None:
         try:
             self.timestamp_system = json_dict["Stamp"]["System"]
             self.timestamp_ros = json_dict["Stamp"]["ROS"]
         except (KeyError, IndexError):
             pass
 
-    def validate(self):
-        return self.timestamp_system > 0.0 and self.timestamp_ros > 0.0
+    def validate(self) -> bool:
+        return self.timestamp_system > 0.0 and self.timestamp_ros > 0.0  # noqa
 
 
 @dataclass
@@ -57,10 +56,12 @@ class Position:
     y: float = None  # vehicle front
     z: float = None
 
-    def __init__(self, data: Dict = {}) -> None:  # noqa
+    def __init__(self, data: dict | None = None) -> None:
+        if data is None:
+            data = {}
         self.try_parse_dict(data)
 
-    def try_parse_dict(self, data):
+    def try_parse_dict(self, data) -> None:  # noqa
         if isinstance(data, dict):
             try:
                 self.y = data["x"]
@@ -79,7 +80,7 @@ class Position:
             error_msg = "Input data should be a dict or list."
             raise NotImplementedError(error_msg)  # EM101
 
-    def validate(self):
+    def validate(self) -> bool:
         return self.x is not None and self.y is not None and self.z is not None
 
     def get_distance(self, dist_type: DistType) -> float:
@@ -91,8 +92,8 @@ class Position:
             return math.hypot(self.x, self.y)
         return None
 
-    def add_overhang(self, val: float):
+    def add_overhang(self, val: float) -> None:
         self.y = self.y + val
 
-    def sub_overhang(self, val: float):
+    def sub_overhang(self, val: float) -> None:
         self.y = self.y - val

@@ -23,7 +23,7 @@ from driving_log_replayer_analyzer.plot.line_plot import LinePlot
 from driving_log_replayer_analyzer.plot.scatter_plot import ScatterPlot
 
 
-def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type: DistType):
+def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type: DistType) -> None:
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード
@@ -100,7 +100,8 @@ def visualize(input_jsonl: Path, output_dir: Path, config_yaml: Path, dist_type:
 
     pointcloud_non_detection_plot = ScatterPlot()
     pointcloud_non_detection_plot.add_data_with_hover(
-        parser.get_non_detection_frame_points(config.fp_distance), legend="points"
+        parser.get_non_detection_frame_points(config.fp_distance),
+        legend="points",
     )
     pointcloud_non_detection_plot.plot_with_hover(
         title="False Positive",

@@ -14,7 +14,6 @@
 
 import os
 from pathlib import Path
-from typing import Optional
 
 import click
 
@@ -25,7 +24,7 @@ CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 
 
 @click.group(context_settings=CONTEXT_SETTINGS)
-def analysis():
+def analysis() -> None:
     """Run analysis of the use case."""
 
 
@@ -41,8 +40,11 @@ def analysis():
     help="Distance type to calculate threshold. Possible values are front(vehicle front direction), side(vehicle side direction) and euclidean distance",
 )
 def obstacle_segmentation(
-    input_jsonl: str, output_dir: Optional[str], config_yaml: Optional[str], dist_type: str
-):
+    input_jsonl: str,
+    output_dir: str | None,
+    config_yaml: str | None,
+    dist_type: str,
+) -> None:
     """Run obstacle_segmentation analysis."""
     p_input_jsonl = Path(os.path.expandvars(input_jsonl))
     if output_dir is None:

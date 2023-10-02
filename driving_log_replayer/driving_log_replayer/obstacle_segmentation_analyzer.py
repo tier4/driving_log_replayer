@@ -15,8 +15,6 @@
 # limitations under the License.
 
 from pathlib import Path
-from typing import Dict
-from typing import Tuple
 
 from ament_index_python.packages import get_package_share_directory
 import yaml
@@ -54,8 +52,12 @@ def update_config(config: Config, vehicle_model: str) -> Config:
 
 
 def get_graph_data(
-    input_jsonl: Path, vehicle_model: str, output_dir: Path, config_yaml: Path, dist_type: DistType
-) -> Tuple[Dict, Dict]:
+    input_jsonl: Path,
+    vehicle_model: str,
+    output_dir: Path,
+    config_yaml: Path,
+    dist_type: DistType,
+) -> tuple[dict, dict]:
     output_dir.mkdir(exist_ok=True)
 
     # 設定ファイルのロード
