@@ -38,17 +38,24 @@ def get_diag_value(diag_status: DiagnosticStatus, key_name: str) -> str:
     return ""
 
 
-def parse_str_float(str_float: str) -> float:
+def convert_str_to_float(str_float: str) -> float:
     try:
         return float(str_float)
     except ValueError:
         return INVALID_FLOAT_VALUE
 
 
+def convert_str_to_int(str_float: str) -> float:
+    try:
+        return int(str_float)
+    except ValueError:
+        return 0
+
+
 @dataclass
 class Visibility(EvaluationItem):
     name: ClassVar[str] = "Visibility"
-    success = True
+    success: bool = True
     REGEX_VISIBILITY_DIAG_NAME: ClassVar[
         str
     ] = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
@@ -60,6 +67,7 @@ class Visibility(EvaluationItem):
 
     def set_frame(self, msg: DiagnosticArray) -> tuple[dict, Float64 | None, Byte | None]:
         if not self.valid:
+            self.summary = "Invalid"
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
                 None,
@@ -88,7 +96,7 @@ class Visibility(EvaluationItem):
             self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total}"
             break
         if include_target_status:
-            float_value = parse_str_float(visibility_value)
+            float_value = convert_str_to_float(visibility_value)
             valid_value = float_value >= Visibility.VALID_VALUE_THRESHOLD
             return (
                 {
@@ -186,8 +194,8 @@ class Blockage(EvaluationItem):
                 self.success_sensors[lidar_name] = (
                     self.passed_sensors[lidar_name] != self.total_sensors[lidar_name]
                 )
-            float_sky_ratio = parse_str_float(sky_ratio)
-            float_ground_ratio = parse_str_float(ground_ratio)
+            float_sky_ratio = convert_str_to_float(sky_ratio)
+            float_ground_ratio = convert_str_to_float(ground_ratio)
             valid_ratio = (
                 float_sky_ratio >= Blockage.VALID_VALUE_THRESHOLD
                 and float_ground_ratio >= Blockage.VALID_VALUE_THRESHOLD
@@ -197,11 +205,13 @@ class Blockage(EvaluationItem):
                 "Info": {
                     "Level": int.from_bytes(diag_level, byteorder="little"),
                     "GroundBlockageRatio": float_sky_ratio,
-                    "GroundBlockageCount": int(
+                    "GroundBlockageCount": convert_str_to_int(
                         get_diag_value(diag_status, "ground_blockage_count"),
                     ),
                     "SkyBlockageRatio": float_ground_ratio,
-                    "SkyBlockageCount": int(get_diag_value(diag_status, "sky_blockage_count")),
+                    "SkyBlockageCount": convert_str_to_int(
+                        get_diag_value(diag_status, "sky_blockage_count"),
+                    ),
                 },
             }
             rtn_sky_ratio[lidar_name] = Float64(data=float_sky_ratio) if valid_ratio else None
