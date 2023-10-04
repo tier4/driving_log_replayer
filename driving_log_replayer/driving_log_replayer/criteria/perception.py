@@ -7,9 +7,12 @@ from typing import Optional, Union
 
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation import PerceptionFrameResult
+from perception_eval.evaluation.matching import MatchingMode
 
 
 class SuccessFail(Enum):
+    """Enum object represents evaluated result is success or fail."""
+
     SUCCESS = "Success"
     FAIL = "Fail"
 
@@ -17,6 +20,11 @@ class SuccessFail(Enum):
         return self.value
 
     def is_success(self) -> bool:
+        """Returns whether success or fail.
+
+        Returns:
+            bool: Success or fail.
+        """
         return self == SuccessFail.SUCCESS
 
 
@@ -26,13 +34,46 @@ class CriteriaLevel(Enum):
     NORMAL = 75.0
     EASY = 50.0
 
+    CUSTOM = None
+
     def is_ok(self, score: Number) -> bool:
+        """Returns whether the score satisfied the level.
+
+        Args:
+            score (Number): Calculated score.
+
+        Returns:
+            bool: Whether the score satisfied the level.
+        """
         return score >= self.value
 
     @classmethod
     def from_str(cls, value: str) -> CriteriaLevel:
+        """Constructs instance from
+
+        Args:
+            value (str): _description_
+
+        Returns:
+            CriteriaLevel: _description_
+        """
         name: str = value.upper()
+        assert name != "CUSTOM", "If you want to use custom level, input value [0.0, 100.0]."
         return cls.__members__[name]
+
+    @classmethod
+    def from_number(cls, value: Number) -> CriteriaLevel:
+        """Constructs `CriteriaLevel.CUSTOM` with custom value.
+
+        Args:
+            value (Number): Level value which is must be [0.0, 100.0].
+
+        Returns:
+            CriteriaLevel: `CriteriaLevel.CUSTOM` with custom value.
+        """
+        assert 0.0 <= value <= 100.0, f"Custom level must be [0.0, 100.0], but got {value}."
+        cls.CUSTOM._value_ = value
+        return cls.CUSTOM
 
 
 class CriteriaMode(Enum):
@@ -41,6 +82,14 @@ class CriteriaMode(Enum):
 
     @classmethod
     def from_str(cls, value: str) -> CriteriaMode:
+        """Constructs instance from name in string.
+
+        Args:
+            value (str): Name of enum.
+
+        Returns:
+            CriteriaMode: `CriteriaMode` instance.
+        """
         name: str = value.upper()
         return cls.__members__[name]
 
@@ -51,6 +100,14 @@ class CriteriaMethod(ABC):
         self.level: CriteriaLevel = level
 
     def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
+        """Returns `SuccessFail` instance from the frame result.
+
+        Args:
+            frame (PerceptionFrameResult): Frame result.
+
+        Returns:
+            SuccessFail: Success or fail.
+        """
         if self.has_objects(frame) is False:
             return SuccessFail.FAIL
         score: float = self.calculate_score(frame)
@@ -58,6 +115,14 @@ class CriteriaMethod(ABC):
 
     @staticmethod
     def has_objects(frame: PerceptionFrameResult) -> bool:
+        """Returns whether the frame result contains at least one objects.
+
+        Args:
+            frame (PerceptionFrameResult): Frame result.
+
+        Returns:
+            bool: Whether the frame result has objects is.
+        """
         num_success: int = frame.pass_fail_result.get_num_success()
         num_fail: int = frame.pass_fail_result.get_num_fail()
         return num_success + num_fail > 0
@@ -65,6 +130,14 @@ class CriteriaMethod(ABC):
     @staticmethod
     @abstractmethod
     def calculate_score(frame: PerceptionFrameResult) -> float:
+        """Calculates score depending on the method.
+
+        Args:
+            frame (PerceptionFrameResult): Frame result.
+
+        Returns:
+            float: Calculated score.
+        """
         pass
 
 
@@ -93,7 +166,11 @@ class MetricsScore(CriteriaMethod):
                 if acc.accuracy != float("inf")
             ]
         else:
-            scores = [map_.map for map_ in frame.metrics_score.maps if map_.map != float("inf")]
+            scores = [
+                map_.map
+                for map_ in frame.metrics_score.maps
+                if map_.map != float("inf") and map_.matching_mode == MatchingMode.CENTERDISTANCE
+            ]
 
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
 
@@ -103,13 +180,13 @@ class PerceptionCriteria:
 
     Args:
         mode (Optional[Union[str, CriteriaMode]])
-        level (Optional[Union[str, CriteriaLevel]])
+        level (Optional[Union[str, Number, CriteriaLevel]])
     """
 
     def __init__(
         self,
         mode: Optional[Union[str, CriteriaMode]] = None,
-        level: Optional[Union[str, CriteriaLevel]] = None,
+        level: Optional[Union[str, Number, CriteriaLevel]] = None,
     ) -> None:
         if mode is None:
             mode: CriteriaMode = CriteriaMode.NUM_FAILED_OBJECT
@@ -121,6 +198,8 @@ class PerceptionCriteria:
             level = CriteriaLevel.EASY
         elif isinstance(level, str):
             level = CriteriaLevel.from_str(level)
+        elif isinstance(level, Number):
+            level = CriteriaLevel.from_number(level)
         assert isinstance(level, CriteriaLevel), f"Invalid type of level: {type(level)}"
 
         if mode == CriteriaMode.NUM_FAILED_OBJECT:
