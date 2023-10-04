@@ -75,11 +75,11 @@ class Visibility(EvaluationItem):
             )
         include_target_status = False
         frame_success = "Fail"
-        self.total += 1
         diag_status: DiagnosticStatus
         for diag_status in msg.status:
             if not re.fullmatch(Visibility.REGEX_VISIBILITY_DIAG_NAME, diag_status.name):
                 continue
+            self.total += 1
             include_target_status = True
             visibility_value = get_diag_value(diag_status, "value")
             diag_level = diag_status.level
@@ -129,6 +129,7 @@ class Blockage(EvaluationItem):
         str
     ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar"
     REGEX_BLOCKAGE_DIAG_NAME: ClassVar[str] = BLOCKAGE_DIAG_BASE_NAME + ".*"
+    BLOCKAGE_DIAG_POSTFIX: ClassVar[str] = ": blockage_validation"
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
@@ -141,15 +142,16 @@ class Blockage(EvaluationItem):
                 self.success_sensors[k] = True
 
     def sensor_success_str(self, lidar_name: str) -> str:
-        return "Success" if self.success_sensors[lidar_name] else "Fail"
+        return "Success" if self.success_sensors.get(lidar_name) else "Fail"
 
     @classmethod
     def trim_lidar_name(cls, diag_name: str) -> str:
         remove_prefix = diag_name.replace(f"{Blockage.BLOCKAGE_DIAG_BASE_NAME} ", "")
-        return remove_prefix.replace(": blockage_validation", "")
+        return remove_prefix.replace(Blockage.BLOCKAGE_DIAG_POSTFIX, "")
 
     def set_frame(self, msg: DiagnosticStatus) -> tuple[dict, dict, dict, dict]:
         if not self.valid:
+            self.summary = "Invalid"
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
                 {},
@@ -157,8 +159,6 @@ class Blockage(EvaluationItem):
                 {},
             )
         include_target_status = False
-        frame_success = "Fail"
-        self.total += 1
         rtn_dict = {}
         rtn_sky_ratio = {}
         rtn_ground_ratio = {}
@@ -204,11 +204,11 @@ class Blockage(EvaluationItem):
                 "Result": {"Total": self.sensor_success_str(lidar_name), "Frame": frame_success},
                 "Info": {
                     "Level": int.from_bytes(diag_level, byteorder="little"),
-                    "GroundBlockageRatio": float_sky_ratio,
+                    "GroundBlockageRatio": float_ground_ratio,
                     "GroundBlockageCount": convert_str_to_int(
                         get_diag_value(diag_status, "ground_blockage_count"),
                     ),
-                    "SkyBlockageRatio": float_ground_ratio,
+                    "SkyBlockageRatio": float_sky_ratio,
                     "SkyBlockageCount": convert_str_to_int(
                         get_diag_value(diag_status, "sky_blockage_count"),
                     ),
@@ -240,7 +240,7 @@ class Blockage(EvaluationItem):
                 tmp_success = False
         self.success = tmp_success
         tmp_success_str = "Success" if tmp_success else "Fail"
-        self.summary = f"Blockage ({tmp_success_str}): {tmp_summary}"
+        self.summary = f"Blockage ({tmp_success_str}): {tmp_summary.rstrip()}"
 
 
 class PerformanceDiagResult(ResultBase):
