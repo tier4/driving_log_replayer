@@ -188,7 +188,10 @@ class Blockage(EvaluationItem):
                     self.passed_sensors[lidar_name] >= self.condition[lidar_name]["PassFrameCount"]
                 )
             elif scenario_type == "FP":
-                if diag_level != DiagnosticStatus.ERROR:
+                if not (
+                    diag_level == DiagnosticStatus.ERROR
+                    and self.condition[lidar_name]["BlockageType"] in diag_status.message
+                ):
                     frame_success = "Success"
                     self.passed_sensors[lidar_name] += 1
                 self.success_sensors[lidar_name] = (
