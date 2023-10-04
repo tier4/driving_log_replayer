@@ -168,7 +168,7 @@ class Blockage(EvaluationItem):
             if not re.fullmatch(Blockage.REGEX_BLOCKAGE_DIAG_NAME, diag_status.name):
                 continue
             lidar_name = Blockage.trim_lidar_name(diag_status.name)
-            scenario_type = self.condition[lidar_name]["ScenarioType"]
+            scenario_type = self.condition.get(lidar_name, {}).get("ScenarioType")
             if scenario_type is None:
                 continue
             include_target_status = True

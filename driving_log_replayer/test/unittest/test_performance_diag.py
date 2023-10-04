@@ -200,8 +200,10 @@ def test_blockage_invalid() -> None:
     assert msg_blockage_levels == {}
 
 
-def test_blockage_has_no_target_diag() -> None:
-    status = DiagnosticStatus(name="not_blockage_diag_name")
+def test_blockage_has_no_target_diag_not_target_lidar() -> None:
+    status = DiagnosticStatus(
+        name="/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar rear_upper: blockage_validation",
+    )
     evaluation_item = Blockage(
         condition={
             "front_lower": {"ScenarioType": "TP", "BlockageType": "both", "PassFrameCount": 100},
