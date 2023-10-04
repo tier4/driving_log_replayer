@@ -98,7 +98,7 @@ def object_state_to_ros_box_and_uuid(
         ),
     )
     # nuScenes box order is width, length, height
-    scale = Vector3(x=gt_state.size[1], y=gt_state[0], z=gt_state.size[2])
+    scale = Vector3(x=gt_state.size[1], y=gt_state.size[0], z=gt_state.size[2])
     bbox = Marker(
         header=header,
         ns=namespace,
