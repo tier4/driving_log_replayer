@@ -17,24 +17,24 @@
 import logging
 import os
 
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+import rclpy
+from driving_log_replayer.criteria import PerceptionCriteria
+from driving_log_replayer.evaluator import DLREvaluator, evaluator_main
+from driving_log_replayer.result import ResultBase
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScore
-from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
-from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
+from perception_eval.evaluation.result.perception_frame_config import (
+    CriticalObjectFilterConfig,
+    PerceptionPassFailConfig,
+)
 from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
-import rclpy
 from std_msgs.msg import Header
-from tier4_perception_msgs.msg import DetectedObjectsWithFeature
-from tier4_perception_msgs.msg import DetectedObjectWithFeature
-
-from driving_log_replayer.evaluator import DLREvaluator
-from driving_log_replayer.evaluator import evaluator_main
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import ResultBase
+from tier4_perception_msgs.msg import DetectedObjectsWithFeature, DetectedObjectWithFeature
 
 
 class Perception2DResult(ResultBase):
@@ -51,6 +51,11 @@ class Perception2DResult(ResultBase):
             self.__total[camera_type] = 0
             self.__result[camera_type] = True
             self.__msg[camera_type] = "NotTested"
+
+        self.__criteria = PerceptionCriteria(
+            mode=condition.get("Criteria"),
+            level=condition.get("Level"),
+        )
 
     def update(self) -> None:
         summary_str = ""
@@ -72,21 +77,11 @@ class Perception2DResult(ResultBase):
         camera_type: str,
     ) -> None:
         self.__total[camera_type] += 1
-        has_objects = True
-        if (
-            frame.pass_fail_result.tp_object_results == []
-            and frame.pass_fail_result.fp_object_results == []
-            and frame.pass_fail_result.fn_objects == []
-        ):
-            has_objects = False
+        result = self.__criteria.get_result(frame)
 
-        success = (
-            "Success"
-            if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects
-            else "Fail"
-        )
-        if success == "Success":
+        if result.is_success():
             self.__success[camera_type] += 1
+
         test_rate = self.__success[camera_type] / self.__total[camera_type] * 100.0
         self.__result[camera_type] = test_rate >= self.__pass_rate
         self.__msg[
@@ -100,7 +95,7 @@ class Perception2DResult(ResultBase):
             "FrameSkip": skip,
         }
         out_frame["PassFail"] = {
-            "Result": success,
+            "Result": str(result),
             "Info": [
                 {
                     "TP": len(frame.pass_fail_result.tp_object_results),
