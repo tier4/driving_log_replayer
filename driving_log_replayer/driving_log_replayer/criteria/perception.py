@@ -29,6 +29,8 @@ class SuccessFail(Enum):
 
 
 class CriteriaLevel(Enum):
+    """Enum object represents criteria level."""
+
     PERFECT = 100.0
     HARD = 90.0
     NORMAL = 75.0
@@ -36,7 +38,7 @@ class CriteriaLevel(Enum):
 
     CUSTOM = None
 
-    def is_ok(self, score: Number) -> bool:
+    def is_valid(self, score: Number) -> bool:
         """Returns whether the score satisfied the level.
 
         Args:
@@ -72,11 +74,13 @@ class CriteriaLevel(Enum):
             CriteriaLevel: `CriteriaLevel.CUSTOM` with custom value.
         """
         assert 0.0 <= value <= 100.0, f"Custom level must be [0.0, 100.0], but got {value}."
-        cls.CUSTOM._value_ = value
+        cls.CUSTOM._value_ = float(value)
         return cls.CUSTOM
 
 
 class CriteriaMode(Enum):
+    """Enum object represents criteria mode."""
+
     NUM_FAILED_OBJECT = "num_failed_object"
     METRICS_SCORE = "metrics_score"
 
@@ -95,6 +99,8 @@ class CriteriaMode(Enum):
 
 
 class CriteriaMethod(ABC):
+    """Class to define implementation for each criteria."""
+
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__()
         self.level: CriteriaLevel = level
@@ -111,7 +117,7 @@ class CriteriaMethod(ABC):
         if self.has_objects(frame) is False:
             return SuccessFail.FAIL
         score: float = self.calculate_score(frame)
-        return SuccessFail.SUCCESS if self.level.is_ok(score) else SuccessFail.FAIL
+        return SuccessFail.SUCCESS if self.level.is_valid(score) else SuccessFail.FAIL
 
     @staticmethod
     def has_objects(frame: PerceptionFrameResult) -> bool:
@@ -176,7 +182,7 @@ class MetricsScore(CriteriaMethod):
 
 
 class PerceptionCriteria:
-    """Criteria interface for perception evaluation
+    """Criteria interface for perception evaluation.
 
     Args:
         mode (Optional[Union[str, CriteriaMode]])
@@ -188,24 +194,45 @@ class PerceptionCriteria:
         mode: Optional[Union[str, CriteriaMode]] = None,
         level: Optional[Union[str, Number, CriteriaLevel]] = None,
     ) -> None:
-        if mode is None:
-            mode: CriteriaMode = CriteriaMode.NUM_FAILED_OBJECT
-        elif isinstance(mode, str):
-            mode: CriteriaMode = CriteriaMode.from_str(mode)
-        assert isinstance(mode, CriteriaMode), f"Invalid type of mode: {type(mode)}"
-
-        if level is None:
-            level = CriteriaLevel.EASY
-        elif isinstance(level, str):
-            level = CriteriaLevel.from_str(level)
-        elif isinstance(level, Number):
-            level = CriteriaLevel.from_number(level)
-        assert isinstance(level, CriteriaLevel), f"Invalid type of level: {type(level)}"
+        mode = CriteriaMode.NUM_FAILED_OBJECT if mode is None else self.load_mode(mode)
+        level = CriteriaLevel.EASY if level is None else self.load_level(level)
 
         if mode == CriteriaMode.NUM_FAILED_OBJECT:
             self.method = NumFailObject(level)
         elif mode == CriteriaMode.METRICS_SCORE:
             self.method = MetricsScore(level)
+
+    @staticmethod
+    def load_mode(mode: Union[str, CriteriaMode]) -> CriteriaMode:
+        """Load `CriteriaMode`.
+
+        Args:
+            mode (Optional[Union[str, CriteriaMode]]): Criteria mode instance or name.
+
+        Returns:
+            CriteriaMode: Instance.
+        """
+        if isinstance(mode, str):
+            mode: CriteriaMode = CriteriaMode.from_str(mode)
+        assert isinstance(mode, CriteriaMode), f"Invalid type of mode: {type(mode)}"
+        return mode
+
+    @staticmethod
+    def load_level(level: Union[str, Number, CriteriaLevel]) -> CriteriaLevel:
+        """Load `CriteriaLevel`.
+
+        Args:
+            level (Optional[Union[str, Number, CriteriaLevel]]): Criteria level instance, name or value.
+
+        Returns:
+            CriteriaLevel: Instance.
+        """
+        if isinstance(level, str):
+            level = CriteriaLevel.from_str(level)
+        elif isinstance(level, Number):
+            level = CriteriaLevel.from_number(level)
+        assert isinstance(level, CriteriaLevel), f"Invalid type of level: {type(level)}"
+        return level
 
     def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
         """Returns Success/Fail result from `PerceptionFrameResult`.
