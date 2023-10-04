@@ -238,7 +238,7 @@ class Blockage(EvaluationItem):
         tmp_summary = ""
         for lidar_name, v in self.success_sensors.items():
             tmp_summary += f"{lidar_name}: {self.passed_sensors[lidar_name]} / {self.total_sensors[lidar_name]} "
-            # 1個でもFalseが入ってたらlidar試験全体がfalse
+            # If even one false is entered, the entire blockage test is false.
             if not v:
                 tmp_success = False
         self.success = tmp_success
