@@ -195,7 +195,7 @@ class Blockage(EvaluationItem):
                     frame_success = "Success"
                     self.passed_sensors[lidar_name] += 1
                 self.success_sensors[lidar_name] = (
-                    self.passed_sensors[lidar_name] != self.total_sensors[lidar_name]
+                    self.passed_sensors[lidar_name] == self.total_sensors[lidar_name]
                 )
             float_sky_ratio = convert_str_to_float(sky_ratio)
             float_ground_ratio = convert_str_to_float(ground_ratio)
