@@ -88,42 +88,40 @@ def object_state_to_ros_box_and_uuid(
     color: ColorRGBA,
     text: str,
 ) -> tuple[Marker, Marker]:
-    pose = Pose()
-    pose.position.x = gt_state.position[0]
-    pose.position.y = gt_state.position[1]
-    pose.position.z = gt_state.position[2]
-    pose.orientation.w = gt_state.orientation[0]
-    pose.orientation.x = gt_state.orientation[1]
-    pose.orientation.y = gt_state.orientation[2]
-    pose.orientation.z = gt_state.orientation[3]
-    scale = Vector3()
+    pose = Pose(
+        position=Point(x=gt_state.position[0], y=gt_state.position[1], z=gt_state.position[2]),
+        orientation=RosQuaternion(
+            w=gt_state.orientation[0],
+            x=gt_state.orientation[1],
+            y=gt_state.orientation[2],
+            z=gt_state.orientation[3],
+        ),
+    )
     # nuScenes box order is width, length, height
-    scale.x = gt_state.size[1]
-    scale.y = gt_state.size[0]
-    scale.z = gt_state.size[2]
-    bbox = Marker()
-    bbox.header = header
-    bbox.ns = namespace
-    bbox.id = marker_id
-    bbox.type = Marker.CUBE
-    bbox.action = Marker.ADD
-    bbox.lifetime = Duration(seconds=0.2).to_msg()
-    bbox.pose = pose
-    bbox.scale = scale
-    bbox.color = color
-    uuid = Marker()
-    uuid.header = header
-    uuid.ns = namespace + "_uuid"
-    uuid.id = marker_id
-    uuid.type = Marker.TEXT_VIEW_FACING
-    uuid.action = Marker.ADD
-    uuid.lifetime = Duration(seconds=0.2).to_msg()
-    uuid_scale = Vector3()
-    uuid_scale.z = 0.8
-    uuid.pose = pose
-    uuid.scale = uuid_scale
-    uuid.color = color
-    uuid.text = text[:8]
+    scale = Vector3(x=gt_state.size[1], y=gt_state.size[0], z=gt_state.size[2])
+    bbox = Marker(
+        header=header,
+        ns=namespace,
+        id=marker_id,
+        type=Marker.CUBE,
+        action=Marker.ADD,
+        lifetime=Duration(seconds=0.2).to_msg(),
+        pose=pose,
+        scale=scale,
+        color=color,
+    )
+    uuid = Marker(
+        header=header,
+        ns=namespace + "_uuid",
+        id=marker_id,
+        type=Marker.TEXT_VIEW_FACING,
+        action=Marker.ADD,
+        lifetime=Duration(seconds=0.2).to_msg(),
+        pose=pose,
+        scale=Vector3(z=0.8),
+        color=color,
+        text=text[:8],
+    )
     return bbox, uuid
 
 
@@ -137,16 +135,7 @@ def dynamic_objects_to_ros_points(
     *,
     tp_gt: bool,
 ) -> Marker:
-    p_marker = Marker()
-    p_marker.header = header
-    p_marker.ns = namespace
-    p_marker.id = marker_id
-    p_marker.type = Marker.POINTS
-    p_marker.action = Marker.ADD
-    p_marker.lifetime = Duration(seconds=0.2).to_msg()
-    p_marker.scale = scale
-    p_marker.color = color
-
+    points: list[Point] = []
     for obj in container:
         point = Point()
         if type(obj) == DynamicObjectWithPerceptionResult:
@@ -163,8 +152,18 @@ def dynamic_objects_to_ros_points(
             point.x = obj.state.position[0]
             point.y = obj.state.position[1]
             point.z = obj.state.position[2]
-        p_marker.points.append(point)
-    return p_marker
+        points.append(point)
+    return Marker(
+        header=header,
+        ns=namespace,
+        id=marker_id,
+        type=Marker.POINTS,
+        action=Marker.ADD,
+        lifetime=Duration(seconds=0.2).to_msg(),
+        scale=scale,
+        color=color,
+        points=points,
+    )
 
 
 def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Header) -> MarkerArray:
