@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 1.6.6
+
+Minor Tweak
+
+| Module                                         | Feature    | Brief summary                                 | Pull request                                                   | Jira     | Contributor                                   |
+| ---------------------------------------------- | ---------- | --------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `performance_diag`                             | test       | add unit test for performance_diag            | [#269](https://github.com/tier4/driving_log_replayer/pull/269) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`                                   | test       | add unit test for perception_eval_conversions | [#271](https://github.com/tier4/driving_log_replayer/pull/271) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                                          | dependency | update dependency.repos                       | [#274](https://github.com/tier4/driving_log_replayer/pull/274) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`, `perception_2d`, `traffic_light` | criteria   | update perception criteria                    | [#272](https://github.com/tier4/driving_log_replayer/pull/272) | RT4-7103 | [ktro2828](https://github.com/ktro2828)       |
+
 ## Version 1.6.5
 
 Minor Tweak
