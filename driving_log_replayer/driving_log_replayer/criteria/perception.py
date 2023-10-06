@@ -106,9 +106,14 @@ class CriteriaLevel(Enum):
 
 
 class CriteriaMethod(Enum):
-    """Enum object represents methods of criteria ."""
+    """
+    Enum object represents methods of criteria .
 
-    NUM_FAILED_OBJECT = "num_failed_object"
+    - NUM_TP: Number of TP (or TN).
+    - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
+    """
+
+    NUM_TP = "num_tp"
     METRICS_SCORE = "metrics_score"
 
     @classmethod
@@ -129,7 +134,13 @@ class CriteriaMethod(Enum):
 
 
 class CriteriaMethodImpl(ABC):
-    """Class to define implementation for each criteria."""
+    """
+    Class to define implementation for each criteria.
+
+    Args:
+    ----
+        level (CriteriaLevel): Level of criteria.
+    """
 
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__()
@@ -185,8 +196,8 @@ class CriteriaMethodImpl(ABC):
         """
 
 
-class NumFailObject(CriteriaMethodImpl):
-    name = CriteriaMethod.NUM_FAILED_OBJECT
+class NumTP(CriteriaMethodImpl):
+    name = CriteriaMethod.NUM_TP
 
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__(level)
@@ -230,7 +241,7 @@ class PerceptionCriteria:
     Args:
     ----
         method (str | CriteriaMethod | None): Criteria method instance or name.
-            If None, `CriteriaMethod.NUM_FAILED_OBJECT` is used. Defaults to None.
+            If None, `CriteriaMethod.NUM_TP` is used. Defaults to None.
         level (str | Number | CriteriaLevel | None): Criteria level instance or name.
             If None, `CriteriaLevel.Easy` is used. Defaults to None.
     """
@@ -240,11 +251,11 @@ class PerceptionCriteria:
         method: str | CriteriaMethod | None = None,
         level: str | Number | CriteriaLevel | None = None,
     ) -> None:
-        method = CriteriaMethod.NUM_FAILED_OBJECT if method is None else self.load_method(method)
+        method = CriteriaMethod.NUM_TP if method is None else self.load_method(method)
         level = CriteriaLevel.EASY if level is None else self.load_level(level)
 
-        if method == CriteriaMethod.NUM_FAILED_OBJECT:
-            self.method = NumFailObject(level)
+        if method == CriteriaMethod.NUM_TP:
+            self.method = NumTP(level)
         elif method == CriteriaMethod.METRICS_SCORE:
             self.method = MetricsScore(level)
 
