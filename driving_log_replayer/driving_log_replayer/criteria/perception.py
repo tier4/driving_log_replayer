@@ -142,6 +142,7 @@ class CriteriaMethod(Enum):
             CriteriaMode: `CriteriaMode` instance.
         """
         name: str = value.upper()
+        assert name in cls.__members__, "value must be NUM_TP or METRICS_SCORE"
         return cls.__members__[name]
 
 
