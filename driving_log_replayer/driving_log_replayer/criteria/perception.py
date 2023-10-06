@@ -34,12 +34,21 @@ class SuccessFail(Enum):
 
 
 class CriteriaLevel(Enum):
-    """Enum object represents criteria level."""
+    """
+    Enum object represents criteria level.
+
+    PERFECT == 100.0
+    HARD    >= 75.0
+    NORMAL  >= 50.0
+    EASY    >= 25.0
+
+    CUSTOM  >= SCORE YOU SPECIFIED [0.0, 100.0]
+    """
 
     PERFECT = 100.0
-    HARD = 90.0
-    NORMAL = 75.0
-    EASY = 50.0
+    HARD = 75.0
+    NORMAL = 50.0
+    EASY = 25.0
 
     CUSTOM = None
 
