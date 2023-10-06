@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 from enum import Enum
 from numbers import Number
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation import PerceptionFrameResult
@@ -20,9 +22,11 @@ class SuccessFail(Enum):
         return self.value
 
     def is_success(self) -> bool:
-        """Returns whether success or fail.
+        """
+        Returns whether success or fail.
 
-        Returns:
+        Returns
+        -------
             bool: Success or fail.
         """
         return self == SuccessFail.SUCCESS
@@ -39,24 +43,30 @@ class CriteriaLevel(Enum):
     CUSTOM = None
 
     def is_valid(self, score: Number) -> bool:
-        """Returns whether the score satisfied the level.
+        """
+        Returns whether the score satisfied the level.
 
         Args:
+        ----
             score (Number): Calculated score.
 
         Returns:
+        -------
             bool: Whether the score satisfied the level.
         """
         return score >= self.value
 
     @classmethod
     def from_str(cls, value: str) -> CriteriaLevel:
-        """Constructs instance from
+        """
+        Constructs instance from.
 
         Args:
+        ----
             value (str): _description_
 
         Returns:
+        -------
             CriteriaLevel: _description_
         """
         name: str = value.upper()
@@ -65,12 +75,15 @@ class CriteriaLevel(Enum):
 
     @classmethod
     def from_number(cls, value: Number) -> CriteriaLevel:
-        """Constructs `CriteriaLevel.CUSTOM` with custom value.
+        """
+        Constructs `CriteriaLevel.CUSTOM` with custom value.
 
         Args:
+        ----
             value (Number): Level value which is must be [0.0, 100.0].
 
         Returns:
+        -------
             CriteriaLevel: `CriteriaLevel.CUSTOM` with custom value.
         """
         assert 0.0 <= value <= 100.0, f"Custom level must be [0.0, 100.0], but got {value}."
@@ -86,12 +99,15 @@ class CriteriaMode(Enum):
 
     @classmethod
     def from_str(cls, value: str) -> CriteriaMode:
-        """Constructs instance from name in string.
+        """
+        Constructs instance from name in string.
 
         Args:
+        ----
             value (str): Name of enum.
 
         Returns:
+        -------
             CriteriaMode: `CriteriaMode` instance.
         """
         name: str = value.upper()
@@ -106,12 +122,15 @@ class CriteriaMethod(ABC):
         self.level: CriteriaLevel = level
 
     def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
-        """Returns `SuccessFail` instance from the frame result.
+        """
+        Returns `SuccessFail` instance from the frame result.
 
         Args:
+        ----
             frame (PerceptionFrameResult): Frame result.
 
         Returns:
+        -------
             SuccessFail: Success or fail.
         """
         if self.has_objects(frame) is False:
@@ -121,12 +140,15 @@ class CriteriaMethod(ABC):
 
     @staticmethod
     def has_objects(frame: PerceptionFrameResult) -> bool:
-        """Returns whether the frame result contains at least one objects.
+        """
+        Returns whether the frame result contains at least one objects.
 
         Args:
+        ----
             frame (PerceptionFrameResult): Frame result.
 
         Returns:
+        -------
             bool: Whether the frame result has objects is.
         """
         num_success: int = frame.pass_fail_result.get_num_success()
@@ -136,15 +158,17 @@ class CriteriaMethod(ABC):
     @staticmethod
     @abstractmethod
     def calculate_score(frame: PerceptionFrameResult) -> float:
-        """Calculates score depending on the method.
+        """
+        Calculates score depending on the method.
 
         Args:
+        ----
             frame (PerceptionFrameResult): Frame result.
 
         Returns:
+        -------
             float: Calculated score.
         """
-        pass
 
 
 class NumFailObject(CriteriaMethod):
@@ -182,9 +206,11 @@ class MetricsScore(CriteriaMethod):
 
 
 class PerceptionCriteria:
-    """Criteria interface for perception evaluation.
+    """
+    Criteria interface for perception evaluation.
 
     Args:
+    ----
         mode (Optional[Union[str, CriteriaMode]])
         level (Optional[Union[str, Number, CriteriaLevel]])
     """
@@ -204,12 +230,15 @@ class PerceptionCriteria:
 
     @staticmethod
     def load_mode(mode: Union[str, CriteriaMode]) -> CriteriaMode:
-        """Load `CriteriaMode`.
+        """
+        Load `CriteriaMode`.
 
         Args:
+        ----
             mode (Optional[Union[str, CriteriaMode]]): Criteria mode instance or name.
 
         Returns:
+        -------
             CriteriaMode: Instance.
         """
         if isinstance(mode, str):
@@ -219,12 +248,15 @@ class PerceptionCriteria:
 
     @staticmethod
     def load_level(level: Union[str, Number, CriteriaLevel]) -> CriteriaLevel:
-        """Load `CriteriaLevel`.
+        """
+        Load `CriteriaLevel`.
 
         Args:
+        ----
             level (Optional[Union[str, Number, CriteriaLevel]]): Criteria level instance, name or value.
 
         Returns:
+        -------
             CriteriaLevel: Instance.
         """
         if isinstance(level, str):
@@ -235,12 +267,15 @@ class PerceptionCriteria:
         return level
 
     def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
-        """Returns Success/Fail result from `PerceptionFrameResult`.
+        """
+        Returns Success/Fail result from `PerceptionFrameResult`.
 
         Args:
+        ----
             frame (PerceptionFrameResult): Frame result of perception evaluation.
 
         Returns:
+        -------
             SuccessFail: Success/Fail result.
         """
         return self.method.get_result(frame)
