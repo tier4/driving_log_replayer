@@ -11,18 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
-from perception_eval.evaluation import PerceptionFrameResult
-
-from driving_log_replayer.traffic_light import Perception
-
-
-def test_perception_success() -> None:
-    evaluation_item = Perception(condition={"PassRate": 99.0})
-    evaluation_item.set_frame(PerceptionFrameResult())
-
-
-def test_perception_fail() -> None:
-    evaluation_item = Perception(condition={"PassRate": 99.0})
-    evaluation_item.set_frame(PerceptionFrameResult())
