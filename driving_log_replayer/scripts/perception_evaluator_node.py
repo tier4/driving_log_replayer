@@ -56,7 +56,7 @@ class PerceptionResult(ResultBase):
         self.__total = 0
 
         self.__criteria = PerceptionCriteria(
-            mode=condition.get("CriteriaMethod"),
+            method=condition.get("CriteriaMethod"),
             level=condition.get("CriteriaLevel"),
         )
 
