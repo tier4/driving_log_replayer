@@ -49,5 +49,5 @@ jobs:
         with:
           package-name: ${{ steps.list_packages.outputs.package_list }}
           target-ros2-distro: ${{ matrix.ros_distribution }}
-          vcs-repo-file-url: github_action_dependency.repos
+          vcs-repo-file-url: dependency.repos
           import-token: ${{ secrets.GITHUB_TOKEN }}
