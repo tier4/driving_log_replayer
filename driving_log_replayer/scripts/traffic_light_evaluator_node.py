@@ -31,6 +31,7 @@ from perception_eval.util.logger_config import configure_logger
 import rclpy
 from std_msgs.msg import Header
 
+from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 import driving_log_replayer.perception_eval_conversions as eval_conversions
@@ -43,6 +44,11 @@ class TrafficLightResult(ResultBase):
         self.__pass_rate = condition["PassRate"]
         self.__success = 0
         self.__total = 0
+
+        self.__criteria = PerceptionCriteria(
+            method=condition.get("CriteriaMethod"),
+            level=condition.get("CriteriaLevel"),
+        )
 
     def update(self) -> None:
         test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
@@ -64,28 +70,18 @@ class TrafficLightResult(ResultBase):
         map_to_baselink: dict,
     ) -> None:
         self.__total += 1
-        has_objects = True
-        if (
-            frame.pass_fail_result.tp_object_results == []
-            and frame.pass_fail_result.fp_object_results == []
-            and frame.pass_fail_result.fn_objects == []
-        ):
-            has_objects = False
+        result = self.__criteria.get_result(frame)
 
-        success = (
-            "Success"
-            if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects
-            else "Fail"
-        )
-        if success == "Success":
+        if result.is_success():
             self.__success += 1
+
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
         out_frame["PassFail"] = {
-            "Result": success,
+            "Result": str(result),
             "Info": [
                 {
                     "TP": len(frame.pass_fail_result.tp_object_results),

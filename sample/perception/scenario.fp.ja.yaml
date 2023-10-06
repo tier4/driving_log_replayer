@@ -5,7 +5,7 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
-  UseCaseFormatVersion: 0.5.0
+  UseCaseFormatVersion: 0.6.0
   Datasets:
     - sample_dataset:
         VehicleId: default # データセット毎にVehicleIdを指定する
@@ -13,6 +13,8 @@ Evaluation:
         LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score)
+    CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値[0.0, 100.0])
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: fp_validation # detection/tracking/fp_validation ここで指定したobjectsを評価する

@@ -5,7 +5,7 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
-  UseCaseFormatVersion: 0.5.0
+  UseCaseFormatVersion: 0.6.0
   Datasets:
     - sample_dataset:
         VehicleId: default # Specify VehicleId for each data set.
@@ -13,6 +13,8 @@ Evaluation:
         LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
+    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value [0.0, 100.0])
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here

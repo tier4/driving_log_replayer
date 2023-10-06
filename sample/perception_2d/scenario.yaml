@@ -5,7 +5,7 @@ SensorModel: aip_x2
 VehicleModel: gsm8
 Evaluation:
   UseCaseName: perception_2d
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Datasets:
     - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
         VehicleId: ps1/20210620/CAL_000015 # Specify VehicleId for each data set.
@@ -13,6 +13,8 @@ Evaluation:
         LocalMapPath: $HOME/map/perception # Specify LocalMapPath for each data set.
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
+    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value [0.0, 100.0])
     TargetCameras: # Describes the type of camera to be evaluated as a key and the camera number as a value.
       cam_front: 0
       cam_front_right: 1
