@@ -25,3 +25,4 @@ def test_perception_success() -> None:
 
 def test_perception_fail() -> None:
     evaluation_item = Perception(condition={"PassRate": 99.0})
+    evaluation_item.set_frame(PerceptionFrameResult())
