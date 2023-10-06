@@ -54,8 +54,8 @@ class Perception2DResult(ResultBase):
             self.__msg[camera_type] = "NotTested"
 
         self.__criteria = PerceptionCriteria(
-            mode=condition.get("Criteria"),
-            level=condition.get("Level"),
+            mode=condition.get("CriteriaMethod"),
+            level=condition.get("CriteriaLevel"),
         )
 
     def update(self) -> None:

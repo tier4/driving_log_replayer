@@ -4,11 +4,12 @@ from abc import ABC
 from abc import abstractmethod
 from enum import Enum
 from numbers import Number
-from typing import Optional
-from typing import Union
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from perception_eval.evaluation import PerceptionFrameResult
 
 from perception_eval.common.evaluation_task import EvaluationTask
-from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.matching import MatchingMode
 
 
@@ -23,7 +24,7 @@ class SuccessFail(Enum):
 
     def is_success(self) -> bool:
         """
-        Returns whether success or fail.
+        Return whether success or fail.
 
         Returns
         -------
@@ -44,7 +45,7 @@ class CriteriaLevel(Enum):
 
     def is_valid(self, score: Number) -> bool:
         """
-        Returns whether the score satisfied the level.
+        Return whether the score satisfied the level.
 
         Args:
         ----
@@ -59,7 +60,7 @@ class CriteriaLevel(Enum):
     @classmethod
     def from_str(cls, value: str) -> CriteriaLevel:
         """
-        Constructs instance from.
+        Construct instance from.
 
         Args:
         ----
@@ -76,7 +77,7 @@ class CriteriaLevel(Enum):
     @classmethod
     def from_number(cls, value: Number) -> CriteriaLevel:
         """
-        Constructs `CriteriaLevel.CUSTOM` with custom value.
+        Construct `CriteriaLevel.CUSTOM` with custom value.
 
         Args:
         ----
@@ -86,21 +87,25 @@ class CriteriaLevel(Enum):
         -------
             CriteriaLevel: `CriteriaLevel.CUSTOM` with custom value.
         """
-        assert 0.0 <= value <= 100.0, f"Custom level must be [0.0, 100.0], but got {value}."
+        min_range = 0.0
+        max_range = 100.0
+        assert (
+            min_range <= value <= max_range
+        ), f"Custom level must be [0.0, 100.0], but got {value}."
         cls.CUSTOM._value_ = float(value)
         return cls.CUSTOM
 
 
-class CriteriaMode(Enum):
-    """Enum object represents criteria mode."""
+class CriteriaMethod(Enum):
+    """Enum object represents methods of criteria ."""
 
     NUM_FAILED_OBJECT = "num_failed_object"
     METRICS_SCORE = "metrics_score"
 
     @classmethod
-    def from_str(cls, value: str) -> CriteriaMode:
+    def from_str(cls, value: str) -> CriteriaMethod:
         """
-        Constructs instance from name in string.
+        Construct instance from name in string.
 
         Args:
         ----
@@ -114,7 +119,7 @@ class CriteriaMode(Enum):
         return cls.__members__[name]
 
 
-class CriteriaMethod(ABC):
+class CriteriaMethodImpl(ABC):
     """Class to define implementation for each criteria."""
 
     def __init__(self, level: CriteriaLevel) -> None:
@@ -123,7 +128,7 @@ class CriteriaMethod(ABC):
 
     def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
         """
-        Returns `SuccessFail` instance from the frame result.
+        Return `SuccessFail` instance from the frame result.
 
         Args:
         ----
@@ -141,7 +146,7 @@ class CriteriaMethod(ABC):
     @staticmethod
     def has_objects(frame: PerceptionFrameResult) -> bool:
         """
-        Returns whether the frame result contains at least one objects.
+        Return whether the frame result contains at least one objects.
 
         Args:
         ----
@@ -159,7 +164,7 @@ class CriteriaMethod(ABC):
     @abstractmethod
     def calculate_score(frame: PerceptionFrameResult) -> float:
         """
-        Calculates score depending on the method.
+        Calculate score depending on the method.
 
         Args:
         ----
@@ -171,7 +176,9 @@ class CriteriaMethod(ABC):
         """
 
 
-class NumFailObject(CriteriaMethod):
+class NumFailObject(CriteriaMethodImpl):
+    name = CriteriaMethod.NUM_FAILED_OBJECT
+
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__(level)
 
@@ -182,7 +189,9 @@ class NumFailObject(CriteriaMethod):
         return 100.0 * num_success / num_objects if num_objects != 0 else 0.0
 
 
-class MetricsScore(CriteriaMethod):
+class MetricsScore(CriteriaMethodImpl):
+    name = CriteriaMethod.METRICS_SCORE
+
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__(level)
 
@@ -211,49 +220,51 @@ class PerceptionCriteria:
 
     Args:
     ----
-        mode (Optional[Union[str, CriteriaMode]])
-        level (Optional[Union[str, Number, CriteriaLevel]])
+        method (str | CriteriaMethod | None): Criteria method instance or name.
+            If None, `CriteriaMethod.NUM_FAILED_OBJECT` is used. Defaults to None.
+        level (str | Number | CriteriaLevel | None): Criteria level instance or name.
+            If None, `CriteriaLevel.Easy` is used. Defaults to None.
     """
 
     def __init__(
         self,
-        mode: Optional[Union[str, CriteriaMode]] = None,
-        level: Optional[Union[str, Number, CriteriaLevel]] = None,
+        method: str | CriteriaMethod | None = None,
+        level: str | Number | CriteriaLevel | None = None,
     ) -> None:
-        mode = CriteriaMode.NUM_FAILED_OBJECT if mode is None else self.load_mode(mode)
+        method = CriteriaMethod.NUM_FAILED_OBJECT if method is None else self.load_method(method)
         level = CriteriaLevel.EASY if level is None else self.load_level(level)
 
-        if mode == CriteriaMode.NUM_FAILED_OBJECT:
+        if method == CriteriaMethod.NUM_FAILED_OBJECT:
             self.method = NumFailObject(level)
-        elif mode == CriteriaMode.METRICS_SCORE:
+        elif method == CriteriaMethod.METRICS_SCORE:
             self.method = MetricsScore(level)
 
     @staticmethod
-    def load_mode(mode: Union[str, CriteriaMode]) -> CriteriaMode:
+    def load_method(method: str | CriteriaMethod) -> CriteriaMethod:
         """
-        Load `CriteriaMode`.
+        Load `CriteriaMethod` enum.
 
         Args:
         ----
-            mode (Optional[Union[str, CriteriaMode]]): Criteria mode instance or name.
+            method (str | CriteriaMethod): Criteria method instance or name.
 
         Returns:
         -------
-            CriteriaMode: Instance.
+            CriteriaMethod: Instance.
         """
-        if isinstance(mode, str):
-            mode: CriteriaMode = CriteriaMode.from_str(mode)
-        assert isinstance(mode, CriteriaMode), f"Invalid type of mode: {type(mode)}"
-        return mode
+        if isinstance(method, str):
+            method: CriteriaMethod = CriteriaMethod.from_str(method)
+        assert isinstance(method, CriteriaMethod), f"Invalid type of method: {type(method)}"
+        return method
 
     @staticmethod
-    def load_level(level: Union[str, Number, CriteriaLevel]) -> CriteriaLevel:
+    def load_level(level: str | Number | CriteriaLevel) -> CriteriaLevel:
         """
         Load `CriteriaLevel`.
 
         Args:
         ----
-            level (Optional[Union[str, Number, CriteriaLevel]]): Criteria level instance, name or value.
+            level (str | Number | CriteriaLevel): Criteria level instance, name or value.
 
         Returns:
         -------
@@ -268,7 +279,7 @@ class PerceptionCriteria:
 
     def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
         """
-        Returns Success/Fail result from `PerceptionFrameResult`.
+        Return Success/Fail result from `PerceptionFrameResult`.
 
         Args:
         ----

@@ -46,8 +46,8 @@ class TrafficLightResult(ResultBase):
         self.__total = 0
 
         self.__criteria = PerceptionCriteria(
-            mode=condition.get("Criteria"),
-            level=condition.get("Level"),
+            mode=condition.get("CriteriaMethod"),
+            level=condition.get("CriteriaLevel"),
         )
 
     def update(self) -> None:
