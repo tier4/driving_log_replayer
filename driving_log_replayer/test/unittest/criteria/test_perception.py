@@ -12,17 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
 from driving_log_replayer.criteria.perception import CriteriaLevel
 
 
-def test_criteria_level_ok() -> None:
+def test_criteria_level_from_str_ok() -> None:
     criteria_level = CriteriaLevel.from_str("perfect")
     assert criteria_level == CriteriaLevel.PERFECT
 
 
-def test_criteria_level_not_allowed_type() -> None:
-    try:
+def test_criteria_level_from_str_ng() -> None:
+    with pytest.raises(AssertionError):
         CriteriaLevel.from_str("not_criteria_level_type")
-        assert False  # noqa
-    except AssertionError:
-        pass
+
+
+def test_criteria_level_from_number_ok() -> None:
+    allowed_value = 50.0
+    criteria_level = CriteriaLevel.from_number(allowed_value)
+    assert criteria_level == CriteriaLevel.CUSTOM
+    assert criteria_level.value == allowed_value
+
+
+def test_criteria_level_from_number_ng() -> None:
+    with pytest.raises(AssertionError):
+        CriteriaLevel.from_number(110.0)
