@@ -12,19 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
 from enum import Enum
 from numbers import Number
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from perception_eval.evaluation import PerceptionFrameResult
 
 from perception_eval.common.evaluation_task import EvaluationTask
+from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.matching import MatchingMode
+from typing_extensions import Self
 
 
 class SuccessFail(Enum):
@@ -81,7 +78,7 @@ class CriteriaLevel(Enum):
         return score >= self.value
 
     @classmethod
-    def from_str(cls, value: str) -> CriteriaLevel:
+    def from_str(cls, value: str) -> Self:
         """
         Construct instance from.
 
@@ -99,7 +96,7 @@ class CriteriaLevel(Enum):
         return cls.__members__[name]
 
     @classmethod
-    def from_number(cls, value: Number) -> CriteriaLevel:
+    def from_number(cls, value: Number) -> Self:
         """
         Construct `CriteriaLevel.CUSTOM` with custom value.
 
@@ -132,7 +129,7 @@ class CriteriaMethod(Enum):
     METRICS_SCORE = "metrics_score"
 
     @classmethod
-    def from_str(cls, value: str) -> CriteriaMethod:
+    def from_str(cls, value: str) -> Self:
         """
         Construct instance from name in string.
 
