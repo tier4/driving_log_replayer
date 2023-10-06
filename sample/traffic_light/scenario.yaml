@@ -5,7 +5,7 @@ SensorModel: aip_xx1
 VehicleModel: jpntaxi
 Evaluation:
   UseCaseName: traffic_light
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Datasets:
     - sample:
         VehicleId: "7" # Specify VehicleId for each data set.

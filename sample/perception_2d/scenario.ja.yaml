@@ -5,7 +5,7 @@ SensorModel: aip_x2
 VehicleModel: gsm8
 Evaluation:
   UseCaseName: perception_2d
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Datasets:
     - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
         VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
