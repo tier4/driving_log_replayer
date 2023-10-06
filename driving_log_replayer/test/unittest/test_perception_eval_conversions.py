@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-not working. cannot import perception_eval.
-
 from builtin_interfaces.msg import Time
 from geometry_msgs.msg import Point
+from geometry_msgs.msg import Quaternion as RosQuaternion
+from pyquaternion.quaternion import Quaternion
 from std_msgs.msg import Header
 
+from driving_log_replayer.perception_eval_conversions import orientation_from_ros_msg
 from driving_log_replayer.perception_eval_conversions import position_from_ros_msg
 from driving_log_replayer.perception_eval_conversions import unix_time_from_ros_msg
 
@@ -31,15 +31,8 @@ def test_unix_time_from_ros_msg() -> None:
 def test_position_from_ros_msg() -> None:
     tuple_position = position_from_ros_msg(Point(x=1.0, y=2.0, z=3.0))
     assert tuple_position == (1.0, 2.0, 3.0)
-"""
 
-"""
-not working. import error
+
 def test_orientation_from_ros_msg() -> None:
-    from driving_log_replayer.perception_eval_conversions import orientation_from_ros_msg
-    from geometry_msgs.msg import Quaternion as RosQuaternion
-    from pyquaternion.quaternion import Quaternion  # not working
-
     eval_quaternion = orientation_from_ros_msg(RosQuaternion(x=0.0, y=0.0, z=0.0, w=1.0))
     assert eval_quaternion == Quaternion(1.0, 0.0, 0.0, 0.0)
-"""
