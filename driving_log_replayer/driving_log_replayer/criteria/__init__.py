@@ -1,5 +1,5 @@
 from .perception import CriteriaLevel
-from .perception import CriteriaMode
+from .perception import CriteriaMethod
 from .perception import PerceptionCriteria
 
-__all__ = ("CriteriaLevel", "CriteriaMode", "PerceptionCriteria")
+__all__ = ("CriteriaLevel", "CriteriaMethod", "PerceptionCriteria")
