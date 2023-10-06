@@ -13,6 +13,8 @@ Evaluation:
         LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score)
+    CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値[0.0, 100.0])
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: fp_validation # detection/tracking/fp_validation ここで指定したobjectsを評価する

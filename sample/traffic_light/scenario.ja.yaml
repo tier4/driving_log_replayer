@@ -13,6 +13,8 @@ Evaluation:
         LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score)
+    CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値[0.0, 100.0])
   PerceptionEvaluationConfig:
     camera_type: cam_traffic_light_near # 信号認識のカメラタイプを指定する
     evaluation_config_dict:
