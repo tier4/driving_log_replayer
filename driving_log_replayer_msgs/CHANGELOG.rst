@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.6 (2023-10-06)
+------------------
 * feat(perception): update perception criteria (`#272 <https://github.com/tier4/driving_log_replayer/issues/272>`_)
   Co-authored-by: ktro2828 <ktro2828@users.noreply.github.com>
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
