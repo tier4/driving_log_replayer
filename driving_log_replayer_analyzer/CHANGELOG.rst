@@ -2,6 +2,16 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat(perception): update perception criteria (`#272 <https://github.com/tier4/driving_log_replayer/issues/272>`_)
+  Co-authored-by: ktro2828 <ktro2828@users.noreply.github.com>
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* fix: dependency (`#274 <https://github.com/tier4/driving_log_replayer/issues/274>`_)
+* feat: eval_conversions add test (`#271 <https://github.com/tier4/driving_log_replayer/issues/271>`_)
+* feat: diag test (`#269 <https://github.com/tier4/driving_log_replayer/issues/269>`_)
+* Contributors: Hayato Mizushima, Kotaro Uetake
+
 1.6.5 (2023-09-29)
 ------------------
 * feat: poetry add group docs (`#265 <https://github.com/tier4/driving_log_replayer/issues/265>`_)
