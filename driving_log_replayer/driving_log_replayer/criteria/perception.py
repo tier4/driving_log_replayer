@@ -26,8 +26,6 @@ if TYPE_CHECKING:
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
 
-# cspell: ignore CENTERDISTANCE
-
 
 class SuccessFail(Enum):
     """Enum object represents evaluated result is success or fail."""
