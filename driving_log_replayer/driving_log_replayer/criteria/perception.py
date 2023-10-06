@@ -94,7 +94,8 @@ class CriteriaLevel(Enum):
             CriteriaLevel: _description_
         """
         name: str = value.upper()
-        assert name != "CUSTOM", "If you want to use custom level, input value [0.0, 100.0]."
+        assert name != "CUSTOM", "If you want to use custom level, use from_number."
+        assert name in cls.__members__, "value must be PERFECT, HARD, NORMAL, or EASY"
         return cls.__members__[name]
 
     @classmethod
