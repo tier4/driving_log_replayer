@@ -171,48 +171,22 @@ def summarize_frame_container(
     return info, counter, marker_array, pcd, graph_detection
 
 
-def summarize_numpy_pointcloud(
-    list_pcd: list[np.ndarray],
-    header: Header,
-) -> tuple[PointCloud2, np.ndarray]:
-    numpy_pcd = np.zeros(
-        0,
-        dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
-    )
-    dist_array = np.array([])
-    for pcd in list_pcd:
-        dist = np.linalg.norm(pcd, ord=2, axis=1)
-        dist_array = np.concatenate([dist_array, dist])
-        num_points = pcd.shape[0]
-        pcd_data = np.zeros(
-            num_points,
-            dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
-        )
-        pcd_data["x"] = pcd[:, 0]
-        pcd_data["y"] = pcd[:, 1]
-        pcd_data["z"] = pcd[:, 2]
-        numpy_pcd = np.concatenate([numpy_pcd, pcd_data])
-    ros_pcd = ros2_numpy.msgify(PointCloud2, numpy_pcd)
-    ros_pcd.header = header
-    return ros_pcd, dist_array
-
-
 def get_sensing_frame_config(
     pcd_header: Header,
     scenario_yaml_obj: dict,
 ) -> tuple[bool, SensingFrameConfig | None]:
-    detection_config = scenario_yaml_obj["Evaluation"]["Conditions"].get("Detection", None)
+    detection_config = scenario_yaml_obj["Evaluation"]["Conditions"].get("Detection")
     if detection_config is None:
         return True, None
-    bbox_conf = detection_config.get("BoundingBoxConfig", None)
+    bbox_conf = detection_config.get("BoundingBoxConfig")
     if bbox_conf is None:
         return True, None
     target_uuids = []
     for uuid_dict in bbox_conf:
         for uuid, v in uuid_dict.items():
             # uuid: str, v: Dict
-            start: float | None = v.get("Start", None)
-            end: float | None = v.get("End", None)
+            start: float | None = v.get("Start")
+            end: float | None = v.get("End")
             if start is None:
                 start = 0.0
             if end is None:
@@ -250,8 +224,9 @@ class Detection(EvaluationItem):
         ObstacleSegmentationMarkerArray | None,
     ]:
         if self.condition is None:
+            self.summary = "Invalid"
             return (
-                {"Result": {"Total": "Success", "Frame": "Invalid"}, "Info": {}},
+                {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
                 None,
                 None,
             )
@@ -350,8 +325,9 @@ class NonDetection(EvaluationItem):
         topic_rate: bool,
     ) -> tuple[dict, PointCloud2 | None, ObstacleSegmentationMarker | None]:
         if self.condition is None:
+            self.summary = "Invalid"
             return (
-                {"Result": {"Total": "Success", "Frame": "Invalid"}, "Info": {}},
+                {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
                 None,
                 None,
             )
@@ -366,16 +342,14 @@ class NonDetection(EvaluationItem):
         self.success = current_rate >= self.condition["PassRate"]
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
 
-        ros_pcd, dist_array = summarize_numpy_pointcloud(pcd_list, header)
-        graph_non_detection = ObstacleSegmentationMarker()
-        graph_non_detection.header = header
-        graph_non_detection.status = (
-            ObstacleSegmentationMarker.ERROR
+        ros_pcd, dist_array = NonDetection.convert_numpy_pointcloud(pcd_list, header)
+        graph_non_detection = ObstacleSegmentationMarker(
+            header=header,
+            status=ObstacleSegmentationMarker.ERROR
             if frame_success == "Fail"
-            else ObstacleSegmentationMarker.OK
+            else ObstacleSegmentationMarker.OK,
+            number_of_pointcloud=dist_array.shape[0],
         )
-        graph_non_detection.number_of_pointcloud = dist_array.shape[0]
-
         info = {}
         if frame_success == "Fail":
             # 詳細情報の追記を書く
@@ -397,6 +371,33 @@ class NonDetection(EvaluationItem):
             graph_non_detection,
         )
 
+    @classmethod
+    def convert_numpy_pointcloud(
+        cls,
+        list_pcd: list[np.ndarray],
+        header: Header,
+    ) -> tuple[PointCloud2, np.ndarray]:
+        numpy_pcd = np.zeros(
+            0,
+            dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
+        )
+        dist_array = np.array([])
+        for pcd in list_pcd:
+            dist = np.linalg.norm(pcd, ord=2, axis=1)
+            dist_array = np.concatenate([dist_array, dist])
+            num_points = pcd.shape[0]
+            pcd_data = np.zeros(
+                num_points,
+                dtype=[("x", np.float32), ("y", np.float32), ("z", np.float32)],
+            )
+            pcd_data["x"] = pcd[:, 0]
+            pcd_data["y"] = pcd[:, 1]
+            pcd_data["z"] = pcd[:, 2]
+            numpy_pcd = np.concatenate([numpy_pcd, pcd_data])
+        ros_pcd = ros2_numpy.msgify(PointCloud2, numpy_pcd)
+        ros_pcd.header = header
+        return ros_pcd, dist_array
+
 
 class ObstacleSegmentationResult(ResultBase):
     def __init__(self, condition: dict) -> None:
@@ -405,7 +406,7 @@ class ObstacleSegmentationResult(ResultBase):
         self.__non_detection = NonDetection(condition=condition.get("NonDetection"))
 
     def update(self) -> None:
-        summary_str = f"{self.__detection.summary} {self.__non_detection.summary}"
+        summary_str = f"{self.__detection.summary}, {self.__non_detection.summary}"
         if self.__detection.success and self.__non_detection.success:
             self._success = True
             self._summary = f"Passed: {summary_str}"
@@ -433,6 +434,8 @@ class ObstacleSegmentationResult(ResultBase):
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
+            "StopReasons": stop_reasons,
+            "TopicRate": str(topic_rate),
         }
         (
             out_frame["Detection"],
@@ -449,11 +452,7 @@ class ObstacleSegmentationResult(ResultBase):
             header,
             topic_rate=topic_rate,
         )
-        out_frame["StopReasons"] = stop_reasons
-        out_frame["TopicRate"] = str(topic_rate)
-        # update current frame
         self._frame = out_frame
-        # update result
         self.update()
         return (
             marker_detection,
