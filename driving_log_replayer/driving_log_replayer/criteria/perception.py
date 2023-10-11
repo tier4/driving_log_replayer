@@ -13,6 +13,8 @@
 # limitations under the License.
 
 
+from __future__ import annotations
+
 from abc import ABC
 from abc import abstractmethod
 from enum import Enum
@@ -21,7 +23,6 @@ from numbers import Number
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.matching import MatchingMode
-from typing_extensions import Self
 
 
 class SuccessFail(Enum):
@@ -78,7 +79,7 @@ class CriteriaLevel(Enum):
         return score >= self.value
 
     @classmethod
-    def from_str(cls, value: str) -> Self:
+    def from_str(cls, value: str) -> CriteriaLevel:
         """
         Construct instance from.
 
@@ -96,7 +97,7 @@ class CriteriaLevel(Enum):
         return cls.__members__[name]
 
     @classmethod
-    def from_number(cls, value: Number) -> Self:
+    def from_number(cls, value: Number) -> CriteriaLevel:
         """
         Construct `CriteriaLevel.CUSTOM` with custom value.
 
@@ -129,7 +130,7 @@ class CriteriaMethod(Enum):
     METRICS_SCORE = "metrics_score"
 
     @classmethod
-    def from_str(cls, value: str) -> Self:
+    def from_str(cls, value: str) -> CriteriaMethod:
         """
         Construct instance from name in string.
 
