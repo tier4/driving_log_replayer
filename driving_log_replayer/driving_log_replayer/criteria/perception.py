@@ -19,10 +19,13 @@ from abc import ABC
 from abc import abstractmethod
 from enum import Enum
 from numbers import Number
+from typing import TYPE_CHECKING
 
 from perception_eval.common.evaluation_task import EvaluationTask
-from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.matching import MatchingMode
+
+if TYPE_CHECKING:
+    from perception_eval.evaluation import PerceptionFrameResult
 
 
 class SuccessFail(Enum):
