@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.6.7
+
+Bug fix
+
+| Module       | Feature | Brief summary    | Pull request                                                   | Jira | Contributor                             |
+| ------------ | ------- | ---------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `perception` | library | fix import error | [#277](https://github.com/tier4/driving_log_replayer/pull/277) | -    | [ktro2828](https://github.com/ktro2828) |
+
 ## Version 1.6.6
 
 Minor Tweak
