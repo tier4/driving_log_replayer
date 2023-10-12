@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.7 (2023-10-12)
+------------------
 * fix(perception): remove `typing_extensions` (`#277 <https://github.com/tier4/driving_log_replayer/issues/277>`_)
 * Contributors: Kotaro Uetake
 
