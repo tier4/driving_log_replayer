@@ -1,14 +1,22 @@
 import glob
 import os
-import subprocess
 from pathlib import Path
+import subprocess
 
+from natsort import natsorted
 import termcolor
 import yaml
-from natsort import natsorted
 
 
 class TestScriptGenerator:
+    PERCEPTION_MODES = (
+        "camera_lidar_radar_fusion",
+        "camera_lidar_fusion",
+        "lidar_radar_fusion",
+        "lidar",
+        "radar",
+    )
+
     def __init__(
         self,
         data_directory: str,
@@ -265,15 +273,8 @@ class TestScriptGenerator:
             launch_args += " rviz:=true"
             if scenario_yaml_obj.get("PerceptionMode") is not None:
                 perception_mode: str = scenario_yaml_obj["PerceptionMode"]
-                valid_modes = (
-                    "camera_lidar_radar_fusion",
-                    "camera_lidar_fusion",
-                    "lidar_radar_fusion",
-                    "lidar",
-                    "radar",
-                )
-                assert perception_mode in valid_modes, (
-                    f"perception_mode must be chosen from {valid_modes}, "
+                assert perception_mode in self.PERCEPTION_MODES, (
+                    f"perception_mode must be chosen from {self.PERCEPTION_MODES}, "
                     f"but got {perception_mode}"
                 )
                 launch_args += " perception_mode:=" + perception_mode

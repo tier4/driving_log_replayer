@@ -83,6 +83,7 @@ def get_driving_log_replayer_common_argument() -> list:
     add_launch_arg("vehicle_id", default_value="default", description="vehicle specific ID")
 
     # additional argument
+    add_launch_arg("perception_mode", default_value="lidar", description="perception mode")
     add_launch_arg(
         "t4_dataset_path",
         default_value="/opt/autoware/t4_dataset",
@@ -105,7 +106,6 @@ def get_autoware_launch(
     planning: str = "false",
     control: str = "false",
     scenario_simulation: str = "false",
-    perception_mode: str = "lidar",
     pose_source: str = "ndt",
     twist_source: str = "gyro_odom",
 ) -> launch.actions.IncludeLaunchDescription:
@@ -129,7 +129,7 @@ def get_autoware_launch(
             "planning": planning,
             "control": control,
             "scenario_simulation": scenario_simulation,
-            "perception_mode": perception_mode,
+            "perception_mode": LaunchConfiguration("perception_mode"),
             "pose_source": pose_source,
             "twist_source": twist_source,
             "rviz": "false",
