@@ -1,11 +1,11 @@
 import glob
 import os
-from pathlib import Path
 import subprocess
+from pathlib import Path
 
-from natsort import natsorted
 import termcolor
 import yaml
+from natsort import natsorted
 
 
 class TestScriptGenerator:
@@ -263,6 +263,8 @@ class TestScriptGenerator:
             launch_args += " sensor_model:=" + scenario_yaml_obj["SensorModel"]
             launch_args += " vehicle_id:=" + vehicle_id
             launch_args += " rviz:=true"
+            if scenario_yaml_obj.get("PerceptionMode") is not None:
+                launch_args += " perception_mode:=" + scenario_yaml_obj["PerceptionMode"]
 
             # t4_dataset
             launch_args += " t4_dataset_path:=" + t4_dataset_path
