@@ -264,7 +264,19 @@ class TestScriptGenerator:
             launch_args += " vehicle_id:=" + vehicle_id
             launch_args += " rviz:=true"
             if scenario_yaml_obj.get("PerceptionMode") is not None:
-                launch_args += " perception_mode:=" + scenario_yaml_obj["PerceptionMode"]
+                perception_mode: str = scenario_yaml_obj["PerceptionMode"]
+                valid_modes = (
+                    "camera_lidar_radar_fusion",
+                    "camera_lidar_fusion",
+                    "lidar_radar_fusion",
+                    "lidar",
+                    "radar",
+                )
+                assert perception_mode in valid_modes, (
+                    f"perception_mode must be chosen from {valid_modes}, "
+                    f"but got {perception_mode}"
+                )
+                launch_args += " perception_mode:=" + perception_mode
 
             # t4_dataset
             launch_args += " t4_dataset_path:=" + t4_dataset_path
