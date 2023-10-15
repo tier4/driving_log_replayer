@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.7.0
+
+Major change
+
+| Module       | Feature         | Brief summary           | Pull request                                                   | Jira | Contributor                                   |
+| ------------ | --------------- | ----------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `perception` | lint            | fix TCH002              | [#278](https://github.com/tier4/driving_log_replayer/pull/278) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `perception` | scenario format | support perception_mode | [#279](https://github.com/tier4/driving_log_replayer/pull/279) | -    | [ktro2828](https://github.com/ktro2828)       |
+
 ## Version 1.6.7
 
 Bug fix
