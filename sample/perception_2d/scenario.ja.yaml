@@ -1,4 +1,4 @@
-ScenarioFormatVersion: 3.0.0
+ScenarioFormatVersion: 3.1.0
 ScenarioName: perception_2d_x2
 ScenarioDescription: perception_2d_x2
 SensorModel: aip_x2

@@ -1,4 +1,4 @@
-ScenarioFormatVersion: 3.0.0
+ScenarioFormatVersion: 3.1.0
 ScenarioName: perception_use_bag_concat_data
 ScenarioDescription: sensing_module_off_and_use_pointcloud_in_the_rosbag
 SensorModel: sample_sensor_kit
