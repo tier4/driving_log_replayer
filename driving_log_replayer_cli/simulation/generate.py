@@ -9,6 +9,14 @@ import yaml
 
 
 class TestScriptGenerator:
+    PERCEPTION_MODES = (
+        "camera_lidar_radar_fusion",
+        "camera_lidar_fusion",
+        "lidar_radar_fusion",
+        "lidar",
+        "radar",
+    )
+
     def __init__(
         self,
         data_directory: str,
@@ -190,7 +198,7 @@ class TestScriptGenerator:
         print("launch command generated! => " + launch_command)  # noqa
         return launch_command
 
-    def __create_launch_command_with_t4_dataset(
+    def __create_launch_command_with_t4_dataset(  # noqa TODO: fix logic
         self,
         scenario_root: str,
         scenario_name: str,
@@ -263,6 +271,13 @@ class TestScriptGenerator:
             launch_args += " sensor_model:=" + scenario_yaml_obj["SensorModel"]
             launch_args += " vehicle_id:=" + vehicle_id
             launch_args += " rviz:=true"
+            if scenario_yaml_obj.get("PerceptionMode") is not None:
+                perception_mode: str = scenario_yaml_obj["PerceptionMode"]
+                assert perception_mode in self.PERCEPTION_MODES, (
+                    f"perception_mode must be chosen from {self.PERCEPTION_MODES}, "
+                    f"but got {perception_mode}"
+                )
+                launch_args += " perception_mode:=" + perception_mode
 
             # t4_dataset
             launch_args += " t4_dataset_path:=" + t4_dataset_path

@@ -1,8 +1,9 @@
-ScenarioFormatVersion: 3.0.0
+ScenarioFormatVersion: 3.1.0
 ScenarioName: perception_2d_x2
 ScenarioDescription: perception_2d_x2
 SensorModel: aip_x2
 VehicleModel: gsm8
+PerceptionMode: camera_lidar_fusion
 Evaluation:
   UseCaseName: perception_2d
   UseCaseFormatVersion: 0.3.0
