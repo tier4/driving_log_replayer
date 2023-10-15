@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.0 (2023-10-16)
+------------------
 * feat(perception): allow to specify perception mode in scenario (`#279 <https://github.com/tier4/driving_log_replayer/issues/279>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
 * fix: TCH002 (`#278 <https://github.com/tier4/driving_log_replayer/issues/278>`_)
