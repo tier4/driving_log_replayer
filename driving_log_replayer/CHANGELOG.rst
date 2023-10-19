@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.8.0 (2023-10-19)
+------------------
 * perf: fixed to use `/localization/pose_estimator/initial_to_result_relative_pose` (`#282 <https://github.com/tier4/driving_log_replayer/issues/282>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
 * docs: update (`#283 <https://github.com/tier4/driving_log_replayer/issues/283>`_)
