@@ -556,7 +556,7 @@
         
   
   <span class="md-ellipsis">
-    Localization Evaluation
+    NDT Localization Evaluation
   </span>
   
 
@@ -1000,7 +1000,7 @@
         
   
   <span class="md-ellipsis">
-    Evaluate self-localization estimation
+    Evaluate NDT estimation
   </span>
   
 
@@ -1569,7 +1569,7 @@
 <h1 id="evaluate-perception">Evaluate perception<a class="headerlink" href="#evaluate-perception" title="Permanent link">#</a></h1>
 <p>The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.</p>
 <p>Run the perception module and pass the output perception topic to the evaluation library for evaluation.</p>
-<p>By default, it is launched with perception_mode = lidar, so if you want to target camera or radar, pass perception_mode to perception.launch.py to change it.</p>
+<p>Since it is activated in the perception_mode described in the scenario, change the scenario if you want to change the sensor to be evaluated.</p>
 <h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
 <p>In perception evaluation, machine learning pre-trained models are used.
 The models are automatically downloaded during set-up.

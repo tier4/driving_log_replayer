@@ -556,7 +556,7 @@
         
   
   <span class="md-ellipsis">
-    自己位置推定機能の評価
+    NDT自己位置推定機能の評価
   </span>
   
 
@@ -1000,7 +1000,7 @@
         
   
   <span class="md-ellipsis">
-    自己位置推定の評価
+    NDT自己位置推定の評価
   </span>
   
 
@@ -1301,6 +1301,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#perceptionmode" class="md-nav__link">
+    PerceptionMode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#localmappath" class="md-nav__link">
     LocalMapPath
   </a>
@@ -1376,6 +1383,7 @@
 <span class="nt">ScenarioDescription</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">SensorModel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">VehicleModel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
+<span class="nt">PerceptionMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">Evaluation</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
@@ -1388,7 +1396,7 @@
 <h3 id="scenarioformatversion">ScenarioFormatVersion<a class="headerlink" href="#scenarioformatversion" title="Permanent link">#</a></h3>
 <p>シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。</p>
 <p><code>localization</code> と <code>performance_diag</code> と <code>yabloc</code> と <code>eagleye</code> と <code>ar_tag_based_localizer</code> は 2.x.x 系を使用する。2.x.x の最新バージョンは 2.2.0
-<code>perception</code> と <code>obstacle_segmentation</code> は 3.x.x 系を使用する。3.x.x の最新バージョンは 3.0.0</p>
+<code>perception</code> と <code>obstacle_segmentation</code> は 3.x.x 系を使用する。3.x.x の最新バージョンは 3.1.0</p>
 <p>フォーマットの更新の度にマイナーバージョンを更新する。</p>
 <h3 id="scenarioname">ScenarioName<a class="headerlink" href="#scenarioname" title="Permanent link">#</a></h3>
 <p>シナリオの名前を記述する。Autoware Evaluator 上でシナリオの表示名として使用される。</p>
@@ -1401,6 +1409,8 @@
 <h3 id="vehicleid">VehicleId<a class="headerlink" href="#vehicleid" title="Permanent link">#</a></h3>
 <p>autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。</p>
 <p>車両 ID が不明な場合は、<code>default</code> を設定する。</p>
+<h3 id="perceptionmode">PerceptionMode<a class="headerlink" href="#perceptionmode" title="Permanent link">#</a></h3>
+<p>autoware_launch/launch/autoware.launch.xml の perception_mode を指定する。</p>
 <h3 id="localmappath">LocalMapPath<a class="headerlink" href="#localmappath" title="Permanent link">#</a></h3>
 <p>ローカル環境で使用する地図のフォルダのパスを記述する。</p>
 <p><code>$HOME</code>のような環境変数を使用することが出来る。</p>

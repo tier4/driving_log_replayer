@@ -556,7 +556,7 @@
         
   
   <span class="md-ellipsis">
-    自己位置推定機能の評価
+    NDT自己位置推定機能の評価
   </span>
   
 
@@ -1000,7 +1000,7 @@
         
   
   <span class="md-ellipsis">
-    自己位置推定の評価
+    NDT自己位置推定の評価
   </span>
   
 
@@ -1569,7 +1569,7 @@
 <h1 id="_1">認識機能の評価<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
 <p>Autoware の認識機能(perception)の認識結果から mAP(mean Average Precision)などの指標を計算して性能を評価する。</p>
 <p>perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。</p>
-<p>デフォルトではperception_mode = lidarで起動されるので、cameraやradarを対象としたい場合は、perception.launch.pyにperception_modeを渡して変更する。</p>
+<p>シナリオに記述したperception_modeで起動されるので、評価対象のセンサーを変更したい場合はシナリオを変更する。</p>
 <h2 id="_2">事前準備<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
 <p>perception では、機械学習の学習済みモデルを使用する。
 モデルはセットアップ時に自動的にダウンロードされる。

@@ -22,7 +22,7 @@
     
     
       
-        <title>Evaluate self-localization estimation - Driving Log Replayer Documentation</title>
+        <title>Evaluate NDT estimation - Driving Log Replayer Documentation</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#evaluate-self-localization-estimation" class="md-skip">
+        <a href="#evaluate-ndt-estimation" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Evaluate self-localization estimation
+              Evaluate NDT estimation
             
           </span>
         </div>
@@ -556,7 +556,7 @@
         
   
   <span class="md-ellipsis">
-    Localization Evaluation
+    NDT Localization Evaluation
   </span>
   
 
@@ -1009,7 +1009,7 @@
           
   
   <span class="md-ellipsis">
-    Evaluate self-localization estimation
+    Evaluate NDT estimation
   </span>
   
 
@@ -1020,7 +1020,7 @@
         
   
   <span class="md-ellipsis">
-    Evaluate self-localization estimation
+    Evaluate NDT estimation
   </span>
   
 
@@ -1608,9 +1608,9 @@
   
 
 
-<h1 id="evaluate-self-localization-estimation">Evaluate self-localization estimation<a class="headerlink" href="#evaluate-self-localization-estimation" title="Permanent link">#</a></h1>
-<p>Evaluate whether Autoware's localization is working stably.</p>
-<p>In the evaluation of localization, the reliability and convergence of NDT are evaluated.</p>
+<h1 id="evaluate-ndt-estimation">Evaluate NDT estimation<a class="headerlink" href="#evaluate-ndt-estimation" title="Permanent link">#</a></h1>
+<p>Evaluate whether Autoware's localization by NDT is working stably.</p>
+<p>In the evaluation of NDT, the reliability, convergence, and availability of NDT are evaluated.</p>
 <h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
 <p>The localization's evaluation is executed by launching the <code>localization.launch.py</code> file.
 Launching the file executes the following steps:</p>
@@ -1629,8 +1629,7 @@ Launching the file executes the following steps:</p>
 <h3 id="convergence-of-ndt">Convergence of NDT<a class="headerlink" href="#convergence-of-ndt" title="Permanent link">#</a></h3>
 <p>Convergence evaluation is based on the following topics:</p>
 <ul>
-<li><code>/localization/pose_estimator/pose</code></li>
-<li><code>/localization/pose_twist_fusion_filter/pose</code></li>
+<li><code>/localization/pose_estimator/initial_to_result_relative_pose</code></li>
 </ul>
 <h3 id="availability-of-ndt">Availability of NDT<a class="headerlink" href="#availability-of-ndt" title="Permanent link">#</a></h3>
 <p>We also evaluate whether the output of <code>ndt_scan_matcher</code> is available. This is mainly useful for detecting some cases where NDT is not capable of publishing the appropriate outputs, for example due to:</p>
@@ -1657,11 +1656,11 @@ For example, <code>/localization/pose_estimator/pose</code> is not suitable as a
 <h3 id="convergence-normal">Convergence Normal<a class="headerlink" href="#convergence-normal" title="Permanent link">#</a></h3>
 <p>If all of the following conditions are met, the convergence is reported as Normal:</p>
 <ol>
-<li>The lateral distance (calculated from <code>/localization/pose_estimator/pose</code> and <code>/localization/pose_twist_fusion_filter/pose</code> topics output) is less than or equal to <code>AllowableDistance</code> described in the scenario</li>
+<li>The lateral distance of <code>/localization/pose_estimator/initial_to_result_relative_pose</code> is less than or equal to <code>AllowableDistance</code> described in the scenario</li>
 <li>Execution time published to <code>/localization/pose_estimator/exe_time_ms</code> is less than or equal to <code>AllowableExeTimeMs</code> described in the scenario</li>
 <li>Number of iterations published to <code>/localization/pose_estimator/iteration_num</code> is less than or equal to <code>AllowableIterationNum</code> described in the scenario</li>
 </ol>
-<p>The lateral distance calculated in the step 1 is published as <code>/driving_log_replayer/localization/lateral_distance</code>.</p>
+<p>The lateral distance obtained in the step 1 is published as <code>/driving_log_replayer/localization/lateral_distance</code>.</p>
 <h3 id="convergence-error">Convergence Error<a class="headerlink" href="#convergence-error" title="Permanent link">#</a></h3>
 <p>The convergence evaluation output is marked as <code>Error</code> when conditions for <code>Convergence Normal</code> are not met.</p>
 <h3 id="ndt-availability-normal">NDT Availability Normal<a class="headerlink" href="#ndt-availability-normal" title="Permanent link">#</a></h3>
@@ -1691,12 +1690,8 @@ For example, <code>/localization/pose_estimator/pose</code> is not suitable as a
 <td>tier4_debug_msgs::msg::Float32Stamped</td>
 </tr>
 <tr>
-<td>/localization/pose_estimator/pose</td>
+<td>/localization/pose_estimator/initial_to_result_relative_pose</td>
 <td>geometry_msgs::msg::PoseStamped</td>
-</tr>
-<tr>
-<td>/localization/kinematic_state</td>
-<td>nav_msgs::msg::Odometry</td>
 </tr>
 <tr>
 <td>/localization/pose_estimator/exe_time_ms</td>
@@ -1879,8 +1874,8 @@ The Result is <code>true</code> if convergence, reliability, and availability al
 <span class="w">  </span><span class="nt">&quot;Convergence&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;LateralDistance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lateral distance between ndt and ekf pose&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;HorizontalDistance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Horizontal distance between ndt and ekf. Reference value&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;LateralDistance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;initial_to_result_relative_pose.pose.position.y&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;HorizontalDistance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Horizontal distance of initial_to_result_relative_pose.pose.position&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;ExeTimeMs&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Time taken to calculate ndt&quot;</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">&quot;IterationNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of recalculations of ndt&quot;</span>
 <span class="w">    </span><span class="p">}</span>
