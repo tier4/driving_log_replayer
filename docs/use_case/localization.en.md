@@ -182,8 +182,8 @@ Convergence Result example:
   "Convergence": {
     "Result": "Success or Fail",
     "Info": {
-      "LateralDistance": "Lateral distance between ndt and ekf pose",
-      "HorizontalDistance": "Horizontal distance between ndt and ekf. Reference value",
+      "LateralDistance": "initial_to_result_relative_pose.pose.position.y",
+      "HorizontalDistance": "Horizontal distance of initial_to_result_relative_pose.pose.position",
       "ExeTimeMs": "Time taken to calculate ndt",
       "IterationNum": "Number of recalculations of ndt"
     }

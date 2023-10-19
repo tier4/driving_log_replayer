@@ -183,8 +183,8 @@ Result は収束性、信頼度、可用性のすべてをパスしていれば 
   "Convergence": {
     "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
     "Info": {
-      "LateralDistance": "ndtとekfのposeの横方距離",
-      "HorizontalDistance": "ndtとekfの水平距離。参考値",
+      "LateralDistance": "initial_to_result_relative_pose.pose.position.y",
+      "HorizontalDistance": "initial_to_result_relative_pose.pose.positionの水平距離。参考値",
       "ExeTimeMs": "ndtの計算にかかった時間",
       "IterationNum": "ndtの再計算回数"
     }
