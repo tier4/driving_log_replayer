@@ -1,4 +1,4 @@
-# Localization Evaluation
+# NDT Localization Evaluation
 
 ## Preparation
 
