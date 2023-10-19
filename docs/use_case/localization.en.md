@@ -61,7 +61,7 @@ If the data in `/localization/pose_estimator/transform_probability` or `/localiz
 
 If all of the following conditions are met, the convergence is reported as Normal:
 
-1. The lateral distance (`y` value of `/localization/pose_estimator/initial_to_result_relative_pose`) is less than or equal to `AllowableDistance` described in the scenario
+1. The lateral distance of `/localization/pose_estimator/initial_to_result_relative_pose` is less than or equal to `AllowableDistance` described in the scenario
 2. Execution time published to `/localization/pose_estimator/exe_time_ms` is less than or equal to `AllowableExeTimeMs` described in the scenario
 3. Number of iterations published to `/localization/pose_estimator/iteration_num` is less than or equal to `AllowableIterationNum` described in the scenario
 
