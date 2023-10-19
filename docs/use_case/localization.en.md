@@ -1,8 +1,8 @@
-# Evaluate self-localization estimation
+# Evaluate self-localization estimation (NDT)
 
-Evaluate whether Autoware's localization is working stably.
+Evaluate whether Autoware's localization by NDT is working stably.
 
-In the evaluation of localization, the reliability and convergence of NDT are evaluated.
+In the evaluation of localization, the reliability, convergence, and availability of NDT are evaluated.
 
 ## Evaluation method
 
@@ -25,8 +25,7 @@ Of the following two topics, the one specified in the scenario will be used for 
 
 Convergence evaluation is based on the following topics:
 
-- `/localization/pose_estimator/pose`
-- `/localization/pose_twist_fusion_filter/pose`
+- `/localization/pose_estimator/initial_to_result_relative_pose`
 
 ### Availability of NDT
 
@@ -62,11 +61,11 @@ If the data in `/localization/pose_estimator/transform_probability` or `/localiz
 
 If all of the following conditions are met, the convergence is reported as Normal:
 
-1. The lateral distance (calculated from `/localization/pose_estimator/pose` and `/localization/pose_twist_fusion_filter/pose` topics output) is less than or equal to `AllowableDistance` described in the scenario
+1. The lateral distance (`y` value of `/localization/pose_estimator/initial_to_result_relative_pose`) is less than or equal to `AllowableDistance` described in the scenario
 2. Execution time published to `/localization/pose_estimator/exe_time_ms` is less than or equal to `AllowableExeTimeMs` described in the scenario
 3. Number of iterations published to `/localization/pose_estimator/iteration_num` is less than or equal to `AllowableIterationNum` described in the scenario
 
-The lateral distance calculated in the step 1 is published as `/driving_log_replayer/localization/lateral_distance`.
+The lateral distance obtained in the step 1 is published as `/driving_log_replayer/localization/lateral_distance`.
 
 ### Convergence Error
 
@@ -89,8 +88,7 @@ Subscribed topics:
 | /diagnostics_agg                                                     | diagnostic_msgs::msg::DiagnosticArray |
 | /localization/pose_estimator/transform_probability                   | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | tier4_debug_msgs::msg::Float32Stamped |
-| /localization/pose_estimator/pose                                    | geometry_msgs::msg::PoseStamped       |
-| /localization/kinematic_state                                        | nav_msgs::msg::Odometry               |
+| /localization/pose_estimator/initial_to_result_relative_pose         | geometry_msgs::msg::PoseStamped       |
 | /localization/pose_estimator/exe_time_ms                             | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/iteration_num                           | tier4_debug_msgs::msg::Int32Stamped   |
 | /tf                                                                  | tf2_msgs/msg/TFMessage                |
