@@ -4,7 +4,7 @@ The performance of Autoware's recognition function (perception) is evaluated by 
 
 Run the perception module and pass the output perception topic to the evaluation library for evaluation.
 
-By default, it is launched with perception_mode = lidar, so if you want to target camera or radar, pass perception_mode to perception.launch.py to change it.
+Since it is activated in the perception_mode described in the scenario, change the scenario if you want to change the sensor to be evaluated.
 
 ## Preparation
 

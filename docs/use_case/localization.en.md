@@ -1,8 +1,8 @@
-# Evaluate self-localization estimation (NDT)
+# Evaluate NDT estimation
 
 Evaluate whether Autoware's localization by NDT is working stably.
 
-In the evaluation of localization, the reliability, convergence, and availability of NDT are evaluated.
+In the evaluation of NDT, the reliability, convergence, and availability of NDT are evaluated.
 
 ## Evaluation method
 
