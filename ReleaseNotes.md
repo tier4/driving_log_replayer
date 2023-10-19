@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.8.0
+
+Major change
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/5319).
+
+| Module         | Feature              | Brief summary                       | Pull request                                                   | Jira | Contributor                                         |
+| -------------- | -------------------- | ----------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------------- |
+| `localization` | evaluate convergence | use initial_to_result_relative_pose | [#282](https://github.com/tier4/driving_log_replayer/pull/282) | -    | [SakodaShintaro](https://github.com/SakodaShintaro) |
+| `all`          | documentation        | scenario format 3.1.0               | [#283](https://github.com/tier4/driving_log_replayer/pull/283) | -    | [hayato-m126](https://github.com/hayato-m126)       |
+
 ## Version 1.7.0
 
 Major change
