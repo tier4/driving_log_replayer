@@ -35,7 +35,7 @@ class DrivingLogReplayerTestRunner:
         )
         is_executable = generator.run()
         if is_executable:
-            cmd = "/bin/bash " + generator.script_path
+            cmd = "/bin/bash " + generator.script_path.as_posix()
             subprocess.run(cmd, shell=True)
             if self.__output_json:
                 convert(self.__output_directory)

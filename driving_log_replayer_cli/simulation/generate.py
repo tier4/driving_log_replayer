@@ -6,6 +6,7 @@ import subprocess
 import termcolor
 import yaml
 
+
 @dataclass(frozen=True)
 class AutowareEssentialParameter:
     map_path: Path = Path("/dlr_not_exist_path")
@@ -56,13 +57,14 @@ class TestScriptGenerator:
         # kill zombie ros2 process
         # kill rviz
         # sleep 1 sec
-        return """echo $?
-        pgrep ros | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
-        pgrep ros | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
-        pgrep rviz | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
-        pgrep rviz | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
-        sleep 1
-        """
+        return """
+echo $?
+pgrep ros | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
+pgrep ros | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
+pgrep rviz | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
+pgrep rviz | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
+sleep 1
+"""
 
     def run(self) -> bool:
         if not self.__output_directory.exists():
@@ -70,8 +72,9 @@ class TestScriptGenerator:
         generated_cmd = (
             f"source {self.__autoware_path.joinpath('install', 'setup.bash').as_posix()}\n"
         )
-        for dataset_path in self.__data_directory.glob("**"):
-            # pathlib.Path.glob("**") detect directories only
+        for dataset_path in self.__data_directory.glob("*"):
+            if not dataset_path.is_dir():
+                continue
             launch_command = self._create_launch_cmd(dataset_path)
             if launch_command is None:
                 continue
@@ -117,18 +120,18 @@ class TestScriptGenerator:
         essential_param: AutowareEssentialParameter,
     ) -> str:
         return f"""{optional_arg}\
-        scenario_path:={scenario_path.as_posix()} \
-        result_json_path:={output_path.joinpath("result.json").as_posix()} \
-        play_rate:={self.__rate} \
-        play_delay:={self.__delay} \
-        input_bag:={input_bag.as_posix()} \
-        result_bag_path:={output_path.joinpath("result_bag").as_posix()} \
-        map_path:={essential_param.map_path} \
-        vehicle_model:={essential_param.vehicle_model} \
-        sensor_model:={essential_param.sensor_model} \
-        vehicle_id:={essential_param.vehicle_id} \
-        rviz:=true
-        """
+scenario_path:={scenario_path.as_posix()} \
+result_json_path:={output_path.joinpath("result.json").as_posix()} \
+play_rate:={self.__rate} \
+play_delay:={self.__delay} \
+input_bag:={input_bag.as_posix()} \
+result_bag_path:={output_path.joinpath("result_bag").as_posix()} \
+map_path:={essential_param.map_path} \
+vehicle_model:={essential_param.vehicle_model} \
+sensor_model:={essential_param.sensor_model} \
+vehicle_id:={essential_param.vehicle_id} \
+rviz:=true\
+"""
 
     def _cmd_use_bag_only(
         self,
@@ -212,7 +215,7 @@ class TestScriptGenerator:
                 continue
 
             use_case_name = scenario_yaml_obj["Evaluation"]["UseCaseName"]
-            launch_base_command = f"ros2 launch driving_log_replayer {use_case_name}.launch.py"
+            launch_base_command = f"ros2 launch driving_log_replayer {use_case_name}.launch.py "
             optional_arg = ""
             perception_mode: str | None = scenario_yaml_obj.get("PerceptionMode")
             if perception_mode is not None:
@@ -235,7 +238,9 @@ class TestScriptGenerator:
             )
             # t4_dataset
             launch_args += f" t4_dataset_path:={t4_dataset_path}"
-            launch_args += f" result_archive_path:={output_dir_per_dataset.joinpath("result_archive")}"
+            launch_args += (
+                f" result_archive_path:={output_dir_per_dataset.joinpath('result_archive')}"
+            )
             launch_args += f" sensing:={dataset[key].get('LaunchSensing', True)}"
             launch_command = launch_base_command + launch_args + "\n"
             launch_command_for_all_dataset += launch_command
