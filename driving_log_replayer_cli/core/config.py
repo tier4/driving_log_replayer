@@ -118,4 +118,4 @@ def _save_as_file(data: dict[str, dict], filepath: str) -> None:
 
 
 def _default_filepath() -> str:
-    return Path("~").expanduser().joinpath(DEFAULT_CONFIG_FILE)
+    return Path("~").expanduser().joinpath(DEFAULT_CONFIG_FILE).as_posix()
