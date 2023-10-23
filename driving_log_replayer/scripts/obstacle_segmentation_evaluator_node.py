@@ -533,7 +533,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             default_config_path(),
             convert_str_to_dist_type("euclidean"),
         )
-        with open(jsonl_file_path, "r+") as jsonl_file:
+        with jsonl_file_path.open("r+") as jsonl_file:
             last_line = jsonl_file.readlines()[-1]
             try:
                 last_line_dict = json.loads(last_line)

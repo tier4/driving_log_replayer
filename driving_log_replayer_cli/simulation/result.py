@@ -1,21 +1,19 @@
 import contextlib
-import glob
-import os
+from os.path import expandvars
 from pathlib import Path
 
-from natsort import natsorted
 import simplejson as json
 import termcolor
 
 
 class DrivingLogReplayerResultViewer:
     def __init__(self, result_path: str) -> None:
-        self.__result_path = result_path
+        self.__result_path = Path(result_path)
 
     def output(self) -> None:
         print("--------------------------------------------------")  # noqa
         self.__result_json_dict = {}
-        with open(self.__result_path) as jsonl_file:
+        with self.__result_path.open() as jsonl_file:
             last_line = jsonl_file.readlines()[-1]
             with contextlib.suppress(json.JSONDecodeError):
                 self.__result_json_dict = json.loads(last_line)
@@ -33,36 +31,31 @@ class DrivingLogReplayerResultViewer:
 
 class DrivingLogReplayerResultConverter:
     def __init__(self, result_path: str) -> None:
-        self.__result_path = result_path
+        self.__result_path = Path(result_path)
 
     def convert(self) -> None:
-        output_file_path = Path(self.__result_path).parent.joinpath("result.json")
+        output_file_path = self.__result_path.parent.joinpath("result.json")
         if output_file_path.exists():
             return
-        with open(self.__result_path) as jsonl_file:
+        with self.__result_path.open() as jsonl_file:
             result_dict = [json.loads(line) for line in jsonl_file]
-            with open(output_file_path, "w") as out_file:
+            with output_file_path.open("w") as out_file:
                 json.dump(result_dict, out_file)
 
 
 def display(output_directory: str) -> None:
-    regex = os.path.join(os.path.expandvars(output_directory), "**", "result.jsonl")
-    result_paths = glob.glob(regex, recursive=True)
+    result_paths = Path(expandvars(output_directory)).glob("**/result.jsonl")
     number = 1
     total = len(result_paths)
-    for result_path in natsorted(result_paths):
-        result_path_obj = Path(result_path)
-        log_directory = result_path_obj.parent
-        print(f"test case {number} / {total} : use case: {log_directory.name}")  # noqa
-        viewer = DrivingLogReplayerResultViewer(result_path_obj.as_posix())
+    for result_path in result_paths:
+        print(f"test case {number} / {total} : use case: {result_path.parent.name}")  # noqa
+        viewer = DrivingLogReplayerResultViewer(result_path.as_posix())
         viewer.output()
         number = number + 1
 
 
 def convert(output_directory: str) -> None:
-    regex = os.path.join(os.path.expandvars(output_directory), "**", "result.jsonl")
-    result_paths = glob.glob(regex, recursive=True)
-    for result_path in natsorted(result_paths):
-        result_path_obj = Path(result_path)
-        converter = DrivingLogReplayerResultConverter(result_path_obj.as_posix())
+    result_paths = Path(expandvars(output_directory)).glob("**/result.jsonl")
+    for result_path in result_paths:
+        converter = DrivingLogReplayerResultConverter(result_path.as_posix())
         converter.convert()

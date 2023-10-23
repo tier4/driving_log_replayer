@@ -17,6 +17,7 @@
 import argparse
 import glob
 import os
+from pathlib import Path
 
 from perception_eval.tool import PerceptionAnalyzer3D
 import simplejson as json
@@ -38,9 +39,9 @@ class PerceptionLoadDatabaseResult:
         error_dict = error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
         database_metrics = {"Score": score_dict, "Error": error_dict}
 
-        result_file_path = os.path.join(result_root_directory, "database_result.json")
+        result_file_path = Path(result_root_directory).joinpath("database_result.json")
 
-        with open(result_file_path, "w") as f:
+        with result_file_path.open("w") as f:
             json.dump(database_metrics, f)
 
 

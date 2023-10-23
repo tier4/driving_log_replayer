@@ -36,7 +36,7 @@ class Config:
 
 
 def load_config(file: Path) -> Config:
-    with open(file) as f:
+    with file.open() as f:
         yaml_obj = yaml.safe_load(f)
 
     return Config(
