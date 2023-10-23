@@ -29,7 +29,7 @@ def run(profile: str, rate: float, delay: float, no_json: bool) -> None:  # noqa
     print(output_dir_by_time)  # noqa
     sim_run(
         config.data_directory,
-        output_dir_by_time,
+        output_dir_by_time.as_posix(),
         config.autoware_path,
         rate,
         delay,

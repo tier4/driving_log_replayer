@@ -109,12 +109,13 @@ def _load_from_file(filepath: str) -> dict[str, dict]:
 
 
 def _save_as_file(data: dict[str, dict], filepath: str) -> None:
-    Path(filepath).parent.mkdir(exist_ok=True)
+    config_file_path = Path(filepath)
+    config_file_path.parent.mkdir(exist_ok=True)
 
-    with Path(filepath).open("w") as fp:
+    with config_file_path.open("w") as fp:
         toml.dump(data, fp)
 
-    Path(filepath).chmod(0o600)
+    config_file_path.chmod(0o600)
 
 
 def _default_filepath() -> str:
