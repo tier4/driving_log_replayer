@@ -39,8 +39,8 @@ class DrivingLogReplayerResultConverter:
             return
         with self.__result_path.open() as jsonl_file:
             result_dict = [json.loads(line) for line in jsonl_file]
-            with output_file_path.open("w") as out_file:
-                json.dump(result_dict, out_file)
+        with output_file_path.open("w") as out_file:
+            json.dump(result_dict, out_file)
 
 
 def display(output_directory: str) -> None:
