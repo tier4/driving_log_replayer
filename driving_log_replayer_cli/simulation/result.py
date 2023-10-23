@@ -46,7 +46,7 @@ class DrivingLogReplayerResultConverter:
 def display(output_directory: str) -> None:
     result_paths = Path(expandvars(output_directory)).glob("**/result.jsonl")
     number = 1
-    total = len(result_paths)
+    total = len(list(result_paths))
     for result_path in result_paths:
         print(f"test case {number} / {total} : use case: {result_path.parent.name}")  # noqa
         viewer = DrivingLogReplayerResultViewer(result_path.as_posix())
