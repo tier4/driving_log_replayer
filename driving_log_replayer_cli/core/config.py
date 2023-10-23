@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any
 from typing import NamedTuple
 from typing import overload
@@ -57,10 +58,8 @@ def save_config(config: Config, profile: str, filepath: str | None = None):
 
     config_data = {}
 
-    from os.path import exists
-
-    if exists(filepath):
-        with open(filepath) as fp:
+    if Path(filepath).exists():
+        with Path(filepath).open() as fp:
             config_data = toml.load(fp)
 
     config_data[profile] = config.as_dict()
@@ -99,36 +98,24 @@ def remove_config(profile: str, filepath: str | None = None) -> Config:
 
 
 def _load_from_file(filepath: str) -> dict[str, dict]:
-    from os.path import exists
-
-    if not exists(filepath):
+    if not Path(filepath).exists():
         from driving_log_replayer_cli.core.exception import UserError
 
         error_msg = "Configuration file is not found."
         raise UserError(error_msg)  # EM101
 
-    with open(filepath) as fp:
+    with Path(filepath).open() as fp:
         return toml.load(fp)
 
 
 def _save_as_file(data: dict[str, dict], filepath: str) -> None:
-    from os import makedirs
-    from os.path import dirname
+    Path(filepath).parent.mkdir(exist_ok=True)
 
-    makedirs(dirname(filepath), exist_ok=True)
-
-    with open(filepath, mode="w") as fp:
+    with Path(filepath).open("w") as fp:
         toml.dump(data, fp)
 
-    from os import chmod
-    from stat import S_IREAD
-    from stat import S_IWRITE
-
-    chmod(filepath, S_IREAD | S_IWRITE)
+    Path(filepath).chmod(0o600)
 
 
 def _default_filepath() -> str:
-    from os.path import expanduser
-    from os.path import join
-
-    return join(expanduser("~"), DEFAULT_CONFIG_FILE)
+    return Path("~").expanduser().joinpath(DEFAULT_CONFIG_FILE)
