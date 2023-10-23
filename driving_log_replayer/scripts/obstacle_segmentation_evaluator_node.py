@@ -15,7 +15,6 @@
 # limitations under the License.
 
 import logging
-import os
 from pathlib import Path
 import sys
 from typing import TYPE_CHECKING
@@ -440,7 +439,9 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id="base_link",
-            result_root_directory=os.path.join(self._perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=Path(self._perception_eval_log_path)
+            .joinpath("result", "{TIME}")
+            .as_posix(),
             evaluation_config_dict=self.__s_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )
@@ -521,11 +522,9 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             self.__pub_goal_pose.publish(self.__goal_pose)
 
     def write_graph_data(self) -> None:
-        # jsonlを一旦閉じて開きなおす
+        # jsonlを一旦閉じて開きなおす。
+        jsonl_file_path = self._result_writer.result_path
         self._result_writer.close()
-        jsonl_file_path = Path(
-            os.path.splitext(os.path.expandvars(self._result_json_path))[0] + ".jsonl",
-        )
         detection_dist, pointcloud_numpoints = get_graph_data(
             jsonl_file_path,
             self.__vehicle_model,

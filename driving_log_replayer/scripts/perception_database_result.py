@@ -15,8 +15,7 @@
 # limitations under the License.
 
 import argparse
-import glob
-import os
+from os.path import expandvars
 from pathlib import Path
 
 from perception_eval.tool import PerceptionAnalyzer3D
@@ -29,8 +28,7 @@ class PerceptionLoadDatabaseResult:
             result_root_directory,
             scenario_path,
         )
-        regex = os.path.join(result_root_directory, "**", "scene_result.pkl")
-        pickle_file_paths = glob.glob(regex, recursive=True)
+        pickle_file_paths = Path(result_root_directory).glob("**/scene_result.pkl")
         for filepath in pickle_file_paths:
             analyzer.add_from_pkl(filepath)
         score_df, error_df = analyzer.analyze()
@@ -61,8 +59,8 @@ def main() -> None:
     )
     args = parser.parse_args()
     PerceptionLoadDatabaseResult(
-        os.path.expandvars(args.result_root_directory),
-        os.path.expandvars(args.scenario_path),
+        expandvars(args.result_root_directory),
+        expandvars(args.scenario_path),
     )
 
 

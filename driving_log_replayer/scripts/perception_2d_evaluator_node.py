@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import logging
-import os
+from pathlib import Path
 
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
@@ -123,7 +123,9 @@ class Perception2DEvaluator(DLREvaluator):
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=list(self.__camera_type_dict.keys()),
-            result_root_directory=os.path.join(self._perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=Path(self._perception_eval_log_path)
+            .joinpath("result", "{TIME}")
+            .as_posix(),
             evaluation_config_dict=self.__p_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )

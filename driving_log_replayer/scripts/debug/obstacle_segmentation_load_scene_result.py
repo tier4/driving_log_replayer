@@ -38,7 +38,7 @@ class ObstacleSegmentationEvaluatorPickle:
         self.__scenario_yaml_obj = None
         self.__loaded_frame_results = None
         self.__t4_dataset_paths = [expandvars(t4_dataset_path)]
-        self.__perception_eval_log_path = log_path
+        self.__perception_eval_log_path = Path(log_path)
         with Path(scenario_path).open() as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
 
@@ -52,7 +52,10 @@ class ObstacleSegmentationEvaluatorPickle:
             frame_id="base_link",
             merge_similar_labels=False,
             does_use_pointcloud=False,
-            result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=self.__perception_eval_log_path.joinpath(
+                "result",
+                "{TIME}",
+            ).as_posix(),
             evaluation_config_dict=s_cfg["evaluation_config_dict"],
         )
         _ = configure_logger(

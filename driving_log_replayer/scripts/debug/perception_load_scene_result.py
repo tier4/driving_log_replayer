@@ -56,7 +56,9 @@ class PerceptionEvaluatorPickle:
             frame_id=frame_id,
             merge_similar_labels=False,
             does_use_pointcloud=False,
-            result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=Path(self.__perception_eval_log_path)
+            .joinpath("result", "{TIME}")
+            .as_posix(),
             evaluation_config_dict=p_cfg["evaluation_config_dict"],
         )
         _ = configure_logger(
