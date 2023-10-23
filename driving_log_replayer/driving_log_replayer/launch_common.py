@@ -115,7 +115,9 @@ def get_autoware_launch(
         "logging_simulator.launch.xml",
     )
     return launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(autoware_launch_file),
+        launch.launch_description_sources.AnyLaunchDescriptionSource(
+            autoware_launch_file.as_posix(),
+        ),
         launch_arguments={
             "map_path": LaunchConfiguration("map_path"),
             "vehicle_model": LaunchConfiguration("vehicle_model"),
@@ -144,7 +146,7 @@ def get_map_height_fitter(launch_service: str = "true") -> launch.actions.Includ
         "map_height_fitter.launch.xml",
     )
     return launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(fitter_launch_file),
+        launch.launch_description_sources.AnyLaunchDescriptionSource(fitter_launch_file.as_posix()),
         condition=IfCondition(launch_service),
     )
 
@@ -158,7 +160,7 @@ def get_rviz(rviz_config_name: str) -> Node:
         package="rviz2",
         executable="rviz2",
         name="rviz2",
-        arguments=["-d", rviz_config_dir],
+        arguments=["-d", rviz_config_dir.as_posix()],
         parameters=[{"use_sim_time": True}],
         output="screen",
         condition=IfCondition(LaunchConfiguration("rviz")),
@@ -201,10 +203,12 @@ def get_recorder(record_config_name: str, record_topics: list) -> ExecuteProcess
         "-o",
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
-        Path(get_package_share_directory("driving_log_replayer")).joinpath(
+        Path(get_package_share_directory("driving_log_replayer"))
+        .joinpath(
             "config",
             record_config_name,
-        ),
+        )
+        .as_posix(),
     ]
     return ExecuteProcess(cmd=record_cmd)
 
@@ -217,10 +221,12 @@ def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProces
         "-o",
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
-        Path(get_package_share_directory("driving_log_replayer")).joinpath(
+        Path(get_package_share_directory("driving_log_replayer"))
+        .joinpath(
             "config",
             record_config_name,
-        ),
+        )
+        .as_posix(),
         "-e",
         allowlist,
     ]
@@ -263,10 +269,10 @@ def get_topic_state_monitor_launch(
     )
     return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(
-            component_state_monitor_launch_file,
+            component_state_monitor_launch_file.as_posix(),
         ),
         launch_arguments={
-            "file": topic_monitor_config_path,
+            "file": topic_monitor_config_path.as_posix(),
             "mode": "logging_simulation",
         }.items(),
     )
