@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+from pathlib import Path
 from string import capwords
 
 from ament_index_python.packages import get_package_share_directory
@@ -110,8 +110,7 @@ def get_autoware_launch(
     twist_source: str = "gyro_odom",
 ) -> launch.actions.IncludeLaunchDescription:
     # autoware launch
-    autoware_launch_file = os.path.join(
-        get_package_share_directory("autoware_launch"),
+    autoware_launch_file = Path(get_package_share_directory("autoware_launch")).joinpath(
         "launch",
         "logging_simulator.launch.xml",
     )
@@ -140,8 +139,7 @@ def get_autoware_launch(
 
 def get_map_height_fitter(launch_service: str = "true") -> launch.actions.IncludeLaunchDescription:
     # map_height_fitter launch
-    fitter_launch_file = os.path.join(
-        get_package_share_directory("map_height_fitter"),
+    fitter_launch_file = Path(get_package_share_directory("map_height_fitter")).joinpath(
         "launch",
         "map_height_fitter.launch.xml",
     )
@@ -152,8 +150,7 @@ def get_map_height_fitter(launch_service: str = "true") -> launch.actions.Includ
 
 
 def get_rviz(rviz_config_name: str) -> Node:
-    rviz_config_dir = os.path.join(
-        get_package_share_directory("driving_log_replayer"),
+    rviz_config_dir = Path(get_package_share_directory("driving_log_replayer")).joinpath(
         "config",
         rviz_config_name,
     )
@@ -204,8 +201,7 @@ def get_recorder(record_config_name: str, record_topics: list) -> ExecuteProcess
         "-o",
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
-        os.path.join(
-            get_package_share_directory("driving_log_replayer"),
+        Path(get_package_share_directory("driving_log_replayer")).joinpath(
             "config",
             record_config_name,
         ),
@@ -221,8 +217,7 @@ def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProces
         "-o",
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
-        os.path.join(
-            get_package_share_directory("driving_log_replayer"),
+        Path(get_package_share_directory("driving_log_replayer")).joinpath(
             "config",
             record_config_name,
         ),
@@ -256,13 +251,13 @@ def get_topic_state_monitor_launch(
     topic_monitor_config: str,
 ) -> launch.actions.IncludeLaunchDescription:
     # component_state_monitor launch
-    component_state_monitor_launch_file = os.path.join(
+    component_state_monitor_launch_file = Path(
         get_package_share_directory("component_state_monitor"),
+    ).joinpath(
         "launch",
         "component_state_monitor.launch.py",
     )
-    topic_monitor_config_path = os.path.join(
-        get_package_share_directory("driving_log_replayer"),
+    topic_monitor_config_path = Path(get_package_share_directory("driving_log_replayer")).joinpath(
         "config",
         topic_monitor_config,
     )
