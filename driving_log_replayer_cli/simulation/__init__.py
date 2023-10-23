@@ -1,5 +1,5 @@
 import datetime
-import os
+from pathlib import Path
 
 import click
 
@@ -23,14 +23,13 @@ def simulation() -> None:
 @click.option("--no-json", is_flag=True, help="Do not convert jsonl files to json")
 def run(profile: str, rate: float, delay: float, no_json: bool) -> None:  # noqa
     config = load_config(profile)
-    output_dir_by_time = os.path.join(
-        config.output_directory,
+    output_dir_by_time = Path(config.output_directory).joinpath(
         datetime.datetime.now().strftime("%Y-%m%d-%H%M%S"),  # noqa
     )
     print(output_dir_by_time)  # noqa
     sim_run(
         config.data_directory,
-        output_dir_by_time,
+        output_dir_by_time.as_posix(),
         config.autoware_path,
         rate,
         delay,

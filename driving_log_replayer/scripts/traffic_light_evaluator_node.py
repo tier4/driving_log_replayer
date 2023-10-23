@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import logging
-import os
+from pathlib import Path
 
 from autoware_auto_perception_msgs.msg import TrafficSignal
 from autoware_auto_perception_msgs.msg import TrafficSignalArray
@@ -108,7 +108,9 @@ class TrafficLightEvaluator(DLREvaluator):
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=self.__camera_type,
-            result_root_directory=os.path.join(self._perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=Path(self._perception_eval_log_path)
+            .joinpath("result", "{TIME}")
+            .as_posix(),
             evaluation_config_dict=self.__p_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )

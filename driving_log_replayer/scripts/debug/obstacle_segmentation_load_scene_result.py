@@ -16,7 +16,8 @@
 
 import argparse
 import logging
-import os
+from os.path import expandvars
+from pathlib import Path
 import pickle
 
 import numpy as np
@@ -36,23 +37,26 @@ class ObstacleSegmentationEvaluatorPickle:
     ) -> None:
         self.__scenario_yaml_obj = None
         self.__loaded_frame_results = None
-        self.__t4_dataset_paths = [os.path.expandvars(t4_dataset_path)]
-        self.__perception_eval_log_path = log_path
-        with open(scenario_path) as scenario_file:
+        self.__t4_dataset_paths = [expandvars(t4_dataset_path)]
+        self.__perception_eval_log_path = Path(log_path)
+        with Path(scenario_path).open() as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
 
-        with open(pickle_path, "rb") as pickle_file:
+        with Path(pickle_path).open("rb") as pickle_file:
             self.__loaded_frame_results = pickle.load(pickle_file)
 
         s_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
+        s_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"  # Add a fixed value setting
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
             frame_id="base_link",
-            merge_similar_labels=False,
-            does_use_pointcloud=False,
-            result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=self.__perception_eval_log_path.joinpath(
+                "result",
+                "{TIME}",
+            ).as_posix(),
             evaluation_config_dict=s_cfg["evaluation_config_dict"],
+            load_raw_data=False,
         )
         _ = configure_logger(
             log_file_directory=evaluation_config.log_directory,
@@ -100,10 +104,10 @@ def main() -> None:
     parser.add_argument("-l", "--log_path", required=True, help="perception_eval log path")
     args = parser.parse_args()
     evaluator = ObstacleSegmentationEvaluatorPickle(
-        os.path.expandvars(args.pickle),
-        os.path.expandvars(args.scenario),
-        os.path.expandvars(args.dataset),
-        os.path.expandvars(args.log_path),
+        expandvars(args.pickle),
+        expandvars(args.scenario),
+        expandvars(args.dataset),
+        expandvars(args.log_path),
     )
     evaluator.get_final_result()
 

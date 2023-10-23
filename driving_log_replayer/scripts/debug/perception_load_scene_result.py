@@ -16,7 +16,8 @@
 
 import argparse
 import logging
-import os
+from os.path import expandvars
+from pathlib import Path
 import pickle
 
 from perception_eval.config.perception_evaluation_config import PerceptionEvaluationConfig
@@ -37,15 +38,16 @@ class PerceptionEvaluatorPickle:
     ) -> None:
         self.__scenario_yaml_obj = None
         self.__loaded_frame_results = None
-        self.__t4_dataset_paths = [os.path.expandvars(t4_dataset_path)]
+        self.__t4_dataset_paths = [expandvars(t4_dataset_path)]
         self.__perception_eval_log_path = log_path
-        with open(scenario_path) as scenario_file:
+        with Path(scenario_path).open() as scenario_file:
             self.__scenario_yaml_obj = yaml.safe_load(scenario_file)
 
-        with open(pickle_path, "rb") as pickle_file:
+        with Path(pickle_path).open("rb") as pickle_file:
             self.__loaded_frame_results = pickle.load(pickle_file)
 
         p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
+        p_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"  # Add a fixed value setting
 
         evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
         frame_id = self.__get_frame_id(evaluation_task)
@@ -53,10 +55,11 @@ class PerceptionEvaluatorPickle:
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
             frame_id=frame_id,
-            merge_similar_labels=False,
-            does_use_pointcloud=False,
-            result_root_directory=os.path.join(self.__perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=Path(self.__perception_eval_log_path)
+            .joinpath("result", "{TIME}")
+            .as_posix(),
             evaluation_config_dict=p_cfg["evaluation_config_dict"],
+            load_raw_data=False,
         )
         _ = configure_logger(
             log_file_directory=evaluation_config.log_directory,
@@ -116,10 +119,10 @@ def main() -> None:
     parser.add_argument("-l", "--log_path", required=True, help="perception_eval log path")
     args = parser.parse_args()
     evaluator = PerceptionEvaluatorPickle(
-        os.path.expandvars(args.pickle),
-        os.path.expandvars(args.scenario),
-        os.path.expandvars(args.dataset),
-        os.path.expandvars(args.log_path),
+        expandvars(args.pickle),
+        expandvars(args.scenario),
+        expandvars(args.dataset),
+        expandvars(args.log_path),
     )
     evaluator.get_final_result()
 
