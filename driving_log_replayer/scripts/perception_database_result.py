@@ -30,7 +30,7 @@ class PerceptionLoadDatabaseResult:
         )
         pickle_file_paths = Path(result_root_directory).glob("**/scene_result.pkl")
         for filepath in pickle_file_paths:
-            analyzer.add_from_pkl(filepath)
+            analyzer.add_from_pkl(filepath.as_posix())
         score_df, error_df = analyzer.analyze()
 
         score_dict = score_df.to_dict()
