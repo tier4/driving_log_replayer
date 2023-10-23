@@ -46,17 +46,17 @@ class ObstacleSegmentationEvaluatorPickle:
             self.__loaded_frame_results = pickle.load(pickle_file)
 
         s_cfg = self.__scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
+        s_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"  # Add a fixed value setting
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
             frame_id="base_link",
-            merge_similar_labels=False,
-            does_use_pointcloud=False,
             result_root_directory=self.__perception_eval_log_path.joinpath(
                 "result",
                 "{TIME}",
             ).as_posix(),
             evaluation_config_dict=s_cfg["evaluation_config_dict"],
+            load_raw_data=False,
         )
         _ = configure_logger(
             log_file_directory=evaluation_config.log_directory,

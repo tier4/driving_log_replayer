@@ -47,6 +47,7 @@ class PerceptionEvaluatorPickle:
             self.__loaded_frame_results = pickle.load(pickle_file)
 
         p_cfg = self.__scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
+        p_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"  # Add a fixed value setting
 
         evaluation_task = p_cfg["evaluation_config_dict"]["evaluation_task"]
         frame_id = self.__get_frame_id(evaluation_task)
@@ -54,12 +55,11 @@ class PerceptionEvaluatorPickle:
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self.__t4_dataset_paths,
             frame_id=frame_id,
-            merge_similar_labels=False,
-            does_use_pointcloud=False,
             result_root_directory=Path(self.__perception_eval_log_path)
             .joinpath("result", "{TIME}")
             .as_posix(),
             evaluation_config_dict=p_cfg["evaluation_config_dict"],
+            load_raw_data=False,
         )
         _ = configure_logger(
             log_file_directory=evaluation_config.log_directory,

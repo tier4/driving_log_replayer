@@ -522,6 +522,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             self.__pub_goal_pose.publish(self.__goal_pose)
 
     def write_graph_data(self) -> None:
+        # debug self.save_pkl(self.__evaluator.frame_results)
         # jsonlを一旦閉じて開きなおす。
         jsonl_file_path = self._result_writer.result_path
         self._result_writer.close()

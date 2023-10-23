@@ -20,13 +20,13 @@
       "console": "integratedTerminal",
       "args": [
         "-p",
-        "$HOME/out/perception/latest/sample/f72e1065-7c38-40fe-a4e2-c5bbe6ff6443/result_archive/scene_result.pkl",
+        "$HOME/out/oss_perception/latest/sample/sample_dataset/result_archive/scene_result.pkl",
         "-s",
-        "$HOME/data/perception/sample/scenario.yaml",
+        "$HOME/data/oss_perception/sample/scenario.yaml",
         "-d",
-        "$HOME/data/perception/sample/t4_dataset/f72e1065-7c38-40fe-a4e2-c5bbe6ff6443",
+        "$HOME/data/oss_perception/sample/t4_dataset/sample_dataset",
         "-l",
-        "$HOME/out/perception/latest/sample/f72e1065-7c38-40fe-a4e2-c5bbe6ff6443/perception_eval_log"
+        "$HOME/out/oss_perception/latest/sample/sample_dataset/perception_eval_log"
       ]
     },
     {
@@ -37,9 +37,9 @@
       "console": "integratedTerminal",
       "args": [
         "-r",
-        "$HOME/out/perception/latest/sample",
+        "$HOME/out/oss_perception_database/latest/sample",
         "-s",
-        "$HOME/data/perception/sample/scenario.yaml"
+        "$HOME/data/oss_perception_database/sample/scenario.yaml"
       ]
     },
     {
@@ -50,26 +50,13 @@
       "console": "integratedTerminal",
       "args": [
         "-p",
-        "$HOME/out/obstacle_segmentation/latest/sample/63800729-18d2-4383-91e9-fea7bad384f4/frame.pkl",
+        "$HOME/out/oss_obstacle_segmentation/latest/sample/sample_dataset/result_archive/scene_result.pkl",
         "-s",
-        "$HOME/data/obstacle_segmentation/sample/scenario.yaml",
+        "$HOME/data/oss_obstacle_segmentation/sample/scenario.yaml",
         "-d",
-        "$HOME/data/obstacle_segmentation/sample/t4_dataset/63800729-18d2-4383-91e9-fea7bad384f4",
+        "$HOME/data/oss_obstacle_segmentation/sample/t4_dataset/sample_dataset",
         "-l",
-        "$HOME/out/obstacle_segmentation/latest/sample/63800729-18d2-4383-91e9-fea7bad384f4/perception_eval_log"
-      ]
-    },
-    {
-      "name": "obstacle_segementation_analyzer",
-      "type": "python",
-      "request": "launch",
-      "program": "driving_log_replayer/driving_log_replayer/obstacle_segmentation_analyzer.py",
-      "console": "integratedTerminal",
-      "args": [
-        "-i",
-        "$HOME/out/obstacle_segmentation/latest/sample/63800729-18d2-4383-91e9-fea7bad384f4/result.jsonl",
-        "-v",
-        "gsm8"
+        "$HOME/out/oss_obstacle_segmentation/latest/sample/sample_dataset/perception_eval_log"
       ]
     }
   ]
