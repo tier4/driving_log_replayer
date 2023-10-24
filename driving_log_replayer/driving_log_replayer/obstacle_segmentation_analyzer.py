@@ -41,7 +41,7 @@ def update_config(config: Config, vehicle_model: str) -> Config:
         "config",
         "vehicle_info.param.yaml",
     )
-    with open(vehicle_info_param) as f:
+    with vehicle_info_param.open() as f:
         yaml_obj = yaml.safe_load(f)
 
     config.overhang_from_baselink = (

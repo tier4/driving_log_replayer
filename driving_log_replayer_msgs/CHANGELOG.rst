@@ -2,6 +2,35 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.8.0 (2023-10-19)
+------------------
+* perf: fixed to use `/localization/pose_estimator/initial_to_result_relative_pose` (`#282 <https://github.com/tier4/driving_log_replayer/issues/282>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* docs: update (`#283 <https://github.com/tier4/driving_log_replayer/issues/283>`_)
+* Contributors: SakodaShintaro
+
+1.7.0 (2023-10-16)
+------------------
+* feat(perception): allow to specify perception mode in scenario (`#279 <https://github.com/tier4/driving_log_replayer/issues/279>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* fix: TCH002 (`#278 <https://github.com/tier4/driving_log_replayer/issues/278>`_)
+* Contributors: Hayato Mizushima, Kotaro Uetake
+
+1.6.7 (2023-10-12)
+------------------
+* fix(perception): remove `typing_extensions` (`#277 <https://github.com/tier4/driving_log_replayer/issues/277>`_)
+* Contributors: Kotaro Uetake
+
+1.6.6 (2023-10-06)
+------------------
+* feat(perception): update perception criteria (`#272 <https://github.com/tier4/driving_log_replayer/issues/272>`_)
+  Co-authored-by: ktro2828 <ktro2828@users.noreply.github.com>
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* fix: dependency (`#274 <https://github.com/tier4/driving_log_replayer/issues/274>`_)
+* feat: eval_conversions add test (`#271 <https://github.com/tier4/driving_log_replayer/issues/271>`_)
+* feat: diag test (`#269 <https://github.com/tier4/driving_log_replayer/issues/269>`_)
+* Contributors: Hayato Mizushima, Kotaro Uetake
+
 1.6.5 (2023-09-29)
 ------------------
 * feat: poetry add group docs (`#265 <https://github.com/tier4/driving_log_replayer/issues/265>`_)

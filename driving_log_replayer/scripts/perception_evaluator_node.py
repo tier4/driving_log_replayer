@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import logging
-import os
+from pathlib import Path
 
 from autoware_auto_perception_msgs.msg import DetectedObject
 from autoware_auto_perception_msgs.msg import DetectedObjects
@@ -41,6 +41,7 @@ from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from visualization_msgs.msg import MarkerArray
 
+from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 import driving_log_replayer.perception_eval_conversions as eval_conversions
@@ -53,6 +54,11 @@ class PerceptionResult(ResultBase):
         self.__pass_rate = condition["PassRate"]
         self.__success = 0
         self.__total = 0
+
+        self.__criteria = PerceptionCriteria(
+            method=condition.get("CriteriaMethod"),
+            level=condition.get("CriteriaLevel"),
+        )
 
     def update(self) -> None:
         test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
@@ -74,28 +80,18 @@ class PerceptionResult(ResultBase):
         map_to_baselink: dict,
     ) -> tuple[MarkerArray, MarkerArray]:
         self.__total += 1
-        has_objects = True
-        if (
-            frame.pass_fail_result.tp_object_results == []
-            and frame.pass_fail_result.fp_object_results == []
-            and frame.pass_fail_result.fn_objects == []
-        ):
-            has_objects = False
+        result = self.__criteria.get_result(frame)
 
-        success = (
-            "Success"
-            if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects
-            else "Fail"
-        )
-        if success == "Success":
+        if result.is_success():
             self.__success += 1
+
         out_frame = {
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
         out_frame["PassFail"] = {
-            "Result": success,
+            "Result": str(result),
             "Info": [
                 {
                     "TP": len(frame.pass_fail_result.tp_object_results),
@@ -144,7 +140,11 @@ class PerceptionEvaluator(DLREvaluator):
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=self.__frame_id_str,
-            result_root_directory=os.path.join(self._perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=Path(
+                self._perception_eval_log_path,
+                "result",
+                "{TIME}",
+            ).as_posix(),
             evaluation_config_dict=self.__p_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )

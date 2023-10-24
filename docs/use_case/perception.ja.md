@@ -4,7 +4,7 @@ Autoware の認識機能(perception)の認識結果から mAP(mean Average Preci
 
 perception モジュールを起動して出力される perception の topic を評価用ライブラリに渡して評価を行う。
 
-デフォルトではperception_mode = lidarで起動されるので、cameraやradarを対象としたい場合は、perception.launch.pyにperception_modeを渡して変更する。
+シナリオに記述したperception_modeで起動されるので、評価対象のセンサーを変更したい場合はシナリオを変更する。
 
 ## 事前準備
 

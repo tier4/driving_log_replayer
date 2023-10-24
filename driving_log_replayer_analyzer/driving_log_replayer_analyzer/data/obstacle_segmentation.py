@@ -184,7 +184,7 @@ class Summary:
         self.visible_range_three_frame = get_min_range(fail_3_times_in_a_row(pass_fail_list))
 
     def save(self, path: Path) -> None:
-        with open(path.with_suffix(".json"), "w") as f:
+        with path.with_suffix(".json").open("w") as f:
             json.dump(dataclasses.asdict(self), f, indent=2)
             f.write("\n")
 
@@ -207,7 +207,7 @@ class JsonlParser:
         self._modify_center_from_baselink_to_overhang(config.overhang_from_baselink)
 
     def _read_jsonl_results(self, path: Path) -> None:
-        with open(path) as f:
+        with path.open() as f:
             lines = f.read().splitlines()
 
         previous_dist = sys.float_info.max
@@ -260,7 +260,7 @@ class JsonlParser:
 
         TODO: detection: List[Detection]の形式を変えて、detection.py内部でリストを保持するように変更する。合わせてこの関数も移動。
         """
-        with open(output_path, "w") as f:
+        with output_path.open("w") as f:
             writer = csv.writer(f)
             # header
             writer.writerow(["UUID", "PC_Dist", "PC_NumPoints"])

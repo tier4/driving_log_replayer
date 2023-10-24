@@ -229,7 +229,7 @@ class DLREvaluator(Node, ABC):
 
     @classmethod
     def get_goal_pose_from_t4_dataset(cls, dataset_path: str) -> PoseStamped:
-        ego_pose_json_path = Path(dataset_path).joinpath("annotation", "ego_pose.json")
+        ego_pose_json_path = Path(dataset_path, "annotation", "ego_pose.json")
         with ego_pose_json_path.open() as ego_pose_file:
             ego_pose_json = json.load(ego_pose_file)
             last_ego_pose = ego_pose_json[-1]

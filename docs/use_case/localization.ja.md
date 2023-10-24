@@ -1,8 +1,8 @@
-# 自己位置推定の評価
+# NDT自己位置推定の評価
 
-Autoware の自己位置推定(localization)が安定して動作しているかを評価する。
+NDTによるAutowareの自己位置推定が安定して動作しているかを評価する。
 
-自己位置推定の評価では NDT の信頼度と収束性を評価する。
+NDT自己位置推定の評価では NDT の信頼度、収束性、可用性を評価する。
 
 ## 評価方法
 
@@ -25,8 +25,7 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 以下を用いて評価する
 
-- /localization/pose_estimator/pose
-- /localization/pose_twist_fusion_filter/pose
+- /localization/pose_estimator/initial_to_result_relative_pose
 
 ### NDT の可用性
 
@@ -61,11 +60,11 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 以下の 3 つの条件を全て満たす場合
 
-1. /localization/pose_estimator/pose と /localization/pose_twist_fusion_filter/pose から横方向の距離を計算して、シナリオに記述した AllowableDistance 以下
+1. /localization/pose_estimator/initial_to_result_relative_poseの横方向距離が、シナリオに記述した AllowableDistance 以下
 2. /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
 3. /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
 
-ステップ 1 で計算した横方向の距離が/driving_log_replayer/localization/lateral_distance として publish される。
+ステップ 1 で取得した横方向距離が/driving_log_replayer/localization/lateral_distance として publish される。
 
 ### 収束異常
 
@@ -89,8 +88,7 @@ Subscribed topics:
 | /diagnostics_agg                                                     | diagnostic_msgs::msg::DiagnosticArray |
 | /localization/pose_estimator/transform_probability                   | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | tier4_debug_msgs::msg::Float32Stamped |
-| /localization/pose_estimator/pose                                    | geometry_msgs::msg::PoseStamped       |
-| /localization/kinematic_state                                        | nav_msgs::msg::Odometry               |
+| /localization/pose_estimator/initial_to_result_relative_pose         | geometry_msgs::msg::PoseStamped       |
 | /localization/pose_estimator/exe_time_ms                             | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/iteration_num                           | tier4_debug_msgs::msg::Int32Stamped   |
 | /tf                                                                  | tf2_msgs/msg/TFMessage                |
@@ -185,8 +183,8 @@ Result は収束性、信頼度、可用性のすべてをパスしていれば 
   "Convergence": {
     "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
     "Info": {
-      "LateralDistance": "ndtとekfのposeの横方距離",
-      "HorizontalDistance": "ndtとekfの水平距離。参考値",
+      "LateralDistance": "initial_to_result_relative_pose.pose.position.y",
+      "HorizontalDistance": "initial_to_result_relative_pose.pose.positionの水平距離。参考値",
       "ExeTimeMs": "ndtの計算にかかった時間",
       "IterationNum": "ndtの再計算回数"
     }

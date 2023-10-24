@@ -1,5 +1,43 @@
 # Release Notes
 
+## Version 1.8.0
+
+Major change
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/5319).
+
+| Module         | Feature              | Brief summary                       | Pull request                                                   | Jira | Contributor                                         |
+| -------------- | -------------------- | ----------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------------- |
+| `localization` | evaluate convergence | use initial_to_result_relative_pose | [#282](https://github.com/tier4/driving_log_replayer/pull/282) | -    | [SakodaShintaro](https://github.com/SakodaShintaro) |
+| `all`          | documentation        | scenario format 3.1.0               | [#283](https://github.com/tier4/driving_log_replayer/pull/283) | -    | [hayato-m126](https://github.com/hayato-m126)       |
+
+## Version 1.7.0
+
+Major change
+
+| Module       | Feature         | Brief summary           | Pull request                                                   | Jira | Contributor                                   |
+| ------------ | --------------- | ----------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `perception` | lint            | fix TCH002              | [#278](https://github.com/tier4/driving_log_replayer/pull/278) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `perception` | scenario format | support perception_mode | [#279](https://github.com/tier4/driving_log_replayer/pull/279) | -    | [ktro2828](https://github.com/ktro2828)       |
+
+## Version 1.6.7
+
+Bug fix
+
+| Module       | Feature | Brief summary    | Pull request                                                   | Jira | Contributor                             |
+| ------------ | ------- | ---------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `perception` | library | fix import error | [#277](https://github.com/tier4/driving_log_replayer/pull/277) | -    | [ktro2828](https://github.com/ktro2828) |
+
+## Version 1.6.6
+
+Minor Tweak
+
+| Module                                         | Feature    | Brief summary                                 | Pull request                                                   | Jira     | Contributor                                   |
+| ---------------------------------------------- | ---------- | --------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `performance_diag`                             | test       | add unit test for performance_diag            | [#269](https://github.com/tier4/driving_log_replayer/pull/269) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`                                   | test       | add unit test for perception_eval_conversions | [#271](https://github.com/tier4/driving_log_replayer/pull/271) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                                          | dependency | update dependency.repos                       | [#274](https://github.com/tier4/driving_log_replayer/pull/274) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`, `perception_2d`, `traffic_light` | criteria   | update perception criteria                    | [#272](https://github.com/tier4/driving_log_replayer/pull/272) | RT4-7103 | [ktro2828](https://github.com/ktro2828)       |
+
 ## Version 1.6.5
 
 Minor Tweak

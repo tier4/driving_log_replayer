@@ -21,10 +21,8 @@ from typing import ClassVar
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
-from nav_msgs.msg import Odometry
 import numpy as np
 from rosidl_runtime_py import message_to_ordereddict
-from tf_transformations import euler_from_quaternion
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
@@ -32,30 +30,14 @@ from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 
 
-def calc_pose_lateral_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> float:
-    base_point = ndt_pose.pose.position
-    _, _, yaw = euler_from_quaternion(
-        [
-            ndt_pose.pose.orientation.x,
-            ndt_pose.pose.orientation.y,
-            ndt_pose.pose.orientation.z,
-            ndt_pose.pose.orientation.w,
-        ],
-    )
-    base_unit_vec = np.array([np.cos(yaw), np.sin(yaw), 0.0])
-    dx = ekf_pose.pose.pose.position.x - base_point.x
-    dy = ekf_pose.pose.pose.position.y - base_point.y
-    diff_vec = np.array([dx, dy, 0.0])
-    cross_vec = np.cross(base_unit_vec, diff_vec)
-    return cross_vec[2]
+def calc_pose_lateral_distance(relative_pose: PoseStamped) -> float:
+    return relative_pose.pose.position.y
 
 
-def calc_pose_horizontal_distance(ndt_pose: PoseStamped, ekf_pose: Odometry) -> float:
-    ndt_x = ndt_pose.pose.position.x
-    ndt_y = ndt_pose.pose.position.y
-    ekf_x = ekf_pose.pose.pose.position.x
-    ekf_y = ekf_pose.pose.pose.position.y
-    return np.sqrt(np.power(ndt_x - ekf_x, 2) + np.power(ndt_y - ekf_y, 2))
+def calc_pose_horizontal_distance(relative_pose: PoseStamped) -> float:
+    x = relative_pose.pose.position.x
+    y = relative_pose.pose.position.y
+    return np.sqrt(np.power(x, 2) + np.power(y, 2))
 
 
 def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:

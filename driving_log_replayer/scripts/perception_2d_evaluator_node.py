@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import logging
-import os
+from pathlib import Path
 
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
@@ -31,6 +31,7 @@ from std_msgs.msg import Header
 from tier4_perception_msgs.msg import DetectedObjectsWithFeature
 from tier4_perception_msgs.msg import DetectedObjectWithFeature
 
+from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 import driving_log_replayer.perception_eval_conversions as eval_conversions
@@ -52,6 +53,11 @@ class Perception2DResult(ResultBase):
             self.__result[camera_type] = True
             self.__msg[camera_type] = "NotTested"
 
+        self.__criteria = PerceptionCriteria(
+            method=condition.get("CriteriaMethod"),
+            level=condition.get("CriteriaLevel"),
+        )
+
     def update(self) -> None:
         summary_str = ""
         for camera_type, eval_msg in self.__msg.items():
@@ -72,21 +78,11 @@ class Perception2DResult(ResultBase):
         camera_type: str,
     ) -> None:
         self.__total[camera_type] += 1
-        has_objects = True
-        if (
-            frame.pass_fail_result.tp_object_results == []
-            and frame.pass_fail_result.fp_object_results == []
-            and frame.pass_fail_result.fn_objects == []
-        ):
-            has_objects = False
+        result = self.__criteria.get_result(frame)
 
-        success = (
-            "Success"
-            if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects
-            else "Fail"
-        )
-        if success == "Success":
+        if result.is_success():
             self.__success[camera_type] += 1
+
         test_rate = self.__success[camera_type] / self.__total[camera_type] * 100.0
         self.__result[camera_type] = test_rate >= self.__pass_rate
         self.__msg[
@@ -100,7 +96,7 @@ class Perception2DResult(ResultBase):
             "FrameSkip": skip,
         }
         out_frame["PassFail"] = {
-            "Result": success,
+            "Result": str(result),
             "Info": [
                 {
                     "TP": len(frame.pass_fail_result.tp_object_results),
@@ -127,7 +123,9 @@ class Perception2DEvaluator(DLREvaluator):
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=list(self.__camera_type_dict.keys()),
-            result_root_directory=os.path.join(self._perception_eval_log_path, "result", "{TIME}"),
+            result_root_directory=Path(self._perception_eval_log_path)
+            .joinpath("result", "{TIME}")
+            .as_posix(),
             evaluation_config_dict=self.__p_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )

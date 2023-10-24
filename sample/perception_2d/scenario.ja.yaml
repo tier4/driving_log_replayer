@@ -1,11 +1,12 @@
-ScenarioFormatVersion: 3.0.0
+ScenarioFormatVersion: 3.1.0
 ScenarioName: perception_2d_x2
 ScenarioDescription: perception_2d_x2
 SensorModel: aip_x2
 VehicleModel: gsm8
+PerceptionMode: camera_lidar_fusion
 Evaluation:
   UseCaseName: perception_2d
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Datasets:
     - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
         VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
@@ -13,6 +14,8 @@ Evaluation:
         LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score)
+    CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値[0.0, 100.0])
     TargetCameras: # 評価対象のカメラの種類をキーに、カメラの番号を値として記述する
       cam_front: 0
       cam_front_right: 1

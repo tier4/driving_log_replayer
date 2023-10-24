@@ -17,7 +17,6 @@
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
-from nav_msgs.msg import Odometry
 import rclpy
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
@@ -36,7 +35,6 @@ class LocalizationEvaluator(DLREvaluator):
         self.check_scenario()
         self.__result = LocalizationResult(self._condition)
 
-        self.__latest_ekf_pose: Odometry = Odometry()
         self.__latest_exe_time: Float32Stamped = Float32Stamped()
         self.__latest_iteration_num: Int32Stamped = Int32Stamped()
         self.__latest_tp: Float32Stamped = Float32Stamped()
@@ -59,16 +57,10 @@ class LocalizationEvaluator(DLREvaluator):
             self.nvtl_cb,
             1,
         )
-        self.__sub_pose = self.create_subscription(
+        self.__sub_relative_pose = self.create_subscription(
             PoseStamped,
-            "/localization/pose_estimator/pose",
-            self.pose_cb,
-            1,
-        )
-        self.__sub_ekf_pose = self.create_subscription(
-            Odometry,
-            "/localization/kinematic_state",
-            self.ekf_pose_cb,
+            "/localization/pose_estimator/initial_to_result_relative_pose",
+            self.relative_pose_cb,
             1,
         )
         self.__sub_exe_time = self.create_subscription(
@@ -97,9 +89,6 @@ class LocalizationEvaluator(DLREvaluator):
         if self.__reliability_method is None:
             self.get_logger().error(error_msg)
             rclpy.shutdown()
-
-    def ekf_pose_cb(self, msg: Odometry) -> None:
-        self.__latest_ekf_pose = msg
 
     def exe_time_cb(self, msg: Float32Stamped) -> None:
         self.__latest_exe_time = msg
@@ -133,11 +122,11 @@ class LocalizationEvaluator(DLREvaluator):
         )
         self._result_writer.write_result(self.__result)
 
-    def pose_cb(self, msg: PoseStamped) -> None:
+    def relative_pose_cb(self, msg: PoseStamped) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         msg_lateral_distance = self.__result.set_frame(
-            calc_pose_lateral_distance(msg, self.__latest_ekf_pose),
-            calc_pose_horizontal_distance(msg, self.__latest_ekf_pose),
+            calc_pose_lateral_distance(msg),
+            calc_pose_horizontal_distance(msg),
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_exe_time,
             self.__latest_iteration_num,

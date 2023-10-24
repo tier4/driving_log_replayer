@@ -16,12 +16,12 @@
 
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from autoware_auto_perception_msgs.msg import TrafficSignal
 from autoware_auto_perception_msgs.msg import TrafficSignalArray
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
+from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
@@ -30,13 +30,11 @@ from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
 
+from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.traffic_light import TrafficLightResult
-
-if TYPE_CHECKING:
-    from perception_eval.evaluation import PerceptionFrameResult
 
 
 class TrafficLightEvaluator(DLREvaluator):
@@ -50,9 +48,11 @@ class TrafficLightEvaluator(DLREvaluator):
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=self.__camera_type,
-            result_root_directory=Path(self._perception_eval_log_path)
-            .joinpath("result", "{TIME}")
-            .as_posix(),
+            result_root_directory=Path(
+                self._perception_eval_log_path,
+                "result",
+                "{TIME}",
+            ).as_posix(),
             evaluation_config_dict=self.__p_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )
