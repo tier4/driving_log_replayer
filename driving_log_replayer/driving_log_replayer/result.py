@@ -30,7 +30,8 @@ import simplejson as json
 @dataclass
 class EvaluationItem(ABC):
     name: ClassVar[str] = "This field should be overwritten"
-    condition: dict = field(default_factory=dict)
+    # If condition is None, this evaluation item is not used.
+    condition: dict | None = field(default_factory=dict)
     total: int = 0
     passed: int = 0
     summary: str = "NotTested"
@@ -94,7 +95,8 @@ class ResultWriter:
         return original_path.parent.joinpath(original_path.stem + ".jsonl")
 
     def close(self) -> None:
-        self._result_file.close()
+        if not self._result_file.closed:
+            self._result_file.close()
 
     def delete_result_file(self) -> None:
         self._result_path.unlink()
