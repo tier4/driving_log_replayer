@@ -17,6 +17,7 @@ from typing import ClassVar
 
 from perception_eval.evaluation import PerceptionFrameResult
 
+from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 
@@ -25,18 +26,18 @@ from driving_log_replayer.result import ResultBase
 class Perception(EvaluationItem):
     name: ClassVar[str] = "Perception"
 
+    def __post_init__(self) -> None:
+        self.criteria: PerceptionCriteria = PerceptionCriteria(
+            method=self.condition.get("CriteriaMethod"),
+            level=self.condition.get("CriteriaLevel"),
+        )
+
     def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
         self.total += 1
-        has_objects = True
         frame_success = "Fail"
-        if (
-            frame.pass_fail_result.tp_object_results == []
-            and frame.pass_fail_result.fp_object_results == []
-            and frame.pass_fail_result.fn_objects == []
-        ):
-            has_objects = False
+        result = self.criteria.get_result(frame)
 
-        if frame.pass_fail_result.get_fail_object_num() == 0 and has_objects:
+        if result.is_success():
             self.passed += 1
             frame_success = "Success"
 
