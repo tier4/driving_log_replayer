@@ -439,9 +439,11 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id="base_link",
-            result_root_directory=Path(self._perception_eval_log_path)
-            .joinpath("result", "{TIME}")
-            .as_posix(),
+            result_root_directory=Path(
+                self._perception_eval_log_path,
+                "result",
+                "{TIME}",
+            ).as_posix(),
             evaluation_config_dict=self.__s_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )

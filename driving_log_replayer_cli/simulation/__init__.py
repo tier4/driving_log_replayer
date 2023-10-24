@@ -23,7 +23,8 @@ def simulation() -> None:
 @click.option("--no-json", is_flag=True, help="Do not convert jsonl files to json")
 def run(profile: str, rate: float, delay: float, no_json: bool) -> None:  # noqa
     config = load_config(profile)
-    output_dir_by_time = Path(config.output_directory).joinpath(
+    output_dir_by_time = Path(
+        config.output_directory,
         datetime.datetime.now().strftime("%Y-%m%d-%H%M%S"),  # noqa
     )
     print(output_dir_by_time)  # noqa

@@ -140,9 +140,11 @@ class PerceptionEvaluator(DLREvaluator):
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=self.__frame_id_str,
-            result_root_directory=Path(self._perception_eval_log_path)
-            .joinpath("result", "{TIME}")
-            .as_posix(),
+            result_root_directory=Path(
+                self._perception_eval_log_path,
+                "result",
+                "{TIME}",
+            ).as_posix(),
             evaluation_config_dict=self.__p_cfg["evaluation_config_dict"],
             load_raw_data=False,
         )
