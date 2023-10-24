@@ -37,7 +37,7 @@ class PerceptionLoadDatabaseResult:
         error_dict = error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
         database_metrics = {"Score": score_dict, "Error": error_dict}
 
-        result_file_path = Path(result_root_directory).joinpath("database_result.json")
+        result_file_path = Path(result_root_directory, "database_result.json")
 
         with result_file_path.open("w") as f:
             json.dump(database_metrics, f)

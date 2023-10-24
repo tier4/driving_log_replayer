@@ -110,7 +110,8 @@ def get_autoware_launch(
     twist_source: str = "gyro_odom",
 ) -> launch.actions.IncludeLaunchDescription:
     # autoware launch
-    autoware_launch_file = Path(get_package_share_directory("autoware_launch")).joinpath(
+    autoware_launch_file = Path(
+        get_package_share_directory("autoware_launch"),
         "launch",
         "logging_simulator.launch.xml",
     )
@@ -141,7 +142,8 @@ def get_autoware_launch(
 
 def get_map_height_fitter(launch_service: str = "true") -> launch.actions.IncludeLaunchDescription:
     # map_height_fitter launch
-    fitter_launch_file = Path(get_package_share_directory("map_height_fitter")).joinpath(
+    fitter_launch_file = Path(
+        get_package_share_directory("map_height_fitter"),
         "launch",
         "map_height_fitter.launch.xml",
     )
@@ -152,7 +154,8 @@ def get_map_height_fitter(launch_service: str = "true") -> launch.actions.Includ
 
 
 def get_rviz(rviz_config_name: str) -> Node:
-    rviz_config_dir = Path(get_package_share_directory("driving_log_replayer")).joinpath(
+    rviz_config_dir = Path(
+        get_package_share_directory("driving_log_replayer"),
         "config",
         rviz_config_name,
     )
@@ -203,12 +206,11 @@ def get_recorder(record_config_name: str, record_topics: list) -> ExecuteProcess
         "-o",
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
-        Path(get_package_share_directory("driving_log_replayer"))
-        .joinpath(
+        Path(
+            get_package_share_directory("driving_log_replayer"),
             "config",
             record_config_name,
-        )
-        .as_posix(),
+        ).as_posix(),
     ]
     return ExecuteProcess(cmd=record_cmd)
 
@@ -221,12 +223,11 @@ def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProces
         "-o",
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
-        Path(get_package_share_directory("driving_log_replayer"))
-        .joinpath(
+        Path(
+            get_package_share_directory("driving_log_replayer"),
             "config",
             record_config_name,
-        )
-        .as_posix(),
+        ).as_posix(),
         "-e",
         allowlist,
     ]
@@ -259,11 +260,11 @@ def get_topic_state_monitor_launch(
     # component_state_monitor launch
     component_state_monitor_launch_file = Path(
         get_package_share_directory("component_state_monitor"),
-    ).joinpath(
         "launch",
         "component_state_monitor.launch.py",
     )
-    topic_monitor_config_path = Path(get_package_share_directory("driving_log_replayer")).joinpath(
+    topic_monitor_config_path = Path(
+        get_package_share_directory("driving_log_replayer"),
         "config",
         topic_monitor_config,
     )
