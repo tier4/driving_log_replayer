@@ -128,22 +128,22 @@ class DLREvaluator(Node, ABC):
         register_shutdown_func: Callable | None = None,
     ) -> None:
         self._current_time = self.get_clock().now().to_msg()
-        # to debug callback use: self.get_logger().error(f"time: {self.__current_time.sec}.{self.__current_time.nanosec}")
-        if self._current_time.sec > 0:
-            if register_loop_func is not None:
-                register_loop_func()
-            if self._initial_pose is not None:
-                self.call_initialpose_service()
-            if self._current_time == self._prev_time:
-                self._clock_stop_counter += 1
-            else:
-                self._clock_stop_counter = 0
-            self._prev_time = self._current_time
-            if self._clock_stop_counter >= DLREvaluator.COUNT_SHUTDOWN_NODE:
-                if register_shutdown_func is not None:
-                    register_shutdown_func()
-                self._result_writer.close()
-                rclpy.shutdown()
+        # to debug callback use: self.get_logger().error(f"time: {self._current_time.sec}.{self._current_time.nanosec}")
+        if self._current_time.sec <= 0:
+            return
+        if register_loop_func is not None:
+            register_loop_func()
+        if self._initial_pose is not None:
+            self.call_initialpose_service()
+        self._clock_stop_counter = (
+            self._clock_stop_counter + 1 if self._current_time == self._prev_time else 0
+        )
+        self._prev_time = self._current_time
+        if self._clock_stop_counter >= DLREvaluator.COUNT_SHUTDOWN_NODE:
+            if register_shutdown_func is not None:
+                register_shutdown_func()
+            self._result_writer.close()
+            rclpy.shutdown()
 
     def start_initialpose_service(self) -> None:
         if self._initial_pose is None:
