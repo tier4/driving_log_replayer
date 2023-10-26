@@ -14,9 +14,10 @@
 
 from typing import Callable
 
+from perception_eval.common import DynamicObject2D
 from perception_eval.common.dataset import FrameGroundTruth
 from perception_eval.common.evaluation_task import EvaluationTask
-from perception_eval.common.label import LabelType
+from perception_eval.common.label import Label
 from perception_eval.common.label import TrafficLightLabel
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import DynamicObjectWithPerceptionResult
@@ -24,6 +25,7 @@ from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScoreConfig
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
+from perception_eval.evaluation.result.perception_pass_fail_result import PassFailResult
 import pytest
 
 from driving_log_replayer.traffic_light import Perception
@@ -80,6 +82,12 @@ def create_perception() -> Perception:
     )
 
 
+@pytest.fixture()
+def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
+    dynamic_obj_2d = DynamicObject2D(123, "12", 0.5, Label(TrafficLightLabel.GREEN, "12"))
+    return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None)
+
+
 def test_perception_fail(create_perception: Callable, create_frame_result: Callable) -> None:
     evaluation_item: Perception = create_perception
     result: PerceptionFrameResult = create_frame_result
@@ -94,6 +102,33 @@ def test_perception_fail(create_perception: Callable, create_frame_result: Calla
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {
                 "TP": 0,
+                "FP": 0,
+                "FN": 0,
+            },
+        },
+    }
+
+
+def test_perception_success(
+    create_perception: Callable,
+    create_frame_result: Callable,
+    create_dynamic_object: Callable,
+) -> None:
+    evaluation_item: Perception = create_perception
+    result: PerceptionFrameResult = create_frame_result
+    tp_objects_results: list[DynamicObjectWithPerceptionResult] = [create_dynamic_object]
+    result.pass_fail_result.tp_object_results = tp_objects_results
+    frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "Traffic Light Perception (Success): 95 / 100 -> 95.00%"
+    assert frame_dict == {
+        "Ego": {"TransformStamped": {}},
+        "FrameName": "12",
+        "FrameSkip": 3,
+        "PassFail": {
+            "Result": {"Total": "Success", "Frame": "Success"},
+            "Info": {
+                "TP": 1,
                 "FP": 0,
                 "FN": 0,
             },
