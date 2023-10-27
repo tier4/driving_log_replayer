@@ -62,6 +62,14 @@ $HOME/autoware/install/traffic_light_classifier/share/traffic_light_classifier/d
 $HOME/autoware/install/traffic_light_fine_detector/share/traffic_light_fine_detector/data/tlr_yolox_s_batch_6.fp16-batch6.engine
 ```
 
+### (For evaluation on a single PC) rewrite parameters in the launch file
+
+set the value of `traffic_light_recognition/fusion_only` `true` in the file `autoware.universe/launch/tier4_perception_launch/launch/perception.launch.xml`
+<https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L79>
+
+In the main branch of Autoware Foundation's Autoware, it is set to `false`, but in the case of Autoware used in actual vehicles, it may be set to `true`.
+Because `true` is a setting that recognition results are sent from another computer, when evaluating with a single PC, it should be set back to `false` before execution.
+
 ## Evaluation method
 
 The traffic_light evaluation is executed by launching the `traffic_light.launch.py` file.
