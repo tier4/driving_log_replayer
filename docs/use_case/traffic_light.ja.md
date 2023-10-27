@@ -24,10 +24,11 @@ autowarefoundation の autoware.universe を使用した場合の例を以下に
 # $HOME/autowareにautowareをインストールした場合
 source ~/autoware/install/setup.bash
 ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
-ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.launch.xml build_only:=true
+ros2 launch traffic_light_fine_detector traffic_light_fine_detector.launch.xml build_only:=true
 
-# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engineが出力されている
-# ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engineが出力されている
+# 以下のファイルが出力される
+# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
+# ~/autoware/install/traffic_light_fine_detector/share/traffic_light_fine_detector/data/tlr_yolox_s_batch_6.fp16-batch6.engine
 ```
 
 ## 評価方法

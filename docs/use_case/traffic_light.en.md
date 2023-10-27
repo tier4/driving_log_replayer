@@ -23,11 +23,11 @@ An example of the use of autowarefoundation's autoware.universe is shown below.
 # If autoware is installed in $HOME/autoware
 source ~/autoware/install/setup.bash
 ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
-ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.launch.xml build_only:=true
+ros2 launch traffic_light_fine_detector traffic_light_fine_detector.launch.xml build_only:=true
 
 # The following two engine files appear in
-# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engine
-# ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engine
+# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
+# ~/autoware/install/traffic_light_fine_detector/share/traffic_light_fine_detector/data/tlr_yolox_s_batch_6.fp16-batch6.engine
 ```
 
 ## Evaluation method
