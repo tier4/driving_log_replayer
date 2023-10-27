@@ -9,26 +9,66 @@ perception モジュールを起動して出力される perception の topic �
 ## 事前準備
 
 perception では、機械学習の学習済みモデルを使用する。
-モデルはセットアップ時に自動的にダウンロードされる。
-[traffic_light_classifier/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_classifier/CMakeLists.txt#L104)
-[traffic_light_ssd_fine_detector/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112)
+モデルを事前に準備していないとAutowareから認識結果が出力されない。
+何も評価結果が出てこない場合は、この作業が正しく出来ているか確認する。
 
-また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
+### モデルファイルのダウンロード
+
+モデルはAutowareのセットアップ時にダウンロードされる。
+モデルのダウンロード方法は、使用しているにAutowareのバージョンによって異なるのでどちらの手法が使われているか確認する。
+以下のパターンが存在する。
+
+#### ansibleでダウンロード
+
+スクリプト実行時に`Download artifacts? [y/N]`と出てくるので`y`を入力してエンターを押す(Autoware foundationのmainだとこちら)
+<https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml>
+
+#### パッケージのビルド時に自動でダウンロード
+
+少し古いAutoware.universeを使用している場合はこちら、`13b96ad3c636389b32fea3a47dfb7cfb7813cadc`のコミットハッシュまではこちらが使用される。
+[traffic_light_classifier/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/13b96ad3c636389b32fea3a47dfb7cfb7813cadc/perception/traffic_light_classifier/CMakeLists.txt#L113-L119)
+
+### モデルファイルの変換
+
+ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-変換コマンドが終了すると、engine ファイルが出力されているので[traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10)
-に記載のディレクトリ確認する。
 
-autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
+`$HOME/autoware`にautowareをインストールしたとして説明する。
 
 ```shell
-# $HOME/autowareにautowareをインストールした場合
-source ~/autoware/install/setup.bash
+source $HOME/autoware/install/setup.bash
 ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
-ros2 launch traffic_light_ssd_fine_detector traffic_light_ssd_fine_detector.launch.xml build_only:=true
-
-# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engineが出力されている
-# ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engineが出力されている
+ros2 launch traffic_light_fine_detector traffic_light_fine_detector.launch.xml build_only:=true
 ```
+
+変換コマンドが終了すると、engine ファイルが出力されている。
+モデルのダウンロード方法に合わせて出力先が変わるので、適切なディレクトリに出力されているか確認する。
+
+#### ansibleでダウンロード
+
+以下のファイルが出力される。
+
+```shell
+$HOME/autoware_data/traffic_light_classifier/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
+$HOME/autoware_data/traffic_light_fine_detector/tlr_yolox_s_batch_6.fp16-batch6.engine
+```
+
+#### パッケージのビルド時に自動でダウンロード
+
+以下のファイルが出力される
+
+```shell
+$HOME/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
+$HOME/autoware/install/traffic_light_fine_detector/share/traffic_light_fine_detector/data/tlr_yolox_s_batch_6.fp16-batch6.engine
+```
+
+### (PC1台で評価する場合)launchファイルのパラメータ書き換え
+
+autoware.universe/launch/tier4_perception_launch/launch/perception.launch.xml の traffic_light_recognition/fusion_only を `false`にする。
+<https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L79>
+
+Autoware Foundationのmainでは、`false`になっているが、実車両で利用しているAutowareの場合は、`true`になっていことがある。
+`true`は、別のコンピュータから、認識結果が送られてくるという設定であるため、PC1台で評価する場合には`false`に戻してから実行する。
 
 ## 評価方法
 
