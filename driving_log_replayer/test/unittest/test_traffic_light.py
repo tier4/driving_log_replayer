@@ -25,7 +25,6 @@ from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScoreConfig
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
-from perception_eval.evaluation.result.perception_pass_fail_result import PassFailResult
 import pytest
 
 from driving_log_replayer.traffic_light import Perception
@@ -74,9 +73,18 @@ def create_frame_result() -> PerceptionFrameResult:
 
 
 @pytest.fixture()
-def create_perception() -> Perception:
+def create_tp_normal() -> Perception:
     return Perception(
-        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "easy"},
+        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "normal"},
+        total=99,
+        passed=94,
+    )
+
+
+@pytest.fixture()
+def create_tp_hard() -> Perception:
+    return Perception(
+        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "hard"},
         total=99,
         passed=94,
     )
@@ -88,9 +96,13 @@ def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
     return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None)
 
 
-def test_perception_fail(create_perception: Callable, create_frame_result: Callable) -> None:
-    evaluation_item: Perception = create_perception
+def test_perception_fail_has_no_object(
+    create_tp_normal: Callable,
+    create_frame_result: Callable,
+) -> None:
+    evaluation_item: Perception = create_tp_normal
     result: PerceptionFrameResult = create_frame_result
+    # add no tp_object_results, fp_object_results
     frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
     assert evaluation_item.success is False
     assert evaluation_item.summary == "Traffic Light Perception (Fail): 94 / 100 -> 94.00%"
@@ -109,15 +121,22 @@ def test_perception_fail(create_perception: Callable, create_frame_result: Calla
     }
 
 
-def test_perception_success(
-    create_perception: Callable,
+def test_perception_success_tp_normal(
+    create_tp_normal: Callable,
     create_frame_result: Callable,
     create_dynamic_object: Callable,
 ) -> None:
-    evaluation_item: Perception = create_perception
+    evaluation_item: Perception = create_tp_normal
     result: PerceptionFrameResult = create_frame_result
-    tp_objects_results: list[DynamicObjectWithPerceptionResult] = [create_dynamic_object]
+    tp_objects_results: list[DynamicObjectWithPerceptionResult] = [
+        create_dynamic_object for i in range(5)
+    ]
+    fp_objects_results: list[DynamicObjectWithPerceptionResult] = [
+        create_dynamic_object for i in range(5)
+    ]
     result.pass_fail_result.tp_object_results = tp_objects_results
+    result.pass_fail_result.fp_object_results = fp_objects_results
+    # score 50.0 >= NORMAL(50.0)
     frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
     assert evaluation_item.success is True
     assert evaluation_item.summary == "Traffic Light Perception (Success): 95 / 100 -> 95.00%"
@@ -128,8 +147,76 @@ def test_perception_success(
         "PassFail": {
             "Result": {"Total": "Success", "Frame": "Success"},
             "Info": {
-                "TP": 1,
-                "FP": 0,
+                "TP": 5,
+                "FP": 5,
+                "FN": 0,
+            },
+        },
+    }
+
+
+def test_perception_fail_tp_normal(
+    create_tp_normal: Callable,
+    create_frame_result: Callable,
+    create_dynamic_object: Callable,
+) -> None:
+    evaluation_item: Perception = create_tp_normal
+    result: PerceptionFrameResult = create_frame_result
+    tp_objects_results: list[DynamicObjectWithPerceptionResult] = [
+        create_dynamic_object for i in range(5)
+    ]
+    fp_objects_results: list[DynamicObjectWithPerceptionResult] = [
+        create_dynamic_object for i in range(10)
+    ]
+    result.pass_fail_result.tp_object_results = tp_objects_results
+    result.pass_fail_result.fp_object_results = fp_objects_results
+    # score 33.3 < NORMAL(50.0)
+    frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "Traffic Light Perception (Fail): 94 / 100 -> 94.00%"
+    assert frame_dict == {
+        "Ego": {"TransformStamped": {}},
+        "FrameName": "12",
+        "FrameSkip": 3,
+        "PassFail": {
+            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Info": {
+                "TP": 5,
+                "FP": 10,
+                "FN": 0,
+            },
+        },
+    }
+
+
+def test_perception_fail_tp_hard(
+    create_tp_hard: Callable,
+    create_frame_result: Callable,
+    create_dynamic_object: Callable,
+) -> None:
+    evaluation_item: Perception = create_tp_hard
+    result: PerceptionFrameResult = create_frame_result
+    tp_objects_results: list[DynamicObjectWithPerceptionResult] = [
+        create_dynamic_object for i in range(5)
+    ]
+    fp_objects_results: list[DynamicObjectWithPerceptionResult] = [
+        create_dynamic_object for i in range(5)
+    ]
+    result.pass_fail_result.tp_object_results = tp_objects_results
+    result.pass_fail_result.fp_object_results = fp_objects_results
+    # score 50.0 < HARD(75.0)
+    frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "Traffic Light Perception (Fail): 94 / 100 -> 94.00%"
+    assert frame_dict == {
+        "Ego": {"TransformStamped": {}},
+        "FrameName": "12",
+        "FrameSkip": 3,
+        "PassFail": {
+            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Info": {
+                "TP": 5,
+                "FP": 5,
                 "FN": 0,
             },
         },
