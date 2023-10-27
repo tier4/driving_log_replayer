@@ -33,9 +33,10 @@ perception では、機械学習の学習済みモデルを使用する。
 ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
 
+`$HOME/autoware`にautowareをインストールしたとして説明する。
+
 ```shell
-# $HOME/autowareにautowareをインストールした場合
-source ~/autoware/install/setup.bash
+source $HOME/autoware/install/setup.bash
 ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
 ros2 launch traffic_light_fine_detector traffic_light_fine_detector.launch.xml build_only:=true
 ```
@@ -54,7 +55,6 @@ $HOME/autoware_data/traffic_light_fine_detector/tlr_yolox_s_batch_6.fp16-batch6.
 
 #### パッケージのビルド時に自動でダウンロード
 
-~/autowareにautowareをインストールした場合
 以下のファイルが出力される
 
 ```shell

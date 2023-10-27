@@ -8,26 +8,58 @@ Currently, only the evaluation of `classification2d` is supported.
 
 ## Preparation
 
-In perception evaluation, machine learning pre-trained models are used.
-The models are automatically downloaded during set-up.
-[traffic_light_classifier/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_classifier/CMakeLists.txt#L104)
-[traffic_light_ssd_fine_detector/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112)
+In perception evaluation, machine-learning pre-trained models are used.
+If the model is not prepared in advance, Autoware will not output recognition results.
+If no evaluation results are produced, check to see if this has been done correctly.
 
-The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-Commands for model conversion are available, so source the autoware workspace and execute the commands.
-When the conversion command finishes, check that the engine file is output to the directory listed in [traffic_light.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10).
+### Downloading Model Files
 
-An example of the use of autowarefoundation's autoware.universe is shown below.
+Models are downloaded during Autoware setup.
+The method of downloading models depends on the version of Autoware you are using, so check which method is used.
+The following patterns exist.
+
+#### Download with ansible
+
+When you run the ansible setup script, you will see `Download artifacts? [y/N]`, type `y` and press enter (Autoware foundation's main branch use this method)
+<https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml>
+
+#### Automatically downloaded when the package is built
+
+If you are using a slightly older Autoware.universe, this is the one to use, until the commit hash of `13b96ad3c636389b32fea3a47dfb7cfb7813cadc`.
+[traffic_light_classifier/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/13b96ad3c636389b32fea3a47dfb7cfb7813cadc/perception/traffic_light_classifier/CMakeLists.txt#L113-L119)
+
+### Conversion of model files
+
+The downloaded onnx file is not to be used as-is, but to be converted to a TensorRT engine file for use.
+A conversion command is available, so source the autoware workspace and execute the command.
+
+Let's assume that autoware is installed in `$HOME/autoware`.
 
 ```shell
-# If autoware is installed in $HOME/autoware
-source ~/autoware/install/setup.bash
+source $HOME/autoware/install/setup.bash
 ros2 launch traffic_light_classifier traffic_light_classifier.launch.xml use_gpu:=true  build_only:=true
 ros2 launch traffic_light_fine_detector traffic_light_fine_detector.launch.xml build_only:=true
+```
 
-# The following two engine files appear in
-# ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
-# ~/autoware/install/traffic_light_fine_detector/share/traffic_light_fine_detector/data/tlr_yolox_s_batch_6.fp16-batch6.engine
+When the conversion command finishes, the engine file is output.
+The output destination changes according to the model download method, so check that the output is in the appropriate directory.
+
+#### Download with ansible
+
+The following file is output.
+
+```shell
+$HOME/autoware_data/traffic_light_classifier/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
+$HOME/autoware_data/traffic_light_fine_detector/tlr_yolox_s_batch_6.fp16-batch6.engine
+```
+
+#### Automatic download at package build time
+
+The following file is output.
+
+```shell
+$HOME/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
+$HOME/autoware/install/traffic_light_fine_detector/share/traffic_light_fine_detector/data/tlr_yolox_s_batch_6.fp16-batch6.engine
 ```
 
 ## Evaluation method
