@@ -13,13 +13,45 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+import logging
+from pathlib import Path
 from typing import ClassVar
 
 from perception_eval.evaluation import PerceptionFrameResult
+import simplejson as json
 
 from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+
+
+class FailResultHolder:
+    def __init__(self, save_dir: str) -> None:
+        self.save_path: str = Path(save_dir, "fail_info.json")
+        self.buffer = []
+
+    def add_frame(self, frame_result: PerceptionFrameResult) -> None:
+        if frame_result.pass_fail_result.get_fail_object_num() > 0:
+            info = {"fp": [], "fn": []}
+            info["timestamp"] = frame_result.frame_ground_truth.unix_time
+            for fp_result in frame_result.pass_fail_result.fp_object_results:
+                est_label = fp_result.estimated_object.semantic_label.label.value
+                gt_label = (
+                    fp_result.ground_truth_object.semantic_label.label.value
+                    if fp_result.ground_truth_object is not None
+                    else None
+                )
+                info["fp"].append({"est": est_label, "gt": gt_label})
+            for fn_object in frame_result.pass_fail_result.fn_objects:
+                info["fn"].append({"est": None, "gt": fn_object.semantic_label.label.value})
+
+            info_str = f"Fail timestamp: {info}"
+            logging.info(info_str)
+            self.buffer.append(info)
+
+    def save(self) -> None:
+        with self.save_path.open("w") as f:
+            json.dump(self.buffer, f, ensure_ascii=False, indent=4)
 
 
 @dataclass

@@ -18,11 +18,12 @@ from collections.abc import Callable
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
+from typing import ClassVar
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from autoware_auto_perception_msgs.msg import ObjectClassification
-from autoware_auto_perception_msgs.msg import TrafficLight
+from autoware_perception_msgs.msg import TrafficSignalElement
 from builtin_interfaces.msg import Time as Stamp
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped
@@ -54,6 +55,27 @@ if TYPE_CHECKING:
 
 class DLREvaluator(Node, ABC):
     COUNT_SHUTDOWN_NODE = 5
+    TRAFFIC_LIGHT_LABEL_MAPPINGS: ClassVar[list[tuple[set, str]]] = [
+        ({"green"}, "green"),
+        ({"green", "straight"}, "green_straight"),
+        ({"green", "left"}, "green_left"),
+        ({"green", "right"}, "green_right"),
+        ({"yellow"}, "yellow"),
+        ({"yellow", "straight"}, "yellow_straight"),
+        ({"yellow", "left"}, "yellow_left"),
+        ({"yellow", "right"}, "yellow_right"),
+        ({"yellow", "straight", "left"}, "yellow_straight_left"),
+        ({"yellow", "straight", "right"}, "yellow_straight_right"),
+        ({"red"}, "red"),
+        ({"red", "straight"}, "red_straight"),
+        ({"red", "left"}, "red_left"),
+        ({"red", "right"}, "red_right"),
+        ({"red", "straight", "left"}, "red_straight_left"),
+        ({"red", "straight", "right"}, "red_straight_right"),
+        ({"red", "straight", "left", "right"}, "red_straight_left_right"),
+        ({"red", "right", "diagonal"}, "red_rightdiagonal"),
+        ({"red", "left", "diagonal"}, "red_leftdiagonal"),
+    ]
 
     def __init__(self, name: str) -> None:
         super().__init__(name)
@@ -349,27 +371,52 @@ class DLREvaluator(Node, ABC):
         return highest_classification
 
     @classmethod
-    def get_traffic_light_label_str(cls, light: TrafficLight) -> str:
-        if light.color == TrafficLight.RED:
-            return "red"
-        if light.color == TrafficLight.AMBER:
-            return "yellow"
-        if light.color == TrafficLight.GREEN:
-            return "green"
+    def get_traffic_light_label_str(cls, elements: list[TrafficSignalElement]) -> str:  # noqa
+        label_infos = []
+        for element in elements:
+            if element.shape == TrafficSignalElement.CIRCLE:
+                if element.color == TrafficSignalElement.RED:
+                    label_infos.append("red")
+                elif element.color == TrafficSignalElement.AMBER:
+                    label_infos.append("yellow")
+                elif element.color == TrafficSignalElement.GREEN:
+                    label_infos.append("green")
+                continue
+
+            if element.shape == TrafficSignalElement.UP_ARROW:
+                label_infos.append("straight")
+            elif element.shape == TrafficSignalElement.LEFT_ARROW:
+                label_infos.append("left")
+            elif element.shape == TrafficSignalElement.RIGHT_ARROW:
+                label_infos.append("right")
+            elif element.shape in (
+                TrafficSignalElement.UP_LEFT_ARROW,
+                TrafficSignalElement.DOWN_LEFT_ARROW,
+            ):
+                label_infos.append("left")
+                label_infos.append("diagonal")
+            elif element.shape in (
+                TrafficSignalElement.UP_RIGHT_ARROW,
+                TrafficSignalElement.DOWN_RIGHT_ARROW,
+            ):
+                label_infos.append("right")
+                label_infos.append("diagonal")
+
+        label_infos = set(label_infos)
+
+        for info_set, label in DLREvaluator.TRAFFIC_LIGHT_LABEL_MAPPINGS:
+            if label_infos == info_set:
+                return label
+
         return "unknown"
 
     @classmethod
-    def get_most_probable_signal(
+    def get_most_probable_element(
         cls,
-        lights: list[TrafficLight],
-    ) -> TrafficLight:
-        highest_probability = 0.0
-        highest_light = None
-        for light in lights:
-            if light.confidence >= highest_probability:
-                highest_probability = light.confidence
-                highest_light = light
-        return highest_light
+        elements: list[TrafficSignalElement],
+    ) -> TrafficSignalElement:
+        index: int = elements.index(max(elements, key=lambda x: x.confidence))
+        return elements[index]
 
 
 def evaluator_main(func: Callable) -> Callable:
