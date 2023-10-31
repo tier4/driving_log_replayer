@@ -23,6 +23,8 @@
     "Koji",
     "Minoda",
     "pyproject",
-    "CENTERDISTANCE"
+    "CENTERDISTANCE",
+    "rightdiagonal",
+    "leftdiagonal"
   ]
 }

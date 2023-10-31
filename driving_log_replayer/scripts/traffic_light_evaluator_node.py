@@ -159,7 +159,7 @@ class TrafficLightEvaluator(DLREvaluator):
                 DLREvaluator.get_traffic_light_label_str(signal.elements),
             )
             confidence: float = max(signal.elements, key=lambda x: x.confidence)
-            logging.info(f"Est {[i]}: {(signal.traffic_signal_id, label.name)}")
+            logging.info(f"Est {[i]}: {(signal.traffic_signal_id, label.name)}")  # noqa
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
@@ -199,7 +199,7 @@ class TrafficLightEvaluator(DLREvaluator):
                 distance_to_traffic_light,
             )
             logging.info(
-                f"GT: {obj.uuid}, {obj.semantic_label.name}, dist={distance_to_traffic_light:.2f}",
+                f"GT: {obj.uuid}, {obj.semantic_label.name}, dist={distance_to_traffic_light:.2f}",  # noqa
             )
         logging.info("==============start conversion==============")
         estimated_objects: list[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
@@ -222,10 +222,10 @@ class TrafficLightEvaluator(DLREvaluator):
                     distance_to_traffic_light,
                 )
         logging.info(
-            f"GTs: {[(obj.uuid, obj.semantic_label.name)for obj in ground_truth_now_frame.objects]}",
+            f"GTs: {[(obj.uuid, obj.semantic_label.name)for obj in ground_truth_now_frame.objects]}",  # noqa
         )
         logging.info("==============end conversion==============")
-        if distance_to_traffic_light > 202:  # TODO avoid using magic number
+        if distance_to_traffic_light > 202:  # noqa TODO avoid using magic number
             self.__skip_counter += 1
             return
         ros_critical_ground_truth_objects = ground_truth_now_frame.objects
@@ -238,7 +238,7 @@ class TrafficLightEvaluator(DLREvaluator):
             frame_pass_fail_config=self.__frame_pass_fail_config,
         )
         logging.info(
-            f"TP: {len(frame_result.pass_fail_result.tp_object_results)}, FP: {len(frame_result.pass_fail_result.fp_object_results)}, FN: {len(frame_result.pass_fail_result.fn_objects)}",
+            f"TP: {len(frame_result.pass_fail_result.tp_object_results)}, FP: {len(frame_result.pass_fail_result.fp_object_results)}, FN: {len(frame_result.pass_fail_result.fn_objects)}",  # noqa
         )
         self.__result.set_frame(
             frame_result,
