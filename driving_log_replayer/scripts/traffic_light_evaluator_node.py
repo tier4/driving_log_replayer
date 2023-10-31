@@ -16,12 +16,12 @@
 
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from autoware_auto_perception_msgs.msg import TrafficSignal
 from autoware_auto_perception_msgs.msg import TrafficSignalArray
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
-from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
@@ -29,72 +29,14 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from std_msgs.msg import Header
 
-from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import ResultBase
+from driving_log_replayer.traffic_light import TrafficLightResult
 
-
-class TrafficLightResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
-        super().__init__()
-        self.__pass_rate = condition["PassRate"]
-        self.__success = 0
-        self.__total = 0
-
-        self.__criteria = PerceptionCriteria(
-            method=condition.get("CriteriaMethod"),
-            level=condition.get("CriteriaLevel"),
-        )
-
-    def update(self) -> None:
-        test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
-        success = test_rate >= self.__pass_rate
-        summary_str = f"{self.__success} / {self.__total } -> {test_rate:.2f}%"
-
-        if success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
-
-    def set_frame(
-        self,
-        frame: PerceptionFrameResult,
-        skip: int,
-        header: Header,  # noqa
-        map_to_baselink: dict,
-    ) -> None:
-        self.__total += 1
-        result = self.__criteria.get_result(frame)
-
-        if result.is_success():
-            self.__success += 1
-
-        out_frame = {
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
-        }
-        out_frame["PassFail"] = {
-            "Result": str(result),
-            "Info": [
-                {
-                    "TP": len(frame.pass_fail_result.tp_object_results),
-                    "FP": len(frame.pass_fail_result.fp_object_results),
-                    "FN": len(frame.pass_fail_result.fn_objects),
-                },
-            ],
-        }
-        self._frame = out_frame
-        self.update()
-
-    def set_final_metrics(self, final_metrics: dict) -> None:
-        self._frame = {"FinalScore": final_metrics}
+if TYPE_CHECKING:
+    from perception_eval.evaluation import PerceptionFrameResult
 
 
 class TrafficLightEvaluator(DLREvaluator):
@@ -232,7 +174,6 @@ class TrafficLightEvaluator(DLREvaluator):
             self.__result.set_frame(
                 frame_result,
                 self.__skip_counter,
-                msg.header,
                 DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             )
             self._result_writer.write_result(self.__result)
