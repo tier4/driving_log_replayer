@@ -32,7 +32,10 @@ def generate_launch_description() -> launch.LaunchDescription:
         localization="false",
     )
     rviz_node = driving_log_replayer.launch_common.get_rviz("perception.rviz")
-    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("traffic_light")
+    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
+        "traffic_light",
+        addition_parameter={"map_path": LaunchConfiguration("map_path")},
+    )
 
     play_cmd = [
         "ros2",

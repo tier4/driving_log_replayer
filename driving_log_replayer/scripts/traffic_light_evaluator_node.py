@@ -116,11 +116,14 @@ class TrafficLightEvaluator(DLREvaluator):
         return True
 
     def use_map_interface(self) -> None:
+        self.declare_parameter("map_path", "")
         map_path = Path(
             expandvars(
                 self.get_parameter("map_path").get_parameter_value().string_value,
             ),
+            "lanelet2_map.osm",
         )
+        self.get_logger().error(f"lanelet2_map_path: {map_path}")
         self.__traffic_light_obj = TrafficLightLoader(map_path)
         self.__use_regulatory_element: bool = True
         self.fail_result_holder = FailResultHolder(self._perception_eval_log_path)
