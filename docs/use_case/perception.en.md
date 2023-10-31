@@ -36,7 +36,7 @@ A conversion command is available, so source the autoware workspace and execute 
 Let's assume that autoware is installed in `$HOME/autoware`.
 
 ```shell
-source ~/autoware/install/setup.bash
+source $HOME/autoware/install/setup.bash
 ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml build_only:=true
 ```
 

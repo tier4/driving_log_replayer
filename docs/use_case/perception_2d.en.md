@@ -6,27 +6,58 @@ Run the perception module and pass the output perception topic to the evaluation
 
 ## Preparation
 
-### Model conversion
+In perception evaluation, machine-learning pre-trained models are used.
+If the model is not prepared in advance, Autoware will not output recognition results.
+If no evaluation results are produced, check to see if this has been done correctly.
 
-In perception evaluation, machine learning pre-trained models are used.
-The models are automatically downloaded during set-up.
-[tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58)
+### Downloading Model Files
 
-The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-Commands for model conversion are available, so source the autoware workspace and execute the commands.
-When the conversion command finishes, check that the engine file is output to the directory listed in [tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6).
+Models are downloaded during Autoware setup.
+The method of downloading models depends on the version of Autoware you are using, so check which method is used.
+The following patterns exist.
 
-An example of the use of autowarefoundation's autoware.universe is shown below.
+#### Download with ansible
+
+When you run the ansible setup script, you will see `Download artifacts? [y/N]`, type `y` and press enter (Autoware foundation's main branch use this method)
+<https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml>
+
+#### Automatically downloaded when the package is built
+
+If you are using a slightly older Autoware.universe, this is the one to use, until the commit hash of `13b96ad3c636389b32fea3a47dfb7cfb7813cadc`.
+[tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/13b96ad3c636389b32fea3a47dfb7cfb7813cadc/perception/tensorrt_yolox/CMakeLists.txt#L65-L68)
+
+### Conversion of model files
+
+The downloaded onnx file is not to be used as-is, but to be converted to a TensorRT engine file for use.
+A conversion command is available, so source the autoware workspace and execute the command.
+
+Let's assume that autoware is installed in `$HOME/autoware`.
 
 ```shell
-# If autoware is installed in $HOME/autoware
-source ~/autoware/install/setup.bash
+source $HOME/autoware/install/setup.bash
 ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=true
-
-# The engine file appears in ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engine
 ```
 
-### Modifying the launch file
+When the conversion command finishes, the engine file is output.
+The output destination changes according to the model download method, so check that the output is in the appropriate directory.
+
+#### Download with ansible
+
+The following file is output.
+
+```shell
+$HOME/autoware_data/tensorrt_yolox/yolox-sPlus-T4-960x960-pseudo-finetune.EntropyV2-int8-batch1.engine
+```
+
+#### Automatic download at package build time
+
+The following file is output.
+
+```shell
+$HOME/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-sPlus-T4-960x960-pseudo-finetune.EntropyV2-int8-batch1.engine
+```
+
+### (For evaluation on a single PC) modify the launch file
 
 To evaluate on a single PC, it is necessary to modify launch to output the recognition results of the camera.
 Change launch as follows.

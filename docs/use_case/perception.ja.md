@@ -36,7 +36,7 @@ perception では、機械学習の学習済みモデルを使用する。
 `$HOME/autoware`にautowareをインストールしたとして説明する。
 
 ```shell
-source ~/autoware/install/setup.bash
+source $HOME/autoware/install/setup.bash
 ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml build_only:=true
 ```
 
