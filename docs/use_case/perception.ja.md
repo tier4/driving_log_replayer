@@ -9,24 +9,54 @@ perception モジュールを起動して出力される perception の topic �
 ## 事前準備
 
 perception では、機械学習の学習済みモデルを使用する。
-モデルはセットアップ時に自動的にダウンロードされる。
-[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L112-L118)
+モデルを事前に準備していないとAutowareから認識結果が出力されない。
+何も評価結果が出てこない場合は、この作業が正しく出来ているか確認する。
 
-また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
+### モデルファイルのダウンロード
+
+モデルはAutowareのセットアップ時にダウンロードされる。
+モデルのダウンロード方法は、使用しているにAutowareのバージョンによって異なるのでどちらの手法が使われているか確認する。
+以下のパターンが存在する。
+
+#### ansibleでダウンロード
+
+スクリプト実行時に`Download artifacts? [y/N]`と出てくるので`y`を入力してエンターを押す(Autoware foundationのmainだとこちら)
+<https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml>
+
+#### パッケージのビルド時に自動でダウンロード
+
+少し古いAutoware.universeを使用している場合はこちら、`13b96ad3c636389b32fea3a47dfb7cfb7813cadc`のコミットハッシュまではこちらが使用される。
+[lidar_centerpoint/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/13b96ad3c636389b32fea3a47dfb7cfb7813cadc/perception/lidar_centerpoint/CMakeLists.txt#L112-L118)
+
+### モデルファイルの変換
+
+ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-変換コマンドが終了すると、engine ファイルが出力されているので[perception.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L12-L14)
-に記載のディレクトリを確認する。
 
-autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
+`$HOME/autoware`にautowareをインストールしたとして説明する。
 
 ```shell
-# $HOME/autowareにautowareをインストールした場合
-source ~/autoware/install/setup.bash
+source $HOME/autoware/install/setup.bash
 ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml build_only:=true
+```
 
-# ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/dataに以下の２つが出力される
-# pts_backbone_neck_head_centerpoint_tiny.engine
-# pts_voxel_encoder_centerpoint_tiny.engine
+変換コマンドが終了すると、engine ファイルが出力されている。
+モデルのダウンロード方法に合わせて出力先が変わるので、適切なディレクトリに出力されているか確認する。
+
+#### ansibleでダウンロード
+
+以下のファイルが出力される。
+
+```shell
+$HOME/autoware_data/lidar_centerpoint/pts_backbone_neck_head_centerpoint_tiny.engine
+$HOME/autoware_data/lidar_centerpoint/pts_voxel_encoder_centerpoint_tiny.engine
+```
+
+#### パッケージのビルド時に自動でダウンロード
+
+```shell
+$HOME/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data/pts_backbone_neck_head_centerpoint_tiny.engine
+$HOME/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data/pts_voxel_encoder_centerpoint_tiny.engine
 ```
 
 ## 評価方法

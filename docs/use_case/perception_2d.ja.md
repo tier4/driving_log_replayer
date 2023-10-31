@@ -6,28 +6,53 @@ perception モジュールを起動して出力される perception の topic �
 
 ## 事前準備
 
-### モデルの変換
-
 perception では、機械学習の学習済みモデルを使用する。
-モデルはセットアップ時に自動的にダウンロードされる。
-[tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58)
+モデルを事前に準備していないとAutowareから認識結果が出力されない。
+何も評価結果が出てこない場合は、この作業が正しく出来ているか確認する。
 
-また、ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
+### モデルファイルのダウンロード
+
+モデルはAutowareのセットアップ時にダウンロードされる。
+モデルのダウンロード方法は、使用しているにAutowareのバージョンによって異なるのでどちらの手法が使われているか確認する。
+以下のパターンが存在する。
+
+#### ansibleでダウンロード
+
+スクリプト実行時に`Download artifacts? [y/N]`と出てくるので`y`を入力してエンターを押す(Autoware foundationのmainだとこちら)
+<https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml>
+
+#### パッケージのビルド時に自動でダウンロード
+
+少し古いAutoware.universeを使用している場合はこちら、`13b96ad3c636389b32fea3a47dfb7cfb7813cadc`のコミットハッシュまではこちらが使用される。
+[tensorrt_yolox/CMakeList.txt](https://github.com/autowarefoundation/autoware.universe/blob/13b96ad3c636389b32fea3a47dfb7cfb7813cadc/perception/tensorrt_yolox/CMakeLists.txt#L65-L68)
+
+### モデルファイルの変換
+
+ダウンロードした onnx ファイルはそのまま使用するのではなく、TensorRT の engine ファイルに変換して利用する。
 変換用のコマンドが用意されているので、autoware のワークスペースを source してコマンドを実行する。
-変換コマンドが終了すると、engine ファイルが出力されているので[tensorrt_yolox.launch.xml](https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6)
-に記載のディレクトリを確認する。
 
-autowarefoundation の autoware.universe を使用した場合の例を以下に示す。
+`$HOME/autoware`にautowareをインストールしたとして説明する。
 
 ```shell
-# $HOME/autowareにautowareをインストールした場合
-source ~/autoware/install/setup.bash
+source $HOME/autoware/install/setup.bash
 ros2 launch tensorrt_yolox yolox.launch.xml use_decompress:=false build_only:=true
-
-# ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engineが出力されている
 ```
 
-### launch の変更
+#### ansibleでダウンロード
+
+以下のファイルが出力される。
+
+```shell
+$HOME/autoware_data/tensorrt_yolox/yolox-sPlus-T4-960x960-pseudo-finetune.EntropyV2-int8-batch1.engine
+```
+
+#### パッケージのビルド時に自動でダウンロード
+
+```shell
+$HOME/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-sPlus-T4-960x960-pseudo-finetune.EntropyV2-int8-batch1.engine
+```
+
+### (PC1台で評価する場合)launchファイルの修正
 
 PC 一台で評価するには、launch をいじって、カメラの認識結果を出力するように変更する必要がある。
 以下のように、launch を変更する。
