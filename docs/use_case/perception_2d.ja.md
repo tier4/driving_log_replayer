@@ -52,7 +52,7 @@ $HOME/autoware_data/tensorrt_yolox/yolox-sPlus-T4-960x960-pseudo-finetune.Entrop
 $HOME/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-sPlus-T4-960x960-pseudo-finetune.EntropyV2-int8-batch1.engine
 ```
 
-### (PC1台で評価する場合)launchファイルのパラメータ書き換え
+### (PC1台で評価する場合)launchファイルの修正
 
 PC 一台で評価するには、launch をいじって、カメラの認識結果を出力するように変更する必要がある。
 以下のように、launch を変更する。
