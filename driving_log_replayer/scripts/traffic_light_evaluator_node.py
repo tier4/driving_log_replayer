@@ -123,7 +123,6 @@ class TrafficLightEvaluator(DLREvaluator):
             ),
             "lanelet2_map.osm",
         )
-        self.get_logger().error(f"lanelet2_map_path: {map_path}")
         self.__traffic_light_obj = TrafficLightLoader(map_path)
         self.__use_regulatory_element: bool = True
         self.fail_result_holder = FailResultHolder(self._perception_eval_log_path)
