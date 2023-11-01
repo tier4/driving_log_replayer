@@ -37,7 +37,8 @@
     "${env:HOME}/ros_ws/awf/install/autoware_adapi_v1_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/tier4_localization_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/tier4_api_msgs/local/lib/python3.10/dist-packages",
-    "${env:HOME}/ros_ws/awf/install/tier4_perception_msgs/local/lib/python3.10/dist-packages"
+    "${env:HOME}/ros_ws/awf/install/tier4_perception_msgs/local/lib/python3.10/dist-packages",
+    "${env:HOME}/ros_ws/awf/install/autoware_perception_msgs/local/lib/python3.10/dist-packages"
   ],
   "python.analysis.extraPaths": [
     "/opt/ros/humble/lib/python3.10/site-packages",
@@ -52,7 +53,8 @@
     "${env:HOME}/ros_ws/awf/install/autoware_adapi_v1_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/tier4_localization_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/tier4_api_msgs/local/lib/python3.10/dist-packages",
-    "${env:HOME}/ros_ws/awf/install/tier4_perception_msgs/local/lib/python3.10/dist-packages"
+    "${env:HOME}/ros_ws/awf/install/tier4_perception_msgs/local/lib/python3.10/dist-packages",
+    "${env:HOME}/ros_ws/awf/install/autoware_perception_msgs/local/lib/python3.10/dist-packages"
   ],
   "files.associations": {
     "cctype": "cpp",

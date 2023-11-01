@@ -169,7 +169,7 @@ class TrafficLightEvaluator(DLREvaluator):
                 semantic_score=confidence,
                 semantic_label=label,
                 roi=None,
-                uuid=str(signal.map_primitive_id),
+                uuid=str(signal.traffic_signal_id),
             )
             estimated_objects.append(estimated_object)
         return estimated_objects
