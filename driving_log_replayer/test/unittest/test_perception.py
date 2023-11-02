@@ -14,18 +14,20 @@
 
 from typing import Callable
 
-from perception_eval.common import DynamicObject2D
+from perception_eval.common import DynamicObject
 from perception_eval.common.dataset import FrameGroundTruth
 from perception_eval.common.evaluation_task import EvaluationTask
+from perception_eval.common.label import AutowareLabel
 from perception_eval.common.label import Label
-from perception_eval.common.label import TrafficLightLabel
 from perception_eval.common.schema import FrameID
+from perception_eval.common.shape import Shape
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import DynamicObjectWithPerceptionResult
 from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScoreConfig
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
+from pyquaternion import Quaternion
 import pytest
 
 from driving_log_replayer.traffic_light import Perception
@@ -33,13 +35,22 @@ from driving_log_replayer.traffic_light import Perception
 
 @pytest.fixture()
 def create_frame_result() -> PerceptionFrameResult:
-    target_labels = ["green", "red", "yellow", "unknown"]
+    target_labels = ["car", "bicycle", "pedestrian", "motorbike"]
     evaluation_config_dict = {
-        "evaluation_task": "classification2d",
+        "evaluation_task": "detection",
         "target_labels": target_labels,
-        "allow_matching_unknown": True,
+        "max_x_position": 102.4,
+        "max_y_position": 102.4,
+        "max_matchable_radii": [5.0, 3.0, 3.0, 3.0],
         "merge_similar_labels": False,
-        "label_prefix": "traffic_light",
+        "allow_matching_unknown": True,
+        "ignore_attributes": ["cycle_state.without_rider"],
+        "center_distance_thresholds": [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]],
+        "plane_distance_thresholds": [2.0, 30.0],
+        "iou_2d_thresholds": [0.5],
+        "iou_3d_thresholds": [0.5],
+        "min_point_numbers": [0, 0, 0, 0],
+        "label_prefix": "autoware",
     }
     m_params: dict = {
         "target_labels": target_labels,
@@ -50,7 +61,7 @@ def create_frame_result() -> PerceptionFrameResult:
     }
     evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
         dataset_paths=["/tmp/dlr"],  # noqa
-        frame_id="cam_traffic_light_near",
+        frame_id="base_link",
         result_root_directory="/tmp/dlr/result/{TIME}",  # noqa
         evaluation_config_dict=evaluation_config_dict,
         load_raw_data=False,
@@ -60,7 +71,7 @@ def create_frame_result() -> PerceptionFrameResult:
         object_results=[],
         frame_ground_truth=FrameGroundTruth(123, "12", []),
         metrics_config=MetricsScoreConfig(
-            EvaluationTask.CLASSIFICATION2D,
+            EvaluationTask.DETECTION,
             **m_params,
         ),
         critical_object_filter_config=CriticalObjectFilterConfig(
@@ -69,7 +80,7 @@ def create_frame_result() -> PerceptionFrameResult:
         ),
         frame_pass_fail_config=PerceptionPassFailConfig(evaluation_config, target_labels),
         unix_time=123,
-        target_labels=[TrafficLightLabel.GREEN],
+        target_labels=[AutowareLabel.CAR],
     )
 
 
@@ -93,13 +104,17 @@ def create_tp_hard() -> Perception:
 
 @pytest.fixture()
 def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
-    dynamic_obj_2d = DynamicObject2D(
+    dynamic_obj = DynamicObject(
         123,
-        FrameID.CAM_TRAFFIC_LIGHT_NEAR,
+        FrameID.BASE_LINK,
         0.5,
-        Label(TrafficLightLabel.GREEN, "12"),
+        (1.0, 2.0, 3.0),
+        Quaternion(),
+        None,
+        0.5,
+        Label(AutowareLabel.CAR, "12"),
     )
-    return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None)
+    return DynamicObjectWithPerceptionResult(dynamic_obj, None)
 
 
 def test_perception_fail_has_no_object(
@@ -111,7 +126,7 @@ def test_perception_fail_has_no_object(
     # add no tp_object_results, fp_object_results
     frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Traffic Light Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.summary == "Perception (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "FrameName": "12",
@@ -145,7 +160,7 @@ def test_perception_success_tp_normal(
     # score 50.0 >= NORMAL(50.0)
     frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "Traffic Light Perception (Success): 95 / 100 -> 95.00%"
+    assert evaluation_item.summary == "Perception (Success): 95 / 100 -> 95.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "FrameName": "12",
@@ -179,7 +194,7 @@ def test_perception_fail_tp_normal(
     # score 33.3 < NORMAL(50.0)
     frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Traffic Light Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.summary == "Perception (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "FrameName": "12",
@@ -213,7 +228,7 @@ def test_perception_fail_tp_hard(
     # score 50.0 < HARD(75.0)
     frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Traffic Light Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.summary == "Perception (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "FrameName": "12",
