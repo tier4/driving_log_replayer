@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.7">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.35e1ed30.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
@@ -1231,15 +1231,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#model-conversion" class="md-nav__link">
-    Model conversion
+  <a href="#downloading-model-files" class="md-nav__link">
+    Downloading Model Files
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#modifying-the-launch-file" class="md-nav__link">
-    Modifying the launch file
+  <a href="#conversion-of-model-files" class="md-nav__link">
+    Conversion of model files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-evaluation-on-a-single-pc-modify-the-launch-file" class="md-nav__link">
+    (For evaluation on a single PC) modify the launch file
   </a>
   
 </li>
@@ -1407,21 +1414,37 @@
 <p>The performance of Autoware's recognition function (perception) is evaluated by calculating mAP (mean Average Precision) and other indices from the recognition results.</p>
 <p>Run the perception module and pass the output perception topic to the evaluation library for evaluation.</p>
 <h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
-<h3 id="model-conversion">Model conversion<a class="headerlink" href="#model-conversion" title="Permanent link">#</a></h3>
-<p>In perception evaluation, machine learning pre-trained models are used.
-The models are automatically downloaded during set-up.
-<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/CMakeLists.txt#L58">tensorrt_yolox/CMakeList.txt</a></p>
-<p>The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-Commands for model conversion are available, so source the autoware workspace and execute the commands.
-When the conversion command finishes, check that the engine file is output to the directory listed in <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/tensorrt_yolox/launch/tensorrt_yolo.launch.xml#L6">tensorrt_yolox.launch.xml</a>.</p>
-<p>An example of the use of autowarefoundation's autoware.universe is shown below.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># If autoware is installed in $HOME/autoware</span>
-<span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
+<p>In perception evaluation, machine-learning pre-trained models are used.
+If the model is not prepared in advance, Autoware will not output recognition results.
+If no evaluation results are produced, check to see if this has been done correctly.</p>
+<h3 id="downloading-model-files">Downloading Model Files<a class="headerlink" href="#downloading-model-files" title="Permanent link">#</a></h3>
+<p>Models are downloaded during Autoware setup.
+The method of downloading models depends on the version of Autoware you are using, so check which method is used.
+The following patterns exist.</p>
+<h4 id="download-with-ansible">Download with ansible<a class="headerlink" href="#download-with-ansible" title="Permanent link">#</a></h4>
+<p>When you run the ansible setup script, you will see <code>Download artifacts? [y/N]</code>, type <code>y</code> and press enter (Autoware foundation's main branch use this method)
+<a href="https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml">https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml</a></p>
+<h4 id="automatically-downloaded-when-the-package-is-built">Automatically downloaded when the package is built<a class="headerlink" href="#automatically-downloaded-when-the-package-is-built" title="Permanent link">#</a></h4>
+<p>If you are using a slightly older Autoware.universe, this is the one to use, until the commit hash of <code>13b96ad3c636389b32fea3a47dfb7cfb7813cadc</code>.
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/13b96ad3c636389b32fea3a47dfb7cfb7813cadc/perception/tensorrt_yolox/CMakeLists.txt#L65-L68">tensorrt_yolox/CMakeList.txt</a></p>
+<h3 id="conversion-of-model-files">Conversion of model files<a class="headerlink" href="#conversion-of-model-files" title="Permanent link">#</a></h3>
+<p>The downloaded onnx file is not to be used as-is, but to be converted to a TensorRT engine file for use.
+A conversion command is available, so source the autoware workspace and execute the command.</p>
+<p>Let's assume that autoware is installed in <code>$HOME/autoware</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span><span class="nv">$HOME</span>/autoware/install/setup.bash
 ros2<span class="w"> </span>launch<span class="w"> </span>tensorrt_yolox<span class="w"> </span>yolox.launch.xml<span class="w"> </span>use_decompress:<span class="o">=</span><span class="nb">false</span><span class="w"> </span>build_only:<span class="o">=</span><span class="nb">true</span>
-
-<span class="c1"># The engine file appears in ~/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-tiny.engine</span>
 </code></pre></div>
-<h3 id="modifying-the-launch-file">Modifying the launch file<a class="headerlink" href="#modifying-the-launch-file" title="Permanent link">#</a></h3>
+<p>When the conversion command finishes, the engine file is output.
+The output destination changes according to the model download method, so check that the output is in the appropriate directory.</p>
+<h4 id="download-with-ansible_1">Download with ansible<a class="headerlink" href="#download-with-ansible_1" title="Permanent link">#</a></h4>
+<p>The following file is output.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">$HOME</span>/autoware_data/tensorrt_yolox/yolox-sPlus-T4-960x960-pseudo-finetune.EntropyV2-int8-batch1.engine
+</code></pre></div>
+<h4 id="automatic-download-at-package-build-time">Automatic download at package build time<a class="headerlink" href="#automatic-download-at-package-build-time" title="Permanent link">#</a></h4>
+<p>The following file is output.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">$HOME</span>/autoware/install/tensorrt_yolox/share/tensorrt_yolox/data/yolox-sPlus-T4-960x960-pseudo-finetune.EntropyV2-int8-batch1.engine
+</code></pre></div>
+<h3 id="for-evaluation-on-a-single-pc-modify-the-launch-file">(For evaluation on a single PC) modify the launch file<a class="headerlink" href="#for-evaluation-on-a-single-pc-modify-the-launch-file" title="Permanent link">#</a></h3>
 <p>To evaluate on a single PC, it is necessary to modify launch to output the recognition results of the camera.
 Change launch as follows.</p>
 <div class="highlight"><pre><span></span><code>❯<span class="w"> </span>vcs<span class="w"> </span>diff<span class="w"> </span>src/

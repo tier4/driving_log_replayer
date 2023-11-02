@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.7">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.35e1ed30.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
@@ -1146,6 +1146,26 @@
     Preparation
   </a>
   
+    <nav class="md-nav" aria-label="Preparation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#downloading-model-files" class="md-nav__link">
+    Downloading Model Files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversion-of-model-files" class="md-nav__link">
+    Conversion of model files
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1410,6 +1430,26 @@
     Preparation
   </a>
   
+    <nav class="md-nav" aria-label="Preparation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#downloading-model-files" class="md-nav__link">
+    Downloading Model Files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversion-of-model-files" class="md-nav__link">
+    Conversion of model files
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1572,19 +1612,37 @@
 <p>Since it is activated in the perception_mode described in the scenario, change the scenario if you want to change the sensor to be evaluated.</p>
 <h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
 <p>In perception evaluation, machine learning pre-trained models are used.
-The models are automatically downloaded during set-up.
-<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/lidar_centerpoint/CMakeLists.txt#L112-L118">lidar_centerpoint/CMakeList.txt</a></p>
-<p>The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-Commands for model conversion are available, so source the autoware workspace and execute the commands.
-When the conversion command finishes, check that the engine file is output to the directory listed in <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L12-L14">perception.launch.xml</a>.</p>
-<p>An example of the use of autowarefoundation's autoware.universe is shown below.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># If autoware is installed in $HOME/autoware</span>
-<span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
+If the model is not prepared in advance, Autoware will not output recognition results.
+If no evaluation results are produced, check to see if this has been done correctly.</p>
+<h3 id="downloading-model-files">Downloading Model Files<a class="headerlink" href="#downloading-model-files" title="Permanent link">#</a></h3>
+<p>Models are downloaded during Autoware setup.
+The method of downloading models depends on the version of Autoware you are using, so check which method is used.
+The following patterns exist.</p>
+<h4 id="download-with-ansible">Download with ansible<a class="headerlink" href="#download-with-ansible" title="Permanent link">#</a></h4>
+<p>When you run the ansible setup script, you will see <code>Download artifacts? [y/N]</code>, type <code>y</code> and press enter (Autoware foundation's main branch use this method)
+<a href="https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml">https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml</a></p>
+<h4 id="automatically-downloaded-when-the-package-is-built">Automatically downloaded when the package is built<a class="headerlink" href="#automatically-downloaded-when-the-package-is-built" title="Permanent link">#</a></h4>
+<p>If you are using a slightly older Autoware.universe, this is the one to use, until the commit hash of <code>13b96ad3c636389b32fea3a47dfb7cfb7813cadc</code>.
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/13b96ad3c636389b32fea3a47dfb7cfb7813cadc/perception/lidar_centerpoint/CMakeLists.txt#L112-L118">lidar_centerpoint/CMakeList.txt</a></p>
+<h3 id="conversion-of-model-files">Conversion of model files<a class="headerlink" href="#conversion-of-model-files" title="Permanent link">#</a></h3>
+<p>The downloaded onnx file is not to be used as-is, but to be converted to a TensorRT engine file for use.
+A conversion command is available, so source the autoware workspace and execute the command.</p>
+<p>Let's assume that autoware is installed in <code>$HOME/autoware</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span><span class="nv">$HOME</span>/autoware/install/setup.bash
 ros2<span class="w"> </span>launch<span class="w"> </span>lidar_centerpoint<span class="w"> </span>lidar_centerpoint.launch.xml<span class="w"> </span>build_only:<span class="o">=</span><span class="nb">true</span>
-
-<span class="c1"># The following two engine files appear in ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data</span>
-<span class="c1"># pts_backbone_neck_head_centerpoint_tiny.engine</span>
-<span class="c1"># pts_voxel_encoder_centerpoint_tiny.engine</span>
+</code></pre></div>
+<p>When the conversion command finishes, the engine file is output.
+The output destination changes according to the model download method, so check that the output is in the appropriate directory.</p>
+<h4 id="download-with-ansible_1">Download with ansible<a class="headerlink" href="#download-with-ansible_1" title="Permanent link">#</a></h4>
+<p>An example of the use of autowarefoundation's autoware.universe is shown below.</p>
+<p>The following file is output.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">$HOME</span>/autoware_data/lidar_centerpoint/pts_backbone_neck_head_centerpoint_tiny.engine
+<span class="nv">$HOME</span>/autoware_data/lidar_centerpoint/pts_voxel_encoder_centerpoint_tiny.engine
+</code></pre></div>
+<h4 id="automatic-download-at-package-build-time">Automatic download at package build time<a class="headerlink" href="#automatic-download-at-package-build-time" title="Permanent link">#</a></h4>
+<p>The following file is output.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">$HOME</span>/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data/pts_backbone_neck_head_centerpoint_tiny.engine
+<span class="nv">$HOME</span>/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data/pts_voxel_encoder_centerpoint_tiny.engine
 </code></pre></div>
 <h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
 <p>The perception evaluation is executed by launching the <code>perception.launch.py</code> file.

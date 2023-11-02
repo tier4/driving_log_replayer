@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.7">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.35e1ed30.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
@@ -1227,6 +1227,33 @@
     Preparation
   </a>
   
+    <nav class="md-nav" aria-label="Preparation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#downloading-model-files" class="md-nav__link">
+    Downloading Model Files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conversion-of-model-files" class="md-nav__link">
+    Conversion of model files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-evaluation-on-a-single-pc-rewrite-parameters-in-the-launch-file" class="md-nav__link">
+    (For evaluation on a single PC) rewrite parameters in the launch file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1388,23 +1415,44 @@
 <p>Run the perception module and pass the output perception topic to the evaluation library for evaluation.</p>
 <p>Currently, only the evaluation of <code>classification2d</code> is supported.</p>
 <h2 id="preparation">Preparation<a class="headerlink" href="#preparation" title="Permanent link">#</a></h2>
-<p>In perception evaluation, machine learning pre-trained models are used.
-The models are automatically downloaded during set-up.
-<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_classifier/CMakeLists.txt#L104">traffic_light_classifier/CMakeList.txt</a>
-<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/perception/traffic_light_ssd_fine_detector/CMakeLists.txt#L112">traffic_light_ssd_fine_detector/CMakeList.txt</a></p>
-<p>The downloaded onnx file is not used as is, but is converted into a TensorRT engine file.
-Commands for model conversion are available, so source the autoware workspace and execute the commands.
-When the conversion command finishes, check that the engine file is output to the directory listed in <a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/traffic_light_recognition/traffic_light.launch.xml#L7-L10">traffic_light.launch.xml</a>.</p>
-<p>An example of the use of autowarefoundation's autoware.universe is shown below.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># If autoware is installed in $HOME/autoware</span>
-<span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
+<p>In perception evaluation, machine-learning pre-trained models are used.
+If the model is not prepared in advance, Autoware will not output recognition results.
+If no evaluation results are produced, check to see if this has been done correctly.</p>
+<h3 id="downloading-model-files">Downloading Model Files<a class="headerlink" href="#downloading-model-files" title="Permanent link">#</a></h3>
+<p>Models are downloaded during Autoware setup.
+The method of downloading models depends on the version of Autoware you are using, so check which method is used.
+The following patterns exist.</p>
+<h4 id="download-with-ansible">Download with ansible<a class="headerlink" href="#download-with-ansible" title="Permanent link">#</a></h4>
+<p>When you run the ansible setup script, you will see <code>Download artifacts? [y/N]</code>, type <code>y</code> and press enter (Autoware foundation's main branch use this method)
+<a href="https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml">https://github.com/autowarefoundation/autoware/blob/main/ansible/roles/artifacts/tasks/main.yaml</a></p>
+<h4 id="automatically-downloaded-when-the-package-is-built">Automatically downloaded when the package is built<a class="headerlink" href="#automatically-downloaded-when-the-package-is-built" title="Permanent link">#</a></h4>
+<p>If you are using a slightly older Autoware.universe, this is the one to use, until the commit hash of <code>13b96ad3c636389b32fea3a47dfb7cfb7813cadc</code>.
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/13b96ad3c636389b32fea3a47dfb7cfb7813cadc/perception/traffic_light_classifier/CMakeLists.txt#L113-L119">traffic_light_classifier/CMakeList.txt</a></p>
+<h3 id="conversion-of-model-files">Conversion of model files<a class="headerlink" href="#conversion-of-model-files" title="Permanent link">#</a></h3>
+<p>The downloaded onnx file is not to be used as-is, but to be converted to a TensorRT engine file for use.
+A conversion command is available, so source the autoware workspace and execute the command.</p>
+<p>Let's assume that autoware is installed in <code>$HOME/autoware</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span><span class="nv">$HOME</span>/autoware/install/setup.bash
 ros2<span class="w"> </span>launch<span class="w"> </span>traffic_light_classifier<span class="w"> </span>traffic_light_classifier.launch.xml<span class="w"> </span>use_gpu:<span class="o">=</span><span class="nb">true</span><span class="w">  </span>build_only:<span class="o">=</span><span class="nb">true</span>
-ros2<span class="w"> </span>launch<span class="w"> </span>traffic_light_ssd_fine_detector<span class="w"> </span>traffic_light_ssd_fine_detector.launch.xml<span class="w"> </span>build_only:<span class="o">=</span><span class="nb">true</span>
-
-<span class="c1"># The following two engine files appear in</span>
-<span class="c1"># ~/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2.engine</span>
-<span class="c1"># ~/autoware/install/traffic_light_ssd_fine_detector/share/traffic_light_ssd_fine_detector/data/mb2-ssd-lite-tlr.engine</span>
+ros2<span class="w"> </span>launch<span class="w"> </span>traffic_light_fine_detector<span class="w"> </span>traffic_light_fine_detector.launch.xml<span class="w"> </span>build_only:<span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
+<p>When the conversion command finishes, the engine file is output.
+The output destination changes according to the model download method, so check that the output is in the appropriate directory.</p>
+<h4 id="download-with-ansible_1">Download with ansible<a class="headerlink" href="#download-with-ansible_1" title="Permanent link">#</a></h4>
+<p>The following file is output.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">$HOME</span>/autoware_data/traffic_light_classifier/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
+<span class="nv">$HOME</span>/autoware_data/traffic_light_fine_detector/tlr_yolox_s_batch_6.fp16-batch6.engine
+</code></pre></div>
+<h4 id="automatic-download-at-package-build-time">Automatic download at package build time<a class="headerlink" href="#automatic-download-at-package-build-time" title="Permanent link">#</a></h4>
+<p>The following file is output.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">$HOME</span>/autoware/install/traffic_light_classifier/share/traffic_light_classifier/data/traffic_light_classifier_mobilenetv2_batch_6.fp16-batch6.engine
+<span class="nv">$HOME</span>/autoware/install/traffic_light_fine_detector/share/traffic_light_fine_detector/data/tlr_yolox_s_batch_6.fp16-batch6.engine
+</code></pre></div>
+<h3 id="for-evaluation-on-a-single-pc-rewrite-parameters-in-the-launch-file">(For evaluation on a single PC) rewrite parameters in the launch file<a class="headerlink" href="#for-evaluation-on-a-single-pc-rewrite-parameters-in-the-launch-file" title="Permanent link">#</a></h3>
+<p>set the value of <code>traffic_light_recognition/fusion_only</code> <code>true</code> in the file <code>autoware.universe/launch/tier4_perception_launch/launch/perception.launch.xml</code>
+<a href="https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L79">https://github.com/autowarefoundation/autoware.universe/blob/main/launch/tier4_perception_launch/launch/perception.launch.xml#L79</a></p>
+<p>In the main branch of Autoware Foundation's Autoware, it is set to <code>false</code>, but in the case of Autoware used in actual vehicles, it may be set to <code>true</code>.
+Because <code>true</code> is a setting that recognition results are sent from another computer, when evaluating with a single PC, it should be set back to <code>false</code> before execution.</p>
 <h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
 <p>The traffic_light evaluation is executed by launching the <code>traffic_light.launch.py</code> file.
 Launching the file executes the following steps:</p>
