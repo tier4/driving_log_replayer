@@ -26,29 +26,15 @@ from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 
 
-class PerceptionResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
-        super().__init__()
-        self.__pass_rate = condition["PassRate"]
-        self.__success = 0
-        self.__total = 0
+@dataclass
+class Perception(EvaluationItem):
+    name: ClassVar[str] = "Perception"
 
-        self.__criteria = PerceptionCriteria(
-            method=condition.get("CriteriaMethod"),
-            level=condition.get("CriteriaLevel"),
+    def __post_init__(self) -> None:
+        self.criteria: PerceptionCriteria = PerceptionCriteria(
+            method=self.condition.get("CriteriaMethod"),
+            level=self.condition.get("CriteriaLevel"),
         )
-
-    def update(self) -> None:
-        test_rate = 0.0 if self.__total == 0 else self.__success / self.__total * 100.0
-        success = test_rate >= self.__pass_rate
-        summary_str = f"{self.__success} / {self.__total } -> {test_rate:.2f}%"
-
-        if success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
 
     def set_frame(
         self,
@@ -56,28 +42,15 @@ class PerceptionResult(ResultBase):
         skip: int,
         header: Header,
         map_to_baselink: dict,
-    ) -> tuple[MarkerArray, MarkerArray]:
-        self.__total += 1
-        result = self.__criteria.get_result(frame)
+    ) -> tuple[dict, MarkerArray, MarkerArray]:
+        self.total += 1
+        frame_success = "Fail"
+        result = self.criteria.get_result(frame)
 
         if result.is_success():
-            self.__success += 1
+            self.passed += 1
+            frame_success = "Success"
 
-        out_frame = {
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
-        }
-        out_frame["PassFail"] = {
-            "Result": str(result),
-            "Info": [
-                {
-                    "TP": len(frame.pass_fail_result.tp_object_results),
-                    "FP": len(frame.pass_fail_result.fp_object_results),
-                    "FN": len(frame.pass_fail_result.fn_objects),
-                },
-            ],
-        }
         marker_ground_truth = MarkerArray()
         color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
 
@@ -98,7 +71,55 @@ class PerceptionResult(ResultBase):
             header,
         )
 
-        self._frame = out_frame
+        self.success = self.rate() >= self.condition["PassRate"]
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
+
+        return (
+            {
+                "Ego": {"TransformStamped": map_to_baselink},
+                "FrameName": frame.frame_name,
+                "FrameSkip": skip,
+                "PassFail": {
+                    "Result": {"Total": self.success_str(), "Frame": frame_success},
+                    "Info": {
+                        "TP": len(frame.pass_fail_result.tp_object_results),
+                        "FP": len(frame.pass_fail_result.fp_object_results),
+                        "FN": len(frame.pass_fail_result.fn_objects),
+                    },
+                },
+            },
+            marker_ground_truth,
+            marker_results,
+        )
+
+
+class PerceptionResult(ResultBase):
+    def __init__(self, condition: dict) -> None:
+        super().__init__()
+        self.__perception = Perception(condition=condition)
+
+    def update(self) -> None:
+        summary_str = f"{self.__perception.summary}"
+        if self.__perception.success:
+            self._success = True
+            self._summary = f"Passed: {summary_str}"
+        else:
+            self._success = False
+            self._summary = f"Failed: {summary_str}"
+
+    def set_frame(
+        self,
+        frame: PerceptionFrameResult,
+        skip: int,
+        header: Header,
+        map_to_baselink: dict,
+    ) -> tuple[MarkerArray, MarkerArray]:
+        self._frame, marker_ground_truth, marker_results = self.__perception.set_frame(
+            frame,
+            skip,
+            header,
+            map_to_baselink,
+        )
         self.update()
         return marker_ground_truth, marker_results
 
