@@ -108,14 +108,14 @@ def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
     dynamic_obj = DynamicObject(
         123,
         FrameID.BASE_LINK,
-        0.5,
         (1.0, 2.0, 3.0),
         Quaternion(),
         None,
+        (1.0, 2.0, 3.0),
         0.5,
         Label(AutowareLabel.CAR, "12"),
     )
-    return DynamicObjectWithPerceptionResult(dynamic_obj, dynamic_obj)
+    return DynamicObjectWithPerceptionResult(dynamic_obj, None)
 
 
 def test_perception_fail_has_no_object(
