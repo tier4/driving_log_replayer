@@ -140,10 +140,11 @@ def dynamic_objects_to_ros_points(
         point = Point()
         if type(obj) == DynamicObjectWithPerceptionResult:
             if tp_gt:
-                # tpのgtを出したい場合、tpならば必ずground_truthのペアがいる
-                point.x = obj.ground_truth_object.state.position[0]
-                point.y = obj.ground_truth_object.state.position[1]
-                point.z = obj.ground_truth_object.state.position[2]
+                if obj.ground_truth_object is not None:
+                    # tpのgtを出したい場合、tpならば必ずground_truthのペアがいる
+                    point.x = obj.ground_truth_object.state.position[0]
+                    point.y = obj.ground_truth_object.state.position[1]
+                    point.z = obj.ground_truth_object.state.position[2]
             else:
                 point.x = obj.estimated_object.state.position[0]
                 point.y = obj.estimated_object.state.position[1]
@@ -173,12 +174,11 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
 
     if objs := pass_fail.tp_object_results:
         # estimated obj
-        c_tp_est = ColorRGBA(r=0.0, g=0.0, b=1.0, a=1.0)
         marker = dynamic_objects_to_ros_points(
             objs,
             header,
             scale,
-            c_tp_est,
+            ColorRGBA(r=0.0, g=0.0, b=1.0, a=1.0),
             "tp_est",
             0,
             tp_gt=False,
@@ -186,15 +186,36 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
         marker_results.markers.append(marker)
     if objs := pass_fail.tp_object_results:
         # ground truth obj
-        c_tp_gt = ColorRGBA(r=1.0, g=0.0, b=0.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_tp_gt, "tp_gt", 0, tp_gt=True)
+        marker = dynamic_objects_to_ros_points(
+            objs,
+            header,
+            scale,
+            ColorRGBA(r=1.0, g=0.0, b=0.0, a=1.0),
+            "tp_gt",
+            0,
+            tp_gt=True,
+        )
         marker_results.markers.append(marker)
     if objs := pass_fail.fp_object_results:
-        c_fp = ColorRGBA(r=0.0, g=1.0, b=1.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fp, "fp", 0, tp_gt=False)
+        marker = dynamic_objects_to_ros_points(
+            objs,
+            header,
+            scale,
+            ColorRGBA(r=0.0, g=1.0, b=1.0, a=1.0),
+            "fp",
+            0,
+            tp_gt=False,
+        )
         marker_results.markers.append(marker)
     if objs := pass_fail.fn_objects:
-        c_fn = ColorRGBA(r=1.0, g=0.5, b=0.0, a=1.0)
-        marker = dynamic_objects_to_ros_points(objs, header, scale, c_fn, "fn", 0, tp_gt=False)
+        marker = dynamic_objects_to_ros_points(
+            objs,
+            header,
+            scale,
+            ColorRGBA(r=1.0, g=0.5, b=0.0, a=1.0),
+            "fn",
+            0,
+            tp_gt=False,
+        )
         marker_results.markers.append(marker)
     return marker_results
