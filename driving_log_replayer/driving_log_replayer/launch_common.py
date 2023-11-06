@@ -108,6 +108,7 @@ def get_autoware_launch(
     scenario_simulation: str = "false",
     pose_source: str = "ndt",
     twist_source: str = "gyro_odom",
+    perception_mode: str = LaunchConfiguration("perception_mode"),
 ) -> launch.actions.IncludeLaunchDescription:
     # autoware launch
     autoware_launch_file = Path(
@@ -131,7 +132,7 @@ def get_autoware_launch(
             "planning": planning,
             "control": control,
             "scenario_simulation": scenario_simulation,
-            "perception_mode": LaunchConfiguration("perception_mode"),
+            "perception_mode": perception_mode,
             "pose_source": pose_source,
             "twist_source": twist_source,
             "rviz": "false",
