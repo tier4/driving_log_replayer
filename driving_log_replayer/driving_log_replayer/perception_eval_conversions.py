@@ -140,10 +140,11 @@ def dynamic_objects_to_ros_points(
         point = Point()
         if type(obj) == DynamicObjectWithPerceptionResult:
             if tp_gt:
-                # tpのgtを出したい場合、tpならば必ずground_truthのペアがいる
-                point.x = obj.ground_truth_object.state.position[0]
-                point.y = obj.ground_truth_object.state.position[1]
-                point.z = obj.ground_truth_object.state.position[2]
+                if obj.ground_truth_object is not None:
+                    # tpのgtを出したい場合、tpならば必ずground_truthのペアがいる
+                    point.x = obj.ground_truth_object.state.position[0]
+                    point.y = obj.ground_truth_object.state.position[1]
+                    point.z = obj.ground_truth_object.state.position[2]
             else:
                 point.x = obj.estimated_object.state.position[0]
                 point.y = obj.estimated_object.state.position[1]
