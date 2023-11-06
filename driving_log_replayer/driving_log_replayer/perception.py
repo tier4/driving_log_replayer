@@ -28,7 +28,7 @@ from driving_log_replayer.result import ResultBase
 
 @dataclass
 class Perception(EvaluationItem):
-    name: ClassVar[str] = "Perception"
+    name: str = "Perception"
 
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(

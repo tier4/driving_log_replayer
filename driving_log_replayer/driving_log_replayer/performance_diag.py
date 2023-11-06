@@ -54,7 +54,7 @@ def convert_str_to_int(str_float: str) -> float:
 
 @dataclass
 class Visibility(EvaluationItem):
-    name: ClassVar[str] = "Visibility"
+    name: str = "Visibility"
     success: bool = True
     REGEX_VISIBILITY_DIAG_NAME: ClassVar[
         str
@@ -121,7 +121,7 @@ class Visibility(EvaluationItem):
 
 @dataclass
 class Blockage(EvaluationItem):
-    name: ClassVar[str] = "Blockage"
+    name: str = "Blockage"
     success: bool = True
     passed_sensors: dict[str, int] = field(default_factory=dict)
     total_sensors: dict[str, int] = field(default_factory=dict)

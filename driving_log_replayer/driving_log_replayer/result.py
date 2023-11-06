@@ -29,7 +29,7 @@ import simplejson as json
 
 @dataclass
 class EvaluationItem(ABC):
-    name: ClassVar[str] = "This field should be overwritten"
+    name: str = "This field should be overwritten"
     # If condition is None, this evaluation item is not used.
     condition: dict | None = field(default_factory=dict)
     total: int = 0

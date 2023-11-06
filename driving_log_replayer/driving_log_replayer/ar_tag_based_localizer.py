@@ -23,7 +23,7 @@ from driving_log_replayer.result import ResultBase
 
 @dataclass
 class Availability(EvaluationItem):
-    name: ClassVar[str] = "ArTagBasedLocalizer Availability"
+    name: str = "ArTagBasedLocalizer Availability"
     TARGET_DIAG_NAME: ClassVar[str] = "localization: ar_tag_based_localizer"
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
