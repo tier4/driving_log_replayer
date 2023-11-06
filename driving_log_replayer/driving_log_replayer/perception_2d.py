@@ -13,8 +13,6 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from dataclasses import field
-from typing import ClassVar
 
 from perception_eval.evaluation import PerceptionFrameResult
 
@@ -25,29 +23,10 @@ from driving_log_replayer.result import ResultBase
 
 @dataclass
 class Perception(EvaluationItem):
-    name: ClassVar[str] = "Perception2D Perception"
-    passed_cameras: dict[str, int] = field(default_factory=dict)
-    total_cameras: dict[str, int] = field(default_factory=dict)
-    success_cameras: dict[str, bool] = field(default_factory=dict)
-
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(
             method=self.condition.get("CriteriaMethod"),
             level=self.condition.get("CriteriaLevel"),
-        )
-        for camera_type in self.condition.get("TargetCameras"):
-            self.passed_cameras[camera_type] = 0
-            self.total_cameras[camera_type] = 0
-            self.success_cameras[camera_type] = True
-
-    def camera_success_str(self, camera_name: str) -> str:
-        return "Success" if self.success_cameras.get(camera_name) else "Fail"
-
-    def rate_camera(self, camera_name: str) -> float:
-        return (
-            0.0
-            if self.total_cameras[camera_name] == 0
-            else self.passed_cameras[camera_name] / self.total_cameras[camera_name] * 100.0
         )
 
     def set_frame(
@@ -55,30 +34,27 @@ class Perception(EvaluationItem):
         frame: PerceptionFrameResult,
         skip: int,
         map_to_baselink: dict,
-        camera_type: str,
     ) -> dict:
-        self.total[camera_type] += 1
+        self.total += 1
         frame_success = "Fail"
         result = self.criteria.get_result(frame)
 
         if result.is_success():
-            self.passed_cameras[camera_type] += 1
+            self.passed += 1
             frame_success = "Success"
 
-        self.success_cameras[camera_type] = (
-            self.rate_camera(camera_type) >= self.condition["PassRate"]
-        )
-        self.update()
+        self.success = self.rate() >= self.condition["PassRate"]
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return (
             {
-                "CameraType": camera_type,
+                "CameraType": self.name,
                 "Ego": {"TransformStamped": map_to_baselink},
                 "FrameName": frame.frame_name,
                 "FrameSkip": skip,
                 "PassFail": {
                     "Result": {
-                        "Total": self.camera_success_str(camera_type),
+                        "Total": {"Total": self.success_str(), "Frame": frame_success},
                         "Frame": frame_success,
                     },
                     "Info": {
@@ -90,32 +66,24 @@ class Perception(EvaluationItem):
             },
         )
 
-    def update(self) -> None:
-        tmp_success = True
-        tmp_summary = ""
-        for camera_name, v in self.success_cameras.items():
-            tmp_summary += f"{camera_name}: {self.passed_cameras[camera_name]} / {self.total_cameras[camera_name]} -> {self.rate_camera(camera_name):.2f}% "
-            # If even one false is entered, the entire test is false.
-            if not v:
-                tmp_success = False
-        self.success = tmp_success
-        tmp_success_str = "Success" if tmp_success else "Fail"
-        self.summary = f"{self.name} ({tmp_success_str}): {tmp_summary.rstrip()}"
-
 
 class Perception2DResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
-        self.__perception = Perception(condition=condition)
+        self.__cameras: dict[Perception] = {}
+        for camera_type in condition.get("TargetCameras"):
+            self.__cameras[camera_type] = Perception(name=camera_type, condition=condition)
 
     def update(self) -> None:
-        summary_str = f"{self.__perception.summary}"
-        if self.__perception.success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
+        tmp_success = True
+        tmp_summary = ""
+        for e_item in self.__cameras:
+            tmp_summary += e_item.summary
+            if not e_item.success:
+                tmp_success = False
+        prefix_str = "Passed: " if tmp_success else "Failed: "
+        self._success = tmp_success
+        self._summary = prefix_str + tmp_summary
 
     def set_frame(
         self,
@@ -124,7 +92,11 @@ class Perception2DResult(ResultBase):
         map_to_baselink: dict,
         camera_type: str,
     ) -> None:
-        self._frame = self.__perception.set_frame(frame, skip, map_to_baselink, camera_type)
+        self._frame = self.__cameras[camera_type].set_frame(
+            frame,
+            skip,
+            map_to_baselink,
+        )
         self.update()
 
     def set_final_metrics(self, final_metrics: dict) -> None:
