@@ -108,8 +108,10 @@ def get_autoware_launch(
     scenario_simulation: str = "false",
     pose_source: str = "ndt",
     twist_source: str = "gyro_odom",
-    perception_mode: str = LaunchConfiguration("perception_mode"),
+    perception_mode: str | None = None,
 ) -> launch.actions.IncludeLaunchDescription:
+    if perception_mode is None:
+        perception_mode = LaunchConfiguration("perception_mode")
     # autoware launch
     autoware_launch_file = Path(
         get_package_share_directory("autoware_launch"),

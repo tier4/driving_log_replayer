@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import ClassVar
 
 from perception_eval.evaluation import PerceptionFrameResult
 from std_msgs.msg import ColorRGBA

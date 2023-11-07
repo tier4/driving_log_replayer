@@ -20,7 +20,6 @@ from os.path import expandvars
 from pathlib import Path
 import pickle
 from typing import Any
-from typing import ClassVar
 
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
