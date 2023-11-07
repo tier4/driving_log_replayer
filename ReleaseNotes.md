@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.8.2
+
+Minor Tweak
+
+| Module          | Feature | Brief summary                   | Pull request                                                   | Jira     | Contributor                                   |
+| --------------- | ------- | ------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception`    | test    | add unit test for perception    | [#292](https://github.com/tier4/driving_log_replayer/pull/292) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `cli`           | runner  | fix create output directory     | [#294](https://github.com/tier4/driving_log_replayer/pull/294) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception_2d` | test    | add unit test for perception_2d | [#295](https://github.com/tier4/driving_log_replayer/pull/295) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.8.1
 
 Minor Tweak
