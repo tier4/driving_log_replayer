@@ -23,7 +23,7 @@ from driving_log_replayer.result import ResultBase
 
 @dataclass
 class Availability(EvaluationItem):
-    name: ClassVar[str] = "Yabloc Availability"
+    name: str = "Yabloc Availability"
     TARGET_DIAG_NAME: ClassVar[str] = "yabloc_monitor: yabloc_status"
 
     def set_frame(self, msg: DiagnosticArray) -> dict:

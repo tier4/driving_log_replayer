@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import ClassVar
 
 from perception_eval.evaluation import PerceptionFrameResult
 from std_msgs.msg import ColorRGBA
@@ -28,7 +27,7 @@ from driving_log_replayer.result import ResultBase
 
 @dataclass
 class Perception(EvaluationItem):
-    name: ClassVar[str] = "Perception"
+    name: str = "Perception"
 
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(

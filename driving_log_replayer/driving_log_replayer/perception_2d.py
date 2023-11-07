@@ -23,15 +23,18 @@ from driving_log_replayer.result import ResultBase
 
 @dataclass
 class Perception(EvaluationItem):
-    name: str = "Traffic Light Perception"
-
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(
             method=self.condition.get("CriteriaMethod"),
             level=self.condition.get("CriteriaLevel"),
         )
 
-    def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
+    def set_frame(
+        self,
+        frame: PerceptionFrameResult,
+        skip: int,
+        map_to_baselink: dict,
+    ) -> dict:
         self.total += 1
         frame_success = "Fail"
         result = self.criteria.get_result(frame)
@@ -44,11 +47,15 @@ class Perception(EvaluationItem):
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
+            "CameraType": self.name,
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
             "PassFail": {
-                "Result": {"Total": self.success_str(), "Frame": frame_success},
+                "Result": {
+                    "Total": self.success_str(),
+                    "Frame": frame_success,
+                },
                 "Info": {
                     "TP": len(frame.pass_fail_result.tp_object_results),
                     "FP": len(frame.pass_fail_result.fp_object_results),
@@ -58,27 +65,36 @@ class Perception(EvaluationItem):
         }
 
 
-class TrafficLightResult(ResultBase):
+class Perception2DResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
-        self.__perception = Perception(condition=condition)
+        self.__cameras: dict[Perception] = {}
+        for camera_type in condition.get("TargetCameras"):
+            self.__cameras[camera_type] = Perception(name=camera_type, condition=condition)
 
     def update(self) -> None:
-        summary_str = f"{self.__perception.summary}"
-        if self.__perception.success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
+        tmp_success = True
+        tmp_summary = ""
+        for v in self.__cameras.values():
+            tmp_summary += v.summary
+            if not v.success:
+                tmp_success = False
+        prefix_str = "Passed: " if tmp_success else "Failed: "
+        self._success = tmp_success
+        self._summary = prefix_str + tmp_summary
 
     def set_frame(
         self,
         frame: PerceptionFrameResult,
         skip: int,
         map_to_baselink: dict,
+        camera_type: str,
     ) -> None:
-        self._frame = self.__perception.set_frame(frame, skip, map_to_baselink)
+        self._frame = self.__cameras[camera_type].set_frame(
+            frame,
+            skip,
+            map_to_baselink,
+        )
         self.update()
 
     def set_final_metrics(self, final_metrics: dict) -> None:

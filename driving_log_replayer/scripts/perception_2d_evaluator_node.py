@@ -16,10 +16,10 @@
 
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
-from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
@@ -27,89 +27,16 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from std_msgs.msg import Header
 from tier4_perception_msgs.msg import DetectedObjectsWithFeature
 from tier4_perception_msgs.msg import DetectedObjectWithFeature
 
-from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
+from driving_log_replayer.perception_2d import Perception2DResult
 import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import ResultBase
 
-
-class Perception2DResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
-        super().__init__()
-        self.__pass_rate = condition["PassRate"]
-        self.__target_cameras = condition["TargetCameras"]
-        self.__success = {}
-        self.__total = {}
-        self.__result = {}
-        self.__msg = {}
-        for camera_type in self.__target_cameras:
-            self.__success[camera_type] = 0
-            self.__total[camera_type] = 0
-            self.__result[camera_type] = True
-            self.__msg[camera_type] = "NotTested"
-
-        self.__criteria = PerceptionCriteria(
-            method=condition.get("CriteriaMethod"),
-            level=condition.get("CriteriaLevel"),
-        )
-
-    def update(self) -> None:
-        summary_str = ""
-        for camera_type, eval_msg in self.__msg.items():
-            summary_str += f" {camera_type}: {eval_msg}"
-        if all(self.__result.values()):  # if all camera results are True
-            self._success = True
-            self._summary = f"Passed:{summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed:{summary_str}"
-
-    def set_frame(
-        self,
-        frame: PerceptionFrameResult,
-        skip: int,
-        header: Header,  # noqa
-        map_to_baselink: dict,
-        camera_type: str,
-    ) -> None:
-        self.__total[camera_type] += 1
-        result = self.__criteria.get_result(frame)
-
-        if result.is_success():
-            self.__success[camera_type] += 1
-
-        test_rate = self.__success[camera_type] / self.__total[camera_type] * 100.0
-        self.__result[camera_type] = test_rate >= self.__pass_rate
-        self.__msg[
-            camera_type
-        ] = f"{self.__success[camera_type]} / {self.__total[camera_type]} -> {test_rate:.2f}%"
-
-        out_frame = {
-            "CameraType": camera_type,
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
-        }
-        out_frame["PassFail"] = {
-            "Result": str(result),
-            "Info": [
-                {
-                    "TP": len(frame.pass_fail_result.tp_object_results),
-                    "FP": len(frame.pass_fail_result.fp_object_results),
-                    "FN": len(frame.pass_fail_result.fn_objects),
-                },
-            ],
-        }
-        self._frame = out_frame
-        self.update()
-
-    def set_final_metrics(self, final_metrics: dict) -> None:
-        self._frame = {"FinalScore": final_metrics}
+if TYPE_CHECKING:
+    from perception_eval.evaluation import PerceptionFrameResult
 
 
 class Perception2DEvaluator(DLREvaluator):
@@ -275,7 +202,6 @@ class Perception2DEvaluator(DLREvaluator):
             self.__result.set_frame(
                 frame_result,
                 self.__skip_counter[camera_type],
-                msg.header,
                 DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
                 camera_type,
             )

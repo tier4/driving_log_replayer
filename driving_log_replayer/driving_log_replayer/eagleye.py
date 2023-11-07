@@ -24,7 +24,7 @@ from driving_log_replayer.result import ResultBase
 
 @dataclass
 class Availability(EvaluationItem):
-    name: ClassVar[str] = "Eagleye Availability"
+    name: str = "Eagleye Availability"
     TARGET_DIAG_NAME: ClassVar[str] = "monitor: eagleye_enu_absolute_pos_interpolate"
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
