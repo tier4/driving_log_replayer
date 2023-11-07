@@ -250,6 +250,11 @@ Metrics Data Format:
           "label0": "FN rate of label0",
           "label1": "FN rate of label1"
         },
+        "TN": {
+          "ALL": "TN rate for all labels",
+          "label0": "TN rate of label0",
+          "label1": "TN rate of label1"
+        },
         "AP(Center Distance)": {
           "ALL": "AP(Center Distance) rate for all labels",
           "label0": "AP(Center Distance) rate of label0",

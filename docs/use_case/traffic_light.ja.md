@@ -262,6 +262,11 @@ perception では、シナリオに指定した条件で perception_eval が評�
           "label0": "label0のFN率",
           "label1": "label1のFN率"
         },
+        "TN": {
+          "ALL": "すべてのラベルのTN率",
+          "label0": "label0のTN率",
+          "label1": "label1のTN率"
+        },
         "Accuracy": {
           "ALL": "すべてのラベルのAccuracy",
           "label0": "label0のAccuracy",
