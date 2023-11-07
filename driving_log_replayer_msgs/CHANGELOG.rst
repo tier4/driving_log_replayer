@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.8.3 (2023-11-07)
+------------------
 * docs: update result format (`#297 <https://github.com/tier4/driving_log_replayer/issues/297>`_)
 * Contributors: Hayato Mizushima
 
