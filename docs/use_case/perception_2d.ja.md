@@ -330,16 +330,16 @@ perception では、シナリオに指定した条件で perception_eval が評�
           "ALL": "すべてのラベルのAPH率(IoU 2D)",
           "label0": "label0のAPH率(IoU 2D)",
           "label1": "label1のAPH率(IoU 2D)"
-        },
+        }
       },
       "ConfusionMatrix": {
         "label0(真値)": {
           "label0(予測値)": "値",
-          "label1(予測値)": "値",
+          "label1(予測値)": "値"
         },
         "label1(真値)": {
           "label0(予測値)": "値",
-          "label1(予測値)": "値",
+          "label1(予測値)": "値"
         }
       }
     }

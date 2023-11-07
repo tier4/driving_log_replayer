@@ -385,7 +385,7 @@ When the `evaluation_task` is fp_validation
         "TP": "TP rate of the scene",
         "FP": "FP rate of the scene",
         "TN": "TN rate of the scene",
-        "FN": "FN rate of the scene",
+        "FN": "FN rate of the scene"
       }
     }
   }

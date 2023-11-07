@@ -291,11 +291,11 @@ perception では、シナリオに指定した条件で perception_eval が評�
       "ConfusionMatrix": {
         "label0(真値)": {
           "label0(予測値)": "値",
-          "label1(予測値)": "値",
+          "label1(予測値)": "値"
         },
         "label1(真値)": {
           "label0(予測値)": "値",
-          "label1(予測値)": "値",
+          "label1(予測値)": "値"
         }
       }
     }

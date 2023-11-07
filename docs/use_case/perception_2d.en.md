@@ -338,11 +338,11 @@ Metrics Data Format:
       "ConfusionMatrix": {
         "label0(GroundTruth)": {
           "label0(Prediction)": "value",
-          "label1(Prediction)": "value",
+          "label1(Prediction)": "value"
         },
         "label1(GroundTruth)": {
           "label0(Prediction)": "value",
-          "label1(Prediction)": "value",
+          "label1(Prediction)": "value"
         }
       }
     }

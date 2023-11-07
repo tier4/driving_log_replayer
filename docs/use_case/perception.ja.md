@@ -370,14 +370,14 @@ evaluation_taskがfp_validationの場合
             "TP": "表示UUIDのTP率",
             "FP": "表示UUIDのFP率",
             "TN": "表示UUIDのTN率",
-            "FN": "表示UUIDのFN率",
+            "FN": "表示UUIDのFN率"
           },
           "frame_nums": {
             "total": "GTが評価されるフレーム番号のリスト",
             "TP": "GTがTPとして評価されるフレーム番号のリスト",
             "FP": "GTがFPとして評価されるフレーム番号のリスト",
             "TN": "GTがTNとして評価されるフレーム番号のリスト",
-            "FN": "GTがFNとして評価されるフレーム番号のリスト",
+            "FN": "GTがFNとして評価されるフレーム番号のリスト"
           }
         }
       },
@@ -385,7 +385,7 @@ evaluation_taskがfp_validationの場合
         "TP": "シーンのTP率",
         "FP": "シーンのFP率",
         "TN": "シーンのTN率",
-        "FN": "シーンのFN率",
+        "FN": "シーンのFN率"
       }
     }
   }
