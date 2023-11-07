@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* docs: update result format (`#297 <https://github.com/tier4/driving_log_replayer/issues/297>`_)
+* Contributors: Hayato Mizushima
+
 1.8.2 (2023-11-07)
 ------------------
 * feat: perception 2d test (`#295 <https://github.com/tier4/driving_log_replayer/issues/295>`_)
