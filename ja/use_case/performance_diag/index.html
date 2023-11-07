@@ -1805,38 +1805,45 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <h3 id="_4">シナリオフォーマット<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
 <p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.ja.yaml">サンプル</a>参照</p>
 <h3 id="_5">評価結果フォーマット<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
+<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/result.json">サンプル</a>参照</p>
 <p>performance_diag では、visibility と blockage の 2 つを評価している。
 Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。</p>
 <p>以下に、フォーマットを示す。
 <strong>注:結果ファイルフォーマットで解説済みの共通部分については省略する。</strong></p>
+<p>visibilityの結果(Frame に Visibility の項目がある場合)</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Skipped&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;visibilityの値&quot;</span>
-<span class="w">          </span><span class="p">}</span>
-<span class="w">        </span><span class="p">]</span>
+<span class="w">  </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Invalid&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;visibilityの値&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>blockageの結果(Frame に Blockage の項目がある場合)</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Blockage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;LiDAR1の名前&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;GroundBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;地上側のblockage比率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;GroundBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;SkyBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;空中側のblockage比率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;SkyBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span>
 <span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;Blockage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Skipped&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LiDARの名前&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;GroundBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;地上側のblockage比率&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;GroundBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;SkyBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;空中側のblockage比率&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;SkyBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span>
-<span class="w">          </span><span class="p">}</span>
-<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;LiDAR2の名前&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;GroundBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;地上側のblockage比率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;GroundBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;SkyBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;空中側のblockage比率&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;SkyBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span>
 <span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>

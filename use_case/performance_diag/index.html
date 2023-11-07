@@ -1805,38 +1805,45 @@ The following example shows the topic list available in evaluation input rosbag 
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
 <p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.yaml">sample</a>.</p>
 <h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/result.json">sample</a>.</p>
 <p>In <code>performance_diag</code> evaluation scenario visibility and blockage are evaluated.
 The <code>Result</code> is <code>true</code> if both visibility and blockage evaluation steps have passed. Otherwise, the <code>Result</code> is <code>false</code>.</p>
 <p>The result format is shown below.
 <strong>NOTE: common part of the result file format, which has already been explained, is omitted.</strong></p>
+<p>Visibility Result example:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, Skipped&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Level of diag&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of visibility&quot;</span>
-<span class="w">          </span><span class="p">}</span>
-<span class="w">        </span><span class="p">]</span>
+<span class="w">  </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Invalid&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;visibilityの値&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Blockage Result example:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Blockage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name of LiDAR1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Level of diag&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;GroundBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ground blockage ratio&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;GroundBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ground blockage count. Reference&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;SkyBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sky blockage ratio&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;SkyBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sky blockage count. Reference&quot;</span>
 <span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;Blockage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Skipped&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">          </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Name of LiDAR&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Level of diag&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;GroundBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ground blockage ratio&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;GroundBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ground blockage count. Reference&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;SkyBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sky blockage ratio&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;SkyBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sky blockage count. Reference&quot;</span>
-<span class="w">          </span><span class="p">}</span>
-<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;name of LiDAR2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Level of diag&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;GroundBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ground blockage ratio&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;GroundBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ground blockage count. Reference&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;SkyBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sky blockage ratio&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;SkyBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sky blockage count. Reference&quot;</span>
 <span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>

@@ -1690,6 +1690,7 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 また、Sensing モジュールを起動するかどうかの設定も行う。</p>
 <p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/scenario.ja.yaml">サンプル</a>参照</p>
 <h3 id="_13">評価結果フォーマット<a class="headerlink" href="#_13" title="Permanent link">#</a></h3>
+<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/result.json">サンプル</a>参照</p>
 <p>perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
 全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。</p>
 <p>以下に、各フレームのフォーマットとメトリクスのフォーマットを示す。
@@ -1700,14 +1701,12 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 <span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;評価に使用したt4_datasetのフレーム番号&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;PassFail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TPと判定された数&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FPと判定された数&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FNと判定された数&quot;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">      </span><span class="p">]</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TPと判定された数&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FPと判定された数&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FNと判定された数&quot;</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
@@ -1717,14 +1716,56 @@ perception_eval は ROS 非依存のライブラリなので、ROS のオブジ�
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;FinalScore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">&quot;Score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのTP率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFP率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのFN率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;AP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAP値&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;APH&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ラベルのAPH値&quot;</span>
+<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;すべてのラベルのTP率&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label0のTP率&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label1のTP率&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;すべてのラベルのFP率&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label0のFP率&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label1のFP率&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;すべてのラベルのFN率&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label0のFN率&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label1のFN率&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;TN&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;すべてのラベルのTN率&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label0のTN率&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label1のTN率&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;Accuracy&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;すべてのラベルのAccuracy&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label0のAccuracy&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label1のAccuracy&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;Precision&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;すべてのラベルのPrecision&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label0のPrecision&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label1のPrecision&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;Recall&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;すべてのラベルのRecall&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label0のRecall&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label1のRecall&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;F1score&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;すべてのラベルのF1score&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label0のF1score&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;label1のF1score&quot;</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="nt">&quot;ConfusionMatrix&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;ラベル(真値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;予測結果&quot;</span>
+<span class="w">        </span><span class="nt">&quot;label0(真値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;label0(予測値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;値&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1(予測値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;値&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;label1(真値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;label0(予測値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;値&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1(予測値)&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;値&quot;</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>

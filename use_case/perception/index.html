@@ -1888,19 +1888,18 @@ Only the final line has a different format from the other lines since the final 
 <span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frame number of t4_dataset used for evaluation&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;PassFail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of TPs&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of FPs&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of FNs&quot;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">      </span><span class="p">]</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of TPs&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of FPs&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of FNs&quot;</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>Metrics Data Format:</p>
+<p>When the <code>evaluation_task</code> is detection or tracking</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;FinalScore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1919,6 +1918,11 @@ Only the final line has a different format from the other lines since the final 
 <span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate for all labels&quot;</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of label0&quot;</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of label1&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;TN&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TN rate for all labels&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TN rate of label0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;label1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TN rate of label1&quot;</span>
 <span class="w">        </span><span class="p">},</span>
 <span class="w">        </span><span class="nt">&quot;AP(Center Distance)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">&quot;ALL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AP(Center Distance) rate for all labels&quot;</span><span class="p">,</span>
@@ -2015,6 +2019,37 @@ Only the final line has a different format from the other lines since the final 
 <span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">},</span>
 <span class="w">        </span><span class="nt">&quot;label0&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Error metrics for the label0&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>When the <code>evaluation_task</code> is fp_validation</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;FinalScore&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;GroundTruthStatus&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;UUID&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TP rate of the displyed UUID&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FP rate of the displyed UUID&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;TN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TN rate of the displyed UUID&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of the displyed UUID&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;frame_nums&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List of frame numbers, which GT is evaluated&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List of frame numbers, which GT is evaluated as TP&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List of frame numbers, which GT is evaluated as FP&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;TN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List of frame numbers, which GT is evaluated as TN&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;List of frame numbers, which GT is evaluated as FN&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Scene&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TP rate of the scene&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FP rate of the scene&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;TN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TN rate of the scene&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FN rate of the scene&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
