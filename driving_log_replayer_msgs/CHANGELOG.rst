@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.8.2 (2023-11-07)
+------------------
 * feat: perception 2d test (`#295 <https://github.com/tier4/driving_log_replayer/issues/295>`_)
 * fix: cli create output directory (`#294 <https://github.com/tier4/driving_log_replayer/issues/294>`_)
 * feat: perception test (`#292 <https://github.com/tier4/driving_log_replayer/issues/292>`_)
