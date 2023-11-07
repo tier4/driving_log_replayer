@@ -213,6 +213,8 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### 評価結果フォーマット
 
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/result.json)参照
+
 perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
 全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。
 
@@ -227,14 +229,12 @@ perception では、シナリオに指定した条件で perception_eval が評�
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
     "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
     "PassFail": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "TP": "TPと判定された数",
-          "FP": "FPと判定された数",
-          "FN": "FNと判定された数"
-        }
-      ]
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "TP": "TPと判定された数",
+        "FP": "FPと判定された数",
+        "FN": "FNと判定された数"
+      }
     }
   }
 }
@@ -247,14 +247,51 @@ perception では、シナリオに指定した条件で perception_eval が評�
   "Frame": {
     "FinalScore": {
       "Score": {
-        "TP": "ラベルのTP率",
-        "FP": "ラベルのFP率",
-        "FN": "ラベルのFN率",
-        "AP": "ラベルのAP値",
-        "APH": "ラベルのAPH値"
+        "TP": {
+          "ALL": "すべてのラベルのTP率",
+          "label0": "label0のTP率",
+          "label1": "label1のTP率"
+        },
+        "FP": {
+          "ALL": "すべてのラベルのFP率",
+          "label0": "label0のFP率",
+          "label1": "label1のFP率"
+        },
+        "FN": {
+          "ALL": "すべてのラベルのFN率",
+          "label0": "label0のFN率",
+          "label1": "label1のFN率"
+        },
+        "Accuracy": {
+          "ALL": "すべてのラベルのAccuracy",
+          "label0": "label0のAccuracy",
+          "label1": "label1のAccuracy"
+        },
+        "Precision": {
+          "ALL": "すべてのラベルのPrecision",
+          "label0": "label0のPrecision",
+          "label1": "label1のPrecision"
+        },
+        "Recall": {
+          "ALL": "すべてのラベルのRecall",
+          "label0": "label0のRecall",
+          "label1": "label1のRecall"
+        },
+        "F1score": {
+          "ALL": "すべてのラベルのF1score",
+          "label0": "label0のF1score",
+          "label1": "label1のF1score"
+        }
       },
       "ConfusionMatrix": {
-        "ラベル(真値)": "予測結果"
+        "label0(真値)": {
+          "label0(予測値)": "値",
+          "label1(予測値)": "値",
+        },
+        "label1(真値)": {
+          "label0(予測値)": "値",
+          "label1(予測値)": "値",
+        }
       }
     }
   }
