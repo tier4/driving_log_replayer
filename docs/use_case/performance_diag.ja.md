@@ -150,41 +150,53 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### 評価結果フォーマット
 
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/result.json)参照
+
 performance_diag では、visibility と blockage の 2 つを評価している。
 Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。
 
 以下に、フォーマットを示す。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
 
+visibilityの結果(Frame に Visibility の項目がある場合)
+
 ```json
 {
-  "Frame": {
-    "Visibility": [
-      {
-        "Result": "Success, Fail, or Skipped",
-        "Info": [
-          {
-            "Level": "diagのレベル",
-            "Visibility": "visibilityの値"
-          }
-        ]
+  "Visibility": {
+    "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Invalid" },
+    "Info": {
+      "Level": "diagのレベル",
+      "Visibility": "visibilityの値"
+    }
+  }
+}
+```
+
+blockageの結果(Frame に Blockage の項目がある場合)
+
+```json
+{
+  "Blockage": {
+    "LiDAR1の名前": {
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "Level": "diagのレベル",
+        "GroundBlockageRatio": "地上側のblockage比率",
+        "GroundBlockageCount": "参考値",
+        "SkyBlockageRatio": "空中側のblockage比率",
+        "SkyBlockageCount": "参考値"
       }
-    ],
-    "Blockage": [
-      {
-        "Result": "Success, Fail, or Skipped",
-        "Info": [
-          {
-            "Name": "LiDARの名前",
-            "Level": "diagのレベル",
-            "GroundBlockageRatio": "地上側のblockage比率",
-            "GroundBlockageCount": "参考値",
-            "SkyBlockageRatio": "空中側のblockage比率",
-            "SkyBlockageCount": "参考値"
-          }
-        ]
+    },
+    "LiDAR2の名前": {
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "Level": "diagのレベル",
+        "GroundBlockageRatio": "地上側のblockage比率",
+        "GroundBlockageCount": "参考値",
+        "SkyBlockageRatio": "空中側のblockage比率",
+        "SkyBlockageCount": "参考値"
       }
-    ]
+    }
   }
 }
 ```
