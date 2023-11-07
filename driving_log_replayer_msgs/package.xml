@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>driving_log_replayer_msgs</name>
-  <version>1.8.0</version>
+  <version>1.8.2</version>
   <description>driving_log_replayer msgs</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
   <license>Apache-2.0</license>

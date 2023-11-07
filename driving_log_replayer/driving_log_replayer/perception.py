@@ -13,50 +13,21 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-import logging
-from pathlib import Path
 
 from perception_eval.evaluation import PerceptionFrameResult
-import simplejson as json
+from std_msgs.msg import ColorRGBA
+from std_msgs.msg import Header
+from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.criteria import PerceptionCriteria
+import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 
 
-class FailResultHolder:
-    def __init__(self, save_dir: str) -> None:
-        self.save_path: str = Path(save_dir, "fail_info.json")
-        self.buffer = []
-
-    def add_frame(self, frame_result: PerceptionFrameResult) -> None:
-        if frame_result.pass_fail_result.get_fail_object_num() <= 0:
-            return
-        info = {"fp": [], "fn": []}
-        info["timestamp"] = frame_result.frame_ground_truth.unix_time
-        for fp_result in frame_result.pass_fail_result.fp_object_results:
-            est_label = fp_result.estimated_object.semantic_label.label.value
-            gt_label = (
-                fp_result.ground_truth_object.semantic_label.label.value
-                if fp_result.ground_truth_object is not None
-                else None
-            )
-            info["fp"].append({"est": est_label, "gt": gt_label})
-        for fn_object in frame_result.pass_fail_result.fn_objects:
-            info["fn"].append({"est": None, "gt": fn_object.semantic_label.label.value})
-
-        info_str = f"Fail timestamp: {info}"
-        logging.info(info_str)
-        self.buffer.append(info)
-
-    def save(self) -> None:
-        with self.save_path.open("w") as f:
-            json.dump(self.buffer, f, ensure_ascii=False, indent=4)
-
-
 @dataclass
 class Perception(EvaluationItem):
-    name: str = "Traffic Light Perception"
+    name: str = "Perception"
 
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(
@@ -64,7 +35,13 @@ class Perception(EvaluationItem):
             level=self.condition.get("CriteriaLevel"),
         )
 
-    def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
+    def set_frame(
+        self,
+        frame: PerceptionFrameResult,
+        skip: int,
+        header: Header,
+        map_to_baselink: dict,
+    ) -> tuple[dict, MarkerArray, MarkerArray]:
         self.total += 1
         frame_success = "Fail"
         result = self.criteria.get_result(frame)
@@ -73,25 +50,49 @@ class Perception(EvaluationItem):
             self.passed += 1
             frame_success = "Success"
 
+        marker_ground_truth = MarkerArray()
+        color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
+
+        for cnt, obj in enumerate(frame.frame_ground_truth.objects, start=1):
+            bbox, uuid = eval_conversions.object_state_to_ros_box_and_uuid(
+                obj.state,
+                header,
+                "ground_truth",
+                cnt,
+                color_success,
+                obj.uuid,
+            )
+            marker_ground_truth.markers.append(bbox)
+            marker_ground_truth.markers.append(uuid)
+
+        marker_results = eval_conversions.pass_fail_result_to_ros_points_array(
+            frame.pass_fail_result,
+            header,
+        )
+
         self.success = self.rate() >= self.condition["PassRate"]
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
-        return {
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
-            "PassFail": {
-                "Result": {"Total": self.success_str(), "Frame": frame_success},
-                "Info": {
-                    "TP": len(frame.pass_fail_result.tp_object_results),
-                    "FP": len(frame.pass_fail_result.fp_object_results),
-                    "FN": len(frame.pass_fail_result.fn_objects),
+        return (
+            {
+                "Ego": {"TransformStamped": map_to_baselink},
+                "FrameName": frame.frame_name,
+                "FrameSkip": skip,
+                "PassFail": {
+                    "Result": {"Total": self.success_str(), "Frame": frame_success},
+                    "Info": {
+                        "TP": len(frame.pass_fail_result.tp_object_results),
+                        "FP": len(frame.pass_fail_result.fp_object_results),
+                        "FN": len(frame.pass_fail_result.fn_objects),
+                    },
                 },
             },
-        }
+            marker_ground_truth,
+            marker_results,
+        )
 
 
-class TrafficLightResult(ResultBase):
+class PerceptionResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
         self.__perception = Perception(condition=condition)
@@ -109,10 +110,17 @@ class TrafficLightResult(ResultBase):
         self,
         frame: PerceptionFrameResult,
         skip: int,
+        header: Header,
         map_to_baselink: dict,
-    ) -> None:
-        self._frame = self.__perception.set_frame(frame, skip, map_to_baselink)
+    ) -> tuple[MarkerArray, MarkerArray]:
+        self._frame, marker_ground_truth, marker_results = self.__perception.set_frame(
+            frame,
+            skip,
+            header,
+            map_to_baselink,
+        )
         self.update()
+        return marker_ground_truth, marker_results
 
     def set_final_metrics(self, final_metrics: dict) -> None:
         self._frame = {"FinalScore": final_metrics}

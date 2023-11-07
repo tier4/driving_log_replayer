@@ -41,7 +41,7 @@ class TestScriptGenerator:
         self.__rate = rate
         self.__delay = delay
         #  os.path.join(config.output_directory, datetime.datetime.now().strftime("%Y-%m%d-%H%M%S"))が渡ってくるので被ることはない
-        self.__output_directory.mkdir()
+        self.__output_directory.mkdir(parents=True)
 
         symlink_dst = self.__output_directory.parent.joinpath("latest").as_posix()
         update_symlink = f"ln -snf {self.__output_directory.as_posix()} {symlink_dst}"

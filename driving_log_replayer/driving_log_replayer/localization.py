@@ -50,7 +50,7 @@ def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
 
 @dataclass
 class Convergence(EvaluationItem):
-    name: ClassVar[str] = "Convergence"
+    name: str = "Convergence"
     success: bool = True
 
     def set_frame(
@@ -98,7 +98,7 @@ class Convergence(EvaluationItem):
 
 @dataclass
 class Reliability(EvaluationItem):
-    name: ClassVar[str] = "Reliability"
+    name: str = "Reliability"
     success: bool = True
     ng_seq: int = 0
     received_data: list[float] = field(default_factory=list)
@@ -138,7 +138,7 @@ class Reliability(EvaluationItem):
 
 @dataclass
 class Availability(EvaluationItem):
-    name: ClassVar[str] = "NDT Availability"
+    name: str = "NDT Availability"
     success: bool = True
     TARGET_DIAG_NAME: ClassVar[
         str

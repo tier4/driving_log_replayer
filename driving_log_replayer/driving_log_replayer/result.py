@@ -20,7 +20,6 @@ from os.path import expandvars
 from pathlib import Path
 import pickle
 from typing import Any
-from typing import ClassVar
 
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
@@ -29,7 +28,7 @@ import simplejson as json
 
 @dataclass
 class EvaluationItem(ABC):
-    name: ClassVar[str] = "This field should be overwritten"
+    name: str = "This field should be overwritten"
     # If condition is None, this evaluation item is not used.
     condition: dict | None = field(default_factory=dict)
     total: int = 0

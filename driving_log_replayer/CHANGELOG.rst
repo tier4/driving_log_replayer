@@ -2,6 +2,21 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.8.2 (2023-11-07)
+------------------
+* feat: perception 2d test (`#295 <https://github.com/tier4/driving_log_replayer/issues/295>`_)
+* fix: cli create output directory (`#294 <https://github.com/tier4/driving_log_replayer/issues/294>`_)
+* feat: perception test (`#292 <https://github.com/tier4/driving_log_replayer/issues/292>`_)
+* Contributors: Hayato Mizushima
+
+1.8.1 (2023-11-02)
+------------------
+* feat: traffic light test (`#255 <https://github.com/tier4/driving_log_replayer/issues/255>`_)
+* refactor: common module (`#288 <https://github.com/tier4/driving_log_replayer/issues/288>`_)
+* chore: delete meaningless joinpath (`#287 <https://github.com/tier4/driving_log_replayer/issues/287>`_)
+* refactor: use pathlib (`#286 <https://github.com/tier4/driving_log_replayer/issues/286>`_)
+* Contributors: Hayato Mizushima
+
 1.8.0 (2023-10-19)
 ------------------
 * perf: fixed to use `/localization/pose_estimator/initial_to_result_relative_pose` (`#282 <https://github.com/tier4/driving_log_replayer/issues/282>`_)

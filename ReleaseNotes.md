@@ -1,5 +1,28 @@
 # Release Notes
 
+## Version 1.8.2
+
+Minor Tweak
+
+| Module          | Feature | Brief summary                   | Pull request                                                   | Jira     | Contributor                                   |
+| --------------- | ------- | ------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception`    | test    | add unit test for perception    | [#292](https://github.com/tier4/driving_log_replayer/pull/292) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `cli`           | runner  | fix create output directory     | [#294](https://github.com/tier4/driving_log_replayer/pull/294) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception_2d` | test    | add unit test for perception_2d | [#295](https://github.com/tier4/driving_log_replayer/pull/295) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.8.1
+
+Minor Tweak
+
+| Module                      | Feature       | Brief summary                        | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ------------- | ------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `cli`                       | refactoring   | refactor command generation          | [#285](https://github.com/tier4/driving_log_replayer/pull/285) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                       | refactoring   | apply ruff PTH rules (use pathlib)   | [#286](https://github.com/tier4/driving_log_replayer/pull/286) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                       | refactoring   | refactor pathlib.Path initialization | [#287](https://github.com/tier4/driving_log_replayer/pull/287) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `common`                    | refactoring   | refactor common module               | [#288](https://github.com/tier4/driving_log_replayer/pull/288) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`             | documentation | update traffic light ml model        | [#289](https://github.com/tier4/driving_log_replayer/pull/289) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d` | documentation | update ml model                      | [#290](https://github.com/tier4/driving_log_replayer/pull/290) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.8.0
 
 Major change
