@@ -230,6 +230,8 @@ perception では、シナリオに指定した条件で perception_eval が評�
 
 メトリクスデータのフォーマット
 
+evaluation_taskがdetectionまたはtrackingの場合
+
 ```json
 {
   "Frame": {
@@ -350,6 +352,50 @@ perception では、シナリオに指定した条件で perception_eval が評�
           }
         },
         "label0": "label0の誤差メトリクス"
+      }
+    }
+  }
+}
+```
+
+evaluation_taskがfp_validationの場合
+
+```json
+{
+  "Frame": {
+    "FinalScore": {
+      "GroundTruthStatus": {
+        "2b3dbc70e876f6829fb27301e27316f0": {
+          "rate": {
+            "TP": null,
+            "FP": 1.0,
+            "TN": null,
+            "FN": null
+          },
+          "frame_nums": {
+            "total": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "TP": [],
+            "FP": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "TN": [],
+            "FN": []
+          }
+        }
+      },
+      "Scene": {
+        "TP": 0.0,
+        "FP": 1.0,
+        "TN": 0.0,
+        "FN": 0.0
       }
     }
   }
