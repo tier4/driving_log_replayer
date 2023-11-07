@@ -202,7 +202,6 @@ class Perception2DEvaluator(DLREvaluator):
             self.__result.set_frame(
                 frame_result,
                 self.__skip_counter[camera_type],
-                msg.header,
                 DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
                 camera_type,
             )

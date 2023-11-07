@@ -77,9 +77,9 @@ class Perception2DResult(ResultBase):
     def update(self) -> None:
         tmp_success = True
         tmp_summary = ""
-        for e_item in self.__cameras:
-            tmp_summary += e_item.summary
-            if not e_item.success:
+        for v in self.__cameras.values():
+            tmp_summary += v.summary
+            if not v.success:
                 tmp_success = False
         prefix_str = "Passed: " if tmp_success else "Failed: "
         self._success = tmp_success
