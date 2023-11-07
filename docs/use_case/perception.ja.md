@@ -365,37 +365,27 @@ evaluation_taskがfp_validationの場合
   "Frame": {
     "FinalScore": {
       "GroundTruthStatus": {
-        "2b3dbc70e876f6829fb27301e27316f0": {
+        "UUID": {
           "rate": {
-            "TP": null,
-            "FP": 1.0,
-            "TN": null,
-            "FN": null
+            "TP": "表示UUIDのTP率",
+            "FP": "表示UUIDのFP率",
+            "TN": "表示UUIDのTN率",
+            "FN": "表示UUIDのFN率",
           },
           "frame_nums": {
-            "total": [
-              0,
-              1,
-              2,
-              3
-            ],
-            "TP": [],
-            "FP": [
-              0,
-              1,
-              2,
-              3
-            ],
-            "TN": [],
-            "FN": []
+            "total": "GTが評価されるフレーム番号のリスト",
+            "TP": "GTがTPとして評価されるフレーム番号のリスト",
+            "FP": "GTがFPとして評価されるフレーム番号のリスト",
+            "TN": "GTがTNとして評価されるフレーム番号のリスト",
+            "FN": "GTがFNとして評価されるフレーム番号のリスト",
           }
         }
       },
       "Scene": {
-        "TP": 0.0,
-        "FP": 1.0,
-        "TN": 0.0,
-        "FN": 0.0
+        "TP": "シーンのTP率",
+        "FP": "シーンのFP率",
+        "TN": "シーンのTN率",
+        "FN": "シーンのFN率",
       }
     }
   }

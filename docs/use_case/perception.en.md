@@ -230,6 +230,8 @@ Format of each frame:
 
 Metrics Data Format:
 
+When the `evaluation_task` is detection or tracking
+
 ```json
 {
   "Frame": {
@@ -350,6 +352,40 @@ Metrics Data Format:
           }
         },
         "label0": "Error metrics for the label0"
+      }
+    }
+  }
+}
+```
+
+When the `evaluation_task` is fp_validation
+
+```json
+{
+  "Frame": {
+    "FinalScore": {
+      "GroundTruthStatus": {
+        "UUID": {
+          "rate": {
+            "TP": "TP rate of the displyed UUID",
+            "FP": "FP rate of the displyed UUID",
+            "TN": "TN rate of the displyed UUID",
+            "FN": "FN rate of the displyed UUID"
+          },
+          "frame_nums": {
+            "total": "List of frame numbers, which GT is evaluated",
+            "TP": "List of frame numbers, which GT is evaluated as TP",
+            "FP": "List of frame numbers, which GT is evaluated as FP",
+            "TN": "List of frame numbers, which GT is evaluated as TN",
+            "FN": "List of frame numbers, which GT is evaluated as FN"
+          }
+        }
+      },
+      "Scene": {
+        "TP": "TP rate of the scene",
+        "FP": "FP rate of the scene",
+        "TN": "TN rate of the scene",
+        "FN": "FN rate of the scene",
       }
     }
   }
