@@ -46,25 +46,23 @@ class Perception(EvaluationItem):
         self.success = self.rate() >= self.condition["PassRate"]
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
-        return (
-            {
-                "CameraType": self.name,
-                "Ego": {"TransformStamped": map_to_baselink},
-                "FrameName": frame.frame_name,
-                "FrameSkip": skip,
-                "PassFail": {
-                    "Result": {
-                        "Total": {"Total": self.success_str(), "Frame": frame_success},
-                        "Frame": frame_success,
-                    },
-                    "Info": {
-                        "TP": len(frame.pass_fail_result.tp_object_results),
-                        "FP": len(frame.pass_fail_result.fp_object_results),
-                        "FN": len(frame.pass_fail_result.fn_objects),
-                    },
+        return {
+            "CameraType": self.name,
+            "Ego": {"TransformStamped": map_to_baselink},
+            "FrameName": frame.frame_name,
+            "FrameSkip": skip,
+            "PassFail": {
+                "Result": {
+                    "Total": self.success_str(),
+                    "Frame": frame_success,
+                },
+                "Info": {
+                    "TP": len(frame.pass_fail_result.tp_object_results),
+                    "FP": len(frame.pass_fail_result.fp_object_results),
+                    "FN": len(frame.pass_fail_result.fn_objects),
                 },
             },
-        )
+        }
 
 
 class Perception2DResult(ResultBase):
