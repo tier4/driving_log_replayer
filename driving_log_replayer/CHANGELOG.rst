@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: perception 2d test (`#295 <https://github.com/tier4/driving_log_replayer/issues/295>`_)
+* fix: cli create output directory (`#294 <https://github.com/tier4/driving_log_replayer/issues/294>`_)
+* feat: perception test (`#292 <https://github.com/tier4/driving_log_replayer/issues/292>`_)
+* Contributors: Hayato Mizushima
+
 1.8.1 (2023-11-02)
 ------------------
 * feat: traffic light test (`#255 <https://github.com/tier4/driving_log_replayer/issues/255>`_)
