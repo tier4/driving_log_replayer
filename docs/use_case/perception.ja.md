@@ -217,14 +217,12 @@ perception では、シナリオに指定した条件で perception_eval が評�
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
     "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
     "PassFail": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "TP": "TPと判定された数",
-          "FP": "FPと判定された数",
-          "FN": "FNと判定された数"
-        }
-      ]
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "TP": "TPと判定された数",
+        "FP": "FPと判定された数",
+        "FN": "FNと判定された数"
+      }
     }
   }
 }

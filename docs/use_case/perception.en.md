@@ -217,14 +217,12 @@ Format of each frame:
     "FrameName": "Frame number of t4_dataset used for evaluation",
     "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
     "PassFail": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "TP": "Number of TPs",
-          "FP": "Number of FPs",
-          "FN": "Number of FNs"
-        }
-      ]
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "TP": "Number of TPs",
+        "FP": "Number of FPs",
+        "FN": "Number of FNs"
+      }
     }
   }
 }
