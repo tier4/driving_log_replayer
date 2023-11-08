@@ -53,7 +53,6 @@ ScenarioName: String
 ScenarioDescription: String
 SensorModel: String
 VehicleModel: String
-PerceptionMode: String
 Evaluation:
   UseCaseName: String
   UseCaseFormatVersion: String
@@ -69,7 +68,7 @@ Evaluation:
 Describe the version information of the scenario format. Use the semantic version.
 
 `localization`, `performance_diag`, `yabloc`, `eagleye` and `ar_tag_based_localizer` scenarios use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
-`perception` and `obstacle_segmentation` scenarios use 3.x.x series. The latest version of 3.x.x is 3.1 .0
+`perception` and `obstacle_segmentation` scenarios use 3.x.x series. The latest version of 3.x.x is 3.0.0
 
 Minor versions are updated each time the format is updated.
 
@@ -94,10 +93,6 @@ Specify `vehicle_model` as an argument in `autoware_launch/launch/logging_simula
 Specify `vehicle_id` as an argument in `autoware_launch/launch/logging_simulator.launch.xml`
 
 If you don't know `vehicle_id`, set `default`.
-
-### PerceptionMode
-
-Specify the `perception_mode` in `autoware_launch/launch/autoware.launch.xml`.
 
 ### LocalMapPath
 

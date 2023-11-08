@@ -16,14 +16,6 @@ class AutowareEssentialParameter:
 
 
 class TestScriptGenerator:
-    PERCEPTION_MODES = (
-        "camera_lidar_radar_fusion",
-        "camera_lidar_fusion",
-        "lidar_radar_fusion",
-        "lidar",
-        "radar",
-    )
-
     USE_T4_DATASET = ("perception", "obstacle_segmentation", "perception_2d", "traffic_light")
 
     def __init__(
@@ -33,6 +25,7 @@ class TestScriptGenerator:
         autoware_path: str,
         rate: float,
         delay: float,
+        perception_mode: str,
     ) -> None:
         self.__data_directory = Path(data_directory)
         self.__output_directory = Path(output_directory)
@@ -40,6 +33,7 @@ class TestScriptGenerator:
         self.__script_path = self.__output_directory.joinpath("run.bash")
         self.__rate = rate
         self.__delay = delay
+        self.__perception_mode = perception_mode
         #  os.path.join(config.output_directory, datetime.datetime.now().strftime("%Y-%m%d-%H%M%S"))が渡ってくるので被ることはない
         self.__output_directory.mkdir(parents=True)
 
@@ -216,14 +210,7 @@ rviz:=true\
 
             use_case_name = scenario_yaml_obj["Evaluation"]["UseCaseName"]
             launch_base_command = f"ros2 launch driving_log_replayer {use_case_name}.launch.py "
-            optional_arg = ""
-            perception_mode: str | None = scenario_yaml_obj.get("PerceptionMode")
-            if perception_mode is not None:
-                assert perception_mode in self.PERCEPTION_MODES, (
-                    f"perception_mode must be chosen from {self.PERCEPTION_MODES}, "
-                    f"but got {perception_mode}"
-                )
-                optional_arg = f"perception_mode:={perception_mode} "
+            optional_arg = f"perception_mode:={self.__perception_mode} "
             launch_args = self._create_common_arg(
                 optional_arg,
                 scenario_path,
