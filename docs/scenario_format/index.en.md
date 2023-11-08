@@ -94,10 +94,6 @@ Specify `vehicle_id` as an argument in `autoware_launch/launch/logging_simulator
 
 If you don't know `vehicle_id`, set `default`.
 
-### PerceptionMode
-
-Specify the `perception_mode` in `autoware_launch/launch/autoware.launch.xml`.
-
 ### LocalMapPath
 
 Describes the path of the map folder to be used in the local environment.

@@ -94,10 +94,6 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を�
 
 車両 ID が不明な場合は、`default` を設定する。
 
-### PerceptionMode
-
-autoware_launch/launch/autoware.launch.xml の perception_mode を指定する。
-
 ### LocalMapPath
 
 ローカル環境で使用する地図のフォルダのパスを記述する。
