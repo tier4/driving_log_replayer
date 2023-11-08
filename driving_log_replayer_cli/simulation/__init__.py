@@ -27,13 +27,13 @@ def simulation() -> None:
 @click.option("--profile", "-p", type=str, default="default")
 @click.option("--rate", "-r", default=1.0)
 @click.option("--delay", "-d", default=10.0)
-@click.option("--no-json", is_flag=True, help="Do not convert jsonl files to json")
 @click.option(
     "--perception-mode",
     "-m",
     default="lidar",
     type=click.Choice(PERCEPTION_MODES, case_sensitive=False),
 )
+@click.option("--no-json", is_flag=True, help="Do not convert jsonl files to json")
 def run(
     profile: str,
     rate: float,
@@ -53,8 +53,8 @@ def run(
         config.autoware_path,
         rate,
         delay,
-        not no_json,
         perception_mode,
+        not no_json,
     )
 
 

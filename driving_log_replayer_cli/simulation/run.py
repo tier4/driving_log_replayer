@@ -16,8 +16,8 @@ class DrivingLogReplayerTestRunner:
         autoware_path: str,
         rate: float,
         delay: float,
-        output_json: bool,  # noqa
         perception_mode: str,
+        output_json: bool,  # noqa
     ) -> None:
         self.__data_directory = expandvars(data_directory)
         self.__output_directory = expandvars(output_directory)
