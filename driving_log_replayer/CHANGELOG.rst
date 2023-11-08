@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: parameterize perception mode (`#299 <https://github.com/tier4/driving_log_replayer/issues/299>`_)
+* Contributors: Hayato Mizushima
+
 1.8.3 (2023-11-07)
 ------------------
 * docs: update result format (`#297 <https://github.com/tier4/driving_log_replayer/issues/297>`_)
