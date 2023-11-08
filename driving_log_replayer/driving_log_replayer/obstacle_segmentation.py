@@ -207,7 +207,7 @@ def get_sensing_frame_config(
 
 
 class Detection(EvaluationItem):
-    name: ClassVar[str] = "Detection"
+    name: str = "Detection"
     success: bool = True
     warn: int = 0
 
@@ -314,7 +314,7 @@ class Detection(EvaluationItem):
 
 
 class NonDetection(EvaluationItem):
-    name: ClassVar[str] = "NonDetection"
+    name: str = "NonDetection"
     success: bool = True
 
     def set_frame(
