@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from dataclasses import dataclass
 from pathlib import Path
 import sys
-from typing import ClassVar
 
 from ament_index_python.packages import get_package_share_directory
 import numpy as np
@@ -206,6 +206,7 @@ def get_sensing_frame_config(
     return True, sensing_frame_config
 
 
+@dataclass
 class Detection(EvaluationItem):
     name: str = "Detection"
     success: bool = True
@@ -313,6 +314,7 @@ class Detection(EvaluationItem):
         )
 
 
+@dataclass
 class NonDetection(EvaluationItem):
     name: str = "NonDetection"
     success: bool = True
