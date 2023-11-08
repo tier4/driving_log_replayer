@@ -1301,13 +1301,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#perceptionmode" class="md-nav__link">
-    PerceptionMode
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#localmappath" class="md-nav__link">
     LocalMapPath
   </a>
@@ -1383,7 +1376,6 @@ Time:<span class="w"> </span>s
 <span class="nt">ScenarioDescription</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">SensorModel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">VehicleModel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
-<span class="nt">PerceptionMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="nt">Evaluation</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
 <span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">String</span>
@@ -1396,7 +1388,7 @@ Time:<span class="w"> </span>s
 <h3 id="scenarioformatversion">ScenarioFormatVersion<a class="headerlink" href="#scenarioformatversion" title="Permanent link">#</a></h3>
 <p>Describe the version information of the scenario format. Use the semantic version.</p>
 <p><code>localization</code>, <code>performance_diag</code>, <code>yabloc</code>, <code>eagleye</code> and <code>ar_tag_based_localizer</code> scenarios use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
-<code>perception</code> and <code>obstacle_segmentation</code> scenarios use 3.x.x series. The latest version of 3.x.x is 3.1 .0</p>
+<code>perception</code> and <code>obstacle_segmentation</code> scenarios use 3.x.x series. The latest version of 3.x.x is 3.0.0</p>
 <p>Minor versions are updated each time the format is updated.</p>
 <h3 id="scenarioname">ScenarioName<a class="headerlink" href="#scenarioname" title="Permanent link">#</a></h3>
 <p>Describes the name of the scenario, used as the display name of the scenario on the Autoware Evaluator.</p>
@@ -1409,8 +1401,6 @@ Time:<span class="w"> </span>s
 <h3 id="vehicleid">VehicleId<a class="headerlink" href="#vehicleid" title="Permanent link">#</a></h3>
 <p>Specify <code>vehicle_id</code> as an argument in <code>autoware_launch/launch/logging_simulator.launch.xml</code></p>
 <p>If you don't know <code>vehicle_id</code>, set <code>default</code>.</p>
-<h3 id="perceptionmode">PerceptionMode<a class="headerlink" href="#perceptionmode" title="Permanent link">#</a></h3>
-<p>Specify the <code>perception_mode</code> in <code>autoware_launch/launch/autoware.launch.xml</code>.</p>
 <h3 id="localmappath">LocalMapPath<a class="headerlink" href="#localmappath" title="Permanent link">#</a></h3>
 <p>Describes the path of the map folder to be used in the local environment.</p>
 <p>Environment variables such as <code>$HOME</code> can be used.</p>
