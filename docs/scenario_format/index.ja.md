@@ -53,7 +53,6 @@ ScenarioName: String
 ScenarioDescription: String
 SensorModel: String
 VehicleModel: String
-PerceptionMode: String
 Evaluation:
   UseCaseName: String
   UseCaseFormatVersion: String
@@ -69,7 +68,7 @@ Evaluation:
 シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
 
 `localization` と `performance_diag` と `yabloc` と `eagleye` と `ar_tag_based_localizer` は 2.x.x 系を使用する。2.x.x の最新バージョンは 2.2.0
-`perception` と `obstacle_segmentation` は 3.x.x 系を使用する。3.x.x の最新バージョンは 3.1.0
+`perception` と `obstacle_segmentation` は 3.x.x 系を使用する。3.x.x の最新バージョンは 3.0.0
 
 フォーマットの更新の度にマイナーバージョンを更新する。
 

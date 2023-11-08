@@ -1,9 +1,8 @@
-ScenarioFormatVersion: 3.1.0
+ScenarioFormatVersion: 3.0.0
 ScenarioName: fp_sample
 ScenarioDescription: fp_sample
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
-PerceptionMode: lidar
 Evaluation:
   UseCaseName: perception
   UseCaseFormatVersion: 0.6.0
