@@ -217,20 +217,20 @@ Format of each frame:
     "FrameName": "Frame number of t4_dataset used for evaluation",
     "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
     "PassFail": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "TP": "Number of TPs",
-          "FP": "Number of FPs",
-          "FN": "Number of FNs"
-        }
-      ]
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "TP": "Number of TPs",
+        "FP": "Number of FPs",
+        "FN": "Number of FNs"
+      }
     }
   }
 }
 ```
 
 Metrics Data Format:
+
+When the `evaluation_task` is detection or tracking
 
 ```json
 {
@@ -251,6 +251,11 @@ Metrics Data Format:
           "ALL": "FN rate for all labels",
           "label0": "FN rate of label0",
           "label1": "FN rate of label1"
+        },
+        "TN": {
+          "ALL": "TN rate for all labels",
+          "label0": "TN rate of label0",
+          "label1": "TN rate of label1"
         },
         "AP(Center Distance)": {
           "ALL": "AP(Center Distance) rate for all labels",
@@ -347,6 +352,40 @@ Metrics Data Format:
           }
         },
         "label0": "Error metrics for the label0"
+      }
+    }
+  }
+}
+```
+
+When the `evaluation_task` is fp_validation
+
+```json
+{
+  "Frame": {
+    "FinalScore": {
+      "GroundTruthStatus": {
+        "UUID": {
+          "rate": {
+            "TP": "TP rate of the displyed UUID",
+            "FP": "FP rate of the displyed UUID",
+            "TN": "TN rate of the displyed UUID",
+            "FN": "FN rate of the displyed UUID"
+          },
+          "frame_nums": {
+            "total": "List of frame numbers, which GT is evaluated",
+            "TP": "List of frame numbers, which GT is evaluated as TP",
+            "FP": "List of frame numbers, which GT is evaluated as FP",
+            "TN": "List of frame numbers, which GT is evaluated as TN",
+            "FN": "List of frame numbers, which GT is evaluated as FN"
+          }
+        }
+      },
+      "Scene": {
+        "TP": "TP rate of the scene",
+        "FP": "FP rate of the scene",
+        "TN": "TN rate of the scene",
+        "FN": "FN rate of the scene"
       }
     }
   }

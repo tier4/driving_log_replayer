@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 1.8.4
+
+Minor Tweak
+
+| Module       | Feature         | Brief summary       | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | --------------- | ------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception` | launch argument | add perception_mode | [#299](https://github.com/tier4/driving_log_replayer/pull/299) | RT4-7580 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.8.3
+
+Minor Tweak
+
+| Module | Feature       | Brief summary        | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------- | -------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | documentation | update result format | [#297](https://github.com/tier4/driving_log_replayer/pull/297) | RT4-5832 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.8.2
 
 Minor Tweak

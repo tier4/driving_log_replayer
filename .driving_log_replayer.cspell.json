@@ -25,6 +25,7 @@
     "pyproject",
     "CENTERDISTANCE",
     "rightdiagonal",
-    "leftdiagonal"
+    "leftdiagonal",
+    "nums"
   ]
 }

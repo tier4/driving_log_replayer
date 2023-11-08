@@ -149,41 +149,53 @@ See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/perf
 
 ### Evaluation Result Format
 
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/result.json).
+
 In `performance_diag` evaluation scenario visibility and blockage are evaluated.
 The `Result` is `true` if both visibility and blockage evaluation steps have passed. Otherwise, the `Result` is `false`.
 
 The result format is shown below.
 **NOTE: common part of the result file format, which has already been explained, is omitted.**
 
+Visibility Result example:
+
 ```json
 {
-  "Frame": {
-    "Visibility": [
-      {
-        "Result": "Success, Fail, Skipped",
-        "Info": [
-          {
-            "Level": "Level of diag",
-            "Visibility": "Value of visibility"
-          }
-        ]
+  "Visibility": {
+    "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Invalid" },
+    "Info": {
+      "Level": "diagのレベル",
+      "Visibility": "visibilityの値"
+    }
+  }
+}
+```
+
+Blockage Result example:
+
+```json
+{
+  "Blockage": {
+    "name of LiDAR1": {
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "Level": "Level of diag",
+        "GroundBlockageRatio": "Ground blockage ratio",
+        "GroundBlockageCount": "Ground blockage count. Reference",
+        "SkyBlockageRatio": "Sky blockage ratio",
+        "SkyBlockageCount": "Sky blockage count. Reference"
       }
-    ],
-    "Blockage": [
-      {
-        "Result": "Success, Fail, or Skipped",
-        "Info": [
-          {
-            "Name": "Name of LiDAR",
-            "Level": "Level of diag",
-            "GroundBlockageRatio": "Ground blockage ratio",
-            "GroundBlockageCount": "Ground blockage count. Reference",
-            "SkyBlockageRatio": "Sky blockage ratio",
-            "SkyBlockageCount": "Sky blockage count. Reference"
-          }
-        ]
+    },
+    "name of LiDAR2": {
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "Level": "Level of diag",
+        "GroundBlockageRatio": "Ground blockage ratio",
+        "GroundBlockageCount": "Ground blockage count. Reference",
+        "SkyBlockageRatio": "Sky blockage ratio",
+        "SkyBlockageCount": "Sky blockage count. Reference"
       }
-    ]
+    }
   }
 }
 ```

@@ -217,20 +217,20 @@ perception では、シナリオに指定した条件で perception_eval が評�
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
     "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
     "PassFail": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "TP": "TPと判定された数",
-          "FP": "FPと判定された数",
-          "FN": "FNと判定された数"
-        }
-      ]
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "TP": "TPと判定された数",
+        "FP": "FPと判定された数",
+        "FN": "FNと判定された数"
+      }
     }
   }
 }
 ```
 
 メトリクスデータのフォーマット
+
+evaluation_taskがdetectionまたはtrackingの場合
 
 ```json
 {
@@ -251,6 +251,11 @@ perception では、シナリオに指定した条件で perception_eval が評�
           "ALL": "すべてのラベルのFN率",
           "label0": "label0のFN率",
           "label1": "label1のFN率"
+        },
+        "TN": {
+          "ALL": "すべてのラベルのTN率",
+          "label0": "label0のTN率",
+          "label1": "label1のTN率"
         },
         "AP(Center Distance)": {
           "ALL": "すべてのラベルのAP率(Center Distance)",
@@ -347,6 +352,40 @@ perception では、シナリオに指定した条件で perception_eval が評�
           }
         },
         "label0": "label0の誤差メトリクス"
+      }
+    }
+  }
+}
+```
+
+evaluation_taskがfp_validationの場合
+
+```json
+{
+  "Frame": {
+    "FinalScore": {
+      "GroundTruthStatus": {
+        "UUID": {
+          "rate": {
+            "TP": "表示UUIDのTP率",
+            "FP": "表示UUIDのFP率",
+            "TN": "表示UUIDのTN率",
+            "FN": "表示UUIDのFN率"
+          },
+          "frame_nums": {
+            "total": "GTが評価されるフレーム番号のリスト",
+            "TP": "GTがTPとして評価されるフレーム番号のリスト",
+            "FP": "GTがFPとして評価されるフレーム番号のリスト",
+            "TN": "GTがTNとして評価されるフレーム番号のリスト",
+            "FN": "GTがFNとして評価されるフレーム番号のリスト"
+          }
+        }
+      },
+      "Scene": {
+        "TP": "シーンのTP率",
+        "FP": "シーンのFP率",
+        "TN": "シーンのTN率",
+        "FN": "シーンのFN率"
       }
     }
   }

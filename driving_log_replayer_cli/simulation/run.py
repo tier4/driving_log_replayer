@@ -1,4 +1,4 @@
-import os
+from os.path import expandvars
 import subprocess
 
 import termcolor
@@ -16,48 +16,28 @@ class DrivingLogReplayerTestRunner:
         autoware_path: str,
         rate: float,
         delay: float,
+        perception_mode: str,
         output_json: bool,  # noqa
     ) -> None:
-        self.__data_directory = data_directory
-        self.__output_directory = output_directory
-        self.__autoware_path = autoware_path
-        self.__rate = rate
-        self.__delay = delay
-        self.__output_json = output_json
-
+        self.__data_directory = expandvars(data_directory)
+        self.__output_directory = expandvars(output_directory)
+        self.__autoware_path = expandvars(autoware_path)
         termcolor.cprint("<< generating launch command >>", "green")
         generator = TestScriptGenerator(
             self.__data_directory,
             self.__output_directory,
             self.__autoware_path,
-            self.__rate,
-            self.__delay,
+            rate,
+            delay,
+            perception_mode,
         )
         is_executable = generator.run()
-        if is_executable:
-            cmd = "/bin/bash " + generator.script_path.as_posix()
-            subprocess.run(cmd, shell=True)
-            if self.__output_json:
-                convert(self.__output_directory)
-            termcolor.cprint("<< show test result >>", "green")
-            display(self.__output_directory)
-        else:
+        if not is_executable:
             print("aborted.")  # noqa
-
-
-def run(
-    data_directory: str,
-    output_directory: str,
-    autoware_path: str,
-    rate: float,
-    delay: float,
-    output_json: bool,  # noqa
-) -> None:
-    DrivingLogReplayerTestRunner(
-        os.path.expandvars(data_directory),
-        os.path.expandvars(output_directory),
-        os.path.expandvars(autoware_path),
-        rate,
-        delay,
-        output_json=output_json,
-    )
+            return
+        cmd = "/bin/bash " + generator.script_path.as_posix()
+        subprocess.run(cmd, shell=True)
+        if output_json:
+            convert(self.__output_directory)
+        termcolor.cprint("<< show test result >>", "green")
+        display(self.__output_directory)

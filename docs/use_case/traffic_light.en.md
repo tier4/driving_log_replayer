@@ -211,6 +211,8 @@ See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/traf
 
 ### Evaluation Result Format
 
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/result.json).
+
 The evaluation results by [perception_eval](https://github.com/tier4/autoware_perception_evaluation) under the conditions specified in the scenario are output for each frame.
 Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.
 
@@ -225,14 +227,12 @@ Format of each frame:
     "FrameName": "Frame number of t4_dataset used for evaluation",
     "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
     "PassFail": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "TP": "Number of TPs",
-          "FP": "Number of FPs",
-          "FN": "Number of FNs"
-        }
-      ]
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "TP": "Number of TPs",
+        "FP": "Number of FPs",
+        "FN": "Number of FNs"
+      }
     }
   }
 }
@@ -245,14 +245,56 @@ Metrics Data Format:
   "Frame": {
     "FinalScore": {
       "Score": {
-        "TP": "TP rate of the label",
-        "FP": "FP rate of the label",
-        "FN": "FN rate of the label",
-        "AP": "AP value of the label",
-        "APH": "APH value of the label"
+        "TP": {
+          "ALL": "TP rate for all labels",
+          "label0": "TP rate of label0",
+          "label1": "TP rate of label1"
+        },
+        "FP": {
+          "ALL": "FP rate for all labels",
+          "label0": "FP rate of label0",
+          "label1": "FP rate of label1"
+        },
+        "FN": {
+          "ALL": "FN rate for all labels",
+          "label0": "FN rate of label0",
+          "label1": "FN rate of label1"
+        },
+        "TN": {
+          "ALL": "TN rate for all labels",
+          "label0": "TN rate of label0",
+          "label1": "TN rate of label1"
+        },
+        "Accuracy": {
+          "ALL": "Accuracy for all labels",
+          "label0": "Accuracy of label0",
+          "label1": "Accuracy of label1"
+        },
+        "Precision": {
+          "ALL": "Precision for all labels",
+          "label0": "Precision of label0",
+          "label1": "Precision of label1"
+        },
+        "Recall": {
+          "ALL": "Recall for all labels",
+          "label0": "Recall of label0",
+          "label1": "Recall of label1"
+        },
+        "F1score": {
+          "ALL": "F1score for all labels",
+          "label0": "F1score of label0",
+          "label1": "F1score of label1"
+        }
       },
       "ConfusionMatrix": {
-        "Label(GroundTruth)": "Prediction results"
+        "label0(GroundTruth)": {
+          "label0(Prediction)": "value",
+          "label1(Prediction)": "value"
+        },
+        "label1(GroundTruth)": {
+          "label0(Prediction)": "value",
+          "label1(Prediction)": "value"
+        }
       }
     }
   }

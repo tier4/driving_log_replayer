@@ -256,6 +256,8 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### 評価結果フォーマット
 
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception_2d/result.json)参照
+
 perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
 全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。
 
@@ -271,14 +273,12 @@ perception では、シナリオに指定した条件で perception_eval が評�
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
     "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
     "PassFail": {
-      "Result": "Success or Fail",
-      "Info": [
-        {
-          "TP": "TPと判定された数",
-          "FP": "FPと判定された数",
-          "FN": "FNと判定された数"
-        }
-      ]
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+      "Info": {
+        "TP": "TPと判定された数",
+        "FP": "FPと判定された数",
+        "FN": "FNと判定された数"
+      }
     }
   }
 }
@@ -291,14 +291,56 @@ perception では、シナリオに指定した条件で perception_eval が評�
   "Frame": {
     "FinalScore": {
       "Score": {
-        "TP": "ラベルのTP率",
-        "FP": "ラベルのFP率",
-        "FN": "ラベルのFN率",
-        "AP": "ラベルのAP値",
-        "APH": "ラベルのAPH値"
+        "TP": {
+          "ALL": "すべてのラベルのTP率",
+          "label0": "label0のTP率",
+          "label1": "label1のTP率"
+        },
+        "FP": {
+          "ALL": "すべてのラベルのFP率",
+          "label0": "label0のFP率",
+          "label1": "label1のFP率"
+        },
+        "FN": {
+          "ALL": "すべてのラベルのFN率",
+          "label0": "label0のFN率",
+          "label1": "label1のFN率"
+        },
+        "TN": {
+          "ALL": "すべてのラベルのTN率",
+          "label0": "label0のTN率",
+          "label1": "label1のTN率"
+        },
+        "AP(Center Distance)": {
+          "ALL": "すべてのラベルのAP率(Center Distance)",
+          "label0": "label0のAP率(Center Distance)",
+          "label1": "label1のAP率(Center Distance)"
+        },
+        "APH(Center Distance)": {
+          "ALL": "すべてのラベルのAPH率(Center Distance)",
+          "label0": "label0のAPH率(Center Distance)",
+          "label1": "label1のAPH率(Center Distance)"
+        },
+        "AP(IoU 2D)": {
+          "ALL": "すべてのラベルのAP率(IoU 2D)",
+          "label0": "label0のAP率(IoU 2D)",
+          "label1": "label1のAP率(IoU 2D)"
+        },
+        "APH(IoU 2D)": {
+          "ALL": "すべてのラベルのAPH率(IoU 2D)",
+          "label0": "label0のAPH率(IoU 2D)",
+          "label1": "label1のAPH率(IoU 2D)"
+        }
       },
       "ConfusionMatrix": {
-        "ラベル(真値)": "予測結果"
+        "label0(真値)": {
+          "label0(予測値)": "値",
+          "label1(予測値)": "値"
+        },
+        "label1(真値)": {
+          "label0(予測値)": "値",
+          "label1(予測値)": "値"
+        }
       }
     }
   }
