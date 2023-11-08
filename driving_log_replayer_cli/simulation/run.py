@@ -1,4 +1,4 @@
-import os
+from os.path import expandvars
 import subprocess
 
 import termcolor
@@ -19,11 +19,14 @@ class DrivingLogReplayerTestRunner:
         output_json: bool,  # noqa
         perception_mode: str,
     ) -> None:
+        self.__data_directory = expandvars(data_directory)
+        self.__output_directory = expandvars(output_directory)
+        self.__autoware_path = expandvars(autoware_path)
         termcolor.cprint("<< generating launch command >>", "green")
         generator = TestScriptGenerator(
-            data_directory,
-            output_directory,
-            autoware_path,
+            self.__data_directory,
+            self.__output_directory,
+            self.__autoware_path,
             rate,
             delay,
             perception_mode,
