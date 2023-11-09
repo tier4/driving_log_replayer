@@ -127,15 +127,16 @@ def get_box_marker(
 
 def summarize_frame_container(
     container: list[DynamicObjectWithSensingResult],
+    container_type: str,
     header: Header,
     color: ColorRGBA,
-    info: list,
+    info: dict,
     counter: int,
     marker_array: MarkerArray,
     pcd: np.ndarray,
     graph_detection: ObstacleSegmentationMarkerArray,
     result_status: int,
-) -> tuple[dict, int, MarkerArray, np.ndarray, ObstacleSegmentationMarkerArray]:
+) -> int:
     for result in container:
         pcd_result = np.zeros(
             result.inside_pointcloud_num,
@@ -155,12 +156,15 @@ def summarize_frame_container(
         )
         marker_array.markers.append(bbox)
         marker_array.markers.append(uuid)
-        info_dict["PointCloud"] = {
-            "NumPoints": result.inside_pointcloud_num,
-            "Nearest": result.nearest_point.tolist() if result.nearest_point is not None else [],
-            "Stamp": message_to_ordereddict(header.stamp),
+        info[container_type] = {
+            "PointCloud": {
+                "NumPoints": result.inside_pointcloud_num,
+                "Nearest": result.nearest_point.tolist()
+                if result.nearest_point is not None
+                else [],
+                "Stamp": message_to_ordereddict(header.stamp),
+            },
         }
-        info.append(info_dict)
         marker = ObstacleSegmentationMarker(
             header=header,
             number_of_pointcloud=result.inside_pointcloud_num,
@@ -168,7 +172,7 @@ def summarize_frame_container(
             bbox_uuid=result.ground_truth_object.uuid,
         )
         graph_detection.markers.append(marker)
-    return info, counter, marker_array, pcd, graph_detection
+    return counter
 
 
 def get_sensing_frame_config(
@@ -263,9 +267,10 @@ class Detection(EvaluationItem):
             if frame_success == "Success"
             else ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
         )
-        info = []
-        info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
+        info = {}
+        counter = summarize_frame_container(
             frame_result.detection_success_results,
+            "DetectionSuccess",
             header,
             color_success,
             info,
@@ -279,8 +284,9 @@ class Detection(EvaluationItem):
         )
 
         color_fail = ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
-        info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
+        counter = summarize_frame_container(
             frame_result.detection_fail_results,
+            "DetectionFail",
             header,
             color_fail,
             info,
@@ -292,8 +298,9 @@ class Detection(EvaluationItem):
         )
 
         color_warn = ColorRGBA(r=1.0, g=0.65, b=0.0, a=0.3)
-        info, counter, marker_array, pcd, graph_detection = summarize_frame_container(
+        counter = summarize_frame_container(
             frame_result.detection_warning_results,
+            "DetectionWarn",
             header,
             color_warn,
             info,
