@@ -19,6 +19,8 @@ from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.common.label import AutowareLabel
 from perception_eval.common.label import Label
 from perception_eval.common.schema import FrameID
+from perception_eval.common.shape import Shape
+from perception_eval.common.shape import ShapeType
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import DynamicObjectWithPerceptionResult
 from perception_eval.evaluation import PerceptionFrameResult
@@ -110,7 +112,7 @@ def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
         FrameID.BASE_LINK,
         (1.0, 2.0, 3.0),
         Quaternion(),
-        None,
+        Shape(ShapeType.BOUNDING_BOX, (1.0, 1.0, 1.0)),
         (1.0, 2.0, 3.0),
         0.5,
         Label(AutowareLabel.CAR, "12"),
