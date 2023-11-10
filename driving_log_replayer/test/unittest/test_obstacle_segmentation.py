@@ -104,6 +104,21 @@ def test_detection_fail_has_no_object(
     }
 
 
+# not working make no sense
+# def test_detection_invalid(
+#     create_frame_result: Callable,
+# ) -> None:
+#     evaluation_item: Detection = Detection(condition=None)
+#     result: SensingFrameResult = create_frame_result
+#     frame_dict, _, _, _ = evaluation_item.set_frame(result, header=Header(), topic_rate=True)
+#     assert evaluation_item.success is False
+#     assert evaluation_item.summary == "Invalid"
+#     assert frame_dict == {
+#         "Result": {"Total": "Fail", "Frame": "Invalid"},
+#         "Info": {},
+#     }
+
+
 def test_detection_warn(
     create_detection: Callable,
     create_frame_result: Callable,
