@@ -361,7 +361,7 @@ class NonDetection(EvaluationItem):
             number_of_pointcloud=dist_array.shape[0],
         )
         info = {}
-        if frame_success == "Fail":
+        if len(pcd_list) != 0:  # Failだとtopic_rateが原因の場合もある
             # 詳細情報の追記を書く
             dist_dict = {}
             for i in range(100):

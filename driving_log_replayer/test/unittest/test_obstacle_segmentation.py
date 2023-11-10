@@ -78,14 +78,121 @@ def create_dynamic_object() -> DynamicObjectWithSensingResult:
         frame_id=FrameID.BASE_LINK,
         position=(0.0, 0.0, 0.0),
         orientation=Quaternion(),
-        shape=Shape(ShapeType.BOUNDING_BOX, (3.0, 3.0, 3.0)),
+        shape=Shape(ShapeType.BOUNDING_BOX, (10.0, 10.0, 10.0)),
         velocity=(1.0, 2.0, 3.0),
         semantic_score=0.5,
         semantic_label=Label(AutowareLabel.CAR, "12"),
         pointcloud_num=1,
         uuid="dcb2b352232fff50c4fad23718f31611",
     )
-    return DynamicObjectWithSensingResult(dynamic_obj, np.ones(shape=(1, 4)), 1.0, 1)
+    pointcloud = np.array([[1.0, 1.0, 1.0, 0.5], [1.2, 1.2, 1.2, 0.5]])
+    return DynamicObjectWithSensingResult(dynamic_obj, pointcloud, 1.0, 1)
+
+
+@pytest.fixture()
+def create_distance_dict() -> dict:
+    return {
+        "0-1": 0,
+        "1-2": 1,
+        "2-3": 1,
+        "3-4": 0,
+        "4-5": 0,
+        "5-6": 0,
+        "6-7": 0,
+        "7-8": 0,
+        "8-9": 0,
+        "9-10": 0,
+        "10-11": 0,
+        "11-12": 0,
+        "12-13": 0,
+        "13-14": 0,
+        "14-15": 0,
+        "15-16": 0,
+        "16-17": 0,
+        "17-18": 0,
+        "18-19": 0,
+        "19-20": 0,
+        "20-21": 0,
+        "21-22": 0,
+        "22-23": 0,
+        "23-24": 0,
+        "24-25": 0,
+        "25-26": 0,
+        "26-27": 0,
+        "27-28": 0,
+        "28-29": 0,
+        "29-30": 0,
+        "30-31": 0,
+        "31-32": 0,
+        "32-33": 0,
+        "33-34": 0,
+        "34-35": 0,
+        "35-36": 0,
+        "36-37": 0,
+        "37-38": 0,
+        "38-39": 0,
+        "39-40": 0,
+        "40-41": 0,
+        "41-42": 0,
+        "42-43": 0,
+        "43-44": 0,
+        "44-45": 0,
+        "45-46": 0,
+        "46-47": 0,
+        "47-48": 0,
+        "48-49": 0,
+        "49-50": 0,
+        "50-51": 0,
+        "51-52": 0,
+        "52-53": 0,
+        "53-54": 0,
+        "54-55": 0,
+        "55-56": 0,
+        "56-57": 0,
+        "57-58": 0,
+        "58-59": 0,
+        "59-60": 0,
+        "60-61": 0,
+        "61-62": 0,
+        "62-63": 0,
+        "63-64": 0,
+        "64-65": 0,
+        "65-66": 0,
+        "66-67": 0,
+        "67-68": 0,
+        "68-69": 0,
+        "69-70": 0,
+        "70-71": 0,
+        "71-72": 0,
+        "72-73": 0,
+        "73-74": 0,
+        "74-75": 0,
+        "75-76": 0,
+        "76-77": 0,
+        "77-78": 0,
+        "78-79": 0,
+        "79-80": 0,
+        "80-81": 0,
+        "81-82": 0,
+        "82-83": 0,
+        "83-84": 0,
+        "84-85": 0,
+        "85-86": 0,
+        "86-87": 0,
+        "87-88": 0,
+        "88-89": 0,
+        "89-90": 0,
+        "90-91": 0,
+        "91-92": 0,
+        "92-93": 0,
+        "93-94": 0,
+        "94-95": 0,
+        "95-96": 0,
+        "96-97": 0,
+        "97-98": 0,
+        "98-99": 0,
+        "99-100": 0,
+    }
 
 
 def test_detection_fail_has_no_object(
@@ -138,10 +245,169 @@ def test_detection_warn(
         "Info": {
             "DetectionWarn": {
                 "PointCloud": {
-                    "NumPoints": 1,
+                    "NumPoints": 2,
                     "Nearest": [1.0, 1.0, 1.0],
                     "Stamp": {"sec": 0, "nanosec": 0},
                 },
             },
         },
+    }
+
+
+def test_detection_success(
+    create_detection: Callable,
+    create_frame_result: Callable,
+    create_dynamic_object: Callable,
+) -> None:
+    evaluation_item: Detection = create_detection
+    result: SensingFrameResult = create_frame_result
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    frame_dict, _, _, _ = evaluation_item.set_frame(
+        result,
+        header=Header(),
+        topic_rate=True,
+    )
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "Detection (Success): 95 / 100 -> 95.00% (Warn: 0)"
+    assert frame_dict == {
+        "Result": {"Total": "Success", "Frame": "Success"},
+        "Info": {
+            "DetectionSuccess": {
+                "PointCloud": {
+                    "NumPoints": 2,
+                    "Nearest": [1.0, 1.0, 1.0],
+                    "Stamp": {"sec": 0, "nanosec": 0},
+                },
+            },
+        },
+    }
+
+
+def test_detection_topic_rate_fail(
+    create_detection: Callable,
+    create_frame_result: Callable,
+    create_dynamic_object: Callable,
+) -> None:
+    evaluation_item: Detection = create_detection
+    result: SensingFrameResult = create_frame_result
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    frame_dict, _, _, _ = evaluation_item.set_frame(
+        result,
+        header=Header(),
+        topic_rate=False,  # false
+    )
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "Detection (Fail): 94 / 100 -> 94.00% (Warn: 0)"
+    assert frame_dict == {
+        "Result": {"Total": "Fail", "Frame": "Fail"},
+        "Info": {
+            "DetectionSuccess": {
+                "PointCloud": {
+                    "NumPoints": 2,
+                    "Nearest": [1.0, 1.0, 1.0],
+                    "Stamp": {"sec": 0, "nanosec": 0},
+                },
+            },
+        },
+    }
+
+
+def test_detection_fail(
+    create_detection: Callable,
+    create_frame_result: Callable,
+    create_dynamic_object: Callable,
+) -> None:
+    evaluation_item: Detection = create_detection
+    result: SensingFrameResult = create_frame_result
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_fail_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    frame_dict, _, _, _ = evaluation_item.set_frame(
+        result,
+        header=Header(),
+        topic_rate=True,
+    )
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "Detection (Fail): 94 / 100 -> 94.00% (Warn: 0)"
+    assert frame_dict == {
+        "Result": {"Total": "Fail", "Frame": "Fail"},
+        "Info": {
+            "DetectionSuccess": {
+                "PointCloud": {
+                    "NumPoints": 2,
+                    "Nearest": [1.0, 1.0, 1.0],
+                    "Stamp": {"sec": 0, "nanosec": 0},
+                },
+            },
+            "DetectionFail": {
+                "PointCloud": {
+                    "NumPoints": 2,
+                    "Nearest": [1.0, 1.0, 1.0],
+                    "Stamp": {"sec": 0, "nanosec": 0},
+                },
+            },
+        },
+    }
+
+
+def test_non_detection_invalid() -> None:
+    evaluation_item: Detection = NonDetection(condition=None)
+    pointcloud = np.array([[1.0, 1.0, 1.0, 0.5], [1.2, 1.2, 1.2, 0.5]])
+    frame_dict, _, _ = evaluation_item.set_frame([pointcloud], header=Header(), topic_rate=True)
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "Invalid"
+    assert frame_dict == {
+        "Result": {"Total": "Success", "Frame": "Invalid"},
+        "Info": {},
+    }
+
+
+def test_non_detection_fail(
+    create_non_detection: Callable,
+    create_distance_dict: Callable,
+) -> None:
+    evaluation_item: NonDetection = create_non_detection
+    pointcloud = np.array([[1.0, 1.0, 1.0, 0.5], [1.2, 1.2, 1.2, 0.5]])
+    frame_dict, _, _ = evaluation_item.set_frame([pointcloud], header=Header(), topic_rate=True)
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "NonDetection (Fail): 94 / 100 -> 94.00%"
+    assert frame_dict == {
+        "Result": {"Total": "Fail", "Frame": "Fail"},
+        "Info": {
+            "PointCloud": {
+                "NumPoints": 2,
+                "Distance": create_distance_dict,
+            },
+        },
+    }
+
+
+def test_non_detection_topic_rate_fail(
+    create_non_detection: Callable,
+) -> None:
+    evaluation_item: NonDetection = create_non_detection
+    # no pointcloud
+    frame_dict, _, _ = evaluation_item.set_frame(
+        [],
+        header=Header(),
+        topic_rate=False,
+    )  # topic rate error
+    assert evaluation_item.success is False
+    assert evaluation_item.summary == "NonDetection (Fail): 94 / 100 -> 94.00%"
+    assert frame_dict == {
+        "Result": {"Total": "Fail", "Frame": "Fail"},
+        "Info": {},
+    }
+
+
+def test_non_detection_success(
+    create_non_detection: Callable,
+) -> None:
+    evaluation_item: NonDetection = create_non_detection
+    # no pointcloud
+    frame_dict, _, _ = evaluation_item.set_frame([], header=Header(), topic_rate=True)
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "NonDetection (Success): 95 / 100 -> 95.00%"
+    assert frame_dict == {
+        "Result": {"Total": "Success", "Frame": "Success"},
+        "Info": {},
     }
