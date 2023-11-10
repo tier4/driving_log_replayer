@@ -12,36 +12,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import sys
 
-from ament_index_python.packages import get_package_share_directory
 import numpy as np
+import ros2_numpy
+import yaml
+from ament_index_python.packages import get_package_share_directory
 from perception_eval.common.object import DynamicObject
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
-from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithSensingResult
-import ros2_numpy
+from perception_eval.evaluation.sensing.sensing_result import (
+    DynamicObjectWithSensingResult,
+)
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
-from std_msgs.msg import ColorRGBA
-from std_msgs.msg import Header
-from visualization_msgs.msg import Marker
-from visualization_msgs.msg import MarkerArray
-import yaml
+from std_msgs.msg import ColorRGBA, Header
+from visualization_msgs.msg import Marker, MarkerArray
 
 import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import EvaluationItem
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
-from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
+from driving_log_replayer.result import EvaluationItem, ResultBase
+from driving_log_replayer_analyzer.config.obstacle_segmentation import (
+    Config,
+    load_config,
+)
 from driving_log_replayer_analyzer.data import DistType
-from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
-from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
+from driving_log_replayer_analyzer.data.obstacle_segmentation import (
+    JsonlParser,
+    fail_3_times_in_a_row,
+)
 from driving_log_replayer_analyzer.plot import PlotBase
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
+from driving_log_replayer_msgs.msg import (
+    ObstacleSegmentationMarker,
+    ObstacleSegmentationMarkerArray,
+)
 
 
 def default_config_path() -> Path:
@@ -232,6 +237,7 @@ class Detection(EvaluationItem):
             self.summary = "Invalid"
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
+                None,
                 None,
                 None,
             )
