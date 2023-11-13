@@ -170,7 +170,7 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
     "StopReasons": "Planning moduleが出力する停止理由。参考値",
     "TopicRate": "点群の出力レートが正常かどうかを示すdiagの結果",
     "Detection": {
-      "Result": {"Total": "Success or Fail", "Frame": "Success, Fail, Warn or Invalid"},
+      "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, Warn or Invalid" },
       "Info": {
         "DetectionSuccess or DetectionFail or DetectionWarn": {
           "Annotation": {

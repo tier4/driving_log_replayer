@@ -167,7 +167,7 @@ An example of evaluation is described below.
     "StopReasons": "Reasons for stopping output by the Planning module. Reference value",
     "TopicRate": "Result of diag indicating whether the output rate of the point cloud is normal or not.",
     "Detection": {
-      "Result": {"Total": "Success or Fail", "Frame": "Success, Fail, Warn or Invalid"},
+      "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, Warn or Invalid" },
       "Info": {
         "DetectionSuccess or DetectionFail or DetectionWarn": {
           "Annotation": {
@@ -215,7 +215,7 @@ An example of evaluation is described below.
           }
         }
       }
-    },
+    }
   }
 }
 ```
