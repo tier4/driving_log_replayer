@@ -147,7 +147,7 @@ def summarize_frame_container(
         pcd_result["z"] = result.inside_pointcloud[:, 2]
         pcd = np.concatenate([pcd, pcd_result])
 
-        bbox, uuid, info_dict = get_box_marker(
+        bbox, uuid, info[container_type] = get_box_marker(
             result.ground_truth_object,
             header,
             "detection",
