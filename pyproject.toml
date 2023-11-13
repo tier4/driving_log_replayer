@@ -36,7 +36,7 @@ simplejson = "^3.19.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
-ruff = "^0.0.287"
+ruff = "^0.1.5"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.5.3"
