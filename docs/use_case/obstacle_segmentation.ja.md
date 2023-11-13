@@ -153,6 +153,8 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### 評価結果フォーマット
 
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstalce_segmentation/result.json)参照
+
 obstacle_segmentation では、検知(Detection)と非検知(NonDetection)の 2 つを評価している。
 1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。
 Result は検知と非検知両方のパスしていれば true でそれ以外は false 失敗となる。
@@ -165,10 +167,12 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
   "Frame": {
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
     "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
+    "StopReasons": "Planning moduleが出力する停止理由。参考値",
+    "TopicRate": "点群の出力レートが正常かどうかを示すdiagの結果",
     "Detection": {
-      "Result": "Success, Warn, Fail, or Skipped",
-      "Info": [
-        {
+      "Result": {"Total": "Success or Fail", "Frame": "Success, Fail, Warn or Invalid"},
+      "Info": {
+        "DetectionSuccess or DetectionFail or DetectionWarn": {
           "Annotation": {
             "Scale": {
               "x": "バウンディングボックスのx方向の長さ",
@@ -200,25 +204,21 @@ Result は検知と非検知両方のパスしていれば true でそれ以外�
             }
           }
         }
-      ]
+      }
     },
     "NonDetection": {
-      "Result": "Success, Fail, or Skipped",
-      "Info": [
-        {
-          "PointCloud": {
-            "NumPoints": "非検知エリアに出ている点群の数",
-            "Distance": {
-              "0-1": "base_linkから0-1mの間の非検知エリアに出ている点群数",
-              "x-x+1": "非検知エリアに出ている点群の距離毎の分布",
-              "99-100": "base_linkから99-100mの間の非検知エリアに出ている点群数"
-            }
+      "Result": "Success, Fail, or Invalid",
+      "Info": {
+        "PointCloud": {
+          "NumPoints": "非検知エリアに出ている点群の数",
+          "Distance": {
+            "0-1": "base_linkから0-1mの間の非検知エリアに出ている点群数",
+            "x-x+1": "非検知エリアに出ている点群の距離毎の分布",
+            "99-100": "base_linkから99-100mの間の非検知エリアに出ている点群数"
           }
         }
-      ]
-    },
-    "StopReasons": "Planning moduleが出力する停止理由。参考値",
-    "TopicRate": "点群の出力レートが正常かどうかを示すdiagの結果"
+      }
+    }
   }
 }
 ```
