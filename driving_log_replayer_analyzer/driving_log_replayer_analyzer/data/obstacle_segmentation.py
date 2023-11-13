@@ -216,8 +216,12 @@ class JsonlParser:
 
             # tmp: 片側から車両が来るケースにおいて、自車の前(距離が最短となるとき)を通過後のデータは使わない
             try:
+                # DetectionのInfoはDetectionSuccess, DetectionFail, DetectionWarnの3種類があり、最大3個入っている。
+                # 以前は配列で0番が取られていたが、0がSuccessなのかFailなのかWarnなのか区別はなかった。
                 position = Position(
-                    json_dict["Frame"]["Detection"]["Info"]["Annotation"]["Position"]["position"],
+                    json_dict["Frame"]["Detection"]["Info"]["DetectionSuccess"]["Annotation"][
+                        "Position"
+                    ]["position"],
                 )
                 if (
                     previous_dist < position.get_distance(self._dist_type)
