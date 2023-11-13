@@ -77,15 +77,15 @@ class Frame:
 
 @dataclass
 class NonDetection:
-    result: str
+    result: dict
     frame: int
     ego_position: Position
     pointcloud_points: float
     distance: dict[int, int]
 
     def __init__(self, json_dict: dict) -> None:
-        self.result = ""
-        self.frame = ""
+        self.result = {}
+        self.frame = -1
         self.pointcloud_points = 0
         self.distance = {}
         self.ego_position = Position()
@@ -96,9 +96,9 @@ class NonDetection:
                 json_dict["Frame"]["Ego"]["TransformStamped"]["transform"]["translation"],
             )
             self.pointcloud_points = float(
-                json_dict["Frame"]["NonDetection"]["Info"][0]["PointCloud"]["NumPoints"],
+                json_dict["Frame"]["NonDetection"]["Info"]["PointCloud"]["NumPoints"],
             )
-            for distance_str, num_points in json_dict["Frame"]["NonDetection"]["Info"][0][
+            for distance_str, num_points in json_dict["Frame"]["NonDetection"]["Info"][
                 "PointCloud"
             ]["Distance"].items():
                 distance_list = distance_str.split(sep="-")
@@ -130,27 +130,27 @@ class DetectionInfo:
 
 @dataclass
 class Detection:
-    result: str
-    detection_info: list[DetectionInfo]
+    result: dict
+    detection_info: dict[str, DetectionInfo]
 
     def __init__(self, json_dict: dict, dist_type: DistType) -> None:
-        self.result = ""
-        self.detection_info = []
+        self.result = {}
+        self.detection_info = {}
         try:
             self.result = json_dict["Frame"]["Detection"]["Result"]
-            for info in json_dict["Frame"]["Detection"]["Info"]:
+            for k, v in json_dict["Frame"]["Detection"]["Info"].items():
                 di = DetectionInfo()
-                di.uuid = info["Annotation"]["UUID"]
-                di.short_uuid = info["Annotation"]["UUID"][0:6]
-                di.annotation_position = Position(info["Annotation"]["Position"]["position"])
+                di.uuid = v["Annotation"]["UUID"]
+                di.short_uuid = v["Annotation"]["UUID"][0:6]
+                di.annotation_position = Position(v["Annotation"]["Position"]["position"])
                 di.annotation_distance = di.annotation_position.get_distance(dist_type)
-                di.pointcloud_numpoints = info["PointCloud"]["NumPoints"]
+                di.pointcloud_numpoints = v["PointCloud"]["NumPoints"]
                 if di.pointcloud_numpoints > 0:
-                    di.pointcloud_nearest_position = Position(info["PointCloud"]["Nearest"])
+                    di.pointcloud_nearest_position = Position(v["PointCloud"]["Nearest"])
                     di.pointcloud_nearest_distance = di.pointcloud_nearest_position.get_distance(
                         dist_type,
                     )
-                self.detection_info.append(di)
+                self.detection_info[k] = di
         except (KeyError, IndexError):
             print("Passed frame")  # noqa
 
@@ -217,9 +217,7 @@ class JsonlParser:
             # tmp: 片側から車両が来るケースにおいて、自車の前(距離が最短となるとき)を通過後のデータは使わない
             try:
                 position = Position(
-                    json_dict["Frame"]["Detection"]["Info"][0]["Annotation"]["Position"][
-                        "position"
-                    ],
+                    json_dict["Frame"]["Detection"]["Info"]["Annotation"]["Position"]["position"],
                 )
                 if (
                     previous_dist < position.get_distance(self._dist_type)
