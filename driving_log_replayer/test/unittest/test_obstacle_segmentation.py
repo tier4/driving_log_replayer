@@ -195,6 +195,32 @@ def create_distance_dict() -> dict:
     }
 
 
+@pytest.fixture()
+def create_annotation_dict() -> dict:
+    return {
+        "Scale": {
+            "x": 10.0,
+            "y": 10.0,
+            "z": 10.0,
+        },
+        "Position": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+            },
+            "orientation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0,
+            },
+        },
+        "UUID": "dcb2b352232fff50c4fad23718f31611",
+        "StampFloat": 0.000123,
+    }
+
+
 def test_detection_fail_has_no_object(
     create_detection: Callable,
     create_frame_result: Callable,
@@ -229,9 +255,11 @@ def test_detection_warn(
     create_detection: Callable,
     create_frame_result: Callable,
     create_dynamic_object: Callable,
+    create_annotation_dict: Callable,
 ) -> None:
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
+    annotation_dict: dict = create_annotation_dict
     result.detection_warning_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
@@ -244,6 +272,7 @@ def test_detection_warn(
         "Result": {"Total": "Fail", "Frame": "Warn"},
         "Info": {
             "DetectionWarn": {
+                "Annotation": annotation_dict,
                 "PointCloud": {
                     "NumPoints": 2,
                     "Nearest": [1.0, 1.0, 1.0],
@@ -258,9 +287,11 @@ def test_detection_success(
     create_detection: Callable,
     create_frame_result: Callable,
     create_dynamic_object: Callable,
+    create_annotation_dict: Callable,
 ) -> None:
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
+    annotation_dict: dict = create_annotation_dict
     result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
@@ -273,6 +304,7 @@ def test_detection_success(
         "Result": {"Total": "Success", "Frame": "Success"},
         "Info": {
             "DetectionSuccess": {
+                "Annotation": annotation_dict,
                 "PointCloud": {
                     "NumPoints": 2,
                     "Nearest": [1.0, 1.0, 1.0],
@@ -287,9 +319,11 @@ def test_detection_topic_rate_fail(
     create_detection: Callable,
     create_frame_result: Callable,
     create_dynamic_object: Callable,
+    create_annotation_dict: Callable,
 ) -> None:
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
+    annotation_dict: dict = create_annotation_dict
     result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
@@ -302,6 +336,7 @@ def test_detection_topic_rate_fail(
         "Result": {"Total": "Fail", "Frame": "Fail"},
         "Info": {
             "DetectionSuccess": {
+                "Annotation": annotation_dict,
                 "PointCloud": {
                     "NumPoints": 2,
                     "Nearest": [1.0, 1.0, 1.0],
@@ -316,9 +351,11 @@ def test_detection_fail(
     create_detection: Callable,
     create_frame_result: Callable,
     create_dynamic_object: Callable,
+    create_annotation_dict: Callable,
 ) -> None:
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
+    annotation_dict: dict = create_annotation_dict
     result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
     result.detection_fail_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
     frame_dict, _, _, _ = evaluation_item.set_frame(
@@ -332,6 +369,7 @@ def test_detection_fail(
         "Result": {"Total": "Fail", "Frame": "Fail"},
         "Info": {
             "DetectionSuccess": {
+                "Annotation": annotation_dict,
                 "PointCloud": {
                     "NumPoints": 2,
                     "Nearest": [1.0, 1.0, 1.0],
@@ -339,6 +377,7 @@ def test_detection_fail(
                 },
             },
             "DetectionFail": {
+                "Annotation": annotation_dict,
                 "PointCloud": {
                     "NumPoints": 2,
                     "Nearest": [1.0, 1.0, 1.0],
