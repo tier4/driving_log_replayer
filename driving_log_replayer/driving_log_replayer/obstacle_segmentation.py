@@ -156,14 +156,10 @@ def summarize_frame_container(
         )
         marker_array.markers.append(bbox)
         marker_array.markers.append(uuid)
-        info[container_type] = {
-            "PointCloud": {
-                "NumPoints": result.inside_pointcloud_num,
-                "Nearest": result.nearest_point.tolist()
-                if result.nearest_point is not None
-                else [],
-                "Stamp": message_to_ordereddict(header.stamp),
-            },
+        info[container_type]["PointCloud"] = {
+            "NumPoints": result.inside_pointcloud_num,
+            "Nearest": result.nearest_point.tolist() if result.nearest_point is not None else [],
+            "Stamp": message_to_ordereddict(header.stamp),
         }
         marker = ObstacleSegmentationMarker(
             header=header,

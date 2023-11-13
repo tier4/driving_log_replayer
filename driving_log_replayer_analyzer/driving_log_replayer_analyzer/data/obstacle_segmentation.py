@@ -236,7 +236,7 @@ class JsonlParser:
 
     def _modify_center_from_baselink_to_overhang(self, overhang: float) -> None:
         for record in self.detection:
-            for detection_info in record.detection_info:
+            for detection_info in record.detection_info.values():
                 if detection_info.annotation_position.validate():
                     detection_info.annotation_position.sub_overhang(overhang)
                     detection_info.annotation_distance = (
@@ -284,7 +284,7 @@ class JsonlParser:
         """自車を基準としたアノテーションバウンディングボックス(BB)の中心点(x, y)とSuccess/Failのフレーム毎のリストを作成する."""
         ret = []
         for frame in self.detection:
-            for detection_info in frame.detection_info:
+            for detection_info in frame.detection_info.values():
                 if detection_info.annotation_position.validate():
                     ret.append(
                         [
@@ -299,7 +299,7 @@ class JsonlParser:
         """自車を基準としたアノテーションバウンディングボックス(BB)のPointCloudの最近傍点、ラベルとしてPointCloudを付与したリストを作成する."""
         ret = []
         for frame in self.detection:
-            for detection_info in frame.detection_info:
+            for detection_info in frame.detection_info.values():
                 if detection_info.pointcloud_nearest_position.validate():
                     ret.append(
                         [
@@ -320,7 +320,7 @@ class JsonlParser:
         """
         ret = []
         for frame in self.detection:
-            for detection_info in frame.detection_info:
+            for detection_info in frame.detection_info.values():
                 if detection_info.annotation_distance is not None:
                     y_val = 1 if frame.result == "Success" else 0
                     ret.append(
@@ -336,7 +336,7 @@ class JsonlParser:
         ret = []
         i = 0
         for detection, frame, stamp in zip(self.detection, self.frame, self.stamp):
-            for detection_info in detection.detection_info:
+            for detection_info in detection.detection_info.values():
                 if detection_info.annotation_distance is not None:
                     ret.append(
                         {
@@ -371,7 +371,7 @@ class JsonlParser:
         """
         tmp = []
         for frame in self.detection:
-            for detection_info in frame.detection_info:
+            for detection_info in frame.detection_info.values():
                 if detection_info.pointcloud_nearest_distance is not None:
                     tmp.append(
                         [
@@ -392,7 +392,7 @@ class JsonlParser:
         """
         tmp = []
         for frame in self.detection:
-            for detection_info in frame.detection_info:
+            for detection_info in frame.detection_info.values():
                 if (
                     detection_info.annotation_distance is not None
                     and detection_info.pointcloud_nearest_distance is not None
