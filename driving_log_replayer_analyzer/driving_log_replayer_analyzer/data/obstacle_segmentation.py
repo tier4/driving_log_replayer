@@ -59,7 +59,7 @@ def get_min_range(data: list) -> float:
 
     # Val == 0はFail, 最初にFailした距離を探索する
     minimum_fail_dist = df[df["Val"] == 0].min()["Dist"]
-    if pd.isnull(minimum_fail_dist):
+    if pd.isna(minimum_fail_dist):
         minimum_fail_dist = sys.float_info.max
 
     # Passしたもののうち、最大の距離を計算する。ただし、一度でもFailするとダメなので、その条件も加える。
