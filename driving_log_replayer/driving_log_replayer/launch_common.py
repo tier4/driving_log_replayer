@@ -106,7 +106,7 @@ def get_driving_log_replayer_common_argument() -> list:
     add_launch_arg(
         "override_topics_regex",
         default_value="",
-        description="use allowlist. Ex: override_topics_regex:=\^/clock\$\|\^/tf\$\|/sensing/lidar/concatenated/pointcloud",
+        description="use allowlist. Ex: override_topics_regex:=\^/clock\$\|\^/tf\$\|/sensing/lidar/concatenated/pointcloud",  # noqa
     )
 
     return launch_arguments
