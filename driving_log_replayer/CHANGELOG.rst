@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: obstacle segmentation test (`#273 <https://github.com/tier4/driving_log_replayer/issues/273>`_)
+* Contributors: Hayato Mizushima
+
 1.8.4 (2023-11-08)
 ------------------
 * feat: parameterize perception mode (`#299 <https://github.com/tier4/driving_log_replayer/issues/299>`_)
