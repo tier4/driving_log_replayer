@@ -1794,6 +1794,7 @@ The following example shows the topic list available in evaluation input rosbag 
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
 <p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/scenario.yaml">sample</a>.</p>
 <h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/result.json">sample</a>.</p>
 <p>In <code>obstacle_segmentation</code> evaluation scenario, two types of checks, detection (Detection) and non-detection (NonDetection), are evaluated.
 Although they are evaluated simultaneously, in one callback function, they are counted separately.
 The <code>Result</code> is <code>true</code> if both detection and non-detection evaluation steps have passed. Otherwise the <code>Result</code> is <code>false</code>.</p>
@@ -1803,10 +1804,12 @@ The <code>Result</code> is <code>true</code> if both detection and non-detection
 <span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;FrameName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frame number of t4_dataset used for evaluation&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;FrameSkip&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;StopReasons&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Reasons for stopping output by the Planning module. Reference value&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;TopicRate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Result of diag indicating whether the output rate of the point cloud is normal or not.&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;Detection&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Warn, Fail, or Skipped&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, Warn or Invalid&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;DetectionSuccess or DetectionFail or DetectionWarn&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">&quot;Annotation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="nt">&quot;Scale&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">              </span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Length of bounding box in x-direction&quot;</span><span class="p">,</span>
@@ -1838,25 +1841,21 @@ The <code>Result</code> is <code>true</code> if both detection and non-detection
 <span class="w">            </span><span class="p">}</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
-<span class="w">      </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="nt">&quot;NonDetection&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Skipped&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;PointCloud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;NumPoints&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas.&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;Distance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">              </span><span class="nt">&quot;0-1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas between 0-1 m from base_link&quot;</span><span class="p">,</span>
-<span class="w">              </span><span class="nt">&quot;x-x+1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Distribution of point clouds appearing in non-detected areas by distance&quot;</span><span class="p">,</span>
-<span class="w">              </span><span class="nt">&quot;99-100&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas between 99-100 m from base_link&quot;</span>
-<span class="w">            </span><span class="p">}</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Invalid&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;PointCloud&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;NumPoints&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas.&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;Distance&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;0-1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas between 0-1 m from base_link&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;x-x+1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Distribution of point clouds appearing in non-detected areas by distance&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;99-100&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of point clouds out in non-detected areas between 99-100 m from base_link&quot;</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
-<span class="w">      </span><span class="p">]</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;StopReasons&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Reasons for stopping output by the Planning module. Reference value&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;TopicRate&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Result of diag indicating whether the output rate of the point cloud is normal or not.&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
