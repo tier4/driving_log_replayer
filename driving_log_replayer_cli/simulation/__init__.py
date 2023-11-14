@@ -34,7 +34,7 @@ def simulation() -> None:
     type=click.Choice(PERCEPTION_MODES, case_sensitive=False),
 )
 @click.option("--override_record_topics", "-o", default=False, type=bool)
-@click.option("--override_topics_regex", "-x", default="", type=str)
+@click.option("--override_topics_regex", "-x", default="/override_not_used", type=str)
 @click.option("--no-json", is_flag=True, help="Do not convert jsonl files to json")
 def run(
     profile: str,
