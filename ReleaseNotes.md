@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.9.0
+
+Minor Tweak
+
+| Module                  | Feature | Brief summary                                                           | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ------- | ----------------------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | test    | add unit test for obstacle segmentation, update log format and analyzer | [#273](https://github.com/tier4/driving_log_replayer/pull/273) | RT4-7580 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.8.4
 
 Minor Tweak
