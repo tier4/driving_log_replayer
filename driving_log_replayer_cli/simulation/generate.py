@@ -128,8 +128,8 @@ map_path:={essential_param.map_path} \
 vehicle_model:={essential_param.vehicle_model} \
 sensor_model:={essential_param.sensor_model} \
 vehicle_id:={essential_param.vehicle_id} \
-override_record_topics:={self.__override_recode_topics}
-override_topics_regex:={self.__override_topics_regex}
+override_record_topics:={self.__override_recode_topics} \
+override_topics_regex:={self.__override_topics_regex} \
 rviz:=true\
 """
 
