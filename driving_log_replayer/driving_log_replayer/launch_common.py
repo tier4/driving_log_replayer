@@ -46,6 +46,10 @@ def get_driving_log_replayer_common_argument() -> list:
     vehicle_model
     sensor_model
     vehicle_id
+    perception_mode
+    t4_dataset_path
+    result_archive_path
+    override_record_topics
 
     """
     launch_arguments = []
@@ -89,11 +93,20 @@ def get_driving_log_replayer_common_argument() -> list:
         default_value="/opt/autoware/t4_dataset",
         description="full path of t4_dataset",
     )
-
     add_launch_arg(
         "result_archive_path",
         default_value="/opt/autoware/result_archive",
         description="additional result file",
+    )
+    add_launch_arg(
+        "override_record_topics",
+        default_value="false",
+        description="flag of override record topics",
+    )
+    add_launch_arg(
+        "override_topics_regex",
+        default_value="",
+        description="use allowlist. Ex: override_topics_regex:=^/clock$|^/tf$|/sensing/lidar/concatenated/pointcloud|^/perception/object_recognition/detection/objects$",
     )
 
     return launch_arguments
@@ -218,8 +231,8 @@ def get_recorder(record_config_name: str, record_topics: list) -> ExecuteProcess
     return ExecuteProcess(cmd=record_cmd)
 
 
-def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
-    record_cmd = [
+def create_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
+    return [
         "ros2",
         "bag",
         "record",
@@ -234,6 +247,10 @@ def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProces
         "-e",
         allowlist,
     ]
+
+
+def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
+    record_cmd = create_regex_record_cmd(record_config_name, allowlist)
     return ExecuteProcess(cmd=record_cmd)
 
 

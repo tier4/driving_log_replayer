@@ -17,6 +17,8 @@ class DrivingLogReplayerTestRunner:
         rate: float,
         delay: float,
         perception_mode: str,
+        override_record_topics: bool,  # noqa
+        override_topics_regex: str,
         output_json: bool,  # noqa
     ) -> None:
         self.__data_directory = expandvars(data_directory)
@@ -30,6 +32,8 @@ class DrivingLogReplayerTestRunner:
             rate,
             delay,
             perception_mode,
+            override_record_topics,
+            override_topics_regex,
         )
         is_executable = generator.run()
         if not is_executable:

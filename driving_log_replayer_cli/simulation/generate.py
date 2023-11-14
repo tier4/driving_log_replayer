@@ -26,6 +26,8 @@ class TestScriptGenerator:
         rate: float,
         delay: float,
         perception_mode: str,
+        override_recode_topics: bool,  # noqa
+        override_topics_regex: str,
     ) -> None:
         self.__data_directory = Path(data_directory)
         self.__output_directory = Path(output_directory)
@@ -34,6 +36,8 @@ class TestScriptGenerator:
         self.__rate = rate
         self.__delay = delay
         self.__perception_mode = perception_mode
+        self.__override_topics_regex = override_topics_regex
+        self.__override_recode_topics = override_recode_topics
         #  os.path.join(config.output_directory, datetime.datetime.now().strftime("%Y-%m%d-%H%M%S"))が渡ってくるので被ることはない
         self.__output_directory.mkdir(parents=True)
 
@@ -124,6 +128,8 @@ map_path:={essential_param.map_path} \
 vehicle_model:={essential_param.vehicle_model} \
 sensor_model:={essential_param.sensor_model} \
 vehicle_id:={essential_param.vehicle_id} \
+override_record_topics:={self.__override_recode_topics}
+override_topics_regex:={self.__override_topics_regex}
 rviz:=true\
 """
 

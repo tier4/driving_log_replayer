@@ -66,9 +66,24 @@ def generate_launch_description() -> launch.LaunchDescription:
         condition=IfCondition(LaunchConfiguration("sensing")),
     )
 
-    recorder = driving_log_replayer.launch_common.get_regex_recorder(
+    record_cmd = driving_log_replayer.launch_common.create_regex_record_cmd(
         "perception.qos.yaml",
         "^/clock$|^/tf$|/sensing/lidar/concatenated/pointcloud|^/perception/object_recognition/detection/objects$|^/perception/object_recognition/tracking/objects$|^/perception/object_recognition/objects$|^/driving_log_replayer/.*|^/sensing/camera/.*",
+    )
+
+    recorder = ExecuteProcess(
+        cmd=record_cmd,
+        condition=UnlessCondition(LaunchConfiguration("override_record_topics")),
+    )
+
+    record_override_cmd = driving_log_replayer.launch_common.create_regex_record_cmd(
+        "perception.qos.yaml",
+        LaunchConfiguration("override_topics_regex"),
+    )
+
+    recorder_override = ExecuteProcess(
+        cmd=record_override_cmd,
+        condition=IfCondition(LaunchConfiguration("override_record_topics")),
     )
 
     return launch.LaunchDescription(
@@ -80,5 +95,6 @@ def generate_launch_description() -> launch.LaunchDescription:
             player_normal,
             player_remap,
             recorder,
+            recorder_override,
         ],
     )
