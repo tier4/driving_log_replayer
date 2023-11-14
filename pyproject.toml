@@ -36,7 +36,7 @@ simplejson = "^3.19.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
-ruff = "^0.0.287"
+ruff = "^0.1.5"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.5.3"
@@ -56,9 +56,8 @@ line_length = 100
 line-length = 100
 show-source = true
 # https://beta.ruff.rs/docs/rules/
-select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "ISC", "NPY", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
-# "INP", "PD"
-ignore = ["Q000", "ANN101", "ANN102", "ANN401", "PGH004", "E501", "PLR0913", "S101", "S301", "S602", "SIM115", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417"]
+select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+ignore = ["Q000", "ANN101", "ANN102", "ANN401", "PGH004", "E501", "PLR0913", "S101", "S301", "S602", "SIM115", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417", "PD011", "PD002", "PD901"]
 fixable=["D", "I", "ANN", "COM", "EXE", "PIE"]
 
 [tool.ruff.isort]

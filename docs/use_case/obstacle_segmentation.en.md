@@ -150,6 +150,8 @@ See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/obst
 
 ### Evaluation Result Format
 
+See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/result.json).
+
 In `obstacle_segmentation` evaluation scenario, two types of checks, detection (Detection) and non-detection (NonDetection), are evaluated.
 Although they are evaluated simultaneously, in one callback function, they are counted separately.
 The `Result` is `true` if both detection and non-detection evaluation steps have passed. Otherwise the `Result` is `false`.
@@ -162,10 +164,12 @@ An example of evaluation is described below.
   "Frame": {
     "FrameName": "Frame number of t4_dataset used for evaluation",
     "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
+    "StopReasons": "Reasons for stopping output by the Planning module. Reference value",
+    "TopicRate": "Result of diag indicating whether the output rate of the point cloud is normal or not.",
     "Detection": {
-      "Result": "Success, Warn, Fail, or Skipped",
-      "Info": [
-        {
+      "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, Warn or Invalid" },
+      "Info": {
+        "DetectionSuccess or DetectionFail or DetectionWarn": {
           "Annotation": {
             "Scale": {
               "x": "Length of bounding box in x-direction",
@@ -197,25 +201,21 @@ An example of evaluation is described below.
             }
           }
         }
-      ]
+      }
     },
     "NonDetection": {
-      "Result": "Success, Fail, or Skipped",
-      "Info": [
-        {
-          "PointCloud": {
-            "NumPoints": "Number of point clouds out in non-detected areas.",
-            "Distance": {
-              "0-1": "Number of point clouds out in non-detected areas between 0-1 m from base_link",
-              "x-x+1": "Distribution of point clouds appearing in non-detected areas by distance",
-              "99-100": "Number of point clouds out in non-detected areas between 99-100 m from base_link"
-            }
+      "Result": "Success, Fail, or Invalid",
+      "Info": {
+        "PointCloud": {
+          "NumPoints": "Number of point clouds out in non-detected areas.",
+          "Distance": {
+            "0-1": "Number of point clouds out in non-detected areas between 0-1 m from base_link",
+            "x-x+1": "Distribution of point clouds appearing in non-detected areas by distance",
+            "99-100": "Number of point clouds out in non-detected areas between 99-100 m from base_link"
           }
         }
-      ]
-    },
-    "StopReasons": "Reasons for stopping output by the Planning module. Reference value",
-    "TopicRate": "Result of diag indicating whether the output rate of the point cloud is normal or not."
+      }
+    }
   }
 }
 ```
