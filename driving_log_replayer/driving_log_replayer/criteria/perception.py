@@ -175,8 +175,9 @@ class CriteriaMethodImpl(ABC):
         -------
             SuccessFail: Success or fail.
         """
+        # no ground truth and no result is considered as success
         if self.has_objects(frame) is False:
-            return SuccessFail.FAIL
+            return SuccessFail.SUCCESS
         score: float = self.calculate_score(frame)
         return SuccessFail.SUCCESS if self.level.is_valid(score) else SuccessFail.FAIL
 
