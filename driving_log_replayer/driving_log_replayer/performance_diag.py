@@ -121,9 +121,10 @@ class Visibility(EvaluationItem):
 @dataclass
 class Blockage(EvaluationItem):
     success: bool = True
+    # sample /autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar right_upper: blockage_validation
     BLOCKAGE_DIAG_BASE_NAME: ClassVar[
         str
-    ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar"
+    ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar "
     BLOCKAGE_DIAG_POSTFIX: ClassVar[str] = ": blockage_validation"
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
@@ -135,11 +136,6 @@ class Blockage(EvaluationItem):
         self.blockage_name = (
             Blockage.BLOCKAGE_DIAG_BASE_NAME + self.name + Blockage.BLOCKAGE_DIAG_POSTFIX
         )
-
-    @classmethod
-    def trim_lidar_name(cls, diag_name: str) -> str:
-        remove_prefix = diag_name.replace(f"{Blockage.BLOCKAGE_DIAG_BASE_NAME} ", "")
-        return remove_prefix.replace(Blockage.BLOCKAGE_DIAG_POSTFIX, "")
 
     def set_frame(
         self,
