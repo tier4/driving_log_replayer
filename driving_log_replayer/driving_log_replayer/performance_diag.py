@@ -144,11 +144,7 @@ class Blockage(EvaluationItem):
         if not self.valid:
             self.summary = "Invalid"
             return (
-                {
-                    "LidarName": self.name,
-                    "Result": {"Total": self.success_str(), "Frame": "Invalid"},
-                    "Info": {},
-                },
+                {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
                 None,
                 None,
                 None,
@@ -191,7 +187,6 @@ class Blockage(EvaluationItem):
             )
             return (
                 {
-                    "LidarName": self.name,
                     "Result": {
                         "Total": self.success_str(),
                         "Frame": frame_success,
@@ -215,7 +210,6 @@ class Blockage(EvaluationItem):
 
         return (
             {
-                "LidarName": self.name,
                 "Result": {"Total": self.success_str(), "Frame": "Warn"},
                 "Info": {"Reason": "diagnostics does not contain blockage"},
             },
