@@ -14,7 +14,6 @@
 
 
 from dataclasses import dataclass
-from dataclasses import field
 import re
 from typing import ClassVar
 
@@ -121,146 +120,124 @@ class Visibility(EvaluationItem):
 
 @dataclass
 class Blockage(EvaluationItem):
-    name: str = "Blockage"
     success: bool = True
-    passed_sensors: dict[str, int] = field(default_factory=dict)
-    total_sensors: dict[str, int] = field(default_factory=dict)
-    success_sensors: dict[str, bool] = field(default_factory=dict)
+    # sample /autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar right_upper: blockage_validation
     BLOCKAGE_DIAG_BASE_NAME: ClassVar[
         str
-    ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar"
-    REGEX_BLOCKAGE_DIAG_NAME: ClassVar[str] = BLOCKAGE_DIAG_BASE_NAME + ".*"
+    ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar "
     BLOCKAGE_DIAG_POSTFIX: ClassVar[str] = ": blockage_validation"
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
-        self.valid = False
-        for k, v in self.condition.items():
-            if v.get("ScenarioType") is not None:
-                self.valid = True
-                self.passed_sensors[k] = 0
-                self.total_sensors[k] = 0
-                self.success_sensors[k] = True
+        self.scenario_type: str | None = self.condition["ScenarioType"]
+        self.blockage_type: str = self.condition["BlockageType"]
+        self.pass_frame_count: int = self.condition["PassFrameCount"]
+        self.valid: bool = self.scenario_type is not None
+        self.blockage_name = (
+            Blockage.BLOCKAGE_DIAG_BASE_NAME + self.name + Blockage.BLOCKAGE_DIAG_POSTFIX
+        )
 
-    def sensor_success_str(self, lidar_name: str) -> str:
-        return "Success" if self.success_sensors.get(lidar_name) else "Fail"
-
-    @classmethod
-    def trim_lidar_name(cls, diag_name: str) -> str:
-        remove_prefix = diag_name.replace(f"{Blockage.BLOCKAGE_DIAG_BASE_NAME} ", "")
-        return remove_prefix.replace(Blockage.BLOCKAGE_DIAG_POSTFIX, "")
-
-    def set_frame(self, msg: DiagnosticStatus) -> tuple[dict, dict, dict, dict]:
+    def set_frame(
+        self,
+        msg: DiagnosticStatus,
+    ) -> tuple[dict, Float64 | None, Float64 | None, Byte | None]:
         if not self.valid:
             self.summary = "Invalid"
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
-                {},
-                {},
-                {},
+                None,
+                None,
+                None,
             )
         include_target_status = False
-        rtn_dict = {}
-        rtn_sky_ratio = {}
-        rtn_ground_ratio = {}
-        rtn_level = {}
         diag_status: DiagnosticStatus
         for diag_status in msg.status:
-            if not re.fullmatch(Blockage.REGEX_BLOCKAGE_DIAG_NAME, diag_status.name):
-                continue
-            lidar_name = Blockage.trim_lidar_name(diag_status.name)
-            scenario_type = self.condition.get(lidar_name, {}).get("ScenarioType")
-            if scenario_type is None:
+            if diag_status.name != self.blockage_name:
                 continue
             include_target_status = True
             frame_success = "Fail"
-            self.total_sensors[lidar_name] += 1
+            self.total += 1
             ground_ratio = get_diag_value(diag_status, "ground_blockage_ratio")
             sky_ratio = get_diag_value(diag_status, "sky_blockage_ratio")
             diag_level = diag_status.level
-            if scenario_type == "TP":
+            if self.scenario_type == "TP":
                 if (
                     diag_level == DiagnosticStatus.ERROR
-                    and self.condition[lidar_name]["BlockageType"] in diag_status.message
+                    and self.blockage_type in diag_status.message
                 ):
                     frame_success = "Success"
-                    self.passed_sensors[lidar_name] += 1
-                self.success_sensors[lidar_name] = (
-                    self.passed_sensors[lidar_name] >= self.condition[lidar_name]["PassFrameCount"]
-                )
-            elif scenario_type == "FP":
+                    self.passed += 1
+                self.success = self.passed >= self.pass_frame_count
+            elif self.scenario_type == "FP":
                 if not (
                     diag_level == DiagnosticStatus.ERROR
-                    and self.condition[lidar_name]["BlockageType"] in diag_status.message
+                    and self.blockage_type in diag_status.message
                 ):
                     frame_success = "Success"
-                    self.passed_sensors[lidar_name] += 1
-                self.success_sensors[lidar_name] = (
-                    self.passed_sensors[lidar_name] == self.total_sensors[lidar_name]
-                )
+                    self.passed += 1
+                self.success = self.passed == self.total
+            self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total}"
+            break
+        if include_target_status:
             float_sky_ratio = convert_str_to_float(sky_ratio)
             float_ground_ratio = convert_str_to_float(ground_ratio)
             valid_ratio = (
                 float_sky_ratio >= Blockage.VALID_VALUE_THRESHOLD
                 and float_ground_ratio >= Blockage.VALID_VALUE_THRESHOLD
             )
-            rtn_dict[lidar_name] = {
-                "Result": {"Total": self.sensor_success_str(lidar_name), "Frame": frame_success},
-                "Info": {
-                    "Level": int.from_bytes(diag_level, byteorder="little"),
-                    "GroundBlockageRatio": float_ground_ratio,
-                    "GroundBlockageCount": convert_str_to_int(
-                        get_diag_value(diag_status, "ground_blockage_count"),
-                    ),
-                    "SkyBlockageRatio": float_sky_ratio,
-                    "SkyBlockageCount": convert_str_to_int(
-                        get_diag_value(diag_status, "sky_blockage_count"),
-                    ),
+            return (
+                {
+                    "Result": {
+                        "Total": self.success_str(),
+                        "Frame": frame_success,
+                    },
+                    "Info": {
+                        "Level": int.from_bytes(diag_level, byteorder="little"),
+                        "GroundBlockageRatio": float_ground_ratio,
+                        "GroundBlockageCount": convert_str_to_int(
+                            get_diag_value(diag_status, "ground_blockage_count"),
+                        ),
+                        "SkyBlockageRatio": float_sky_ratio,
+                        "SkyBlockageCount": convert_str_to_int(
+                            get_diag_value(diag_status, "sky_blockage_count"),
+                        ),
+                    },
                 },
-            }
-            rtn_sky_ratio[lidar_name] = Float64(data=float_sky_ratio) if valid_ratio else None
-            rtn_ground_ratio[lidar_name] = Float64(data=float_ground_ratio) if valid_ratio else None
-            rtn_level[lidar_name] = Byte(data=diag_level) if valid_ratio else None
-        self.update()
-        if include_target_status:
-            return rtn_dict, rtn_sky_ratio, rtn_ground_ratio, rtn_level
+                Float64(data=float_sky_ratio) if valid_ratio else None,
+                Float64(data=float_ground_ratio) if valid_ratio else None,
+                Byte(data=diag_level) if valid_ratio else None,
+            )
+
         return (
             {
                 "Result": {"Total": self.success_str(), "Frame": "Warn"},
                 "Info": {"Reason": "diagnostics does not contain blockage"},
             },
-            {},
-            {},
-            {},
+            None,
+            None,
+            None,
         )
-
-    def update(self) -> None:
-        tmp_success = True
-        tmp_summary = ""
-        for lidar_name, v in self.success_sensors.items():
-            tmp_summary += f"{lidar_name}: {self.passed_sensors[lidar_name]} / {self.total_sensors[lidar_name]} "
-            # If even one false is entered, the entire blockage test is false.
-            if not v:
-                tmp_success = False
-        self.success = tmp_success
-        tmp_success_str = "Success" if tmp_success else "Fail"
-        self.summary = f"{self.name} ({tmp_success_str}): {tmp_summary.rstrip()}"
 
 
 class PerformanceDiagResult(ResultBase):
     def __init__(self, condition: dict) -> None:
         super().__init__()
         self.__visibility = Visibility(condition=condition.get("LiDAR", {}).get("Visibility", {}))
-        self.__blockage = Blockage(condition=condition.get("LiDAR", {}).get("Blockage", {}))
+        self.__blockages: dict[str, Blockage] = {}
+        for lidar_name, v in condition.get("LiDAR", {}).get("Blockage", {}).items():
+            if v["ScenarioType"] is not None:
+                self.__blockages[lidar_name] = Blockage(name=lidar_name, condition=v)
 
     def update(self) -> None:
-        summary_str = f"{self.__visibility.summary}, {self.__blockage.summary}"
-        if self.__visibility.success and self.__blockage.success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
+        tmp_success = self.__visibility.success
+        tmp_summary = self.__visibility.summary + " Blockage:"
+        for v in self.__blockages.values():
+            tmp_summary += " " + v.summary
+            if not v.success:
+                tmp_success = False
+        prefix_str = "Passed: " if tmp_success else "Failed: "
+        self._success = tmp_success
+        self._summary = prefix_str + tmp_summary
 
     def set_frame(
         self,
@@ -273,18 +250,24 @@ class PerformanceDiagResult(ResultBase):
         dict[str, Float64],
         dict[str, Byte],
     ]:
+        msg_blockage_sky_ratios: dict[str, Float64] = {}
+        msg_blockage_ground_ratios: dict[str, Float64] = {}
+        msg_blockage_levels: dict[str, Byte] = {}
+
         out_frame = {"Ego": {"TransformStamped": map_to_baselink}}
         (
             out_frame["Visibility"],
             msg_visibility_value,
             msg_visibility_level,
         ) = self.__visibility.set_frame(msg)
-        (
-            out_frame["Blockage"],
-            msg_blockage_sky_ratios,
-            msg_blockage_ground_ratios,
-            msg_blockage_levels,
-        ) = self.__blockage.set_frame(msg)
+        out_frame["Blockage"] = {}
+        for k, v in self.__blockages.items():
+            (
+                out_frame["Blockage"][k],
+                msg_blockage_sky_ratios[k],
+                msg_blockage_ground_ratios[k],
+                msg_blockage_levels[k],
+            ) = v.set_frame(msg)
         self._frame = out_frame
         self.update()
         return (

@@ -76,7 +76,7 @@ class Perception2DResult(ResultBase):
         tmp_success = True
         tmp_summary = ""
         for v in self.__cameras.values():
-            tmp_summary += v.summary
+            tmp_summary += " " + v.summary
             if not v.success:
                 tmp_success = False
         prefix_str = "Passed: " if tmp_success else "Failed: "
