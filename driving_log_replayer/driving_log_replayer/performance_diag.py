@@ -236,7 +236,7 @@ class PerformanceDiagResult(ResultBase):
 
     def update(self) -> None:
         tmp_success = self.__visibility.success
-        tmp_summary = self.__visibility.summary + "Blockage: "
+        tmp_summary = self.__visibility.summary + " Blockage:"
         for v in self.__blockages.values():
             tmp_summary += " " + v.summary
             if not v.success:
