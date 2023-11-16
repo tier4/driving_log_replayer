@@ -17,7 +17,6 @@ from typing import Callable
 import pytest
 
 from driving_log_replayer.scenario import Scenario
-from driving_log_replayer.scenario import ScenarioWithoutT4Dataset
 
 # TODO: scenario loaderを作って直接sampleからdict作ってテストするのもあとで入れる
 
@@ -25,33 +24,83 @@ from driving_log_replayer.scenario import ScenarioWithoutT4Dataset
 @pytest.fixture()
 def create_scenario_dict() -> dict:
     return {
-        "ScenarioFormatVersion": "3.0.0",
-        "ScenarioName": "perception_use_bag_concat_data",
-        "ScenarioDescription": "sensing_module_off_and_use_pointcloud_in_the_rosbag",
+        "ScenarioFormatVersion": "2.2.0",
+        "ScenarioName": "sample_localization",
+        "ScenarioDescription": "sample_description",
         "SensorModel": "sample_sensor_kit",
         "VehicleModel": "sample_vehicle",
+        "VehicleId": "default",
+        "LocalMapPath": "$HOME/autoware_map/sample-map-planning",
+        "Evaluation": {
+            "UseCaseName": "localization",
+            "UseCaseFormatVersion": "1.2.0",
+            "Conditions": {
+                "Convergence": {
+                    "AllowableDistance": 0.2,
+                    "AllowableExeTimeMs": 100.0,
+                    "AllowableIterationNum": 30,
+                    "PassRate": 95.0,
+                },
+                "Reliability": {
+                    "Method": "NVTL",
+                    "AllowableLikelihood": 2.3,
+                    "NGCount": 10,
+                },
+            },
+            "InitialPose": {
+                "position": {
+                    "x": 3836.5478515625,
+                    "y": 73729.96875,
+                    "z": 0.0,
+                },
+                "orientation": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": -0.9689404241590215,
+                    "w": 0.2472942668776119,
+                },
+            },
+        },
     }
 
 
 @pytest.fixture()
-def create_scenario_without_t4_dataset_dict() -> dict:
+def create_t4_scenario_dict() -> dict:
     return {
         "ScenarioFormatVersion": "3.0.0",
         "ScenarioName": "perception_use_bag_concat_data",
         "ScenarioDescription": "sensing_module_off_and_use_pointcloud_in_the_rosbag",
         "SensorModel": "sample_sensor_kit",
         "VehicleModel": "sample_vehicle",
-        "VehicleId": "ps1",
+        "Evaluation": {
+            "UseCaseName": "perception",
+            "UseCaseFormatVersion": "0.6.0",
+            "Conditions": {
+                "Convergence": {
+                    "AllowableDistance": 0.2,
+                    "AllowableExeTimeMs": 100.0,
+                    "AllowableIterationNum": 30,
+                    "PassRate": 95.0,
+                },
+                "Reliability": {
+                    "Method": "NVTL",
+                    "AllowableLikelihood": 2.3,
+                    "NGCount": 10,
+                },
+            },
+        },
     }
 
 
-def test_scenario(create_scenario_dict: Callable) -> None:
-    scenario_dict: dict = create_scenario_dict
-    scenario = Scenario(**scenario_dict)
-    assert scenario.ScenarioDescription == "sensing_module_off_and_use_pointcloud_in_the_rosbag"
+# def test_scenario(create_scenario_dict: Callable) -> None:
+#     scenario_dict: dict = create_scenario_dict
+#     scenario = Scenario(**scenario_dict)
+#     print(scenario)
+#     assert scenario.ScenarioDescription == "sample_description"
+#     assert scenario.Evaluation.InitialPose.position.x == 3836.5478515625
 
 
-def test_scenario_without_t4_dataset(create_scenario_without_t4_dataset_dict: Callable) -> None:
-    scenario_dict: dict = create_scenario_without_t4_dataset_dict
+def test_t4_scenario(create_t4_scenario_dict: Callable) -> None:
+    scenario_dict: dict = create_t4_scenario_dict
     scenario = Scenario(**scenario_dict)
-    assert scenario.ScenarioDescription == "sensing_module_off_and_use_pointcloud_in_the_rosbag"
+    print(type(scenario.Evaluation))

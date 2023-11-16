@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from pydantic import BaseModel
 from pydantic import Field
-from pydantic import validator
+from typing_extensions import Literal
 
 
 class ScenarioFormatVersionError(Exception):
@@ -25,34 +26,52 @@ class UseCaseFormatVersionError(Exception):
     pass
 
 
-class PositionConfig(BaseModel):
+class Position(BaseModel):
     x: float
     y: float
     z: float
 
 
-class OrientationConfig(BaseModel):
+class Orientation(BaseModel):
     x: float
     y: float
     z: float
     w: float
 
 
-class InitialPoseConfig(BaseModel):
-    position: PositionConfig
-    orientation: OrientationConfig
+class InitialPose(BaseModel):
+    position: Position
+    orientation: Orientation
+
+
+class EvaluationModel(BaseModel):
+    UseCaseName: str
+    UseCaseFormatVersion: str
+    Conditions: dict
+    InitialPose: InitialPose | None
+
+
+class Localization(EvaluationModel):
+    UseCaseName: Literal["localization"]
+    UseCaseFormatVersion: Literal["1.2.0"]
+    Conditions: dict
+
+
+class Perception(EvaluationModel):
+    UseCaseName: Literal["perception"]
+    UseCaseFormatVersion: Literal["0.6.0"]
+    Conditions: dict
+
+
+Evaluation = Perception | Localization
 
 
 class Scenario(BaseModel):
-    ScenarioFormatVersion: str = Field(pattern="3.0.0")
+    ScenarioFormatVersion: Literal["2.2.0", "3.0.0"]
     ScenarioName: str
     ScenarioDescription: str
     SensorModel: str
     VehicleModel: str
-    # Evaluation: BaseModel
-
-
-class ScenarioWithoutT4Dataset(Scenario):
-    ScenarioFormatVersion: str = Field(pattern="2.2.0")
-    VehicleId: str
+    VehicleId: str | None = Field(default=None)
     LocalMapPath: str = Field(default="")
+    Evaluation: Evaluation
