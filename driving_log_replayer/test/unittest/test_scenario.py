@@ -47,19 +47,19 @@ def create_scenario_dict() -> dict:
                     "NGCount": 10,
                 },
             },
-            "InitialPose": {
-                "position": {
-                    "x": 3836.5478515625,
-                    "y": 73729.96875,
-                    "z": 0.0,
-                },
-                "orientation": {
-                    "x": 0.0,
-                    "y": 0.0,
-                    "z": -0.9689404241590215,
-                    "w": 0.2472942668776119,
-                },
-            },
+            # "InitialPose": {
+            #     "position": {
+            #         "x": 3836.5478515625,
+            #         "y": 73729.96875,
+            #         "z": 0.0,
+            #     },
+            #     "orientation": {
+            #         "x": 0.0,
+            #         "y": 0.0,
+            #         "z": -0.9689404241590215,
+            #         "w": 0.2472942668776119,
+            #     },
+            # },
         },
     }
 
@@ -92,15 +92,14 @@ def create_t4_scenario_dict() -> dict:
     }
 
 
-# def test_scenario(create_scenario_dict: Callable) -> None:
-#     scenario_dict: dict = create_scenario_dict
-#     scenario = Scenario(**scenario_dict)
-#     print(scenario)
-#     assert scenario.ScenarioDescription == "sample_description"
-#     assert scenario.Evaluation.InitialPose.position.x == 3836.5478515625
+def test_scenario(create_scenario_dict: Callable) -> None:
+    scenario_dict: dict = create_scenario_dict
+    scenario = Scenario(**scenario_dict)
+    print(scenario)
 
 
 def test_t4_scenario(create_t4_scenario_dict: Callable) -> None:
     scenario_dict: dict = create_t4_scenario_dict
     scenario = Scenario(**scenario_dict)
     print(type(scenario.Evaluation))
+    print(scenario)

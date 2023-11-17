@@ -48,7 +48,6 @@ class EvaluationModel(BaseModel):
     UseCaseName: str
     UseCaseFormatVersion: str
     Conditions: dict
-    InitialPose: InitialPose | None
 
 
 class Localization(EvaluationModel):
@@ -72,6 +71,6 @@ class Scenario(BaseModel):
     ScenarioDescription: str
     SensorModel: str
     VehicleModel: str
-    VehicleId: str | None = Field(default=None)
-    LocalMapPath: str = Field(default="")
+    VehicleId: str | None = None
+    LocalMapPath: str = ""
     Evaluation: Evaluation
