@@ -29,12 +29,12 @@ from driving_log_replayer.localization import Convergence
 from driving_log_replayer.localization import get_reliability_method
 from driving_log_replayer.localization import Reliability
 from driving_log_replayer.localization import Scenario
-from driving_log_replayer.scenario import load_scenario
+from driving_log_replayer.scenario import load_sample_scenario
 
 
 def test_scenario() -> None:
-    scenario_path = Path("sample/localization/scenario.yaml")
-    scenario: Scenario = load_scenario(scenario_path, Scenario)
+    scenario: Scenario = load_sample_scenario("localization", Scenario)
+    print(scenario)
     assert scenario.VehicleId == "default"
 
 

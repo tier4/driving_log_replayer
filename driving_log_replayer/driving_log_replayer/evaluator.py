@@ -49,6 +49,7 @@ import yaml
 
 from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultWriter
+from driving_log_replayer.scenario import load_scenario
 
 if TYPE_CHECKING:
     from autoware_adapi_v1_msgs.msg import ResponseStatus
@@ -71,8 +72,7 @@ class DLREvaluator(Node, ABC):
 
         self._scenario = None
         try:
-            with Path(self._scenario_path).open() as scenario_file:
-                self._scenario = scenario_class(**yaml.safe_load(scenario_file))
+            self._scenario = load_scenario(Path(self._scenario_path), scenario_class)
         except (FileNotFoundError, PermissionError, yaml.YAMLError, ValidationError) as e:
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
             rclpy.shutdown()
