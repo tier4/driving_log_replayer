@@ -47,7 +47,8 @@ def create_scenario_dict() -> dict:
                     "NGCount": 10,
                 },
             },
-            # "InitialPose": {
+            "InitialPose": None,
+            # {
             #     "position": {
             #         "x": 3836.5478515625,
             #         "y": 73729.96875,

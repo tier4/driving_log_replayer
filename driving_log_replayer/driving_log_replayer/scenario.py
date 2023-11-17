@@ -12,18 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Any
 
 from pydantic import BaseModel
 from pydantic import Field
 from typing_extensions import Literal
-
-
-class ScenarioFormatVersionError(Exception):
-    pass
-
-
-class UseCaseFormatVersionError(Exception):
-    pass
 
 
 class Position(BaseModel):
@@ -54,6 +47,7 @@ class Localization(EvaluationModel):
     UseCaseName: Literal["localization"]
     UseCaseFormatVersion: Literal["1.2.0"]
     Conditions: dict
+    InitialPose: InitialPose | None
 
 
 class Perception(EvaluationModel):
