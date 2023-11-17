@@ -30,6 +30,7 @@ from driving_log_replayer.localization import get_reliability_method
 from driving_log_replayer.localization import Reliability
 from driving_log_replayer.localization import Scenario
 from driving_log_replayer.scenario import load_sample_scenario
+from driving_log_replayer.scenario import load_scenario
 
 
 def test_scenario() -> None:

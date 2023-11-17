@@ -96,11 +96,11 @@ def create_t4_scenario_dict() -> dict:
 def test_scenario(create_scenario_dict: Callable) -> None:
     scenario_dict: dict = create_scenario_dict
     scenario = Scenario(**scenario_dict)
-    print(scenario)
+    # print(scenario)
 
 
 def test_t4_scenario(create_t4_scenario_dict: Callable) -> None:
     scenario_dict: dict = create_t4_scenario_dict
     scenario = Scenario(**scenario_dict)
     print(type(scenario.Evaluation))
-    print(scenario)
+    # print(scenario)

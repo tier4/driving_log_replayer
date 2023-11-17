@@ -66,4 +66,5 @@ def load_sample_scenario(use_case_name: str, scenario_class: Callable) -> Any:
     )
     if sample_scenario_path.is_symlink():
         sample_scenario_path = sample_scenario_path.resolve()
-    load_scenario(sample_scenario_path, scenario_class)
+    with sample_scenario_path.open() as scenario_file:
+        return scenario_class(**yaml.safe_load(scenario_file))
