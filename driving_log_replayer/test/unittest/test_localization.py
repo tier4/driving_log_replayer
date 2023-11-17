@@ -34,7 +34,7 @@ from driving_log_replayer.scenario import load_scenario
 
 def test_scenario() -> None:
     scenario_path = Path("sample/localization/scenario.yaml")
-    scenario: Scenario = load_scenario(scenario_path)
+    scenario: Scenario = load_scenario(scenario_path, Scenario)
     assert scenario.VehicleId == "default"
 
 
