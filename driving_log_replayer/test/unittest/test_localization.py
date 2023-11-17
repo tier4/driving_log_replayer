@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from collections.abc import Callable
+from pathlib import Path
 
 from builtin_interfaces.msg import Time
 from diagnostic_msgs.msg import DiagnosticArray
@@ -27,6 +28,14 @@ from driving_log_replayer.localization import Availability
 from driving_log_replayer.localization import Convergence
 from driving_log_replayer.localization import get_reliability_method
 from driving_log_replayer.localization import Reliability
+from driving_log_replayer.localization import Scenario
+from driving_log_replayer.scenario import load_scenario
+
+
+def test_scenario() -> None:
+    scenario_path = Path("sample/localization/scenario.yaml")
+    scenario: Scenario = load_scenario(scenario_path)
+    assert scenario.VehicleId == "default"
 
 
 def test_availability_success() -> None:

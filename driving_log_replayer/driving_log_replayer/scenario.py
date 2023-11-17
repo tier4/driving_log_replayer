@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pathlib import Path
 from typing import Any
+from typing import Callable
 
 from pydantic import BaseModel
-from pydantic import Field
 from typing_extensions import Literal
+import yaml
 
 
 class Position(BaseModel):
@@ -37,28 +39,6 @@ class InitialPose(BaseModel):
     orientation: Orientation
 
 
-class EvaluationModel(BaseModel):
-    UseCaseName: str
-    UseCaseFormatVersion: str
-    Conditions: dict
-
-
-class Localization(EvaluationModel):
-    UseCaseName: Literal["localization"]
-    UseCaseFormatVersion: Literal["1.2.0"]
-    Conditions: dict
-    InitialPose: InitialPose | None
-
-
-class Perception(EvaluationModel):
-    UseCaseName: Literal["perception"]
-    UseCaseFormatVersion: Literal["0.6.0"]
-    Conditions: dict
-
-
-Evaluation = Perception | Localization
-
-
 class Scenario(BaseModel):
     ScenarioFormatVersion: Literal["2.2.0", "3.0.0"]
     ScenarioName: str
@@ -67,4 +47,9 @@ class Scenario(BaseModel):
     VehicleModel: str
     VehicleId: str | None = None
     LocalMapPath: str = ""
-    Evaluation: Evaluation
+    Evaluation: Any
+
+
+def load_scenario(scenario_path: Path, scenario_class: Callable) -> Any:
+    with scenario_path.open() as scenario_file:
+        return scenario_class(**yaml.safe_load(scenario_file))

@@ -15,13 +15,10 @@
 from abc import ABC
 from abc import abstractmethod
 from collections.abc import Callable
-from dataclasses import dataclass
-from dataclasses import Field
-from dataclasses import fields
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
-from typing import get_type_hints
+from typing import Callable
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
@@ -32,6 +29,7 @@ from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from geometry_msgs.msg import TransformStamped
 import numpy as np
+from pydantic import ValidationError
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.clock import Clock
@@ -59,7 +57,7 @@ if TYPE_CHECKING:
 class DLREvaluator(Node, ABC):
     COUNT_SHUTDOWN_NODE = 5
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, scenario_class: Callable) -> None:
         super().__init__(name)
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
@@ -71,15 +69,14 @@ class DLREvaluator(Node, ABC):
             self.get_parameter("result_json_path").get_parameter_value().string_value,
         )
 
-        self._scenario_yaml_obj = None
+        self._scenario = None
         try:
             with Path(self._scenario_path).open() as scenario_file:
-                self._scenario_yaml_obj = yaml.safe_load(scenario_file)
-        except (FileNotFoundError, PermissionError, yaml.YAMLError) as e:
+                self._scenario = scenario_class(**yaml.safe_load(scenario_file))
+        except (FileNotFoundError, PermissionError, yaml.YAMLError, ValidationError) as e:
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
             rclpy.shutdown()
 
-        self._condition = self._scenario_yaml_obj["Evaluation"].get("Conditions", {})
         self._result_writer = ResultWriter(
             self._result_json_path,
             self.get_clock(),
@@ -89,9 +86,9 @@ class DLREvaluator(Node, ABC):
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
-        self._initial_pose = DLREvaluator.set_initial_pose(
-            self._scenario_yaml_obj["Evaluation"].get("InitialPose", None),
-        )
+        # self._initial_pose = DLREvaluator.set_initial_pose(
+        #     self._scenario_yaml_obj["Evaluation"].get("InitialPose", None),
+        # )
         self.start_initialpose_service()
 
         self._current_time = Time().to_msg()

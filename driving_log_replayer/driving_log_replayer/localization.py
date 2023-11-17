@@ -22,12 +22,18 @@ from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
 import numpy as np
+from pydantic import BaseModel
 from rosidl_runtime_py import message_to_ordereddict
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
+from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import Scenario
+
+number = int | float
 
 
 def calc_pose_lateral_distance(relative_pose: PoseStamped) -> float:
@@ -46,6 +52,35 @@ def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
     if method_name in ["TP", "NVTL"]:
         return method_name, ""
     return None, f"{method_name} is not valid reliability method"
+
+
+class ConvergenceCondition(BaseModel):
+    AllowableDistance: number
+    AllowableExeTimeMs: number
+    AllowableIterationNum: int
+    PassRate: number
+
+
+class ReliabilityCondition(BaseModel):
+    Method: Literal["NVTL", "TP"]
+    AllowableLikelihood: number
+    NGCount: int
+
+
+class Conditions(BaseModel):
+    Convergence: ConvergenceCondition
+    Reliability: ReliabilityCondition
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["localization"]
+    UseCaseFormatVersion: Literal["1.2.0"]
+    Conditions: Conditions
+    InitialPose: InitialPose | None
+
+
+class LocalizationScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass
