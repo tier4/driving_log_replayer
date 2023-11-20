@@ -20,6 +20,8 @@ from pydantic import BaseModel
 from typing_extensions import Literal
 import yaml
 
+number = int | float
+
 
 class Position(BaseModel):
     x: float

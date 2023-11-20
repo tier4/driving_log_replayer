@@ -31,9 +31,8 @@ from typing_extensions import Literal
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
-
-number = int | float
 
 
 def calc_pose_lateral_distance(relative_pose: PoseStamped) -> float:

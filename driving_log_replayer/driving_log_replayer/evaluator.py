@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from abc import ABC
-from abc import abstractmethod
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
@@ -60,7 +58,7 @@ if TYPE_CHECKING:
     from autoware_adapi_v1_msgs.msg import ResponseStatus
 
 
-class DLREvaluator(Node, ABC):
+class DLREvaluator(Node):
     COUNT_SHUTDOWN_NODE = 5
 
     def __init__(self, name: str, scenario_class: Callable, result_class: Callable) -> None:
