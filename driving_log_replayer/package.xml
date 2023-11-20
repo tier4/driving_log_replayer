@@ -42,7 +42,8 @@
   <exec_depend>perception_eval</exec_depend>
   <exec_depend>python-transforms3d-pip</exec_depend>
   <exec_depend>python3-pandas</exec_depend>
-  <exec_depend>python3-pydantic</exec_depend>
+  <!-- The version of python3-pydantic is old, so use pip to install it when building with CMake -->
+  <!-- <exec_depend>python3-pydantic</exec_depend> -->
   <exec_depend>python3-simplejson</exec_depend>
   <exec_depend>python3-termcolor</exec_depend>
   <exec_depend>python3-yaml</exec_depend>
