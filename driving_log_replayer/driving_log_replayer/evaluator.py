@@ -76,21 +76,29 @@ class DLREvaluator(Node):
         self._scenario = None
         try:
             self._scenario = load_scenario(Path(self._scenario_path), scenario_class)
-            self._result = result_class(self._scenario.Evaluation.Conditions)
             self._result_writer = ResultWriter(
                 self._result_json_path,
                 self.get_clock(),
                 self._scenario.Evaluation.Conditions,
             )
+            self._result = result_class(self._scenario.Evaluation.Conditions)
         except (FileNotFoundError, PermissionError, yaml.YAMLError, ValidationError) as e:
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
+            self._result_writer = ResultWriter(
+                self._result_json_path,
+                self.get_clock(),
+                {},
+            )
             error_dict = {
                 "Result": {"Success": False, "Summary": "ScenarioFormatError"},
                 "Stamp": {"System": 0.0},
-                "Frame": {"ErrorMsg": e},
+                "Frame": {"ErrorMsg": e.__str__()},
             }
             self._result_writer.write_line(error_dict)
+            self._result_writer.close()
             rclpy.shutdown()
+
+        self.set_t4_dataset()
 
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
@@ -110,7 +118,9 @@ class DLREvaluator(Node):
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
 
-    def use_t4_dataset(self) -> None:
+    def set_t4_dataset(self) -> None:
+        if self._scenario.ScenarioFormatVersion != "3.0.0":
+            return
         self.declare_parameter("t4_dataset_path", "")
         self.declare_parameter("result_archive_path", "")
 

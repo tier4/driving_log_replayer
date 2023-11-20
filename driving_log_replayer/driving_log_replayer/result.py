@@ -75,12 +75,20 @@ class ResultBase(ABC):
 
 
 class ResultWriter:
-    def __init__(self, result_json_path: str, ros_clock: Clock, condition: BaseModel) -> None:
+    def __init__(
+        self,
+        result_json_path: str,
+        ros_clock: Clock,
+        condition: BaseModel | dict,
+    ) -> None:
         self._result_path = self.create_jsonl_path(result_json_path)
         self._result_file = self._result_path.open("w")
         self._ros_clock = ros_clock
         self._system_clock = Clock(clock_type=ClockType.SYSTEM_TIME)
-        self.write_line({"Condition": condition.model_dump()})
+        condition_dict = condition
+        if type(condition) == BaseModel:
+            condition_dict = condition.model_dump()
+        self.write_line({"Condition": condition_dict})
         self.write_line(self.get_header())
 
     @property
