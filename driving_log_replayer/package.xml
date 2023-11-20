@@ -42,8 +42,6 @@
   <exec_depend>perception_eval</exec_depend>
   <exec_depend>python-transforms3d-pip</exec_depend>
   <exec_depend>python3-pandas</exec_depend>
-  <!-- The version of python3-pydantic is old, so use pip to install it when building with CMake -->
-  <!-- <exec_depend>python3-pydantic</exec_depend> -->
   <exec_depend>python3-simplejson</exec_depend>
   <exec_depend>python3-termcolor</exec_depend>
   <exec_depend>python3-yaml</exec_depend>
@@ -51,6 +49,8 @@
   <exec_depend>ros2_numpy</exec_depend>
   <exec_depend>rosidl_runtime_py</exec_depend>
   <exec_depend>tf_transformations</exec_depend>
+  <!-- The version of python3-pydantic is old, so use pip to install it when building with CMake -->
+  <!-- <exec_depend>python3-pydantic</exec_depend> -->
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_cmake_pytest</test_depend>
