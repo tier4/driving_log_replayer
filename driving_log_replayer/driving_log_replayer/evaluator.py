@@ -63,7 +63,7 @@ if TYPE_CHECKING:
 class DLREvaluator(Node, ABC):
     COUNT_SHUTDOWN_NODE = 5
 
-    def __init__(self, name: str, scenario_class: Callable) -> None:
+    def __init__(self, name: str, scenario_class: Callable, result_class: Callable) -> None:
         super().__init__(name)
         self.declare_parameter("scenario_path", "")
         self.declare_parameter("result_json_path", "")
@@ -78,15 +78,21 @@ class DLREvaluator(Node, ABC):
         self._scenario = None
         try:
             self._scenario = load_scenario(Path(self._scenario_path), scenario_class)
+            self._result = result_class(self._scenario.Evaluation.Conditions)
+            self._result_writer = ResultWriter(
+                self._result_json_path,
+                self.get_clock(),
+                self._scenario.Evaluation.Conditions,
+            )
         except (FileNotFoundError, PermissionError, yaml.YAMLError, ValidationError) as e:
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
+            error_dict = {
+                "Result": {"Success": False, "Summary": "ScenarioFormatError"},
+                "Stamp": {"System": 0.0},
+                "Frame": {"ErrorMsg": e},
+            }
+            self._result_writer.write_line(error_dict)
             rclpy.shutdown()
-
-        self._result_writer = ResultWriter(
-            self._result_json_path,
-            self.get_clock(),
-            self._condition,
-        )
 
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
@@ -224,12 +230,6 @@ class DLREvaluator(Node, ABC):
 
     def save_pkl(self, save_object: Any) -> None:
         PickleWriter(self._pkl_path, save_object)
-
-    @abstractmethod
-    def check_scenario(self) -> None:
-        """Check self._scenario_yaml_obj and if has error shutdown."""
-        if self._scenario_yaml_obj is None:
-            rclpy.shutdown()
 
     @classmethod
     def get_goal_pose_from_t4_dataset(cls, dataset_path: str) -> PoseStamped:

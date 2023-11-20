@@ -15,6 +15,7 @@
 from collections.abc import Callable
 from os.path import expandvars
 
+from pydantic import BaseModel
 import pytest
 from rclpy.clock import ClockType
 from rclpy.clock import ROSClock
@@ -36,6 +37,10 @@ class SampleResult(ResultBase):
         self._frame = {"Test": "ok"}
 
 
+class SampleConditions(BaseModel):
+    PassRate: float
+
+
 @pytest.fixture()
 def create_writer() -> ResultWriter:
     json_path = "$HOME/dlr_result.json"
@@ -43,7 +48,7 @@ def create_writer() -> ResultWriter:
     ros_time = Time(seconds=123, nanoseconds=456, clock_type=ClockType.ROS_TIME)
     ros_clock.set_ros_time_override(ros_time)
     ros_clock._set_ros_time_is_active(True)  # noqa
-    condition = {"sample_condition": "sample"}
+    condition = SampleConditions(PassRate=99.0)
     writer = ResultWriter(json_path, ros_clock, condition)
     yield writer
     # delete created jsonl file
@@ -62,7 +67,7 @@ def test_get_result(create_writer: Callable) -> None:
     sample_result.update()
     record = writer.get_result(sample_result)
     writer.write_line(record)
-    assert record["Result"]["Success"] == True  # noqa
+    assert record["Result"]["Success"] is True
     assert record["Result"]["Summary"] == "Sample OK"
     assert record["Frame"] == {"Test": "ok"}
     # The system time stamp is not checked since it changes with each execution.
