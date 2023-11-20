@@ -46,14 +46,6 @@ def calc_pose_horizontal_distance(relative_pose: PoseStamped) -> float:
     return np.sqrt(np.power(x, 2) + np.power(y, 2))
 
 
-def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
-    if method_name is None:
-        return None, "Scenario format error"
-    if method_name in ["TP", "NVTL"]:
-        return method_name, ""
-    return None, f"{method_name} is not valid reliability method"
-
-
 class ConvergenceCondition(BaseModel):
     AllowableDistance: number
     AllowableExeTimeMs: number

@@ -273,7 +273,7 @@ class DLREvaluator(Node, ABC):
     def set_initial_pose(self) -> PoseWithCovarianceStamped | None:
         if not hasattr(self._scenario.Evaluation, "InitialPose"):
             return None
-        initial_pose: InitialPose = self._scenario.Evaluation.Initialpose
+        initial_pose: InitialPose = self._scenario.Evaluation.InitialPose
         covariance = np.array(
             [
                 0.25,
@@ -321,7 +321,7 @@ class DLREvaluator(Node, ABC):
             ),
             covariance=covariance,
         )
-        return PoseWithCovarianceStamped(stamp=Header(frame_id="map"), pose=pose)
+        return PoseWithCovarianceStamped(header=Header(frame_id="map"), pose=pose)
 
     @classmethod
     def get_perception_label_str(cls, classification: ObjectClassification) -> str:

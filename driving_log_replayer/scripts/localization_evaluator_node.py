@@ -17,7 +17,6 @@
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
-import rclpy
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
@@ -25,7 +24,6 @@ from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.localization import calc_pose_horizontal_distance
 from driving_log_replayer.localization import calc_pose_lateral_distance
-from driving_log_replayer.localization import get_reliability_method
 from driving_log_replayer.localization import LocalizationResult
 from driving_log_replayer.localization import LocalizationScenario
 
@@ -33,7 +31,10 @@ from driving_log_replayer.localization import LocalizationScenario
 class LocalizationEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, LocalizationScenario, LocalizationResult)
+        self._scenario: LocalizationScenario
         self._result: LocalizationResult
+
+        self.__reliability_method = self._scenario.Evaluation.Conditions.Reliability.Method
 
         self.__latest_exe_time: Float32Stamped = Float32Stamped()
         self.__latest_iteration_num: Int32Stamped = Int32Stamped()
@@ -81,14 +82,6 @@ class LocalizationEvaluator(DLREvaluator):
             self.diagnostics_cb,
             1,
         )
-
-    def check_scenario(self) -> None:
-        self.__reliability_method, error_msg = get_reliability_method(
-            self._condition.get("Reliability", {}).get("Method"),
-        )
-        if self.__reliability_method is None:
-            self.get_logger().error(error_msg)
-            rclpy.shutdown()
 
     def exe_time_cb(self, msg: Float32Stamped) -> None:
         self.__latest_exe_time = msg
