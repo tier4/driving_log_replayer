@@ -55,8 +55,8 @@ class Perception(EvaluationItem):
 
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(
-            method=self.condition.get("CriteriaMethod"),
-            level=self.condition.get("CriteriaLevel"),
+            method=self.condition.CriteriaMethod,
+            level=self.condition.CriteriaLevel,
         )
 
     def set_frame(
@@ -94,7 +94,7 @@ class Perception(EvaluationItem):
             header,
         )
 
-        self.success = self.rate() >= self.condition["PassRate"]
+        self.success = self.rate() >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return (
@@ -117,7 +117,7 @@ class Perception(EvaluationItem):
 
 
 class PerceptionResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
         self.__perception = Perception(condition=condition)
 

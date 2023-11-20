@@ -49,11 +49,19 @@ import driving_log_replayer.perception_eval_conversions as eval_conversions
 class PerceptionEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, PerceptionScenario, PerceptionResult)
+        self._scenario: PerceptionScenario
 
-        self.use_t4_dataset()
+        self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
+        self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
+        self.__f_cfg = self._scenario.Evaluation.PerceptionPassFailConfig
+        self.__evaluation_task = self.__p_cfg["evaluation_config_dict"]["evaluation_task"]
+        self.__p_cfg["evaluation_config_dict"][
+            "label_prefix"
+        ] = "autoware"  # Add a fixed value setting
+        if not self.check_evaluation_task():
+            rclpy.shutdown()
 
         self.__frame_id: FrameID = FrameID.from_value(self.__frame_id_str)
-
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=self.__frame_id_str,
@@ -106,21 +114,6 @@ class PerceptionEvaluator(DLREvaluator):
         )
         self.__pub_marker_results = self.create_publisher(MarkerArray, "marker/results", 1)
         self.__skip_counter = 0
-
-    def check_scenario(self) -> None:
-        try:
-            self.__p_cfg = self._scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
-            self.__c_cfg = self._scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
-            self.__f_cfg = self._scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
-            self.__evaluation_task = self.__p_cfg["evaluation_config_dict"]["evaluation_task"]
-            self.__p_cfg["evaluation_config_dict"][
-                "label_prefix"
-            ] = "autoware"  # Add a fixed value setting
-        except KeyError:
-            self.get_logger().error("Scenario format error.")
-            rclpy.shutdown()
-        if not self.check_evaluation_task():
-            rclpy.shutdown()
 
     def check_evaluation_task(self) -> bool:
         if self.__evaluation_task in ["detection", "fp_validation"]:
