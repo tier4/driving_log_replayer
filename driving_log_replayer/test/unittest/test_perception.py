@@ -32,6 +32,13 @@ import pytest
 from std_msgs.msg import Header
 
 from driving_log_replayer.perception import Perception
+from driving_log_replayer.perception import PerceptionScenario
+from driving_log_replayer.scenario import load_sample_scenario
+
+
+def test_scenario() -> None:
+    scenario: PerceptionScenario = load_sample_scenario("perception", PerceptionScenario)
+    assert scenario.Evaluation.Conditions.CriteriaMethod == "num_tp"
 
 
 @pytest.fixture()

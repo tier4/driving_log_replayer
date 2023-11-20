@@ -15,14 +15,38 @@
 from dataclasses import dataclass
 
 from perception_eval.evaluation import PerceptionFrameResult
+from pydantic import BaseModel
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
+from typing_extensions import Literal
 from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.criteria import PerceptionCriteria
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import number
+from driving_log_replayer.scenario import Scenario
+
+
+class Conditions(BaseModel):
+    PassRate: number
+    CriteriaMethod: Literal["num_tp", "metrics_score"]
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[number]
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["perception"]
+    UseCaseFormatVersion: Literal["0.6.0"]
+    Datasets: list[dict]
+    Conditions: Conditions
+    PerceptionEvaluationConfig: dict
+    CriticalObjectFilterConfig: dict
+    PerceptionPassFailConfig: dict
+
+
+class PerceptionScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass

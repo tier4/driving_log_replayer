@@ -42,16 +42,16 @@ from visualization_msgs.msg import MarkerArray
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.perception import PerceptionResult
+from driving_log_replayer.perception import PerceptionScenario
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 
 
 class PerceptionEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.check_scenario()
+        super().__init__(name, PerceptionScenario, PerceptionResult)
+
         self.use_t4_dataset()
 
-        self.__result = PerceptionResult(self._condition)
         self.__frame_id: FrameID = FrameID.from_value(self.__frame_id_str)
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
@@ -143,8 +143,8 @@ class PerceptionEvaluator(DLREvaluator):
         self.save_pkl(self.__evaluator.frame_results)
         if self.__evaluation_task == "fp_validation":
             final_metrics = self.get_fp_result()
-            self.__result.set_final_metrics(final_metrics)
-            self._result_writer.write_result(self.__result)
+            self._result.set_final_metrics(final_metrics)
+            self._result_writer.write_result(self._result)
         else:
             self.get_final_result()
             score_dict = {}
@@ -159,8 +159,8 @@ class PerceptionEvaluator(DLREvaluator):
                     error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
                 )
             final_metrics = {"Score": score_dict, "Error": error_dict}
-            self.__result.set_final_metrics(final_metrics)
-            self._result_writer.write_result(self.__result)
+            self._result.set_final_metrics(final_metrics)
+            self._result_writer.write_result(self._result)
 
     def list_dynamic_object_from_ros_msg(
         self,
@@ -241,13 +241,13 @@ class PerceptionEvaluator(DLREvaluator):
             frame_pass_fail_config=self.__frame_pass_fail_config,
         )
         # write result
-        marker_ground_truth, marker_results = self.__result.set_frame(
+        marker_ground_truth, marker_results = self._result.set_frame(
             frame_result,
             self.__skip_counter,
             msg.header,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
         )
-        self._result_writer.write_result(self.__result)
+        self._result_writer.write_result(self._result)
         self.__pub_marker_ground_truth.publish(marker_ground_truth)
         self.__pub_marker_results.publish(marker_results)
 
