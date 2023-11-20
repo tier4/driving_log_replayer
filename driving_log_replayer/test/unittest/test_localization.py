@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from collections.abc import Callable
-from pathlib import Path
 
 from builtin_interfaces.msg import Time
 from diagnostic_msgs.msg import DiagnosticArray
@@ -30,12 +29,11 @@ from driving_log_replayer.localization import get_reliability_method
 from driving_log_replayer.localization import Reliability
 from driving_log_replayer.localization import Scenario
 from driving_log_replayer.scenario import load_sample_scenario
-from driving_log_replayer.scenario import load_scenario
 
 
 def test_scenario() -> None:
     scenario: Scenario = load_sample_scenario("localization", Scenario)
-    print(scenario)
+    print(scenario)  # noqa
     assert scenario.VehicleId == "default"
 
 

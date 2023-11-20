@@ -14,7 +14,6 @@
 
 from abc import ABC
 from abc import abstractmethod
-from collections.abc import Callable
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
@@ -25,8 +24,12 @@ from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from autoware_auto_perception_msgs.msg import ObjectClassification
 from autoware_auto_perception_msgs.msg import TrafficLight
 from builtin_interfaces.msg import Time as Stamp
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose
 from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseWithCovariance
 from geometry_msgs.msg import PoseWithCovarianceStamped
+from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import TransformStamped
 import numpy as np
 from pydantic import ValidationError
@@ -40,6 +43,7 @@ from rclpy.time import Duration
 from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
 import simplejson as json
+from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformException
 from tf2_ros import TransformListener
@@ -49,6 +53,7 @@ import yaml
 
 from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultWriter
+from driving_log_replayer.scenario import InitialPose
 from driving_log_replayer.scenario import load_scenario
 
 if TYPE_CHECKING:
@@ -86,9 +91,7 @@ class DLREvaluator(Node, ABC):
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
-        # self._initial_pose = DLREvaluator.set_initial_pose(
-        #     self._scenario_yaml_obj["Evaluation"].get("InitialPose", None),
-        # )
+        self._initial_pose = self.set_initial_pose()
         self.start_initialpose_service()
 
         self._current_time = Time().to_msg()
@@ -234,16 +237,20 @@ class DLREvaluator(Node, ABC):
         with ego_pose_json_path.open() as ego_pose_file:
             ego_pose_json = json.load(ego_pose_file)
             last_ego_pose = ego_pose_json[-1]
-            goal_pose = PoseStamped()
-            goal_pose.header.frame_id = "map"
-            goal_pose.pose.position.x = last_ego_pose["translation"][0]
-            goal_pose.pose.position.y = last_ego_pose["translation"][1]
-            goal_pose.pose.position.z = last_ego_pose["translation"][2]
-            goal_pose.pose.orientation.x = last_ego_pose["rotation"][1]
-            goal_pose.pose.orientation.y = last_ego_pose["rotation"][2]
-            goal_pose.pose.orientation.z = last_ego_pose["rotation"][3]
-            goal_pose.pose.orientation.w = last_ego_pose["rotation"][0]
-            return goal_pose
+            pose = Pose(
+                position=Point(
+                    x=last_ego_pose["translation"][0],
+                    y=last_ego_pose["translation"][1],
+                    z=last_ego_pose["translation"][2],
+                ),
+                orientation=Quaternion(
+                    x=last_ego_pose["rotation"][1],
+                    y=last_ego_pose["rotation"][2],
+                    z=last_ego_pose["rotation"][3],
+                    w=last_ego_pose["rotation"][0],
+                ),
+            )
+            return PoseStamped(header=Header(frame_id="map"), pose=pose)
 
     @classmethod
     def transform_stamped_with_euler_angle(cls, transform_stamped: TransformStamped) -> dict:
@@ -263,64 +270,58 @@ class DLREvaluator(Node, ABC):
         }
         return tf_euler
 
-    @classmethod
-    def set_initial_pose(cls, initial_pose: dict | None) -> PoseWithCovarianceStamped | None:
-        if initial_pose is None:
+    def set_initial_pose(self) -> PoseWithCovarianceStamped | None:
+        if not hasattr(self._scenario.Evaluation, "InitialPose"):
             return None
-        try:
-            ros_init_pose = PoseWithCovarianceStamped()
-            ros_init_pose.header.frame_id = "map"
-            ros_init_pose.pose.pose.position.x = float(initial_pose["position"]["x"])
-            ros_init_pose.pose.pose.position.y = float(initial_pose["position"]["y"])
-            ros_init_pose.pose.pose.position.z = float(initial_pose["position"]["z"])
-            ros_init_pose.pose.pose.orientation.x = float(initial_pose["orientation"]["x"])
-            ros_init_pose.pose.pose.orientation.y = float(initial_pose["orientation"]["y"])
-            ros_init_pose.pose.pose.orientation.z = float(initial_pose["orientation"]["z"])
-            ros_init_pose.pose.pose.orientation.w = float(initial_pose["orientation"]["w"])
-            ros_init_pose.pose.covariance = np.array(
-                [
-                    0.25,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.25,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.06853892326654787,
-                ],
-            )
-        except KeyError:
-            return None
-        else:
-            return ros_init_pose
+        initial_pose: InitialPose = self._scenario.Evaluation.Initialpose
+        covariance = np.array(
+            [
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.06853892326654787,
+            ],
+        )
+        pose = PoseWithCovariance(
+            pose=Pose(
+                position=Point(**initial_pose.position.model_dump()),
+                orientation=Quaternion(**initial_pose.orientation.model_dump()),
+            ),
+            covariance=covariance,
+        )
+        return PoseWithCovarianceStamped(stamp=Header(frame_id="map"), pose=pose)
 
     @classmethod
     def get_perception_label_str(cls, classification: ObjectClassification) -> str:
