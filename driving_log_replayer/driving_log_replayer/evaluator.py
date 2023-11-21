@@ -76,12 +76,15 @@ class DLREvaluator(Node):
         self._scenario = None
         try:
             self._scenario = load_scenario(Path(self._scenario_path), scenario_class)
+            evaluation_condition = {}
+            if hasattr(self._scenario.Evaluation, "Conditions"):
+                evaluation_condition = self._scenario.Evaluation.Conditions
             self._result_writer = ResultWriter(
                 self._result_json_path,
                 self.get_clock(),
-                self._scenario.Evaluation.Conditions,
+                evaluation_condition,
             )
-            self._result = result_class(self._scenario.Evaluation.Conditions)
+            self._result = result_class(evaluation_condition)
         except (FileNotFoundError, PermissionError, yaml.YAMLError, ValidationError) as e:
             self.get_logger().error(f"An error occurred while loading the scenario. {e}")
             self._result_writer = ResultWriter(

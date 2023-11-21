@@ -71,7 +71,8 @@ class Availability(EvaluationItem):
 
 
 class EagleyeResult(ResultBase):
-    def __init__(self) -> None:
+    def __init__(self, condition) -> None:  # noqa
+        # condition is for future extensibility and code commonality
         super().__init__()
         self.__availability = Availability()
 
