@@ -22,7 +22,6 @@ from std_msgs.msg import Header
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
-from driving_log_replayer.performance_diag import Conditions as PerformanceDiagCondition
 from driving_log_replayer.performance_diag import PerformanceDiagResult
 from driving_log_replayer.performance_diag import PerformanceDiagScenario
 
@@ -30,7 +29,7 @@ from driving_log_replayer.performance_diag import PerformanceDiagScenario
 class PerformanceDiagEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, PerformanceDiagScenario, PerformanceDiagResult)
-        self._condition: PerformanceDiagCondition
+        self._scenario: PerformanceDiagScenario
 
         self.__pub_visibility_value = self.create_publisher(Float64, "visibility/value", 1)
         self.__pub_visibility_level = self.create_publisher(Byte, "visibility/level", 1)
@@ -40,7 +39,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
         self.__pub_blockage_levels = {}
         self.__diag_header_prev = Header()
 
-        for k, v in self._condition.LiDAR.Blockage.items():
+        for k, v in self._scenario.Evaluation.Conditions.LiDAR.Blockage.items():
             if v.ScenarioType is not None:
                 self.__pub_blockage_sky_ratios[k] = self.create_publisher(
                     Float64,
