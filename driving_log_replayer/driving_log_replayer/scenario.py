@@ -49,7 +49,7 @@ class Scenario(BaseModel):
     VehicleModel: str
     VehicleId: str | None = None
     LocalMapPath: str = ""
-    Evaluation: Any
+    Evaluation: dict
 
 
 def load_scenario(scenario_path: Path, scenario_class: Callable) -> Any:
