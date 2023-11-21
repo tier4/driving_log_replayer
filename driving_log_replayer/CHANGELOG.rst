@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.9.1 (2023-11-21)
+------------------
 * fix no data criteria (`#305 <https://github.com/tier4/driving_log_replayer/issues/305>`_)
   Co-authored-by: YoshiRi <YoshiRi@users.noreply.github.com>
 * refactor: diag (`#303 <https://github.com/tier4/driving_log_replayer/issues/303>`_)
