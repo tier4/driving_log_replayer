@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.9.1
+
+Minor Tweak, Bug fix
+
+| Module       | Feature     | Brief summary                 | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | ----------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `diag`       | refactoring | refactor diag blockage result | [#303](https://github.com/tier4/driving_log_replayer/pull/303) | RT4-7580 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception` | criteria    | fix no data criteria          | [#305](https://github.com/tier4/driving_log_replayer/pull/305) | -        | [YoshiRi](https://github.com/YoshiRi)         |
+
 ## Version 1.9.0
 
 Minor Tweak
