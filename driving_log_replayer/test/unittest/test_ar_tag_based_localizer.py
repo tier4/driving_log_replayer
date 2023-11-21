@@ -16,7 +16,17 @@ from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 
+from driving_log_replayer.ar_tag_based_localizer import ArtagBasedLocalizerScenario
 from driving_log_replayer.ar_tag_based_localizer import Availability
+from driving_log_replayer.scenario import load_sample_scenario
+
+
+def test_scenario() -> None:
+    scenario: ArtagBasedLocalizerScenario = load_sample_scenario(
+        "ar_tag_based_localizer",
+        ArtagBasedLocalizerScenario,
+    )
+    assert scenario.ScenarioName == "sample_ar_tag_based_localizer"
 
 
 def test_availability_success() -> None:

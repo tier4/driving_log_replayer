@@ -16,9 +16,23 @@ from dataclasses import dataclass
 from typing import ClassVar
 
 from diagnostic_msgs.msg import DiagnosticArray
+from pydantic import BaseModel
+from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import Scenario
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["ar_tag_based_localizer"]
+    UseCaseFormatVersion: Literal["0.1.0"]
+    InitialPose: InitialPose | None
+
+
+class ArtagBasedLocalizerScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass

@@ -16,6 +16,13 @@ from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 
 from driving_log_replayer.eagleye import Availability
+from driving_log_replayer.eagleye import EagleyeScenario
+from driving_log_replayer.scenario import load_sample_scenario
+
+
+def test_scenario() -> None:
+    scenario: EagleyeScenario = load_sample_scenario("eagleye", EagleyeScenario)
+    assert scenario.ScenarioName == "sample_eagleye"
 
 
 def test_availability_success() -> None:
