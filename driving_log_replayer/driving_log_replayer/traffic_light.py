@@ -15,10 +15,34 @@
 from dataclasses import dataclass
 
 from perception_eval.evaluation import PerceptionFrameResult
+from pydantic import BaseModel
+from typing_extensions import Literal
 
 from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import number
+from driving_log_replayer.scenario import Scenario
+
+
+class Conditions(BaseModel):
+    PassRate: number
+    CriteriaMethod: Literal["num_tp", "metrics_score"]
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[number]
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["traffic_light"]
+    UseCaseFormatVersion: Literal["0.3.0"]
+    Datasets: list[dict]
+    Conditions: Conditions
+    PerceptionEvaluationConfig: dict
+    CriticalObjectFilterConfig: dict
+    PerceptionPassFailConfig: dict
+
+
+class TrafficLightScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass
@@ -26,9 +50,10 @@ class Perception(EvaluationItem):
     name: str = "Traffic Light Perception"
 
     def __post_init__(self) -> None:
+        self.condition: Conditions
         self.criteria: PerceptionCriteria = PerceptionCriteria(
-            method=self.condition.get("CriteriaMethod"),
-            level=self.condition.get("CriteriaLevel"),
+            method=self.condition.CriteriaMethod,
+            level=self.condition.CriteriaLevel,
         )
 
     def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
@@ -40,7 +65,7 @@ class Perception(EvaluationItem):
             self.passed += 1
             frame_success = "Success"
 
-        self.success = self.rate() >= self.condition["PassRate"]
+        self.success = self.rate() >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
@@ -59,7 +84,7 @@ class Perception(EvaluationItem):
 
 
 class TrafficLightResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
         self.__perception = Perception(condition=condition)
 
