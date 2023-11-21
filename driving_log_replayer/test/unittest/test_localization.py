@@ -25,8 +25,10 @@ from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.localization import Availability
 from driving_log_replayer.localization import Convergence
+from driving_log_replayer.localization import ConvergenceCondition
 from driving_log_replayer.localization import LocalizationScenario
 from driving_log_replayer.localization import Reliability
+from driving_log_replayer.localization import ReliabilityCondition
 from driving_log_replayer.scenario import load_sample_scenario
 
 
@@ -109,9 +111,14 @@ def test_availability_has_no_target_diag() -> None:
 
 @pytest.fixture()
 def create_convergence() -> Convergence:
-    scenario: LocalizationScenario = load_sample_scenario("localization", LocalizationScenario)
+    condition = ConvergenceCondition(
+        AllowableDistance=0.2,
+        AllowableExeTimeMs=100.0,
+        AllowableIterationNum=30,
+        PassRate=95.0,
+    )
     return Convergence(
-        condition=scenario.Evaluation.Conditions.Convergence,
+        condition=condition,
         total=99,
         passed=94,
     )
@@ -171,9 +178,13 @@ def test_convergence_fail(create_convergence: Callable) -> None:
 
 @pytest.fixture()
 def create_reliability() -> Reliability:
-    scenario: LocalizationScenario = load_sample_scenario("localization", LocalizationScenario)
+    condition: ReliabilityCondition = ReliabilityCondition(
+        Method="NVTL",
+        AllowableLikelihood=2.3,
+        NGCount=10,
+    )
     return Reliability(
-        condition=scenario.Evaluation.Conditions.Reliability,
+        condition=condition,
         total=9,
         ng_seq=9,
         received_data=[1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],

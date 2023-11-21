@@ -19,8 +19,10 @@ from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 
 from driving_log_replayer.performance_diag import Blockage
+from driving_log_replayer.performance_diag import BlockageCondition
 from driving_log_replayer.performance_diag import PerformanceDiagScenario
 from driving_log_replayer.performance_diag import Visibility
+from driving_log_replayer.performance_diag import VisibilityCondition
 from driving_log_replayer.scenario import load_sample_scenario
 
 
@@ -38,7 +40,9 @@ def test_visibility_invalid() -> None:
         name="/autoware/sensing/lidar/performance_monitoring/visibility/dual_return_filter:  sensing lidar left_upper: visibility_validation",
         level=DiagnosticStatus.OK,
     )
-    evaluation_item = Visibility(condition={"ScenarioType": None, "PassFrameCount": 100})
+    evaluation_item = Visibility(
+        condition=VisibilityCondition(ScenarioType=None, PassFrameCount=100),
+    )
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
@@ -55,7 +59,7 @@ def test_visibility_invalid() -> None:
 def test_visibility_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_visibility_diag_name")
     evaluation_item = Visibility(
-        condition={"ScenarioType": "TP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="TP", PassFrameCount=100),
     )
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
@@ -77,7 +81,7 @@ def test_visibility_tp_success() -> None:
         values=[KeyValue(key="value", value="-1.00")],
     )
     evaluation_item = Visibility(
-        condition={"ScenarioType": "TP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="TP", PassFrameCount=100),
         total=149,
         passed=99,
         success=False,
@@ -105,7 +109,7 @@ def test_visibility_tp_fail() -> None:
         values=[KeyValue(key="value", value="1.00")],
     )
     evaluation_item = Visibility(
-        condition={"ScenarioType": "TP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="TP", PassFrameCount=100),
         total=149,
         passed=99,
         success=False,
@@ -133,7 +137,7 @@ def test_visibility_fp_success() -> None:
         values=[KeyValue(key="value", value="1.00")],
     )
     evaluation_item = Visibility(
-        condition={"ScenarioType": "FP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="FP", PassFrameCount=100),
         total=49,
         passed=49,
         success=True,
@@ -161,7 +165,7 @@ def test_visibility_fp_fail() -> None:
         values=[KeyValue(key="value", value="-1.00")],
     )
     evaluation_item = Visibility(
-        condition={"ScenarioType": "FP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="FP", PassFrameCount=100),
         total=49,
         passed=49,
         success=True,
@@ -189,7 +193,7 @@ def test_blockage_invalid() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition={"ScenarioType": None, "BlockageType": "both", "PassFrameCount": 100},
+        condition=BlockageCondition(ScenarioType=None, BlockageType="both", PassFrameCount=100),
     )
     (
         frame_dict,
@@ -216,7 +220,7 @@ def test_blockage_has_no_target_diag_not_target_lidar() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition={"ScenarioType": "TP", "BlockageType": "both", "PassFrameCount": 100},
+        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassFrameCount=100),
     )
     (
         frame_dict,
@@ -251,7 +255,7 @@ def test_blockage_tp_success() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition={"ScenarioType": "TP", "BlockageType": "both", "PassFrameCount": 100},
+        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassFrameCount=100),
         success=False,
         passed=99,
         total=149,
@@ -295,7 +299,7 @@ def test_blockage_tp_fail() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition={"ScenarioType": "TP", "BlockageType": "both", "PassFrameCount": 100},
+        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassFrameCount=100),
         success=False,
         passed=99,
         total=149,
@@ -339,7 +343,7 @@ def test_blockage_fp_success() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition={"ScenarioType": "FP", "BlockageType": "both", "PassFrameCount": 100},
+        condition=BlockageCondition(ScenarioType="FP", BlockageType="both", PassFrameCount=100),
         success=True,
         passed=49,
         total=49,
@@ -383,7 +387,7 @@ def test_blockage_fp_fail() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition={"ScenarioType": "FP", "BlockageType": "both", "PassFrameCount": 100},
+        condition=BlockageCondition(ScenarioType="FP", BlockageType="both", PassFrameCount=100),
         success=True,
         passed=49,
         total=49,
