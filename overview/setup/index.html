@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.fad675c6.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
@@ -807,14 +807,18 @@
       
         <li class="md-nav__item">
   <a href="#cli-setting" class="md-nav__link">
-    Cli setting
+    <span class="md-ellipsis">
+      Cli setting
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#folder-structure-and-file-naming-rules" class="md-nav__link">
-    Folder structure and file naming rules
+    <span class="md-ellipsis">
+      Folder structure and file naming rules
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Folder structure and file naming rules">
@@ -822,28 +826,36 @@
         
           <li class="md-nav__item">
   <a href="#data-folder" class="md-nav__link">
-    Data Folder
+    <span class="md-ellipsis">
+      Data Folder
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#data-folder-structure-for-localization-and-performance_diag" class="md-nav__link">
-    Data Folder Structure for localization and performance_diag
+    <span class="md-ellipsis">
+      Data Folder Structure for localization and performance_diag
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#data-folder-structure-for-obstacle_segmentation-and-perception" class="md-nav__link">
-    Data Folder Structure for obstacle_segmentation and perception
+    <span class="md-ellipsis">
+      Data Folder Structure for obstacle_segmentation and perception
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#map-folder" class="md-nav__link">
-    Map Folder
+    <span class="md-ellipsis">
+      Map Folder
+    </span>
   </a>
   
 </li>
@@ -1312,14 +1324,18 @@
       
         <li class="md-nav__item">
   <a href="#cli-setting" class="md-nav__link">
-    Cli setting
+    <span class="md-ellipsis">
+      Cli setting
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#folder-structure-and-file-naming-rules" class="md-nav__link">
-    Folder structure and file naming rules
+    <span class="md-ellipsis">
+      Folder structure and file naming rules
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Folder structure and file naming rules">
@@ -1327,28 +1343,36 @@
         
           <li class="md-nav__item">
   <a href="#data-folder" class="md-nav__link">
-    Data Folder
+    <span class="md-ellipsis">
+      Data Folder
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#data-folder-structure-for-localization-and-performance_diag" class="md-nav__link">
-    Data Folder Structure for localization and performance_diag
+    <span class="md-ellipsis">
+      Data Folder Structure for localization and performance_diag
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#data-folder-structure-for-obstacle_segmentation-and-perception" class="md-nav__link">
-    Data Folder Structure for obstacle_segmentation and perception
+    <span class="md-ellipsis">
+      Data Folder Structure for obstacle_segmentation and perception
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#map-folder" class="md-nav__link">
-    Map Folder
+    <span class="md-ellipsis">
+      Map Folder
+    </span>
   </a>
   
 </li>
@@ -1392,41 +1416,41 @@ driving_log_replayer<span class="w"> </span>configure<span class="w"> </span>reg
 <p>Specifying the profile name with <code>-p ${profile_name}</code> in the commands described below will load the settings specified in the profile.
 You can switch between multiple autoware profiles, and if no profile is specified, default is used.</p>
 <div class="highlight"><pre><span></span><code><span class="k">[profile_name]</span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the data folder used as input for the simulation&quot;</span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the folder to output the simulation results&quot;</span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;path of the autoware workspace folder&quot;</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path of the data folder used as input for the simulation&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path of the folder to output the simulation results&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;path of the autoware workspace folder&quot;</span>
 </code></pre></div>
 <p>example setting</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># default is required and selected when profile name is omitted</span>
 <span class="k">[default]</span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/default&quot;</span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/default&quot;</span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_data/default&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_output/default&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/autoware&quot;</span>
 
 <span class="k">[localization]</span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/localization&quot;</span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/localization&quot;</span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_data/localization&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_output/localization&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/autoware&quot;</span>
 
 <span class="k">[yabloc]</span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/yabloc&quot;</span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/yabloc&quot;</span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_data/yabloc&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_output/yabloc&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/autoware&quot;</span>
 
 <span class="k">[ar_tag_based_localizer]</span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/ar_tag_based_localizer&quot;</span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/ar_tag_based_localizer&quot;</span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_data/ar_tag_based_localizer&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_output/ar_tag_based_localizer&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/autoware&quot;</span>
 
 <span class="k">[obstacle_segmentation]</span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/obstacle_segmentation&quot;</span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/obstacle_segmentation&quot;</span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_data/obstacle_segmentation&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_output/obstacle_segmentation&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/autoware&quot;</span>
 
 <span class="k">[perception]</span>
-<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_data/perception&quot;</span>
-<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/driving_log_replayer_output/perception&quot;</span>
-<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;$HOME/autoware&quot;</span>
+<span class="n">data_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_data/perception&quot;</span>
+<span class="n">output_directory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/driving_log_replayer_output/perception&quot;</span>
+<span class="n">autoware_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;$HOME/autoware&quot;</span>
 </code></pre></div>
 <h2 id="folder-structure-and-file-naming-rules">Folder structure and file naming rules<a class="headerlink" href="#folder-structure-and-file-naming-rules" title="Permanent link">#</a></h2>
 <p>This section describes the folder structure and file naming rules expected by <code>driving_log_replayer</code>.</p>
@@ -1570,7 +1594,7 @@ Also, by placing multiple folders in <code>data_directory</code> multiple tests 
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.81fa17fe.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
     
   </body>
