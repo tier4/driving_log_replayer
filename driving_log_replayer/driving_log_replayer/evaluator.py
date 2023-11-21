@@ -281,6 +281,8 @@ class DLREvaluator(Node):
     def set_initial_pose(self) -> PoseWithCovarianceStamped | None:
         if not hasattr(self._scenario.Evaluation, "InitialPose"):
             return None
+        if self._scenario.Evaluation.InitialPose is None:
+            return None
         initial_pose: InitialPose = self._scenario.Evaluation.InitialPose
         covariance = np.array(
             [
