@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from pydantic import BaseModel
-import pytest
 
 
 class SampleModel(BaseModel):

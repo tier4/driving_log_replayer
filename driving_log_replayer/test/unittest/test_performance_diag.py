@@ -19,7 +19,18 @@ from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 
 from driving_log_replayer.performance_diag import Blockage
+from driving_log_replayer.performance_diag import PerformanceDiagScenario
 from driving_log_replayer.performance_diag import Visibility
+from driving_log_replayer.scenario import load_sample_scenario
+
+
+def test_scenario() -> None:
+    scenario: PerformanceDiagScenario = load_sample_scenario(
+        "performance_diag",
+        PerformanceDiagScenario,
+    )
+    assert scenario.Evaluation.Conditions.LiDAR.Visibility.ScenarioType == "FP"
+    assert scenario.Evaluation.Conditions.LiDAR.Blockage["front_lower"].BlockageType == "both"
 
 
 def test_visibility_invalid() -> None:

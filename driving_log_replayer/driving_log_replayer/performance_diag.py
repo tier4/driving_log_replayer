@@ -22,9 +22,13 @@ from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
+from pydantic import BaseModel
+from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import Scenario
 
 INVALID_FLOAT_VALUE = -99.9
 
@@ -49,6 +53,37 @@ def convert_str_to_int(str_float: str) -> float:
         return int(str_float)
     except ValueError:
         return 0
+
+
+class VisibilityCondition(BaseModel):
+    ScenarioType: Literal["TP", "FP"] | None
+    PassFrameCount: int
+
+
+class BlockageCondition(BaseModel):
+    ScenarioType: Literal["TP", "FP"] | None
+    PassFrameCount: int
+    BlockageType: Literal["both", "ground", "sky"]
+
+
+class LiDARCondition(BaseModel):
+    Visibility: VisibilityCondition
+    Blockage: dict[str, BlockageCondition]
+
+
+class Conditions(BaseModel):
+    LiDAR: LiDARCondition
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["performance_diag"]
+    UseCaseFormatVersion: Literal["1.0.0"]
+    Conditions: Conditions
+    InitialPose: InitialPose | None
+
+
+class PerformanceDiagScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass
