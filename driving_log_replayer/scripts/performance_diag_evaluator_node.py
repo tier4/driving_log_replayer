@@ -22,14 +22,15 @@ from std_msgs.msg import Header
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
+from driving_log_replayer.performance_diag import Conditions as PerformanceDiagCondition
 from driving_log_replayer.performance_diag import PerformanceDiagResult
+from driving_log_replayer.performance_diag import PerformanceDiagScenario
 
 
 class PerformanceDiagEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.check_scenario()
-        self.__result = PerformanceDiagResult(self._condition)
+        super().__init__(name, PerformanceDiagScenario, PerformanceDiagResult)
+        self._condition: PerformanceDiagCondition
 
         self.__pub_visibility_value = self.create_publisher(Float64, "visibility/value", 1)
         self.__pub_visibility_level = self.create_publisher(Byte, "visibility/level", 1)
@@ -39,8 +40,8 @@ class PerformanceDiagEvaluator(DLREvaluator):
         self.__pub_blockage_levels = {}
         self.__diag_header_prev = Header()
 
-        for k, v in self._condition["LiDAR"]["Blockage"].items():
-            if v["ScenarioType"] is not None:
+        for k, v in self._condition.LiDAR.Blockage.items():
+            if v.ScenarioType is not None:
                 self.__pub_blockage_sky_ratios[k] = self.create_publisher(
                     Float64,
                     f"blockage/{k}/sky/ratio",
@@ -64,9 +65,6 @@ class PerformanceDiagEvaluator(DLREvaluator):
             1,
         )
 
-    def check_scenario(self) -> None:
-        pass
-
     def diag_cb(self, msg: DiagnosticArray) -> None:
         if msg.header == self.__diag_header_prev:
             return
@@ -78,7 +76,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
             msg_blockage_sky_ratios,
             msg_blockage_ground_ratios,
             msg_blockage_levels,
-        ) = self.__result.set_frame(
+        ) = self._result.set_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
         )
@@ -95,7 +93,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
         for k, v in msg_blockage_levels.items():
             if v is not None:
                 self.__pub_blockage_levels[k].publish(v)
-        self._result_writer.write_result(self.__result)
+        self._result_writer.write_result(self._result)
 
 
 @evaluator_main

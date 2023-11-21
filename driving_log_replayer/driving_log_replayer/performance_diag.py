@@ -96,7 +96,8 @@ class Visibility(EvaluationItem):
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
-        self.scenario_type: str | None = self.condition.get("ScenarioType")
+        self.condition: VisibilityCondition
+        self.scenario_type: str | None = self.condition.ScenarioType
         self.valid: bool = self.scenario_type is not None
 
     def set_frame(self, msg: DiagnosticArray) -> tuple[dict, Float64 | None, Byte | None]:
@@ -121,7 +122,7 @@ class Visibility(EvaluationItem):
                 if diag_level == DiagnosticStatus.ERROR:
                     frame_success = "Success"
                     self.passed += 1
-                self.success = self.passed >= self.condition["PassFrameCount"]
+                self.success = self.passed >= self.condition.PassFrameCount
             elif self.scenario_type == "FP":
                 if diag_level != DiagnosticStatus.ERROR:
                     frame_success = "Success"
@@ -164,9 +165,10 @@ class Blockage(EvaluationItem):
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
-        self.scenario_type: str | None = self.condition["ScenarioType"]
-        self.blockage_type: str = self.condition["BlockageType"]
-        self.pass_frame_count: int = self.condition["PassFrameCount"]
+        self.condition: BlockageCondition
+        self.scenario_type: str | None = self.condition.ScenarioType
+        self.blockage_type: str = self.condition.BlockageType
+        self.pass_frame_count: int = self.condition.PassFrameCount
         self.valid: bool = self.scenario_type is not None
         self.blockage_name = (
             Blockage.BLOCKAGE_DIAG_BASE_NAME + self.name + Blockage.BLOCKAGE_DIAG_POSTFIX
@@ -255,12 +257,12 @@ class Blockage(EvaluationItem):
 
 
 class PerformanceDiagResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__visibility = Visibility(condition=condition.get("LiDAR", {}).get("Visibility", {}))
+        self.__visibility = Visibility(condition=condition.LiDAR.Visibility)
         self.__blockages: dict[str, Blockage] = {}
-        for lidar_name, v in condition.get("LiDAR", {}).get("Blockage", {}).items():
-            if v["ScenarioType"] is not None:
+        for lidar_name, v in condition.LiDAR.Blockage.items():
+            if v.ScenarioType is not None:
                 self.__blockages[lidar_name] = Blockage(name=lidar_name, condition=v)
 
     def update(self) -> None:

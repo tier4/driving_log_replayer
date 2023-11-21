@@ -28,7 +28,7 @@ import simplejson as json
 
 @dataclass
 class EvaluationItem(ABC):
-    name: str = "This field should be overwritten"
+    name: str
     # If condition is None, this evaluation item is not used.
     condition: BaseModel | None = None
     total: int = 0
