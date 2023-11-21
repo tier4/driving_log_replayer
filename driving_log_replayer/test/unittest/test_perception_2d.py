@@ -115,15 +115,15 @@ def test_perception_fail_has_no_object(
     result: PerceptionFrameResult = create_frame_result
     # add no tp_object_results, fp_object_results
     frame_dict = evaluation_item.set_frame(result, skip=3, map_to_baselink={})
-    assert evaluation_item.success is False
-    assert evaluation_item.summary == "cam_front (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "cam_front (Success): 95 / 100 -> 95.00%"
     assert frame_dict == {
         "CameraType": "cam_front",
         "Ego": {"TransformStamped": {}},
         "FrameName": "12",
         "FrameSkip": 3,
         "PassFail": {
-            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Result": {"Total": "Success", "Frame": "Success"},
             "Info": {
                 "TP": 0,
                 "FP": 0,

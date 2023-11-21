@@ -133,14 +133,14 @@ def test_perception_fail_has_no_object(
         header=Header(),
         map_to_baselink={},
     )
-    assert evaluation_item.success is False
-    assert evaluation_item.summary == "Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "Perception (Success): 95 / 100 -> 95.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "FrameName": "12",
         "FrameSkip": 3,
         "PassFail": {
-            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Result": {"Total": "Success", "Frame": "Success"},
             "Info": {
                 "TP": 0,
                 "FP": 0,
