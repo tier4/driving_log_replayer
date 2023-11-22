@@ -23,7 +23,6 @@ import numpy as np
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.manager import SensingEvaluationManager
 from perception_eval.util.logger_config import configure_logger
-import rclpy
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
