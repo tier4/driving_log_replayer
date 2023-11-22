@@ -28,7 +28,18 @@ from perception_eval.evaluation.result.perception_frame_config import CriticalOb
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 import pytest
 
+from driving_log_replayer.scenario import load_sample_scenario
+from driving_log_replayer.traffic_light import Conditions
 from driving_log_replayer.traffic_light import Perception
+from driving_log_replayer.traffic_light import TrafficLightScenario
+
+
+def test_scenario() -> None:
+    scenario: TrafficLightScenario = load_sample_scenario(
+        "traffic_light",
+        scenario_class=TrafficLightScenario,
+    )
+    assert scenario.Evaluation.Conditions.CriteriaMethod == "num_tp"
 
 
 @pytest.fixture()
@@ -76,7 +87,7 @@ def create_frame_result() -> PerceptionFrameResult:
 @pytest.fixture()
 def create_tp_normal() -> Perception:
     return Perception(
-        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "normal"},
+        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="normal"),
         total=99,
         passed=94,
     )
@@ -85,7 +96,7 @@ def create_tp_normal() -> Perception:
 @pytest.fixture()
 def create_tp_hard() -> Perception:
     return Perception(
-        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "hard"},
+        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="hard"),
         total=99,
         passed=94,
     )
