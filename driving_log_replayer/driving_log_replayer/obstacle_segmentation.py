@@ -12,36 +12,82 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import sys
 
-from ament_index_python.packages import get_package_share_directory
 import numpy as np
+import ros2_numpy
+import yaml
+from ament_index_python.packages import get_package_share_directory
 from perception_eval.common.object import DynamicObject
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
-from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithSensingResult
-import ros2_numpy
+from perception_eval.evaluation.sensing.sensing_result import (
+    DynamicObjectWithSensingResult,
+)
+from pydantic import BaseModel
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
-from std_msgs.msg import ColorRGBA
-from std_msgs.msg import Header
-from visualization_msgs.msg import Marker
-from visualization_msgs.msg import MarkerArray
-import yaml
+from std_msgs.msg import ColorRGBA, Header
+from typing_extensions import Literal
+from visualization_msgs.msg import Marker, MarkerArray
 
 import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import EvaluationItem
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
-from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
+from driving_log_replayer.result import EvaluationItem, ResultBase
+from driving_log_replayer.scenario import Scenario, number
+from driving_log_replayer_analyzer.config.obstacle_segmentation import (
+    Config,
+    load_config,
+)
 from driving_log_replayer_analyzer.data import DistType
-from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
-from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
+from driving_log_replayer_analyzer.data.obstacle_segmentation import (
+    JsonlParser,
+    fail_3_times_in_a_row,
+)
 from driving_log_replayer_analyzer.plot import PlotBase
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
+from driving_log_replayer_msgs.msg import (
+    ObstacleSegmentationMarker,
+    ObstacleSegmentationMarkerArray,
+)
+
+
+class ProposedAreaCondition(BaseModel):
+    polygon_2d: list[list[number]]
+    z_min: number
+    z_max: number
+
+
+class BoundingBoxCondition(BaseModel):
+    Start: number | None = None
+    End: number | None = None
+
+
+class DetectionCondition(BaseModel):
+    PassRate: number
+    BoundingBoxConfig: list[dict[str, BoundingBoxCondition]] | None
+
+
+class NonDetectionCondition(BaseModel):
+    PassRate: number
+    ProposedArea: ProposedAreaCondition
+
+
+class Conditions(BaseModel):
+    Detection: DetectionCondition | None
+    NonDetection: NonDetectionCondition | None
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["obstacle_segmentation"]
+    UseCaseFormatVersion: Literal["0.3.0"]
+    Datasets: list[dict]
+    Conditions: Conditions
+    SensingEvaluationConfig: dict
+
+
+class ObstacleSegmentationScenario(Scenario):
+    Evaluation: Evaluation
 
 
 def default_config_path() -> Path:
@@ -172,21 +218,20 @@ def summarize_frame_container(
 
 
 def get_sensing_frame_config(
-    pcd_header: Header,
-    scenario_yaml_obj: dict,
+    pcd_header: Header, scenario: ObstacleSegmentationScenario
 ) -> tuple[bool, SensingFrameConfig | None]:
-    detection_config = scenario_yaml_obj["Evaluation"]["Conditions"].get("Detection")
+    detection_config = scenario.Evaluation.Conditions.Detection
     if detection_config is None:
         return True, None
-    bbox_conf = detection_config.get("BoundingBoxConfig")
+    bbox_conf = detection_config.BoundingBoxConfig
     if bbox_conf is None:
         return True, None
     target_uuids = []
     for uuid_dict in bbox_conf:
         for uuid, v in uuid_dict.items():
             # uuid: str, v: Dict
-            start: float | None = v.get("Start")
-            end: float | None = v.get("End")
+            start = v.Start
+            end = v.End
             if start is None:
                 start = 0.0
             if end is None:
@@ -196,7 +241,7 @@ def get_sensing_frame_config(
                 target_uuids.append(uuid)
     if target_uuids == []:
         return False, None
-    e_conf = scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]["evaluation_config_dict"]
+    e_conf = scenario.Evaluation.SensingEvaluationConfig["evaluation_config_dict"]
     sensing_frame_config = SensingFrameConfig(
         target_uuids=target_uuids,
         box_scale_0m=e_conf["box_scale_0m"],
@@ -232,6 +277,7 @@ class Detection(EvaluationItem):
                 None,
                 None,
             )
+        self.condition: DetectionCondition
         self.total += 1
         frame_success = "Fail"
         if len(frame_result.detection_warning_results) != 0:
@@ -246,7 +292,7 @@ class Detection(EvaluationItem):
             self.passed += 1
 
         current_rate = self.rate()
-        self.success = current_rate >= self.condition["PassRate"]
+        self.success = current_rate >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}% (Warn: {self.warn})"
 
         # initialize
@@ -337,6 +383,7 @@ class NonDetection(EvaluationItem):
                 None,
                 None,
             )
+        self.condition: NonDetectionCondition
 
         self.total += 1
         frame_success = "Fail"
@@ -345,7 +392,7 @@ class NonDetection(EvaluationItem):
             self.passed += 1
 
         current_rate = self.rate()
-        self.success = current_rate >= self.condition["PassRate"]
+        self.success = current_rate >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
 
         ros_pcd, dist_array = NonDetection.convert_numpy_pointcloud(pcd_list, header)
@@ -406,10 +453,10 @@ class NonDetection(EvaluationItem):
 
 
 class ObstacleSegmentationResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__detection = Detection(condition=condition.get("Detection"))
-        self.__non_detection = NonDetection(condition=condition.get("NonDetection"))
+        self.__detection = Detection(condition=condition.Detection)
+        self.__non_detection = NonDetection(condition=condition.NonDetection)
 
     def update(self) -> None:
         summary_str = f"{self.__detection.summary}, {self.__non_detection.summary}"

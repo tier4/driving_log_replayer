@@ -37,6 +37,7 @@ from driving_log_replayer.obstacle_segmentation import default_config_path
 from driving_log_replayer.obstacle_segmentation import get_graph_data
 from driving_log_replayer.obstacle_segmentation import get_sensing_frame_config
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationResult
+from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
@@ -52,15 +53,18 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
     COUNT_FINISH_PUB_GOAL_POSE = 5
 
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.check_scenario()
-        self.use_t4_dataset()
+        super().__init__(name, ObstacleSegmentationScenario, ObstacleSegmentationResult)
+
+        self._scenario: ObstacleSegmentationScenario
+        self.__s_cfg = self._scenario.Evaluation.SensingEvaluationConfig
+        self.__s_cfg["evaluation_config_dict"][
+            "label_prefix"
+        ] = "autoware"  # Add a fixed value setting
 
         self.declare_parameter("vehicle_model", "")
         self.__vehicle_model = (
             self.get_parameter("vehicle_model").get_parameter_value().string_value
         )
-        self.__result = ObstacleSegmentationResult(self._condition)
         self.__goal_pose_counter = 0
         self.__goal_pose = DLREvaluator.get_goal_pose_from_t4_dataset(self._t4_dataset_paths[0])
 
@@ -129,16 +133,6 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         )
         self.__skip_counter = 0
 
-    def check_scenario(self) -> None:
-        try:
-            self.__s_cfg = self._scenario_yaml_obj["Evaluation"]["SensingEvaluationConfig"]
-            self.__s_cfg["evaluation_config_dict"][
-                "label_prefix"
-            ] = "autoware"  # Add a fixed value setting
-        except KeyError:
-            self.get_logger().error("Scenario format error.")
-            rclpy.shutdown()
-
     def timer_cb(self) -> None:
         super().timer_cb(
             register_loop_func=self.publish_goal_pose,
@@ -192,7 +186,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         # create sensing_frame_config
         frame_ok, sensing_frame_config = get_sensing_frame_config(
             pcd_header,
-            self._scenario_yaml_obj,
+            self._scenario,
         )
         if not frame_ok:
             self.__skip_counter += 1
@@ -225,7 +219,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             graph_detection,
             pcd_non_detection,
             graph_non_detection,
-        ) = self.__result.set_frame(
+        ) = self._result.set_frame(
             frame_result,
             self.__skip_counter,
             DLREvaluator.transform_stamped_with_euler_angle(msg.map_to_baselink),
@@ -233,7 +227,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             pcd_header,
             topic_rate=msg.topic_rate,
         )
-        self._result_writer.write_result(self.__result)
+        self._result_writer.write_result(self._result)
 
         topic_rate_data = ObstacleSegmentationMarker()
         topic_rate_data.header = msg.pointcloud.header
