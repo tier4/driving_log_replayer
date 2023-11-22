@@ -19,6 +19,8 @@ from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.common.label import AutowareLabel
 from perception_eval.common.label import Label
 from perception_eval.common.schema import FrameID
+from perception_eval.common.shape import Shape
+from perception_eval.common.shape import ShapeType
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation import DynamicObjectWithPerceptionResult
 from perception_eval.evaluation import PerceptionFrameResult
@@ -29,30 +31,26 @@ from pyquaternion import Quaternion
 import pytest
 from std_msgs.msg import Header
 
+from driving_log_replayer.perception import Conditions
 from driving_log_replayer.perception import Perception
+from driving_log_replayer.perception import PerceptionScenario
+from driving_log_replayer.scenario import load_sample_scenario
+
+
+def test_scenario() -> None:
+    scenario: PerceptionScenario = load_sample_scenario("perception", PerceptionScenario)
+    assert scenario.Evaluation.Conditions.CriteriaMethod == "num_tp"
 
 
 @pytest.fixture()
 def create_frame_result() -> PerceptionFrameResult:
-    target_labels = ["car", "bicycle", "pedestrian", "motorbike"]
-    evaluation_config_dict = {
-        "evaluation_task": "detection",
-        "target_labels": target_labels,
-        "max_x_position": 102.4,
-        "max_y_position": 102.4,
-        "max_matchable_radii": [5.0, 3.0, 3.0, 3.0],
-        "merge_similar_labels": False,
-        "allow_matching_unknown": True,
-        "ignore_attributes": ["cycle_state.without_rider"],
-        "center_distance_thresholds": [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]],
-        "plane_distance_thresholds": [2.0, 30.0],
-        "iou_2d_thresholds": [0.5],
-        "iou_3d_thresholds": [0.5],
-        "min_point_numbers": [0, 0, 0, 0],
-        "label_prefix": "autoware",
-    }
+    scenario: PerceptionScenario = load_sample_scenario("perception", PerceptionScenario)
+    evaluation_config_dict = scenario.Evaluation.PerceptionEvaluationConfig[
+        "evaluation_config_dict"
+    ]
+    evaluation_config_dict["label_prefix"] = "autoware"
     m_params: dict = {
-        "target_labels": target_labels,
+        "target_labels": evaluation_config_dict["target_labels"],
         "center_distance_thresholds": evaluation_config_dict.get("center_distance_thresholds"),
         "plane_distance_thresholds": evaluation_config_dict.get("plane_distance_thresholds"),
         "iou_2d_thresholds": evaluation_config_dict.get("iou_2d_thresholds"),
@@ -75,11 +73,14 @@ def create_frame_result() -> PerceptionFrameResult:
         ),
         critical_object_filter_config=CriticalObjectFilterConfig(
             evaluation_config,
-            target_labels,
+            evaluation_config_dict["target_labels"],
             max_x_position_list=[30.0, 30.0, 30.0, 30.0],
             max_y_position_list=[30.0, 30.0, 30.0, 30.0],
         ),
-        frame_pass_fail_config=PerceptionPassFailConfig(evaluation_config, target_labels),
+        frame_pass_fail_config=PerceptionPassFailConfig(
+            evaluation_config,
+            evaluation_config_dict["target_labels"],
+        ),
         unix_time=123,
         target_labels=[AutowareLabel.CAR],
     )
@@ -88,7 +89,7 @@ def create_frame_result() -> PerceptionFrameResult:
 @pytest.fixture()
 def create_tp_normal() -> Perception:
     return Perception(
-        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "normal"},
+        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="normal"),
         total=99,
         passed=94,
     )
@@ -97,7 +98,7 @@ def create_tp_normal() -> Perception:
 @pytest.fixture()
 def create_tp_hard() -> Perception:
     return Perception(
-        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "hard"},
+        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="hard"),
         total=99,
         passed=94,
     )
@@ -110,7 +111,7 @@ def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
         FrameID.BASE_LINK,
         (1.0, 2.0, 3.0),
         Quaternion(),
-        None,
+        Shape(ShapeType.BOUNDING_BOX, (1.0, 1.0, 1.0)),
         (1.0, 2.0, 3.0),
         0.5,
         Label(AutowareLabel.CAR, "12"),
@@ -131,14 +132,14 @@ def test_perception_fail_has_no_object(
         header=Header(),
         map_to_baselink={},
     )
-    assert evaluation_item.success is False
-    assert evaluation_item.summary == "Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.success is True
+    assert evaluation_item.summary == "Perception (Success): 95 / 100 -> 95.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
         "FrameName": "12",
         "FrameSkip": 3,
         "PassFail": {
-            "Result": {"Total": "Fail", "Frame": "Fail"},
+            "Result": {"Total": "Success", "Frame": "Success"},
             "Info": {
                 "TP": 0,
                 "FP": 0,

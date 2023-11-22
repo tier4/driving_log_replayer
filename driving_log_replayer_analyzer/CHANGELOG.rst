@@ -2,6 +2,18 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.9.1 (2023-11-21)
+------------------
+* fix no data criteria (`#305 <https://github.com/tier4/driving_log_replayer/issues/305>`_)
+  Co-authored-by: YoshiRi <YoshiRi@users.noreply.github.com>
+* refactor: diag (`#303 <https://github.com/tier4/driving_log_replayer/issues/303>`_)
+* Contributors: Hayato Mizushima, Yoshi Ri
+
+1.9.0 (2023-11-14)
+------------------
+* feat: obstacle segmentation test (`#273 <https://github.com/tier4/driving_log_replayer/issues/273>`_)
+* Contributors: Hayato Mizushima
+
 1.8.4 (2023-11-08)
 ------------------
 * feat: parameterize perception mode (`#299 <https://github.com/tier4/driving_log_replayer/issues/299>`_)

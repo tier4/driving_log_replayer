@@ -22,12 +22,17 @@ from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
 import numpy as np
+from pydantic import BaseModel
 from rosidl_runtime_py import message_to_ordereddict
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
+from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import number
+from driving_log_replayer.scenario import Scenario
 
 
 def calc_pose_lateral_distance(relative_pose: PoseStamped) -> float:
@@ -40,12 +45,33 @@ def calc_pose_horizontal_distance(relative_pose: PoseStamped) -> float:
     return np.sqrt(np.power(x, 2) + np.power(y, 2))
 
 
-def get_reliability_method(method_name: str | None) -> tuple[str | None, str]:
-    if method_name is None:
-        return None, "Scenario format error"
-    if method_name in ["TP", "NVTL"]:
-        return method_name, ""
-    return None, f"{method_name} is not valid reliability method"
+class ConvergenceCondition(BaseModel):
+    AllowableDistance: number
+    AllowableExeTimeMs: number
+    AllowableIterationNum: int
+    PassRate: number
+
+
+class ReliabilityCondition(BaseModel):
+    Method: Literal["NVTL", "TP"]
+    AllowableLikelihood: number
+    NGCount: int
+
+
+class Conditions(BaseModel):
+    Convergence: ConvergenceCondition
+    Reliability: ReliabilityCondition
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["localization"]
+    UseCaseFormatVersion: Literal["1.2.0"]
+    Conditions: Conditions
+    InitialPose: InitialPose | None
+
+
+class LocalizationScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass
@@ -61,6 +87,7 @@ class Convergence(EvaluationItem):
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,
     ) -> tuple[dict, Float64]:
+        self.condition: ConvergenceCondition
         self.total += 1
         frame_success = "Fail"
 
@@ -71,15 +98,15 @@ class Convergence(EvaluationItem):
         iteration = iteration_num.data
 
         if (
-            abs(lateral_dist) <= self.condition["AllowableDistance"]
-            and exe_time_ms <= self.condition["AllowableExeTimeMs"]
-            and iteration <= self.condition["AllowableIterationNum"]
+            abs(lateral_dist) <= self.condition.AllowableDistance
+            and exe_time_ms <= self.condition.AllowableExeTimeMs
+            and iteration <= self.condition.AllowableIterationNum
         ):
             self.passed += 1
             frame_success = "Success"
 
         current_rate = self.rate()
-        self.success = current_rate >= self.condition["PassRate"]
+        self.success = current_rate >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}%"
 
         return {
@@ -109,6 +136,7 @@ class Reliability(EvaluationItem):
         map_to_baselink: dict,
         reference: Float32Stamped,
     ) -> dict:
+        self.condition: ReliabilityCondition
         self.total += 1
         frame_success = "Fail"
         self.received_data.append(msg.data)
@@ -116,14 +144,14 @@ class Reliability(EvaluationItem):
         # If the likelihood is lower than AllowableLikelihood for NGCount consecutive times, it is assumed to be a failure.
         if self.success:
             # Update nq_seq only while reliability.result is true
-            if msg.data >= self.condition["AllowableLikelihood"]:
+            if msg.data >= self.condition.AllowableLikelihood:
                 self.ng_seq = 0
                 frame_success = "Success"
             else:
                 self.ng_seq += 1
-        self.success = bool(self.ng_seq < self.condition["NGCount"])
+        self.success = bool(self.ng_seq < self.condition.NGCount)
 
-        self.summary = f"{self.name} ({self.success_str()}): {self.condition['Method']} Sequential NG Count: {self.ng_seq} (Total Test: {self.total}, Average: {statistics.mean(self.received_data):.5f}, StdDev: {statistics.pstdev(self.received_data):.5f})"
+        self.summary = f"{self.name} ({self.success_str()}): {self.condition.Method} Sequential NG Count: {self.ng_seq} (Total Test: {self.total}, Average: {statistics.mean(self.received_data):.5f}, StdDev: {statistics.pstdev(self.received_data):.5f})"
         return {
             "Ego": {"TransformStamped": map_to_baselink},
             "Reliability": {
@@ -186,10 +214,10 @@ class Availability(EvaluationItem):
 
 
 class LocalizationResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__convergence = Convergence(condition=condition["Convergence"])
-        self.__reliability = Reliability(condition=condition["Reliability"])
+        self.__convergence = Convergence(condition=condition.Convergence)
+        self.__reliability = Reliability(condition=condition.Reliability)
         self.__availability = Availability()
 
     def update(self) -> None:

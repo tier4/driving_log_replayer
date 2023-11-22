@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 1.9.1
+
+Minor Tweak, Bug fix
+
+| Module       | Feature     | Brief summary                 | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | ----------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `diag`       | refactoring | refactor diag blockage result | [#303](https://github.com/tier4/driving_log_replayer/pull/303) | RT4-7580 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception` | criteria    | fix no data criteria          | [#305](https://github.com/tier4/driving_log_replayer/pull/305) | -        | [YoshiRi](https://github.com/YoshiRi)         |
+
+## Version 1.9.0
+
+Minor Tweak
+
+| Module                  | Feature | Brief summary                                                           | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ------- | ----------------------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | test    | add unit test for obstacle segmentation, update log format and analyzer | [#273](https://github.com/tier4/driving_log_replayer/pull/273) | RT4-7580 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.8.4
 
 Minor Tweak

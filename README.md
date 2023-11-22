@@ -45,3 +45,28 @@ pipx uninstall driving_log_replayer_cli
 ## Usage
 
 refer [document](https://tier4.github.io/driving_log_replayer/)
+
+## (For Developer) Release Process
+
+This package uses `catkin_pkg` to manage releases.
+
+Refer [this page](https://wiki.ros.org/bloom/Tutorials/ReleaseCatkinPackage)
+
+### Release command
+
+Can only be executed by users with repository maintainer privileges
+
+```shell
+# create change log
+catkin_generate_changelog
+# edit CHANGELOG.rst
+# update package version in pyproject.toml
+# edit ReleaseNotes.md
+# commit and create pull request
+# merge pull request
+catkin_prepare_release
+# When you type the command, it automatically updates CHANGELOG.rst and creates a git tag
+git checkout main
+git merge develop
+git push origin main
+```
