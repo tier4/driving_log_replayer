@@ -15,18 +15,44 @@
 from dataclasses import dataclass
 
 from perception_eval.evaluation import PerceptionFrameResult
+from pydantic import BaseModel
+from typing_extensions import Literal
 
 from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import number
+from driving_log_replayer.scenario import Scenario
+
+
+class Conditions(BaseModel):
+    PassRate: number
+    CriteriaMethod: Literal["num_tp", "metrics_score"]
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[number]
+    TargetCameras: dict[str, int]
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["perception_2d"]
+    UseCaseFormatVersion: Literal["0.3.0"]
+    Datasets: list[dict]
+    Conditions: Conditions
+    PerceptionEvaluationConfig: dict
+    CriticalObjectFilterConfig: dict
+    PerceptionPassFailConfig: dict
+
+
+class Perception2DScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass
 class Perception(EvaluationItem):
     def __post_init__(self) -> None:
+        self.condition: Conditions
         self.criteria: PerceptionCriteria = PerceptionCriteria(
-            method=self.condition.get("CriteriaMethod"),
-            level=self.condition.get("CriteriaLevel"),
+            method=self.condition.CriteriaMethod,
+            level=self.condition.CriteriaLevel,
         )
 
     def set_frame(
@@ -43,7 +69,7 @@ class Perception(EvaluationItem):
             self.passed += 1
             frame_success = "Success"
 
-        self.success = self.rate() >= self.condition["PassRate"]
+        self.success = self.rate() >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
@@ -66,10 +92,10 @@ class Perception(EvaluationItem):
 
 
 class Perception2DResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
         self.__cameras: dict[Perception] = {}
-        for camera_type in condition.get("TargetCameras"):
+        for camera_type in condition.TargetCameras:
             self.__cameras[camera_type] = Perception(name=camera_type, condition=condition)
 
     def update(self) -> None:
