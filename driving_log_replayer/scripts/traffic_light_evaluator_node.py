@@ -48,6 +48,8 @@ if TYPE_CHECKING:
 class TrafficLightEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, TrafficLightScenario, TrafficLightResult)
+        self.use_map_interface()
+
         self._scenario: TrafficLightScenario
         self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
