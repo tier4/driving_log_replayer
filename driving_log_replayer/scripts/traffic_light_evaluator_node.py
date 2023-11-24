@@ -17,7 +17,6 @@
 import logging
 from os.path import expandvars
 from pathlib import Path
-import sys
 from typing import TYPE_CHECKING
 
 from autoware_perception_msgs.msg import TrafficSignal
@@ -180,64 +179,52 @@ class TrafficLightEvaluator(DLREvaluator):
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
             return
-        # get the minimum distance to traffic light
-        distance_to_traffic_light = sys.maxsize
-        gt_tlr_objects = ground_truth_now_frame.objects
-        for obj in gt_tlr_objects:
+
+        # extract all traffic lights closer than 202[m]
+        # TODO: avoid using magic number
+        max_distance_threshold = 202.0  # [m]
+        filtered_gt_objects = []
+        for obj in ground_truth_now_frame.objects:
             ego_position = map_to_baselink.transform.translation
-            distance_to_each_traffic_light = (
-                self.__traffic_light_obj.get_distance_to_traffic_light_group(
-                    obj.uuid,
-                    [ego_position.x, ego_position.y, ego_position.z],
-                )
+            distance_to_gt = self.__traffic_light_obj.get_distance_to_traffic_light_group(
+                obj.uuid,
+                [ego_position.x, ego_position.y, ego_position.z],
             )
-            if distance_to_each_traffic_light is None:
-                continue
-            distance_to_traffic_light = min(
-                distance_to_each_traffic_light,
-                distance_to_traffic_light,
+            if distance_to_gt is not None and distance_to_gt < max_distance_threshold:
+                filtered_gt_objects.append(obj)
+
+        estimated_objects = self.list_dynamic_object_2d_from_ros_msg(unix_time, msg.signals)
+        filtered_est_objects = []
+        for obj in estimated_objects:
+            ego_position = map_to_baselink.transform.translation
+            distance_to_est = self.__traffic_light_obj.get_distance_to_traffic_light_group(
+                obj.uuid,
+                [ego_position.x, ego_position.y, ego_position.z],
             )
-            logging.info(
-                f"GT: {obj.uuid}, {obj.semantic_label.name}, dist={distance_to_traffic_light:.2f}",  # noqa
-            )
-        logging.info("==============start conversion==============")
-        estimated_objects: list[DynamicObject2D] = self.list_dynamic_object_2d_from_ros_msg(
-            unix_time,
-            msg.signals,
-        )
-        if distance_to_traffic_light == sys.maxsize:
-            for obj in estimated_objects:
-                ego_position = map_to_baselink.transform.translation
-                distance_to_each_traffic_light = (
-                    self.__traffic_light_obj.get_distance_to_traffic_light_group(
-                        obj.uuid,
-                        [ego_position.x, ego_position.y, ego_position.z],
-                    )
-                )
-                if distance_to_each_traffic_light is None:
-                    continue
-                distance_to_traffic_light = min(
-                    distance_to_each_traffic_light,
-                    distance_to_traffic_light,
-                )
-        logging.info(
-            f"GTs: {[(obj.uuid, obj.semantic_label.name)for obj in ground_truth_now_frame.objects]}",  # noqa
-        )
-        logging.info("==============end conversion==============")
-        if distance_to_traffic_light > 202:  # noqa TODO avoid using magic number
+            if distance_to_est is not None and distance_to_est < max_distance_threshold:
+                filtered_est_objects.append(obj)
+
+        if len(filtered_gt_objects) == 0 and len(filtered_est_objects) == 0:
             self.__skip_counter += 1
             return
-        ros_critical_ground_truth_objects = ground_truth_now_frame.objects
+        ground_truth_now_frame.objects = filtered_gt_objects
+        ros_critical_ground_truth_objects = filtered_gt_objects
+        logging.info(
+            f"GTs: {[obj.uuid for obj in filtered_gt_objects]}, "  # noqa
+            f"ESTs: {[obj.uuid for obj in estimated_objects]}"  # noqa
+        )
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
             unix_time=unix_time,
             ground_truth_now_frame=ground_truth_now_frame,
-            estimated_objects=estimated_objects,
+            estimated_objects=filtered_est_objects,
             ros_critical_ground_truth_objects=ros_critical_ground_truth_objects,
             critical_object_filter_config=self.__critical_object_filter_config,
             frame_pass_fail_config=self.__frame_pass_fail_config,
         )
         logging.info(
-            f"TP: {len(frame_result.pass_fail_result.tp_object_results)}, FP: {len(frame_result.pass_fail_result.fp_object_results)}, FN: {len(frame_result.pass_fail_result.fn_objects)}",  # noqa
+            f"TP: {len(frame_result.pass_fail_result.tp_object_results)}, "  # noqa
+            f"FP: {len(frame_result.pass_fail_result.fp_object_results)}, "
+            f"FN: {len(frame_result.pass_fail_result.fn_objects)}",
         )
         self.__result.set_frame(
             frame_result,
