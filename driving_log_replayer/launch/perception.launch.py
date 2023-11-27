@@ -20,7 +20,15 @@ from launch.substitutions import LaunchConfiguration
 
 import driving_log_replayer.launch_common
 
-RECORD_TOPIC_REGEX = "^/clock$|^/tf$|/sensing/lidar/concatenated/pointcloud|^/perception/object_recognition/detection/objects$|^/perception/object_recognition/tracking/objects$|^/perception/object_recognition/objects$|^/driving_log_replayer/.*|^/sensing/camera/.*"
+RECORD_TOPIC_REGEX = """^/clock$\
+|^/tf$\
+|^/sensing/lidar/concatenated/pointcloud$\
+|^/perception/object_recognition/detection/objects$\
+|^/perception/object_recognition/tracking/objects$\
+|^/perception/object_recognition/objects$\
+|^/driving_log_replayer/.*\
+|^/sensing/camera/.*
+"""
 
 
 def generate_launch_description() -> launch.LaunchDescription:

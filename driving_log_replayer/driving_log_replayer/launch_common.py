@@ -213,24 +213,6 @@ def get_evaluator_node(
     )
 
 
-def get_recorder(record_config_name: str, record_topics: list) -> ExecuteProcess:
-    record_cmd = [
-        "ros2",
-        "bag",
-        "record",
-        *record_topics,
-        "-o",
-        LaunchConfiguration("result_bag_path"),
-        "--qos-profile-overrides-path",
-        Path(
-            get_package_share_directory("driving_log_replayer"),
-            "config",
-            record_config_name,
-        ).as_posix(),
-    ]
-    return ExecuteProcess(cmd=record_cmd)
-
-
 def create_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
     return [
         "ros2",

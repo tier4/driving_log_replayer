@@ -19,6 +19,14 @@ from launch_ros.actions import Node
 import driving_log_replayer.launch_common
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
+RECORD_TOPIC_REGEX = """^/clock$\
+|^/tf$\
+|^/perception/obstacle_segmentation/pointcloud$\
+|^/planning/scenario_planning/trajectory$\
+|^/planning/scenario_planning/status/stop_reasons$\
+|^/driving_log_replayer/.*
+"""
+
 
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
@@ -49,23 +57,9 @@ def generate_launch_description() -> launch.LaunchDescription:
         ],
     )
 
-    recorder = driving_log_replayer.launch_common.get_recorder(
+    recorder = driving_log_replayer.launch_common.get_regex_recorder(
         "obstacle_segmentation.qos.yaml",
-        [
-            "/clock",
-            "/tf",
-            "/perception/obstacle_segmentation/pointcloud",
-            "/planning/scenario_planning/status/stop_reasons",
-            "/planning/scenario_planning/trajectory",
-            "/driving_log_replayer/marker/detection",
-            "/driving_log_replayer/marker/non_detection",
-            "/driving_log_replayer/pcd/detection",
-            "/driving_log_replayer/pcd/non_detection",
-            "/driving_log_replayer/obstacle_segmentation/input",
-            "/driving_log_replayer/graph/topic_rate",
-            "/driving_log_replayer/graph/detection",
-            "/driving_log_replayer/graph/non_detection",
-        ],
+        RECORD_TOPIC_REGEX,
     )
 
     return launch.LaunchDescription(

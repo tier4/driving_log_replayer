@@ -23,6 +23,15 @@ from launch.substitutions import LaunchConfiguration
 
 import driving_log_replayer.launch_common
 
+RECORD_TOPIC_REGEX = """^/clock$\
+|^/tf$\
+|^/perception/obstacle_segmentation/pointcloud$\
+|^/sensing/lidar/concatenated/pointcloud$\
+|^/diagnostics_agg$\
+|^/sensing/lidar/.*/blockage_diag/debug/blockage_mask_image$\
+|^/driving_log_replayer/.*
+"""
+
 
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
@@ -68,7 +77,7 @@ def generate_launch_description() -> launch.LaunchDescription:
 
     recorder = driving_log_replayer.launch_common.get_regex_recorder(
         "performance_diag.qos.yaml",
-        "^/clock$|^/tf$|/perception/obstacle_segmentation/pointcloud|/sensing/lidar/concatenated/pointcloud|^/diagnostics$|^/diagnostics_agg$|^/driving_log_replayer/.*|^/sensing/lidar/.*/blockage_diag/debug/blockage_mask_image$",
+        RECORD_TOPIC_REGEX,
     )
     return launch.LaunchDescription(
         [
