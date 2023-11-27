@@ -4,21 +4,21 @@
 
 1. Copy sample scenario
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data/perception/sample
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/perception/scenario.yaml ~/driving_log_replayer_data/perception/sample
    ```
 
 2. Copy bag file from dataset
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data/perception/sample/t4_dataset
    cp -r ~/driving_log_replayer_data/sample_dataset ~/driving_log_replayer_data/perception/sample/t4_dataset
    ```
 
 3. Transform machine learning trained models
 
-   ```bash
+   ```shell
    source ~/autoware/install/setup
    ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
    # Wait until the following file is created in ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data
@@ -31,7 +31,7 @@
 
 1. Run the simulation
 
-   ```bash
+   ```shell
    driving_log_replayer simulation run -p perception --rate 0.5
    ```
 
@@ -42,7 +42,7 @@
    Results are displayed in the terminal like below.
    The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
 
-   ```bash
+   ```shell
     test case 1 / 1 : use case: sample
     --------------------------------------------------
     TestResult: Passed

@@ -4,20 +4,20 @@
 
 1. サンプルのシナリオのコピー
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data/localization/sample
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/localization/scenario.yaml ~/driving_log_replayer_data/localization/sample
    ```
 
 2. サンプルのデータセットをコピー
 
-   ```bash
+   ```shell
    cp -r ~/driving_log_replayer_data/sample_dataset/input_bag ~/driving_log_replayer_data/localization/sample
    ```
 
 3. 入力の bag ファイルのフィルタとスライス処理
 
-   ```bash
+   ```shell
    source ~/autoware/install/setup.bash
    cd ~/driving_log_replayer_data/localization/sample
    ros2 bag filter input_bag -o filtered_bag -x "/localization/.*" "/sensing/lidar/concatenated/pointcloud" "/tf"
@@ -31,7 +31,7 @@
 
 1. シミュレーションの実行
 
-   ```bash
+   ```shell
    driving_log_replayer simulation run -p localization --rate 0.5
    ```
 
@@ -42,7 +42,7 @@
    以下のような結果がターミナルに表示されます。
    PC の性能や CPU の負荷状況によってテスト回数が若干異なることがありますが、多少の差は問題ありません。
 
-   ```bash
+   ```shell
     test case 1 / 1 : use case: sample
     --------------------------------------------------
     TestResult: Passed

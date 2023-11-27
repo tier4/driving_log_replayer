@@ -4,14 +4,14 @@
 
 1. Copy sample scenario
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data/obstacle_segmentation/sample
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/obstacle_segmentation/scenario.yaml ~/driving_log_replayer_data/obstacle_segmentation/sample
    ```
 
 2. Copy bag file from dataset
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data/obstacle_segmentation/sample/t4_dataset
    cp -r ~/driving_log_replayer_data/sample_dataset ~/driving_log_replayer_data/obstacle_segmentation/sample/t4_dataset
    ```
@@ -20,7 +20,7 @@
 
 1. Run the simulation
 
-   ```bash
+   ```shell
    driving_log_replayer simulation run -p obstacle_segmentation --rate 0.5
    ```
 
@@ -31,7 +31,7 @@
    Results are displayed in the terminal like below.
    The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
 
-   ```bash
+   ```shell
     test case 1 / 1 : use case: sample_dataset
     --------------------------------------------------
     TestResult: Failed

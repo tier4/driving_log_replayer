@@ -4,20 +4,20 @@
 
 1. Copy sample scenario
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data/localization/sample
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/localization/scenario.yaml ~/driving_log_replayer_data/localization/sample
    ```
 
 2. Copy bag file from dataset
 
-   ```bash
+   ```shell
    cp -r ~/driving_log_replayer_data/sample_dataset/input_bag ~/driving_log_replayer_data/localization/sample
    ```
 
 3. Filter and slice bag
 
-   ```bash
+   ```shell
    source ~/autoware/install/setup.bash
    cd ~/driving_log_replayer_data/localization/sample
    ros2 bag filter input_bag -o filtered_bag -x "/localization/.*" "/sensing/lidar/concatenated/pointcloud" "/tf"
@@ -31,7 +31,7 @@
 
 1. Run the simulation
 
-   ```bash
+   ```shell
    driving_log_replayer simulation run -p localization --rate 0.5
    ```
 
@@ -42,7 +42,7 @@
    Results are displayed in the terminal like below.
    The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
 
-   ```bash
+   ```shell
     test case 1 / 1 : use case: sample
     --------------------------------------------------
     TestResult: Passed
