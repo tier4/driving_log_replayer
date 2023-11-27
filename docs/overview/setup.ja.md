@@ -14,7 +14,7 @@ driving_log_replayer_cli では、cli に渡す引数を少なくするために
 nano $HOME/.driving_log_replayer.config.toml
 
 # cliで作成
-driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
+dlr configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
 ```
 
 profile は最低 1 つ必要で、1 つは `default` という名前である必要がある。

@@ -42,6 +42,27 @@ pipx upgrade driving_log_replayer_cli
 pipx uninstall driving_log_replayer_cli
 ```
 
+### Shell Completion
+
+Execute the following command so that you can complete the command in the shell.
+
+#### bash
+
+```shell
+_DLR_COMPLETE=bash_source dlr > $HOME/.dlr-complete.bash
+_DLR_COMPLETE=bash_source dlr > $HOME/.dlr-analyzer-complete.bash
+
+echo "source $HOME/.dlr-complete.bash" >> ~/.bashrc
+echo "source $HOME/.dlr-analyzer-complete.bash" >> ~/.bashrc
+```
+
+#### fish
+
+```shell
+_DLR_COMPLETE=fish_source dlr > $HOME/.config/fish/completions/dlr.fish
+_DLR_ANALYZER_COMPLETE=fish_source dlr-analyzer > $HOME/.config/fish/completions/dlr-analyzer.fish
+```
+
 ## Usage
 
 refer [document](https://tier4.github.io/driving_log_replayer/)
