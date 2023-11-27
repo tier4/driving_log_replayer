@@ -38,7 +38,7 @@
 1. Run the simulation
 
    ```shell
-   driving_log_replayer simulation run -p yabloc --rate 0.5
+   dlr simulation run -p yabloc --rate 0.5
    ```
 
 2. Check the results

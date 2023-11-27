@@ -38,7 +38,7 @@
 1. シミュレーションの実行
 
    ```shell
-   driving_log_replayer simulation run -p yabloc --rate 0.5
+   dlr simulation run -p yabloc --rate 0.5
    ```
 
 2. 結果の確認

@@ -21,7 +21,7 @@
 1. Run the simulation
 
    ```shell
-   driving_log_replayer simulation run -p obstacle_segmentation --rate 0.5
+   dlr simulation run -p obstacle_segmentation --rate 0.5
    ```
 
    ![obstacle_segmentation](images/obstacle_segmentation.png)

@@ -39,7 +39,7 @@ mv sliced_bag input_bag
 1. シミュレーションの実行
 
    ```shell
-   driving_log_replayer simulation run -p ar_tag_based_localizer --rate 0.5
+   dlr simulation run -p ar_tag_based_localizer --rate 0.5
    ```
 
 2. 結果の確認

@@ -32,7 +32,7 @@
 1. Run the simulation
 
    ```shell
-   driving_log_replayer simulation run -p perception --rate 0.5
+   dlr simulation run -p perception --rate 0.5
    ```
 
    ![perception](images/perception.png)
