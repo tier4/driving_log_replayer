@@ -197,7 +197,7 @@ def get_evaluator_node(
         "t4_dataset_path": LaunchConfiguration("t4_dataset_path"),
         "result_archive_path": LaunchConfiguration("result_archive_path"),
     }
-    if addition_parameter is not None and type(addition_parameter) == dict:
+    if addition_parameter is not None and isinstance(addition_parameter, dict):
         params.update(addition_parameter)
 
     node_name = usecase_name + "_evaluator_node.py"
@@ -254,7 +254,27 @@ def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProces
     return ExecuteProcess(cmd=record_cmd)
 
 
-def get_player(additional_argument: list | None = None) -> ExecuteProcess:
+def get_regex_recorders(
+    record_config_name: str,
+    allowlist: str,
+) -> tuple[ExecuteProcess, ExecuteProcess]:
+    record_cmd = create_regex_record_cmd(record_config_name, allowlist)
+    record_proc = ExecuteProcess(
+        cmd=record_cmd,
+        condition=UnlessCondition(LaunchConfiguration("override_record_topics")),
+    )
+    record_override_cmd = create_regex_record_cmd(
+        record_config_name,
+        LaunchConfiguration("override_topics_regex"),
+    )
+    record_override_proc = ExecuteProcess(
+        cmd=record_override_cmd,
+        condition=IfCondition(LaunchConfiguration("override_record_topics")),
+    )
+    return record_proc, record_override_proc
+
+
+def get_player_cmd(additional_argument: list | None = None) -> list:
     play_cmd = [
         "ros2",
         "bag",
@@ -265,8 +285,23 @@ def get_player(additional_argument: list | None = None) -> ExecuteProcess:
         "--clock",
         "200",
     ]
-    if additional_argument is not None and type(additional_argument) == list:
+    if additional_argument is not None and isinstance(additional_argument, list):
         play_cmd.extend(additional_argument)
+    return play_cmd
+
+
+def get_player(
+    additional_argument: list | None = None,
+    condition: IfCondition | None = None,
+) -> ExecuteProcess:
+    play_cmd = get_player_cmd(additional_argument)
+    if condition is not None:
+        return ExecuteProcess(
+            cmd=["sleep", LaunchConfiguration("play_delay")],
+            on_exit=[ExecuteProcess(cmd=play_cmd)],
+            output="screen",
+            condition=condition,
+        )
     return ExecuteProcess(
         cmd=["sleep", LaunchConfiguration("play_delay")],
         on_exit=[ExecuteProcess(cmd=play_cmd)],

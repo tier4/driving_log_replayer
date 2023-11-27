@@ -12,16 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import copy
-
 import launch
 from launch.actions import DeclareLaunchArgument
-from launch.actions import ExecuteProcess
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
 
 import driving_log_replayer.launch_common
+
+RECORD_TOPIC_REGEX = "^/clock$|^/tf$|/sensing/lidar/concatenated/pointcloud|^/perception/object_recognition/detection/objects$|^/perception/object_recognition/tracking/objects$|^/perception/object_recognition/objects$|^/driving_log_replayer/.*|^/sensing/camera/.*"
 
 
 def generate_launch_description() -> launch.LaunchDescription:
@@ -34,58 +33,22 @@ def generate_launch_description() -> launch.LaunchDescription:
     rviz_node = driving_log_replayer.launch_common.get_rviz("perception.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("perception")
 
-    play_cmd = [
-        "ros2",
-        "bag",
-        "play",
-        LaunchConfiguration("input_bag"),
-        "--rate",
-        LaunchConfiguration("play_rate"),
-        "--clock",
-        "200",
-    ]
-    play_cmd_remap = copy.copy(play_cmd)
-    play_cmd_remap.extend(
-        [
-            "--remap",
-            "/sensing/lidar/concatenated/pointcloud:=/driving_log_replayer/concatenated/pointcloud",
-        ],
-    )
-
-    player_normal = ExecuteProcess(
-        cmd=["sleep", LaunchConfiguration("play_delay")],
-        on_exit=[ExecuteProcess(cmd=play_cmd)],
-        output="screen",
+    player_normal = driving_log_replayer.launch_common.get_player(
         condition=UnlessCondition(LaunchConfiguration("sensing")),
     )
 
-    player_remap = ExecuteProcess(
-        cmd=["sleep", LaunchConfiguration("play_delay")],
-        on_exit=[ExecuteProcess(cmd=play_cmd_remap)],
-        output="screen",
+    player_remap = driving_log_replayer.launch_common.get_player(
+        additional_argument=[
+            "--remap",
+            "/sensing/lidar/concatenated/pointcloud:=/driving_log_replayer/concatenated/pointcloud",
+        ],
         condition=IfCondition(LaunchConfiguration("sensing")),
     )
 
-    record_cmd = driving_log_replayer.launch_common.create_regex_record_cmd(
+    recorder, recorder_override = driving_log_replayer.launch_common.get_regex_recorders(
         "perception.qos.yaml",
-        "^/clock$|^/tf$|/sensing/lidar/concatenated/pointcloud|^/perception/object_recognition/detection/objects$|^/perception/object_recognition/tracking/objects$|^/perception/object_recognition/objects$|^/driving_log_replayer/.*|^/sensing/camera/.*",
+        RECORD_TOPIC_REGEX,
     )
-
-    recorder = ExecuteProcess(
-        cmd=record_cmd,
-        condition=UnlessCondition(LaunchConfiguration("override_record_topics")),
-    )
-
-    record_override_cmd = driving_log_replayer.launch_common.create_regex_record_cmd(
-        "perception.qos.yaml",
-        LaunchConfiguration("override_topics_regex"),
-    )
-
-    recorder_override = ExecuteProcess(
-        cmd=record_override_cmd,
-        condition=IfCondition(LaunchConfiguration("override_record_topics")),
-    )
-
     return launch.LaunchDescription(
         [
             *launch_arguments,
