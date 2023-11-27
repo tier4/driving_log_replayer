@@ -1,21 +1,21 @@
 # Command
 
-After installing `driving_log_replayer_cli`, the `driving_log_replayer` command can be executed in the terminal.
-The `driving_log_replayer` command has subcommands.
+After installing `driving_log_replayer_cli`, the `dlr` command can be executed in the terminal.
+The `dlr` command has subcommands.
 The arguments required for each command can be displayed by specifying the `--help` option.
 
 ```shell
 # driving_log_replayer top level help
-driving_log_replayer --help
+dlr --help
 
 # show version
-driving_log_replayer --version
+dlr --version
 
 # show subcommand help
-driving_log_replayer subcommand --help
+dlr subcommand --help
 
 # show subsubcommand help
-driving_log_replayer subcommand subsubcommand --help
+dlr subcommand subsubcommand --help
 ```
 
 ## CLI subcommands
@@ -25,32 +25,32 @@ The list of supported subcommands can be found below:
 - configure
 - simulation
 
-### driving_log_replayer configure
+### dlr configure
 
 Command to manipulate the configuration file `.driving_log_replayer.config.toml`.
 
 ```shell
 # Set data_directory, output_directory, and autoware_path to the profile name specified by -p.
 # If -p is omitted, default is specified for the profile name.
-driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
+dlr configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
 ```
 
-### driving_log_replayer simulation
+### dlr simulation
 
 Available commands to run the Autoware evaluation:
 
 ```shell
 # simulation run, both jsonl and json result files are output
-driving_log_replayer simulation run -p ${profile}
+dlr simulation run -p ${profile}
 
 # simulation run, do not convert jsonl to json
-driving_log_replayer simulation run -p ${profile} --no-json
+dlr simulation run -p ${profile} --no-json
 
 # Check results and display summary of result files under output_directory
-driving_log_replayer simulation show-result ${output_directory}
+dlr simulation show-result ${output_directory}
 
 # Convert result files to json
-driving_log_replayer simulation convert-result ${output_directory}
+dlr simulation convert-result ${output_directory}
 ```
 
 ## Run driving_log_replayer with wasim

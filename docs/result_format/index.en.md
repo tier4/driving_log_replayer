@@ -43,7 +43,7 @@ If you want to convert a JSONL file to JSON, you can do so with the following co
 
 ```shell
 # Conversion of result files, converting result.jsonl under output_directory to result.json
-driving_log_replayer simulation convert-result ${output_directory}
+dlr simulation convert-result ${output_directory}
 ```
 
 ## Analyze the result files
