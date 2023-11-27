@@ -22,9 +22,13 @@ from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
+from pydantic import BaseModel
+from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import Scenario
 
 INVALID_FLOAT_VALUE = -99.9
 
@@ -51,6 +55,37 @@ def convert_str_to_int(str_float: str) -> float:
         return 0
 
 
+class VisibilityCondition(BaseModel):
+    ScenarioType: Literal["TP", "FP"] | None
+    PassFrameCount: int
+
+
+class BlockageCondition(BaseModel):
+    ScenarioType: Literal["TP", "FP"] | None
+    PassFrameCount: int
+    BlockageType: Literal["both", "ground", "sky"]
+
+
+class LiDARCondition(BaseModel):
+    Visibility: VisibilityCondition
+    Blockage: dict[str, BlockageCondition]
+
+
+class Conditions(BaseModel):
+    LiDAR: LiDARCondition
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["performance_diag"]
+    UseCaseFormatVersion: Literal["1.0.0"]
+    Conditions: Conditions
+    InitialPose: InitialPose | None
+
+
+class PerformanceDiagScenario(Scenario):
+    Evaluation: Evaluation
+
+
 @dataclass
 class Visibility(EvaluationItem):
     name: str = "Visibility"
@@ -61,7 +96,8 @@ class Visibility(EvaluationItem):
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
-        self.scenario_type: str | None = self.condition.get("ScenarioType")
+        self.condition: VisibilityCondition
+        self.scenario_type: str | None = self.condition.ScenarioType
         self.valid: bool = self.scenario_type is not None
 
     def set_frame(self, msg: DiagnosticArray) -> tuple[dict, Float64 | None, Byte | None]:
@@ -86,7 +122,7 @@ class Visibility(EvaluationItem):
                 if diag_level == DiagnosticStatus.ERROR:
                     frame_success = "Success"
                     self.passed += 1
-                self.success = self.passed >= self.condition["PassFrameCount"]
+                self.success = self.passed >= self.condition.PassFrameCount
             elif self.scenario_type == "FP":
                 if diag_level != DiagnosticStatus.ERROR:
                     frame_success = "Success"
@@ -129,9 +165,10 @@ class Blockage(EvaluationItem):
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
-        self.scenario_type: str | None = self.condition["ScenarioType"]
-        self.blockage_type: str = self.condition["BlockageType"]
-        self.pass_frame_count: int = self.condition["PassFrameCount"]
+        self.condition: BlockageCondition
+        self.scenario_type: str | None = self.condition.ScenarioType
+        self.blockage_type: str = self.condition.BlockageType
+        self.pass_frame_count: int = self.condition.PassFrameCount
         self.valid: bool = self.scenario_type is not None
         self.blockage_name = (
             Blockage.BLOCKAGE_DIAG_BASE_NAME + self.name + Blockage.BLOCKAGE_DIAG_POSTFIX
@@ -220,12 +257,12 @@ class Blockage(EvaluationItem):
 
 
 class PerformanceDiagResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__visibility = Visibility(condition=condition.get("LiDAR", {}).get("Visibility", {}))
+        self.__visibility = Visibility(condition=condition.LiDAR.Visibility)
         self.__blockages: dict[str, Blockage] = {}
-        for lidar_name, v in condition.get("LiDAR", {}).get("Blockage", {}).items():
-            if v["ScenarioType"] is not None:
+        for lidar_name, v in condition.LiDAR.Blockage.items():
+            if v.ScenarioType is not None:
                 self.__blockages[lidar_name] = Blockage(name=lidar_name, condition=v)
 
     def update(self) -> None:

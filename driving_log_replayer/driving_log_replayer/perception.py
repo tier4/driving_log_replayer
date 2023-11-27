@@ -15,14 +15,38 @@
 from dataclasses import dataclass
 
 from perception_eval.evaluation import PerceptionFrameResult
+from pydantic import BaseModel
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
+from typing_extensions import Literal
 from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.criteria import PerceptionCriteria
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import number
+from driving_log_replayer.scenario import Scenario
+
+
+class Conditions(BaseModel):
+    PassRate: number
+    CriteriaMethod: Literal["num_tp", "metrics_score"] | None = None
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[number] | None = None
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["perception"]
+    UseCaseFormatVersion: Literal["0.5.0", "0.6.0"]
+    Datasets: list[dict]
+    Conditions: Conditions
+    PerceptionEvaluationConfig: dict
+    CriticalObjectFilterConfig: dict
+    PerceptionPassFailConfig: dict
+
+
+class PerceptionScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass
@@ -31,8 +55,8 @@ class Perception(EvaluationItem):
 
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(
-            method=self.condition.get("CriteriaMethod"),
-            level=self.condition.get("CriteriaLevel"),
+            method=self.condition.CriteriaMethod,
+            level=self.condition.CriteriaLevel,
         )
 
     def set_frame(
@@ -70,7 +94,7 @@ class Perception(EvaluationItem):
             header,
         )
 
-        self.success = self.rate() >= self.condition["PassRate"]
+        self.success = self.rate() >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return (
@@ -93,7 +117,7 @@ class Perception(EvaluationItem):
 
 
 class PerceptionResult(ResultBase):
-    def __init__(self, condition: dict) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
         self.__perception = Perception(condition=condition)
 

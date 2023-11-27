@@ -16,7 +16,17 @@ from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 
+from driving_log_replayer.scenario import load_sample_scenario
 from driving_log_replayer.yabloc import Availability
+from driving_log_replayer.yabloc import YablocScenario
+
+
+def test_scenario() -> None:
+    scenario: YablocScenario = load_sample_scenario(
+        "yabloc",
+        YablocScenario,
+    )
+    assert scenario.ScenarioName == "sample_yabloc"
 
 
 def test_availability_success() -> None:

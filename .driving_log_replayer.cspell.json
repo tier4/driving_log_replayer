@@ -24,6 +24,7 @@
     "Minoda",
     "pyproject",
     "CENTERDISTANCE",
-    "nums"
+    "nums",
+    "pydantic"
   ]
 }

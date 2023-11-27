@@ -8,4 +8,4 @@ LocalMapPath: $HOME/autoware_map/awsim-shinjuku
 Evaluation:
   UseCaseName: eagleye
   UseCaseFormatVersion: 0.1.0
-  InitialPose: Null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
+  InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.

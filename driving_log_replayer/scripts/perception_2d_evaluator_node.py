@@ -33,6 +33,7 @@ from tier4_perception_msgs.msg import DetectedObjectWithFeature
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.perception_2d import Perception2DResult
+from driving_log_replayer.perception_2d import Perception2DScenario
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 
 if TYPE_CHECKING:
@@ -41,11 +42,22 @@ if TYPE_CHECKING:
 
 class Perception2DEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.check_scenario()
-        self.use_t4_dataset()
+        super().__init__(name, Perception2DScenario, Perception2DResult)
+        self._scenario: Perception2DScenario
 
-        self.__result = Perception2DResult(self._condition)
+        self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
+        self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
+        self.__f_cfg = self._scenario.Evaluation.PerceptionPassFailConfig
+        self.__evaluation_task = self.__p_cfg["evaluation_config_dict"]["evaluation_task"]
+        self.__p_cfg["evaluation_config_dict"][
+            "label_prefix"
+        ] = "autoware"  # Add a fixed value setting
+        self.__p_cfg["evaluation_config_dict"][
+            "count_label_number"
+        ] = True  # Add a fixed value setting
+        self.__camera_type_dict = self._scenario.Evaluation.Conditions.TargetCameras
+        if not self.check_evaluation_task():
+            rclpy.shutdown()
 
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
@@ -88,38 +100,11 @@ class Perception2DEvaluator(DLREvaluator):
             )
             self.__skip_counter[camera_type] = 0
 
-    def check_scenario(self) -> None:
-        try:
-            self.__p_cfg = self._scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
-            self.__c_cfg = self._scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
-            self.__f_cfg = self._scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
-            self.__evaluation_task = self.__p_cfg["evaluation_config_dict"]["evaluation_task"]
-            self.__p_cfg["evaluation_config_dict"][
-                "label_prefix"
-            ] = "autoware"  # Add a fixed value setting
-            self.__p_cfg["evaluation_config_dict"][
-                "count_label_number"
-            ] = True  # Add a fixed value setting
-            self.__camera_type_dict = self._condition["TargetCameras"]
-        except KeyError:
-            self.get_logger().error("Scenario format error.")
-            rclpy.shutdown()
-        if not self.check_evaluation_task():
-            rclpy.shutdown()
-        if not self.check_camera_type():
-            rclpy.shutdown()
-
     def check_evaluation_task(self) -> bool:
         if self.__evaluation_task in ["detection2d", "tracking2d"]:
             return True
         self.get_logger().error(f"Unexpected evaluation task: {self.__evaluation_task}.")
         return False
-
-    def check_camera_type(self) -> bool:
-        if isinstance(self.__camera_type_dict, str) or len(self.__camera_type_dict) == 0:
-            self.get_logger().error("camera_types is not appropriate.")
-            return False
-        return True
 
     def get_topic_name(self, camera_no: int) -> str:
         if self.__evaluation_task == "detection2d":
@@ -142,8 +127,8 @@ class Perception2DEvaluator(DLREvaluator):
         if conf_mat_df is not None:
             conf_mat_dict = conf_mat_df.to_dict()
         final_metrics = {"Score": score_dict, "ConfusionMatrix": conf_mat_dict}
-        self.__result.set_final_metrics(final_metrics)
-        self._result_writer.write_result(self.__result)
+        self._result.set_final_metrics(final_metrics)
+        self._result_writer.write_result(self._result)
 
     def list_dynamic_object_2d_from_ros_msg(
         self,
@@ -199,13 +184,13 @@ class Perception2DEvaluator(DLREvaluator):
                 frame_pass_fail_config=self.__frame_pass_fail_config,
             )
             # write result
-            self.__result.set_frame(
+            self._result.set_frame(
                 frame_result,
                 self.__skip_counter[camera_type],
                 DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
                 camera_type,
             )
-            self._result_writer.write_result(self.__result)
+            self._result_writer.write_result(self._result)
 
     def get_final_result(self) -> MetricsScore:
         final_metric_score = self.__evaluator.get_scene_result()

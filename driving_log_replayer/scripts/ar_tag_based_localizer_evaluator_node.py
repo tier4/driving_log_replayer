@@ -18,16 +18,14 @@
 from diagnostic_msgs.msg import DiagnosticArray
 
 from driving_log_replayer.ar_tag_based_localizer import ArTagBasedLocalizerResult
+from driving_log_replayer.ar_tag_based_localizer import ArtagBasedLocalizerScenario
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 
 
 class ArTagBasedLocalizerEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.check_scenario()
-
-        self.__result = ArTagBasedLocalizerResult()
+        super().__init__(name, ArtagBasedLocalizerScenario, ArTagBasedLocalizerResult)
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
@@ -36,12 +34,9 @@ class ArTagBasedLocalizerEvaluator(DLREvaluator):
             1,
         )
 
-    def check_scenario(self) -> None:
-        pass
-
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
-        self.__result.set_frame(msg)
-        self._result_writer.write_result(self.__result)
+        self._result.set_frame(msg)
+        self._result_writer.write_result(self._result)
 
 
 @evaluator_main
