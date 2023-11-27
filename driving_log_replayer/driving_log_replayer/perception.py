@@ -31,13 +31,13 @@ from driving_log_replayer.scenario import Scenario
 
 class Conditions(BaseModel):
     PassRate: number
-    CriteriaMethod: Literal["num_tp", "metrics_score"]
-    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[number]
+    CriteriaMethod: Literal["num_tp", "metrics_score"] | None = None
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[number] | None = None
 
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["perception"]
-    UseCaseFormatVersion: Literal["0.6.0"]
+    UseCaseFormatVersion: Literal["0.5.0", "0.6.0"]
     Datasets: list[dict]
     Conditions: Conditions
     PerceptionEvaluationConfig: dict

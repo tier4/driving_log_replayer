@@ -28,7 +28,15 @@ from perception_eval.evaluation.result.perception_frame_config import CriticalOb
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 import pytest
 
+from driving_log_replayer.perception_2d import Conditions
 from driving_log_replayer.perception_2d import Perception
+from driving_log_replayer.perception_2d import Perception2DScenario
+from driving_log_replayer.scenario import load_sample_scenario
+
+
+def test_scenario() -> None:
+    scenario: Perception2DScenario = load_sample_scenario("perception_2d", Perception2DScenario)
+    assert scenario.Evaluation.Conditions.TargetCameras["cam_front"] == 0
 
 
 @pytest.fixture()
@@ -80,7 +88,12 @@ def create_frame_result() -> PerceptionFrameResult:
 def create_tp_normal() -> Perception:
     return Perception(
         name="cam_front",
-        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "normal"},
+        condition=Conditions(
+            PassRate=95.0,
+            CriteriaMethod="num_tp",
+            CriteriaLevel="normal",
+            TargetCameras={"cam_front": 0},
+        ),
         total=99,
         passed=94,
     )
@@ -90,7 +103,12 @@ def create_tp_normal() -> Perception:
 def create_tp_hard() -> Perception:
     return Perception(
         name="cam_front",
-        condition={"PassRate": 95.0, "CriteriaMethod": "num_tp", "CriteriaLevel": "hard"},
+        condition=Conditions(
+            PassRate=95.0,
+            CriteriaMethod="num_tp",
+            CriteriaLevel="hard",
+            TargetCameras={"cam_front": 0},
+        ),
         total=99,
         passed=94,
     )

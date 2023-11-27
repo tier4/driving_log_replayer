@@ -29,7 +29,25 @@ import pytest
 from std_msgs.msg import Header
 
 from driving_log_replayer.obstacle_segmentation import Detection
+from driving_log_replayer.obstacle_segmentation import DetectionCondition
 from driving_log_replayer.obstacle_segmentation import NonDetection
+from driving_log_replayer.obstacle_segmentation import NonDetectionCondition
+from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
+from driving_log_replayer.obstacle_segmentation import ProposedAreaCondition
+from driving_log_replayer.scenario import load_sample_scenario
+
+
+def test_scenario() -> None:
+    scenario: ObstacleSegmentationScenario = load_sample_scenario(
+        "obstacle_segmentation",
+        ObstacleSegmentationScenario,
+    )
+    assert (
+        scenario.Evaluation.Conditions.Detection.BoundingBoxConfig[0][
+            "dcb2b352232fff50c4fad23718f31611"
+        ].Start
+        is None
+    )
 
 
 @pytest.fixture()
@@ -49,7 +67,7 @@ def create_frame_result() -> SensingFrameResult:
 @pytest.fixture()
 def create_detection() -> Detection:
     return Detection(
-        condition={"PassRate": 95.0, "BoundingBoxConfig": None},
+        condition=DetectionCondition(PassRate=95.0, BoundingBoxConfig=None),
         total=99,
         passed=94,
     )
@@ -58,14 +76,14 @@ def create_detection() -> Detection:
 @pytest.fixture()
 def create_non_detection() -> NonDetection:
     return NonDetection(
-        condition={
-            "PassRate": 95.0,
-            "ProposedArea": {
-                "polygon_2d": [[10.0, 1.5], [10.0, -1.5], [0.0, -1.5], [0.0, 1.5]],
-                "z_min": 0.0,
-                "z_max": 1.5,
-            },
-        },
+        condition=NonDetectionCondition(
+            PassRate=95.0,
+            ProposedArea=ProposedAreaCondition(
+                polygon_2d=[[10.0, 1.5], [10.0, -1.5], [0.0, -1.5], [0.0, 1.5]],
+                z_min=0.0,
+                z_max=1.5,
+            ),
+        ),
         total=99,
         passed=94,
     )
