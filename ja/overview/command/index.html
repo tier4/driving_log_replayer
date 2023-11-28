@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.14">
     
     
       
@@ -431,6 +431,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../" class="md-nav__link">
         
@@ -447,6 +448,7 @@
     
       
       
+  
   
   
   
@@ -511,6 +513,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../quick_start/installation/" class="md-nav__link">
         
@@ -528,6 +531,7 @@
             
               
                 
+  
   
   
   
@@ -551,6 +555,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../quick_start/localization/" class="md-nav__link">
         
@@ -568,6 +573,7 @@
             
               
                 
+  
   
   
   
@@ -591,6 +597,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../quick_start/eagleye/" class="md-nav__link">
         
@@ -608,6 +615,7 @@
             
               
                 
+  
   
   
   
@@ -631,6 +639,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../quick_start/obstacle_segmentation/" class="md-nav__link">
         
@@ -651,6 +660,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../quick_start/perception/" class="md-nav__link">
         
@@ -668,6 +678,7 @@
             
               
                 
+  
   
   
   
@@ -698,6 +709,7 @@
   
   
     
+  
   
   
     
@@ -759,6 +771,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../setup/" class="md-nav__link">
         
@@ -779,6 +792,7 @@
   
   
     
+  
   
   
     <li class="md-nav__item md-nav__item--active">
@@ -836,18 +850,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#driving_log_replayer-configure" class="md-nav__link">
+  <a href="#dlr-configure" class="md-nav__link">
     <span class="md-ellipsis">
-      driving_log_replayer configure
+      dlr configure
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#driving_log_replayer-simulation" class="md-nav__link">
+  <a href="#dlr-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      driving_log_replayer simulation
+      dlr simulation
     </span>
   </a>
   
@@ -885,6 +899,7 @@
     
       
       
+  
   
   
   
@@ -947,6 +962,7 @@
   
   
   
+  
     
     
       
@@ -1003,6 +1019,7 @@
     
       
       
+  
   
   
   
@@ -1077,6 +1094,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../use_case/localization/" class="md-nav__link">
         
@@ -1094,6 +1112,7 @@
             
               
                 
+  
   
   
   
@@ -1117,6 +1136,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../use_case/eagleye/" class="md-nav__link">
         
@@ -1134,6 +1154,7 @@
             
               
                 
+  
   
   
   
@@ -1157,6 +1178,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../use_case/obstacle_segmentation/" class="md-nav__link">
         
@@ -1177,6 +1199,7 @@
   
   
   
+  
     <li class="md-nav__item">
       <a href="../../use_case/perception/" class="md-nav__link">
         
@@ -1194,6 +1217,7 @@
             
               
                 
+  
   
   
   
@@ -1221,6 +1245,7 @@
     
       
       
+  
   
   
   
@@ -1315,18 +1340,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#driving_log_replayer-configure" class="md-nav__link">
+  <a href="#dlr-configure" class="md-nav__link">
     <span class="md-ellipsis">
-      driving_log_replayer configure
+      dlr configure
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#driving_log_replayer-simulation" class="md-nav__link">
+  <a href="#dlr-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      driving_log_replayer simulation
+      dlr simulation
     </span>
   </a>
   
@@ -1365,20 +1390,20 @@
 
 
 <h1 id="_1">コマンド<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
-<p>driving_log_replayer_cli をインストールすると、ターミナルで <code>driving_log_replayer</code> というコマンドが実行できるようになります。
-<code>driving_log_replayer</code> コマンドは、サブコマンドを持っています。
+<p>driving_log_replayer_cli をインストールすると、ターミナルで <code>dlr</code> というコマンドが実行できるようになります。
+<code>dlr</code> コマンドは、サブコマンドを持っています。
 各コマンドに必要な引数は <code>--help</code> オプションを指定すると表示できるます。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># driving_log_replayer top level help</span>
-driving_log_replayer<span class="w"> </span>--help
+dlr<span class="w"> </span>--help
 
 <span class="c1"># show version</span>
-driving_log_replayer<span class="w"> </span>--version
+dlr<span class="w"> </span>--version
 
 <span class="c1"># show subcommand help</span>
-driving_log_replayer<span class="w"> </span>subcommand<span class="w"> </span>--help
+dlr<span class="w"> </span>subcommand<span class="w"> </span>--help
 
 <span class="c1"># show subsubcommand help</span>
-driving_log_replayer<span class="w"> </span>subcommand<span class="w"> </span>subsubcommand<span class="w"> </span>--help
+dlr<span class="w"> </span>subcommand<span class="w"> </span>subsubcommand<span class="w"> </span>--help
 </code></pre></div>
 <h2 id="cli">cli サブコマンド<a class="headerlink" href="#cli" title="Permanent link">#</a></h2>
 <p>サブコマンドとして以下が存在する</p>
@@ -1386,25 +1411,25 @@ driving_log_replayer<span class="w"> </span>subcommand<span class="w"> </span>su
 <li>configure</li>
 <li>simulation</li>
 </ul>
-<h3 id="driving_log_replayer-configure">driving_log_replayer configure<a class="headerlink" href="#driving_log_replayer-configure" title="Permanent link">#</a></h3>
+<h3 id="dlr-configure">dlr configure<a class="headerlink" href="#dlr-configure" title="Permanent link">#</a></h3>
 <p>設定ファイル <code>.driving_log_replayer.config.toml</code> を操作するコマンド。</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># -pで指定したprofile名にdata_directory、output_directory、autoware_pathを設定する。</span>
 <span class="c1"># -pを省略した場合はprofile名にdefaultが指定される</span>
-driving_log_replayer<span class="w"> </span>configure<span class="w"> </span>register<span class="w"> </span>-d<span class="w"> </span><span class="si">${</span><span class="nv">data_directory</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span><span class="w"> </span>-a<span class="w"> </span><span class="si">${</span><span class="nv">autoware_path</span><span class="si">}</span><span class="w"> </span><span class="o">[</span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="o">]</span>
+dlr<span class="w"> </span>configure<span class="w"> </span>register<span class="w"> </span>-d<span class="w"> </span><span class="si">${</span><span class="nv">data_directory</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span><span class="w"> </span>-a<span class="w"> </span><span class="si">${</span><span class="nv">autoware_path</span><span class="si">}</span><span class="w"> </span><span class="o">[</span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="o">]</span>
 </code></pre></div>
-<h3 id="driving_log_replayer-simulation">driving_log_replayer simulation<a class="headerlink" href="#driving_log_replayer-simulation" title="Permanent link">#</a></h3>
+<h3 id="dlr-simulation">dlr simulation<a class="headerlink" href="#dlr-simulation" title="Permanent link">#</a></h3>
 <p>simulation を実行するコマンド</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># simulation 実行、jsonlとjsonの両方の結果ファイルが出力される</span>
-driving_log_replayer<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span>
 
 <span class="c1"># simulation 実行、jsonlをjsonに変換しない</span>
-driving_log_replayer<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="w"> </span>--no-json
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="w"> </span>--no-json
 
 <span class="c1"># 結果の確認、output_directory以下の結果ファイルのサマリーを表示する</span>
-driving_log_replayer<span class="w"> </span>simulation<span class="w"> </span>show-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>show-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
 
 <span class="c1"># 結果ファイルをjsonに変換する</span>
-driving_log_replayer<span class="w"> </span>simulation<span class="w"> </span>convert-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>convert-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
 </code></pre></div>
 <h2 id="wasim-driving_log_replayer">wasim による driving_log_replayer 実行<a class="headerlink" href="#wasim-driving_log_replayer" title="Permanent link">#</a></h2>
 <p>TIER IV が提供している<a href="https://docs.web.auto/user-manuals/evaluator/introduction">Autoware Evaluator</a>へ
@@ -1503,7 +1528,7 @@ driving_log_replayer<span class="w"> </span>simulation<span class="w"> </span>co
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.6c14ae12.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.cd18aaf1.min.js"></script>
       
     
   </body>
