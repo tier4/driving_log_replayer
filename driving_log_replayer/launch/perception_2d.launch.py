@@ -68,5 +68,6 @@ def generate_launch_description() -> launch.LaunchDescription:
             player_normal,
             player_remap,
             recorder,
+            recorder_override,
         ],
     )

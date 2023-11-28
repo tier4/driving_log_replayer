@@ -35,7 +35,7 @@ def generate_launch_description() -> launch.LaunchDescription:
     rviz_node = driving_log_replayer.launch_common.get_rviz("localization.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("localization")
     player = driving_log_replayer.launch_common.get_player()
-    recorder = driving_log_replayer.launch_common.get_regex_recorders(
+    recorder, recorder_override = driving_log_replayer.launch_common.get_regex_recorders(
         "localization.qos.yaml",
         RECORD_TOPIC_REGEX,
     )
@@ -51,6 +51,7 @@ def generate_launch_description() -> launch.LaunchDescription:
             fitter_launch,
             evaluator_node,
             recorder,
+            recorder_override,
             player,
             topic_monitor,
         ],

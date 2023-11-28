@@ -57,7 +57,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         ],
     )
 
-    recorder = driving_log_replayer.launch_common.get_regex_recorder(
+    recorder, recorder_override = driving_log_replayer.launch_common.get_regex_recorders(
         "obstacle_segmentation.qos.yaml",
         RECORD_TOPIC_REGEX,
     )
@@ -71,5 +71,6 @@ def generate_launch_description() -> launch.LaunchDescription:
             evaluator_sub_node,
             player,
             recorder,
+            recorder_override,
         ],
     )
