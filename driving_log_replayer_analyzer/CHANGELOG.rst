@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.0 (2023-11-28)
+-------------------
 * feat: override record topics (`#301 <https://github.com/tier4/driving_log_replayer/issues/301>`_)
 * feat: scenario class (`#306 <https://github.com/tier4/driving_log_replayer/issues/306>`_)
 * Contributors: Hayato Mizushima
