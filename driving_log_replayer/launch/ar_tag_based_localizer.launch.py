@@ -45,8 +45,8 @@ def generate_launch_description() -> launch.LaunchDescription:
             autoware_launch,
             fitter_launch,
             evaluator_node,
+            player,
             recorder,
             recorder_override,
-            player,
         ],
     )
