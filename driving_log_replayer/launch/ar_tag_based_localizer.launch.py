@@ -19,7 +19,7 @@ import driving_log_replayer.launch_common
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
 |^/diagnostics$"\
-|^/localization/kinematic_state$
+|^/localization/kinematic_state$\
 """
 
 

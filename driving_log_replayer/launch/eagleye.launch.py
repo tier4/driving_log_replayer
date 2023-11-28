@@ -22,7 +22,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/localization/kinematic_state$\
 |^/localization/pose_estimator/pose$\
 |^/localization/util/downsample/pointcloud$\
-|^/localization/pose_estimator/points_aligned$
+|^/localization/pose_estimator/points_aligned$\
 """
 
 

@@ -24,7 +24,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/obstacle_segmentation/pointcloud$\
 |^/planning/scenario_planning/trajectory$\
 |^/planning/scenario_planning/status/stop_reasons$\
-|^/driving_log_replayer/.*
+|^/driving_log_replayer/.*\
 """
 
 

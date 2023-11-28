@@ -24,7 +24,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/localization/kinematic_state$\
 |^/localization/util/downsample/pointcloud$\
 |^/localization/pose_estimator/points_aligned$\
-|^/driving_log_replayer/.*
+|^/driving_log_replayer/.*\
 """
 
 

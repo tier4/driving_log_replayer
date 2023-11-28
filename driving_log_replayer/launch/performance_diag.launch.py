@@ -29,7 +29,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/sensing/lidar/concatenated/pointcloud$\
 |^/diagnostics_agg$\
 |^/sensing/lidar/.*/blockage_diag/debug/blockage_mask_image$\
-|^/driving_log_replayer/.*
+|^/driving_log_replayer/.*\
 """
 
 

@@ -27,7 +27,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/object_recognition/tracking/objects$\
 |^/perception/object_recognition/objects$\
 |^/sensing/camera/.*"\
-|^/driving_log_replayer/.*
+|^/driving_log_replayer/.*\
 """
 
 
