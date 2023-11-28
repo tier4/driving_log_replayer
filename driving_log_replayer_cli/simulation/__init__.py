@@ -33,6 +33,8 @@ def simulation() -> None:
     default="lidar",
     type=click.Choice(PERCEPTION_MODES, case_sensitive=False),
 )
+@click.option("--override_record_topics", "-o", default=False, type=bool)
+@click.option("--override_topics_regex", "-x", default="/override_unused", type=str)
 @click.option("--no-json", is_flag=True, help="Do not convert jsonl files to json")
 def run(
     profile: str,
@@ -40,6 +42,8 @@ def run(
     delay: float,
     no_json: bool,  # noqa
     perception_mode: str,
+    override_record_topics: bool,  # noqa
+    override_topics_regex: str,
 ) -> None:
     config = load_config(profile)
     output_dir_by_time = Path(
@@ -54,6 +58,8 @@ def run(
         rate,
         delay,
         perception_mode,
+        override_record_topics,
+        override_topics_regex,
         not no_json,
     )
 
