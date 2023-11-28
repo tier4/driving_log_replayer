@@ -50,6 +50,7 @@ def get_driving_log_replayer_common_argument() -> list:
     t4_dataset_path
     result_archive_path
     override_record_topics
+    override_topics_regex
 
     """
     launch_arguments = []
