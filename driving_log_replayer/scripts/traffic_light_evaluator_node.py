@@ -184,6 +184,7 @@ class TrafficLightEvaluator(DLREvaluator):
         # TODO: avoid using magic number
         max_distance_threshold = 202.0  # [m]
         filtered_gt_objects = []
+        valid_gt_distances = []
         for obj in ground_truth_now_frame.objects:
             ego_position = map_to_baselink.transform.translation
             distance_to_gt = self.__traffic_light_obj.get_distance_to_traffic_light_group(
@@ -192,9 +193,11 @@ class TrafficLightEvaluator(DLREvaluator):
             )
             if distance_to_gt is not None and distance_to_gt < max_distance_threshold:
                 filtered_gt_objects.append(obj)
+                valid_gt_distances.append(distance_to_gt)
 
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(unix_time, msg.signals)
         filtered_est_objects = []
+        valid_est_distances = []
         for obj in estimated_objects:
             ego_position = map_to_baselink.transform.translation
             distance_to_est = self.__traffic_light_obj.get_distance_to_traffic_light_group(
@@ -203,6 +206,7 @@ class TrafficLightEvaluator(DLREvaluator):
             )
             if distance_to_est is not None and distance_to_est < max_distance_threshold:
                 filtered_est_objects.append(obj)
+                valid_est_distances.append(distance_to_est)
 
         if len(filtered_gt_objects) == 0 and len(filtered_est_objects) == 0:
             self.__skip_counter += 1
@@ -210,8 +214,8 @@ class TrafficLightEvaluator(DLREvaluator):
         ground_truth_now_frame.objects = filtered_gt_objects
         ros_critical_ground_truth_objects = filtered_gt_objects
         logging.info(
-            f"GTs: {[obj.uuid for obj in filtered_gt_objects]}, "  # noqa
-            f"ESTs: {[obj.uuid for obj in estimated_objects]}"  # noqa
+            f"GTs: {[(obj.uuid, f'{dist} [m]') for obj, dist in zip(filtered_gt_objects, valid_gt_distances)]}, "  # noqa
+            f"ESTs: {[(obj.uuid, f'{dist} [m]') for obj, dist in zip(estimated_objects, valid_est_distances)]}"  # noqa
         )
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
             unix_time=unix_time,
