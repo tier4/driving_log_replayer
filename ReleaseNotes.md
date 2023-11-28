@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 1.10.0
+
+Minor Tweak
+
+| Module | Feature          | Brief summary                                              | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ---------------- | ---------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | documentation    | add release process                                        | [#308](https://github.com/tier4/driving_log_replayer/pull/308) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | scenario         | add scenario class                                         | [#306](https://github.com/tier4/driving_log_replayer/pull/306) | RT4-7583 | [hayato-m126](https://github.com/hayato-m126) |
+| `cli`  | shell completion | add bash and fish completion                               | [#309](https://github.com/tier4/driving_log_replayer/pull/309) | RT4-7803 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | bag record       | add runtime arguments to override the topic to be recorded | [#301](https://github.com/tier4/driving_log_replayer/pull/301) | RT4-7669 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.9.1
 
 Minor Tweak, Bug fix

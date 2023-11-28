@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: override record topics (`#301 <https://github.com/tier4/driving_log_replayer/issues/301>`_)
+* feat: scenario class (`#306 <https://github.com/tier4/driving_log_replayer/issues/306>`_)
+* Contributors: Hayato Mizushima
+
 1.9.1 (2023-11-21)
 ------------------
 * fix no data criteria (`#305 <https://github.com/tier4/driving_log_replayer/issues/305>`_)
