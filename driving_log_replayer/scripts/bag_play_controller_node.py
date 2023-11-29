@@ -33,7 +33,7 @@ class BagPlayController(Node):
         super().__init__("bag_play_controller")
         self.declare_parameter("pause_sec", 15)
         self.declare_parameter("shutdown_sec", 5)
-        self._pause_state = True
+        self._pause_state = False
         self._pause_sec = self.get_parameter("pause_sec").get_parameter_value().integer_value
         self._shutdown_sec = self.get_parameter("shutdown_sec").get_parameter_value().integer_value
         self._pause_client = self.create_client(Pause, "/rosbag2_player/pause")
@@ -45,7 +45,7 @@ class BagPlayController(Node):
         self._prev_time = Time().to_msg()
         self._timer = self.create_timer(
             1,
-            self._timer_cb,
+            self.timer_cb,
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
 
@@ -57,22 +57,10 @@ class BagPlayController(Node):
         else:
             self.get_logger().error(f"Exception while calling service: {future.exception()}")
 
-    def trigger_result_cb(self, name: str) -> Callable:
-        def impl(future: Future) -> None:
-            res = future.result()
-            if res is not None:
-                self.get_logger().info(f"Response received for: {name}")
-            else:
-                self.get_logger().error(f"Exception for service: {future.exception()}")
-
-        return impl
-
     def timer_cb(self) -> None:
         self._prev_time = self._current_time
         self._current_time = self.get_clock().now().to_msg()
-        req = IsPaused.Request()
-        future = self._is_paused_client.call_async(req)
-        future.add_done_callback(self._print_state)
+        self.show_state()
         if self._current_time.sec > 0:
             if self._pause_counter == 0:
                 # stop bag play
@@ -85,17 +73,32 @@ class BagPlayController(Node):
             else:
                 self._shutdown_counter = 0
             if self._shutdown_counter > self._shutdown_sec:
-                sys.exit(1)
+                rclpy.shutdown()
+
+    def trigger_result_cb(self, name: str) -> Callable:
+        def cb_func(future: Future) -> None:
+            res = future.result()
+            if res is not None:
+                self.get_logger().info(f"Response received for: {name}")
+            else:
+                self.get_logger().error(f"Exception for service: {future.exception()}")
+
+        return cb_func
+
+    def show_state(self) -> None:
+        req = IsPaused.Request()
+        future = self._is_paused_client.call_async(req)
+        future.add_done_callback(self.print_state)
 
     def pause(self) -> None:
         req = Pause.Request()
         future = self._pause_client.call_async(req)
-        future.add_done_callback(self._trigger_result_cb("Pause"))
+        future.add_done_callback(self.trigger_result_cb("Pause"))
 
     def resume(self) -> None:
         req = Resume.Request()
         future = self._resume_client.call_async(req)
-        future.add_done_callback(self._trigger_result_cb("Resume"))
+        future.add_done_callback(self.trigger_result_cb("Resume"))
 
 
 def main(args: list[str] | None = None) -> None:
