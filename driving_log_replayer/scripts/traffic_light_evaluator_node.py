@@ -215,7 +215,8 @@ class TrafficLightEvaluator(DLREvaluator):
         ros_critical_ground_truth_objects = filtered_gt_objects
         logging.info(
             f"GTs: {[(obj.uuid, f'{dist} [m]') for obj, dist in zip(filtered_gt_objects, valid_gt_distances)]}, "  # noqa
-            f"ESTs: {[(obj.uuid, f'{dist} [m]') for obj, dist in zip(estimated_objects, valid_est_distances)]}"  # noqa
+            f"ESTs: {[(obj.uuid, f'{dist} [m]') for obj, dist in zip(estimated_objects, valid_est_distances)]}, "  # noqa
+            f"Confidence: {[(obj.uuid, obj.semantic_score.confidence) for obj in estimated_objects]}"  # noqa
         )
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
             unix_time=unix_time,
