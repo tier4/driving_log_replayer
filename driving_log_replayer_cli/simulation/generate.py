@@ -42,8 +42,8 @@ class TestScriptGenerator:
         self.__output_directory.mkdir(parents=True)
 
         symlink_dst = self.__output_directory.parent.joinpath("latest").as_posix()
-        update_symlink = f"ln -snf {self.__output_directory.as_posix()} {symlink_dst}"
-        subprocess.run(update_symlink, shell=True)
+        update_symlink = ["ln", "-snf", self.__output_directory.as_posix(), symlink_dst]
+        subprocess.run(update_symlink, check=False)
 
     @property
     def script_path(self) -> Path:
