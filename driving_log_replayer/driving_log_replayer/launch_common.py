@@ -50,6 +50,7 @@ def get_driving_log_replayer_common_argument() -> list:
     result_archive_path
     override_record_topics
     override_topics_regex
+    pause_sec
 
     """
     launch_arguments = []
@@ -106,6 +107,12 @@ def get_driving_log_replayer_common_argument() -> list:
         "override_topics_regex",
         default_value="",
         description="use allowlist. Ex: override_topics_regex:=\^/clock\$\|\^/tf\$\|/sensing/lidar/concatenated/pointcloud",  # noqa
+    )
+
+    add_launch_arg(
+        "pause_sec",
+        default_value="15",
+        description="pause ros bag play for initial pose",
     )
 
     return launch_arguments
@@ -182,6 +189,17 @@ def get_rviz(rviz_config_name: str) -> Node:
         parameters=[{"use_sim_time": True}],
         output="screen",
         condition=IfCondition(LaunchConfiguration("rviz")),
+    )
+
+
+def get_bag_play_controller_node() -> Node:
+    return Node(
+        package="driving_log_replayer",
+        namespace="/driving_log_replayer",
+        executable="bag_play_controller_node.py",
+        output="screen",
+        name="bag_play_controller_node",
+        parameters=[{"use_sim_time": True, "pause_sec": LaunchConfiguration("pause_sec")}],
     )
 
 
