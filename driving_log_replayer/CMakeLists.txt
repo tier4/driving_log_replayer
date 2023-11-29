@@ -44,6 +44,7 @@ install(PROGRAMS
   scripts/yabloc_evaluator_node.py
   scripts/eagleye_evaluator_node.py
   scripts/ar_tag_based_localizer_evaluator_node.py
+  scripts/bag_play_controller_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
