@@ -37,6 +37,7 @@ from rclpy.clock import Clock
 from rclpy.clock import ClockType
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
+from rclpy.task import Future
 from rclpy.time import Duration
 from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
@@ -197,7 +198,7 @@ class DLREvaluator(Node):
             )
             future_map_fit.add_done_callback(self.map_fit_cb)
 
-    def map_fit_cb(self, future) -> None:  # noqa
+    def map_fit_cb(self, future: Future) -> None:
         result = future.result()
         if result is not None:
             if result.success:
@@ -214,7 +215,7 @@ class DLREvaluator(Node):
             self._initial_pose_running = False
             self.get_logger().error(f"Exception for service: {future.exception()}")
 
-    def initial_pose_cb(self, future) -> None:  # noqa
+    def initial_pose_cb(self, future: Future) -> None:
         result = future.result()
         if result is not None:
             res_status: ResponseStatus = result.status
