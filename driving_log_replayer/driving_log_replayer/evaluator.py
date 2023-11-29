@@ -40,6 +40,7 @@ from rclpy.node import Node
 from rclpy.task import Future
 from rclpy.time import Duration
 from rclpy.time import Time
+from rosbag2_interfaces.srv import IsPaused
 from rosidl_runtime_py import message_to_ordereddict
 import simplejson as json
 from std_msgs.msg import Header
@@ -104,6 +105,9 @@ class DLREvaluator(Node):
 
         self.set_t4_dataset()
 
+        self._bag_player_check_client = self.create_client(IsPaused, "/rosbag2_player/is_paused")
+        self._bag_player_is_paused = False
+
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
@@ -121,6 +125,19 @@ class DLREvaluator(Node):
             callback_group=self._timer_group,
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
+
+    def print_state(self, future: Future) -> None:
+        res = future.result()
+        if res is not None:
+            self._bag_player_is_paused = res.paused
+            self.get_logger().info(f"IsPaused: {self._bag_player_is_paused}")
+        else:
+            self.get_logger().error(f"Exception while calling service: {future.exception()}")
+
+    def check_player_state(self) -> None:
+        req = IsPaused.Request()
+        future = self._bag_player_check_client.call_async(req)
+        future.add_done_callback(self.print_state)
 
     def set_t4_dataset(self) -> None:
         if self._scenario.ScenarioFormatVersion != "3.0.0":
@@ -153,13 +170,17 @@ class DLREvaluator(Node):
         # to debug callback use: self.get_logger().error(f"time: {self._current_time.sec}.{self._current_time.nanosec}")
         if self._current_time.sec <= 0:
             return
+        self.check_player_state()
         if register_loop_func is not None:
             register_loop_func()
         if self._initial_pose is not None:
             self.call_initialpose_service()
-        self._clock_stop_counter = (
-            self._clock_stop_counter + 1 if self._current_time == self._prev_time else 0
-        )
+        if self._current_time == self._prev_time:
+            if not self._bag_player_is_paused:
+                # Increase the counter only if current and prev are the same and bag_player is running.
+                self._clock_stop_counter += 1
+        else:
+            self._clock_stop_counter = 0
         self._prev_time = self._current_time
         if self._clock_stop_counter >= DLREvaluator.COUNT_SHUTDOWN_NODE:
             if register_shutdown_func is not None:
