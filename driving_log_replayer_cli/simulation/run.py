@@ -39,8 +39,8 @@ class DrivingLogReplayerTestRunner:
         if not is_executable:
             print("aborted.")  # noqa
             return
-        cmd = "/bin/bash " + generator.script_path.as_posix()
-        subprocess.run(cmd, shell=True)
+        cmd = ["/bin/bash", generator.script_path.as_posix()]
+        subprocess.run(cmd, check=False)
         if output_json:
             convert(self.__output_directory)
         termcolor.cprint("<< show test result >>", "green")
