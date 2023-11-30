@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: perception criteria validation bug (`#314 <https://github.com/tier4/driving_log_replayer/issues/314>`_)
+* fix: fix ruff S602 rule (`#312 <https://github.com/tier4/driving_log_replayer/issues/313>`_)
+* chore: type hint (`#312 <https://github.com/tier4/driving_log_replayer/issues/312>`_)
+* Contributors: Hayato Mizushima
+
 1.10.0 (2023-11-28)
 -------------------
 * feat: override record topics (`#301 <https://github.com/tier4/driving_log_replayer/issues/301>`_)
