@@ -32,7 +32,7 @@ from driving_log_replayer.scenario import Scenario
 class Conditions(BaseModel):
     PassRate: number
     CriteriaMethod: Literal["num_tp", "metrics_score"] | None = None
-    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[number] | None = None
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | number | None = None
 
 
 class Evaluation(BaseModel):
