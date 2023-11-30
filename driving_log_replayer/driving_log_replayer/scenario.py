@@ -53,20 +53,23 @@ class Scenario(BaseModel):
 
 
 def load_scenario(scenario_path: Path, scenario_class: Callable) -> Any:
+    if scenario_path.is_symlink():
+        scenario_path = scenario_path.resolve()
     with scenario_path.open() as scenario_file:
         return scenario_class(**yaml.safe_load(scenario_file))
 
 
-def load_sample_scenario(use_case_name: str, scenario_class: Callable) -> Any:
+def load_sample_scenario(
+    use_case_name: str,
+    scenario_class: Callable,
+    scenario_name: str = "scenario.yaml",
+) -> Any:
     from ament_index_python.packages import get_package_share_directory
 
     sample_scenario_path = Path(
         get_package_share_directory("driving_log_replayer"),
         "sample",
         use_case_name,
-        "scenario.yaml",
+        scenario_name,
     )
-    if sample_scenario_path.is_symlink():
-        sample_scenario_path = sample_scenario_path.resolve()
-    with sample_scenario_path.open() as scenario_file:
-        return scenario_class(**yaml.safe_load(scenario_file))
+    return load_scenario(sample_scenario_path, scenario_class)
