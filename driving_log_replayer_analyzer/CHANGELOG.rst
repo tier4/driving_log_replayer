@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.1 (2023-11-30)
+-------------------
 * fix: perception criteria validation bug (`#314 <https://github.com/tier4/driving_log_replayer/issues/314>`_)
 * fix: fix ruff S602 rule (`#312 <https://github.com/tier4/driving_log_replayer/issues/313>`_)
 * chore: type hint (`#312 <https://github.com/tier4/driving_log_replayer/issues/312>`_)
