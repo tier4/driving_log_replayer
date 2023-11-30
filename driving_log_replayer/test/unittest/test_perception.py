@@ -50,7 +50,7 @@ def test_scenario_criteria_custom_level() -> None:
         "scenario.criteria.custom.yaml",
     )
     assert scenario.Evaluation.Conditions.CriteriaMethod == "metrics_score"
-    assert scenario.Evaluation.Conditions.CriteriaLevel == 10.0
+    assert scenario.Evaluation.Conditions.CriteriaLevel == 10.0  # noqa
 
 
 @pytest.fixture()
