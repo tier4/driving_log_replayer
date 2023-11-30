@@ -14,7 +14,7 @@ Evaluation:
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
     CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score)
-    CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値[0.0, 100.0])
+    CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection/tracking ここで指定したobjectsを評価する

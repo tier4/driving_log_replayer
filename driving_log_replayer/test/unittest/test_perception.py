@@ -40,6 +40,17 @@ from driving_log_replayer.scenario import load_sample_scenario
 def test_scenario() -> None:
     scenario: PerceptionScenario = load_sample_scenario("perception", PerceptionScenario)
     assert scenario.Evaluation.Conditions.CriteriaMethod == "num_tp"
+    assert scenario.Evaluation.Conditions.CriteriaLevel == "easy"
+
+
+def test_scenario_criteria_custom_level() -> None:
+    scenario: PerceptionScenario = load_sample_scenario(
+        "perception",
+        PerceptionScenario,
+        "scenario.criteria.custom.yaml",
+    )
+    assert scenario.Evaluation.Conditions.CriteriaMethod == "metrics_score"
+    assert scenario.Evaluation.Conditions.CriteriaLevel == 10.0  # noqa
 
 
 @pytest.fixture()

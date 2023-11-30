@@ -13,8 +13,8 @@ Evaluation:
         LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
     PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
-    CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+    CriteriaMethod: metrics_score # Method name of criteria (num_tp/metrics_score)
+    CriteriaLevel: 10.0 # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here
