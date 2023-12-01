@@ -41,6 +41,8 @@ from rclpy.task import Future
 from rclpy.time import Duration
 from rclpy.time import Time
 from rosbag2_interfaces.srv import IsPaused
+from rosbag2_interfaces.srv import Pause
+from rosbag2_interfaces.srv import Resume
 from rosidl_runtime_py import message_to_ordereddict
 import simplejson as json
 from std_msgs.msg import Header
@@ -105,12 +107,17 @@ class DLREvaluator(Node):
 
         self.set_t4_dataset()
 
+        # bag player control client
         self._bag_player_check_client = self.create_client(IsPaused, "/rosbag2_player/is_paused")
+        self._bag_player_pause_client = self.create_client(Pause, "/rosbag2_player/pause")
+        self._bag_player_resume_client = self.create_client(Resume, "/rosbag2_player/resume")
         self._bag_player_is_paused = False
 
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
+        self._initial_pose_running = False
+        self._initial_pose_success = False
         self._initial_pose = self.set_initial_pose()
         self.start_initialpose_service()
 
@@ -134,10 +141,30 @@ class DLREvaluator(Node):
         else:
             self.get_logger().error(f"Exception while calling service: {future.exception()}")
 
-    def check_player_state(self) -> None:
+    def check_player(self) -> None:
         req = IsPaused.Request()
         future = self._bag_player_check_client.call_async(req)
         future.add_done_callback(self.print_state)
+
+    def trigger_result_cb(self, name: str) -> Callable:
+        def cb_func(future: Future) -> None:
+            res = future.result()
+            if res is not None:
+                self.get_logger().info(f"Response received for: {name}")
+            else:
+                self.get_logger().error(f"Exception for service: {future.exception()}")
+
+        return cb_func
+
+    def pause_player(self) -> None:
+        req = Pause.Request()
+        future = self._pause_client.call_async(req)
+        future.add_done_callback(self.trigger_result_cb("Pause"))
+
+    def resume_player(self) -> None:
+        req = Resume.Request()
+        future = self._resume_client.call_async(req)
+        future.add_done_callback(self.trigger_result_cb("Resume"))
 
     def set_t4_dataset(self) -> None:
         if self._scenario.ScenarioFormatVersion != "3.0.0":
@@ -168,13 +195,12 @@ class DLREvaluator(Node):
     ) -> None:
         self._current_time = self.get_clock().now().to_msg()
         # to debug callback use: self.get_logger().error(f"time: {self._current_time.sec}.{self._current_time.nanosec}")
-        if self._current_time.sec <= 0:
+        if self._current_time.nanosec <= 0:
             return
-        self.check_player_state()
+        self.check_player()
         if register_loop_func is not None:
             register_loop_func()
-        if self._initial_pose is not None:
-            self.call_initialpose_service()
+        self.call_initialpose_service()
         if self._current_time == self._prev_time:
             if not self._bag_player_is_paused:
                 # Increase the counter only if current and prev are the same and bag_player is running.
@@ -191,8 +217,6 @@ class DLREvaluator(Node):
     def start_initialpose_service(self) -> None:
         if self._initial_pose is None:
             return
-        self._initial_pose_running = False
-        self._initial_pose_success = False
         self._initial_pose_client = self.create_client(
             InitializeLocalization,
             "/api/localization/initialize",
@@ -208,16 +232,18 @@ class DLREvaluator(Node):
             self.get_logger().warning("map height fitter service not available, waiting again...")
 
     def call_initialpose_service(self) -> None:
-        if not self._initial_pose_success and not self._initial_pose_running:
-            self.get_logger().info(
-                f"call initial_pose time: {self._current_time.sec}.{self._current_time.nanosec}",
-            )
-            self._initial_pose_running = True
-            self._initial_pose.header.stamp = self._current_time
-            future_map_fit = self._map_fit_client.call_async(
-                PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose),
-            )
-            future_map_fit.add_done_callback(self.map_fit_cb)
+        if self._initial_pose is None or self._initial_pose_success or self._initial_pose_running:
+            return
+        self.pause_player()
+        self.get_logger().info(
+            f"call initial_pose time: {self._current_time.sec}.{self._current_time.nanosec}",
+        )
+        self._initial_pose_running = True
+        self._initial_pose.header.stamp = self._current_time
+        future_map_fit = self._map_fit_client.call_async(
+            PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose),
+        )
+        future_map_fit.add_done_callback(self.map_fit_cb)
 
     def map_fit_cb(self, future: Future) -> None:
         result = future.result()
@@ -244,6 +270,7 @@ class DLREvaluator(Node):
             self.get_logger().info(
                 f"initial_pose_success: {self._initial_pose_success}",
             )  # debug msg
+            self.resume_player()  # resume bag play
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
         # free self._initial_pose_running
