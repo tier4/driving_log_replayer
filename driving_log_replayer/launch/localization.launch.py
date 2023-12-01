@@ -33,7 +33,6 @@ def generate_launch_description() -> launch.LaunchDescription:
     fitter_launch = driving_log_replayer.launch_common.get_map_height_fitter(launch_service="true")
     autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(perception="false")
     rviz_node = driving_log_replayer.launch_common.get_rviz("localization.rviz")
-    bag_controller_node = driving_log_replayer.launch_common.get_bag_play_controller_node()
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("localization")
     player = driving_log_replayer.launch_common.get_player()
     recorder, recorder_override = driving_log_replayer.launch_common.get_regex_recorders(
@@ -52,7 +51,6 @@ def generate_launch_description() -> launch.LaunchDescription:
             fitter_launch,
             evaluator_node,
             player,
-            bag_controller_node,
             recorder,
             recorder_override,
             topic_monitor,
