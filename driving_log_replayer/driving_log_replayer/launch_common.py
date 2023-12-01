@@ -185,17 +185,6 @@ def get_rviz(rviz_config_name: str) -> Node:
     )
 
 
-def get_bag_play_controller_node() -> Node:
-    return Node(
-        package="driving_log_replayer",
-        namespace="/driving_log_replayer",
-        executable="bag_play_controller_node.py",
-        output="screen",
-        name="bag_play_controller_node",
-        parameters=[{"use_sim_time": True, "pause_sec": LaunchConfiguration("pause_sec")}],
-    )
-
-
 def get_evaluator_node(
     usecase_name: str,
     addition_parameter: dict | None = None,
