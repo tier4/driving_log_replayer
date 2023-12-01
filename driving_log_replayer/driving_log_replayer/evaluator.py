@@ -158,12 +158,12 @@ class DLREvaluator(Node):
 
     def pause_player(self) -> None:
         req = Pause.Request()
-        future = self._pause_client.call_async(req)
+        future = self._bag_player_pause_client.call_async(req)
         future.add_done_callback(self.trigger_result_cb("Pause"))
 
     def resume_player(self) -> None:
         req = Resume.Request()
-        future = self._resume_client.call_async(req)
+        future = self._bag_player_resume_client.call_async(req)
         future.add_done_callback(self.trigger_result_cb("Resume"))
 
     def set_t4_dataset(self) -> None:
