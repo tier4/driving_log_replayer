@@ -4,10 +4,10 @@
 
 Minor Tweak, Bug fix
 
-| Module                                     | Feature   | Brief summary                     | Pull request                                                   | Jira     | Contributor                                   |
-| ------------------------------------------ | --------- | --------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
-| `perception, perception_2d, traffic_light` | unit test | add test for custom criteria leve | [#316](https://github.com/tier4/driving_log_replayer/pull/316) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
-| `perception, perception_2d, traffic_light` | unit test | add test for custom criteria leve | [#316](https://github.com/tier4/driving_log_replayer/pull/316) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
+| Module                                     | Feature         | Brief summary                      | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | --------------- | ---------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, perception_2d, traffic_light` | unit test       | add test for custom criteria level | [#316](https://github.com/tier4/driving_log_replayer/pull/316) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | perception_mode | fix override perception_mode       | [#317](https://github.com/tier4/driving_log_replayer/pull/316) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.10.1
 
