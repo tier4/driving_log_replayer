@@ -45,7 +45,7 @@ jobs:
           required-ros-distributions: ${{ matrix.ros_distribution }}
 
       - name: build and test
-        uses: ros-tooling/action-ros-ci@0.3.3
+        uses: ros-tooling/action-ros-ci@0.3.5
         with:
           package-name: ${{ steps.list_packages.outputs.package_list }}
           target-ros2-distro: ${{ matrix.ros_distribution }}
