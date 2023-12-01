@@ -46,7 +46,6 @@ def get_driving_log_replayer_common_argument() -> list:
     vehicle_model
     sensor_model
     vehicle_id
-    perception_mode
     t4_dataset_path
     result_archive_path
     override_record_topics
@@ -88,7 +87,6 @@ def get_driving_log_replayer_common_argument() -> list:
     add_launch_arg("vehicle_id", default_value="default", description="vehicle specific ID")
 
     # additional argument
-    add_launch_arg("perception_mode", default_value="lidar", description="perception mode")
     add_launch_arg(
         "t4_dataset_path",
         default_value="/opt/autoware/t4_dataset",
@@ -124,35 +122,35 @@ def get_autoware_launch(
     twist_source: str = "gyro_odom",
     perception_mode: str | None = None,
 ) -> launch.actions.IncludeLaunchDescription:
-    if perception_mode is None:
-        perception_mode = LaunchConfiguration("perception_mode")
     # autoware launch
     autoware_launch_file = Path(
         get_package_share_directory("autoware_launch"),
         "launch",
         "logging_simulator.launch.xml",
     )
+    launch_args = {
+        "map_path": LaunchConfiguration("map_path"),
+        "vehicle_model": LaunchConfiguration("vehicle_model"),
+        "sensor_model": LaunchConfiguration("sensor_model"),
+        "vehicle_id": LaunchConfiguration("vehicle_id"),
+        "launch_vehicle_interface": "true",
+        "sensing": sensing,
+        "localization": localization,
+        "perception": perception,
+        "planning": planning,
+        "control": control,
+        "scenario_simulation": scenario_simulation,
+        "pose_source": pose_source,
+        "twist_source": twist_source,
+        "rviz": "false",
+    }
+    if isinstance(perception_mode, str):
+        launch_args["perception_mode"] = perception_mode
     return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(
             autoware_launch_file.as_posix(),
         ),
-        launch_arguments={
-            "map_path": LaunchConfiguration("map_path"),
-            "vehicle_model": LaunchConfiguration("vehicle_model"),
-            "sensor_model": LaunchConfiguration("sensor_model"),
-            "vehicle_id": LaunchConfiguration("vehicle_id"),
-            "launch_vehicle_interface": "true",
-            "sensing": sensing,
-            "localization": localization,
-            "perception": perception,
-            "planning": planning,
-            "control": control,
-            "scenario_simulation": scenario_simulation,
-            "perception_mode": perception_mode,
-            "pose_source": pose_source,
-            "twist_source": twist_source,
-            "rviz": "false",
-        }.items(),
+        launch_arguments=launch_args.items(),
         condition=IfCondition(LaunchConfiguration("with_autoware")),
     )
 
