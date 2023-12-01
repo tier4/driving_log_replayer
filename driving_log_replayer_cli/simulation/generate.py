@@ -25,7 +25,7 @@ class TestScriptGenerator:
         autoware_path: str,
         rate: float,
         delay: float,
-        perception_mode: str,
+        perception_mode: str | None,
         override_recode_topics: bool,  # noqa
         override_topics_regex: str,
     ) -> None:
@@ -216,7 +216,11 @@ rviz:=true\
 
             use_case_name = scenario_yaml_obj["Evaluation"]["UseCaseName"]
             launch_base_command = f"ros2 launch driving_log_replayer {use_case_name}.launch.py "
-            optional_arg = f"perception_mode:={self.__perception_mode} "
+            optional_arg = (
+                f"perception_mode:={self.__perception_mode} "
+                if isinstance(self.__perception_mode, str)
+                else ""
+            )
             launch_args = self._create_common_arg(
                 optional_arg,
                 scenario_path,
