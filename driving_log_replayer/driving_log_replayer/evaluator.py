@@ -116,8 +116,8 @@ class DLREvaluator(Node):
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
-        self._initial_pose_running = False
-        self._initial_pose_success = False
+        self._initial_pose_running: bool = False
+        self._initial_pose_success: bool = False
         self._initial_pose = self.set_initial_pose()
         self.start_initialpose_service()
 
@@ -270,7 +270,8 @@ class DLREvaluator(Node):
             self.get_logger().info(
                 f"initial_pose_success: {self._initial_pose_success}",
             )  # debug msg
-            self.resume_player()  # resume bag play
+            if self._initial_pose_success:
+                self.resume_player()  # resume bag play
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
         # free self._initial_pose_running
