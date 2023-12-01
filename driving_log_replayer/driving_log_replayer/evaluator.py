@@ -133,18 +133,18 @@ class DLREvaluator(Node):
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
 
-    def print_state(self, future: Future) -> None:
+    def update_pause_state(self, future: Future) -> None:
         res = future.result()
         if res is not None:
             self._bag_player_is_paused = res.paused
-            self.get_logger().info(f"IsPaused: {self._bag_player_is_paused}")
+            # debug print self.get_logger().info(f"IsPaused: {self._bag_player_is_paused}")
         else:
             self.get_logger().error(f"Exception while calling service: {future.exception()}")
 
     def check_player(self) -> None:
         req = IsPaused.Request()
         future = self._bag_player_check_client.call_async(req)
-        future.add_done_callback(self.print_state)
+        future.add_done_callback(self.update_pause_state)
 
     def trigger_result_cb(self, name: str) -> Callable:
         def cb_func(future: Future) -> None:
