@@ -1,14 +1,23 @@
 # Release Notes
 
+## Version 1.10.2
+
+Minor Tweak, Bug fix
+
+| Module                                     | Feature         | Brief summary                      | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | --------------- | ---------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, perception_2d, traffic_light` | unit test       | add test for custom criteria level | [#316](https://github.com/tier4/driving_log_replayer/pull/316) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | perception_mode | fix override perception_mode       | [#317](https://github.com/tier4/driving_log_replayer/pull/316) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.10.1
 
 Minor Tweak, Bug fix
 
-| Module                                     | Feature             | Brief summary                       | Pull request                                                   | Jira | Contributor                                   |
-| ------------------------------------------ | ------------------- | ----------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
-| `common`                                   | type hint           | add type hint for rclpy.task.Future | [#312](https://github.com/tier4/driving_log_replayer/pull/312) | -    | [hayato-m126](https://github.com/hayato-m126) |
-| `cli`                                      | security            | fix ruff rule S602                  | [#313](https://github.com/tier4/driving_log_replayer/pull/313) | -    | [hayato-m126](https://github.com/hayato-m126) |
-| `perception, perception_2d, traffic_light` | scenario validation | fix criteria type                   | [#314](https://github.com/tier4/driving_log_replayer/pull/314) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| Module                                     | Feature             | Brief summary                       | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | ------------------- | ----------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `common`                                   | type hint           | add type hint for rclpy.task.Future | [#312](https://github.com/tier4/driving_log_replayer/pull/312) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
+| `cli`                                      | security            | fix ruff rule S602                  | [#313](https://github.com/tier4/driving_log_replayer/pull/313) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | scenario validation | fix criteria type                   | [#314](https://github.com/tier4/driving_log_replayer/pull/314) | -        | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.10.0
 
