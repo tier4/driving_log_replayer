@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.2 (2023-12-01)
+-------------------
 * fix: perception mode default (`#317 <https://github.com/tier4/driving_log_replayer/issues/317>`_)
 * chore: test perception criteria custom level (`#316 <https://github.com/tier4/driving_log_replayer/issues/316>`_)
 * Contributors: Hayato Mizushima
