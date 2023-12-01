@@ -50,7 +50,6 @@ def get_driving_log_replayer_common_argument() -> list:
     result_archive_path
     override_record_topics
     override_topics_regex
-    pause_sec
 
     """
     launch_arguments = []
@@ -107,12 +106,6 @@ def get_driving_log_replayer_common_argument() -> list:
         "override_topics_regex",
         default_value="",
         description="use allowlist. Ex: override_topics_regex:=\^/clock\$\|\^/tf\$\|/sensing/lidar/concatenated/pointcloud",  # noqa
-    )
-
-    add_launch_arg(
-        "pause_sec",
-        default_value="15",
-        description="pause ros bag play for initial pose",
     )
 
     return launch_arguments
