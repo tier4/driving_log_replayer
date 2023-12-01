@@ -2,10 +2,16 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: perception mode default (`#317 <https://github.com/tier4/driving_log_replayer/issues/317>`_)
+* chore: test perception criteria custom level (`#316 <https://github.com/tier4/driving_log_replayer/issues/316>`_)
+* Contributors: Hayato Mizushima
+
 1.10.1 (2023-11-30)
 -------------------
 * fix: perception criteria validation bug (`#314 <https://github.com/tier4/driving_log_replayer/issues/314>`_)
-* fix: fix ruff S602 rule (`#312 <https://github.com/tier4/driving_log_replayer/issues/313>`_)
+* fix: fix ruff S602 rule (`#313 <https://github.com/tier4/driving_log_replayer/issues/313>`_)
 * chore: type hint (`#312 <https://github.com/tier4/driving_log_replayer/issues/312>`_)
 * Contributors: Hayato Mizushima
 
