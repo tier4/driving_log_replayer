@@ -211,16 +211,16 @@ class TrafficLightEvaluator(DLREvaluator):
             self.__skip_counter += 1
             return
         logging.info(
-            "[Before] "
-            f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(ground_truth_objects, ground_truth_distances)]}, "  # noqa
-            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(estimated_objects, estimation_distances)]}, ",  # noqa
+            "[Before] "  # noqa
+            f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(ground_truth_objects, ground_truth_distances)]}, "
+            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(estimated_objects, estimation_distances)]}, ",
         )
         ground_truth_now_frame.objects = filtered_gt_objects
         ros_critical_ground_truth_objects = filtered_gt_objects
         logging.info(
-            "[After] "
-            f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(filtered_gt_objects, valid_gt_distances)]}, "  # noqa
-            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]', f'{obj.semantic_score.confidence:.3f}') for obj, dist in zip(estimated_objects, valid_est_distances)]}, "  # noqa
+            f"[After] "  # noqa
+            f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(filtered_gt_objects, valid_gt_distances)]}, "
+            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]', f'{obj.semantic_score.confidence:.3f}') for obj, dist in zip(estimated_objects, valid_est_distances)]}, ",
         )
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
             unix_time=unix_time,
