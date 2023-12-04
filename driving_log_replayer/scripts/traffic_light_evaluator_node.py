@@ -19,25 +19,23 @@ from os.path import expandvars
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from autoware_perception_msgs.msg import TrafficSignal
-from autoware_perception_msgs.msg import TrafficSignalArray
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+import rclpy
+from autoware_perception_msgs.msg import TrafficSignal, TrafficSignalArray
+from driving_log_replayer.evaluator import DLREvaluator, evaluator_main
+from driving_log_replayer.traffic_light import FailResultHolder, TrafficLightResult
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.common.schema import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation.metrics import MetricsScore
-from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
-from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
+from perception_eval.evaluation.result.perception_frame_config import (
+    CriticalObjectFilterConfig,
+    PerceptionPassFailConfig,
+)
 from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
-import rclpy
 from simple_lanelet_loader.traffic_light_loader import TrafficLightLoader
-
-from driving_log_replayer.evaluator import DLREvaluator
-from driving_log_replayer.evaluator import evaluator_main
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.traffic_light import FailResultHolder
-from driving_log_replayer.traffic_light import TrafficLightResult
 
 if TYPE_CHECKING:
     from perception_eval.evaluation import PerceptionFrameResult
@@ -157,7 +155,6 @@ class TrafficLightEvaluator(DLREvaluator):
                 DLREvaluator.get_traffic_light_label_str(signal.elements),
             )
             confidence: float = max(signal.elements, key=lambda x: x.confidence)
-            logging.info(f"Est {[i]}: {(signal.traffic_signal_id, label.name)}")  # noqa
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
@@ -185,12 +182,16 @@ class TrafficLightEvaluator(DLREvaluator):
         max_distance_threshold = 202.0  # [m]
         filtered_gt_objects = []
         valid_gt_distances = []
-        for obj in ground_truth_now_frame.objects:
+
+        ground_truth_objects = ground_truth_now_frame.objects
+        ground_truth_distances = []
+        for obj in ground_truth_objects:
             ego_position = map_to_baselink.transform.translation
             distance_to_gt = self.__traffic_light_obj.get_distance_to_traffic_light_group(
                 obj.uuid,
                 [ego_position.x, ego_position.y, ego_position.z],
             )
+            ground_truth_distances.append(distance_to_gt)
             if distance_to_gt is not None and distance_to_gt < max_distance_threshold:
                 filtered_gt_objects.append(obj)
                 valid_gt_distances.append(distance_to_gt)
@@ -198,12 +199,15 @@ class TrafficLightEvaluator(DLREvaluator):
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(unix_time, msg.signals)
         filtered_est_objects = []
         valid_est_distances = []
+
+        estimation_distances = []
         for obj in estimated_objects:
             ego_position = map_to_baselink.transform.translation
             distance_to_est = self.__traffic_light_obj.get_distance_to_traffic_light_group(
                 obj.uuid,
                 [ego_position.x, ego_position.y, ego_position.z],
             )
+            estimation_distances.append(distance_to_est)
             if distance_to_est is not None and distance_to_est < max_distance_threshold:
                 filtered_est_objects.append(obj)
                 valid_est_distances.append(distance_to_est)
@@ -211,12 +215,17 @@ class TrafficLightEvaluator(DLREvaluator):
         if len(filtered_gt_objects) == 0 and len(filtered_est_objects) == 0:
             self.__skip_counter += 1
             return
+        logging.info(
+            "[Before] "
+            f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(ground_truth_objects, ground_truth_distances)]}, "  # noqa
+            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(estimated_objects, estimation_distances)]}, "  # noqa
+        )
         ground_truth_now_frame.objects = filtered_gt_objects
         ros_critical_ground_truth_objects = filtered_gt_objects
         logging.info(
-            f"GTs: {[(obj.uuid, f'{dist} [m]') for obj, dist in zip(filtered_gt_objects, valid_gt_distances)]}, "  # noqa
-            f"ESTs: {[(obj.uuid, f'{dist} [m]') for obj, dist in zip(estimated_objects, valid_est_distances)]}, "  # noqa
-            f"Confidence: {[(obj.uuid, obj.semantic_score.confidence) for obj in estimated_objects]}"  # noqa
+            "[After] "
+            f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(filtered_gt_objects, valid_gt_distances)]}, "  # noqa
+            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]', f'{obj.semantic_score.confidence:.3f}') for obj, dist in zip(estimated_objects, valid_est_distances)]}, "  # noqa
         )
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
             unix_time=unix_time,

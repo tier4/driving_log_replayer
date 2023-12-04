@@ -41,6 +41,7 @@
   <exec_depend>autoware_launch</exec_depend>
   <exec_depend>driving_log_replayer_analyzer</exec_depend>
   <exec_depend>perception_eval</exec_depend>
+  <exec_depend>simple_lanelet_loader</exec_depend>
   <exec_depend>python-transforms3d-pip</exec_depend>
   <exec_depend>python3-pandas</exec_depend>
   <exec_depend>python3-simplejson</exec_depend>
