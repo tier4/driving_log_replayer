@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from os.path import expandvars
 from pathlib import Path
 import subprocess
-import sys
 
 import termcolor
 import yaml
