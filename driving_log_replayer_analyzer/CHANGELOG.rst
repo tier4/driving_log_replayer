@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: bag controller (`#319 <https://github.com/tier4/driving_log_replayer/issues/319>`_)
+* feat: save the log displayed in the console as a file (`#320 <https://github.com/tier4/driving_log_replayer/issues/320>`_)
+* fix: github actions deprecating command (`#321 <https://github.com/tier4/driving_log_replayer/issues/321>`_)
+* Contributors: Hayato Mizushima
+
 1.10.2 (2023-12-01)
 -------------------
 * fix: perception mode default (`#317 <https://github.com/tier4/driving_log_replayer/issues/317>`_)

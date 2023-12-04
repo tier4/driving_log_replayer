@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.10.3
+
+Minor Tweak, Bug fix
+
+| Module                           | Feature     | Brief summary                                                   | Pull request                                                   | Jira     | Contributor                                   |
+| -------------------------------- | ----------- | --------------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization, performance_diag` | bag control | Stop bag playback while the initial pose process is in progress | [#319](https://github.com/tier4/driving_log_replayer/pull/319) | RT4-7312 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                            | cli         | save the log displayed in the console as a file                 | [#320](https://github.com/tier4/driving_log_replayer/pull/320) | RT4-7883 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                            | ci          | fix github actions deprecating command                          | [#321](https://github.com/tier4/driving_log_replayer/pull/321) | RT4-7922 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.10.2
 
 Minor Tweak, Bug fix
