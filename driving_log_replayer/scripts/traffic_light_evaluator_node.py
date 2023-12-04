@@ -145,7 +145,7 @@ class TrafficLightEvaluator(DLREvaluator):
         signals: list[TrafficSignal],
     ) -> list[DynamicObject2D]:
         estimated_objects: list[DynamicObject2D] = []
-        for i, signal in enumerate(signals):
+        for signal in signals:
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
                 DLREvaluator.get_traffic_light_label_str(signal.elements),
             )
@@ -213,7 +213,7 @@ class TrafficLightEvaluator(DLREvaluator):
         logging.info(
             "[Before] "
             f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(ground_truth_objects, ground_truth_distances)]}, "  # noqa
-            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(estimated_objects, estimation_distances)]}, "  # noqa
+            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(estimated_objects, estimation_distances)]}, ",  # noqa
         )
         ground_truth_now_frame.objects = filtered_gt_objects
         ros_critical_ground_truth_objects = filtered_gt_objects
