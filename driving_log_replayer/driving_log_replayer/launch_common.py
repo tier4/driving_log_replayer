@@ -46,6 +46,10 @@ def get_driving_log_replayer_common_argument() -> list:
     vehicle_model
     sensor_model
     vehicle_id
+    t4_dataset_path
+    result_archive_path
+    override_record_topics
+    override_topics_regex
 
     """
     launch_arguments = []
@@ -83,17 +87,25 @@ def get_driving_log_replayer_common_argument() -> list:
     add_launch_arg("vehicle_id", default_value="default", description="vehicle specific ID")
 
     # additional argument
-    add_launch_arg("perception_mode", default_value="lidar", description="perception mode")
     add_launch_arg(
         "t4_dataset_path",
         default_value="/opt/autoware/t4_dataset",
         description="full path of t4_dataset",
     )
-
     add_launch_arg(
         "result_archive_path",
         default_value="/opt/autoware/result_archive",
         description="additional result file",
+    )
+    add_launch_arg(
+        "override_record_topics",
+        default_value="false",
+        description="flag of override record topics",
+    )
+    add_launch_arg(
+        "override_topics_regex",
+        default_value="",
+        description="use allowlist. Ex: override_topics_regex:=\^/clock\$\|\^/tf\$\|/sensing/lidar/concatenated/pointcloud",  # noqa
     )
 
     return launch_arguments
@@ -110,35 +122,35 @@ def get_autoware_launch(
     twist_source: str = "gyro_odom",
     perception_mode: str | None = None,
 ) -> launch.actions.IncludeLaunchDescription:
-    if perception_mode is None:
-        perception_mode = LaunchConfiguration("perception_mode")
     # autoware launch
     autoware_launch_file = Path(
         get_package_share_directory("autoware_launch"),
         "launch",
         "logging_simulator.launch.xml",
     )
+    launch_args = {
+        "map_path": LaunchConfiguration("map_path"),
+        "vehicle_model": LaunchConfiguration("vehicle_model"),
+        "sensor_model": LaunchConfiguration("sensor_model"),
+        "vehicle_id": LaunchConfiguration("vehicle_id"),
+        "launch_vehicle_interface": "true",
+        "sensing": sensing,
+        "localization": localization,
+        "perception": perception,
+        "planning": planning,
+        "control": control,
+        "scenario_simulation": scenario_simulation,
+        "pose_source": pose_source,
+        "twist_source": twist_source,
+        "rviz": "false",
+    }
+    if isinstance(perception_mode, str):
+        launch_args["perception_mode"] = perception_mode
     return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(
             autoware_launch_file.as_posix(),
         ),
-        launch_arguments={
-            "map_path": LaunchConfiguration("map_path"),
-            "vehicle_model": LaunchConfiguration("vehicle_model"),
-            "sensor_model": LaunchConfiguration("sensor_model"),
-            "vehicle_id": LaunchConfiguration("vehicle_id"),
-            "launch_vehicle_interface": "true",
-            "sensing": sensing,
-            "localization": localization,
-            "perception": perception,
-            "planning": planning,
-            "control": control,
-            "scenario_simulation": scenario_simulation,
-            "perception_mode": perception_mode,
-            "pose_source": pose_source,
-            "twist_source": twist_source,
-            "rviz": "false",
-        }.items(),
+        launch_arguments=launch_args.items(),
         condition=IfCondition(LaunchConfiguration("with_autoware")),
     )
 
@@ -184,7 +196,7 @@ def get_evaluator_node(
         "t4_dataset_path": LaunchConfiguration("t4_dataset_path"),
         "result_archive_path": LaunchConfiguration("result_archive_path"),
     }
-    if addition_parameter is not None and type(addition_parameter) == dict:
+    if addition_parameter is not None and isinstance(addition_parameter, dict):
         params.update(addition_parameter)
 
     node_name = usecase_name + "_evaluator_node.py"
@@ -200,26 +212,8 @@ def get_evaluator_node(
     )
 
 
-def get_recorder(record_config_name: str, record_topics: list) -> ExecuteProcess:
-    record_cmd = [
-        "ros2",
-        "bag",
-        "record",
-        *record_topics,
-        "-o",
-        LaunchConfiguration("result_bag_path"),
-        "--qos-profile-overrides-path",
-        Path(
-            get_package_share_directory("driving_log_replayer"),
-            "config",
-            record_config_name,
-        ).as_posix(),
-    ]
-    return ExecuteProcess(cmd=record_cmd)
-
-
-def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
-    record_cmd = [
+def create_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
+    return [
         "ros2",
         "bag",
         "record",
@@ -234,10 +228,34 @@ def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProces
         "-e",
         allowlist,
     ]
+
+
+def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
+    record_cmd = create_regex_record_cmd(record_config_name, allowlist)
     return ExecuteProcess(cmd=record_cmd)
 
 
-def get_player(additional_argument: list | None = None) -> ExecuteProcess:
+def get_regex_recorders(
+    record_config_name: str,
+    allowlist: str,
+) -> tuple[ExecuteProcess, ExecuteProcess]:
+    record_cmd = create_regex_record_cmd(record_config_name, allowlist)
+    record_proc = ExecuteProcess(
+        cmd=record_cmd,
+        condition=UnlessCondition(LaunchConfiguration("override_record_topics")),
+    )
+    record_override_cmd = create_regex_record_cmd(
+        record_config_name,
+        LaunchConfiguration("override_topics_regex"),
+    )
+    record_override_proc = ExecuteProcess(
+        cmd=record_override_cmd,
+        condition=IfCondition(LaunchConfiguration("override_record_topics")),
+    )
+    return record_proc, record_override_proc
+
+
+def get_player_cmd(additional_argument: list | None = None) -> list:
     play_cmd = [
         "ros2",
         "bag",
@@ -248,8 +266,23 @@ def get_player(additional_argument: list | None = None) -> ExecuteProcess:
         "--clock",
         "200",
     ]
-    if additional_argument is not None and type(additional_argument) == list:
+    if additional_argument is not None and isinstance(additional_argument, list):
         play_cmd.extend(additional_argument)
+    return play_cmd
+
+
+def get_player(
+    additional_argument: list | None = None,
+    condition: IfCondition | None = None,
+) -> ExecuteProcess:
+    play_cmd = get_player_cmd(additional_argument)
+    if condition is not None:
+        return ExecuteProcess(
+            cmd=["sleep", LaunchConfiguration("play_delay")],
+            on_exit=[ExecuteProcess(cmd=play_cmd)],
+            output="screen",
+            condition=condition,
+        )
     return ExecuteProcess(
         cmd=["sleep", LaunchConfiguration("play_delay")],
         on_exit=[ExecuteProcess(cmd=play_cmd)],

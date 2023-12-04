@@ -4,7 +4,7 @@
 
 1. シナリオをコピーする
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data/eagleye/sample
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/eagleye/scenario.yaml ~/driving_log_replayer_data/eagleye/sample
    ```
@@ -18,7 +18,7 @@
    ROSBAGをダウンロードしてください： [Google Drive Link](https://drive.google.com/file/d/1Zgv9eP0j2hAgTj7pW8n-YaECPQGGQjO2/view)。
    その後、下記のコマンドで解答してください。
 
-   ```bash
+   ```shell
    unzip awsim_eagleye_rosbag.zip
    mv input_bag ~/driving_log_replayer/eagleye/sample
    ```
@@ -27,15 +27,15 @@
 
 1. シミュレーションの実行
 
-   ```bash
-   driving_log_replayer simulation run -p eagleye --rate 0.5
+   ```shell
+   dlr simulation run -p eagleye --rate 0.5
    ```
 
 2. 結果の確認
 
    以下のような結果がターミナルに表示されます。
 
-   ```bash
+   ```shell
    test case 1 / 1 : use case: sample
    --------------------------------------------------
    TestResult: Passed

@@ -16,6 +16,12 @@ import launch
 
 import driving_log_replayer.launch_common
 
+RECORD_TOPIC_REGEX = """^/clock$\
+|^/tf$\
+|^/diagnostics$"\
+|^/localization/kinematic_state$\
+"""
+
 
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
@@ -27,14 +33,9 @@ def generate_launch_description() -> launch.LaunchDescription:
     rviz_node = driving_log_replayer.launch_common.get_rviz("localization.rviz")
     evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("ar_tag_based_localizer")
     player = driving_log_replayer.launch_common.get_player()
-    recorder = driving_log_replayer.launch_common.get_recorder(
+    recorder, recorder_override = driving_log_replayer.launch_common.get_regex_recorders(
         "localization.qos.yaml",
-        [
-            "/clock",
-            "/tf",
-            "/localization/kinematic_state",
-            "/diagnostics",
-        ],
+        RECORD_TOPIC_REGEX,
     )
 
     return launch.LaunchDescription(
@@ -44,7 +45,8 @@ def generate_launch_description() -> launch.LaunchDescription:
             autoware_launch,
             fitter_launch,
             evaluator_node,
-            recorder,
             player,
+            recorder,
+            recorder_override,
         ],
     )

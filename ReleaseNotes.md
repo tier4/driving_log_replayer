@@ -1,5 +1,62 @@
 # Release Notes
 
+## Version 1.10.3
+
+Minor Tweak, Bug fix
+
+| Module                           | Feature     | Brief summary                                                   | Pull request                                                   | Jira     | Contributor                                   |
+| -------------------------------- | ----------- | --------------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization, performance_diag` | bag control | Stop bag playback while the initial pose process is in progress | [#319](https://github.com/tier4/driving_log_replayer/pull/319) | RT4-7312 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                            | cli         | save the log displayed in the console as a file                 | [#320](https://github.com/tier4/driving_log_replayer/pull/320) | RT4-7883 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                            | ci          | fix github actions deprecating command                          | [#321](https://github.com/tier4/driving_log_replayer/pull/321) | RT4-7922 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.10.2
+
+Minor Tweak, Bug fix
+
+| Module                                     | Feature         | Brief summary                      | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | --------------- | ---------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, perception_2d, traffic_light` | unit test       | add test for custom criteria level | [#316](https://github.com/tier4/driving_log_replayer/pull/316) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | perception_mode | fix override perception_mode       | [#317](https://github.com/tier4/driving_log_replayer/pull/316) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.10.1
+
+Minor Tweak, Bug fix
+
+| Module                                     | Feature             | Brief summary                       | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | ------------------- | ----------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `common`                                   | type hint           | add type hint for rclpy.task.Future | [#312](https://github.com/tier4/driving_log_replayer/pull/312) | RT4-7872 | [hayato-m126](https://github.com/hayato-m126) |
+| `cli`                                      | security            | fix ruff rule S602                  | [#313](https://github.com/tier4/driving_log_replayer/pull/313) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | scenario validation | fix criteria type                   | [#314](https://github.com/tier4/driving_log_replayer/pull/314) | -        | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.10.0
+
+Minor Tweak
+
+| Module | Feature          | Brief summary                                              | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ---------------- | ---------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | documentation    | add release process                                        | [#308](https://github.com/tier4/driving_log_replayer/pull/308) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | scenario         | add scenario class                                         | [#306](https://github.com/tier4/driving_log_replayer/pull/306) | RT4-7583 | [hayato-m126](https://github.com/hayato-m126) |
+| `cli`  | shell completion | add bash and fish completion                               | [#309](https://github.com/tier4/driving_log_replayer/pull/309) | RT4-7803 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | bag record       | add runtime arguments to override the topic to be recorded | [#301](https://github.com/tier4/driving_log_replayer/pull/301) | RT4-7669 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.9.1
+
+Minor Tweak, Bug fix
+
+| Module       | Feature     | Brief summary                 | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | ----------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `diag`       | refactoring | refactor diag blockage result | [#303](https://github.com/tier4/driving_log_replayer/pull/303) | RT4-7580 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception` | criteria    | fix no data criteria          | [#305](https://github.com/tier4/driving_log_replayer/pull/305) | -        | [YoshiRi](https://github.com/YoshiRi)         |
+
+## Version 1.9.0
+
+Minor Tweak
+
+| Module                  | Feature | Brief summary                                                           | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ------- | ----------------------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | test    | add unit test for obstacle segmentation, update log format and analyzer | [#273](https://github.com/tier4/driving_log_replayer/pull/273) | RT4-7580 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.8.4
 
 Minor Tweak

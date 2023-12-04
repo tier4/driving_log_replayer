@@ -12,7 +12,7 @@
 
 1. Download and unpack a sample map.
 
-   ```bash
+   ```shell
    mkdir -p ~/autoware_map
    gdown -O ~/autoware_map/sample-map-planning.zip 'https://docs.google.com/uc?export=download&id=1499_nsbUbIeturZaDj7jhUownh5fvXHd'
    unzip -d ~/autoware_map ~/autoware_map/sample-map-planning.zip
@@ -22,7 +22,7 @@
 
 2. Download and unpack a dataset.
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data
    gdown -O ~/driving_log_replayer_data/sample_dataset.tar.zst 'https://docs.google.com/uc?export=download&id=1UjMWZj5Yc55O7BZiGHa0ikZGhwmcfPiS'
    tar -I zstd -xvf ~/driving_log_replayer_data/sample_dataset.tar.zst -C ~/driving_log_replayer_data/
@@ -32,7 +32,7 @@
 
 3. Copy sample setting
 
-   ```bash
+   ```shell
    # assuming that autoware is placed under ~/autoware directory
    cp ~/autoware/src/simulator/driving_log_replayer/sample/.driving_log_replayer.config.toml ~/
    ```

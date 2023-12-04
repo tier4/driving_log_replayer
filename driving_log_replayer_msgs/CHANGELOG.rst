@@ -2,6 +2,44 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.3 (2023-12-04)
+-------------------
+* feat: bag controller (`#319 <https://github.com/tier4/driving_log_replayer/issues/319>`_)
+* feat: save the log displayed in the console as a file (`#320 <https://github.com/tier4/driving_log_replayer/issues/320>`_)
+* fix: github actions deprecating command (`#321 <https://github.com/tier4/driving_log_replayer/issues/321>`_)
+* Contributors: Hayato Mizushima
+
+1.10.2 (2023-12-01)
+-------------------
+* fix: perception mode default (`#317 <https://github.com/tier4/driving_log_replayer/issues/317>`_)
+* chore: test perception criteria custom level (`#316 <https://github.com/tier4/driving_log_replayer/issues/316>`_)
+* Contributors: Hayato Mizushima
+
+1.10.1 (2023-11-30)
+-------------------
+* fix: perception criteria validation bug (`#314 <https://github.com/tier4/driving_log_replayer/issues/314>`_)
+* fix: fix ruff S602 rule (`#313 <https://github.com/tier4/driving_log_replayer/issues/313>`_)
+* chore: type hint (`#312 <https://github.com/tier4/driving_log_replayer/issues/312>`_)
+* Contributors: Hayato Mizushima
+
+1.10.0 (2023-11-28)
+-------------------
+* feat: override record topics (`#301 <https://github.com/tier4/driving_log_replayer/issues/301>`_)
+* feat: scenario class (`#306 <https://github.com/tier4/driving_log_replayer/issues/306>`_)
+* Contributors: Hayato Mizushima
+
+1.9.1 (2023-11-21)
+------------------
+* fix no data criteria (`#305 <https://github.com/tier4/driving_log_replayer/issues/305>`_)
+  Co-authored-by: YoshiRi <YoshiRi@users.noreply.github.com>
+* refactor: diag (`#303 <https://github.com/tier4/driving_log_replayer/issues/303>`_)
+* Contributors: Hayato Mizushima, Yoshi Ri
+
+1.9.0 (2023-11-14)
+------------------
+* feat: obstacle segmentation test (`#273 <https://github.com/tier4/driving_log_replayer/issues/273>`_)
+* Contributors: Hayato Mizushima
+
 1.8.4 (2023-11-08)
 ------------------
 * feat: parameterize perception mode (`#299 <https://github.com/tier4/driving_log_replayer/issues/299>`_)

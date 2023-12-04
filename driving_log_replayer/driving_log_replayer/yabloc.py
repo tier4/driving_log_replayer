@@ -16,9 +16,23 @@ from dataclasses import dataclass
 from typing import ClassVar
 
 from diagnostic_msgs.msg import DiagnosticArray
+from pydantic import BaseModel
+from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import Scenario
+
+
+class Evaluation(BaseModel):
+    UseCaseName: Literal["yabloc"]
+    UseCaseFormatVersion: Literal["0.1.0"]
+    InitialPose: InitialPose | None
+
+
+class YablocScenario(Scenario):
+    Evaluation: Evaluation
 
 
 @dataclass
@@ -55,7 +69,8 @@ class Availability(EvaluationItem):
 
 
 class YabLocResult(ResultBase):
-    def __init__(self) -> None:
+    def __init__(self, condition) -> None:  # noqa
+        # condition is for future extensibility and code commonality
         super().__init__()
         self.__availability = Availability()
 

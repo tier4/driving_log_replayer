@@ -19,7 +19,20 @@ from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 
 from driving_log_replayer.performance_diag import Blockage
+from driving_log_replayer.performance_diag import BlockageCondition
+from driving_log_replayer.performance_diag import PerformanceDiagScenario
 from driving_log_replayer.performance_diag import Visibility
+from driving_log_replayer.performance_diag import VisibilityCondition
+from driving_log_replayer.scenario import load_sample_scenario
+
+
+def test_scenario() -> None:
+    scenario: PerformanceDiagScenario = load_sample_scenario(
+        "performance_diag",
+        PerformanceDiagScenario,
+    )
+    assert scenario.Evaluation.Conditions.LiDAR.Visibility.ScenarioType == "FP"
+    assert scenario.Evaluation.Conditions.LiDAR.Blockage["front_lower"].BlockageType == "both"
 
 
 def test_visibility_invalid() -> None:
@@ -27,7 +40,9 @@ def test_visibility_invalid() -> None:
         name="/autoware/sensing/lidar/performance_monitoring/visibility/dual_return_filter:  sensing lidar left_upper: visibility_validation",
         level=DiagnosticStatus.OK,
     )
-    evaluation_item = Visibility(condition={"ScenarioType": None, "PassFrameCount": 100})
+    evaluation_item = Visibility(
+        condition=VisibilityCondition(ScenarioType=None, PassFrameCount=100),
+    )
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
@@ -44,7 +59,7 @@ def test_visibility_invalid() -> None:
 def test_visibility_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_visibility_diag_name")
     evaluation_item = Visibility(
-        condition={"ScenarioType": "TP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="TP", PassFrameCount=100),
     )
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
@@ -66,7 +81,7 @@ def test_visibility_tp_success() -> None:
         values=[KeyValue(key="value", value="-1.00")],
     )
     evaluation_item = Visibility(
-        condition={"ScenarioType": "TP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="TP", PassFrameCount=100),
         total=149,
         passed=99,
         success=False,
@@ -94,7 +109,7 @@ def test_visibility_tp_fail() -> None:
         values=[KeyValue(key="value", value="1.00")],
     )
     evaluation_item = Visibility(
-        condition={"ScenarioType": "TP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="TP", PassFrameCount=100),
         total=149,
         passed=99,
         success=False,
@@ -122,7 +137,7 @@ def test_visibility_fp_success() -> None:
         values=[KeyValue(key="value", value="1.00")],
     )
     evaluation_item = Visibility(
-        condition={"ScenarioType": "FP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="FP", PassFrameCount=100),
         total=49,
         passed=49,
         success=True,
@@ -150,7 +165,7 @@ def test_visibility_fp_fail() -> None:
         values=[KeyValue(key="value", value="-1.00")],
     )
     evaluation_item = Visibility(
-        condition={"ScenarioType": "FP", "PassFrameCount": 100},
+        condition=VisibilityCondition(ScenarioType="FP", PassFrameCount=100),
         total=49,
         passed=49,
         success=True,
@@ -177,15 +192,14 @@ def test_blockage_invalid() -> None:
         level=DiagnosticStatus.OK,
     )
     evaluation_item = Blockage(
-        condition={
-            "front_lower": {"ScenarioType": None, "BlockageType": "both", "PassFrameCount": 100},
-        },
+        name="front_lower",
+        condition=BlockageCondition(ScenarioType=None, BlockageType="both", PassFrameCount=100),
     )
     (
         frame_dict,
-        msg_blockage_sky_ratios,
-        msg_blockage_ground_ratios,
-        msg_blockage_levels,
+        msg_blockage_sky_ratio,
+        msg_blockage_ground_ratio,
+        msg_blockage_level,
     ) = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
@@ -195,9 +209,9 @@ def test_blockage_invalid() -> None:
         "Result": {"Total": "Success", "Frame": "Invalid"},
         "Info": {},
     }
-    assert msg_blockage_sky_ratios == {}
-    assert msg_blockage_ground_ratios == {}
-    assert msg_blockage_levels == {}
+    assert msg_blockage_sky_ratio is None
+    assert msg_blockage_ground_ratio is None
+    assert msg_blockage_level is None
 
 
 def test_blockage_has_no_target_diag_not_target_lidar() -> None:
@@ -205,27 +219,26 @@ def test_blockage_has_no_target_diag_not_target_lidar() -> None:
         name="/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar rear_upper: blockage_validation",
     )
     evaluation_item = Blockage(
-        condition={
-            "front_lower": {"ScenarioType": "TP", "BlockageType": "both", "PassFrameCount": 100},
-        },
+        name="front_lower",
+        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassFrameCount=100),
     )
     (
         frame_dict,
-        msg_blockage_sky_ratios,
-        msg_blockage_ground_ratios,
-        msg_blockage_levels,
+        msg_blockage_sky_ratio,
+        msg_blockage_ground_ratio,
+        msg_blockage_level,
     ) = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "Blockage (Success): front_lower: 0 / 0"
+    assert evaluation_item.summary == "NotTested"
     assert frame_dict == {
         "Result": {"Total": "Success", "Frame": "Warn"},
         "Info": {"Reason": "diagnostics does not contain blockage"},
     }
-    assert msg_blockage_sky_ratios == {}
-    assert msg_blockage_ground_ratios == {}
-    assert msg_blockage_levels == {}
+    assert msg_blockage_sky_ratio is None
+    assert msg_blockage_ground_ratio is None
+    assert msg_blockage_level is None
 
 
 def test_blockage_tp_success() -> None:
@@ -241,38 +254,35 @@ def test_blockage_tp_success() -> None:
         ],
     )
     evaluation_item = Blockage(
-        condition={
-            "front_lower": {"ScenarioType": "TP", "BlockageType": "both", "PassFrameCount": 100},
-        },
+        name="front_lower",
+        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassFrameCount=100),
         success=False,
+        passed=99,
+        total=149,
     )
-    evaluation_item.passed_sensors["front_lower"] = 99
-    evaluation_item.total_sensors["front_lower"] = 149
     (
         frame_dict,
-        msg_blockage_sky_ratios,
-        msg_blockage_ground_ratios,
-        msg_blockage_levels,
+        msg_blockage_sky_ratio,
+        msg_blockage_ground_ratio,
+        msg_blockage_level,
     ) = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "Blockage (Success): front_lower: 100 / 150"
+    assert evaluation_item.summary == "front_lower (Success): 100 / 150"
     assert frame_dict == {
-        "front_lower": {
-            "Result": {"Total": "Success", "Frame": "Success"},
-            "Info": {
-                "Level": 2,
-                "GroundBlockageRatio": 0.194444,
-                "GroundBlockageCount": 100,
-                "SkyBlockageRatio": 0.211706,
-                "SkyBlockageCount": 100,
-            },
+        "Result": {"Total": "Success", "Frame": "Success"},
+        "Info": {
+            "Level": 2,
+            "GroundBlockageRatio": 0.194444,
+            "GroundBlockageCount": 100,
+            "SkyBlockageRatio": 0.211706,
+            "SkyBlockageCount": 100,
         },
     }
-    assert msg_blockage_sky_ratios == {"front_lower": Float64(data=0.211706)}
-    assert msg_blockage_ground_ratios == {"front_lower": Float64(data=0.194444)}
-    assert msg_blockage_levels == {"front_lower": Byte(data=bytes([2]))}
+    assert msg_blockage_sky_ratio == Float64(data=0.211706)
+    assert msg_blockage_ground_ratio == Float64(data=0.194444)
+    assert msg_blockage_level == Byte(data=bytes([2]))
 
 
 def test_blockage_tp_fail() -> None:
@@ -288,38 +298,35 @@ def test_blockage_tp_fail() -> None:
         ],
     )
     evaluation_item = Blockage(
-        condition={
-            "front_lower": {"ScenarioType": "TP", "BlockageType": "both", "PassFrameCount": 100},
-        },
+        name="front_lower",
+        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassFrameCount=100),
         success=False,
+        passed=99,
+        total=149,
     )
-    evaluation_item.passed_sensors["front_lower"] = 99
-    evaluation_item.total_sensors["front_lower"] = 149
     (
         frame_dict,
-        msg_blockage_sky_ratios,
-        msg_blockage_ground_ratios,
-        msg_blockage_levels,
+        msg_blockage_sky_ratio,
+        msg_blockage_ground_ratio,
+        msg_blockage_level,
     ) = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Blockage (Fail): front_lower: 99 / 150"
+    assert evaluation_item.summary == "front_lower (Fail): 99 / 150"
     assert frame_dict == {
-        "front_lower": {
-            "Result": {"Total": "Fail", "Frame": "Fail"},
-            "Info": {
-                "Level": 2,
-                "GroundBlockageRatio": -1.0,
-                "GroundBlockageCount": 1,
-                "SkyBlockageRatio": 0.824167,
-                "SkyBlockageCount": 100,
-            },
+        "Result": {"Total": "Fail", "Frame": "Fail"},
+        "Info": {
+            "Level": 2,
+            "GroundBlockageRatio": -1.0,
+            "GroundBlockageCount": 1,
+            "SkyBlockageRatio": 0.824167,
+            "SkyBlockageCount": 100,
         },
     }
-    assert msg_blockage_sky_ratios == {"front_lower": None}
-    assert msg_blockage_ground_ratios == {"front_lower": None}
-    assert msg_blockage_levels == {"front_lower": None}
+    assert msg_blockage_sky_ratio is None
+    assert msg_blockage_ground_ratio is None
+    assert msg_blockage_level is None
 
 
 def test_blockage_fp_success() -> None:
@@ -335,38 +342,35 @@ def test_blockage_fp_success() -> None:
         ],
     )
     evaluation_item = Blockage(
-        condition={
-            "front_lower": {"ScenarioType": "FP", "BlockageType": "both", "PassFrameCount": 100},
-        },
+        name="front_lower",
+        condition=BlockageCondition(ScenarioType="FP", BlockageType="both", PassFrameCount=100),
         success=True,
+        passed=49,
+        total=49,
     )
-    evaluation_item.passed_sensors["front_lower"] = 49
-    evaluation_item.total_sensors["front_lower"] = 49
     (
         frame_dict,
-        msg_blockage_sky_ratios,
-        msg_blockage_ground_ratios,
-        msg_blockage_levels,
+        msg_blockage_sky_ratio,
+        msg_blockage_ground_ratio,
+        msg_blockage_level,
     ) = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "Blockage (Success): front_lower: 50 / 50"
+    assert evaluation_item.summary == "front_lower (Success): 50 / 50"
     assert frame_dict == {
-        "front_lower": {
-            "Result": {"Total": "Success", "Frame": "Success"},
-            "Info": {
-                "Level": 0,
-                "GroundBlockageRatio": 0.0,
-                "GroundBlockageCount": 0,
-                "SkyBlockageRatio": 0.380967,
-                "SkyBlockageCount": 50,
-            },
+        "Result": {"Total": "Success", "Frame": "Success"},
+        "Info": {
+            "Level": 0,
+            "GroundBlockageRatio": 0.0,
+            "GroundBlockageCount": 0,
+            "SkyBlockageRatio": 0.380967,
+            "SkyBlockageCount": 50,
         },
     }
-    assert msg_blockage_sky_ratios == {"front_lower": Float64(data=0.380967)}
-    assert msg_blockage_ground_ratios == {"front_lower": Float64(data=0.0)}
-    assert msg_blockage_levels == {"front_lower": Byte(data=bytes([0]))}
+    assert msg_blockage_sky_ratio == Float64(data=0.380967)
+    assert msg_blockage_ground_ratio == Float64(data=0.0)
+    assert msg_blockage_level == Byte(data=bytes([0]))
 
 
 def test_blockage_fp_fail() -> None:
@@ -382,35 +386,32 @@ def test_blockage_fp_fail() -> None:
         ],
     )
     evaluation_item = Blockage(
-        condition={
-            "front_lower": {"ScenarioType": "FP", "BlockageType": "both", "PassFrameCount": 100},
-        },
+        name="front_lower",
+        condition=BlockageCondition(ScenarioType="FP", BlockageType="both", PassFrameCount=100),
         success=True,
+        passed=49,
+        total=49,
     )
-    evaluation_item.passed_sensors["front_lower"] = 49
-    evaluation_item.total_sensors["front_lower"] = 49
     (
         frame_dict,
-        msg_blockage_sky_ratios,
-        msg_blockage_ground_ratios,
-        msg_blockage_levels,
+        msg_blockage_sky_ratio,
+        msg_blockage_ground_ratio,
+        msg_blockage_level,
     ) = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Blockage (Fail): front_lower: 49 / 50"
+    assert evaluation_item.summary == "front_lower (Fail): 49 / 50"
     assert frame_dict == {
-        "front_lower": {
-            "Result": {"Total": "Fail", "Frame": "Fail"},
-            "Info": {
-                "Level": 2,
-                "GroundBlockageRatio": 0.194444,
-                "GroundBlockageCount": 50,
-                "SkyBlockageRatio": 0.211706,
-                "SkyBlockageCount": 50,
-            },
+        "Result": {"Total": "Fail", "Frame": "Fail"},
+        "Info": {
+            "Level": 2,
+            "GroundBlockageRatio": 0.194444,
+            "GroundBlockageCount": 50,
+            "SkyBlockageRatio": 0.211706,
+            "SkyBlockageCount": 50,
         },
     }
-    assert msg_blockage_sky_ratios == {"front_lower": Float64(data=0.211706)}
-    assert msg_blockage_ground_ratios == {"front_lower": Float64(data=0.194444)}
-    assert msg_blockage_levels == {"front_lower": Byte(data=bytes([2]))}
+    assert msg_blockage_sky_ratio == Float64(data=0.211706)
+    assert msg_blockage_ground_ratio == Float64(data=0.194444)
+    assert msg_blockage_level == Byte(data=bytes([2]))

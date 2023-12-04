@@ -17,7 +17,6 @@
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
-import rclpy
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
@@ -25,15 +24,17 @@ from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.localization import calc_pose_horizontal_distance
 from driving_log_replayer.localization import calc_pose_lateral_distance
-from driving_log_replayer.localization import get_reliability_method
 from driving_log_replayer.localization import LocalizationResult
+from driving_log_replayer.localization import LocalizationScenario
 
 
 class LocalizationEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.check_scenario()
-        self.__result = LocalizationResult(self._condition)
+        super().__init__(name, LocalizationScenario, LocalizationResult)
+        self._scenario: LocalizationScenario
+        self._result: LocalizationResult
+
+        self.__reliability_method = self._scenario.Evaluation.Conditions.Reliability.Method
 
         self.__latest_exe_time: Float32Stamped = Float32Stamped()
         self.__latest_iteration_num: Int32Stamped = Int32Stamped()
@@ -82,14 +83,6 @@ class LocalizationEvaluator(DLREvaluator):
             1,
         )
 
-    def check_scenario(self) -> None:
-        self.__reliability_method, error_msg = get_reliability_method(
-            self._condition.get("Reliability", {}).get("Method"),
-        )
-        if self.__reliability_method is None:
-            self.get_logger().error(error_msg)
-            rclpy.shutdown()
-
     def exe_time_cb(self, msg: Float32Stamped) -> None:
         self.__latest_exe_time = msg
 
@@ -102,12 +95,12 @@ class LocalizationEvaluator(DLREvaluator):
             # evaluates when reliability_method is TP
             return
         map_to_baselink = self.lookup_transform(msg.stamp)
-        self.__result.set_frame(
+        self._result.set_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_nvtl,
         )
-        self._result_writer.write_result(self.__result)
+        self._result_writer.write_result(self._result)
 
     def nvtl_cb(self, msg: Float32Stamped) -> None:
         self.__latest_nvtl = msg
@@ -115,16 +108,16 @@ class LocalizationEvaluator(DLREvaluator):
             # evaluates when reliability_method is NVTL
             return
         map_to_baselink = self.lookup_transform(msg.stamp)
-        self.__result.set_frame(
+        self._result.set_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_tp,
         )
-        self._result_writer.write_result(self.__result)
+        self._result_writer.write_result(self._result)
 
     def relative_pose_cb(self, msg: PoseStamped) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
-        msg_lateral_distance = self.__result.set_frame(
+        msg_lateral_distance = self._result.set_frame(
             calc_pose_lateral_distance(msg),
             calc_pose_horizontal_distance(msg),
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
@@ -132,11 +125,11 @@ class LocalizationEvaluator(DLREvaluator):
             self.__latest_iteration_num,
         )
         self.__pub_lateral_distance.publish(msg_lateral_distance)  # TODO: add integration test
-        self._result_writer.write_result(self.__result)
+        self._result_writer.write_result(self._result)
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
-        self.__result.set_frame(msg)
-        self._result_writer.write_result(self.__result)
+        self._result.set_frame(msg)
+        self._result_writer.write_result(self._result)
 
 
 @evaluator_main

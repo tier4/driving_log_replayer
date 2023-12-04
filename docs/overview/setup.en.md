@@ -14,7 +14,7 @@ You can create it manually or by using the driving_log_replayer configure comman
 nano $HOME/.driving_log_replayer.config.toml
 
 # cli creation
-driving_log_replayer configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
+dlr configure register -d ${data_directory} -o ${output_directory} -a ${autoware_path} [-p ${profile}]
 ```
 
 At least one profile is required, and one must be named `default`.

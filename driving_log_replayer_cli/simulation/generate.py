@@ -25,7 +25,9 @@ class TestScriptGenerator:
         autoware_path: str,
         rate: float,
         delay: float,
-        perception_mode: str,
+        perception_mode: str | None,
+        override_recode_topics: bool,  # noqa
+        override_topics_regex: str,
     ) -> None:
         self.__data_directory = Path(data_directory)
         self.__output_directory = Path(output_directory)
@@ -34,12 +36,14 @@ class TestScriptGenerator:
         self.__rate = rate
         self.__delay = delay
         self.__perception_mode = perception_mode
+        self.__override_topics_regex = override_topics_regex
+        self.__override_recode_topics = override_recode_topics
         #  os.path.join(config.output_directory, datetime.datetime.now().strftime("%Y-%m%d-%H%M%S"))が渡ってくるので被ることはない
         self.__output_directory.mkdir(parents=True)
 
         symlink_dst = self.__output_directory.parent.joinpath("latest").as_posix()
-        update_symlink = f"ln -snf {self.__output_directory.as_posix()} {symlink_dst}"
-        subprocess.run(update_symlink, shell=True)
+        update_symlink = ["ln", "-snf", self.__output_directory.as_posix(), symlink_dst]
+        subprocess.run(update_symlink, check=False)
 
     @property
     def script_path(self) -> Path:
@@ -124,6 +128,8 @@ map_path:={essential_param.map_path} \
 vehicle_model:={essential_param.vehicle_model} \
 sensor_model:={essential_param.sensor_model} \
 vehicle_id:={essential_param.vehicle_id} \
+override_record_topics:={self.__override_recode_topics} \
+override_topics_regex:={self.__override_topics_regex} \
 rviz:=true\
 """
 
@@ -210,7 +216,11 @@ rviz:=true\
 
             use_case_name = scenario_yaml_obj["Evaluation"]["UseCaseName"]
             launch_base_command = f"ros2 launch driving_log_replayer {use_case_name}.launch.py "
-            optional_arg = f"perception_mode:={self.__perception_mode} "
+            optional_arg = (
+                f"perception_mode:={self.__perception_mode} "
+                if isinstance(self.__perception_mode, str)
+                else ""
+            )
             launch_args = self._create_common_arg(
                 optional_arg,
                 scenario_path,

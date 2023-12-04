@@ -17,16 +17,14 @@
 from diagnostic_msgs.msg import DiagnosticArray
 
 from driving_log_replayer.eagleye import EagleyeResult
+from driving_log_replayer.eagleye import EagleyeScenario
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 
 
 class EagleyeEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.check_scenario()
-
-        self.__result = EagleyeResult()
+        super().__init__(name, EagleyeScenario, EagleyeResult)
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
@@ -35,12 +33,9 @@ class EagleyeEvaluator(DLREvaluator):
             1,
         )
 
-    def check_scenario(self) -> None:
-        pass
-
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
-        self.__result.set_frame(msg)
-        self._result_writer.write_result(self.__result)
+        self._result.set_frame(msg)
+        self._result_writer.write_result(self._result)
 
 
 @evaluator_main

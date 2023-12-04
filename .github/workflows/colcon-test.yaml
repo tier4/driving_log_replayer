@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test_environment:
+  build-and-test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -37,15 +37,15 @@ jobs:
       - name: Search packages in this repository
         id: list_packages
         run: |
-          echo ::set-output name=package_list::$(colcon list --names-only)
+          echo package_list=$(colcon list --names-only | sed -e ':loop; N; $!b loop; s/\n/ /g') >> $GITHUB_OUTPUT
 
       - name: Setup ROS environment
-        uses: ros-tooling/setup-ros@0.7.0
+        uses: ros-tooling/setup-ros@0.7.1
         with:
           required-ros-distributions: ${{ matrix.ros_distribution }}
 
       - name: build and test
-        uses: ros-tooling/action-ros-ci@0.3.3
+        uses: ros-tooling/action-ros-ci@0.3.5
         with:
           package-name: ${{ steps.list_packages.outputs.package_list }}
           target-ros2-distro: ${{ matrix.ros_distribution }}

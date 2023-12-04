@@ -4,7 +4,7 @@
 
 1. サンプルのシナリオのコピー
 
-   ```bash
+   ```shell
    mkdir -p ~/driving_log_replayer_data/yabloc/sample
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/yabloc/scenario.yaml ~/driving_log_replayer_data/yabloc/sample
    ```
@@ -13,7 +13,7 @@
 
    [Google Drive Link](https://drive.google.com/file/d/1zKTGRH4lD-wptpOdNCgpiPfGRDP0XrUm/view)からRosbagをダウンロードし、下記のコマンドを実行してください。
 
-   ```bash
+   ```shell
    unzstd yabloc_autoware_test_made_in_awsim_0.db3.zst
    mkdir input_bag
    mv yabloc_autoware_test_made_in_awsim_0.db3 input_bag
@@ -23,7 +23,7 @@
 
 3. 入力の bag ファイルのフィルタとスライス処理
 
-   ```bash
+   ```shell
    source ~/autoware/install/setup.bash
    cd ~/driving_log_replayer_data/yabloc/sample
    ros2 bag filter input_bag -o filtered_bag -x "/clock"
@@ -37,15 +37,15 @@
 
 1. シミュレーションの実行
 
-   ```bash
-   driving_log_replayer simulation run -p yabloc --rate 0.5
+   ```shell
+   dlr simulation run -p yabloc --rate 0.5
    ```
 
 2. 結果の確認
 
    以下のような結果がターミナルに表示されます。
 
-   ```bash
+   ```shell
    test case 1 / 1 : use case: sample
    --------------------------------------------------
    TestResult: Passed
