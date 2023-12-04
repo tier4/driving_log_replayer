@@ -2,9 +2,27 @@ from dataclasses import dataclass
 from os.path import expandvars
 from pathlib import Path
 import subprocess
+import sys
 
 import termcolor
 import yaml
+
+
+def run_with_log(cmd: list, log_path: Path) -> None:
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    f = log_path.open("w", encoding="utf-8")
+
+    while True:
+        # バッファから1行読み込む.
+        line = proc.stdout.readline().decode("utf-8")
+        sys.stdout.write(line)
+        f.write(line)
+
+        # バッファが空 + プロセス終了.
+        if not line and proc.poll() is not None:
+            break
+
+    f.close()
 
 
 @dataclass(frozen=True)
