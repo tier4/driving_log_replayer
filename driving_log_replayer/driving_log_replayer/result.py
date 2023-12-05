@@ -15,12 +15,12 @@
 from abc import ABC
 from abc import abstractmethod
 from dataclasses import dataclass
-from dataclasses import field
 from os.path import expandvars
 from pathlib import Path
 import pickle
 from typing import Any
 
+from pydantic import BaseModel
 from rclpy.clock import Clock
 from rclpy.clock import ClockType
 import simplejson as json
@@ -28,9 +28,9 @@ import simplejson as json
 
 @dataclass
 class EvaluationItem(ABC):
-    name: str = "This field should be overwritten"
+    name: str
     # If condition is None, this evaluation item is not used.
-    condition: dict | None = field(default_factory=dict)
+    condition: BaseModel | None = None
     total: int = 0
     passed: int = 0
     summary: str = "NotTested"
@@ -75,12 +75,18 @@ class ResultBase(ABC):
 
 
 class ResultWriter:
-    def __init__(self, result_json_path: str, ros_clock: Clock, condition: dict) -> None:
+    def __init__(
+        self,
+        result_json_path: str,
+        ros_clock: Clock,
+        condition: BaseModel | dict,
+    ) -> None:
         self._result_path = self.create_jsonl_path(result_json_path)
         self._result_file = self._result_path.open("w")
         self._ros_clock = ros_clock
         self._system_clock = Clock(clock_type=ClockType.SYSTEM_TIME)
-        self.write_line({"Condition": condition})
+        condition_dict = condition if isinstance(condition, dict) else condition.model_dump()
+        self.write_line({"Condition": condition_dict})
         self.write_line(self.get_header())
 
     @property

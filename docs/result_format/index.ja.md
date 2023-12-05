@@ -43,7 +43,7 @@ jsonl ファイルを json に変換したい場合は、以下のコマンド�
 
 ```shell
 # 結果ファイルの変換、output_directory以下のresult.jsonlをresult.jsonに変換する
-driving_log_replayer simulation convert-result ${output_directory}
+dlr simulation convert-result ${output_directory}
 ```
 
 ## 結果ファイルの分析

@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>driving_log_replayer</name>
-  <version>1.8.4</version>
+  <version>1.10.3</version>
   <description>The driving_log_replayer package</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
   <maintainer email="koji.minoda@tier4.jp">Koji Minoda</maintainer>
@@ -41,7 +41,6 @@
   <exec_depend>autoware_launch</exec_depend>
   <exec_depend>driving_log_replayer_analyzer</exec_depend>
   <exec_depend>perception_eval</exec_depend>
-  <exec_depend>simple_lanelet_loader</exec_depend>
   <exec_depend>python-transforms3d-pip</exec_depend>
   <exec_depend>python3-pandas</exec_depend>
   <exec_depend>python3-simplejson</exec_depend>
@@ -50,7 +49,10 @@
   <exec_depend>rclpy</exec_depend>
   <exec_depend>ros2_numpy</exec_depend>
   <exec_depend>rosidl_runtime_py</exec_depend>
+  <exec_depend>simple_lanelet_loader</exec_depend>
   <exec_depend>tf_transformations</exec_depend>
+  <!-- The version of python3-pydantic is old, so use pip to install it when building with CMake -->
+  <!-- <exec_depend>python3-pydantic</exec_depend> -->
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_cmake_pytest</test_depend>

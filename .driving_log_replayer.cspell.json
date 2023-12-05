@@ -26,6 +26,7 @@
     "CENTERDISTANCE",
     "rightdiagonal",
     "leftdiagonal",
-    "nums"
+    "nums",
+    "pydantic"
   ]
 }

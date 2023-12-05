@@ -76,3 +76,20 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
    ```shell
    pipx install git+https://github.com/tier4/driving_log_replayer.git
    ```
+
+8. Install shell completion scripts
+
+   ```shell
+   # bash
+   _DLR_COMPLETE=bash_source dlr > $HOME/.dlr-complete.bash
+   _DLR_COMPLETE=bash_source dlr > $HOME/.dlr-analyzer-complete.bash
+
+   echo "source $HOME/.dlr-complete.bash" >> ~/.bashrc
+   echo "source $HOME/.dlr-analyzer-complete.bash" >> ~/.bashrc
+   ```
+
+   ```shell
+   # fish
+   _DLR_COMPLETE=fish_source dlr > $HOME/.config/fish/completions/dlr.fish
+   _DLR_ANALYZER_COMPLETE=fish_source dlr-analyzer > $HOME/.config/fish/completions/dlr-analyzer.fish
+   ```

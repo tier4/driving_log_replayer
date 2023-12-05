@@ -42,18 +42,26 @@ from visualization_msgs.msg import MarkerArray
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.perception import PerceptionResult
+from driving_log_replayer.perception import PerceptionScenario
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 
 
 class PerceptionEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.check_scenario()
-        self.use_t4_dataset()
+        super().__init__(name, PerceptionScenario, PerceptionResult)
+        self._scenario: PerceptionScenario
 
-        self.__result = PerceptionResult(self._condition)
+        self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
+        self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
+        self.__f_cfg = self._scenario.Evaluation.PerceptionPassFailConfig
+        self.__evaluation_task = self.__p_cfg["evaluation_config_dict"]["evaluation_task"]
+        self.__p_cfg["evaluation_config_dict"][
+            "label_prefix"
+        ] = "autoware"  # Add a fixed value setting
+        if not self.check_evaluation_task():
+            rclpy.shutdown()
+
         self.__frame_id: FrameID = FrameID.from_value(self.__frame_id_str)
-
         evaluation_config: PerceptionEvaluationConfig = PerceptionEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
             frame_id=self.__frame_id_str,
@@ -107,21 +115,6 @@ class PerceptionEvaluator(DLREvaluator):
         self.__pub_marker_results = self.create_publisher(MarkerArray, "marker/results", 1)
         self.__skip_counter = 0
 
-    def check_scenario(self) -> None:
-        try:
-            self.__p_cfg = self._scenario_yaml_obj["Evaluation"]["PerceptionEvaluationConfig"]
-            self.__c_cfg = self._scenario_yaml_obj["Evaluation"]["CriticalObjectFilterConfig"]
-            self.__f_cfg = self._scenario_yaml_obj["Evaluation"]["PerceptionPassFailConfig"]
-            self.__evaluation_task = self.__p_cfg["evaluation_config_dict"]["evaluation_task"]
-            self.__p_cfg["evaluation_config_dict"][
-                "label_prefix"
-            ] = "autoware"  # Add a fixed value setting
-        except KeyError:
-            self.get_logger().error("Scenario format error.")
-            rclpy.shutdown()
-        if not self.check_evaluation_task():
-            rclpy.shutdown()
-
     def check_evaluation_task(self) -> bool:
         if self.__evaluation_task in ["detection", "fp_validation"]:
             self.__frame_id_str = "base_link"
@@ -143,8 +136,8 @@ class PerceptionEvaluator(DLREvaluator):
         self.save_pkl(self.__evaluator.frame_results)
         if self.__evaluation_task == "fp_validation":
             final_metrics = self.get_fp_result()
-            self.__result.set_final_metrics(final_metrics)
-            self._result_writer.write_result(self.__result)
+            self._result.set_final_metrics(final_metrics)
+            self._result_writer.write_result(self._result)
         else:
             self.get_final_result()
             score_dict = {}
@@ -159,8 +152,8 @@ class PerceptionEvaluator(DLREvaluator):
                     error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
                 )
             final_metrics = {"Score": score_dict, "Error": error_dict}
-            self.__result.set_final_metrics(final_metrics)
-            self._result_writer.write_result(self.__result)
+            self._result.set_final_metrics(final_metrics)
+            self._result_writer.write_result(self._result)
 
     def list_dynamic_object_from_ros_msg(
         self,
@@ -241,13 +234,13 @@ class PerceptionEvaluator(DLREvaluator):
             frame_pass_fail_config=self.__frame_pass_fail_config,
         )
         # write result
-        marker_ground_truth, marker_results = self.__result.set_frame(
+        marker_ground_truth, marker_results = self._result.set_frame(
             frame_result,
             self.__skip_counter,
             msg.header,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
         )
-        self._result_writer.write_result(self.__result)
+        self._result_writer.write_result(self._result)
         self.__pub_marker_ground_truth.publish(marker_ground_truth)
         self.__pub_marker_results.publish(marker_results)
 
