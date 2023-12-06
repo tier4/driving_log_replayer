@@ -19,18 +19,15 @@ from ament_index_python.packages import get_package_share_directory
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
-from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import Node
-from launch_ros.descriptions import ComposableNode
 
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
 
-def get_driving_log_replayer_common_argument() -> list:
+def get_launch_arguments() -> list:
     """
     Set and return launch argument.
 
@@ -198,7 +195,7 @@ def get_evaluator_node(
     )
 
 
-def create_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
+def get_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
     return [
         "ros2",
         "bag",
@@ -217,7 +214,7 @@ def create_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
 
 
 def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
-    record_cmd = create_regex_record_cmd(record_config_name, allowlist)
+    record_cmd = get_regex_record_cmd(record_config_name, allowlist)
     return ExecuteProcess(cmd=record_cmd)
 
 
@@ -225,12 +222,12 @@ def get_regex_recorders(
     record_config_name: str,
     allowlist: str,
 ) -> tuple[ExecuteProcess, ExecuteProcess]:
-    record_cmd = create_regex_record_cmd(record_config_name, allowlist)
+    record_cmd = get_regex_record_cmd(record_config_name, allowlist)
     record_proc = ExecuteProcess(
         cmd=record_cmd,
         condition=UnlessCondition(LaunchConfiguration("override_record_topics")),
     )
-    record_override_cmd = create_regex_record_cmd(
+    record_override_cmd = get_regex_record_cmd(
         record_config_name,
         LaunchConfiguration("override_topics_regex"),
     )
