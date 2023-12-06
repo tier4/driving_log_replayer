@@ -31,7 +31,11 @@ RECORD_TOPIC_REGEX = """^/clock$\
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
     fitter_launch = cmn.get_map_height_fitter(launch_service="true")
-    autoware_launch = cmn.get_autoware_launch(perception="false")
+    autoware_launch = cmn.get_autoware_launch(
+        perception="false",
+        pose_source="ndt",
+        twist_source="gyro_odom",
+    )
     rviz_node = cmn.get_rviz("localization.rviz")
     evaluator_node = cmn.get_evaluator_node("localization")
     player = cmn.get_player()
