@@ -116,6 +116,10 @@ def get_autoware_launch(
         "logging_simulator.launch.xml",
     )
     launch_args = {
+        "map_path": LaunchConfiguration("map_path"),
+        "vehicle_model": LaunchConfiguration("vehicle_model"),
+        "sensor_model": LaunchConfiguration("sensor_model"),
+        "vehicle_id": LaunchConfiguration("vehicle_id"),
         "launch_vehicle_interface": "true",
         "sensing": sensing,
         "localization": localization,
