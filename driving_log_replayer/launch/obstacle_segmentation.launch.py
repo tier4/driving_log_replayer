@@ -16,7 +16,7 @@ import launch
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-import driving_log_replayer.launch_common
+import driving_log_replayer.launch_common as cmn
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
 RECORD_TOPIC_REGEX = """^/clock$\
@@ -29,15 +29,15 @@ RECORD_TOPIC_REGEX = """^/clock$\
 
 
 def generate_launch_description() -> launch.LaunchDescription:
-    launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
-    autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(
+    launch_arguments = cmn.get_launch_arguments()
+    autoware_launch = cmn.get_autoware_launch(
         planning="true",
         localization="false",
         control="true",
         scenario_simulation="true",
     )
-    rviz_node = driving_log_replayer.launch_common.get_rviz("obstacle_segmentation.rviz")
-    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node(
+    rviz_node = cmn.get_rviz("obstacle_segmentation.rviz")
+    evaluator_node = cmn.get_evaluator_node(
         "obstacle_segmentation",
         addition_parameter={"vehicle_model": LaunchConfiguration("vehicle_model")},
     )
@@ -50,14 +50,14 @@ def generate_launch_description() -> launch.LaunchDescription:
         parameters=[{"use_sim_time": True, "scenario_path": LaunchConfiguration("scenario_path")}],
         on_exit=ShutdownOnce(),
     )
-    player = driving_log_replayer.launch_common.get_player(
+    player = cmn.get_player(
         additional_argument=[
             "--remap",
             "/sensing/lidar/concatenated/pointcloud:=/driving_log_replayer/unused_concatenated_pointcloud",
         ],
     )
 
-    recorder, recorder_override = driving_log_replayer.launch_common.get_regex_recorders(
+    recorder, recorder_override = cmn.get_regex_recorders(
         "obstacle_segmentation.qos.yaml",
         RECORD_TOPIC_REGEX,
     )
