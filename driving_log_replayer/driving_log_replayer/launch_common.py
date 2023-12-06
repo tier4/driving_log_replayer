@@ -35,17 +35,12 @@ def get_driving_log_replayer_common_argument() -> list:
     Set and return launch argument.
 
     with_autoware
-    rviz
     scenario_path
     result_json_path
     play_rate
     play_delay
     input_bag
     result_bag_path
-    map_path
-    vehicle_model
-    sensor_model
-    vehicle_id
     t4_dataset_path
     result_archive_path
     override_record_topics
@@ -68,7 +63,6 @@ def get_driving_log_replayer_common_argument() -> list:
         default_value="true",
         description="Whether to launch autoware or not",
     )
-    add_launch_arg("rviz", default_value="true", description="Whether to display rviz or not")
     add_launch_arg("scenario_path", description="scenario path")
     add_launch_arg(
         "result_json_path",
@@ -81,12 +75,7 @@ def get_driving_log_replayer_common_argument() -> list:
         "result_bag_path",
         description="result bag save path",
     )
-    add_launch_arg("map_path", description="point cloud and lanelet2 map directory path")
-    add_launch_arg("vehicle_model", description="vehicle model name")
-    add_launch_arg("sensor_model", description="sensor model name")
-    add_launch_arg("vehicle_id", default_value="default", description="vehicle specific ID")
-
-    # additional argument
+    # for use case that uses t4_dataset
     add_launch_arg(
         "t4_dataset_path",
         default_value="/opt/autoware/t4_dataset",
@@ -97,6 +86,7 @@ def get_driving_log_replayer_common_argument() -> list:
         default_value="/opt/autoware/result_archive",
         description="additional result file",
     )
+    # bag record override option
     add_launch_arg(
         "override_record_topics",
         default_value="false",
@@ -129,20 +119,16 @@ def get_autoware_launch(
         "logging_simulator.launch.xml",
     )
     launch_args = {
-        "map_path": LaunchConfiguration("map_path"),
-        "vehicle_model": LaunchConfiguration("vehicle_model"),
-        "sensor_model": LaunchConfiguration("sensor_model"),
-        "vehicle_id": LaunchConfiguration("vehicle_id"),
         "launch_vehicle_interface": "true",
         "sensing": sensing,
         "localization": localization,
         "perception": perception,
         "planning": planning,
         "control": control,
+        "rviz": "false",
         "scenario_simulation": scenario_simulation,
         "pose_source": pose_source,
         "twist_source": twist_source,
-        "rviz": "false",
     }
     if isinstance(perception_mode, str):
         launch_args["perception_mode"] = perception_mode
@@ -313,65 +299,6 @@ def get_topic_state_monitor_launch(
             "mode": "logging_simulation",
         }.items(),
     )
-
-
-def get_evaluator_container(
-    usecase_name: str,
-    addition_parameter: dict | None = None,
-) -> ComposableNodeContainer:
-    params = {
-        "use_sim_time": True,
-        "scenario_path": LaunchConfiguration("scenario_path"),
-        "result_json_path": LaunchConfiguration("result_json_path"),
-        "t4_dataset_path": LaunchConfiguration("t4_dataset_path"),
-        "result_archive_path": LaunchConfiguration("result_archive_path"),
-    }
-    if addition_parameter is not None and type(addition_parameter) == dict:
-        params.update(addition_parameter)
-
-    evaluator_node = ComposableNode(
-        package="driving_log_replayer",
-        plugin="driving_log_replayer::" + snake_to_pascal(usecase_name) + "EvaluatorComponent",
-        namespace="/driving_log_replayer",
-        name=usecase_name + "_evaluator",
-        parameters=[params],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
-    return ComposableNodeContainer(
-        name="DrivingLogReplayer" + snake_to_pascal(usecase_name) + "EvaluatorContainer",
-        namespace="",
-        package="rclcpp_components",
-        executable=LaunchConfiguration("container_executable"),
-        composable_node_descriptions=[evaluator_node],
-        output="screen",
-    )
-
-
-def add_container_argument(launch_arguments: list) -> list:
-    launch_arguments.append(DeclareLaunchArgument("use_multithread", default_value="true"))
-    launch_arguments.append(
-        DeclareLaunchArgument(
-            "use_intra_process",
-            default_value="false",
-            description="use ROS 2 component container communication",
-        ),
-    )
-    return launch_arguments
-
-
-def get_container_configuration() -> tuple[SetLaunchConfiguration, SetLaunchConfiguration]:
-    set_container_executable = SetLaunchConfiguration(
-        "container_executable",
-        "component_container",
-        condition=UnlessCondition(LaunchConfiguration("use_multithread")),
-    )
-
-    set_container_mt_executable = SetLaunchConfiguration(
-        "container_executable",
-        "component_container_mt",
-        condition=IfCondition(LaunchConfiguration("use_multithread")),
-    )
-    return [set_container_executable, set_container_mt_executable]
 
 
 def snake_to_pascal(snake_str: str) -> str:
