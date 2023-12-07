@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import click
 
 from driving_log_replayer_cli.core.config import Config
@@ -35,9 +33,9 @@ def configuration() -> None:
     help="profile name in config file default value is default",
 )
 def register(
-    data_directory: Path,
-    output_directory: Path,
-    autoware_path: Path,
+    data_directory: str,
+    output_directory: str,
+    autoware_path: str,
     profile_name: str,
 ) -> None:
     """Create profile in driving_log_replayer config file."""
