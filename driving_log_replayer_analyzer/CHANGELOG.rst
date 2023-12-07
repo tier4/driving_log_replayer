@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.4 (2023-12-07)
+-------------------
 * fix: overwrite pose_source and twist_source (`#327 <https://github.com/tier4/driving_log_replayer/issues/327>`_)
 * refactor: launch arg (`#326 <https://github.com/tier4/driving_log_replayer/issues/326>`_)
 * Contributors: Hayato Mizushima
