@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.10.4
+
+Minor Tweak, Bug fix
+
+| Module | Feature         | Brief summary                              | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | --------------- | ------------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | launch argument | remove unnecessary functions and arguments | [#326](https://github.com/tier4/driving_log_replayer/pull/326) | RT4-7875 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | launch argument | fix overwrite pose_source and twist_source | [#327](https://github.com/tier4/driving_log_replayer/pull/327) | RT4-7954 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.10.3
 
 Minor Tweak, Bug fix
