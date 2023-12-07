@@ -32,6 +32,7 @@ def generate_launch_description() -> launch.LaunchDescription:
     autoware_launch = cmn.get_autoware_launch(
         perception="false",
         pose_source="yabloc",
+        twist_source="gyro_odom",
     )
     rviz_node = cmn.get_rviz("localization.rviz")
     evaluator_node = cmn.get_evaluator_node("yabloc")

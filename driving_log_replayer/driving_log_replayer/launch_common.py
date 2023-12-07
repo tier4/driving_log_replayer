@@ -105,8 +105,8 @@ def get_autoware_launch(
     planning: str = "false",
     control: str = "false",
     scenario_simulation: str = "false",
-    pose_source: str = "ndt",
-    twist_source: str = "gyro_odom",
+    pose_source: str | None = None,
+    twist_source: str | None = None,
     perception_mode: str | None = None,
 ) -> launch.actions.IncludeLaunchDescription:
     # autoware launch
@@ -128,9 +128,11 @@ def get_autoware_launch(
         "control": control,
         "rviz": "false",
         "scenario_simulation": scenario_simulation,
-        "pose_source": pose_source,
-        "twist_source": twist_source,
     }
+    if isinstance(pose_source, str):
+        launch_args["pose_source"] = pose_source
+    if isinstance(twist_source, str):
+        launch_args["twist_source"] = twist_source
     if isinstance(perception_mode, str):
         launch_args["perception_mode"] = perception_mode
     return launch.actions.IncludeLaunchDescription(
