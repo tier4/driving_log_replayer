@@ -5,8 +5,8 @@ import sys
 import termcolor
 
 from driving_log_replayer_cli.simulation.generate import TestScriptGenerator
-from driving_log_replayer_cli.simulation.result import convert
-from driving_log_replayer_cli.simulation.result import display
+from driving_log_replayer_cli.simulation.result import convert_all
+from driving_log_replayer_cli.simulation.result import display_all
 
 
 def run_with_log(cmd: list, log_path: Path) -> None:
@@ -32,7 +32,6 @@ def run(
     override_record_topics: bool,  # noqa
     override_topics_regex: str,
     output_json: bool,  # noqa
-    autoware_launch_arg: str | None = None,
 ) -> None:
     termcolor.cprint("<< generating launch command >>", "green")
     generator = TestScriptGenerator(
@@ -52,6 +51,6 @@ def run(
     cmd = ["/bin/bash", generator.script_path.as_posix()]
     run_with_log(cmd, Path(output_directory, "console.log"))
     if output_json:
-        convert(output_directory)
+        convert_all(output_directory)
     termcolor.cprint("<< show test result >>", "green")
-    display(output_directory)
+    display_all(output_directory)

@@ -5,8 +5,8 @@ import click
 
 from driving_log_replayer_cli.core.config import Config
 from driving_log_replayer_cli.core.config import load_config
-from driving_log_replayer_cli.simulation.result import convert
-from driving_log_replayer_cli.simulation.result import display
+from driving_log_replayer_cli.simulation.result import convert_all
+from driving_log_replayer_cli.simulation.result import display_all
 from driving_log_replayer_cli.simulation.run import run as sim_run
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
@@ -68,9 +68,9 @@ def run(
     "output_directory",
     type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path),
 )
-def show_result(output_directory: str) -> None:
+def show_result(output_directory: Path) -> None:
     """Show summary of simulation results in output_directory."""
-    display(output_directory)  # support latest dir(symlink)
+    display_all(output_directory)
 
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
@@ -78,6 +78,6 @@ def show_result(output_directory: str) -> None:
     "output_directory",
     type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path),
 )
-def convert_result(output_directory: str) -> None:
+def convert_result(output_directory: Path) -> None:
     """Convert result.jsonl to result.json in output_directory."""
-    convert(output_directory)  # support latest dir(symlink)
+    convert_all(output_directory)
