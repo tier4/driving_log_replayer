@@ -14,7 +14,7 @@
 
 import launch
 
-import driving_log_replayer.launch_common
+import driving_log_replayer.launch_common as cmn
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
@@ -29,17 +29,21 @@ RECORD_TOPIC_REGEX = """^/clock$\
 
 
 def generate_launch_description() -> launch.LaunchDescription:
-    launch_arguments = driving_log_replayer.launch_common.get_driving_log_replayer_common_argument()
-    fitter_launch = driving_log_replayer.launch_common.get_map_height_fitter(launch_service="true")
-    autoware_launch = driving_log_replayer.launch_common.get_autoware_launch(perception="false")
-    rviz_node = driving_log_replayer.launch_common.get_rviz("localization.rviz")
-    evaluator_node = driving_log_replayer.launch_common.get_evaluator_node("localization")
-    player = driving_log_replayer.launch_common.get_player()
-    recorder, recorder_override = driving_log_replayer.launch_common.get_regex_recorders(
+    launch_arguments = cmn.get_launch_arguments()
+    fitter_launch = cmn.get_map_height_fitter(launch_service="true")
+    autoware_launch = cmn.get_autoware_launch(
+        perception="false",
+        pose_source="ndt",
+        twist_source="gyro_odom",
+    )
+    rviz_node = cmn.get_rviz("localization.rviz")
+    evaluator_node = cmn.get_evaluator_node("localization")
+    player = cmn.get_player()
+    recorder, recorder_override = cmn.get_regex_recorders(
         "localization.qos.yaml",
         RECORD_TOPIC_REGEX,
     )
-    topic_monitor = driving_log_replayer.launch_common.get_topic_state_monitor_launch(
+    topic_monitor = cmn.get_topic_state_monitor_launch(
         "localization_topics.yaml",
     )
 
