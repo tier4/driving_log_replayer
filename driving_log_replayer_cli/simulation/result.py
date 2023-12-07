@@ -6,9 +6,9 @@ import simplejson as json
 import termcolor
 
 
-class DrivingLogReplayerResultViewer:
-    def __init__(self, result_path: str) -> None:
-        self.__result_path = Path(result_path)
+class DrivingLogReplayerResult:
+    def __init__(self, result_path: Path) -> None:
+        self.__result_path = result_path
 
     def output(self) -> None:
         print("--------------------------------------------------")  # noqa
@@ -28,11 +28,6 @@ class DrivingLogReplayerResultViewer:
             termcolor.cprint(result, color)
             termcolor.cprint(self.__result_json_dict["Result"]["Summary"], color)
 
-
-class DrivingLogReplayerResultConverter:
-    def __init__(self, result_path: str) -> None:
-        self.__result_path = Path(result_path)
-
     def convert(self) -> None:
         output_file_path = self.__result_path.parent.joinpath("result.json")
         if output_file_path.exists():
@@ -43,16 +38,14 @@ class DrivingLogReplayerResultConverter:
             json.dump(result_dict, out_file)
 
 
-def display(output_directory: str) -> None:
-    result_paths = Path(expandvars(output_directory)).glob("**/result.jsonl")
+def display(output_directory: Path) -> None:
+    result_paths = output_directory.glob("**/result.jsonl")
     for result_path in result_paths:
         print(f"scenario: {result_path.parent.name}")  # noqa
-        viewer = DrivingLogReplayerResultViewer(result_path.as_posix())
-        viewer.output()
+        DrivingLogReplayerResult(result_path).output()
 
 
-def convert(output_directory: str) -> None:
-    result_paths = Path(expandvars(output_directory)).glob("**/result.jsonl")
+def convert(output_directory: Path) -> None:
+    result_paths = output_directory.glob("**/result.jsonl")
     for result_path in result_paths:
-        converter = DrivingLogReplayerResultConverter(result_path.as_posix())
-        converter.convert()
+        DrivingLogReplayerResult(result_path).convert()

@@ -3,10 +3,11 @@ from pathlib import Path
 
 import click
 
+from driving_log_replayer_cli.core.config import Config
 from driving_log_replayer_cli.core.config import load_config
 from driving_log_replayer_cli.simulation.result import convert
 from driving_log_replayer_cli.simulation.result import display
-from driving_log_replayer_cli.simulation.run import DrivingLogReplayerTestRunner
+from driving_log_replayer_cli.simulation.run import run as sim_run
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 PERCEPTION_MODES = (
@@ -44,15 +45,14 @@ def run(
     override_topics_regex: str,
     perception_mode: str | None = None,
 ) -> None:
-    config = load_config(profile)
-    output_dir_by_time = Path(
-        config.output_directory,
-        datetime.datetime.now().strftime("%Y-%m%d-%H%M%S"),  # noqa
+    config: Config = load_config(profile)
+    output_dir_by_time = config.output_directory.joinpath(
+        datetime.datetime.now().strftime("%Y-%m%d-%H%M%S")  # noqa
     )
     print(output_dir_by_time)  # noqa
-    DrivingLogReplayerTestRunner(
+    sim_run(
         config.data_directory,
-        output_dir_by_time.as_posix(),
+        output_dir_by_time,
         config.autoware_path,
         rate,
         delay,
@@ -64,14 +64,14 @@ def run(
 
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("output_directory", type=str)
-def show_result(output_directory: str) -> None:
+@click.argument("output_directory", type=click.Path(exists=True, file_okay=False))
+def show_result(output_directory: Path) -> None:
     """Show summary of simulation results in output_directory."""
     display(output_directory)
 
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("output_directory", type=str)
-def convert_result(output_directory: str) -> None:
+@click.argument("output_directory", type=click.Path(exists=True, file_okay=False))
+def convert_result(output_directory: Path) -> None:
     """Convert result.jsonl to result.json in output_directory."""
     convert(output_directory)

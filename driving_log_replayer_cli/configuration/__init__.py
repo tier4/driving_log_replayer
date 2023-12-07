@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import click
 
 from driving_log_replayer_cli.core.config import Config
@@ -12,9 +14,19 @@ def configuration() -> None:
 
 
 @configuration.command(context_settings=CONTEXT_SETTINGS)
-@click.option("--data_directory", "-d", required=True, type=str)
-@click.option("--output_directory", "-o", required=True, type=str)
-@click.option("--autoware_path", "-a", required=True, type=str)
+@click.option(
+    "--data_directory",
+    "-d",
+    required=True,
+    type=click.Path(exists=True, file_okay=False),
+)
+@click.option(
+    "--output_directory",
+    "-o",
+    required=True,
+    type=click.Path(exists=False, file_okay=False),
+)
+@click.option("--autoware_path", "-a", required=True, type=click.Path(exists=True, file_okay=False))
 @click.option(
     "--profile_name",
     "-p",
@@ -23,9 +35,9 @@ def configuration() -> None:
     help="profile name in config file default value is default",
 )
 def register(
-    data_directory: str,
-    output_directory: str,
-    autoware_path: str,
+    data_directory: Path,
+    output_directory: Path,
+    autoware_path: Path,
     profile_name: str,
 ) -> None:
     """Create profile in driving_log_replayer config file."""
