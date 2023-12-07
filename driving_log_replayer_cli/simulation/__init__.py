@@ -64,14 +64,20 @@ def run(
 
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("output_directory", type=click.Path(exists=True, file_okay=False))
+@click.argument(
+    "output_directory",
+    type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path),
+)
 def show_result(output_directory: str) -> None:
     """Show summary of simulation results in output_directory."""
-    display(Path(output_directory).resolve())  # support latest dir(symlink)
+    display(output_directory)  # support latest dir(symlink)
 
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
-@click.argument("output_directory", type=click.Path(exists=True, file_okay=False))
+@click.argument(
+    "output_directory",
+    type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path),
+)
 def convert_result(output_directory: str) -> None:
     """Convert result.jsonl to result.json in output_directory."""
-    convert(Path(output_directory).resolve())  # support latest dir(symlink)
+    convert(output_directory)  # support latest dir(symlink)
