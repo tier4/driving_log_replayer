@@ -195,7 +195,7 @@ class DLREvaluator(Node):
     ) -> None:
         self._current_time = self.get_clock().now().to_msg()
         # to debug callback use: self.get_logger().error(f"time: {self._current_time.sec}.{self._current_time.nanosec}")
-        if self._current_time.nanosec <= 0:
+        if self._current_time.sec <= 0:  # Stop PLAYER after standing for 1 second.
             return
         self.check_player()
         if register_loop_func is not None:
