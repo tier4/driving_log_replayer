@@ -20,18 +20,18 @@ class TestScriptGenerator:
 
     def __init__(
         self,
-        data_directory: str,
-        output_directory: str,
-        autoware_path: str,
+        data_directory: Path,
+        output_directory: Path,
+        autoware_path: Path,
         rate: float,
         delay: float,
         perception_mode: str | None,
         override_recode_topics: bool,  # noqa
         override_topics_regex: str,
     ) -> None:
-        self.__data_directory = Path(data_directory)
-        self.__output_directory = Path(output_directory)
-        self.__autoware_path = Path(autoware_path)
+        self.__data_directory = data_directory
+        self.__output_directory = output_directory
+        self.__autoware_path = autoware_path
         self.__script_path = self.__output_directory.joinpath("run.bash")
         self.__rate = rate
         self.__delay = delay
