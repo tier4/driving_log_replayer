@@ -4,9 +4,9 @@
 
 Minor Tweak
 
-| Module | Feature         | Brief summary                              | Pull request                                                   | Jira     | Contributor                                   |
-| ------ | --------------- | ------------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
-| `all`  | cli | refactor cli | [#329](https://github.com/tier4/driving_log_replayer/pull/329) | RT4-7955 | [hayato-m126](https://github.com/hayato-m126) |
+| Module | Feature | Brief summary | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | cli     | refactor cli  | [#329](https://github.com/tier4/driving_log_replayer/pull/329) | RT4-7955 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.10.4
 
