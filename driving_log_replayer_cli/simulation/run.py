@@ -13,13 +13,15 @@ def run_with_log(cmd: list, log_path: Path) -> None:
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     f = log_path.open("w", encoding="utf-8")
 
-    while True:
-        line = proc.stdout.readline().decode("utf-8")
-        sys.stdout.write(line)
-        f.write(line)
-        if not line and proc.poll() is not None:
-            break
-    f.close()
+    try:
+        while True:
+            line = proc.stdout.readline().decode("utf-8")
+            sys.stdout.write(line)
+            f.write(line)
+            if not line and proc.poll() is not None:
+                break
+    finally:
+        f.close()
 
 
 def run(
@@ -49,7 +51,10 @@ def run(
         print("aborted.")  # noqa
         return
     cmd = ["/bin/bash", generator.script_path.as_posix()]
-    run_with_log(cmd, output_directory.joinpath("console.log"))
+    try:
+        run_with_log(cmd, output_directory.joinpath("console.log"))
+    except KeyboardInterrupt:
+        termcolor.cprint("Simulation execution canceled by Ctrl+C", "red")
     if output_json:
         convert_all(output_directory)
     termcolor.cprint("<< show test result >>", "green")
