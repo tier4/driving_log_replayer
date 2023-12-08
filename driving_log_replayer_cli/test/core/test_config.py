@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from driving_log_replayer_cli.core.config import Config
@@ -7,29 +9,28 @@ from driving_log_replayer_cli.core.exception import UserError
 
 
 def test_config_create_output_dir() -> None:
-    conf = Config(
-        data_directory="$HOME/data/awf",
-        output_directory="$HOME/out/unittest",
-        autoware_path="$HOME/ros_ws/awf",
+    conf: Config = Config(
+        data_directory=".",
+        output_directory="$HOME/dlr_out_unittest",
+        autoware_path=".",
     )
-    assert conf.autoware_path.as_posix() == "/home/hyt/ros_ws/awf"
+    assert conf.output_directory.exists()
+    conf.output_directory.rmdir()
 
 
 def test_config_not_exit_dir() -> None:
     with pytest.raises(UserError) as e:
         Config(
             data_directory="$HOME/not_exit_data",
-            output_directory="$HOME/out/unittest",
-            autoware_path="$HOME/ros_ws/awf",
+            output_directory=".",
+            autoware_path=".",
         )
     assert str(e.value) == "$HOME/not_exit_data is not valid path"
 
 
-def test_load_config_from_file() -> None:
-    config = load_config("default")
-    assert config.autoware_path.as_posix() == "/home/hyt/ros_ws/awf"
-
-
 def test_save_config_as_file() -> None:
-    config = load_config("default")
-    save_config(config, "copy_default")
+    config = load_config(
+        "default",
+        Path(__file__).parent.joinpath("sample.driving_log_replayer.config.toml"),
+    )
+    save_config(config, "copy_default", Path(__file__).parent.joinpath("unittest.config.toml"))
