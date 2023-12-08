@@ -12,9 +12,19 @@ def configuration() -> None:
 
 
 @configuration.command(context_settings=CONTEXT_SETTINGS)
-@click.option("--data_directory", "-d", required=True, type=str)
-@click.option("--output_directory", "-o", required=True, type=str)
-@click.option("--autoware_path", "-a", required=True, type=str)
+@click.option(
+    "--data_directory",
+    "-d",
+    required=True,
+    type=click.Path(exists=True, file_okay=False),
+)
+@click.option(
+    "--output_directory",
+    "-o",
+    required=True,
+    type=click.Path(exists=False, file_okay=False),
+)
+@click.option("--autoware_path", "-a", required=True, type=click.Path(exists=True, file_okay=False))
 @click.option(
     "--profile_name",
     "-p",

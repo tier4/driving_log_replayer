@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "driving_log_replayer_cli"
-version = "1.10.4"
+version = "1.10.5"
 description = "command line tool for driving_log_replayer"
 authors = [
   "Hayato Mizushima <hayato.mizushima@tier4.jp>",
@@ -33,6 +33,7 @@ pandas = "^2.1.0"
 plotly = "^5.16.1"
 kaleido = "0.2.1"
 simplejson = "^3.19.1"
+pydantic = "^2.5.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"

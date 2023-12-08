@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.5 (2023-12-08)
+-------------------
+* chore: Stop PLAYER after standing for 1 second.
+* refactor: cli
+* Contributors: Hayato Mizushima
+
 1.10.4 (2023-12-07)
 -------------------
 * fix: overwrite pose_source and twist_source (`#327 <https://github.com/tier4/driving_log_replayer/issues/327>`_)
