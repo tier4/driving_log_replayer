@@ -49,7 +49,7 @@ def run(
         print("aborted.")  # noqa
         return
     cmd = ["/bin/bash", generator.script_path.as_posix()]
-    run_with_log(cmd, Path(output_directory, "console.log"))
+    run_with_log(cmd, output_directory.joinpath("console.log"))
     if output_json:
         convert_all(output_directory)
     termcolor.cprint("<< show test result >>", "green")
