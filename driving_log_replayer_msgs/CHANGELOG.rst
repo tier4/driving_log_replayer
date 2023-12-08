@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.5 (2023-12-08)
+-------------------
 * chore: Stop PLAYER after standing for 1 second.
 * refactor: cli
 * Contributors: Hayato Mizushima
