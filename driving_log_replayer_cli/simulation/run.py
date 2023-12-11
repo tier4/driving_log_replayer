@@ -4,9 +4,10 @@ import subprocess
 import sys
 
 import termcolor
-import yaml
 
 from driving_log_replayer_cli.core.config import Config
+from driving_log_replayer_cli.core.scenario import load_scenario
+from driving_log_replayer_cli.core.scenario import Scenario
 from driving_log_replayer_cli.simulation.result import convert_all
 from driving_log_replayer_cli.simulation.result import display_all
 
@@ -37,7 +38,10 @@ def run(
         # open scenario file and make ros2 launch command
         if not dataset_path.is_dir():
             continue
-        launch_cmd: str | None = create_launch_cmd(dataset_path)
+        scenario_file = get_scenario_file(dataset_path)
+        if scenario_file is None:
+            continue
+        launch_cmd: str | None = create_launch_cmd(scenario_file)
         if launch_cmd is None:
             continue
 
@@ -46,7 +50,7 @@ def run(
         output_case.mkdir()
 
         # create bash command
-        bash_cmd = create_bash_cmd(config, launch_args, launch_cmd)
+        bash_cmd = create_bash_cmd(config, launch_args, launch_cmd, scenario_file, output_case)
 
         # save command as bash script
         run_script = output_case.joinpath("run.bash")
@@ -54,13 +58,13 @@ def run(
             f.write(bash_cmd)
 
         # run simulation
-        cmd = ["/bin/bash", run_script.as_posix()]
+        # cmd = ["/bin/bash", run_script.as_posix()]
         # tryない方がいいかも
-        try:
-            run_with_log(cmd, output_case.joinpath("console.log"))
-        except KeyboardInterrupt:
-            termcolor.cprint("Simulation execution canceled by Ctrl+C", "red")
-            break
+        # try:
+        #     run_with_log(cmd, output_case.joinpath("console.log"))
+        # except KeyboardInterrupt:
+        #     termcolor.cprint("Simulation execution canceled by Ctrl+C", "red")
+        #     break
 
     # convert result file and display result
     convert_all(output_dir_by_time)
@@ -78,7 +82,7 @@ def create_output_dir_by_time(base_path: Path) -> Path:
     return output_dir_by_time
 
 
-def create_launch_cmd(dataset_path: Path) -> str | None:
+def get_scenario_file(dataset_path: Path) -> Path | None:
     scenario_file_path = dataset_path.joinpath("scenario.yaml")
     if not scenario_file_path.exists():
         scenario_file_path = dataset_path.joinpath("scenario.yml")
@@ -88,18 +92,29 @@ def create_launch_cmd(dataset_path: Path) -> str | None:
                 "red",
             )
             return None
-    with scenario_file_path.open("r") as scenario_file:
-        scenario_dict = yaml.safe_load(scenario_file)
-    if scenario_dict["Evaluation"]["UseCaseName"] in USE_T4_DATASET:
-        return cmd_use_t4_dataset(scenario_file_path)
-    return cmd_use_bag_only(scenario_file_path)
+    return scenario_file_path
 
 
-def create_bash_cmd(launch_cmd: str, launch_args: str, config: Config) -> str:
+def create_launch_cmd(scenario_path: Path) -> str | None:
+    if scenario_path.parent.joinpath("t4_dataset").exists():
+        return cmd_use_t4_dataset(scenario_path)
+    if scenario_path.parent.joinpath("input_bag").exists():
+        return cmd_use_bag_only(scenario_path)
+    return None
+
+
+def create_bash_cmd(
+    config: Config,
+    launch_args: str,
+    launch_cmd: str,
+    scenario_file: Path,
+    output_case: Path,
+) -> str:
     bash_cmd = f"source {config.autoware_path.joinpath('install', 'setup.bash').as_posix()}\n"
-    bash_cmd += launch_cmd + extract_arg(launch_args) + "\n"
-    bash_cmd += clean_up_cmd()
-    return bash_cmd
+    bash_cmd += (
+        launch_cmd + create_dlr_arg(scenario_file, output_case) + extract_arg(launch_args) + "\n"
+    )
+    return bash_cmd + clean_up_cmd()
 
 
 def clean_up_cmd() -> str:
@@ -115,12 +130,30 @@ pgrep rviz | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
 sleep 1"""
 
 
+def cmd_use_bag_only(
+    scenario_path: Path,
+) -> str | None:
+    scenario = load_scenario(scenario_path)
+    launch_command = f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py map_path:={scenario.LocalMapPath} vehicle_model:={scenario.VehicleModel} sensor_model:={scenario.SensorModel} vehicle_id:={scenario.VehicleId}"
+    launch_localization = scenario.Evaluation.get("LaunchLocalization")
+    if launch_localization is not None:
+        launch_command += f"localization:={launch_localization} "
+
+    return launch_command
+
+
 def cmd_use_t4_dataset(scenario_file_path: Path) -> str:
     return ""
 
 
-def cmd_use_bag_only(scenario_file_path: Path) -> str:
-    return ""
+def create_dlr_arg(
+    scenario_file: Path,
+    output_path: Path,
+) -> str:
+    return f""" scenario_path:={scenario_file.as_posix()} \
+result_json_path:={output_path.joinpath("result.json").as_posix()} \
+input_bag:={scenario_file.parent.joinpath("input_bag").as_posix()} \
+result_bag_path:={output_path.joinpath("result_bag").as_posix()}"""
 
 
 def extract_arg(launch_args: str) -> str:
