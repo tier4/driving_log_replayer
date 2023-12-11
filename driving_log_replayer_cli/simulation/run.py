@@ -157,6 +157,8 @@ result_bag_path:={output_path.joinpath("result_bag").as_posix()}"""
 
 
 def extract_arg(launch_args: str) -> str:
+    if launch_args == "":
+        return ""
     extract_launch_arg = ""
     keys_values_list = launch_args.split(",")
     for kv_str in keys_values_list:
