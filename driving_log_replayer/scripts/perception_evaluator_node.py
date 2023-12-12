@@ -174,7 +174,7 @@ class PerceptionEvaluator(DLREvaluator):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
 
             # check footprint length
-            if 1 <= len(perception_object.shape.footprint) < 3:  # noqa
+            if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
                 self.get_logger().error(
                     f"Unexpected footprint length: {len(perception_object.shape.footprint)=}",
                 )
