@@ -41,8 +41,8 @@ def run(
         # open scenario file and make ros2 launch command
         if not dataset_path.is_dir():
             continue
-        scenario_file = get_scenario_file(dataset_path)
         output_case = output_dir_by_time.joinpath(dataset_path.name)
+        scenario_file = get_scenario_file(dataset_path)
         if scenario_file is None:
             continue
         launch_cmd = None
@@ -109,16 +109,6 @@ def get_scenario_file(dataset_path: Path) -> Path | None:
     return scenario_file_path
 
 
-def create_dlr_arg(
-    scenario_file: Path,
-    output_path: Path,
-) -> str:
-    return f""" scenario_path:={scenario_file.as_posix()} \
-result_json_path:={output_path.joinpath("result.json").as_posix()} \
-input_bag:={scenario_file.parent.joinpath("input_bag").as_posix()} \
-result_bag_path:={output_path.joinpath("result_bag").as_posix()}"""
-
-
 def extract_arg(launch_args: str) -> str:
     if launch_args == "":
         return ""
@@ -158,11 +148,8 @@ def cmd_use_bag_only(
     scenario: Scenario = load_scenario(scenario_path)
     launch_command = f"source {autoware_path.joinpath('install', 'setup.bash').as_posix()}\n"
     launch_command += f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py map_path:={scenario.LocalMapPath} vehicle_model:={scenario.VehicleModel} sensor_model:={scenario.SensorModel} vehicle_id:={scenario.VehicleId}"
-    launch_command += create_dlr_arg(scenario, output_path)
-    launch_localization = scenario.Evaluation.get("LaunchLocalization")
-    if launch_localization is not None:
-        launch_command += f" localization:={launch_localization} "
-
+    launch_command += f" scenario_path:={scenario_path.as_posix()} result_json_path:={output_path.joinpath('result.json').as_posix()} input_bag:={scenario_path.parent.joinpath('input_bag').as_posix()} result_bag_path:={output_path.joinpath('result_bag').as_posix()}"
+    launch_command += f" localization:={scenario.Evaluation.get('LaunchLocalization', True)}"
     launch_command += extract_arg(launch_args)
     return launch_command + clean_up_cmd()
 
@@ -170,10 +157,14 @@ def cmd_use_bag_only(
 def cmd_use_t4_dataset(
     scenario_path: Path,
     output_path: Path,
+    autoware_path: Path,
+    launch_args: str,
 ) -> str | None:
     dataset_path = scenario_path.parent
     scenario: Scenario = load_scenario(scenario_path)
-    launch_command_for_all_dataset = ""
+    launch_command_for_all_dataset = (
+        f"source {autoware_path.joinpath('install', 'setup.bash').as_posix()}\n"
+    )
     t4_dataset_base_path = dataset_path.joinpath("t4_dataset")
     try:
         t4_datasets: Datasets = Datasets(**scenario.Evaluation["Datasets"])
@@ -181,14 +172,14 @@ def cmd_use_t4_dataset(
         return None
     else:
         is_database_evaluation = bool(len(t4_datasets) > 1)
-        for dataset in t4_datasets:
+        for t4_dataset in t4_datasets:
             # get dataset_id
-            key = next(iter(dataset))
+            key = next(iter(t4_dataset))
             # create sub directory for the dataset
             output_dir_per_dataset = output_path.joinpath(dataset_path.name, key)
-            output_dir_per_dataset.mkdir()
-            vehicle_id = dataset[key].VehicleId
-            map_path = dataset[key].LocalMapPath
+            output_dir_per_dataset.mkdir(parents=True)
+            vehicle_id = t4_dataset[key].VehicleId
+            map_path = t4_dataset[key].LocalMapPath
             t4_dataset_path = t4_dataset_base_path.joinpath(key)
             if not t4_dataset_path.exists():
                 termcolor.cprint(
@@ -197,25 +188,19 @@ def cmd_use_t4_dataset(
                 )
                 continue
 
-            use_case_name = scenario.Evaluation["UseCaseName"]
-            launch_base_command = f"ros2 launch driving_log_replayer {use_case_name}.launch.py "
-
-            # t4_dataset
-            launch_args += f" t4_dataset_path:={t4_dataset_path}"
-            launch_args += (
-                f" result_archive_path:={output_dir_per_dataset.joinpath('result_archive')}"
-            )
-            launch_args += f" sensing:={dataset[key].get('LaunchSensing', True)}"
-            launch_command = launch_base_command + launch_args + "\n"
+            launch_command = f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py map_path:={map_path} vehicle_model:={scenario.VehicleModel} sensor_model:={scenario.SensorModel} vehicle_id:={vehicle_id}"
+            launch_command += f" scenario_path:={scenario_path.as_posix()} result_json_path:={output_dir_per_dataset.joinpath('result.json').as_posix()} input_bag:={t4_dataset_path.parent.joinpath('input_bag').as_posix()} result_bag_path:={output_dir_per_dataset.joinpath('result_bag').as_posix()}"
+            launch_command += f" t4_dataset_path:={t4_dataset_path} result_archive_path:={output_dir_per_dataset.joinpath('result_archive').as_posix()} sensing:={t4_dataset[key].get('LaunchSensing', True)}"
+            launch_command += extract_arg(launch_args)
             launch_command_for_all_dataset += launch_command
         if is_database_evaluation:
-            database_result_script_path = self.__autoware_path.joinpath(
+            database_result_script_path = autoware_path.joinpath(
                 "install",
                 "driving_log_replayer",
                 "lib",
                 "driving_log_replayer",
                 "perception_database_result.py",
             )
-            database_result_command = f"python3 {database_result_script_path.as_posix()} -s {scenario_path} -r {self.__output_directory.joinpath(dataset_path.name)}\n"
+            database_result_command = f"python3 {database_result_script_path.as_posix()} -s {scenario_path} -r {output_path.joinpath(dataset_path.name)}\n"
             launch_command_for_all_dataset += database_result_command
         return launch_command_for_all_dataset
