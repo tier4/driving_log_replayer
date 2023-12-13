@@ -170,7 +170,7 @@ def get_rviz(rviz_config_name: str) -> Node:
         arguments=["-d", rviz_config_dir.as_posix()],
         parameters=[{"use_sim_time": True}],
         output="screen",
-        condition=IfCondition(LaunchConfiguration("rviz")),
+        condition=IfCondition(LaunchConfiguration("rviz", default="true")),
     )
 
 
