@@ -2,7 +2,7 @@ from os.path import expandvars
 from pathlib import Path
 
 from pydantic import BaseModel
-from pydantic import validator
+from pydantic import field_validator
 from typing_extensions import Literal
 import yaml
 
@@ -19,7 +19,7 @@ class Scenario(BaseModel):
     LocalMapPath: Path | None = None
     Evaluation: dict
 
-    @validator("LocalMapPath")
+    @field_validator("LocalMapPath")
     def validate_local_path(cls, v: str | None) -> Path | None:  # noqa
         if v is None:
             return None
@@ -42,7 +42,7 @@ class Dataset(BaseModel):
     LocalMapPath: Path
     LaunchSensing: bool | None = None
 
-    @validator("LocalMapPath")
+    @field_validator("LocalMapPath")
     def validate_local_path(cls, v: str | None) -> Path | None:  # noqa
         if v is None:
             return None

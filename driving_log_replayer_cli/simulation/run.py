@@ -167,12 +167,12 @@ def cmd_use_t4_dataset(
     )
     t4_dataset_base_path = dataset_path.joinpath("t4_dataset")
     try:
-        t4_datasets: Datasets = Datasets(**scenario.Evaluation["Datasets"])
+        t4_datasets: Datasets = Datasets(Datasets=scenario.Evaluation["Datasets"])
     except ValidationError:
         return None
     else:
         is_database_evaluation = bool(len(t4_datasets) > 1)
-        for t4_dataset in t4_datasets:
+        for t4_dataset in t4_datasets.Datasets:
             # get dataset_id
             key = next(iter(t4_dataset))
             # create sub directory for the dataset
