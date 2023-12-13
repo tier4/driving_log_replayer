@@ -190,7 +190,9 @@ def cmd_use_t4_dataset(
 
             launch_command = f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py map_path:={map_path} vehicle_model:={scenario.VehicleModel} sensor_model:={scenario.SensorModel} vehicle_id:={vehicle_id}"
             launch_command += f" scenario_path:={scenario_path.as_posix()} result_json_path:={output_dir_per_dataset.joinpath('result.json').as_posix()} input_bag:={t4_dataset_path.parent.joinpath('input_bag').as_posix()} result_bag_path:={output_dir_per_dataset.joinpath('result_bag').as_posix()}"
-            launch_command += f" t4_dataset_path:={t4_dataset_path} result_archive_path:={output_dir_per_dataset.joinpath('result_archive').as_posix()} sensing:={t4_dataset[key].get('LaunchSensing', True)}"
+            launch_command += f" t4_dataset_path:={t4_dataset_path} result_archive_path:={output_dir_per_dataset.joinpath('result_archive').as_posix()}"
+            if t4_dataset[key].LaunchSensing is not None:
+                launch_command += f" sensing:={t4_dataset[key].LaunchSensing}"
             launch_command += extract_arg(launch_args)
             launch_command += clean_up_cmd()
             launch_command_for_all_dataset += launch_command
