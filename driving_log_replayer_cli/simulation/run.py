@@ -130,13 +130,15 @@ def clean_up_cmd() -> str:
     # kill zombie ros2 process
     # kill rviz
     # sleep 1 sec
+    # new line
     return """
 echo $?
 pgrep ros | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
 pgrep ros | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
 pgrep rviz | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
 pgrep rviz | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
-sleep 1"""
+sleep 1
+"""
 
 
 def cmd_use_bag_only(
