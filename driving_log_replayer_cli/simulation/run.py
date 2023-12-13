@@ -171,7 +171,7 @@ def cmd_use_t4_dataset(
     except ValidationError:
         return None
     else:
-        is_database_evaluation = bool(len(t4_datasets) > 1)
+        is_database_evaluation = bool(len(t4_datasets.Datasets) > 1)
         for t4_dataset in t4_datasets.Datasets:
             # get dataset_id
             key = next(iter(t4_dataset))
