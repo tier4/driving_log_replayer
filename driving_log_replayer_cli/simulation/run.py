@@ -206,6 +206,6 @@ def cmd_use_t4_dataset(
                 "driving_log_replayer",
                 "perception_database_result.py",
             )
-            database_result_command = f"python3 {database_result_script_path.as_posix()} -s {scenario_path} -r {output_path.joinpath(dataset_path.name)}\n"
+            database_result_command = f"python3 {database_result_script_path.as_posix()} -s {scenario_path} -r {output_path}\n"
             launch_command_for_all_dataset += database_result_command
         return launch_command_for_all_dataset
