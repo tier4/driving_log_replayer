@@ -7,7 +7,6 @@ from pydantic import ValidationError
 import termcolor
 
 from driving_log_replayer_cli.core.config import Config
-from driving_log_replayer_cli.core.scenario import Dataset
 from driving_log_replayer_cli.core.scenario import Datasets
 from driving_log_replayer_cli.core.scenario import load_scenario
 from driving_log_replayer_cli.core.scenario import Scenario
@@ -131,7 +130,8 @@ def clean_up_cmd() -> str:
     # kill zombie ros2 process
     # kill rviz
     # sleep 1 sec
-    return """echo $?
+    return """
+echo $?
 pgrep ros | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
 pgrep ros | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
 pgrep rviz | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
@@ -192,6 +192,7 @@ def cmd_use_t4_dataset(
             launch_command += f" scenario_path:={scenario_path.as_posix()} result_json_path:={output_dir_per_dataset.joinpath('result.json').as_posix()} input_bag:={t4_dataset_path.parent.joinpath('input_bag').as_posix()} result_bag_path:={output_dir_per_dataset.joinpath('result_bag').as_posix()}"
             launch_command += f" t4_dataset_path:={t4_dataset_path} result_archive_path:={output_dir_per_dataset.joinpath('result_archive').as_posix()} sensing:={t4_dataset[key].get('LaunchSensing', True)}"
             launch_command += extract_arg(launch_args)
+            launch_command += clean_up_cmd()
             launch_command_for_all_dataset += launch_command
         if is_database_evaluation:
             database_result_script_path = autoware_path.joinpath(
