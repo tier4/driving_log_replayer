@@ -176,7 +176,7 @@ class PerceptionEvaluator(DLREvaluator):
             # check footprint length
             if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
                 self.get_logger().error(
-                    f"Unexpected footprint length: {len(perception_object.shape.footprint)=}",
+                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}",
                 )
                 rclpy.shutdown()
 
