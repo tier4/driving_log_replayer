@@ -43,9 +43,6 @@ Available commands to run the Autoware evaluation:
 # simulation run, both jsonl and json result files are output
 dlr simulation run -p ${profile}
 
-# simulation run, do not convert jsonl to json
-dlr simulation run -p ${profile} --no-json
-
 # Check results and display summary of result files under output_directory
 dlr simulation show-result ${output_directory}
 

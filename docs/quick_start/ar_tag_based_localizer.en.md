@@ -40,7 +40,7 @@ mv sliced_bag input_bag
 1. Run the simulation
 
    ```shell
-   driving_log_replayer simulation run -p ar_tag_based_localizer --rate 0.5
+   driving_log_replayer simulation run -p ar_tag_based_localizer  -l "play_rate:=0.5"
    ```
 
 2. Check the results

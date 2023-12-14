@@ -43,9 +43,6 @@ simulation を実行するコマンド
 # simulation 実行、jsonlとjsonの両方の結果ファイルが出力される
 dlr simulation run -p ${profile}
 
-# simulation 実行、jsonlをjsonに変換しない
-dlr simulation run -p ${profile} --no-json
-
 # 結果の確認、output_directory以下の結果ファイルのサマリーを表示する
 dlr simulation show-result ${output_directory}
 
