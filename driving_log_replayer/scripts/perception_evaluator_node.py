@@ -173,6 +173,13 @@ class PerceptionEvaluator(DLREvaluator):
             if isinstance(perception_object, TrackedObject):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
 
+            # check footprint length
+            if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
+                self.get_logger().error(
+                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}",
+                )
+                rclpy.shutdown()
+
             shape_type = ShapeType.BOUNDING_BOX
             shape_type_num = perception_object.shape.type
             if shape_type_num == MsgShape.POLYGON:
