@@ -53,8 +53,8 @@ dlr simulation convert-result ${output_directory}
 #### dlr simulation run launch argument option
 
 driving_log_replayerのcliは、シナリオファイルからsensor_modelなどlaunchに必要な引数を読み取って、launchコマンドを生成する。
-しかし、bagの再生速度など、実行時に変更したいlaunchの引数に関してはオプションで渡すことで指定可能である。
-複数の引数を指定する場合には、カンマで区切って引数を連結する。
+一方で、bagの再生速度など、実行時に変更したいlaunchの引数に関してはオプションで渡すことで指定可能である。
+引数をカンマで区切りで並べることで複数の引数を指定可能である。
 
 以下に例を示す。
 
@@ -69,7 +69,7 @@ dlr simulation run -p default -l "play_rate:=0.5,input_pointcloud:=/sensing/lida
 dlr simulation run -p default -l "perception_mode:=camera_lidar_fusion"
 ```
 
-指定可能な引数は、ros2 launchの-sオプションを使うことで調べることができる。
+指定可能な引数は、ros2 launchの-sオプションを使うことで表示できる。
 
 ```shell
 # ❯ ros2 launch driving_log_replayer ${use_case}.launch.py -s
@@ -89,14 +89,14 @@ Arguments (pass arguments as '<name>:=<value>'):
 固定している引数は指定しても無視される。固定されている引数は、以下のファイルを参照。
 
 ```shell
-driving_log_replayer/driving_log_replayer/launch_common.pyのget_autoware_launch関数
-driving_log_replayer/launch/${use_case}.launch.pyでget_autoware_launchを呼び出しているときの引数
+driving_log_replayer/driving_log_replayer/launch_common.py get_autoware_launch関数
+driving_log_replayer/launch/${use_case}.launch.py get_autoware_launchの引数
 ```
 
 #### simulation実行で作成されるファイル
 
 simulation runコマンドを実行するとプロファイルの出力先フォルダに実行時間のディレクトリが作成され、その下にファイルが出力される。
-出力例を以下に示す。
+出力ファイルの例を以下に示す。
 
 ```shell
 # t4_datasetを使用しない場合
@@ -125,7 +125,7 @@ output_direcotry
 │       │   │   ...
 │       │   ├── result.json                // 変換済み結果ファイル
 │       │   ├── result.jsonl               // 変換元結果ファイル
-│       │   ├── result_archive             // json以外の評価結果を出力するフォルダ
+│       │   ├── result_archive             // json以外の評価結果を出力するディレクトリ
 │       │   │   └── scene_result.pkl      // perception_evalで評価したframe_resultsのオブジェクトファイル
 │       │   └── result_bag                 // recordしたbag
 │       │       ├── metadata.yaml

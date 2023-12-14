@@ -52,24 +52,24 @@ dlr simulation convert-result ${output_directory}
 
 #### dlr simulation run launch argument option
 
-driving_log_replayerのcliは、シナリオファイルからsensor_modelなどlaunchに必要な引数を読み取って、launchコマンドを生成する。
-しかし、bagの再生速度など、実行時に変更したいlaunchの引数に関してはオプションで渡すことで指定可能である。
-複数の引数を指定する場合には、カンマで区切って引数を連結する。
+The driving_log_replayer cli reads the necessary launch arguments such as sensor_model from the scenario file and generates the launch command.
+On the other hand, launch arguments that you want to change at runtime, such as bag playback speed, can be specified by passing them as options.
+Multiple arguments can be specified by arranging them in a comma-separated list.
 
-以下に例を示す。
+An example is shown below.
 
 ```shell
-# bagの再生速度、すなわち、simulation時間を0.5倍速にする
+# The playback speed of bag, i.e., simulation time, is set to 0.5x speed.
 dlr simulation run -p default -l "play_rate:=0.5"
 
-# bagの再生速度を0.5倍速、かつ、input_pointcloudを /sensing/lidar/concatenated/pointcloudにする
+# Set bag playback speed to 0.5x and input_pointcloud to /sensing/lidar/concatenated/pointcloud
 dlr simulation run -p default -l "play_rate:=0.5,input_pointcloud:=/sensing/lidar/concatenated/pointcloud"
 
-# perception_modeをcamera_lidar_fusionにする
+# Set perception_mode to camera_lidar_fusion
 dlr simulation run -p default -l "perception_mode:=camera_lidar_fusion"
 ```
 
-指定可能な引数は、ros2 launchの-sオプションを使うことで調べることができる。
+The arguments that can be specified can be displayed by using the -s option of ros2 launch.
 
 ```shell
 # ❯ ros2 launch driving_log_replayer ${use_case}.launch.py -s
@@ -85,49 +85,49 @@ Arguments (pass arguments as '<name>:=<value>'):
 ...
 ```
 
-ただし、launchの引数として表示されていても、localizationの評価でlocalization:=falseといった矛盾した設定が出来ないように、driving_log_replayer側で固定されている引数もある。
-固定している引数は指定しても無視される。固定されている引数は、以下のファイルを参照。
+However, some arguments are fixed on the driving_log_replayer side so that they cannot be inconsistently set, such as localization:=false in the localization evaluation, even if they are displayed as launch arguments.
+Fixed arguments are ignored even if specified. See the following file for fixed arguments.
 
 ```shell
-driving_log_replayer/driving_log_replayer/launch_common.pyのget_autoware_launch関数
-driving_log_replayer/launch/${use_case}.launch.pyでget_autoware_launchを呼び出しているときの引数
+get_autoware_launch fucntion in driving_log_replayer/driving_log_replayer/launch_common.py　
+argument of get_autoware_launch in driving_log_replayer/launch/${use_case}.launch.py
 ```
 
-#### simulation実行で作成されるファイル
+#### Files created by simulation run
 
-simulation runコマンドを実行するとプロファイルの出力先フォルダに実行時間のディレクトリが作成され、その下にファイルが出力される。
-出力例を以下に示す。
+When the simulation run command is executed, a run time directory is created in the output folder of the profile, and the files are output under the directory.
+An example of the output file is shown below.
 
 ```shell
 # t4_datasetを使用しない場合
 output_direcotry
-└── YYYY-mmDD-HHMMSS               // 実行時刻
-    └── TC01                       // テストケース名
-    │   ├── console.log           // ターミナルに出力されているログ
-    │   ├── result.json　         // 変換済み結果ファイル
-    │   ├── result.jsonl          // 変換元結果ファイル
-    │   ├── result_bag            // recordしたbag
+└── YYYY-mmDD-HHMMSS               // Execution time
+    └── TC01                       // Name of test case
+    │   ├── console.log           // Log output to the terminal
+    │   ├── result.json　         // Converted result file
+    │   ├── result.jsonl          // Original result file
+    │   ├── result_bag            // recorded bag
     │   │   ├── metadata.yaml
     │   │   └── result_bag_0.db3
-    │   └── run.bash              // シミュレーション実行コマンド
+    │   └── run.bash              // Simulation execution command
     └── TC02
 ...
 ```
 
 ```shell
 output_direcotry
-└── YYYY-mmDD-HHMMSS                         // 実行時刻
-    └── TC01                                 // テストケース名
-│       ├── console.log                     // ターミナルに出力されているログ
-│       ├── run.bash                        // シミュレーション実行コマンド
+└── YYYY-mmDD-HHMMSS                         // Execution time
+    └── TC01                                 // Name of test case
+│       ├── console.log                     // Log output to the terminal
+│       ├── run.bash                        // Simulation execution command
 │       ├── DATASET01
-│       │   ├── perception_eval_log        // percepiton_evalのログ
+│       │   ├── perception_eval_log        // Log files of percepiton_eval
 │       │   │   ...
-│       │   ├── result.json                // 変換済み結果ファイル
-│       │   ├── result.jsonl               // 変換元結果ファイル
-│       │   ├── result_archive             // json以外の評価結果を出力するフォルダ
-│       │   │   └── scene_result.pkl      // perception_evalで評価したframe_resultsのオブジェクトファイル
-│       │   └── result_bag                 // recordしたbag
+│       │   ├── result.json                // Converted result file
+│       │   ├── result.jsonl               // Original result file
+│       │   ├── result_archive             // Directory to output evaluation results other than json
+│       │   │   └── scene_result.pkl      // Object file of frame_results evaluated by perception_eval
+│       │   └── result_bag                 // recorded bag
 │       │       ├── metadata.yaml
 │       │       └── result_bag_0.db3
 │       └── DATASET02
