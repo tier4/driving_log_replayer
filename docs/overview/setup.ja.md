@@ -77,7 +77,7 @@ driving_log_replayer では、フォルダ構成、ファイル名などを固�
 
 テストケース毎に、シナリオと、bag、dataset を配置する。
 
-### localization, performance_diag のデータフォルダ構成
+### t4_datasetを使用しないユースケースのデータフォルダ構成
 
 ```shell
 driving_log_replayer_data             // .driving_log_replayer.config の data_directory
@@ -93,12 +93,12 @@ driving_log_replayer_data             // .driving_log_replayer.config の data_d
 
 ```
 
-### obstacle_segmentation, perception のデータフォルダ構成
+### t4_datasetを使用するユースケースのデータフォルダ構成
 
 ```shell
 driving_log_replayer_data              // .driving_log_replayer.config の data_directory
 │
-├── TC001                           // シナリオディレクトリ 任意の名称をつけてよい
+├── TC001                           // テストケースディレクトリ 任意の名称をつけてよい
 │   ├── scenario.yaml              // シナリオ
 │   └── t4_dataset
 │       ├── T4D001                 // t4_datasetディレクトリ、sensingの場合は1個
@@ -113,7 +113,7 @@ driving_log_replayer_data              // .driving_log_replayer.config の data_
 │           └── input_bag
 │          ...
 │
-├── TC002                           // シナリオディレクトリ S001と構成は同じ
+├── TC002                           // テストケースディレクトリ S001と構成は同じ
 ...
 
 ```
