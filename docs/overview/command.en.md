@@ -50,7 +50,6 @@ dlr simulation show-result ${output_directory}
 dlr simulation convert-result ${output_directory}
 ```
 
-
 #### dlr simulation run launch argument option
 
 driving_log_replayerのcliは、シナリオファイルからsensor_modelなどlaunchに必要な引数を読み取って、launchコマンドを生成する。
@@ -134,7 +133,6 @@ output_direcotry
 │       └── DATASET02
 ...
 ```
-
 
 ## Run driving_log_replayer with wasim
 
