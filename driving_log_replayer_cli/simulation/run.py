@@ -151,7 +151,9 @@ def cmd_use_bag_only(
     launch_command = f"source {autoware_path.joinpath('install', 'setup.bash').as_posix()}\n"
     launch_command += f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py map_path:={scenario.LocalMapPath} vehicle_model:={scenario.VehicleModel} sensor_model:={scenario.SensorModel} vehicle_id:={scenario.VehicleId}"
     launch_command += f" scenario_path:={scenario_path.as_posix()} result_json_path:={output_path.joinpath('result.json').as_posix()} input_bag:={scenario_path.parent.joinpath('input_bag').as_posix()} result_bag_path:={output_path.joinpath('result_bag').as_posix()}"
-    launch_command += f" localization:={scenario.Evaluation.get('LaunchLocalization', True)}"
+    launch_localization = scenario.Evaluation.get("LaunchLocalization")
+    if launch_localization is not None:
+        launch_command += f" localization:={launch_localization}"
     launch_command += extract_arg(launch_args)
     return launch_command + clean_up_cmd()
 
