@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.10.6
+
+Bug fix
+
+| Module       | Feature         | Brief summary          | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | --------------- | ---------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception` | data validation | check footprint length | [#332](https://github.com/tier4/driving_log_replayer/pull/332) | RT4-7993 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.10.5
 
 Minor Tweak
