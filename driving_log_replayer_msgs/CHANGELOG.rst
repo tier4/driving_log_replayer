@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.6 (2023-12-15)
+-------------------
 * fix: `#331 <https://github.com/tier4/driving_log_replayer/issues/331>`_ check footprint length (`#332 <https://github.com/tier4/driving_log_replayer/issues/332>`_)
 * Contributors: Hayato Mizushima
 
