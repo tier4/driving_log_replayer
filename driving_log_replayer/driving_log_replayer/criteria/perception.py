@@ -328,3 +328,29 @@ class PerceptionCriteria:
             SuccessFail: Success/Fail result.
         """
         return self.method.get_result(frame)
+
+    def filter_frame_result(self, frame: PerceptionFrameResult) -> PerceptionFrameResult:
+        pass
+
+
+class PerceptionFieldCriteria(PerceptionCriteria):
+    def __init__(
+        self,
+        method: str | CriteriaMethod | None = None,
+        level: str | Number | CriteriaLevel | None = None,
+        distance_range: tuple[float, float] | None = None,
+    ) -> None:
+        super().__init__(method, level)
+
+        num_dims: int = 2
+        if distance_range is not None:
+            assert len(distance_range) == num_dims
+
+        self.distance_range = distance_range
+
+    def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
+        filtered_frame = self.filter_frame_result(frame)
+        return super().get_result(filtered_frame)
+
+    def filter_frame_result(self, frame: PerceptionFrameResult) -> PerceptionFrameResult:
+        pass
