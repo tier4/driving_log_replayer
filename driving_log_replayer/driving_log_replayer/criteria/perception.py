@@ -15,8 +15,7 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from enum import Enum
 from numbers import Number
 from typing import TYPE_CHECKING
@@ -285,6 +284,7 @@ class PerceptionCriteria:
             If None, `CriteriaMethod.NUM_TP` is used. Defaults to None.
         levels (str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel]): Criteria level instance or name.
             If None, `CriteriaLevel.Easy` is used. Defaults to None.
+        distance_range (tuple[float, float] | None): Distance ranges for criteria, ordering (min, max) [m].
     """
 
     def __init__(
@@ -297,6 +297,7 @@ class PerceptionCriteria:
         | CriteriaLevel
         | list[CriteriaLevel]
         | None = None,
+        distance_range: tuple[float, float] | None = None,
     ) -> None:
         methods = [CriteriaMethod.NUM_TP] if methods is None else self.load_methods(methods)
         levels = [CriteriaLevel.EASY] if levels is None else self.load_levels(levels)
