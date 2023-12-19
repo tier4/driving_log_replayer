@@ -320,7 +320,7 @@ class PerceptionCriteria:
 
         Returns:
         -------
-            List[CriteriaMethod]: Instance.
+            list[CriteriaMethod]: Instance.
         """
         if isinstance(methods_input, str):
             loaded_methods = [CriteriaMethod.from_str(methods_input)]
