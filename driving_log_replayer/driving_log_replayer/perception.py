@@ -19,6 +19,7 @@ from pydantic import BaseModel
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from typing_extensions import Literal
+from typing import List
 from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.criteria import PerceptionCriteria
