@@ -15,5 +15,6 @@
 from .perception import CriteriaLevel
 from .perception import CriteriaMethod
 from .perception import PerceptionCriteria
+from .perception import PerceptionFieldCriteria
 
-__all__ = ("CriteriaLevel", "CriteriaMethod", "PerceptionCriteria")
+__all__ = ("CriteriaLevel", "CriteriaMethod", "PerceptionCriteria", "PerceptionFieldCriteria")
