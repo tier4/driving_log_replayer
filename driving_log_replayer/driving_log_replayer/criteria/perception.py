@@ -150,7 +150,6 @@ class CriteriaMethod(Enum):
         -------
             CriteriaMode: `CriteriaMode` instance.
         """
-        print("HOGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!, ", value)
         name: str = value.upper()
         assert name in cls.__members__, "value must be NUM_TP, METRICS_SCORE, or METRICS_SCORE_MAPH"
         return cls.__members__[name]
