@@ -77,7 +77,7 @@ A folder where resources used in the simulation are stored.
 
 For each test case: a scenario, rosbag, and dataset are placed.
 
-### Data Folder Structure for localization and performance_diag
+### Data Folder Structure for use case without t4_dataset
 
 ```shell
 driving_log_replayer_data             // .driving_log_replayer.config の data_directory
@@ -93,7 +93,7 @@ driving_log_replayer_data             // .driving_log_replayer.config の data_d
 
 ```
 
-### Data Folder Structure for obstacle_segmentation and perception
+### Data Folder Structure for use case with t4_dataset
 
 ```shell
 driving_log_replayer_data              // .driving_log_replayer.config の data_directory

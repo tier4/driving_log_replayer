@@ -27,7 +27,7 @@
 1. Run the simulation
 
    ```bash
-   dlr simulation run -p eagleye --rate 0.5
+   dlr simulation run -p eagleye  -l "play_rate:=0.5"
    ```
 
 2. Check the results
