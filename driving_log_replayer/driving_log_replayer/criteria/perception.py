@@ -15,11 +15,10 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from enum import Enum
 from numbers import Number
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
@@ -46,6 +45,10 @@ class SuccessFail(Enum):
             bool: Success or fail.
         """
         return self == SuccessFail.SUCCESS
+
+    def __and__(self, other: SuccessFail):
+        if isinstance(other, SuccessFail):
+            return SuccessFail.SUCCESS if self.is_success() and other.is_success() else SuccessFail.FAIL
 
 
 class CriteriaLevel(Enum):
@@ -127,10 +130,12 @@ class CriteriaMethod(Enum):
 
     - NUM_TP: Number of TP (or TN).
     - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
+    - METRICS_SCORE_MAPH: mAPH score.
     """
 
     NUM_TP = "num_tp"
     METRICS_SCORE = "metrics_score"
+    METRICS_SCORE_MAPH = "metrics_score_maph"
 
     @classmethod
     def from_str(cls, value: str) -> CriteriaMethod:
@@ -145,8 +150,9 @@ class CriteriaMethod(Enum):
         -------
             CriteriaMode: `CriteriaMode` instance.
         """
+        print("HOGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!, ", value)
         name: str = value.upper()
-        assert name in cls.__members__, "value must be NUM_TP or METRICS_SCORE"
+        assert name in cls.__members__, "value must be NUM_TP, METRICS_SCORE, or METRICS_SCORE_MAPH"
         return cls.__members__[name]
 
 
@@ -252,13 +258,31 @@ class MetricsScore(CriteriaMethodImpl):
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
 
 
+class MetricsScoreMAPH(CriteriaMethodImpl):
+    name = CriteriaMethod.METRICS_SCORE_MAPH
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        assert frame.metrics_score.evaluation_task.is_3d(), "Evaluation task must be 3D for MAPH."
+        scores = [
+            map_.maph
+            for map_ in frame.metrics_score.maps
+            if map_.maph != float("inf") and map_.matching_mode == MatchingMode.CENTERDISTANCE
+        ]
+
+        return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
+
+
 class PerceptionCriteria:
     """
     Criteria interface for perception evaluation.
 
     Args:
     ----
-        method (str | CriteriaMethod | None): Criteria method instance or name.
+        methods (str | List[str] | CriteriaMethod | List[CriteriaMethod] | None): List of criteria method instances or names.
             If None, `CriteriaMethod.NUM_TP` is used. Defaults to None.
         level (str | Number | CriteriaLevel | None): Criteria level instance or name.
             If None, `CriteriaLevel.Easy` is used. Defaults to None.
@@ -266,34 +290,49 @@ class PerceptionCriteria:
 
     def __init__(
         self,
-        method: str | CriteriaMethod | None = None,
+        methods: str | List[str] | CriteriaMethod | List[CriteriaMethod] | None = None,
         level: str | Number | CriteriaLevel | None = None,
     ) -> None:
-        method = CriteriaMethod.NUM_TP if method is None else self.load_method(method)
+        methods = [CriteriaMethod.NUM_TP] if methods is None else self.load_methods(methods)
         level = CriteriaLevel.EASY if level is None else self.load_level(level)
 
-        if method == CriteriaMethod.NUM_TP:
-            self.method = NumTP(level)
-        elif method == CriteriaMethod.METRICS_SCORE:
-            self.method = MetricsScore(level)
+        self.methods = []
+        for method in methods:
+            if method == CriteriaMethod.NUM_TP:
+                self.methods.append(NumTP(level))
+            elif method == CriteriaMethod.METRICS_SCORE:
+                self.methods.append(MetricsScore(level))
+            elif method == CriteriaMethod.METRICS_SCORE_MAPH:
+                self.methods.append(MetricsScoreMAPH(level))
+            else:
+                raise NotImplementedError(f"Unsupported method: {method}")
 
     @staticmethod
-    def load_method(method: str | CriteriaMethod) -> CriteriaMethod:
+    def load_methods(methods_input: str | List[str] | CriteriaMethod | List[CriteriaMethod]) -> List[CriteriaMethod]:
         """
         Load `CriteriaMethod` enum.
 
         Args:
         ----
-            method (str | CriteriaMethod): Criteria method instance or name.
+            methods (str | List[str] | CriteriaMethod | List[CriteriaMethod]): Criteria method instance or name.
 
         Returns:
         -------
-            CriteriaMethod: Instance.
+            List[CriteriaMethod]: Instance.
         """
-        if isinstance(method, str):
-            method: CriteriaMethod = CriteriaMethod.from_str(method)
-        assert isinstance(method, CriteriaMethod), f"Invalid type of method: {type(method)}"
-        return method
+        if isinstance(methods_input, str):
+            loaded_methods: List[CriteriaMethod] = [CriteriaMethod.from_str(methods_input)]
+        elif isinstance(methods_input, CriteriaMethod):
+            loaded_methods: List[CriteriaMethod] = [methods_input]
+        elif isinstance(methods_input, list):
+            if isinstance(methods_input[0], str):
+                loaded_methods = [CriteriaMethod.from_str(method) for method in methods_input]
+            elif isinstance(methods_input[0], CriteriaMethod):
+                loaded_methods = methods_input
+
+        for method in loaded_methods:
+            assert isinstance(method, CriteriaMethod), f"Invalid type of method: {type(method)}"
+        return loaded_methods
 
     @staticmethod
     def load_level(level: str | Number | CriteriaLevel) -> CriteriaLevel:
@@ -327,4 +366,7 @@ class PerceptionCriteria:
         -------
             SuccessFail: Success/Fail result.
         """
-        return self.method.get_result(frame)
+        result: SuccessFail = SuccessFail.SUCCESS
+        for method in self.methods:
+            result &= method.get_result(frame)
+        return result

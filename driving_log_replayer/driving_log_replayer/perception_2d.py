@@ -14,15 +14,12 @@
 
 from dataclasses import dataclass
 
+from driving_log_replayer.criteria import PerceptionCriteria
+from driving_log_replayer.result import EvaluationItem, ResultBase
+from driving_log_replayer.scenario import Scenario, number
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
 from typing_extensions import Literal
-
-from driving_log_replayer.criteria import PerceptionCriteria
-from driving_log_replayer.result import EvaluationItem
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import number
-from driving_log_replayer.scenario import Scenario
 
 
 class Conditions(BaseModel):
@@ -51,7 +48,7 @@ class Perception(EvaluationItem):
     def __post_init__(self) -> None:
         self.condition: Conditions
         self.criteria: PerceptionCriteria = PerceptionCriteria(
-            method=self.condition.CriteriaMethod,
+            methods=self.condition.CriteriaMethod,
             level=self.condition.CriteriaLevel,
         )
 

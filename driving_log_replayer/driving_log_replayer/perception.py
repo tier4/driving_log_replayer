@@ -13,25 +13,22 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+from typing import List
 
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.criteria import PerceptionCriteria
+from driving_log_replayer.result import EvaluationItem, ResultBase
+from driving_log_replayer.scenario import Scenario, number
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
-from std_msgs.msg import ColorRGBA
-from std_msgs.msg import Header
+from std_msgs.msg import ColorRGBA, Header
 from typing_extensions import Literal
 from visualization_msgs.msg import MarkerArray
-
-from driving_log_replayer.criteria import PerceptionCriteria
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import EvaluationItem
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import number
-from driving_log_replayer.scenario import Scenario
 
 
 class Conditions(BaseModel):
     PassRate: number
-    CriteriaMethod: Literal["num_tp", "metrics_score"] | None = None
+    CriteriaMethod: Literal["num_tp", "metrics_score", "metrics_score_maph"] | List[str] | None = None
     CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | number | None = None
 
 
@@ -55,7 +52,7 @@ class Perception(EvaluationItem):
 
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(
-            method=self.condition.CriteriaMethod,
+            methods=self.condition.CriteriaMethod,
             level=self.condition.CriteriaLevel,
         )
 
