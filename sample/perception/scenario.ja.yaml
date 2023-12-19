@@ -13,7 +13,7 @@ Evaluation:
         LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score)
+    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score/metrics_score_maph)
     CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
   PerceptionEvaluationConfig:
     evaluation_config_dict:
