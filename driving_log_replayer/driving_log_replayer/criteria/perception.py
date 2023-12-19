@@ -19,7 +19,7 @@ from abc import ABC
 from abc import abstractmethod
 from enum import Enum
 from numbers import Number
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
@@ -47,9 +47,8 @@ class SuccessFail(Enum):
         """
         return self == SuccessFail.SUCCESS
 
-    def __and__(self, other: SuccessFail):
-        if isinstance(other, SuccessFail):
-            return SuccessFail.SUCCESS if self.is_success() and other.is_success() else SuccessFail.FAIL
+    def __and__(self, other: SuccessFail) -> SuccessFail:
+        return SuccessFail.SUCCESS if self.is_success() and other.is_success() else SuccessFail.FAIL
 
 
 class CriteriaLevel(Enum):
@@ -282,7 +281,7 @@ class PerceptionCriteria:
 
     Args:
     ----
-        methods (str | List[str] | CriteriaMethod | List[CriteriaMethod] | None): List of criteria method instances or names.
+        methods (str | list[str] | CriteriaMethod | list[CriteriaMethod] | None): List of criteria method instances or names.
             If None, `CriteriaMethod.NUM_TP` is used. Defaults to None.
         level (str | Number | CriteriaLevel | None): Criteria level instance or name.
             If None, `CriteriaLevel.Easy` is used. Defaults to None.
@@ -290,7 +289,7 @@ class PerceptionCriteria:
 
     def __init__(
         self,
-        methods: str | List[str] | CriteriaMethod | List[CriteriaMethod] | None = None,
+        methods: str | list[str] | CriteriaMethod | list[CriteriaMethod] | None = None,
         level: str | Number | CriteriaLevel | None = None,
     ) -> None:
         methods = [CriteriaMethod.NUM_TP] if methods is None else self.load_methods(methods)
@@ -305,25 +304,28 @@ class PerceptionCriteria:
             elif method == CriteriaMethod.METRICS_SCORE_MAPH:
                 self.methods.append(MetricsScoreMAPH(level))
             else:
-                raise NotImplementedError(f"Unsupported method: {method}")
+                error_msg: str = f"Unsupported method: {method}"
+                raise NotImplementedError(error_msg)
 
     @staticmethod
-    def load_methods(methods_input: str | List[str] | CriteriaMethod | List[CriteriaMethod]) -> List[CriteriaMethod]:
+    def load_methods(
+        methods_input: str | list[str] | CriteriaMethod | list[CriteriaMethod],
+    ) -> list[CriteriaMethod]:
         """
         Load `CriteriaMethod` enum.
 
         Args:
         ----
-            methods (str | List[str] | CriteriaMethod | List[CriteriaMethod]): Criteria method instance or name.
+            methods (str | list[str] | CriteriaMethod | list[CriteriaMethod]): Criteria method instance or name.
 
         Returns:
         -------
             List[CriteriaMethod]: Instance.
         """
         if isinstance(methods_input, str):
-            loaded_methods: List[CriteriaMethod] = [CriteriaMethod.from_str(methods_input)]
+            loaded_methods = [CriteriaMethod.from_str(methods_input)]
         elif isinstance(methods_input, CriteriaMethod):
-            loaded_methods: List[CriteriaMethod] = [methods_input]
+            loaded_methods = [methods_input]
         elif isinstance(methods_input, list):
             if isinstance(methods_input[0], str):
                 loaded_methods = [CriteriaMethod.from_str(method) for method in methods_input]
