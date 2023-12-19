@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.11.0
+
+Bug fix
+
+| Module | Feature | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | cli     | allow arbitrary arguments | [#333](https://github.com/tier4/driving_log_replayer/pull/333) | RT4-7955 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.10.6
 
 Bug fix
