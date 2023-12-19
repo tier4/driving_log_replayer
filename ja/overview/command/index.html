@@ -1422,14 +1422,78 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 <div class="highlight"><pre><span></span><code><span class="c1"># simulation 実行、jsonlとjsonの両方の結果ファイルが出力される</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span>
 
-<span class="c1"># simulation 実行、jsonlをjsonに変換しない</span>
-dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="w"> </span>--no-json
-
 <span class="c1"># 結果の確認、output_directory以下の結果ファイルのサマリーを表示する</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>show-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
 
 <span class="c1"># 結果ファイルをjsonに変換する</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>convert-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
+</code></pre></div>
+<h4 id="dlr-simulation-run-launch-argument-option">dlr simulation run launch argument option<a class="headerlink" href="#dlr-simulation-run-launch-argument-option" title="Permanent link">#</a></h4>
+<p>driving_log_replayerのcliは、シナリオファイルからsensor_modelなどlaunchに必要な引数を読み取って、launchコマンドを生成する。
+一方で、bagの再生速度など、実行時に変更したいlaunchの引数に関してはオプションで渡すことで指定可能である。
+引数をカンマで区切りで並べることで複数の引数を指定可能である。</p>
+<p>以下に例を示す。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># bagの再生速度、すなわち、simulation時間を0.5倍速にする</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;play_rate:=0.5&quot;</span>
+
+<span class="c1"># bagの再生速度を0.5倍速、かつ、input_pointcloudを /sensing/lidar/concatenated/pointcloudにする</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;play_rate:=0.5,input_pointcloud:=/sensing/lidar/concatenated/pointcloud&quot;</span>
+
+<span class="c1"># perception_modeをcamera_lidar_fusionにする</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;perception_mode:=camera_lidar_fusion&quot;</span>
+</code></pre></div>
+<p>指定可能な引数は、ros2 launchの-sオプションを使うことで表示できる。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ❯ ros2 launch driving_log_replayer ${use_case}.launch.py -s</span>
+❯<span class="w"> </span>ros2<span class="w"> </span>launch<span class="w"> </span>driving_log_replayer<span class="w"> </span>localization.launch.py<span class="w"> </span>-s
+Arguments<span class="w"> </span><span class="o">(</span>pass<span class="w"> </span>arguments<span class="w"> </span>as<span class="w"> </span><span class="s1">&#39;&lt;name&gt;:=&lt;value&gt;&#39;</span><span class="o">)</span>:
+
+<span class="w">    </span><span class="s1">&#39;with_autoware&#39;</span>:
+<span class="w">        </span>Whether<span class="w"> </span>to<span class="w"> </span>launch<span class="w"> </span>autoware<span class="w"> </span>or<span class="w"> </span>not
+<span class="w">        </span><span class="o">(</span>default:<span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="o">)</span>
+
+<span class="w">    </span><span class="s1">&#39;scenario_path&#39;</span>:
+<span class="w">        </span>scenario<span class="w"> </span>path
+...
+</code></pre></div>
+<p>ただし、launchの引数として表示されていても、localizationの評価でlocalization:=falseといった矛盾した設定が出来ないように、driving_log_replayer側で固定されている引数もある。
+固定している引数は指定しても無視される。固定されている引数は、以下のファイルを参照。</p>
+<div class="highlight"><pre><span></span><code>driving_log_replayer/driving_log_replayer/launch_common.py<span class="w"> </span>get_autoware_launch関数
+driving_log_replayer/launch/<span class="si">${</span><span class="nv">use_case</span><span class="si">}</span>.launch.py<span class="w"> </span>get_autoware_launchの引数
+</code></pre></div>
+<h4 id="simulation">simulation実行で作成されるファイル<a class="headerlink" href="#simulation" title="Permanent link">#</a></h4>
+<p>simulation runコマンドを実行するとプロファイルの出力先フォルダに実行時間のディレクトリが作成され、その下にファイルが出力される。
+出力ファイルの例を以下に示す。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># t4_datasetを使用しない場合</span>
+output_direcotry
+└──<span class="w"> </span>YYYY-mmDD-HHMMSS<span class="w">               </span>//<span class="w"> </span>実行時刻
+<span class="w">    </span>└──<span class="w"> </span>TC01<span class="w">                       </span>//<span class="w"> </span>テストケース名
+<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>console.log<span class="w">           </span>//<span class="w"> </span>ターミナルに出力されているログ
+<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result.json<span class="w">　         </span>//<span class="w"> </span>変換済み結果ファイル
+<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result.jsonl<span class="w">          </span>//<span class="w"> </span>変換元結果ファイル
+<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result_bag<span class="w">            </span>//<span class="w"> </span>recordしたbag
+<span class="w">    </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>metadata.yaml
+<span class="w">    </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>result_bag_0.db3
+<span class="w">    </span>│<span class="w">   </span>└──<span class="w"> </span>run.bash<span class="w">              </span>//<span class="w"> </span>シミュレーション実行コマンド
+<span class="w">    </span>└──<span class="w"> </span>TC02
+...
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>output_direcotry
+└──<span class="w"> </span>YYYY-mmDD-HHMMSS<span class="w">                         </span>//<span class="w"> </span>実行時刻
+<span class="w">    </span>└──<span class="w"> </span>TC01<span class="w">                                 </span>//<span class="w"> </span>テストケース名
+│<span class="w">       </span>├──<span class="w"> </span>console.log<span class="w">                     </span>//<span class="w"> </span>ターミナルに出力されているログ
+│<span class="w">       </span>├──<span class="w"> </span>run.bash<span class="w">                        </span>//<span class="w"> </span>シミュレーション実行コマンド
+│<span class="w">       </span>├──<span class="w"> </span>DATASET01
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>perception_eval_log<span class="w">        </span>//<span class="w"> </span>percepiton_evalのログ
+│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>...
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result.json<span class="w">                </span>//<span class="w"> </span>変換済み結果ファイル
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result.jsonl<span class="w">               </span>//<span class="w"> </span>変換元結果ファイル
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result_archive<span class="w">             </span>//<span class="w"> </span>json以外の評価結果を出力するディレクトリ
+│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>scene_result.pkl<span class="w">      </span>//<span class="w"> </span>perception_evalで評価したframe_resultsのオブジェクトファイル
+│<span class="w">       </span>│<span class="w">   </span>└──<span class="w"> </span>result_bag<span class="w">                 </span>//<span class="w"> </span>recordしたbag
+│<span class="w">       </span>│<span class="w">       </span>├──<span class="w"> </span>metadata.yaml
+│<span class="w">       </span>│<span class="w">       </span>└──<span class="w"> </span>result_bag_0.db3
+│<span class="w">       </span>└──<span class="w"> </span>DATASET02
+...
 </code></pre></div>
 <h2 id="wasim-driving_log_replayer">wasim による driving_log_replayer 実行<a class="headerlink" href="#wasim-driving_log_replayer" title="Permanent link">#</a></h2>
 <p>TIER IV が提供している<a href="https://docs.web.auto/user-manuals/evaluator/introduction">Autoware Evaluator</a>へ

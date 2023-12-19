@@ -1422,14 +1422,78 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 <div class="highlight"><pre><span></span><code><span class="c1"># simulation run, both jsonl and json result files are output</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span>
 
-<span class="c1"># simulation run, do not convert jsonl to json</span>
-dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="w"> </span>--no-json
-
 <span class="c1"># Check results and display summary of result files under output_directory</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>show-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
 
 <span class="c1"># Convert result files to json</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>convert-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
+</code></pre></div>
+<h4 id="dlr-simulation-run-launch-argument-option">dlr simulation run launch argument option<a class="headerlink" href="#dlr-simulation-run-launch-argument-option" title="Permanent link">#</a></h4>
+<p>The driving_log_replayer cli reads the necessary launch arguments such as sensor_model from the scenario file and generates the launch command.
+On the other hand, launch arguments that you want to change at runtime, such as bag playback speed, can be specified by passing them as options.
+Multiple arguments can be specified by arranging them in a comma-separated list.</p>
+<p>An example is shown below.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># The playback speed of bag, i.e., simulation time, is set to 0.5x speed.</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;play_rate:=0.5&quot;</span>
+
+<span class="c1"># Set bag playback speed to 0.5x and input_pointcloud to /sensing/lidar/concatenated/pointcloud</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;play_rate:=0.5,input_pointcloud:=/sensing/lidar/concatenated/pointcloud&quot;</span>
+
+<span class="c1"># Set perception_mode to camera_lidar_fusion</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;perception_mode:=camera_lidar_fusion&quot;</span>
+</code></pre></div>
+<p>The arguments that can be specified can be displayed by using the -s option of ros2 launch.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ❯ ros2 launch driving_log_replayer ${use_case}.launch.py -s</span>
+❯<span class="w"> </span>ros2<span class="w"> </span>launch<span class="w"> </span>driving_log_replayer<span class="w"> </span>localization.launch.py<span class="w"> </span>-s
+Arguments<span class="w"> </span><span class="o">(</span>pass<span class="w"> </span>arguments<span class="w"> </span>as<span class="w"> </span><span class="s1">&#39;&lt;name&gt;:=&lt;value&gt;&#39;</span><span class="o">)</span>:
+
+<span class="w">    </span><span class="s1">&#39;with_autoware&#39;</span>:
+<span class="w">        </span>Whether<span class="w"> </span>to<span class="w"> </span>launch<span class="w"> </span>autoware<span class="w"> </span>or<span class="w"> </span>not
+<span class="w">        </span><span class="o">(</span>default:<span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="o">)</span>
+
+<span class="w">    </span><span class="s1">&#39;scenario_path&#39;</span>:
+<span class="w">        </span>scenario<span class="w"> </span>path
+...
+</code></pre></div>
+<p>However, some arguments are fixed on the driving_log_replayer side so that they cannot be inconsistently set, such as localization:=false in the localization evaluation, even if they are displayed as launch arguments.
+Fixed arguments are ignored even if specified. See the following file for fixed arguments.</p>
+<div class="highlight"><pre><span></span><code>get_autoware_launch<span class="w"> </span>fucntion<span class="w"> </span><span class="k">in</span><span class="w"> </span>driving_log_replayer/driving_log_replayer/launch_common.py<span class="w">　</span>
+argument<span class="w"> </span>of<span class="w"> </span>get_autoware_launch<span class="w"> </span><span class="k">in</span><span class="w"> </span>driving_log_replayer/launch/<span class="si">${</span><span class="nv">use_case</span><span class="si">}</span>.launch.py
+</code></pre></div>
+<h4 id="files-created-by-simulation-run">Files created by simulation run<a class="headerlink" href="#files-created-by-simulation-run" title="Permanent link">#</a></h4>
+<p>When the simulation run command is executed, a run time directory is created in the output folder of the profile, and the files are output under the directory.
+An example of the output file is shown below.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># t4_datasetを使用しない場合</span>
+output_direcotry
+└──<span class="w"> </span>YYYY-mmDD-HHMMSS<span class="w">               </span>//<span class="w"> </span>Execution<span class="w"> </span><span class="nb">time</span>
+<span class="w">    </span>└──<span class="w"> </span>TC01<span class="w">                       </span>//<span class="w"> </span>Name<span class="w"> </span>of<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="k">case</span>
+<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>console.log<span class="w">           </span>//<span class="w"> </span>Log<span class="w"> </span>output<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>terminal
+<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result.json<span class="w">　         </span>//<span class="w"> </span>Converted<span class="w"> </span>result<span class="w"> </span>file
+<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result.jsonl<span class="w">          </span>//<span class="w"> </span>Original<span class="w"> </span>result<span class="w"> </span>file
+<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result_bag<span class="w">            </span>//<span class="w"> </span>recorded<span class="w"> </span>bag
+<span class="w">    </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>metadata.yaml
+<span class="w">    </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>result_bag_0.db3
+<span class="w">    </span>│<span class="w">   </span>└──<span class="w"> </span>run.bash<span class="w">              </span>//<span class="w"> </span>Simulation<span class="w"> </span>execution<span class="w"> </span><span class="nb">command</span>
+<span class="w">    </span>└──<span class="w"> </span>TC02
+...
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>output_direcotry
+└──<span class="w"> </span>YYYY-mmDD-HHMMSS<span class="w">                         </span>//<span class="w"> </span>Execution<span class="w"> </span><span class="nb">time</span>
+<span class="w">    </span>└──<span class="w"> </span>TC01<span class="w">                                 </span>//<span class="w"> </span>Name<span class="w"> </span>of<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="k">case</span>
+│<span class="w">       </span>├──<span class="w"> </span>console.log<span class="w">                     </span>//<span class="w"> </span>Log<span class="w"> </span>output<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>terminal
+│<span class="w">       </span>├──<span class="w"> </span>run.bash<span class="w">                        </span>//<span class="w"> </span>Simulation<span class="w"> </span>execution<span class="w"> </span><span class="nb">command</span>
+│<span class="w">       </span>├──<span class="w"> </span>DATASET01
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>perception_eval_log<span class="w">        </span>//<span class="w"> </span>Log<span class="w"> </span>files<span class="w"> </span>of<span class="w"> </span>percepiton_eval
+│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>...
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result.json<span class="w">                </span>//<span class="w"> </span>Converted<span class="w"> </span>result<span class="w"> </span>file
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result.jsonl<span class="w">               </span>//<span class="w"> </span>Original<span class="w"> </span>result<span class="w"> </span>file
+│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result_archive<span class="w">             </span>//<span class="w"> </span>Directory<span class="w"> </span>to<span class="w"> </span>output<span class="w"> </span>evaluation<span class="w"> </span>results<span class="w"> </span>other<span class="w"> </span>than<span class="w"> </span>json
+│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>scene_result.pkl<span class="w">      </span>//<span class="w"> </span>Object<span class="w"> </span>file<span class="w"> </span>of<span class="w"> </span>frame_results<span class="w"> </span>evaluated<span class="w"> </span>by<span class="w"> </span>perception_eval
+│<span class="w">       </span>│<span class="w">   </span>└──<span class="w"> </span>result_bag<span class="w">                 </span>//<span class="w"> </span>recorded<span class="w"> </span>bag
+│<span class="w">       </span>│<span class="w">       </span>├──<span class="w"> </span>metadata.yaml
+│<span class="w">       </span>│<span class="w">       </span>└──<span class="w"> </span>result_bag_0.db3
+│<span class="w">       </span>└──<span class="w"> </span>DATASET02
+...
 </code></pre></div>
 <h2 id="run-driving_log_replayer-with-wasim">Run driving_log_replayer with wasim<a class="headerlink" href="#run-driving_log_replayer-with-wasim" title="Permanent link">#</a></h2>
 <p>If you have access rights to <a href="https://docs.web.auto/user-manuals/evaluator/introduction">Autoware Evaluator</a> provided by TIER IV,

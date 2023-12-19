@@ -847,18 +847,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#localization-performance_diag" class="md-nav__link">
+  <a href="#t4_dataset" class="md-nav__link">
     <span class="md-ellipsis">
-      localization, performance_diag のデータフォルダ構成
+      t4_datasetを使用しないユースケースのデータフォルダ構成
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#obstacle_segmentation-perception" class="md-nav__link">
+  <a href="#t4_dataset_1" class="md-nav__link">
     <span class="md-ellipsis">
-      obstacle_segmentation, perception のデータフォルダ構成
+      t4_datasetを使用するユースケースのデータフォルダ構成
     </span>
   </a>
   
@@ -1376,18 +1376,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#localization-performance_diag" class="md-nav__link">
+  <a href="#t4_dataset" class="md-nav__link">
     <span class="md-ellipsis">
-      localization, performance_diag のデータフォルダ構成
+      t4_datasetを使用しないユースケースのデータフォルダ構成
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#obstacle_segmentation-perception" class="md-nav__link">
+  <a href="#t4_dataset_1" class="md-nav__link">
     <span class="md-ellipsis">
-      obstacle_segmentation, perception のデータフォルダ構成
+      t4_datasetを使用するユースケースのデータフォルダ構成
     </span>
   </a>
   
@@ -1484,7 +1484,7 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 <h3 id="_3">データフォルダ<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
 <p>シミュレーションで使用するリソースを保存しておくフォルダ。</p>
 <p>テストケース毎に、シナリオと、bag、dataset を配置する。</p>
-<h3 id="localization-performance_diag">localization, performance_diag のデータフォルダ構成<a class="headerlink" href="#localization-performance_diag" title="Permanent link">#</a></h3>
+<h3 id="t4_dataset">t4_datasetを使用しないユースケースのデータフォルダ構成<a class="headerlink" href="#t4_dataset" title="Permanent link">#</a></h3>
 <div class="highlight"><pre><span></span><code>driving_log_replayer_data<span class="w">             </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>data_directory
 │
 ├──<span class="w"> </span>TC001<span class="w">                          </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>任意の名称をつけてよい
@@ -1496,10 +1496,10 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 ├──<span class="w"> </span>TC002<span class="w">                           </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>S001と構成は同じ
 ...
 </code></pre></div>
-<h3 id="obstacle_segmentation-perception">obstacle_segmentation, perception のデータフォルダ構成<a class="headerlink" href="#obstacle_segmentation-perception" title="Permanent link">#</a></h3>
+<h3 id="t4_dataset_1">t4_datasetを使用するユースケースのデータフォルダ構成<a class="headerlink" href="#t4_dataset_1" title="Permanent link">#</a></h3>
 <div class="highlight"><pre><span></span><code>driving_log_replayer_data<span class="w">              </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>data_directory
 │
-├──<span class="w"> </span>TC001<span class="w">                           </span>//<span class="w"> </span>シナリオディレクトリ<span class="w"> </span>任意の名称をつけてよい
+├──<span class="w"> </span>TC001<span class="w">                           </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>任意の名称をつけてよい
 │<span class="w">   </span>├──<span class="w"> </span>scenario.yaml<span class="w">              </span>//<span class="w"> </span>シナリオ
 │<span class="w">   </span>└──<span class="w"> </span>t4_dataset
 │<span class="w">       </span>├──<span class="w"> </span>T4D001<span class="w">                 </span>//<span class="w"> </span>t4_datasetディレクトリ、sensingの場合は1個
@@ -1514,7 +1514,7 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 │<span class="w">           </span>└──<span class="w"> </span>input_bag
 │<span class="w">          </span>...
 │
-├──<span class="w"> </span>TC002<span class="w">                           </span>//<span class="w"> </span>シナリオディレクトリ<span class="w"> </span>S001と構成は同じ
+├──<span class="w"> </span>TC002<span class="w">                           </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>S001と構成は同じ
 ...
 </code></pre></div>
 <h3 id="_4">マップフォルダ<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
