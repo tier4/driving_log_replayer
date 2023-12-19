@@ -17,17 +17,12 @@ Evaluation:
         CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
         CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
         Filter:
-          Distance:
-            Min: 0.0
-            Max: 50.0
-        # Distance: 0.0-50.0 # min-maxの形式で書いて、プログラムの中でばらしてもいい？
+          Distance: 0.0-50.0
       - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
         CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
         CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
         Filter:
-          Distance:
-            Min: 50.0
-            Max: 10.0
+          Distance: 50.0-100.0
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here
