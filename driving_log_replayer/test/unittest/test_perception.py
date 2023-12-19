@@ -13,24 +13,28 @@
 # limitations under the License.
 from typing import Callable
 
-import pytest
-from driving_log_replayer.perception import (Conditions, Perception,
-                                             PerceptionScenario)
-from driving_log_replayer.scenario import load_sample_scenario
 from perception_eval.common import DynamicObject
 from perception_eval.common.dataset import FrameGroundTruth
 from perception_eval.common.evaluation_task import EvaluationTask
-from perception_eval.common.label import AutowareLabel, Label
+from perception_eval.common.label import AutowareLabel
+from perception_eval.common.label import Label
 from perception_eval.common.schema import FrameID
-from perception_eval.common.shape import Shape, ShapeType
+from perception_eval.common.shape import Shape
+from perception_eval.common.shape import ShapeType
 from perception_eval.config import PerceptionEvaluationConfig
-from perception_eval.evaluation import (DynamicObjectWithPerceptionResult,
-                                        PerceptionFrameResult)
+from perception_eval.evaluation import DynamicObjectWithPerceptionResult
+from perception_eval.evaluation import PerceptionFrameResult
 from perception_eval.evaluation.metrics import MetricsScoreConfig
-from perception_eval.evaluation.result.perception_frame_config import (
-    CriticalObjectFilterConfig, PerceptionPassFailConfig)
+from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
+from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from pyquaternion import Quaternion
+import pytest
 from std_msgs.msg import Header
+
+from driving_log_replayer.perception import Conditions
+from driving_log_replayer.perception import Perception
+from driving_log_replayer.perception import PerceptionScenario
+from driving_log_replayer.scenario import load_sample_scenario
 
 
 def test_scenario() -> None:

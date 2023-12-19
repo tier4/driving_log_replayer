@@ -15,7 +15,8 @@
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 from enum import Enum
 from numbers import Number
 from typing import TYPE_CHECKING, List
