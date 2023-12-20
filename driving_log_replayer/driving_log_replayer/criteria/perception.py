@@ -302,7 +302,7 @@ class PerceptionCriteria:
         levels = [CriteriaLevel.EASY] if levels is None else self.load_levels(levels)
 
         assert len(methods) == len(
-            levels
+            levels,
         ), f"Number of CriteriaMethod and CriteriaLevel must be same. Current methods: {methods}, levels: {levels}"
 
         self.methods = []
