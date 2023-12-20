@@ -1,8 +1,16 @@
 # Release Notes
 
+## Version 1.11.1
+
+Minor Tweak
+
+| Module       | Feature  | Brief summary                                  | Pull request                                                   | Jira | Contributor                           |
+| ------------ | -------- | ---------------------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | criteria | add maph criteria and allow multiple criterion | [#337](https://github.com/tier4/driving_log_replayer/pull/337) | -    | [kminoda](https://github.com/kminoda) |
+
 ## Version 1.11.0
 
-Bug fix
+Major change
 
 | Module | Feature | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
 | ------ | ------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
