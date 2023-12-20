@@ -290,12 +290,20 @@ class PerceptionCriteria:
     def __init__(
         self,
         methods: str | list[str] | CriteriaMethod | list[CriteriaMethod] | None = None,
-        levels: str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel] | None = None,
+        levels: str
+        | list[str]
+        | Number
+        | list[Number]
+        | CriteriaLevel
+        | list[CriteriaLevel]
+        | None = None,
     ) -> None:
         methods = [CriteriaMethod.NUM_TP] if methods is None else self.load_methods(methods)
         levels = [CriteriaLevel.EASY] if levels is None else self.load_levels(levels)
 
-        assert len(methods) == len(levels), f"Number of CriteriaMethod and CriteriaLevel must be same. Current methods: {methods}, levels: {levels}"
+        assert len(methods) == len(
+            levels
+        ), f"Number of CriteriaMethod and CriteriaLevel must be same. Current methods: {methods}, levels: {levels}"
 
         self.methods = []
         for method, level in zip(methods, levels):
@@ -339,7 +347,9 @@ class PerceptionCriteria:
         return loaded_methods
 
     @staticmethod
-    def load_levels(levels_input: str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel]) -> list[CriteriaLevel]:
+    def load_levels(
+        levels_input: str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel],
+    ) -> list[CriteriaLevel]:
         """
         Load `CriteriaLevel`.
 

@@ -34,7 +34,9 @@ class Conditions(BaseModel):
     CriteriaMethod: Literal["num_tp", "metrics_score", "metrics_score_maph"] | list[
         str
     ] | None = None
-    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[number] | None = None
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[
+        number
+    ] | None = None
 
 
 class Evaluation(BaseModel):
