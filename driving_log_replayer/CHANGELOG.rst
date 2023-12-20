@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.11.1 (2023-12-20)
+-------------------
 * feat: add maph criteria (`#337 <https://github.com/tier4/driving_log_replayer/issues/337>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
 * Contributors: kminoda
