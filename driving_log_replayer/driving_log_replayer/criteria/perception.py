@@ -283,20 +283,22 @@ class PerceptionCriteria:
     ----
         methods (str | list[str] | CriteriaMethod | list[CriteriaMethod] | None): List of criteria method instances or names.
             If None, `CriteriaMethod.NUM_TP` is used. Defaults to None.
-        level (str | Number | CriteriaLevel | None): Criteria level instance or name.
+        levels (str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel]): Criteria level instance or name.
             If None, `CriteriaLevel.Easy` is used. Defaults to None.
     """
 
     def __init__(
         self,
         methods: str | list[str] | CriteriaMethod | list[CriteriaMethod] | None = None,
-        level: str | Number | CriteriaLevel | None = None,
+        levels: str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel] | None = None,
     ) -> None:
         methods = [CriteriaMethod.NUM_TP] if methods is None else self.load_methods(methods)
-        level = CriteriaLevel.EASY if level is None else self.load_level(level)
+        levels = [CriteriaLevel.EASY] if levels is None else self.load_levels(levels)
+
+        assert len(methods) == len(levels), f"Number of CriteriaMethod and CriteriaLevel must be same. Current methods: {methods}, levels: {levels}"
 
         self.methods = []
-        for method in methods:
+        for method, level in zip(methods, levels):
             if method == CriteriaMethod.NUM_TP:
                 self.methods.append(NumTP(level))
             elif method == CriteriaMethod.METRICS_SCORE:
@@ -316,7 +318,7 @@ class PerceptionCriteria:
 
         Args:
         ----
-            methods (str | list[str] | CriteriaMethod | list[CriteriaMethod]): Criteria method instance or name.
+            methods_input (str | list[str] | CriteriaMethod | list[CriteriaMethod]): Criteria method instance or name.
 
         Returns:
         -------
@@ -337,24 +339,34 @@ class PerceptionCriteria:
         return loaded_methods
 
     @staticmethod
-    def load_level(level: str | Number | CriteriaLevel) -> CriteriaLevel:
+    def load_levels(levels_input: str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel]) -> list[CriteriaLevel]:
         """
         Load `CriteriaLevel`.
 
         Args:
         ----
-            level (str | Number | CriteriaLevel): Criteria level instance, name or value.
+            levels_input (str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel]): Criteria level instance, name or value.
 
         Returns:
         -------
-            CriteriaLevel: Instance.
+            list[CriteriaLevel]: Instance.
         """
-        if isinstance(level, str):
-            level = CriteriaLevel.from_str(level)
-        elif isinstance(level, Number):
-            level = CriteriaLevel.from_number(level)
-        assert isinstance(level, CriteriaLevel), f"Invalid type of level: {type(level)}"
-        return level
+        if isinstance(levels_input, str):
+            levels_output = [CriteriaLevel.from_str(levels_input)]
+        elif isinstance(levels_input, Number):
+            levels_output = [CriteriaLevel.from_number(levels_input)]
+        elif isinstance(levels_input, CriteriaLevel):
+            levels_output = [levels_input]
+        elif isinstance(levels_input, list):
+            if isinstance(levels_input[0], str):
+                levels_output = [CriteriaLevel.from_str(level) for level in levels_input]
+            elif isinstance(levels_input[0], Number):
+                levels_output = [CriteriaLevel.from_number(level) for level in levels_input]
+            elif isinstance(levels_input[0], CriteriaLevel):
+                levels_output = levels_input
+        for level in levels_output:
+            assert isinstance(level, CriteriaLevel), f"Invalid type of level: {type(level)}"
+        return levels_output
 
     def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
         """

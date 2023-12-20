@@ -34,7 +34,7 @@ class Conditions(BaseModel):
     CriteriaMethod: Literal["num_tp", "metrics_score", "metrics_score_maph"] | list[
         str
     ] | None = None
-    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | number | None = None
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[number] | None = None
 
 
 class Evaluation(BaseModel):
@@ -58,7 +58,7 @@ class Perception(EvaluationItem):
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(
             methods=self.condition.CriteriaMethod,
-            level=self.condition.CriteriaLevel,
+            levels=self.condition.CriteriaLevel,
         )
 
     def set_frame(

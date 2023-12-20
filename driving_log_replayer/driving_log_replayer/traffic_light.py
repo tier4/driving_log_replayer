@@ -53,7 +53,7 @@ class Perception(EvaluationItem):
         self.condition: Conditions
         self.criteria: PerceptionCriteria = PerceptionCriteria(
             methods=self.condition.CriteriaMethod,
-            level=self.condition.CriteriaLevel,
+            levels=self.condition.CriteriaLevel,
         )
 
     def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
