@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import List
 
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
@@ -32,7 +31,7 @@ from driving_log_replayer.scenario import Scenario
 
 class Conditions(BaseModel):
     PassRate: number
-    CriteriaMethod: Literal["num_tp", "metrics_score", "metrics_score_maph"] | List[
+    CriteriaMethod: Literal["num_tp", "metrics_score", "metrics_score_maph"] | list[
         str
     ] | None = None
     CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | number | None = None
