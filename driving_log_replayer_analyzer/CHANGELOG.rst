@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add maph criteria (`#337 <https://github.com/tier4/driving_log_replayer/issues/337>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: kminoda
+
 1.11.0 (2023-12-19)
 -------------------
 * feat: cli allow arbitrary arguments (`#333 <https://github.com/tier4/driving_log_replayer/issues/333>`_)
