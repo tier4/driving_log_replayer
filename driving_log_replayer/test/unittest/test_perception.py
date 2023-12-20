@@ -49,8 +49,8 @@ def test_scenario_criteria_custom_level() -> None:
         PerceptionScenario,
         "scenario.criteria.custom.yaml",
     )
-    assert scenario.Evaluation.Conditions.CriteriaMethod == "metrics_score"
-    assert scenario.Evaluation.Conditions.CriteriaLevel == 10.0  # noqa
+    assert scenario.Evaluation.Conditions.CriteriaMethod == ["metrics_score", "metrics_score_maph"]
+    assert scenario.Evaluation.Conditions.CriteriaLevel == [10.0, 10.0]
 
 
 @pytest.fixture()

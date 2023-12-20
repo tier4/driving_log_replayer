@@ -31,8 +31,12 @@ from driving_log_replayer.scenario import Scenario
 
 class Conditions(BaseModel):
     PassRate: number
-    CriteriaMethod: Literal["num_tp", "metrics_score"] | None = None
-    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | number | None = None
+    CriteriaMethod: Literal["num_tp", "metrics_score", "metrics_score_maph"] | list[
+        str
+    ] | None = None
+    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[
+        number
+    ] | None = None
 
 
 class Evaluation(BaseModel):
@@ -55,8 +59,8 @@ class Perception(EvaluationItem):
 
     def __post_init__(self) -> None:
         self.criteria: PerceptionCriteria = PerceptionCriteria(
-            method=self.condition.CriteriaMethod,
-            level=self.condition.CriteriaLevel,
+            methods=self.condition.CriteriaMethod,
+            levels=self.condition.CriteriaLevel,
         )
 
     def set_frame(
