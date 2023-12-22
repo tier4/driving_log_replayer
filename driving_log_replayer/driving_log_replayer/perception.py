@@ -79,8 +79,8 @@ class PerceptionScenario(Scenario):
 class Perception(EvaluationItem):
     def __post_init__(self) -> None:
         self.criteria = PerceptionCriteria(
-            method=self.condition.CriteriaMethod,
-            level=self.condition.CriteriaLevel,
+            methods=self.condition.CriteriaMethod,
+            levels=self.condition.CriteriaLevel,
             distance_range=self.condition.Filter.Distance,
         )
 
