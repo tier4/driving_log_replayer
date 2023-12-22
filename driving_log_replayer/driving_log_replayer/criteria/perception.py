@@ -292,7 +292,7 @@ class CriteriaFilter:
         """
         return self.distance_range is None
 
-    def filter_frame_results(self, frame: PerceptionFrameResult) -> PerceptionFrameResult:
+    def filter_frame_result(self, frame: PerceptionFrameResult) -> PerceptionFrameResult:
         """
         Filter PerceptionFrameResult by distance range.
 
@@ -306,7 +306,7 @@ class CriteriaFilter:
         -------
             PerceptionFrameResult: Filtered result.
         """
-        if self.is_all_none:
+        if self.is_all_none():
             return frame
 
         if self.distance_range is not None:
