@@ -19,8 +19,9 @@ class Scenario(BaseModel):
     LocalMapPath: Path | None = None
     Evaluation: dict
 
-    @field_validator("LocalMapPath")
-    def validate_local_path(cls, v: str | None) -> Path | None:  # noqa
+    @field_validator("LocalMapPath", mode="before")
+    @classmethod
+    def validate_local_path(cls, v: str | None) -> Path | None:
         if v is None:
             return None
         normal_path = Path(expandvars(v))
@@ -42,8 +43,9 @@ class Dataset(BaseModel):
     LocalMapPath: Path
     LaunchSensing: bool | None = None
 
-    @field_validator("LocalMapPath")
-    def validate_local_path(cls, v: str | None) -> Path | None:  # noqa
+    @field_validator("LocalMapPath", mode="before")
+    @classmethod
+    def validate_local_path(cls, v: str | None) -> Path | None:
         if v is None:
             return None
         normal_path = Path(expandvars(v))
