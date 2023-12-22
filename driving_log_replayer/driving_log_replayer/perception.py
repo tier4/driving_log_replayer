@@ -32,9 +32,9 @@ from driving_log_replayer.scenario import Scenario
 
 class Filter(BaseModel):
     Distance: tuple[float, float] | None = None
-    # フィルタ条件追加するときはここに追加していく
+    # add filter condition here
 
-    @field_validator("Distance")
+    @field_validator("Distance", mode="before")
     def validate_distance_range(cls, v: str) -> tuple[number, number]:  # noqa
         distance_range = list(map(float, v.split("-")))
         range_len = 2
@@ -43,7 +43,7 @@ class Filter(BaseModel):
                 f"{v} is not valid distance range, expected ordering (min, max) with min < max."
             )
             raise ValueError(err_msg)
-        return distance_range[0], distance_range[1]
+        return (distance_range[0], distance_range[1])
 
 
 class Criteria(BaseModel):
@@ -54,7 +54,7 @@ class Criteria(BaseModel):
     CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[
         number
     ] | None = None
-    Filter: Filter | None = None
+    Filter: Filter | None
 
 
 class Conditions(BaseModel):
