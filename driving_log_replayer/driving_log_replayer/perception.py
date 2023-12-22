@@ -120,7 +120,7 @@ class Perception(EvaluationItem):
 class PerceptionResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__perception_criterion: list[Perception]
+        self.__perception_criterion: list[Perception] = []
         for i, criteria in enumerate(condition.Criterion):
             self.__perception_criterion.append(
                 Perception(name=f"criteria{i}", condition=criteria),
