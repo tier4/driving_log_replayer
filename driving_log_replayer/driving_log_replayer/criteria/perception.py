@@ -310,8 +310,8 @@ class CriteriaFilter:
             return frame
 
         if self.distance_range is not None:
-            min_distance_list = [self.Distance[0]] * len(frame.target_labels)
-            max_distance_list = [self.Distance[1]] * len(frame.target_labels)
+            min_distance_list = [self.distance_range[0]] * len(frame.target_labels)
+            max_distance_list = [self.distance_range[1]] * len(frame.target_labels)
         else:
             min_distance_list = None
             max_distance_list = None
