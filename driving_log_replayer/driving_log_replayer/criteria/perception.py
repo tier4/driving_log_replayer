@@ -461,7 +461,7 @@ class PerceptionCriteria:
         -------
             SuccessFail: Success/Fail result.
         """
-        frame = self.criteria_filter.filter_frame_results(frame)
+        frame = self.criteria_filter.filter_frame_result(frame)
 
         result: SuccessFail = SuccessFail.SUCCESS
 
