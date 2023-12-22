@@ -16,6 +16,7 @@ from dataclasses import dataclass
 
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
+from pydantic import field_validator
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from typing_extensions import Literal
@@ -29,7 +30,23 @@ from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
 
-class Conditions(BaseModel):
+class Filter(BaseModel):
+    Distance: tuple[float, float] | None = None
+    # フィルタ条件追加するときはここに追加していく
+
+    @field_validator("Distance")
+    def validate_distance_range(cls, v: str) -> tuple[number, number]:  # noqa
+        distance_range = list(map(float, v.split("-")))
+        range_len = 2
+        if len(distance_range) != range_len or (distance_range[0] >= distance_range[1]):
+            err_msg = (
+                f"{v} is not valid distance range, expected ordering (min, max) with min < max."
+            )
+            raise ValueError(err_msg)
+        return distance_range[0], distance_range[1]
+
+
+class Criteria(BaseModel):
     PassRate: number
     CriteriaMethod: Literal["num_tp", "metrics_score", "metrics_score_maph"] | list[
         str
@@ -37,11 +54,16 @@ class Conditions(BaseModel):
     CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[
         number
     ] | None = None
+    Filter: Filter | None = None
+
+
+class Conditions(BaseModel):
+    Criterion: list[Criteria]
 
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["perception"]
-    UseCaseFormatVersion: Literal["0.5.0", "0.6.0"]
+    UseCaseFormatVersion: Literal["1.0.0"]
     Datasets: list[dict]
     Conditions: Conditions
     PerceptionEvaluationConfig: dict
@@ -55,21 +77,19 @@ class PerceptionScenario(Scenario):
 
 @dataclass
 class Perception(EvaluationItem):
-    name: str = "Perception"
-
     def __post_init__(self) -> None:
-        self.criteria: PerceptionCriteria = PerceptionCriteria(
-            methods=self.condition.CriteriaMethod,
-            levels=self.condition.CriteriaLevel,
+        self.criteria = PerceptionCriteria(
+            method=self.condition.CriteriaMethod,
+            level=self.condition.CriteriaLevel,
+            distance_range=self.condition.Filter.Distance,
         )
 
     def set_frame(
         self,
         frame: PerceptionFrameResult,
         skip: int,
-        header: Header,
         map_to_baselink: dict,
-    ) -> tuple[dict, MarkerArray, MarkerArray]:
+    ) -> dict:
         self.total += 1
         frame_success = "Fail"
         result = self.criteria.get_result(frame)
@@ -78,6 +98,67 @@ class Perception(EvaluationItem):
             self.passed += 1
             frame_success = "Success"
 
+        self.success = self.rate() >= self.condition.PassRate
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
+
+        return {
+            "Filter": self.condition.Filter.model_dump(),
+            "Ego": {"TransformStamped": map_to_baselink},
+            "FrameName": frame.frame_name,
+            "FrameSkip": skip,
+            "PassFail": {
+                "Result": {"Total": self.success_str(), "Frame": frame_success},
+                "Info": {
+                    "TP": len(frame.pass_fail_result.tp_object_results),  # ここfilter済みのframeかな
+                    "FP": len(frame.pass_fail_result.fp_object_results),
+                    "FN": len(frame.pass_fail_result.fn_objects),
+                },
+            },
+        }
+
+
+class PerceptionResult(ResultBase):
+    def __init__(self, condition: Conditions) -> None:
+        super().__init__()
+        self.__perception_criterion: list[Perception]
+        for i, criteria in enumerate(condition.Criterion):
+            self.__perception_criterion.append(
+                Perception(name=f"criteria{i}", condition=criteria),
+            )
+
+    def update(self) -> None:
+        tmp_success = True
+        tmp_summary = ""
+        for v in self.__perception_criterion:
+            tmp_summary += " " + v.summary
+            if not v.success:
+                tmp_success = False
+        prefix_str = "Passed: " if tmp_success else "Failed: "
+        self._success = tmp_success
+        self._summary = prefix_str + tmp_summary
+
+    def set_frame(
+        self,
+        frame: PerceptionFrameResult,
+        skip: int,
+        header: Header,
+        map_to_baselink: dict,
+    ) -> tuple[MarkerArray, MarkerArray]:
+        for i in range(len(self.__perception_criterion)):
+            self._frame = self.__perception_criterion[i].set_frame(
+                frame,
+                skip,
+                map_to_baselink,
+            )
+        self.update()
+        marker_ground_truth, marker_results = self.create_ros_msg(frame, header)
+        return marker_ground_truth, marker_results
+
+    def create_ros_msg(
+        self,
+        frame: PerceptionFrameResult,
+        header: Header,
+    ) -> tuple[MarkerArray, MarkerArray]:
         marker_ground_truth = MarkerArray()
         color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
 
@@ -97,57 +178,6 @@ class Perception(EvaluationItem):
             frame.pass_fail_result,
             header,
         )
-
-        self.success = self.rate() >= self.condition.PassRate
-        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
-
-        return (
-            {
-                "Ego": {"TransformStamped": map_to_baselink},
-                "FrameName": frame.frame_name,
-                "FrameSkip": skip,
-                "PassFail": {
-                    "Result": {"Total": self.success_str(), "Frame": frame_success},
-                    "Info": {
-                        "TP": len(frame.pass_fail_result.tp_object_results),
-                        "FP": len(frame.pass_fail_result.fp_object_results),
-                        "FN": len(frame.pass_fail_result.fn_objects),
-                    },
-                },
-            },
-            marker_ground_truth,
-            marker_results,
-        )
-
-
-class PerceptionResult(ResultBase):
-    def __init__(self, condition: Conditions) -> None:
-        super().__init__()
-        self.__perception = Perception(condition=condition)
-
-    def update(self) -> None:
-        summary_str = f"{self.__perception.summary}"
-        if self.__perception.success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
-
-    def set_frame(
-        self,
-        frame: PerceptionFrameResult,
-        skip: int,
-        header: Header,
-        map_to_baselink: dict,
-    ) -> tuple[MarkerArray, MarkerArray]:
-        self._frame, marker_ground_truth, marker_results = self.__perception.set_frame(
-            frame,
-            skip,
-            header,
-            map_to_baselink,
-        )
-        self.update()
         return marker_ground_truth, marker_results
 
     def set_final_metrics(self, final_metrics: dict) -> None:

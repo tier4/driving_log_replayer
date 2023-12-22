@@ -15,13 +15,17 @@
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
+from copy import deepcopy
 from enum import Enum
 from numbers import Number
 from typing import TYPE_CHECKING
 
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
+from perception_eval.evaluation.matching.objects_filter import filter_object_results
+from perception_eval.evaluation.matching.objects_filter import filter_objects
 
 if TYPE_CHECKING:
     from perception_eval.evaluation import PerceptionFrameResult
@@ -274,6 +278,70 @@ class MetricsScoreMAPH(CriteriaMethodImpl):
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
 
 
+class CriteriaFilter:
+    def __init__(self, distance_range: tuple(Number, Number) = None) -> None:
+        self.distance_range = distance_range
+
+    def is_all_none(self) -> bool:
+        """
+        Return True if all filter params are None.
+
+        Returns
+        -------
+            bool: True if all filter params are None.
+        """
+        return self.distance_range is None
+
+    def filter_frame_results(self, frame: PerceptionFrameResult) -> PerceptionFrameResult:
+        """
+        Filter PerceptionFrameResult by distance range.
+
+        If all filter params are None, do nothing and return original frame result.
+
+        Args:
+        ----
+            frame (PerceptionFrameResult): Frame result.
+
+        Returns:
+        -------
+            PerceptionFrameResult: Filtered result.
+        """
+        if self.is_all_none:
+            return frame
+
+        if self.distance_range is not None:
+            min_distance_list = [self.Distance[0]] * len(frame.target_labels)
+            max_distance_list = [self.Distance[1]] * len(frame.target_labels)
+        else:
+            min_distance_list = None
+            max_distance_list = None
+
+        object_results = filter_object_results(
+            frame.object_results,
+            frame.target_labels,
+            max_distance_list=max_distance_list,
+            min_distance_list=min_distance_list,
+            ego2map=frame.frame_ground_truth.ego2map,
+        )
+        frame_ground_truth = frame.frame_ground_truth
+
+        frame_ground_truth.objects = filter_objects(
+            frame_ground_truth.objects,
+            is_gt=True,
+            target_labels=frame.target_labels,
+            max_distance_list=max_distance_list,
+            min_distance_list=min_distance_list,
+            ego2map=frame_ground_truth.ego2map,
+        )
+
+        filtered_frame = deepcopy(frame)
+        filtered_frame.object_results = object_results
+        filtered_frame.frame_ground_truth = frame_ground_truth
+        filtered_frame.evaluate_frame(frame_ground_truth)
+
+        return filtered_frame
+
+
 class PerceptionCriteria:
     """
     Criteria interface for perception evaluation.
@@ -284,7 +352,7 @@ class PerceptionCriteria:
             If None, `CriteriaMethod.NUM_TP` is used. Defaults to None.
         levels (str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel]): Criteria level instance or name.
             If None, `CriteriaLevel.Easy` is used. Defaults to None.
-        distance_range (tuple[float, float] | None): Distance ranges for criteria, ordering (min, max) [m].
+        distance_range (tuple[Number, Number] | None): Range of distance to filter frame result. Defaults to None.
     """
 
     def __init__(
@@ -297,7 +365,7 @@ class PerceptionCriteria:
         | CriteriaLevel
         | list[CriteriaLevel]
         | None = None,
-        distance_range: tuple[float, float] | None = None,
+        distance_range: tuple[Number, Number] | None = None,
     ) -> None:
         methods = [CriteriaMethod.NUM_TP] if methods is None else self.load_methods(methods)
         levels = [CriteriaLevel.EASY] if levels is None else self.load_levels(levels)
@@ -317,6 +385,8 @@ class PerceptionCriteria:
             else:
                 error_msg: str = f"Unsupported method: {method}"
                 raise NotImplementedError(error_msg)
+
+        self.criteria_filter = CriteriaFilter(distance_range)
 
     @staticmethod
     def load_methods(
@@ -391,7 +461,10 @@ class PerceptionCriteria:
         -------
             SuccessFail: Success/Fail result.
         """
+        frame = self.criteria_filter.filter_frame_results(frame)
+
         result: SuccessFail = SuccessFail.SUCCESS
+
         for method in self.methods:
             result &= method.get_result(frame)
         return result
