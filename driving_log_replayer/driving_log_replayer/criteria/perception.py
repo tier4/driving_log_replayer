@@ -337,7 +337,7 @@ class CriteriaFilter:
         filtered_frame = deepcopy(frame)
         filtered_frame.object_results = object_results
         filtered_frame.frame_ground_truth = frame_ground_truth
-        filtered_frame.evaluate_frame(frame_ground_truth)
+        filtered_frame.evaluate_frame(frame_ground_truth.objects)
 
         return filtered_frame
 
