@@ -35,7 +35,8 @@ class Filter(BaseModel):
     # add filter condition here
 
     @field_validator("Distance", mode="before")
-    def validate_distance_range(cls, v: str) -> tuple[number, number]:  # noqa
+    @classmethod
+    def validate_distance_range(cls, v: str) -> tuple[number, number]:
         distance_range = list(map(float, v.split("-")))
         range_len = 2
         if len(distance_range) != range_len or (distance_range[0] >= distance_range[1]):
