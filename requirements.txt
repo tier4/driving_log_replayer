@@ -1,4 +1,4 @@
 # This file is for force overwriting the Python libraries to ensure ROS execution
-numpy==1.21.5
-opencv-python<4.8.0.76
+numpy>=1.22.0,<=1.26.0
 pydantic>=2.5.1
+nuscenes-devkit==1.1.9
