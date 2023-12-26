@@ -36,15 +36,18 @@ class Filter(BaseModel):
 
     @field_validator("Distance", mode="before")
     @classmethod
-    def validate_distance_range(cls, v: str) -> tuple[number, number]:
-        distance_range = list(map(float, v.split("-")))
-        range_len = 2
-        if len(distance_range) != range_len or (distance_range[0] >= distance_range[1]):
-            err_msg = (
-                f"{v} is not valid distance range, expected ordering (min, max) with min < max."
-            )
-            raise ValueError(err_msg)
-        return (distance_range[0], distance_range[1])
+    def validate_distance_range(cls, v: str | None) -> tuple[number, number]:
+        if v is None:
+            return v
+        else:
+            distance_range = list(map(float, v.split("-")))
+            range_len = 2
+            if len(distance_range) != range_len or (distance_range[0] >= distance_range[1]):
+                err_msg = (
+                    f"{v} is not valid distance range, expected ordering (min, max) with min < max."
+                )
+                raise ValueError(err_msg)
+            return (distance_range[0], distance_range[1])
 
 
 class Criteria(BaseModel):
@@ -99,7 +102,7 @@ class Perception(EvaluationItem):
             self.passed += 1
             frame_success = "Success"
 
-        self.success = self.rate() >= self.condition.PassRate
+        self.success: bool = self.rate() >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
@@ -128,15 +131,15 @@ class PerceptionResult(ResultBase):
             )
 
     def update(self) -> None:
-        tmp_success = True
-        tmp_summary = ""
-        for v in self.__perception_criterion:
-            tmp_summary += " " + v.summary
-            if not v.success:
-                tmp_success = False
-        prefix_str = "Passed: " if tmp_success else "Failed: "
-        self._success = tmp_success
-        self._summary = prefix_str + tmp_summary
+        all_summary: list[str] = []
+        all_success: list[bool] = []
+        for criterion in self.__perception_criterion:
+            tmp_success = criterion.success
+            prefix_str = "Passed: " if tmp_success else "Failed: "
+            all_summary.append(prefix_str + " " + criterion.summary)
+            all_success.append(tmp_success)
+        self._summary = ", ".join(all_summary)
+        self._success = all(all_success)
 
     def set_frame(
         self,
@@ -145,8 +148,8 @@ class PerceptionResult(ResultBase):
         header: Header,
         map_to_baselink: dict,
     ) -> tuple[MarkerArray, MarkerArray]:
-        for i in range(len(self.__perception_criterion)):
-            self._frame = self.__perception_criterion[i].set_frame(
+        for criterion in self.__perception_criterion:
+            self._frame[criterion.name] = criterion.set_frame(
                 frame,
                 skip,
                 map_to_baselink,

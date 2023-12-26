@@ -309,21 +309,23 @@ class CriteriaFilter:
         if self.is_all_none():
             return frame
 
+        filtered_frame = deepcopy(frame)
+
         if self.distance_range is not None:
-            min_distance_list = [self.distance_range[0]] * len(frame.target_labels)
-            max_distance_list = [self.distance_range[1]] * len(frame.target_labels)
+            min_distance_list = [self.distance_range[0]] * len(filtered_frame.target_labels)
+            max_distance_list = [self.distance_range[1]] * len(filtered_frame.target_labels)
         else:
             min_distance_list = None
             max_distance_list = None
 
         object_results = filter_object_results(
-            frame.object_results,
-            frame.target_labels,
+            filtered_frame.object_results,
+            filtered_frame.target_labels,
             max_distance_list=max_distance_list,
             min_distance_list=min_distance_list,
-            ego2map=frame.frame_ground_truth.ego2map,
+            ego2map=filtered_frame.frame_ground_truth.ego2map,
         )
-        frame_ground_truth = frame.frame_ground_truth
+        frame_ground_truth = filtered_frame.frame_ground_truth
 
         frame_ground_truth.objects = filter_objects(
             frame_ground_truth.objects,
@@ -334,7 +336,6 @@ class CriteriaFilter:
             ego2map=frame_ground_truth.ego2map,
         )
 
-        filtered_frame = deepcopy(frame)
         filtered_frame.object_results = object_results
         filtered_frame.frame_ground_truth = frame_ground_truth
         filtered_frame.evaluate_frame(frame_ground_truth.objects)
