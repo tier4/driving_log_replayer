@@ -38,8 +38,8 @@ def generate_launch_description() -> launch.LaunchDescription:
         sensing=LaunchConfiguration("sensing"),
         localization="false",
     )
-    rviz_node = cmn.launch_common.get_rviz("perception.rviz")
-    evaluator_node = cmn.launch_common.get_evaluator_node(
+    rviz_node = cmn.get_rviz("perception.rviz")
+    evaluator_node = cmn.get_evaluator_node(
         "traffic_light",
         addition_parameter={"map_path": LaunchConfiguration("map_path")},
     )
