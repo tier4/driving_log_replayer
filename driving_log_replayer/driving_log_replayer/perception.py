@@ -39,15 +39,15 @@ class Filter(BaseModel):
     def validate_distance_range(cls, v: str | None) -> tuple[number, number]:
         if v is None:
             return v
-        else:
-            distance_range = list(map(float, v.split("-")))
-            range_len = 2
-            if len(distance_range) != range_len or (distance_range[0] >= distance_range[1]):
-                err_msg = (
-                    f"{v} is not valid distance range, expected ordering (min, max) with min < max."
-                )
-                raise ValueError(err_msg)
-            return (distance_range[0], distance_range[1])
+
+        distance_range = list(map(float, v.split("-")))
+        range_len = 2
+        if len(distance_range) != range_len or (distance_range[0] >= distance_range[1]):
+            err_msg = (
+                f"{v} is not valid distance range, expected ordering (min, max) with min < max."
+            )
+            raise ValueError(err_msg)
+        return (distance_range[0], distance_range[1])
 
 
 class Criteria(BaseModel):
