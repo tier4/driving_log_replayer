@@ -35,5 +35,7 @@ private:
 
   std::tuple<float, float, float, float> compute_metrics(
     const float TP, const float FP, const float TN, const float FN);
+
+  void test(void);
 };
 }  // namespace driving_log_replayer
