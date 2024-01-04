@@ -19,7 +19,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         scenario_simulation="true",
         perception_mode="lidar",
     )
-    rviz_node = cmn.get_rviz("ground_segmentation.rviz")
+    rviz_node = cmn.get_rviz("autoware.rviz")
     evaluator_node = cmn.get_evaluator_node(
         "ground_segmentation",
         addition_parameter={"vehicle_model": LaunchConfiguration("vehicle_model")},
