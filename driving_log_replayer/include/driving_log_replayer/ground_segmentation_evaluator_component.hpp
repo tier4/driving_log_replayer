@@ -5,6 +5,7 @@
 #include <autoware_point_types/types.hpp>
 #include <rclcpp/rclcpp.hpp>
 
+#include <driving_log_replayer_msgs/msg/ground_segmentation_eval_result.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <sensor_msgs/point_cloud2_iterator.hpp>
 
@@ -29,6 +30,8 @@ private:
   std::shared_ptr<Sync> sync_ptr_;
   message_filters::Subscriber<PointCloud2> concat_cloud_sub_;
   message_filters::Subscriber<PointCloud2> non_ground_cloud_sub_;
+  rclcpp::Publisher<driving_log_replayer_msgs::msg::GroundSegmentationEvalResult>::SharedPtr
+    eval_result_pub_;
   void evaluate(
     const PointCloud2::ConstSharedPtr ground_truth_cloud,
     const PointCloud2::ConstSharedPtr eval_target_cloud);
