@@ -7,7 +7,7 @@ driving_log_replayer を利用するのに必要な設定を述べる。
 driving_log_replayer_cli では、cli に渡す引数を少なくするために引数に指定するディレクトリを設定ファイルに記載し設定ファイルから読み込む形式を取る。
 
 よって cli を使う前に以下の形式で$HOME/.driving_log_replayer.config.toml ファイルを作成しておく。
-手動で作成、もしくは driving_log_replayer configure コマンドで作成する。
+手動で作成、もしくは dlr configure コマンドで作成する。
 
 ```shell
 # 手動で作成

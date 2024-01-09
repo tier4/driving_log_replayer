@@ -16,16 +16,18 @@ class Config(BaseModel):
     output_directory: Path
     autoware_path: Path
 
-    @field_validator("data_directory", "autoware_path")
-    def validate_path(cls, v: str) -> Path:  # noqa
+    @field_validator("data_directory", "autoware_path", mode="before")
+    @classmethod
+    def validate_path(cls, v: str) -> Path:
         normal_path = Path(expandvars(v))
         if normal_path.exists():
             return normal_path
         err_msg = f"{v} is not valid path"
         raise UserError(err_msg)
 
-    @field_validator("output_directory")
-    def validate_out_dir(cls, v: str) -> Path:  # noqa
+    @field_validator("output_directory", mode="before")
+    @classmethod
+    def validate_out_dir(cls, v: str) -> Path:
         normal_path = Path(expandvars(v))
         normal_path.mkdir(parents=True, exist_ok=True)
         if normal_path.exists():
