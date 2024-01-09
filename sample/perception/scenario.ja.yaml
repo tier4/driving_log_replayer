@@ -5,16 +5,24 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
-  UseCaseFormatVersion: 0.6.0
+  UseCaseFormatVersion: 1.0.0
   Datasets:
     - sample_dataset:
         VehicleId: default # データセット毎にVehicleIdを指定する
         LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する。falseの場合はbag中にあるconcatenated/pointcloudを使用する
         LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
   Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score/metrics_score_maph)
-    CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
+    Criterion:
+      - PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+        CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score/metrics_score_maph)
+        CriteriaLevel: hard # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
+        Filter:
+          Distance: 0.0-50.0 # [m]
+      - PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+        CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score/metrics_score_maph)
+        CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
+        Filter: #
+          Distance: 50.0-100.0 # [m]
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection/tracking ここで指定したobjectsを評価する
