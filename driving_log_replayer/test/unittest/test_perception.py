@@ -31,7 +31,8 @@ from pyquaternion import Quaternion
 import pytest
 from std_msgs.msg import Header
 
-from driving_log_replayer.perception import Conditions
+from driving_log_replayer.perception import Criteria
+from driving_log_replayer.perception import Filter
 from driving_log_replayer.perception import Perception
 from driving_log_replayer.perception import PerceptionScenario
 from driving_log_replayer.scenario import load_sample_scenario
@@ -39,8 +40,8 @@ from driving_log_replayer.scenario import load_sample_scenario
 
 def test_scenario() -> None:
     scenario: PerceptionScenario = load_sample_scenario("perception", PerceptionScenario)
-    assert scenario.Evaluation.Conditions.CriteriaMethod == "num_tp"
-    assert scenario.Evaluation.Conditions.CriteriaLevel == "easy"
+    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaMethod == "num_tp"
+    assert scenario.Evaluation.Conditions.Criterion[1].CriteriaLevel == "easy"
 
 
 def test_scenario_criteria_custom_level() -> None:
@@ -49,8 +50,12 @@ def test_scenario_criteria_custom_level() -> None:
         PerceptionScenario,
         "scenario.criteria.custom.yaml",
     )
-    assert scenario.Evaluation.Conditions.CriteriaMethod == ["metrics_score", "metrics_score_maph"]
-    assert scenario.Evaluation.Conditions.CriteriaLevel == [10.0, 10.0]
+    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaMethod == [
+        "metrics_score",
+        "metrics_score_maph",
+    ]
+    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaLevel == [10.0, 10.0]
+    assert scenario.Evaluation.Conditions.Criterion[0].Filter.Distance is None
 
 
 @pytest.fixture()
@@ -100,7 +105,13 @@ def create_frame_result() -> PerceptionFrameResult:
 @pytest.fixture()
 def create_tp_normal() -> Perception:
     return Perception(
-        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="normal"),
+        name="criteria0",
+        condition=Criteria(
+            PassRate=95.0,
+            CriteriaMethod="num_tp",
+            CriteriaLevel="normal",
+            Filter=Filter(Distance=None),
+        ),
         total=99,
         passed=94,
     )
@@ -109,7 +120,13 @@ def create_tp_normal() -> Perception:
 @pytest.fixture()
 def create_tp_hard() -> Perception:
     return Perception(
-        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="hard"),
+        name="criteria0",
+        condition=Criteria(
+            PassRate=95.0,
+            CriteriaMethod="num_tp",
+            CriteriaLevel="hard",
+            Filter=Filter(Distance=None),
+        ),
         total=99,
         passed=94,
     )

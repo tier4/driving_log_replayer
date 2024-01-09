@@ -58,7 +58,7 @@ class Criteria(BaseModel):
     CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[
         number
     ] | None = None
-    Filter: Filter | None
+    Filter: Filter
 
 
 class Conditions(BaseModel):

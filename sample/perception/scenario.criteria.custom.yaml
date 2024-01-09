@@ -5,16 +5,19 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
-  UseCaseFormatVersion: 0.6.0
+  UseCaseFormatVersion: 1.0.0
   Datasets:
     - sample_dataset:
         VehicleId: default # Specify VehicleId for each data set.
         LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
         LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
-    PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: [metrics_score, metrics_score_maph] # Method name of criteria (num_tp/metrics_score/metrics_score_maph)
-    CriteriaLevel: [10.0, 10.0] # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+    Criterion:
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: [metrics_score, metrics_score_maph] # Method name of criteria (num_tp/metrics_score/metrics_score_maph)
+        CriteriaLevel: [10.0, 10.0] # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: null
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here
