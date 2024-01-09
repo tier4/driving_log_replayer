@@ -29,7 +29,6 @@ from perception_eval.evaluation.result.perception_frame_config import CriticalOb
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from pyquaternion import Quaternion
 import pytest
-from std_msgs.msg import Header
 
 from driving_log_replayer.perception import Criteria
 from driving_log_replayer.perception import Filter
