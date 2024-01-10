@@ -96,7 +96,8 @@ class Perception(EvaluationItem):
     ) -> dict:
         self.total += 1
         frame_success = "Fail"
-        result = self.criteria.get_result(frame)
+        # ret_frame might be filtered frame result or original frame result.
+        result, ret_frame = self.criteria.get_result(frame)
 
         if result.is_success():
             self.passed += 1
@@ -108,14 +109,14 @@ class Perception(EvaluationItem):
         return {
             "Filter": self.condition.Filter.model_dump(),
             "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
+            "FrameName": ret_frame.frame_name,
             "FrameSkip": skip,
             "PassFail": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {
-                    "TP": len(frame.pass_fail_result.tp_object_results),  # ここfilter済みのframeかな
-                    "FP": len(frame.pass_fail_result.fp_object_results),
-                    "FN": len(frame.pass_fail_result.fn_objects),
+                    "TP": len(ret_frame.pass_fail_result.tp_object_results),
+                    "FP": len(ret_frame.pass_fail_result.fp_object_results),
+                    "FN": len(ret_frame.pass_fail_result.fn_objects),
                 },
             },
         }

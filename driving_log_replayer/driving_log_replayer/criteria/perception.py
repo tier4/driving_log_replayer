@@ -450,7 +450,7 @@ class PerceptionCriteria:
             assert isinstance(level, CriteriaLevel), f"Invalid type of level: {type(level)}"
         return levels_output
 
-    def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
+    def get_result(self, frame: PerceptionFrameResult) -> tuple[SuccessFail, PerceptionFrameResult]:
         """
         Return Success/Fail result from `PerceptionFrameResult`.
 
@@ -460,12 +460,12 @@ class PerceptionCriteria:
 
         Returns:
         -------
-            SuccessFail: Success/Fail result.
+            tuple[SuccessFail, PerceptionFrameResult]: Success/Fail result and frame result.
         """
-        frame = self.criteria_filter.filter_frame_result(frame)
+        ret_frame = self.criteria_filter.filter_frame_result(frame)
 
         result: SuccessFail = SuccessFail.SUCCESS
 
         for method in self.methods:
-            result &= method.get_result(frame)
-        return result
+            result &= method.get_result(ret_frame)
+        return result, ret_frame
