@@ -75,7 +75,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ### 正常
 
-シナリオに記述したCriterionのCriteriaを満たすこと。
+シナリオのCriterionタグのCriteriaを満たすこと。
 
 sampleのscenario.yamlは以下のようなっており、
 
@@ -93,8 +93,8 @@ Criterion:
       Distance: 50.0-100.0 # [m]
 ```
 
-- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、0.0-50.0mの距離にあるobjectは、tpのobject数がhard(75.0%)以上の場合に正常とみなす。ResultのFrameがSuccessになる。
-- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、50.0-100.0mの距離にあるobjectは、tpのobject数がeasy(25.0%)以上の場合に正常とみなす。ResultのFrameがSuccessになる。
+- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、0.0-50.0mの距離にあるobjectで、tpのobject数がhard(75.0%)以上の場合。ResultのFrameがSuccessになる。
+- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、50.0-100.0mの距離にあるobjectで、tpのobject数がeasy(25.0%)以上の場合。ResultのFrameがSuccessになる。
 - また、`PassRate >= 正常数 / 全受信数 * 100`の条件を満たすとき、ResultのTotalがSuccessになる。
 
 ### 異常
