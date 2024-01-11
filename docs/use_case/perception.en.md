@@ -231,24 +231,10 @@ Format of each frame:
 ```json
 {
   "Frame": {
-    "FrameName": "Frame number of t4_dataset used for evaluation",
-    "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
-    "PassFail": {
-      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
-      "Info": {
-        "TP": "Number of TPs",
-        "FP": "Number of FPs",
-        "FN": "Number of FNs"
-      }
-    }
-  }
-}
-```json
-{
-  "Frame": {
-    "criteria0": { // result of criteria 0
+    "criteria0": {
+      // result of criteria 0
       "Filter": {
-        "Distance": "Condition for Distance" 
+        "Distance": "Condition for Distance"
       },
       "FrameName": "Frame number of t4_dataset used for evaluation",
       "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
@@ -257,16 +243,16 @@ Format of each frame:
         "Info": {
           "TP": "Number of filtered objects determined to be TP",
           "FP": "Number of filtered objects determined to be FP",
-          "FN": "Number of filtered objects determined to be FN",
+          "FN": "Number of filtered objects determined to be FN"
         }
       }
     },
-    "criteria1": { // result of criteria 1. contents of this section is same as criteria 0.
+    "criteria1": {
+      // result of criteria 1. contents of this section is same as criteria 0.
     }
   }
 }
 ```
-
 
 Metrics Data Format:
 

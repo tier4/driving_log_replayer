@@ -231,9 +231,10 @@ perception では、シナリオに指定した条件で perception_eval が評�
 ```json
 {
   "Frame": {
-    "criteria0": { // criteria0の結果
+    "criteria0": {
+      // criteria0の結果
       "Filter": {
-        "Distance": "距離の条件" 
+        "Distance": "距離の条件"
       },
       "FrameName": "評価に使用したt4_datasetのフレーム番号",
       "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
@@ -246,7 +247,8 @@ perception では、シナリオに指定した条件で perception_eval が評�
         }
       }
     },
-    "criteria1": { // criteria0の結果、criteria0と同様の内容
+    "criteria1": {
+      // criteria0の結果、criteria0と同様の内容
     }
   }
 }
