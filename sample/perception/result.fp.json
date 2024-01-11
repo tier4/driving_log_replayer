@@ -7,10 +7,7 @@
           "CriteriaMethod": "num_tp",
           "CriteriaLevel": "hard",
           "Filter": {
-            "Distance": [
-              0.0,
-              50.0
-            ]
+            "Distance": [0.0, 50.0]
           }
         },
         {
@@ -18,10 +15,7 @@
           "CriteriaMethod": "num_tp",
           "CriteriaLevel": "easy",
           "Filter": {
-            "Distance": [
-              50.0,
-              100.0
-            ]
+            "Distance": [50.0, 100.0]
           }
         }
       ]
@@ -49,10 +43,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -100,10 +91,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -163,10 +151,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -214,10 +199,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -277,10 +259,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -328,10 +307,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -391,10 +367,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -442,10 +415,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -505,10 +475,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -556,10 +523,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -619,10 +583,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -670,10 +631,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -733,10 +691,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -784,10 +739,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -847,10 +799,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -898,10 +847,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -961,10 +907,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1012,10 +955,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1075,10 +1015,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1126,10 +1063,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1189,10 +1123,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1240,10 +1171,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1303,10 +1231,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1354,10 +1279,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1417,10 +1339,7 @@
     "Frame": {
       "criteria0": {
         "Filter": {
-          "Distance": [
-            0.0,
-            50.0
-          ]
+          "Distance": [0.0, 50.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1468,10 +1387,7 @@
       },
       "criteria1": {
         "Filter": {
-          "Distance": [
-            50.0,
-            100.0
-          ]
+          "Distance": [50.0, 100.0]
         },
         "Ego": {
           "TransformStamped": {
@@ -1539,15 +1455,9 @@
               "FN": null
             },
             "frame_nums": {
-              "total": [
-                0,
-                2
-              ],
+              "total": [0, 2],
               "TP": [],
-              "FP": [
-                0,
-                2
-              ],
+              "FP": [0, 2],
               "TN": [],
               "FN": []
             }
@@ -1560,37 +1470,9 @@
               "FN": null
             },
             "frame_nums": {
-              "total": [
-                0,
-                2,
-                4,
-                6,
-                7,
-                8,
-                9,
-                11,
-                13,
-                15,
-                16,
-                18,
-                19
-              ],
+              "total": [0, 2, 4, 6, 7, 8, 9, 11, 13, 15, 16, 18, 19],
               "TP": [],
-              "FP": [
-                0,
-                2,
-                4,
-                6,
-                7,
-                8,
-                9,
-                11,
-                13,
-                15,
-                16,
-                18,
-                19
-              ],
+              "FP": [0, 2, 4, 6, 7, 8, 9, 11, 13, 15, 16, 18, 19],
               "TN": [],
               "FN": []
             }
@@ -1603,25 +1485,9 @@
               "FN": null
             },
             "frame_nums": {
-              "total": [
-                9,
-                11,
-                13,
-                15,
-                16,
-                18,
-                19
-              ],
+              "total": [9, 11, 13, 15, 16, 18, 19],
               "TP": [],
-              "FP": [
-                9,
-                11,
-                13,
-                15,
-                16,
-                18,
-                19
-              ],
+              "FP": [9, 11, 13, 15, 16, 18, 19],
               "TN": [],
               "FN": []
             }
@@ -1634,19 +1500,9 @@
               "FN": null
             },
             "frame_nums": {
-              "total": [
-                15,
-                16,
-                18,
-                19
-              ],
+              "total": [15, 16, 18, 19],
               "TP": [],
-              "FP": [
-                15,
-                16,
-                18,
-                19
-              ],
+              "FP": [15, 16, 18, 19],
               "TN": [],
               "FN": []
             }
