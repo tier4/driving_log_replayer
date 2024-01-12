@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.12.0
+
+Breaking change
+This update includes breaking changes to the `perception` scenario
+
+| Module       | Feature  | Brief summary                                | Pull request                                                   | Jira     | Contributor                             |
+| ------------ | -------- | -------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------- |
+| `perception` | criteria | allow setting of criteria for each distance. | [#339](https://github.com/tier4/driving_log_replayer/pull/339) | RT4-8120 | [ktro2828](https://github.com/ktro2828) |
+
 ## Version 1.11.1
 
 Minor Tweak

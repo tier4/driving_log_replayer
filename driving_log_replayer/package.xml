@@ -5,6 +5,7 @@
   <version>1.11.1</version>
   <description>The driving_log_replayer package</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
+  <maintainer email="kotaro.uetake@tier4.jp">Kotaro Uetake</maintainer>
   <maintainer email="koji.minoda@tier4.jp">Koji Minoda</maintainer>
   <maintainer email="shintaro.sakoda@tier4.jp">Shintaro Sakoda</maintainer>
   <maintainer email="keisuke.shima@tier4.jp">Keisuke Shima</maintainer>

@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat!: criteria per distance (`#339 <https://github.com/tier4/driving_log_replayer/issues/339>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Kotaro Uetake
+
 1.11.1 (2023-12-20)
 -------------------
 * feat: add maph criteria (`#337 <https://github.com/tier4/driving_log_replayer/issues/337>`_)
