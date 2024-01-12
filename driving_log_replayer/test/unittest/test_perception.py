@@ -58,7 +58,7 @@ def test_scenario_criteria_custom_level() -> None:
     assert scenario.Evaluation.Conditions.Criterion[0].Filter.Distance is None
 
 
-def test_filter_distance_ommit_upper_limit() -> None:
+def test_filter_distance_omit_upper_limit() -> None:
     filter_condition = Filter(Distance="1.0-")
     assert filter_condition.Distance[0] == 1.0  # noqa
     assert filter_condition.Distance[1] == sys.float_info.max
