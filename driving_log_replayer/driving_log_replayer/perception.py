@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+import sys
 
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
@@ -36,18 +37,22 @@ class Filter(BaseModel):
 
     @field_validator("Distance", mode="before")
     @classmethod
-    def validate_distance_range(cls, v: str | None) -> tuple[number, number]:
+    def validate_distance_range(cls, v: str | None) -> tuple[number, number] | None:
         if v is None:
-            return v
+            return None
 
-        distance_range = list(map(float, v.split("-")))
-        range_len = 2
-        if len(distance_range) != range_len or (distance_range[0] >= distance_range[1]):
-            err_msg = (
-                f"{v} is not valid distance range, expected ordering (min, max) with min < max."
-            )
+        err_msg = f"{v} is not valid distance range, expected ordering min-max with min < max."
+
+        s_lower, s_upper = v.split("-")
+        if s_upper == "":
+            s_upper = sys.float_info.max
+
+        lower = float(s_lower)
+        upper = float(s_upper)
+
+        if lower >= upper:
             raise ValueError(err_msg)
-        return (distance_range[0], distance_range[1])
+        return (lower, upper)
 
 
 class Criteria(BaseModel):

@@ -17,7 +17,7 @@ Evaluation:
         CriteriaMethod: [metrics_score, metrics_score_maph] # Method name of criteria (num_tp/metrics_score/metrics_score_maph)
         CriteriaLevel: [10.0, 10.0] # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
         Filter:
-          Distance: null
+          Distance: null # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here

@@ -89,16 +89,16 @@ Criterion:
     CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
     CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
-      Distance: 0.0-50.0 # [m]
+      Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
     CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
     CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
-      Distance: 50.0-100.0 # [m]
+      Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
 ```
 
-- For each subscription of `/perception/object_recognition/{detection, tracking}/objects`, the number of objects in tp is hard (75.0%) or more for objects at a distance of 0.0-50.0m. Frame of Result becomes Success.
-- For one subscription of `/perception/object_recognition/{detection, tracking}/objects`, the number of objects in tp is easy (25.0%) or more for objects at a distance of 50.0-100.0m. Frame of Result becomes Success.
+- For each subscription of `/perception/object_recognition/{detection, tracking}/objects`, the number of objects in tp is hard (75.0%) or more for objects at a distance of 0.0-50.0[m]. Frame of Result becomes Success.
+- For one subscription of `/perception/object_recognition/{detection, tracking}/objects`, the number of objects in tp is easy (25.0%) or more for objects at a distance of 50.0-1.7976931348623157e+308[m]. Frame of Result becomes Success.
 - If the condition `PassRate >= Normal / Total Received * 100` is satisfied, the Total of Result becomes Success.
 
 ### Perception Error

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import sys
 from typing import Callable
 
 from perception_eval.common import DynamicObject
@@ -55,6 +56,27 @@ def test_scenario_criteria_custom_level() -> None:
     ]
     assert scenario.Evaluation.Conditions.Criterion[0].CriteriaLevel == [10.0, 10.0]
     assert scenario.Evaluation.Conditions.Criterion[0].Filter.Distance is None
+
+
+def test_filter_distance_omit_upper_limit() -> None:
+    filter_condition = Filter(Distance="1.0-")
+    assert filter_condition.Distance[0] == 1.0  # noqa
+    assert filter_condition.Distance[1] == sys.float_info.max
+
+
+def test_filter_distance_is_not_number() -> None:
+    with pytest.raises(ValueError):  # noqa
+        Filter(Distance="a-b")
+
+
+def test_filter_distance_element_is_not_two() -> None:
+    with pytest.raises(ValueError):  # noqa
+        Filter(Distance="1.0-2.0-3.0")
+
+
+def test_filter_distance_min_max_reversed() -> None:
+    with pytest.raises(ValueError):  # noqa
+        Filter(Distance="2.0-1.0")
 
 
 @pytest.fixture()
