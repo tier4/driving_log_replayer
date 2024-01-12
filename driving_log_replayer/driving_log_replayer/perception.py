@@ -44,22 +44,16 @@ class Filter(BaseModel):
 
         err_msg = f"{v} is not valid distance range, expected ordering min-max with min < max."
 
-        try:
-            s_lower, s_upper = v.split("-")
-            if s_upper == "":
-                s_upper = sys.float_info.max
+        s_lower, s_upper = v.split("-")
+        if s_upper == "":
+            s_upper = sys.float_info.max
 
-            lower = float(s_lower)
-            upper = float(s_upper)
+        lower = float(s_lower)
+        upper = float(s_upper)
 
-            if lower >= upper:
-                raise ValidationError(err_msg)
-        except ValueError as ve:
-            # catch cannot convert string to float
-            # catch split element count != 2
-            raise ValidationError(err_msg) from ve
-        else:
-            return (lower, upper)
+        if lower >= upper:
+            raise ValueError(err_msg)
+        return (lower, upper)
 
 
 class Criteria(BaseModel):
