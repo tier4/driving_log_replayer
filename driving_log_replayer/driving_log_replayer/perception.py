@@ -18,7 +18,6 @@ import sys
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
 from pydantic import field_validator
-from pydantic import ValidationError
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from typing_extensions import Literal
