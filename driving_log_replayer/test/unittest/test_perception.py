@@ -29,9 +29,9 @@ from perception_eval.evaluation.result.perception_frame_config import CriticalOb
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from pyquaternion import Quaternion
 import pytest
-from std_msgs.msg import Header
 
-from driving_log_replayer.perception import Conditions
+from driving_log_replayer.perception import Criteria
+from driving_log_replayer.perception import Filter
 from driving_log_replayer.perception import Perception
 from driving_log_replayer.perception import PerceptionScenario
 from driving_log_replayer.scenario import load_sample_scenario
@@ -39,8 +39,8 @@ from driving_log_replayer.scenario import load_sample_scenario
 
 def test_scenario() -> None:
     scenario: PerceptionScenario = load_sample_scenario("perception", PerceptionScenario)
-    assert scenario.Evaluation.Conditions.CriteriaMethod == "num_tp"
-    assert scenario.Evaluation.Conditions.CriteriaLevel == "easy"
+    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaMethod == "num_tp"
+    assert scenario.Evaluation.Conditions.Criterion[1].CriteriaLevel == "easy"
 
 
 def test_scenario_criteria_custom_level() -> None:
@@ -49,8 +49,12 @@ def test_scenario_criteria_custom_level() -> None:
         PerceptionScenario,
         "scenario.criteria.custom.yaml",
     )
-    assert scenario.Evaluation.Conditions.CriteriaMethod == ["metrics_score", "metrics_score_maph"]
-    assert scenario.Evaluation.Conditions.CriteriaLevel == [10.0, 10.0]
+    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaMethod == [
+        "metrics_score",
+        "metrics_score_maph",
+    ]
+    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaLevel == [10.0, 10.0]
+    assert scenario.Evaluation.Conditions.Criterion[0].Filter.Distance is None
 
 
 @pytest.fixture()
@@ -100,7 +104,13 @@ def create_frame_result() -> PerceptionFrameResult:
 @pytest.fixture()
 def create_tp_normal() -> Perception:
     return Perception(
-        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="normal"),
+        name="criteria0",
+        condition=Criteria(
+            PassRate=95.0,
+            CriteriaMethod="num_tp",
+            CriteriaLevel="normal",
+            Filter=Filter(Distance=None),
+        ),
         total=99,
         passed=94,
     )
@@ -109,7 +119,13 @@ def create_tp_normal() -> Perception:
 @pytest.fixture()
 def create_tp_hard() -> Perception:
     return Perception(
-        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="hard"),
+        name="criteria0",
+        condition=Criteria(
+            PassRate=95.0,
+            CriteriaMethod="num_tp",
+            CriteriaLevel="hard",
+            Filter=Filter(Distance=None),
+        ),
         total=99,
         passed=94,
     )
@@ -137,16 +153,16 @@ def test_perception_fail_has_no_object(
     evaluation_item: Perception = create_tp_normal
     result: PerceptionFrameResult = create_frame_result
     # add no tp_object_results, fp_object_results
-    frame_dict, _, _ = evaluation_item.set_frame(
+    frame_dict = evaluation_item.set_frame(
         result,
         skip=3,
-        header=Header(),
         map_to_baselink={},
     )
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "Perception (Success): 95 / 100 -> 95.00%"
+    assert evaluation_item.summary == "criteria0 (Success): 95 / 100 -> 95.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
+        "Filter": {"Distance": None},
         "FrameName": "12",
         "FrameSkip": 3,
         "PassFail": {
@@ -176,16 +192,16 @@ def test_perception_success_tp_normal(
     result.pass_fail_result.tp_object_results = tp_objects_results
     result.pass_fail_result.fp_object_results = fp_objects_results
     # score 50.0 >= NORMAL(50.0)
-    frame_dict, _, _ = evaluation_item.set_frame(
+    frame_dict = evaluation_item.set_frame(
         result,
         skip=3,
-        header=Header(),
         map_to_baselink={},
     )
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "Perception (Success): 95 / 100 -> 95.00%"
+    assert evaluation_item.summary == "criteria0 (Success): 95 / 100 -> 95.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
+        "Filter": {"Distance": None},
         "FrameName": "12",
         "FrameSkip": 3,
         "PassFail": {
@@ -215,16 +231,16 @@ def test_perception_fail_tp_normal(
     result.pass_fail_result.tp_object_results = tp_objects_results
     result.pass_fail_result.fp_object_results = fp_objects_results
     # score 33.3 < NORMAL(50.0)
-    frame_dict, _, _ = evaluation_item.set_frame(
+    frame_dict = evaluation_item.set_frame(
         result,
         skip=3,
-        header=Header(),
         map_to_baselink={},
     )
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.summary == "criteria0 (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
+        "Filter": {"Distance": None},
         "FrameName": "12",
         "FrameSkip": 3,
         "PassFail": {
@@ -254,16 +270,16 @@ def test_perception_fail_tp_hard(
     result.pass_fail_result.tp_object_results = tp_objects_results
     result.pass_fail_result.fp_object_results = fp_objects_results
     # score 50.0 < HARD(75.0)
-    frame_dict, _, _ = evaluation_item.set_frame(
+    frame_dict = evaluation_item.set_frame(
         result,
         skip=3,
-        header=Header(),
         map_to_baselink={},
     )
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.summary == "criteria0 (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
         "Ego": {"TransformStamped": {}},
+        "Filter": {"Distance": None},
         "FrameName": "12",
         "FrameSkip": 3,
         "PassFail": {

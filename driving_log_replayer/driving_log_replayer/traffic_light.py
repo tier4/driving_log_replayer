@@ -59,7 +59,7 @@ class Perception(EvaluationItem):
     def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
         self.total += 1
         frame_success = "Fail"
-        result = self.criteria.get_result(frame)
+        result, _ = self.criteria.get_result(frame)
 
         if result.is_success():
             self.passed += 1
