@@ -85,16 +85,16 @@ Criterion:
     CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
     CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
-      Distance: 0.0-50.0 # [m]
+      Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
     CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
     CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
-      Distance: 50.0-100.0 # [m]
+      Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
 ```
 
-- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、0.0-50.0mの距離にあるobjectで、tpのobject数がhard(75.0%)以上の場合。ResultのFrameがSuccessになる。
-- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、50.0-100.0mの距離にあるobjectで、tpのobject数がeasy(25.0%)以上の場合。ResultのFrameがSuccessになる。
+- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、0.0-50.0[m]の距離にあるobjectで、tpのobject数がhard(75.0%)以上の場合。ResultのFrameがSuccessになる。
+- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、50.0-1.7976931348623157e+308[m]の距離にあるobjectで、tpのobject数がeasy(25.0%)以上の場合。ResultのFrameがSuccessになる。
 - また、`PassRate >= 正常数 / 全受信数 * 100`の条件を満たすとき、ResultのTotalがSuccessになる。
 
 ### 異常

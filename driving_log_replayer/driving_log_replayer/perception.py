@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+import sys
 
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
 from pydantic import field_validator
+from pydantic import ValidationError
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from typing_extensions import Literal
@@ -36,18 +38,28 @@ class Filter(BaseModel):
 
     @field_validator("Distance", mode="before")
     @classmethod
-    def validate_distance_range(cls, v: str | None) -> tuple[number, number]:
+    def validate_distance_range(cls, v: str | None) -> tuple[number, number] | None:
         if v is None:
-            return v
+            return None
 
-        distance_range = list(map(float, v.split("-")))
-        range_len = 2
-        if len(distance_range) != range_len or (distance_range[0] >= distance_range[1]):
-            err_msg = (
-                f"{v} is not valid distance range, expected ordering (min, max) with min < max."
-            )
-            raise ValueError(err_msg)
-        return (distance_range[0], distance_range[1])
+        err_msg = f"{v} is not valid distance range, expected ordering min-max with min < max."
+
+        try:
+            s_lower, s_upper = v.split("-")
+            if s_upper == "":
+                s_upper = sys.float_info.max
+
+            lower = float(s_lower)
+            upper = float(s_upper)
+
+            if lower >= upper:
+                raise ValidationError(err_msg)
+        except ValueError as ve:
+            # catch cannot convert string to float
+            # catch split element count != 2
+            raise ValidationError(err_msg) from ve
+        else:
+            return (lower, upper)
 
 
 class Criteria(BaseModel):
