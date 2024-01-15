@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.0 (2024-01-15)
+-------------------
 * feat: perception criteria upper limit (`#344 <https://github.com/tier4/driving_log_replayer/issues/344>`_)
 * feat!: criteria per distance (`#339 <https://github.com/tier4/driving_log_replayer/issues/339>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
