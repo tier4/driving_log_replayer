@@ -54,6 +54,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         [
             "/clock",
             "/tf",
+            "/diagnostics",
             "/perception/obstacle_segmentation/pointcloud",
             "/planning/scenario_planning/status/stop_reasons",
             "/planning/scenario_planning/trajectory",
