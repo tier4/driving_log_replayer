@@ -8,3 +8,8 @@
   durability: volatile
   history: keep_last
   reliability: best_effort
+/diagnostics:
+  depth: 1000
+  durability: volatile
+  history: keep_last
+  reliability: best_effort

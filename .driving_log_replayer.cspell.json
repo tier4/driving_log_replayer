@@ -22,6 +22,7 @@
     "sideshift",
     "Koji",
     "Minoda",
-    "pyproject"
+    "pyproject",
+    "interp"
   ]
 }
