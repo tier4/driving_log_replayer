@@ -143,11 +143,11 @@ The vehicle topics can be included instead of CAN.
 | /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
 | /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
 | /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
-| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
-| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
-| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
-| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
-| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+| /vehicle/status/control_mode           | autoware_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_vehicle_msgs/msg/VelocityReport       |
 
 ### Topics that must not be included in the input rosbag
 

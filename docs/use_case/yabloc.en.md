@@ -72,7 +72,7 @@ The following example shows the topic list available in evaluation input rosbag.
 | /sensing/camera/traffic_light/camera_info          | sensor_msgs/msg/CameraInfo                    |
 | /sensing/camera/traffic_light/image_raw/compressed | sensor_msgs/msg/CompressedImage               |
 | /sensing/imu/tamagawa/imu_raw                      | sensor_msgs/msg/Imu                           |
-| /vehicle/status/velocity_status                    | autoware_auto_vehicle_msgs/msg/VelocityReport |
+| /vehicle/status/velocity_status                    | autoware_vehicle_msgs/msg/VelocityReport |
 
 ### Topics that must NOT be included in the input rosbag
 
