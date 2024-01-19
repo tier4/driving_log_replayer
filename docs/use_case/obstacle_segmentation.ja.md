@@ -81,7 +81,7 @@ Subscribed topics:
 | /diagnostics                                    | diagnostic_msgs::msg::DiagnosticArray        |
 | /tf                                             | tf2_msgs/msg/TFMessage                       |
 | /planning/scenario_planning/status/stop_reasons | tier4_planning_msgs::msg::StopReasonArray    |
-| /planning/scenario_planning/trajectory          | autoware_auto_planning_msgs::msg::Trajectory |
+| /planning/scenario_planning/trajectory          | autoware_planning_msgs::msg::Trajectory |
 
 Published topics:
 
