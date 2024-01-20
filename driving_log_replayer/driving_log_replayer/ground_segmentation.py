@@ -40,6 +40,7 @@ class Detection(EvaluationItem):
                     "Recall": msg.recall,
                     "Specificity": msg.specificity,
                     "F1-score": msg.f1_score,
+                    "ProcessTime": msg.process_time,
                 },
             }
         }

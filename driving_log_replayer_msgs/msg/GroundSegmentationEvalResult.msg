@@ -7,3 +7,4 @@ float32 precision
 float32 recall
 float32 specificity
 float32 f1_score
+float64 process_time

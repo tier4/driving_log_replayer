@@ -11,21 +11,27 @@ GroundSegmentationEvaluatorComponent::GroundSegmentationEvaluatorComponent(
   eval_result_pub_ =
     this->create_publisher<driving_log_replayer_msgs::msg::GroundSegmentationEvalResult>(
       "ground_segmentation/evaluation/result", rclcpp::QoS(10).best_effort());
+  dbg_invalid_fp_pub_ =
+    this->create_publisher<sensor_msgs::msg::PointCloud2>("dbg_invalid_fp_cloud", rclcpp::QoS(1));
   concat_cloud_sub_.subscribe(
     this, "/sensing/lidar/concatenated/pointcloud", rmw_qos_profile_sensor_data);
   non_ground_cloud_sub_.subscribe(
     this, "/perception/obstacle_segmentation/single_frame/pointcloud_raw",
     rmw_qos_profile_sensor_data);
+  processing_time_sub_.subscribe(
+    this, "/perception/obstacle_segmentation/scan_ground_filter/debug/processing_time", rmw_qos_profile_default);
   // sync_ptr_ = std::make_shared<Sync>(SyncPolicy(10), concat_cloud_sub_, non_ground_cloud_sub_);
-  sync_ptr_ = std::make_shared<Sync>(concat_cloud_sub_, non_ground_cloud_sub_, 1000);
+  sync_ptr_ =
+    std::make_shared<Sync>(concat_cloud_sub_, non_ground_cloud_sub_, processing_time_sub_, 1000);
   sync_ptr_->registerCallback(std::bind(
     &GroundSegmentationEvaluatorComponent::evaluate, this, std::placeholders::_1,
-    std::placeholders::_2));
+    std::placeholders::_2, std::placeholders::_3));
 }
 
 void GroundSegmentationEvaluatorComponent::evaluate(
   const PointCloud2::ConstSharedPtr ground_truth_cloud,
-  const PointCloud2::ConstSharedPtr eval_target_cloud)
+  const PointCloud2::ConstSharedPtr eval_target_cloud,
+  const driving_log_replayer_msgs::msg::ProcessTime::ConstSharedPtr process_time)
 {
   rclcpp::Time gt_cloud_ts = rclcpp::Time(ground_truth_cloud->header.stamp);
   rclcpp::Time eval_target_cloud_ts = rclcpp::Time(eval_target_cloud->header.stamp);
@@ -67,12 +73,11 @@ void GroundSegmentationEvaluatorComponent::evaluate(
   // RCLCPP_INFO(this->get_logger(), "==============================");
   // RCLCPP_INFO_STREAM(
   //   this->get_logger(),
-  //   "time stamp diff : " << std::boolalpha << (eval_target_cloud_ts > gt_cloud_ts));
+  //   "eval target cloud sum ? : " << std::boolalpha << ((tn + fp) == ));
   // RCLCPP_INFO(this->get_logger(), "true ground point : %ld", true_ground_cnt);
   // RCLCPP_INFO(this->get_logger(), "true non ground point : %ld", true_non_ground_cnt);
-  // RCLCPP_INFO(
-  //   this->get_logger(), "gt size : %ld",
-  //   ground_truth_cloud->data.size() / ground_truth_cloud->point_step);
+  // RCLCPP_INFO(this->get_logger(), "before cloud ts : %lf", gt_cloud_ts.seconds());
+  // RCLCPP_INFO(this->get_logger(), "after cloud ts : %lf", eval_target_cloud_ts.seconds());
   // RCLCPP_INFO(this->get_logger(), "TP : %ld, FP : %ld, TN : %ld, FN : %ld", tp, fp, tn, fn);
   // RCLCPP_INFO(
   //   this->get_logger(), "Precision : %f, Recall : %f, Specificity : %f, F1 : %f", precision,
@@ -88,7 +93,11 @@ void GroundSegmentationEvaluatorComponent::evaluate(
   eval_result_msg.recall = recall;
   eval_result_msg.specificity = specificity;
   eval_result_msg.f1_score = f1_score;
+  eval_result_msg.process_time = process_time->process_time;
 
+  // if (tp < fp) {
+  //   dbg_invalid_fp_pub_->publish(*eval_target_cloud);
+  // }
   eval_result_pub_->publish(eval_result_msg);
 }
 
