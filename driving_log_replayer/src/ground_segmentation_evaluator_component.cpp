@@ -19,7 +19,8 @@ GroundSegmentationEvaluatorComponent::GroundSegmentationEvaluatorComponent(
     this, "/perception/obstacle_segmentation/single_frame/pointcloud_raw",
     rmw_qos_profile_sensor_data);
   processing_time_sub_.subscribe(
-    this, "/perception/obstacle_segmentation/scan_ground_filter/debug/processing_time", rmw_qos_profile_default);
+    this, "/perception/obstacle_segmentation/scan_ground_filter/debug/processing_time",
+    rmw_qos_profile_default);
   // sync_ptr_ = std::make_shared<Sync>(SyncPolicy(10), concat_cloud_sub_, non_ground_cloud_sub_);
   sync_ptr_ =
     std::make_shared<Sync>(concat_cloud_sub_, non_ground_cloud_sub_, processing_time_sub_, 1000);
@@ -35,6 +36,15 @@ void GroundSegmentationEvaluatorComponent::evaluate(
 {
   rclcpp::Time gt_cloud_ts = rclcpp::Time(ground_truth_cloud->header.stamp);
   rclcpp::Time eval_target_cloud_ts = rclcpp::Time(eval_target_cloud->header.stamp);
+
+  if (
+    std::find_if(
+      eval_target_cloud->fields.begin(), eval_target_cloud->fields.end(),
+      [](sensor_msgs::msg::PointField f) { return f.name == "entity_id"; }) ==
+    eval_target_cloud->fields.end()) {
+    RCLCPP_WARN(this->get_logger(), "input cloud doesn't have \"entity_id\" field !!");
+    return;
+  };
   sensor_msgs::PointCloud2ConstIterator<int32_t> gt_label_itr(*ground_truth_cloud, "entity_id");
   sensor_msgs::PointCloud2ConstIterator<int32_t> target_label_itr(*eval_target_cloud, "entity_id");
 
@@ -54,7 +64,8 @@ void GroundSegmentationEvaluatorComponent::evaluate(
     }
   }
 
-  // segmentation後の点群におけるground label(false negative)とnon ground label(true negative)を取得
+  // segmentation後の点群におけるground label(false negative)とnon ground label(true
+  // negative)を取得
   std::size_t fn = 0;
   std::size_t tn = 0;
   for (; target_label_itr != target_label_itr.end(); ++target_label_itr) {
