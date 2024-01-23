@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.12.1
+
+Minor Tweak
+
+| Module | Feature | Brief summary      | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------- | ------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | rviz    | update config/rviz | [#346](https://github.com/tier4/driving_log_replayer/pull/346) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.12.0
 
 Breaking change
