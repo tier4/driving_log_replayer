@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: update rviz (`#346 <https://github.com/tier4/driving_log_replayer/issues/346>`_)
+* Contributors: Hayato Mizushima
+
 1.12.0 (2024-01-15)
 -------------------
 * feat: perception criteria upper limit (`#344 <https://github.com/tier4/driving_log_replayer/issues/344>`_)
