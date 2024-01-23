@@ -3238,7 +3238,7 @@ Visualization Manager:
                     VehicleModel: true
                     VelocityHistory: true
                 Value: true
-                driving_log_replayer:
+                driving_log_repalyer:
                   MarkerArray: true
                   Value: true
               Zoom Factor: 1
@@ -4210,7 +4210,7 @@ Visualization Manager:
             Value: /driving_log_replayer/marker/results
           Value: true
       Enabled: true
-      Name: driving_log_replayer
+      Name: driving_log_repalyer
   Enabled: true
   Global Options:
     Background Color: 10; 10; 10
