@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.1 (2024-01-23)
+-------------------
 * chore: update rviz (`#346 <https://github.com/tier4/driving_log_replayer/issues/346>`_)
 * Contributors: Hayato Mizushima
 
