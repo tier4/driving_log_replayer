@@ -8,21 +8,6 @@ autoware_package()
 set(ROS_REQUIREMENTS "${CMAKE_CURRENT_SOURCE_DIR}/../requirements.txt")
 execute_process(COMMAND bash -c "python3 -m pip install -r ${ROS_REQUIREMENTS}")
 
-ament_auto_add_library(obstacle_segmentation_evaluator_component SHARED
-  src/obstacle_segmentation_evaluator_component.cpp
-)
-# Workaround for lanelet2-core@1.2.1
-if(TARGET lanelet2_core::lanelet2_core)
-  get_target_property(lanelet2_core_INCLUDE_DIRECTORIES lanelet2_core::lanelet2_core INTERFACE_INCLUDE_DIRECTORIES)
-  include_directories(SYSTEM
-    ${lanelet2_core_INCLUDE_DIRECTORIES}
-  )
-endif()
-rclcpp_components_register_node(obstacle_segmentation_evaluator_component
-  PLUGIN "driving_log_replayer::ObstacleSegmentationEvaluatorComponent"
-  EXECUTABLE obstacle_segmentation_evaluator_node
-)
-
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()

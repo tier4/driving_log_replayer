@@ -18,15 +18,24 @@ import logging
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from autoware_auto_mapping_msgs.msg import HADMapBin
+from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import TransformStamped
 import numpy as np
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.manager import SensingEvaluationManager
 from perception_eval.util.logger_config import configure_logger
+from rclpy.qos import QoSDurabilityPolicy
+from rclpy.qos import QoSHistoryPolicy
+from rclpy.qos import QoSProfile
+from rclpy.qos import QoSReliabilityPolicy
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
 import simplejson as json
+from std_msgs.msg import Header
 from tier4_api_msgs.msg import AwapiAutowareStatus
 from visualization_msgs.msg import MarkerArray
 
@@ -39,7 +48,6 @@ from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationResul
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer_analyzer.data import convert_str_to_dist_type
-from driving_log_replayer_msgs.msg import ObstacleSegmentationInput
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 
@@ -50,6 +58,7 @@ if TYPE_CHECKING:
 
 class ObstacleSegmentationEvaluator(DLREvaluator):
     COUNT_FINISH_PUB_GOAL_POSE = 5
+    TARGET_DIAG_NAME = "/autoware/perception/node_alive_monitoring/topic_status/topic_state_monitor_obstacle_segmentation_pointcloud: perception_topic_status"
 
     def __init__(self, name: str) -> None:
         super().__init__(name, ObstacleSegmentationScenario, ObstacleSegmentationResult)
@@ -96,11 +105,32 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         )
 
         self.__sub_obstacle_segmentation = self.create_subscription(
-            ObstacleSegmentationInput,
-            "obstacle_segmentation/input",
-            self.obstacle_segmentation_input_cb,
-            10,
+            PointCloud2,
+            "/perception/obstacle_segmentation/pointcloud",
+            self.obstacle_segmentation_cb,
+            QoSProfile(
+                reliability=QoSReliabilityPolicy.BEST_EFFORT,
+                history=QoSHistoryPolicy.KEEP_LAST,
+                depth=10,
+            ),
         )
+        self.__sub_lanelet_bin_map = self.create_subscription(
+            HADMapBin,
+            "/map/vector_map",
+            self.lanelet_cb,
+            QoSProfile(
+                history=QoSHistoryPolicy.KEEP_LAST,
+                depth=1,
+                durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
+            ),
+        )
+        self.__sub_diag = self.create_subscription(
+            DiagnosticArray,
+            "/diagnostics_agg",
+            self.diag_cb,
+            1,
+        )
+
         self.__pub_pcd_detection = self.create_publisher(PointCloud2, "pcd/detection", 1)
         self.__pub_pcd_non_detection = self.create_publisher(PointCloud2, "pcd/non_detection", 1)
         self.__pub_marker_detection = self.create_publisher(MarkerArray, "marker/detection", 1)
@@ -131,6 +161,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             1,
         )
         self.__skip_counter = 0
+        self.__topic_rate = False
 
     def timer_cb(self) -> None:
         super().timer_cb(
@@ -171,9 +202,14 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             except json.JSONDecodeError:
                 pass
 
-    def obstacle_segmentation_input_cb(self, msg: ObstacleSegmentationInput) -> None:
-        self.__pub_marker_non_detection.publish(msg.marker_array)
-        pcd_header = msg.pointcloud.header
+    def obstacle_segmentation_cb(self, msg: PointCloud2) -> None:
+        map_to_baselink = self.lookup_transform(msg.header.stamp)
+        non_detection_area_markers, non_detection_areas = self.get_non_detection_area(
+            msg.header,
+            map_to_baselink,
+        )
+        self.__pub_marker_non_detection.publish(non_detection_area_markers)
+        pcd_header = msg.header
         unix_time: int = eval_conversions.unix_time_from_ros_msg(pcd_header)
         ground_truth_now_frame: FrameGroundTruth = self.__evaluator.get_ground_truth_now_frame(
             unix_time=unix_time,
@@ -190,18 +226,11 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         if not frame_ok:
             self.__skip_counter += 1
             return
-        numpy_pcd = ros2_numpy.numpify(msg.pointcloud)
+        numpy_pcd = ros2_numpy.numpify(msg)
         pointcloud = np.zeros((numpy_pcd.shape[0], 3))
         pointcloud[:, 0] = numpy_pcd["x"]
         pointcloud[:, 1] = numpy_pcd["y"]
         pointcloud[:, 2] = numpy_pcd["z"]
-
-        non_detection_areas: list[list[tuple[float, float, float]]] = []
-        for marker in msg.marker_array.markers:
-            non_detection_area: list[tuple[float, float, float]] = []
-            for point in marker.points:
-                non_detection_area.append((point.x, point.y, point.z))
-            non_detection_areas.append(non_detection_area)
 
         frame_result: SensingFrameResult = self.__evaluator.add_frame_result(
             unix_time=unix_time,
@@ -221,17 +250,17 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         ) = self._result.set_frame(
             frame_result,
             self.__skip_counter,
-            DLREvaluator.transform_stamped_with_euler_angle(msg.map_to_baselink),
+            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_stop_reasons,
             pcd_header,
-            topic_rate=msg.topic_rate,
+            topic_rate=self.__topic_rate,
         )
         self._result_writer.write_result(self._result)
 
         topic_rate_data = ObstacleSegmentationMarker()
-        topic_rate_data.header = msg.pointcloud.header
+        topic_rate_data.header = msg.header
         topic_rate_data.status = (
-            ObstacleSegmentationMarker.OK if msg.topic_rate else ObstacleSegmentationMarker.ERROR
+            ObstacleSegmentationMarker.OK if self.__topic_rate else ObstacleSegmentationMarker.ERROR
         )
         self.__pub_graph_topic_rate.publish(topic_rate_data)
 
@@ -253,6 +282,32 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
                 # to debug reason use: self.get_logger().error(f"stop_reason: {msg_reason.reason}")
                 if msg_reason.reason == "ObstacleStop":
                     self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
+
+    def lanelet_cb(self, msg: HADMapBin) -> None:
+        self.get_logger().error("call lanelet_cb")
+
+    def diag_cb(self, msg: DiagnosticArray) -> None:
+        for diagnostic_status in msg.status:
+            diagnostic_status: DiagnosticStatus
+            if diagnostic_status.name == ObstacleSegmentationEvaluator.TARGET_DIAG_NAME:
+                if diagnostic_status.level >= DiagnosticStatus.ERROR:
+                    self.__topic_rate = False
+                else:
+                    self.__topic_rate = True
+
+    def get_non_detection_area(
+        self,
+        header: Header,
+        map_to_baselink: TransformStamped,
+    ) -> tuple[MarkerArray, list]:
+        non_detection_area_markers = MarkerArray()
+        non_detection_areas: list[list[tuple[float, float, float]]] = []
+        for marker in non_detection_area_markers.markers:
+            non_detection_area: list[tuple[float, float, float]] = []
+            for point in marker.points:
+                non_detection_area.append((point.x, point.y, point.z))
+            non_detection_areas.append(non_detection_area)
+        return non_detection_area_markers, non_detection_areas
 
 
 @evaluator_main
