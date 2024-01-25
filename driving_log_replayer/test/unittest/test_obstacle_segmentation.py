@@ -24,6 +24,7 @@ from perception_eval.common.shape import ShapeType
 from perception_eval.evaluation import DynamicObjectWithSensingResult
 from perception_eval.evaluation import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
+from pydantic import ValidationError
 from pyquaternion import Quaternion
 import pytest
 from std_msgs.msg import Header
@@ -48,6 +49,23 @@ def test_scenario() -> None:
         ].Start
         is None
     )
+
+
+def test_polygon_clockwise_ok() -> None:
+    ProposedAreaCondition(
+        polygon_2d=[[10.0, 1.5], [10.0, -1.5], [0.0, -1.5], [0.0, 1.5]],
+        z_min=0.0,
+        z_max=1.5,
+    )
+
+
+def test_polygon_clockwise_ng() -> None:
+    with pytest.raises(ValidationError):
+        ProposedAreaCondition(
+            polygon_2d=[[10.0, 1.5], [0.0, 1.5], [0.0, -1.5], [10.0, -1.5]],
+            z_min=0.0,
+            z_max=1.5,
+        )
 
 
 @pytest.fixture()
