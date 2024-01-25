@@ -31,6 +31,7 @@ from std_msgs.msg import Header
 from typing_extensions import Literal
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
+from geometry_msgs.msg import PointStamped
 import yaml
 
 import driving_log_replayer.perception_eval_conversions as eval_conversions
@@ -46,12 +47,24 @@ from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
 from driving_log_replayer_analyzer.plot import PlotBase
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
-
+from pydantic import field_validator
+from pydantic import conlist
 
 class ProposedAreaCondition(BaseModel):
-    polygon_2d: list[list[number]]
+    polygon_2d: list[conlist(number, min_items=2, max_items=2)]
     z_min: number
     z_max: number
+
+    @field_validator("polygon_2d", mode="before")
+    @classmethod
+    def is_clockwise(cls, v: list[list[number]]) -> None:
+        check_clock_wise: float = 0.0
+        for i, _ in enumerate(v):
+            p1 = v[i]
+            p2 = v[i+1 % len(v)]
+            check_clock_wise += (p2[0] - p1[0]) * (p2[1] - p2[1])
+        if check_clock_wise <= 0.0:
+            raise ValueError("polygon_2d is not clockwise")
 
 
 class BoundingBoxCondition(BaseModel):
@@ -247,6 +260,10 @@ def get_sensing_frame_config(
         min_points_threshold=e_conf["min_points_threshold"],
     )
     return True, sensing_frame_config
+
+
+def get_proposed_area(proposed_area: ProposedAreaCondition) -> tuple[list[PointStamped], float, float]:
+
 
 
 @dataclass
