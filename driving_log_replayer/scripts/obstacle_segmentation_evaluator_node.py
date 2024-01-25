@@ -15,19 +15,23 @@
 # limitations under the License.
 
 import logging
+from os.path import expandvars
 from pathlib import Path
+from typing import Any
 from typing import TYPE_CHECKING
 
-from autoware_auto_mapping_msgs.msg import HADMapBin
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import TransformStamped
+import lanelet2
+from lanelet2_extension_python.projection import MGRSProjector
+import lanelet2_extension_python.utility.query as query
+import lanelet2_extension_python.utility.utilities as utilities
 import numpy as np
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.manager import SensingEvaluationManager
 from perception_eval.util.logger_config import configure_logger
-from rclpy.qos import QoSDurabilityPolicy
 from rclpy.qos import QoSHistoryPolicy
 from rclpy.qos import QoSProfile
 from rclpy.qos import QoSReliabilityPolicy
@@ -68,6 +72,8 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         self.__s_cfg["evaluation_config_dict"][
             "label_prefix"
         ] = "autoware"  # Add a fixed value setting
+
+        # self.__road_lanelets = self.load_road_lanelets()
 
         self.declare_parameter("vehicle_model", "")
         self.__vehicle_model = (
@@ -112,16 +118,6 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
                 reliability=QoSReliabilityPolicy.BEST_EFFORT,
                 history=QoSHistoryPolicy.KEEP_LAST,
                 depth=10,
-            ),
-        )
-        self.__sub_lanelet_bin_map = self.create_subscription(
-            HADMapBin,
-            "/map/vector_map",
-            self.lanelet_cb,
-            QoSProfile(
-                history=QoSHistoryPolicy.KEEP_LAST,
-                depth=1,
-                durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
             ),
         )
         self.__sub_diag = self.create_subscription(
@@ -201,6 +197,19 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
                 jsonl_file.write(str_last_line)
             except json.JSONDecodeError:
                 pass
+
+    def load_road_lanelets(self) -> Any:  # ConstLanelets
+        self.declare_parameter("map_path", "")
+        map_path = Path(
+            expandvars(
+                self.get_parameter("map_path").get_parameter_value().string_value,
+            ),
+            "lanelet2_map.osm",
+        ).as_posix()
+        projection = MGRSProjector(lanelet2.io.Origin(0.0, 0.0))
+        lanelet_map = lanelet2.io.load(map_path, projection)
+        all_lanelets = query.laneletLayer(lanelet_map)
+        return query.roadLanelets(all_lanelets)
 
     def obstacle_segmentation_cb(self, msg: PointCloud2) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
@@ -282,9 +291,6 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
                 # to debug reason use: self.get_logger().error(f"stop_reason: {msg_reason.reason}")
                 if msg_reason.reason == "ObstacleStop":
                     self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
-
-    def lanelet_cb(self, msg: HADMapBin) -> None:
-        self.get_logger().error("call lanelet_cb")
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
         for diagnostic_status in msg.status:

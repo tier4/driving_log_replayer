@@ -39,7 +39,10 @@ def generate_launch_description() -> launch.LaunchDescription:
     rviz_node = cmn.get_rviz("obstacle_segmentation.rviz")
     evaluator_node = cmn.get_evaluator_node(
         "obstacle_segmentation",
-        addition_parameter={"vehicle_model": LaunchConfiguration("vehicle_model")},
+        addition_parameter={
+            "vehicle_model": LaunchConfiguration("vehicle_model"),
+            "map_path": LaunchConfiguration("map_path"),
+        },
     )
     player = cmn.get_player(
         additional_argument=[
