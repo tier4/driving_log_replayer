@@ -17,12 +17,15 @@ from pathlib import Path
 import sys
 
 from ament_index_python.packages import get_package_share_directory
+from geometry_msgs.msg import PointStamped
 import numpy as np
 from perception_eval.common.object import DynamicObject
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithSensingResult
 from pydantic import BaseModel
+from pydantic import conlist
+from pydantic import field_validator
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
@@ -31,7 +34,6 @@ from std_msgs.msg import Header
 from typing_extensions import Literal
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
-from geometry_msgs.msg import PointStamped
 import yaml
 
 import driving_log_replayer.perception_eval_conversions as eval_conversions
@@ -47,24 +49,24 @@ from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
 from driving_log_replayer_analyzer.plot import PlotBase
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
-from pydantic import field_validator
-from pydantic import conlist
+
 
 class ProposedAreaCondition(BaseModel):
-    polygon_2d: list[conlist(number, min_items=2, max_items=2)]
+    polygon_2d: list[conlist(number, min_length=2, max_length=2)]
     z_min: number
     z_max: number
 
-    @field_validator("polygon_2d", mode="before")
+    @field_validator("polygon_2d")
     @classmethod
     def is_clockwise(cls, v: list[list[number]]) -> None:
         check_clock_wise: float = 0.0
         for i, _ in enumerate(v):
             p1 = v[i]
-            p2 = v[i+1 % len(v)]
-            check_clock_wise += (p2[0] - p1[0]) * (p2[1] - p2[1])
-        if check_clock_wise <= 0.0:
-            raise ValueError("polygon_2d is not clockwise")
+            p2 = v[(i + 1) % len(v)]
+            check_clock_wise += (p2[0] - p1[0]) * (p2[1] + p2[1])
+        if check_clock_wise <= 0.0:  # noqa
+            err_msg = "polygon_2d is not clockwise"
+            raise ValueError(err_msg)
 
 
 class BoundingBoxCondition(BaseModel):
@@ -262,8 +264,10 @@ def get_sensing_frame_config(
     return True, sensing_frame_config
 
 
-def get_proposed_area(proposed_area: ProposedAreaCondition) -> tuple[list[PointStamped], float, float]:
-
+def get_proposed_area(
+    proposed_area: ProposedAreaCondition,
+) -> tuple[list[PointStamped], float, float]:
+    pass
 
 
 @dataclass
