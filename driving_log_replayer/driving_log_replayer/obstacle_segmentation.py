@@ -17,6 +17,7 @@ from pathlib import Path
 import sys
 
 from ament_index_python.packages import get_package_share_directory
+from geometry_msgs.msg import Point
 from geometry_msgs.msg import PointStamped
 import numpy as np
 from perception_eval.common.object import DynamicObject
@@ -267,7 +268,10 @@ def get_sensing_frame_config(
 def get_proposed_area(
     proposed_area: ProposedAreaCondition,
 ) -> tuple[list[PointStamped], float, float]:
-    pass
+    point_array: list[PointStamped] = []
+    for point in proposed_area.polygon_2d:
+        point_array.append(PointStamped(point=Point(x=point.x, y=point.y, z=0.0)))
+    return point_array, proposed_area.z_min, proposed_area.z_max
 
 
 @dataclass
