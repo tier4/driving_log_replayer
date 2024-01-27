@@ -18,21 +18,15 @@ GroundSegmentationEvaluatorComponent::GroundSegmentationEvaluatorComponent(
   non_ground_cloud_sub_.subscribe(
     this, "/perception/obstacle_segmentation/single_frame/pointcloud_raw",
     rmw_qos_profile_sensor_data);
-  processing_time_sub_.subscribe(
-    this, "/perception/obstacle_segmentation/scan_ground_filter/debug/processing_time",
-    rmw_qos_profile_default);
-  // sync_ptr_ = std::make_shared<Sync>(SyncPolicy(10), concat_cloud_sub_, non_ground_cloud_sub_);
-  sync_ptr_ =
-    std::make_shared<Sync>(concat_cloud_sub_, non_ground_cloud_sub_, processing_time_sub_, 1000);
+  sync_ptr_ = std::make_shared<Sync>(concat_cloud_sub_, non_ground_cloud_sub_, 1000);
   sync_ptr_->registerCallback(std::bind(
     &GroundSegmentationEvaluatorComponent::evaluate, this, std::placeholders::_1,
-    std::placeholders::_2, std::placeholders::_3));
+    std::placeholders::_2));
 }
 
 void GroundSegmentationEvaluatorComponent::evaluate(
   const PointCloud2::ConstSharedPtr ground_truth_cloud,
-  const PointCloud2::ConstSharedPtr eval_target_cloud,
-  const driving_log_replayer_msgs::msg::ProcessTime::ConstSharedPtr process_time)
+  const PointCloud2::ConstSharedPtr eval_target_cloud)
 {
   rclcpp::Time gt_cloud_ts = rclcpp::Time(ground_truth_cloud->header.stamp);
   rclcpp::Time eval_target_cloud_ts = rclcpp::Time(eval_target_cloud->header.stamp);
@@ -104,11 +98,7 @@ void GroundSegmentationEvaluatorComponent::evaluate(
   eval_result_msg.recall = recall;
   eval_result_msg.specificity = specificity;
   eval_result_msg.f1_score = f1_score;
-  eval_result_msg.process_time = process_time->process_time;
 
-  // if (tp < fp) {
-  //   dbg_invalid_fp_pub_->publish(*eval_target_cloud);
-  // }
   eval_result_pub_->publish(eval_result_msg);
 }
 

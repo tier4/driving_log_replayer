@@ -9,7 +9,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ObstacleSegmentationMarker.msg"
   "msg/ObstacleSegmentationMarkerArray.msg"
   "msg/GroundSegmentationEvalResult.msg"
-  "msg/ProcessTime.msg"
   DEPENDENCIES
     std_msgs
     geometry_msgs
