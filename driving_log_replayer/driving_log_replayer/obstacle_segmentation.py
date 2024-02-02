@@ -17,8 +17,10 @@ from pathlib import Path
 import sys
 
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import Point
-from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import Point32
+from geometry_msgs.msg import Polygon
+from geometry_msgs.msg import PolygonStamped
+from geometry_msgs.msg import TransformStamped
 import numpy as np
 from perception_eval.common.object import DynamicObject
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
@@ -32,6 +34,7 @@ from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
+from tf2_geometry_msgs import do_transform_polygon_stamped
 from typing_extensions import Literal
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
@@ -265,13 +268,31 @@ def get_sensing_frame_config(
     return True, sensing_frame_config
 
 
-def get_proposed_area(
+def get_proposed_area_polygon_stamped(
     proposed_area: ProposedAreaCondition,
-) -> tuple[list[PointStamped], float, float]:
-    point_array: list[PointStamped] = []
+    header: Header,
+) -> PolygonStamped:
+    points: list[Point32] = []
     for point in proposed_area.polygon_2d:
-        point_array.append(PointStamped(point=Point(x=point.x, y=point.y, z=0.0)))
-    return point_array, proposed_area.z_min, proposed_area.z_max
+        points.append(Point32(x=point.x, y=point.y, z=0.0))
+    return PolygonStamped(header=header, polygon=Polygon(points=points))
+
+
+def transform_proposed_area(
+    proposed_area: ProposedAreaCondition,
+    header: Header,
+    tf: TransformStamped,
+) -> tuple[PolygonStamped, float]:
+    polygon_stamped = get_proposed_area_polygon_stamped(proposed_area, header)
+    proposed_area_in_map = do_transform_polygon_stamped(polygon_stamped, tf)
+    sum_z = 0.0
+    count_point = 0
+    for point in proposed_area_in_map.polygon.points:
+        point: Point32
+        sum_z += point.z
+        count_point += 1
+    average_z = sum_z / count_point
+    return proposed_area_in_map, average_z
 
 
 @dataclass
