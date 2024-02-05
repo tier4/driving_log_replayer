@@ -14,6 +14,10 @@
 
 from typing import Callable
 
+from geometry_msgs.msg import Quaternion
+from geometry_msgs.msg import Transform
+from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import Vector3
 import numpy as np
 from perception_eval.common import DynamicObject
 from perception_eval.common.label import AutowareLabel
@@ -25,16 +29,18 @@ from perception_eval.evaluation import DynamicObjectWithSensingResult
 from perception_eval.evaluation import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from pydantic import ValidationError
-from pyquaternion import Quaternion
+from pyquaternion import Quaternion as PyQuaternion
 import pytest
 from std_msgs.msg import Header
 
 from driving_log_replayer.obstacle_segmentation import Detection
 from driving_log_replayer.obstacle_segmentation import DetectionCondition
+from driving_log_replayer.obstacle_segmentation import get_proposed_area_polygon_stamped
 from driving_log_replayer.obstacle_segmentation import NonDetection
 from driving_log_replayer.obstacle_segmentation import NonDetectionCondition
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
 from driving_log_replayer.obstacle_segmentation import ProposedAreaCondition
+from driving_log_replayer.obstacle_segmentation import transform_proposed_area
 from driving_log_replayer.scenario import load_sample_scenario
 
 
@@ -113,7 +119,7 @@ def create_dynamic_object() -> DynamicObjectWithSensingResult:
         unix_time=123,
         frame_id=FrameID.BASE_LINK,
         position=(0.0, 0.0, 0.0),
-        orientation=Quaternion(),
+        orientation=PyQuaternion(),
         shape=Shape(ShapeType.BOUNDING_BOX, (10.0, 10.0, 10.0)),
         velocity=(1.0, 2.0, 3.0),
         semantic_score=0.5,
@@ -486,3 +492,27 @@ def test_non_detection_success(
         "Result": {"Total": "Success", "Frame": "Success"},
         "Info": {},
     }
+
+
+def test_transform_proposed_area() -> None:
+    tf = TransformStamped(
+        header=Header(frame_id="map"),
+        child_frame_id="base_link",
+        transform=Transform(
+            translation=Vector3(x=10.0, y=10.0, z=0.0),
+            rotation=Quaternion(x=0.0, y=0.0, z=0.0, w=1.0),
+        ),
+    )
+    proposed_area = ProposedAreaCondition(
+        # polygon_2d=[[2.0, 2.0], [0.0, 0, 0], [-2.0, 2.0]],
+        polygon_2d=[[10.0, 1.5], [10.0, -1.5], [0.0, -1.5], [0.0, 1.5]],
+        z_min=0.0,
+        z_max=2.0,
+    )
+    proposed_area_in_map, z = transform_proposed_area(
+        proposed_area,
+        Header(frame_id="base_link"),
+        tf,
+    )
+    print(proposed_area_in_map)
+    assert z == 0.0

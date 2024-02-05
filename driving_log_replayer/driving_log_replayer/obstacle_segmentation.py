@@ -12,47 +12,46 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import sys
 
-from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import Point32
-from geometry_msgs.msg import Polygon
-from geometry_msgs.msg import PolygonStamped
-from geometry_msgs.msg import TransformStamped
 import numpy as np
+import ros2_numpy
+import yaml
+from ament_index_python.packages import get_package_share_directory
+from geometry_msgs.msg import Point32, Polygon, PolygonStamped, TransformStamped
 from perception_eval.common.object import DynamicObject
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
-from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithSensingResult
-from pydantic import BaseModel
-from pydantic import conlist
-from pydantic import field_validator
-import ros2_numpy
+from perception_eval.evaluation.sensing.sensing_result import (
+    DynamicObjectWithSensingResult,
+)
+from pydantic import BaseModel, conlist, field_validator
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
-from std_msgs.msg import ColorRGBA
-from std_msgs.msg import Header
+from std_msgs.msg import ColorRGBA, Header
 from tf2_geometry_msgs import do_transform_polygon_stamped
 from typing_extensions import Literal
-from visualization_msgs.msg import Marker
-from visualization_msgs.msg import MarkerArray
-import yaml
+from visualization_msgs.msg import Marker, MarkerArray
 
 import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.result import EvaluationItem
-from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import number
-from driving_log_replayer.scenario import Scenario
-from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
-from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
+from driving_log_replayer.result import EvaluationItem, ResultBase
+from driving_log_replayer.scenario import Scenario, number
+from driving_log_replayer_analyzer.config.obstacle_segmentation import (
+    Config,
+    load_config,
+)
 from driving_log_replayer_analyzer.data import DistType
-from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
-from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
+from driving_log_replayer_analyzer.data.obstacle_segmentation import (
+    JsonlParser,
+    fail_3_times_in_a_row,
+)
 from driving_log_replayer_analyzer.plot import PlotBase
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
+from driving_log_replayer_msgs.msg import (
+    ObstacleSegmentationMarker,
+    ObstacleSegmentationMarkerArray,
+)
 
 
 class ProposedAreaCondition(BaseModel):
@@ -62,7 +61,7 @@ class ProposedAreaCondition(BaseModel):
 
     @field_validator("polygon_2d")
     @classmethod
-    def is_clockwise(cls, v: list[list[number]]) -> None:
+    def is_clockwise(cls, v: list[list[number]]) -> list | None:
         check_clock_wise: float = 0.0
         for i, _ in enumerate(v):
             p1 = v[i]
@@ -71,6 +70,7 @@ class ProposedAreaCondition(BaseModel):
         if check_clock_wise <= 0.0:  # noqa
             err_msg = "polygon_2d is not clockwise"
             raise ValueError(err_msg)
+        return v
 
 
 class BoundingBoxCondition(BaseModel):
@@ -274,8 +274,20 @@ def get_proposed_area_polygon_stamped(
 ) -> PolygonStamped:
     points: list[Point32] = []
     for point in proposed_area.polygon_2d:
-        points.append(Point32(x=point.x, y=point.y, z=0.0))
+        points.append(Point32(x=point[0], y=point[1], z=0.0))
     return PolygonStamped(header=header, polygon=Polygon(points=points))
+
+
+def polygon_stamped_to_marker(polygon_stamped: PolygonStamped, marker_id: int) -> Marker:
+    return Marker(
+        header=polygon_stamped.header,
+        type=Marker.LINE_STRIP,
+        action=Marker.ADD,
+        ns="intersection",
+        id=marker_id,
+        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3, x=0.2, y=0.2, z=0.2),
+        points=polygon_stamped.polygon.points,  # list[Point]<-list[Point32]
+    )
 
 
 def transform_proposed_area(
