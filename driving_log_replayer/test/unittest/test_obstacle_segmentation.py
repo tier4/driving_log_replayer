@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from math import pi
 from typing import Callable
 
 from geometry_msgs.msg import Quaternion
@@ -32,6 +33,7 @@ from pydantic import ValidationError
 from pyquaternion import Quaternion as PyQuaternion
 import pytest
 from std_msgs.msg import Header
+from tf_transformations import quaternion_from_euler
 
 from driving_log_replayer.obstacle_segmentation import Detection
 from driving_log_replayer.obstacle_segmentation import DetectionCondition
@@ -504,8 +506,7 @@ def test_transform_proposed_area() -> None:
         ),
     )
     proposed_area = ProposedAreaCondition(
-        # polygon_2d=[[2.0, 2.0], [0.0, 0, 0], [-2.0, 2.0]],
-        polygon_2d=[[10.0, 1.5], [10.0, -1.5], [0.0, -1.5], [0.0, 1.5]],
+        polygon_2d=[[2.0, 2.0], [0.0, 0.0], [-2.0, 2.0]],
         z_min=0.0,
         z_max=2.0,
     )
