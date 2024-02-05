@@ -15,7 +15,8 @@
 from math import pi
 from typing import Callable
 
-from geometry_msgs.msg import Point32
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Transform
 from geometry_msgs.msg import TransformStamped
@@ -497,9 +498,11 @@ def test_non_detection_success(
 
 
 def test_transform_proposed_area() -> None:
+    header_base_link = Header(frame_id="base_link")
+    header_map = Header(frame_id="map")
     q = quaternion_from_euler(0.0, 0.0, -pi / 2)
     tf = TransformStamped(
-        header=Header(frame_id="map"),
+        header=header_map,
         child_frame_id="base_link",
         transform=Transform(
             translation=Vector3(x=10.0, y=10.0, z=0.0),
@@ -513,10 +516,18 @@ def test_transform_proposed_area() -> None:
     )
     proposed_area_in_map, z = transform_proposed_area(
         proposed_area,
-        Header(frame_id="base_link"),
+        header_base_link,
         tf,
     )
-    assert proposed_area_in_map.polygon.points[0] == Point32(x=12.0, y=8.0, z=0.0)
-    assert proposed_area_in_map.polygon.points[1] == Point32(x=10.0, y=10.0, z=0.0)
-    assert proposed_area_in_map.polygon.points[2] == Point32(x=12.0, y=12.0, z=0.0)
+    assert proposed_area_in_map[0] == PointStamped(
+        header=header_map, point=Point(x=12.0, y=8.0, z=0.0)
+    )
+    assert proposed_area_in_map[1] == PointStamped(
+        header=header_map,
+        point=Point(x=10.0, y=10.0, z=0.0),
+    )
+    assert proposed_area_in_map[2] == PointStamped(
+        header=header_map,
+        point=Point(x=12.0, y=12.0, z=0.0),
+    )
     assert z == 0.0

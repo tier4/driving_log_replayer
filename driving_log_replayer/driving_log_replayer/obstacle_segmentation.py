@@ -17,9 +17,8 @@ from pathlib import Path
 import sys
 
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import Point32
-from geometry_msgs.msg import Polygon
-from geometry_msgs.msg import PolygonStamped
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import TransformStamped
 import numpy as np
 from perception_eval.common.object import DynamicObject
@@ -34,7 +33,7 @@ from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
-from tf2_geometry_msgs import do_transform_polygon_stamped
+from tf2_geometry_msgs import do_transform_point
 from typing_extensions import Literal
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
@@ -272,41 +271,48 @@ def get_sensing_frame_config(
     return True, sensing_frame_config
 
 
-def get_proposed_area_polygon_stamped(
+def get_proposed_area_list_point_stamped(
     proposed_area: ProposedAreaCondition,
     header: Header,
-) -> PolygonStamped:
-    points: list[Point32] = []
+) -> list[PointStamped]:
+    points: list[PointStamped] = []
     for point in proposed_area.polygon_2d:
-        points.append(Point32(x=point[0], y=point[1], z=0.0))
-    return PolygonStamped(header=header, polygon=Polygon(points=points))
+        points.append(PointStamped(header=header, point=Point(x=point[0], y=point[1], z=0.0)))
+    return points
 
 
-def polygon_stamped_to_marker(polygon_stamped: PolygonStamped, marker_id: int) -> Marker:
-    return Marker(
-        header=polygon_stamped.header,
+def list_point_stamped_to_line_strip(
+    list_point_stamped: list[PointStamped],
+    marker_id: int,
+) -> Marker:
+    line_strip = Marker(
+        header=list_point_stamped[0].header,
         type=Marker.LINE_STRIP,
         action=Marker.ADD,
         ns="intersection",
         id=marker_id,
         color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3, x=0.2, y=0.2, z=0.2),
-        points=polygon_stamped.polygon.points,  # list[Point]<-list[Point32]
     )
+    for point_stamped in list_point_stamped:
+        line_strip.points.append(point_stamped.point)
+    return line_strip
 
 
 def transform_proposed_area(
     proposed_area: ProposedAreaCondition,
     header: Header,
     tf: TransformStamped,
-) -> tuple[PolygonStamped, float]:
-    polygon_stamped = get_proposed_area_polygon_stamped(proposed_area, header)
-    proposed_area_in_map = do_transform_polygon_stamped(polygon_stamped, tf)
+) -> tuple[list[PointStamped], float]:
+    proposed_area_in_map: list[PointStamped] = []
     sum_z = 0.0
     count_point = 0
-    for point in proposed_area_in_map.polygon.points:
-        point: Point32
-        sum_z += point.z
+
+    list_point_stamped = get_proposed_area_list_point_stamped(proposed_area, header)
+    for point_stamped in list_point_stamped:
         count_point += 1
+        point_stamped_in_map = do_transform_point(point_stamped, tf)
+        proposed_area_in_map.append(point_stamped_in_map)
+        sum_z += point_stamped_in_map.point.z
     average_z = sum_z / count_point
     return proposed_area_in_map, average_z
 
