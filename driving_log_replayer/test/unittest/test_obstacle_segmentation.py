@@ -15,6 +15,7 @@
 from math import pi
 from typing import Callable
 
+from geometry_msgs.msg import Point32
 from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Transform
 from geometry_msgs.msg import TransformStamped
@@ -37,7 +38,6 @@ from tf_transformations import quaternion_from_euler
 
 from driving_log_replayer.obstacle_segmentation import Detection
 from driving_log_replayer.obstacle_segmentation import DetectionCondition
-from driving_log_replayer.obstacle_segmentation import get_proposed_area_polygon_stamped
 from driving_log_replayer.obstacle_segmentation import NonDetection
 from driving_log_replayer.obstacle_segmentation import NonDetectionCondition
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
@@ -497,12 +497,13 @@ def test_non_detection_success(
 
 
 def test_transform_proposed_area() -> None:
+    q = quaternion_from_euler(0.0, 0.0, -pi / 2)
     tf = TransformStamped(
         header=Header(frame_id="map"),
         child_frame_id="base_link",
         transform=Transform(
             translation=Vector3(x=10.0, y=10.0, z=0.0),
-            rotation=Quaternion(x=0.0, y=0.0, z=0.0, w=1.0),
+            rotation=Quaternion(x=q[0], y=q[1], z=q[2], w=q[3]),
         ),
     )
     proposed_area = ProposedAreaCondition(
@@ -515,5 +516,7 @@ def test_transform_proposed_area() -> None:
         Header(frame_id="base_link"),
         tf,
     )
-    print(proposed_area_in_map)
+    assert proposed_area_in_map.polygon.points[0] == Point32(x=12.0, y=8.0, z=0.0)
+    assert proposed_area_in_map.polygon.points[1] == Point32(x=10.0, y=10.0, z=0.0)
+    assert proposed_area_in_map.polygon.points[2] == Point32(x=12.0, y=12.0, z=0.0)
     assert z == 0.0
