@@ -17,33 +17,22 @@
 import logging
 from pathlib import Path
 
-from autoware_auto_perception_msgs.msg import DetectedObject
-from autoware_auto_perception_msgs.msg import DetectedObjects
+from autoware_auto_perception_msgs.msg import DetectedObject, DetectedObjects
 from autoware_auto_perception_msgs.msg import Shape as MsgShape
-from autoware_auto_perception_msgs.msg import TrackedObject
-from autoware_auto_perception_msgs.msg import TrackedObjects
+from autoware_auto_perception_msgs.msg import TrackedObject, TrackedObjects
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.schema import FrameID
-from perception_eval.common.shape import Shape
-from perception_eval.common.shape import ShapeType
+from perception_eval.common.shape import Shape, ShapeType
 from perception_eval.common.status import get_scene_rates
 from perception_eval.config import PerceptionEvaluationConfig
-from perception_eval.evaluation import get_object_status
-from perception_eval.evaluation import PerceptionFrameResult
+from perception_eval.evaluation import PerceptionFrameResult, get_object_status
 from perception_eval.evaluation.metrics import MetricsScore
-from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
-from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
+from perception_eval.evaluation.result.perception_frame_config import (
+    CriticalObjectFilterConfig, PerceptionPassFailConfig)
 from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer3D
 from perception_eval.util.logger_config import configure_logger
-import rclpy
 from visualization_msgs.msg import MarkerArray
-
-from driving_log_replayer.evaluator import DLREvaluator
-from driving_log_replayer.evaluator import evaluator_main
-from driving_log_replayer.perception import PerceptionResult
-from driving_log_replayer.perception import PerceptionScenario
-import driving_log_replayer.perception_eval_conversions as eval_conversions
 
 
 class PerceptionEvaluator(DLREvaluator):
@@ -218,8 +207,13 @@ class PerceptionEvaluator(DLREvaluator):
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
+        # Tracking objectはtimestampがズレていることがあるのでGTの補間を行う
+        if isinstance(msg, TrackedObjects):
+            interpolation: bool = True
+        else:
+            interpolation = False
         # 現frameに対応するGround truthを取得
-        ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
+        ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time, interpolate_ground_truth=interpolation)
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
             return
