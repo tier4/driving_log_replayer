@@ -520,7 +520,8 @@ def test_transform_proposed_area() -> None:
         tf,
     )
     assert proposed_area_in_map[0] == PointStamped(
-        header=header_map, point=Point(x=12.0, y=8.0, z=0.0)
+        header=header_map,
+        point=Point(x=12.0, y=8.0, z=0.0),
     )
     assert proposed_area_in_map[1] == PointStamped(
         header=header_map,

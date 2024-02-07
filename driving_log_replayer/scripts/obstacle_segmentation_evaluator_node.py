@@ -27,7 +27,6 @@ from geometry_msgs.msg import TransformStamped
 import lanelet2
 from lanelet2_extension_python.projection import MGRSProjector
 import lanelet2_extension_python.utility.query as query
-import lanelet2_extension_python.utility.utilities as utilities
 import numpy as np
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.manager import SensingEvaluationManager
@@ -38,6 +37,7 @@ from rclpy.qos import QoSReliabilityPolicy
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
+from shapely import intersection
 import simplejson as json
 from std_msgs.msg import Header
 from tier4_api_msgs.msg import AwapiAutowareStatus
@@ -45,11 +45,14 @@ from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
+from driving_log_replayer.obstacle_segmentation import convert_lanelet_to_shapely_polygon
 from driving_log_replayer.obstacle_segmentation import default_config_path
 from driving_log_replayer.obstacle_segmentation import get_graph_data
+from driving_log_replayer.obstacle_segmentation import get_non_detection_area_in_base_link
 from driving_log_replayer.obstacle_segmentation import get_sensing_frame_config
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationResult
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
+from driving_log_replayer.obstacle_segmentation import transform_proposed_area
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
@@ -73,7 +76,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             "label_prefix"
         ] = "autoware"  # Add a fixed value setting
 
-        # self.__road_lanelets = self.load_road_lanelets()
+        self.__road_lanelets = self.load_road_lanelets()
 
         self.declare_parameter("vehicle_model", "")
         self.__vehicle_model = (
@@ -213,9 +216,11 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
 
     def obstacle_segmentation_cb(self, msg: PointCloud2) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
+        base_link_to_map = self.lookup_transform(msg.header.stamp, "base_link", "map")
         non_detection_area_markers, non_detection_areas = self.get_non_detection_area(
             msg.header,
             map_to_baselink,
+            base_link_to_map,
         )
         self.__pub_marker_non_detection.publish(non_detection_area_markers)
         pcd_header = msg.header
@@ -305,14 +310,34 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         self,
         header: Header,
         map_to_baselink: TransformStamped,
+        base_link_to_map: TransformStamped,
     ) -> tuple[MarkerArray, list]:
+        s_proposed_area = self._scenario.Evaluation.Conditions.NonDetection.ProposedArea
+        # get proposed_area in map
         non_detection_area_markers = MarkerArray()
-        non_detection_areas: list[list[tuple[float, float, float]]] = []
-        for marker in non_detection_area_markers.markers:
-            non_detection_area: list[tuple[float, float, float]] = []
-            for point in marker.points:
-                non_detection_area.append((point.x, point.y, point.z))
-            non_detection_areas.append(non_detection_area)
+        non_detection_areas = []
+        # proposed_area_in_map: shapely.Polygon
+        proposed_area_in_map, average_z = transform_proposed_area(
+            s_proposed_area,
+            header,
+            map_to_baselink,
+        )
+        # get intersection
+        for road in self.__road_lanelets:
+            poly_lanelet = convert_lanelet_to_shapely_polygon(road)
+            i_area = intersection(poly_lanelet, proposed_area_in_map)
+            if not i_area.is_empty:
+                marker, area = get_non_detection_area_in_base_link(
+                    i_area,
+                    header,
+                    s_proposed_area.z_min,
+                    s_proposed_area.z_max,
+                    average_z,
+                    base_link_to_map,
+                )
+                non_detection_area_markers.markers.append(marker)  # base_link
+                non_detection_areas.append(area)  # base_link
+        # create marker and polygon for perception_eval
         return non_detection_area_markers, non_detection_areas
 
 

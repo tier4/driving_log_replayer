@@ -17,9 +17,11 @@ from pathlib import Path
 import sys
 
 from ament_index_python.packages import get_package_share_directory
+from builtin_interfaces.msg import Duration
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import TransformStamped
+from lanelet2.core import Lanelet
 import numpy as np
 from perception_eval.common.object import DynamicObject
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
@@ -31,6 +33,7 @@ from pydantic import field_validator
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
+from shapely import Polygon
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_geometry_msgs import do_transform_point
@@ -315,6 +318,42 @@ def transform_proposed_area(
         sum_z += point_stamped_in_map.point.z
     average_z = sum_z / count_point
     return proposed_area_in_map, average_z
+
+
+def convert_lanelet_to_shapely_polygon(lanelet: Lanelet) -> Polygon:
+    points: list[float, float] = []
+    for p_2d in lanelet.polygon2d():
+        points.append([p_2d.x, p_2d.y])
+    return Polygon(points)
+
+
+def get_non_detection_area_in_base_link(
+    intersection_polygon: Polygon,
+    header: Header,
+    z_min: float,
+    z_max: float,
+    average_z: float,
+    base_link_to_map: TransformStamped,
+    marker_id: int,
+) -> tuple[Marker, list]:
+    line_strip = Marker(
+        header=header,
+        type=Marker.LINE_STRIP,
+        action=Marker.ADD,
+        ns="intersection",
+        id=marker_id,
+        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3, x=0.2, y=0.2, z=0.2),
+        lifetime=Duration(nanosec=200_000_000),
+    )
+    list_intersection_area = []
+    for p_2d in intersection_polygon:
+        p_stamped_map = PointStamped(header=header, point=Point(x=p_2d[0], y=p_2d[1], z=average_z))
+        p_stamped_base_link = do_transform_point(p_stamped_map, base_link_to_map)
+        list_intersection_area.append(
+            [p_stamped_base_link.point.x, p_stamped_base_link.point.y, p_stamped_base_link.z],
+        )
+        line_strip.points.append(p_stamped_base_link.point)
+    return line_strip, list_intersection_area
 
 
 @dataclass
