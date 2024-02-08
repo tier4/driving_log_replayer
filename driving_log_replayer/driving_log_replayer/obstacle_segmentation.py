@@ -21,6 +21,7 @@ from builtin_interfaces.msg import Duration
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import Vector3
 from lanelet2.core import Lanelet
 import numpy as np
 from perception_eval.common.object import DynamicObject
@@ -342,7 +343,8 @@ def get_non_detection_area_in_base_link(
         action=Marker.ADD,
         ns="intersection",
         id=marker_id,
-        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3, x=0.2, y=0.2, z=0.2),
+        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3),
+        scale=Vector3(x=0.2, y=0.2, z=0.2),
         lifetime=Duration(nanosec=200_000_000),
     )
     list_intersection_area = []
