@@ -15,8 +15,6 @@
 from math import pi
 from typing import Callable
 
-from geometry_msgs.msg import Point
-from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Transform
 from geometry_msgs.msg import TransformStamped
@@ -34,6 +32,7 @@ from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrame
 from pydantic import ValidationError
 from pyquaternion import Quaternion as PyQuaternion
 import pytest
+from shapely import Polygon
 from std_msgs.msg import Header
 from tf_transformations import quaternion_from_euler
 
@@ -519,16 +518,5 @@ def test_transform_proposed_area() -> None:
         header_base_link,
         tf,
     )
-    assert proposed_area_in_map[0] == PointStamped(
-        header=header_map,
-        point=Point(x=12.0, y=8.0, z=0.0),
-    )
-    assert proposed_area_in_map[1] == PointStamped(
-        header=header_map,
-        point=Point(x=10.0, y=10.0, z=0.0),
-    )
-    assert proposed_area_in_map[2] == PointStamped(
-        header=header_map,
-        point=Point(x=12.0, y=12.0, z=0.0),
-    )
+    assert proposed_area_in_map == Polygon(((12.0, 8.0, 0.0), (10.0, 10.0, 0.0), (12.0, 12.0, 0.0)))
     assert z == 0.0
