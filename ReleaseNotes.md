@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.12.2
+
+Minor Tweak
+
+| Module       | Feature      | Brief summary                                      | Pull request                                                   | Jira | Contributor                           |
+| ------------ | ------------ | -------------------------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | Ground Truth | enable to interpolate gt when scenario is tracking | [#349](https://github.com/tier4/driving_log_replayer/pull/349) | -    | [YoshiRi](https://github.com/YoshiRi) |
+
 ## Version 1.12.1
 
 Minor Tweak
