@@ -322,10 +322,12 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             map_to_baselink,
         )
         # get intersection
+        marker_id = 0
         for road in self.__road_lanelets:
             poly_lanelet = convert_lanelet_to_shapely_polygon(road)
             i_area = intersection(poly_lanelet, proposed_area_in_map)
             if not i_area.is_empty:
+                marker_id += 1
                 marker, area = get_non_detection_area_in_base_link(
                     i_area,
                     header,
@@ -333,6 +335,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
                     s_proposed_area.z_max,
                     average_z,
                     base_link_to_map,
+                    marker_id,
                 )
                 non_detection_area_markers.markers.append(marker)  # base_link
                 non_detection_areas.append(area)  # base_link
