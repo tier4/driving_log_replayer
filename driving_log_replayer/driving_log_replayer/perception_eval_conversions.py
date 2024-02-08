@@ -77,6 +77,7 @@ def uuid_from_ros_msg(ros_uuid: np.ndarray) -> str:
         ros_uuid (np.ndarray): (16,) in uint8
     Returns:
         uuid (str)
+
     """
     return "".join([str(uuid_) for uuid_ in ros_uuid])
 

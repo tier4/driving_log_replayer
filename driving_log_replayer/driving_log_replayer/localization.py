@@ -168,9 +168,9 @@ class Reliability(EvaluationItem):
 class Availability(EvaluationItem):
     name: str = "NDT Availability"
     success: bool = True
-    TARGET_DIAG_NAME: ClassVar[
-        str
-    ] = "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
+    TARGET_DIAG_NAME: ClassVar[str] = (
+        "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
+    )
     ERROR_STATUS_LIST: ClassVar[list[str]] = ["Timeout", "NotReceived"]
 
     def set_frame(self, msg: DiagnosticArray) -> dict:

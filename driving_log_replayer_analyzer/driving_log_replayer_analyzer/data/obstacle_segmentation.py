@@ -41,6 +41,7 @@ def fail_3_times_in_a_row(data: list) -> list:
     Returns:
     -------
         list: Inputと同じ形式のlist。2項目目の0 or 1が変更される。
+
     """
     window = 3
 
@@ -321,6 +322,7 @@ class JsonlParser:
         Returns
         -------
             list: 距離と結果を含むリスト
+
         """
         ret = []
         for frame in self.detection:
@@ -372,6 +374,7 @@ class JsonlParser:
         Returns
         -------
             list: UUIDごとの自車からAnnotation BB内の最近傍PCの距離ごとの検知点群数のリスト
+
         """
         tmp = []
         for frame in self.detection:
@@ -393,6 +396,7 @@ class JsonlParser:
         Returns
         -------
             list: UUIDごとの自車からAnnotation BBの最近傍点と検知点群の最近傍点との距離差
+
         """
         tmp = []
         for frame in self.detection:
@@ -421,6 +425,7 @@ class JsonlParser:
         Returns
         -------
             list: フレームと点群数の累積数、ポップアップ表示用に使用する距離毎のFP数
+
         """
         ret = []
         for frame in self.non_detection:
@@ -444,6 +449,7 @@ class JsonlParser:
         Returns
         -------
             list: 自車の位置(x,y)とNon detectionのNumPoints、ポップアップ表示用に使用する距離毎のFP数
+
         """
         ret = []
         for frame in self.non_detection:
