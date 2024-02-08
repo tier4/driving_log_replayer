@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: enable to interpolate gt when scenario is tracking (`#349 <https://github.com/tier4/driving_log_replayer/issues/349>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Yoshi Ri
+
 1.12.1 (2024-01-23)
 -------------------
 * chore: update rviz (`#346 <https://github.com/tier4/driving_log_replayer/issues/346>`_)
