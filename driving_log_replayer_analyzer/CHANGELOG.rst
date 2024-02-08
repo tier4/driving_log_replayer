@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.12.3 (2024-02-08)
+-------------------
 * chore: update ci (`#351 <https://github.com/tier4/driving_log_replayer/issues/351>`_)
 * Contributors: Hayato Mizushima
 
