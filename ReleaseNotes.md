@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.12.3
+
+Minor Tweak
+
+| Module | Feature | Brief summary     | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ----------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | CI      | update CI setting | [#351](https://github.com/tier4/driving_log_replayer/pull/351) | RT4-8497 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.12.2
 
 Minor Tweak
