@@ -38,6 +38,7 @@ from tf_transformations import quaternion_from_euler
 
 from driving_log_replayer.obstacle_segmentation import Detection
 from driving_log_replayer.obstacle_segmentation import DetectionCondition
+from driving_log_replayer.obstacle_segmentation import get_non_detection_area_in_base_link
 from driving_log_replayer.obstacle_segmentation import NonDetection
 from driving_log_replayer.obstacle_segmentation import NonDetectionCondition
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
@@ -500,7 +501,7 @@ def test_transform_proposed_area() -> None:
     header_base_link = Header(frame_id="base_link")
     header_map = Header(frame_id="map")
     q = quaternion_from_euler(0.0, 0.0, -pi / 2)
-    tf = TransformStamped(
+    map_to_baselink = TransformStamped(
         header=header_map,
         child_frame_id="base_link",
         transform=Transform(
@@ -516,7 +517,41 @@ def test_transform_proposed_area() -> None:
     proposed_area_in_map, z = transform_proposed_area(
         proposed_area,
         header_base_link,
-        tf,
+        map_to_baselink,
     )
     assert proposed_area_in_map == Polygon(((12.0, 8.0, 0.0), (10.0, 10.0, 0.0), (12.0, 12.0, 0.0)))
     assert z == 0.0
+
+
+# def test_get_non_detection_area_in_base_link() -> None:
+header_base_link = Header(frame_id="base_link")
+intersection_polygon = Polygon(((12.0, 8.0, 0.0), (10.0, 10.0, 0.0), (12.0, 12.0, 0.0)))
+q = quaternion_from_euler(0.0, 0.0, -pi / 2)
+base_link_to_map = TransformStamped(
+    header=header_base_link,
+    child_frame_id="map",
+    transform=Transform(
+        translation=Vector3(x=-10.0, y=-10.0, z=0.0),
+        rotation=Quaternion(x=q[0], y=q[1], z=q[2], w=q[3]),
+    ),
+)
+line_strip, non_detection_list = get_non_detection_area_in_base_link(
+    intersection_polygon,
+    header_base_link,
+    0.0,
+    2.0,
+    0.0,
+    base_link_to_map,
+    1,
+)
+print(line_strip)
+print(non_detection_list)
+# assert line_strip == Marker()
+# assert non_detection_list == [
+#     [2.0, 2.0, 0.0],
+#     [0.0, 0.0, 0.0],
+#     [-2.0, 2.0, 0.0],
+#     [2.0, 2.0, 2.0],
+#     [0.0, 0.0, 2.0],
+#     [-2.0, 2.0, 2.0],
+# ]

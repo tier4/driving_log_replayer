@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 import sys
@@ -219,8 +220,7 @@ def summarize_frame_container(
             result.ground_truth_object,
             header,
             "detection",
-            counter := counter
-            + 1,  # アノテーションは基本的にどのフレームでもあるので、uuidで指定した分だけ全体でカウンターが回る。
+            counter := counter + 1,  # アノテーションは基本的にどのフレームでもあるので、uuidで指定した分だけ全体でカウンターが回る。
             color,
         )
         marker_array.markers.append(bbox)
@@ -349,13 +349,15 @@ def get_non_detection_area_in_base_link(
     )
     list_intersection_area = []
     list_p_stamped_base_link: list[PointStamped] = []
-    for p_2d in intersection_polygon:
-        p_stamped_map = PointStamped(header=header, point=Point(x=p_2d[0], y=p_2d[1], z=average_z))
+    for shapely_point in intersection_polygon.exterior.coords:
+        p_stamped_map = PointStamped(
+            header=header, point=Point(x=shapely_point[0], y=shapely_point[1], z=average_z)
+        )
         list_p_stamped_base_link.append(do_transform_point(p_stamped_map, base_link_to_map))
     # create floor polygon
     for p_base_link in list_p_stamped_base_link:
         p_base_link.point.z = z_min
-        line_strip.points.append(p_base_link.point)
+        line_strip.points.append(deepcopy(p_base_link.point))
         list_intersection_area.append(
             [p_base_link.point.x, p_base_link.point.y, p_base_link.point.z],
         )
