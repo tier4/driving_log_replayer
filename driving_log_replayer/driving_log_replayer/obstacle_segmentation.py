@@ -305,8 +305,8 @@ def transform_proposed_area(
     proposed_area: ProposedAreaCondition,
     header: Header,
     tf: TransformStamped,
-) -> tuple[list[PointStamped], float]:
-    proposed_area_in_map: list[PointStamped] = []
+) -> tuple[Polygon, float]:
+    proposed_area_list: list = []
     sum_z = 0.0
     count_point = 0
 
@@ -314,10 +314,10 @@ def transform_proposed_area(
     for point_stamped in list_point_stamped:
         count_point += 1
         point_stamped_in_map = do_transform_point(point_stamped, tf)
-        proposed_area_in_map.append(point_stamped_in_map)
+        proposed_area_list.append([point_stamped_in_map.point.x, point_stamped_in_map.point.y])
         sum_z += point_stamped_in_map.point.z
     average_z = sum_z / count_point
-    return proposed_area_in_map, average_z
+    return Polygon(proposed_area_list), average_z
 
 
 def convert_lanelet_to_shapely_polygon(lanelet: Lanelet) -> Polygon:
@@ -346,13 +346,24 @@ def get_non_detection_area_in_base_link(
         lifetime=Duration(nanosec=200_000_000),
     )
     list_intersection_area = []
+    list_p_stamped_base_link: list[PointStamped] = []
     for p_2d in intersection_polygon:
         p_stamped_map = PointStamped(header=header, point=Point(x=p_2d[0], y=p_2d[1], z=average_z))
-        p_stamped_base_link = do_transform_point(p_stamped_map, base_link_to_map)
+        list_p_stamped_base_link.append(do_transform_point(p_stamped_map, base_link_to_map))
+    # create floor polygon
+    for p_base_link in list_p_stamped_base_link:
+        p_base_link.point.z = z_min
+        line_strip.points.append(p_base_link.point)
         list_intersection_area.append(
-            [p_stamped_base_link.point.x, p_stamped_base_link.point.y, p_stamped_base_link.z],
+            [p_base_link.point.x, p_base_link.point.y, p_base_link.point.z],
         )
-        line_strip.points.append(p_stamped_base_link.point)
+    # create roof polygon
+    for p_base_link in list_p_stamped_base_link:
+        p_base_link.point.z = z_max
+        line_strip.points.append(p_base_link.point)
+        list_intersection_area.append(
+            [p_base_link.point.x, p_base_link.point.y, p_base_link.point.z],
+        )
     return line_strip, list_intersection_area
 
 

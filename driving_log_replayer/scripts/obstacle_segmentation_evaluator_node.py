@@ -316,7 +316,6 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         # get proposed_area in map
         non_detection_area_markers = MarkerArray()
         non_detection_areas = []
-        # proposed_area_in_map: shapely.Polygon
         proposed_area_in_map, average_z = transform_proposed_area(
             s_proposed_area,
             header,
