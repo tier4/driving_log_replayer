@@ -47,6 +47,7 @@ class SuccessFail(Enum):
         Returns
         -------
             bool: Success or fail.
+
         """
         return self == SuccessFail.SUCCESS
 
@@ -84,6 +85,7 @@ class CriteriaLevel(Enum):
         Returns:
         -------
             bool: Whether the score satisfied the level.
+
         """
         return score >= self.value
 
@@ -99,6 +101,7 @@ class CriteriaLevel(Enum):
         Returns:
         -------
             CriteriaLevel: _description_
+
         """
         name: str = value.upper()
         assert name != "CUSTOM", "If you want to use custom level, use from_number."
@@ -117,6 +120,7 @@ class CriteriaLevel(Enum):
         Returns:
         -------
             CriteriaLevel: `CriteriaLevel.CUSTOM` with custom value.
+
         """
         min_range = 0.0
         max_range = 100.0
@@ -152,6 +156,7 @@ class CriteriaMethod(Enum):
         Returns:
         -------
             CriteriaMode: `CriteriaMode` instance.
+
         """
         name: str = value.upper()
         assert name in cls.__members__, "value must be NUM_TP, METRICS_SCORE, or METRICS_SCORE_MAPH"
@@ -165,6 +170,7 @@ class CriteriaMethodImpl(ABC):
     Args:
     ----
         level (CriteriaLevel): Level of criteria.
+
     """
 
     def __init__(self, level: CriteriaLevel) -> None:
@@ -182,6 +188,7 @@ class CriteriaMethodImpl(ABC):
         Returns:
         -------
             SuccessFail: Success or fail.
+
         """
         # no ground truth and no result is considered as success
         if self.has_objects(frame) is False:
@@ -201,6 +208,7 @@ class CriteriaMethodImpl(ABC):
         Returns:
         -------
             bool: Whether the frame result has objects is.
+
         """
         num_success: int = frame.pass_fail_result.get_num_success()
         num_fail: int = frame.pass_fail_result.get_num_fail()
@@ -219,6 +227,7 @@ class CriteriaMethodImpl(ABC):
         Returns:
         -------
             float: Calculated score.
+
         """
 
 
@@ -289,6 +298,7 @@ class CriteriaFilter:
         Returns
         -------
             bool: True if all filter params are None.
+
         """
         return self.distance_range is None
 
@@ -305,6 +315,7 @@ class CriteriaFilter:
         Returns:
         -------
             PerceptionFrameResult: Filtered result.
+
         """
         if self.is_all_none():
             return frame
@@ -354,18 +365,15 @@ class PerceptionCriteria:
         levels (str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel]): Criteria level instance or name.
             If None, `CriteriaLevel.Easy` is used. Defaults to None.
         distance_range (tuple[Number, Number] | None): Range of distance to filter frame result. Defaults to None.
+
     """
 
     def __init__(
         self,
         methods: str | list[str] | CriteriaMethod | list[CriteriaMethod] | None = None,
-        levels: str
-        | list[str]
-        | Number
-        | list[Number]
-        | CriteriaLevel
-        | list[CriteriaLevel]
-        | None = None,
+        levels: (
+            str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel] | None
+        ) = None,
         distance_range: tuple[Number, Number] | None = None,
     ) -> None:
         methods = [CriteriaMethod.NUM_TP] if methods is None else self.load_methods(methods)
@@ -403,6 +411,7 @@ class PerceptionCriteria:
         Returns:
         -------
             list[CriteriaMethod]: Instance.
+
         """
         if isinstance(methods_input, str):
             loaded_methods = [CriteriaMethod.from_str(methods_input)]
@@ -432,6 +441,7 @@ class PerceptionCriteria:
         Returns:
         -------
             list[CriteriaLevel]: Instance.
+
         """
         if isinstance(levels_input, str):
             levels_output = [CriteriaLevel.from_str(levels_input)]
@@ -461,6 +471,7 @@ class PerceptionCriteria:
         Returns:
         -------
             tuple[SuccessFail, PerceptionFrameResult]: Success/Fail result and frame result.
+
         """
         ret_frame = self.criteria_filter.filter_frame_result(frame)
 

@@ -90,9 +90,9 @@ class PerformanceDiagScenario(Scenario):
 class Visibility(EvaluationItem):
     name: str = "Visibility"
     success: bool = True
-    REGEX_VISIBILITY_DIAG_NAME: ClassVar[
-        str
-    ] = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
+    REGEX_VISIBILITY_DIAG_NAME: ClassVar[str] = (
+        "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
+    )
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
@@ -158,9 +158,9 @@ class Visibility(EvaluationItem):
 class Blockage(EvaluationItem):
     success: bool = True
     # sample /autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar right_upper: blockage_validation
-    BLOCKAGE_DIAG_BASE_NAME: ClassVar[
-        str
-    ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar "
+    BLOCKAGE_DIAG_BASE_NAME: ClassVar[str] = (
+        "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar "
+    )
     BLOCKAGE_DIAG_POSTFIX: ClassVar[str] = ": blockage_validation"
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
