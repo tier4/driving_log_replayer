@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat(traffic_light): change recorded topics (`#353 <https://github.com/tier4/driving_log_replayer/issues/353>`_)
+* Contributors: kminoda
+
 1.12.3 (2024-02-08)
 -------------------
 * chore: update ci (`#351 <https://github.com/tier4/driving_log_replayer/issues/351>`_)

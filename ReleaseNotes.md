@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.12.4
+
+Minor Tweak
+
+| Module          | Feature | Brief summary          | Pull request                                                   | Jira | Contributor                           |
+| --------------- | ------- | ---------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `traffic_light` | rosbag2 | change recorded topics | [#353](https://github.com/tier4/driving_log_replayer/pull/353) | -    | [kminoda](https://github.com/kminoda) |
+
 ## Version 1.12.3
 
 Minor Tweak
