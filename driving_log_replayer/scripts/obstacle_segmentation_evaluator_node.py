@@ -17,16 +17,12 @@
 import logging
 from os.path import expandvars
 from pathlib import Path
-from typing import Any
 from typing import TYPE_CHECKING
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import TransformStamped
-import lanelet2
-from lanelet2_extension_python.projection import MGRSProjector
-import lanelet2_extension_python.utility.query as query
 import numpy as np
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.manager import SensingEvaluationManager
@@ -45,7 +41,8 @@ from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
-from driving_log_replayer.obstacle_segmentation import convert_lanelet_to_shapely_polygon
+from driving_log_replayer.lanelet2_util import road_lanelets_from_file
+from driving_log_replayer.lanelet2_util import to_shapely_polygon
 from driving_log_replayer.obstacle_segmentation import default_config_path
 from driving_log_replayer.obstacle_segmentation import get_graph_data
 from driving_log_replayer.obstacle_segmentation import get_non_detection_area_in_base_link
@@ -76,7 +73,14 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             "label_prefix"
         ] = "autoware"  # Add a fixed value setting
 
-        self.__road_lanelets = self.load_road_lanelets()
+        self.declare_parameter("map_path", "")
+        map_path = Path(
+            expandvars(
+                self.get_parameter("map_path").get_parameter_value().string_value,
+            ),
+            "lanelet2_map.osm",
+        ).as_posix()
+        self.__road_lanelets = road_lanelets_from_file(map_path)
 
         self.declare_parameter("vehicle_model", "")
         self.__vehicle_model = (
@@ -201,19 +205,6 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             except json.JSONDecodeError:
                 pass
 
-    def load_road_lanelets(self) -> Any:  # ConstLanelets
-        self.declare_parameter("map_path", "")
-        map_path = Path(
-            expandvars(
-                self.get_parameter("map_path").get_parameter_value().string_value,
-            ),
-            "lanelet2_map.osm",
-        ).as_posix()
-        projection = MGRSProjector(lanelet2.io.Origin(0.0, 0.0))
-        lanelet_map = lanelet2.io.load(map_path, projection)
-        all_lanelets = query.laneletLayer(lanelet_map)
-        return query.roadLanelets(all_lanelets)
-
     def obstacle_segmentation_cb(self, msg: PointCloud2) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         base_link_to_map = self.lookup_transform(msg.header.stamp, "base_link", "map")
@@ -324,7 +315,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         # get intersection
         marker_id = 0
         for road in self.__road_lanelets:
-            poly_lanelet = convert_lanelet_to_shapely_polygon(road)
+            poly_lanelet = to_shapely_polygon(road)
             i_area = intersection(poly_lanelet, proposed_area_in_map)
             if not i_area.is_empty:
                 marker_id += 1

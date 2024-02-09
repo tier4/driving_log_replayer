@@ -23,7 +23,6 @@ from geometry_msgs.msg import Point
 from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import TransformStamped
 from geometry_msgs.msg import Vector3
-from lanelet2.core import Lanelet
 import numpy as np
 from perception_eval.common.object import DynamicObject
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
@@ -220,7 +219,8 @@ def summarize_frame_container(
             result.ground_truth_object,
             header,
             "detection",
-            counter := counter + 1,  # アノテーションは基本的にどのフレームでもあるので、uuidで指定した分だけ全体でカウンターが回る。
+            counter := counter
+            + 1,  # アノテーションは基本的にどのフレームでもあるので、uuidで指定した分だけ全体でカウンターが回る。
             color,
         )
         marker_array.markers.append(bbox)
@@ -321,13 +321,6 @@ def transform_proposed_area(
     return Polygon(proposed_area_list), average_z
 
 
-def convert_lanelet_to_shapely_polygon(lanelet: Lanelet) -> Polygon:
-    points: list[float, float] = []
-    for p_2d in lanelet.polygon2d():
-        points.append([p_2d.x, p_2d.y])
-    return Polygon(points)
-
-
 def get_non_detection_area_in_base_link(
     intersection_polygon: Polygon,
     header: Header,
@@ -351,7 +344,8 @@ def get_non_detection_area_in_base_link(
     list_p_stamped_base_link: list[PointStamped] = []
     for shapely_point in intersection_polygon.exterior.coords:
         p_stamped_map = PointStamped(
-            header=header, point=Point(x=shapely_point[0], y=shapely_point[1], z=average_z)
+            header=header,
+            point=Point(x=shapely_point[0], y=shapely_point[1], z=average_z),
         )
         list_p_stamped_base_link.append(do_transform_point(p_stamped_map, base_link_to_map))
     # create floor polygon
