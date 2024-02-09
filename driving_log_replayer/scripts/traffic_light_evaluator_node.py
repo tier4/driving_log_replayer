@@ -153,9 +153,9 @@ class TrafficLightEvaluator(DLREvaluator):
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
-                frame_id=FrameID.TRAFFIC_LIGHT
-                if self.__use_regulatory_element
-                else self.__camera_type,
+                frame_id=(
+                    FrameID.TRAFFIC_LIGHT if self.__use_regulatory_element else self.__camera_type
+                ),
                 semantic_score=confidence,
                 semantic_label=label,
                 roi=None,
