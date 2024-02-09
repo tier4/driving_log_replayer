@@ -208,6 +208,10 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
     def obstacle_segmentation_cb(self, msg: PointCloud2) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         base_link_to_map = self.lookup_transform(msg.header.stamp, "base_link", "map")
+        """
+        self.get_logger().error(json.dumps(message_to_ordereddict(map_to_baselink)))
+        self.get_logger().error(json.dumps(message_to_ordereddict(base_link_to_map)))
+        """
         non_detection_area_markers, non_detection_areas = self.get_non_detection_area(
             msg.header,
             map_to_baselink,
