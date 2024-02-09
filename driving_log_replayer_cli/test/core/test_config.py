@@ -11,7 +11,7 @@ from driving_log_replayer_cli.core.exception import UserError
 def test_config_create_output_dir() -> None:
     conf: Config = Config(
         data_directory=".",
-        output_directory="$HOME/dlr_out_unittest",
+        output_directory=Path(__file__).parent.joinpath("dlr_out").as_posix(),
         autoware_path=".",
     )
     assert conf.output_directory.exists()

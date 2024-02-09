@@ -66,7 +66,8 @@ def footprint_from_ros_msg(ros_footprint: RosPolygon) -> Polygon | None:
     coords = []
     for ros_point in ros_footprint.points:
         coords.append((ros_point.x, ros_point.y, ros_point.z))
-    if coords:
+    if len(coords) >= 3:  # noqa
+        # polygon must be more than 3 points
         return Polygon(coords)
     # footprint.points of bounding_box and cylinder are empty, so return None
     return None
@@ -81,6 +82,7 @@ def uuid_from_ros_msg(ros_uuid: np.ndarray) -> str:
         ros_uuid (np.ndarray): (16,) in uint8
     Returns:
         uuid (str)
+
     """
     return "".join([str(uuid_) for uuid_ in ros_uuid])
 

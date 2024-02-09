@@ -193,7 +193,8 @@ def summarize_frame_container(
             result.ground_truth_object,
             header,
             "detection",
-            counter := counter + 1,  # アノテーションは基本的にどのフレームでもあるので、uuidで指定した分だけ全体でカウンターが回る。
+            counter := counter
+            + 1,  # アノテーションは基本的にどのフレームでもあるので、uuidで指定した分だけ全体でカウンターが回る。
             color,
         )
         marker_array.markers.append(bbox)
@@ -318,9 +319,11 @@ class Detection(EvaluationItem):
             marker_array,
             pcd,
             graph_detection,
-            ObstacleSegmentationMarker.OK
-            if frame_success == "Success"
-            else ObstacleSegmentationMarker.ERROR,
+            (
+                ObstacleSegmentationMarker.OK
+                if frame_success == "Success"
+                else ObstacleSegmentationMarker.ERROR
+            ),
         )
 
         color_fail = ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3)
@@ -395,9 +398,11 @@ class NonDetection(EvaluationItem):
         ros_pcd, dist_array = NonDetection.convert_numpy_pointcloud(pcd_list, header)
         graph_non_detection = ObstacleSegmentationMarker(
             header=header,
-            status=ObstacleSegmentationMarker.ERROR
-            if frame_success == "Fail"
-            else ObstacleSegmentationMarker.OK,
+            status=(
+                ObstacleSegmentationMarker.ERROR
+                if frame_success == "Fail"
+                else ObstacleSegmentationMarker.OK
+            ),
             number_of_pointcloud=dist_array.shape[0],
         )
         info = {}

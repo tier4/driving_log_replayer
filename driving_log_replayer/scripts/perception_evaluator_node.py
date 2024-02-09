@@ -173,6 +173,13 @@ class PerceptionEvaluator(DLREvaluator):
             if isinstance(perception_object, TrackedObject):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
 
+            # check footprint length
+            if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
+                self.get_logger().error(
+                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}",
+                )
+                rclpy.shutdown()
+
             shape_type = ShapeType.BOUNDING_BOX
             shape_type_num = perception_object.shape.type
             if shape_type_num == MsgShape.POLYGON:
@@ -211,8 +218,16 @@ class PerceptionEvaluator(DLREvaluator):
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
+        # Tracking objectはtimestampがズレていることがあるのでGTの補間を行う
+        if isinstance(msg, TrackedObjects):
+            interpolation: bool = True
+        else:
+            interpolation = False
         # 現frameに対応するGround truthを取得
-        ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
+        ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(
+            unix_time,
+            interpolate_ground_truth=interpolation,
+        )
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
             return

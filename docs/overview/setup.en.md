@@ -7,7 +7,7 @@ This section describes the settings required to use driving_log_replayer.
 In order to reduce the number of arguments to be passed to `driving_log_replayer_cli`, the directories specified as arguments are described in a configuration file.
 
 Therefore, before using the cli, create a $HOME/.driving_log_replayer.config.toml file in the format presented below.
-You can create it manually or by using the driving_log_replayer configure command.
+You can create it manually or by using the dlr configure command.
 
 ```shell
 # manual creation
@@ -77,7 +77,7 @@ A folder where resources used in the simulation are stored.
 
 For each test case: a scenario, rosbag, and dataset are placed.
 
-### Data Folder Structure for localization and performance_diag
+### Data Folder Structure for use case without t4_dataset
 
 ```shell
 driving_log_replayer_data             // .driving_log_replayer.config の data_directory
@@ -93,7 +93,7 @@ driving_log_replayer_data             // .driving_log_replayer.config の data_d
 
 ```
 
-### Data Folder Structure for obstacle_segmentation and perception
+### Data Folder Structure for use case with t4_dataset
 
 ```shell
 driving_log_replayer_data              // .driving_log_replayer.config の data_directory
