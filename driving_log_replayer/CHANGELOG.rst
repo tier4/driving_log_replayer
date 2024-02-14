@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: record tracking delay in perception sim (`#357 <https://github.com/tier4/driving_log_replayer/issues/357>`_)
+* Contributors: Yoshi Ri
+
 1.12.4 (2024-02-09)
 -------------------
 * feat(traffic_light): change recorded topics (`#353 <https://github.com/tier4/driving_log_replayer/issues/353>`_)

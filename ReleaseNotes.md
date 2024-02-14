@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.12.5
+
+Minor Tweak
+
+| Module          | Feature | Brief summary          | Pull request                                                   | Jira | Contributor                           |
+| --------------- | ------- | ---------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `traffic light` | rosbag2 | change recorded topics | [#357](https://github.com/tier4/driving_log_replayer/pull/357) | -    | [YoshiRi](https://github.com/YoshiRi) |
+
 ## Version 1.12.4
 
 Minor Tweak
