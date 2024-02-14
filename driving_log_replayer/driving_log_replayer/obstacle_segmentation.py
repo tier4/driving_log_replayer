@@ -66,18 +66,22 @@ class ProposedAreaCondition(BaseModel):
     @field_validator("polygon_2d")
     @classmethod
     def is_clockwise(cls, v: list[list[number]]) -> list | None:
+        v_float = []
         if len(v) < 3:  # noqa
             err_msg = "polygon requires 3 or more elements"
             raise ValueError(err_msg)
         check_clock_wise: float = 0.0
-        for i, _ in enumerate(v):
-            p1 = v[i]
-            p2 = v[(i + 1) % len(v)]
+        # convert int value to float
+        for p_2d in v:
+            v_float.append([float(p_2d[0]), float(p_2d[1])])
+        for i, _ in enumerate(v_float):
+            p1 = v_float[i]
+            p2 = v_float[(i + 1) % len(v_float)]
             check_clock_wise += (p2[0] - p1[0]) * (p2[1] + p2[1])
         if check_clock_wise <= 0.0:  # noqa
             err_msg = "polygon_2d is not clockwise"
             raise ValueError(err_msg)
-        return v
+        return v_float
 
 
 class BoundingBoxCondition(BaseModel):
