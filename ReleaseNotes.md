@@ -6,7 +6,7 @@ Minor Tweak
 
 | Module          | Feature | Brief summary          | Pull request                                                   | Jira | Contributor                           |
 | --------------- | ------- | ---------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
-| `traffic light` | rosbag2 | change recorded topics | [#357](https://github.com/tier4/driving_log_replayer/pull/357) | -    | [YoshiRi](https://github.com/YoshiRi) |
+| `traffic_light` | rosbag2 | change recorded topics | [#357](https://github.com/tier4/driving_log_replayer/pull/357) | -    | [YoshiRi](https://github.com/YoshiRi) |
 
 ## Version 1.12.4
 
