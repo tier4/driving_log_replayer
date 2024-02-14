@@ -16,7 +16,7 @@ from lanelet2.core import getId
 from lanelet2.core import Lanelet
 from lanelet2.core import LineString3d
 from lanelet2.core import Point3d
-from shapely import Polygon
+from shapely.geometry import Polygon
 
 from driving_log_replayer.lanelet2_util import to_shapely_polygon
 

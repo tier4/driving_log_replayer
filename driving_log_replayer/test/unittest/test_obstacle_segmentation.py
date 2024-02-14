@@ -32,7 +32,7 @@ from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrame
 from pydantic import ValidationError
 from pyquaternion import Quaternion as PyQuaternion
 import pytest
-from shapely import Polygon
+from shapely.geometry import Polygon
 from std_msgs.msg import Header
 from tf_transformations import quaternion_from_euler
 

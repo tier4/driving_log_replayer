@@ -18,7 +18,7 @@ import lanelet2
 from lanelet2.core import Lanelet
 from lanelet2_extension_python.projection import MGRSProjector
 from lanelet2_extension_python.utility import query
-from shapely import Polygon
+from shapely.geometry import Polygon
 
 
 def road_lanelets_from_file(map_path: str) -> Any:

@@ -34,7 +34,7 @@ from pydantic import field_validator
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
-from shapely import Polygon
+from shapely.geometry import Polygon
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_geometry_msgs import do_transform_point
