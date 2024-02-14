@@ -83,6 +83,11 @@ class ProposedAreaCondition(BaseModel):
             raise ValueError(err_msg)
         return v_float
 
+    @field_validator("z_min", "z_max")
+    @classmethod
+    def to_float(cls, v: number) -> float:
+        return float(v)
+
 
 class BoundingBoxCondition(BaseModel):
     Start: number | None = None
