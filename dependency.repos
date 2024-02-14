@@ -11,12 +11,20 @@ repositories:
   core/autoware_common:
     type: git
     url: https://github.com/autowarefoundation/autoware_common.git
-    version: main
+    version: autoware_msg
   # universe
+  universe/external/tier4_ad_api_adaptor: # TODO(TIER IV): Improve design/code and transfer to AWF
+    type: git
+    url: https://github.com/tier4/tier4_ad_api_adaptor.git
+    version: autoware_msg
   universe/external/tier4_autoware_msgs:
     type: git
     url: https://github.com/tier4/tier4_autoware_msgs.git
-    version: tier4/universe
+    version: autoware_msg
+  universe/external/morai_msgs:
+    type: git
+    url: https://github.com/MORAI-Autonomous/MORAI-ROS2_morai_msgs.git
+    version: main
   # simulator
   simulator/perception_eval:
     type: git
