@@ -13,10 +13,6 @@ repositories:
     url: https://github.com/autowarefoundation/autoware_common.git
     version: autoware_msg
   # universe
-  universe/external/tier4_ad_api_adaptor: # TODO(TIER IV): Improve design/code and transfer to AWF
-    type: git
-    url: https://github.com/tier4/tier4_ad_api_adaptor.git
-    version: autoware_msg
   universe/external/tier4_autoware_msgs:
     type: git
     url: https://github.com/tier4/tier4_autoware_msgs.git
