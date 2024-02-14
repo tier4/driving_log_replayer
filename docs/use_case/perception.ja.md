@@ -119,8 +119,8 @@ Subscribed topics:
 
 | topic 名                                         | データ型                                          |
 | ------------------------------------------------ | ------------------------------------------------- |
-| /perception/object_recognition/detection/objects | autoware_auto_perception_msgs/msg/DetectedObjects |
-| /perception/object_recognition/tracking/objects  | autoware_auto_perception_msgs/msg/TrackedObjects  |
+| /perception/object_recognition/detection/objects | autoware_perception_msgs/msg/DetectedObjects |
+| /perception/object_recognition/tracking/objects  | autoware_perception_msgs/msg/TrackedObjects  |
 
 Published topics:
 
