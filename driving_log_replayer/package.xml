@@ -18,7 +18,6 @@
 
   <depend>autoware_adapi_v1_msgs</depend>
   <depend>autoware_map_msgs</depend>
-  <depend>autoware_auto_perception_msgs</depend>
   <depend>diagnostic_msgs</depend>
   <depend>driving_log_replayer_msgs</depend>
   <depend>example_interfaces</depend>

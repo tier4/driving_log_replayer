@@ -19,8 +19,8 @@ from typing import Any
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
-from autoware_auto_perception_msgs.msg import ObjectClassification
-from autoware_auto_perception_msgs.msg import TrafficLight
+from autoware_perception_msgs.msg import ObjectClassification
+from autoware_perception_msgs.msg import TrafficSignalElement
 from builtin_interfaces.msg import Time as Stamp
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
@@ -422,20 +422,20 @@ class DLREvaluator(Node):
         return highest_classification
 
     @classmethod
-    def get_traffic_light_label_str(cls, light: TrafficLight) -> str:
-        if light.color == TrafficLight.RED:
+    def get_traffic_light_label_str(cls, light: TrafficSignalElement) -> str:
+        if light.color == TrafficSignalElement.RED:
             return "red"
-        if light.color == TrafficLight.AMBER:
+        if light.color == TrafficSignalElement.AMBER:
             return "yellow"
-        if light.color == TrafficLight.GREEN:
+        if light.color == TrafficSignalElement.GREEN:
             return "green"
         return "unknown"
 
     @classmethod
     def get_most_probable_signal(
         cls,
-        lights: list[TrafficLight],
-    ) -> TrafficLight:
+        lights: list[TrafficSignalElement],
+    ) -> TrafficSignalElement:
         highest_probability = 0.0
         highest_light = None
         for light in lights:

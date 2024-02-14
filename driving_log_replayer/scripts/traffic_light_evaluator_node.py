@@ -18,8 +18,8 @@ import logging
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from autoware_auto_perception_msgs.msg import TrafficSignal
-from autoware_auto_perception_msgs.msg import TrafficSignalArray
+from autoware_perception_msgs.msg import TrafficSignal
+from autoware_perception_msgs.msg import TrafficSignalArray
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation.metrics import MetricsScore
