@@ -16,7 +16,6 @@ from lanelet2.core import getId
 from lanelet2.core import Lanelet
 from lanelet2.core import LineString3d
 from lanelet2.core import Point3d
-from shapely import intersection
 from shapely import Polygon
 
 from driving_log_replayer.lanelet2_util import to_shapely_polygon
@@ -37,7 +36,7 @@ def test_intersection() -> None:
     lanelet = get_a_lanelet()
     l_poly = to_shapely_polygon(lanelet)
     s_poly = Polygon(((1.5, 3.0), (4.0, 3.0), (4.0, -1.0), (1.5, -1.0)))
-    i_area = intersection(l_poly, s_poly)
+    i_area = l_poly.intersection(s_poly)
     assert i_area == Polygon(((2, 2), (2, 0), (1.5, 0), (1.5, 2)))
 
 
@@ -45,5 +44,5 @@ def test_intersection_no_overlapping() -> None:
     lanelet = get_a_lanelet()
     l_poly = to_shapely_polygon(lanelet)
     s_poly = Polygon(((-1.0, -1.0), (-1.0, -2.0), (-2.0, -2.0), (-2.0, -1.0)))
-    i_area = intersection(l_poly, s_poly)
+    i_area = l_poly.intersection(s_poly)
     assert i_area.is_empty

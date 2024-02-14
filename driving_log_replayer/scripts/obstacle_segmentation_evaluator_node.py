@@ -33,7 +33,6 @@ from rclpy.qos import QoSReliabilityPolicy
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
-from shapely import intersection
 import simplejson as json
 from std_msgs.msg import Header
 from tier4_api_msgs.msg import AwapiAutowareStatus
@@ -320,7 +319,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         marker_id = 0
         for road in self.__road_lanelets:
             poly_lanelet = to_shapely_polygon(road)
-            i_area = intersection(poly_lanelet, proposed_area_in_map)
+            i_area = poly_lanelet.intersection(proposed_area_in_map)
             if not i_area.is_empty:
                 marker_id += 1
                 marker, area = get_non_detection_area_in_base_link(
