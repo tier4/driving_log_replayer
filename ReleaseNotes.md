@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.13.0
+
+Breaking Change
+To use this version, you need to have lanelet2-extension-python in your autoware workspace
+
+| Module                  | Feature  | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | -------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | lanelet2 | use lanelet2-extesion-python | [#356](https://github.com/tier4/driving_log_replayer/pull/356) | RT4-8497 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.12.5
 
 Minor Tweak
