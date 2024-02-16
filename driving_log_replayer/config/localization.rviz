@@ -4246,8 +4246,8 @@ Visualization Manager:
           Axis: Z
           Channel Name: intensity
           Class: rviz_default_plugins/PointCloud2
-          Color: 255; 255; 255
-          Color Transformer: ""
+          Color: 239; 41; 41
+          Color Transformer: FlatColor
           Decay Time: 0
           Enabled: true
           Invert Rainbow: false
@@ -4256,10 +4256,10 @@ Visualization Manager:
           Min Color: 0; 0; 0
           Min Intensity: 0
           Name: PointCloud2
-          Position Transformer: ""
+          Position Transformer: XYZ
           Selectable: true
           Size (Pixels): 3
-          Size (m): 0.009999999776482582
+          Size (m): 0.30000001192092896
           Style: Flat Squares
           Topic:
             Depth: 5
@@ -4280,8 +4280,8 @@ Visualization Manager:
           Axis: Z
           Channel Name: intensity
           Class: rviz_default_plugins/PointCloud2
-          Color: 255; 255; 255
-          Color Transformer: Intensity
+          Color: 115; 210; 22
+          Color Transformer: FlatColor
           Decay Time: 0
           Enabled: true
           Invert Rainbow: false
@@ -4293,7 +4293,7 @@ Visualization Manager:
           Position Transformer: XYZ
           Selectable: true
           Size (Pixels): 3
-          Size (m): 0.009999999776482582
+          Size (m): 0.30000001192092896
           Style: Flat Squares
           Topic:
             Depth: 5
