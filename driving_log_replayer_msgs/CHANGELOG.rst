@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: rye (`#359 <https://github.com/tier4/driving_log_replayer/issues/359>`_)
+* Contributors: Hayato Mizushima
+
 1.13.0 (2024-02-15)
 -------------------
 * feat: `#348 <https://github.com/tier4/driving_log_replayer/issues/348>`_ use lanelet2 extension python (`#356 <https://github.com/tier4/driving_log_replayer/issues/356>`_)
