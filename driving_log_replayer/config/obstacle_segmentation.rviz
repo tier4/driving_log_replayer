@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /Sensing1/LiDAR1/ConcatenatePointCloud1/Autocompute Value Bounds1
       Splitter Ratio: 0.557669460773468
-    Tree Height: 235
+    Tree Height: 205
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -20,6 +20,8 @@ Panels:
     Splitter Ratio: 0.5
   - Class: AutowareDateTimePanel
     Name: AutowareDateTimePanel
+  - Class: rviz_plugins::AutowareStatePanel
+    Name: AutowareStatePanel
 Visualization Manager:
   Class: ""
   Displays:
@@ -59,75 +61,6 @@ Visualization Manager:
           Value: false
         - Class: rviz_common/Group
           Displays:
-            - Class: rviz_plugins/SteeringAngle
-              Enabled: true
-              Left: 62
-              Length: 125
-              Name: SteeringAngle
-              Scale: 17
-              Text Color: 25; 255; 240
-              Top: 62
-              Topic:
-                Depth: 5
-                Durability Policy: Volatile
-                History Policy: Keep Last
-                Reliability Policy: Reliable
-                Value: /vehicle/status/steering_status
-              Value: true
-              Value Scale: 0.14999249577522278
-              Value height offset: 0
-            - Class: rviz_plugins/ConsoleMeter
-              Enabled: true
-              Left: 249
-              Length: 125
-              Name: ConsoleMeter
-              Text Color: 25; 255; 240
-              Top: 62
-              Topic:
-                Depth: 5
-                Durability Policy: Volatile
-                History Policy: Keep Last
-                Reliability Policy: Reliable
-                Value: /vehicle/status/velocity_status
-              Value: true
-              Value Scale: 0.14999249577522278
-              Value height offset: 0
-            - Class: rviz_plugins/AccelerationMeter
-              Emergency Color: 255; 80; 80
-              Enabled: false
-              Left: 436
-              Length: 125
-              Max Emergency Threshold: 1
-              Min Emergency Threshold: -2.5
-              Name: AccelerationMeter
-              Text Color: 25; 255; 240
-              Top: 62
-              Topic:
-                Depth: 5
-                Durability Policy: Volatile
-                History Policy: Keep Last
-                Reliability Policy: Reliable
-                Value: /localization/acceleration
-              Value: false
-              Value Scale: 0.14999249577522278
-              Value height offset: 0
-            - Alpha: 0.9990000128746033
-              Class: rviz_plugins/VelocityHistory
-              Color Border Vel Max: 3
-              Constant Color:
-                Color: 255; 255; 255
-                Value: true
-              Enabled: true
-              Name: VelocityHistory
-              Scale: 0.30000001192092896
-              Timeout: 10
-              Topic:
-                Depth: 5
-                Durability Policy: Volatile
-                History Policy: Keep Last
-                Reliability Policy: Reliable
-                Value: /vehicle/status/velocity_status
-              Value: true
             - Alpha: 0.30000001192092896
               Class: rviz_default_plugins/RobotModel
               Collision Enabled: false
@@ -299,30 +232,22 @@ Visualization Manager:
               Value: true
               Wave Color: 255; 255; 255
               Wave Velocity: 40
-            - Class: rviz_plugins/MaxVelocity
+            - Class: autoware_overlay_rviz_plugin/SignalDisplay
               Enabled: true
-              Left: 290
-              Length: 47
-              Name: MaxVelocity
-              Text Color: 255; 255; 255
-              Top: 136
-              Topic: /planning/scenario_planning/current_max_velocity
+              Gear Topic Test: /vehicle/status/gear_status
+              Hazard Lights Topic: /vehicle/status/hazard_lights_status
+              Height: 175
+              Left: 10
+              Name: SignalDisplay
+              Signal Color: 0; 230; 120
+              Speed Limit Topic: /planning/scenario_planning/current_max_velocity
+              Speed Topic: /vehicle/status/velocity_status
+              Steering Topic: /vehicle/status/steering_status
+              Top: 10
+              Traffic Topic: /perception/traffic_light_recognition/traffic_signals
+              Turn Signals Topic: /vehicle/status/turn_indicators_status
               Value: true
-              Value Scale: 0.25
-            - Class: rviz_plugins/TurnSignal
-              Enabled: true
-              Height: 125
-              Left: 95
-              Name: TurnSignal
-              Top: 170
-              Topic:
-                Depth: 5
-                Durability Policy: Volatile
-                History Policy: Keep Last
-                Reliability Policy: Reliable
-                Value: /vehicle/status/turn_indicators_status
-              Value: true
-              Width: 249
+              Width: 517
           Enabled: true
           Name: Vehicle
         - Class: rviz_plugins/MrmSummaryOverlayDisplay
@@ -383,15 +308,15 @@ Visualization Manager:
           Enabled: true
           Name: Lanelet2VectorMap
           Namespaces:
-            center_lane_line: false
-            center_line_arrows: false
+            center_lane_line: true
+            center_line_arrows: true
             crosswalk_lanelet_id: true
             crosswalk_lanelets: true
             detection_area: true
             detection_area_stopline: true
-            lane_start_bound: false
+            lane_start_bound: true
             lanelet direction: true
-            lanelet_id: false
+            lanelet_id: true
             left_lane_bound: true
             no_stopping_area: true
             no_stopping_area_stopline: true
@@ -400,16 +325,17 @@ Visualization Manager:
             partitions: true
             pedestrian_marking: true
             right_lane_bound: true
-            road_lanelets: false
-            shoulder_center_lane_line: false
+            road_lanelets: true
+            shoulder_center_lane_line: true
             shoulder_center_line_arrows: true
             shoulder_lane_start_bound: true
             shoulder_left_lane_bound: true
             shoulder_right_lane_bound: true
-            shoulder_road_lanelets: false
+            shoulder_road_lanelets: true
             stop_lines: true
             traffic_light: true
-            traffic_light_id: false
+            traffic_light_id: true
+            traffic_light_reg_elem_id: true
             traffic_light_triangle: true
             walkway_lanelets: true
           Topic:
@@ -764,15 +690,21 @@ Visualization Manager:
                   CYCLIST:
                     Alpha: 0.9990000128746033
                     Color: 119; 11; 32
-                  Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+                  Class: autoware_perception_rviz_plugin/DetectedObjects
+                  Confidence Interval: 95%
                   Display Acceleration: true
+                  Display Existence Probability: false
                   Display Label: true
-                  Display PoseWithCovariance: true
+                  Display Pose Covariance: true
                   Display Predicted Path Confidence: true
                   Display Predicted Paths: true
                   Display Twist: true
+                  Display Twist Covariance: false
                   Display UUID: true
                   Display Velocity: true
+                  Display Yaw Covariance: false
+                  Display Yaw Rate: false
+                  Display Yaw Rate Covariance: false
                   Enabled: true
                   Line Width: 0.029999999329447746
                   MOTORCYCLE:
@@ -815,15 +747,21 @@ Visualization Manager:
                   CYCLIST:
                     Alpha: 0.9990000128746033
                     Color: 119; 11; 32
-                  Class: autoware_auto_perception_rviz_plugin/TrackedObjects
+                  Class: autoware_perception_rviz_plugin/TrackedObjects
+                  Confidence Interval: 95%
                   Display Acceleration: true
+                  Display Existence Probability: false
                   Display Label: true
-                  Display PoseWithCovariance: true
+                  Display Pose Covariance: true
                   Display Predicted Path Confidence: true
                   Display Predicted Paths: true
                   Display Twist: true
+                  Display Twist Covariance: false
                   Display UUID: true
                   Display Velocity: true
+                  Display Yaw Covariance: false
+                  Display Yaw Rate: false
+                  Display Yaw Rate Covariance: false
                   Dynamic Status: All
                   Enabled: true
                   Line Width: 0.029999999329447746
@@ -867,15 +805,21 @@ Visualization Manager:
                   CYCLIST:
                     Alpha: 0.9990000128746033
                     Color: 119; 11; 32
-                  Class: autoware_auto_perception_rviz_plugin/PredictedObjects
+                  Class: autoware_perception_rviz_plugin/PredictedObjects
+                  Confidence Interval: 95%
                   Display Acceleration: true
+                  Display Existence Probability: false
                   Display Label: true
-                  Display PoseWithCovariance: false
+                  Display Pose Covariance: true
                   Display Predicted Path Confidence: true
                   Display Predicted Paths: true
                   Display Twist: true
+                  Display Twist Covariance: false
                   Display UUID: true
                   Display Velocity: true
+                  Display Yaw Covariance: false
+                  Display Yaw Rate: false
+                  Display Yaw Rate Covariance: false
                   Enabled: true
                   Line Width: 0.029999999329447746
                   MOTORCYCLE:
@@ -883,14 +827,7 @@ Visualization Manager:
                     Color: 119; 11; 32
                   Name: PredictedObjects
                   Namespaces:
-                    acceleration: true
-                    label: true
-                    path: true
-                    path confidence: true
-                    shape: true
-                    twist: true
-                    uuid: true
-                    velocity: true
+                    {}
                   PEDESTRIAN:
                     Alpha: 0.9990000128746033
                     Color: 255; 192; 203
@@ -994,9 +931,9 @@ Visualization Manager:
               Name: RouteArea
               Namespaces:
                 goal_lanelets: true
-                lane_start_bound: false
-                left_lane_bound: false
-                right_lane_bound: false
+                lane_start_bound: true
+                left_lane_bound: true
+                right_lane_bound: true
                 route_lanelets: true
               Topic:
                 Depth: 5
@@ -2168,6 +2105,18 @@ Visualization Manager:
                             Reliability Policy: Reliable
                             Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/no_drivable_lane
                           Value: true
+                        - Class: rviz_default_plugins/MarkerArray
+                          Enabled: true
+                          Name: VirtualWall (DynamicObstacleStop)
+                          Namespaces:
+                            {}
+                          Topic:
+                            Depth: 5
+                            Durability Policy: Volatile
+                            History Policy: Keep Last
+                            Reliability Policy: Reliable
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/dynamic_obstacle_stop
+                          Value: true
                       Enabled: true
                       Name: VirtualWall
                     - Class: rviz_common/Group
@@ -2435,6 +2384,18 @@ Visualization Manager:
                             History Policy: Keep Last
                             Reliability Policy: Reliable
                             Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/no_drivable_lane
+                          Value: false
+                        - Class: rviz_default_plugins/MarkerArray
+                          Enabled: false
+                          Name: DynamicObstacleStop
+                          Namespaces:
+                            {}
+                          Topic:
+                            Depth: 5
+                            Durability Policy: Volatile
+                            History Policy: Keep Last
+                            Reliability Policy: Reliable
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/dynamic_obstacle_stop
                           Value: false
                       Enabled: false
                       Name: DebugMarker
@@ -3009,43 +2970,14 @@ Visualization Manager:
                 Debug:
                   Control: true
                   Localization:
-                    EKFPoseHistory: true
-                    NDT pointclouds: true
-                    NDTLoadedPCDMap: true
-                    NDTPoseHistory: true
+                    "": true
                     Value: true
                   Map: true
                   Perception:
-                    CameraLidarFusion(purple): true
-                    Centerpoint(red1): true
-                    CenterpointROIFusion(red2): true
-                    CenterpointValidator(red3): true
-                    Detection(yellow): true
-                    DetectionByTracker(orange): true
-                    PointPainting(light_green1): true
-                    PointPaintingROIFusion(light_green2): true
-                    PointPaintingValidator(light_green3): true
-                    Prediction(light_blue): true
-                    RadarFarObjects(white): true
-                    Tracking(green): true
+                    "": true
                     Value: true
                   Planning:
-                    Objects Of Interest:
-                      AvoidanceByLCLeft: true
-                      AvoidanceByLCRight: true
-                      AvoidanceLeft: true
-                      AvoidanceRight: true
-                      BlindSpot: true
-                      Crosswalk: true
-                      DetectionArea: true
-                      GoalPlanner: true
-                      Intersection: true
-                      LaneChangeLeft: true
-                      LaneChangeRight: true
-                      NoStoppingArea: true
-                      StartPlanner: true
-                      TrafficLight: true
-                      Value: true
+                    "": true
                     Value: true
                   Sensing:
                     ConcatenatePointCloud: true
@@ -3113,6 +3045,7 @@ Visualization Manager:
                           Crosswalk: true
                           DetectionArea: true
                           DynamicAvoidance: true
+                          DynamicObstacleStop: true
                           GoalPlanner: true
                           Intersection: true
                           LaneFollowing: true
@@ -3164,6 +3097,7 @@ Visualization Manager:
                           VirtualWall (BlindSpot): true
                           VirtualWall (Crosswalk): true
                           VirtualWall (DetectionArea): true
+                          VirtualWall (DynamicObstacleStop): true
                           VirtualWall (ExtLaneChangeLeft): true
                           VirtualWall (ExtLaneChangeRight): true
                           VirtualWall (GoalPlanner): true
@@ -3232,15 +3166,10 @@ Visualization Manager:
                   TF: true
                   Value: false
                   Vehicle:
-                    AccelerationMeter: true
-                    ConsoleMeter: true
-                    MaxVelocity: true
                     PolarGridDisplay: true
-                    SteeringAngle: true
-                    TurnSignal: true
+                    SignalDisplay: true
                     Value: true
                     VehicleModel: true
-                    VelocityHistory: true
                 Value: true
                 driving_log_replayer:
                   Value: true
@@ -3290,15 +3219,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.5
                 Color: 255; 255; 255
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.029999999329447746
               MOTORCYCLE:
@@ -3447,15 +3382,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 255; 138; 128
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3494,15 +3435,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 255; 82; 82
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3541,15 +3488,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 213; 0; 0
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3588,15 +3541,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 178; 255; 89
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3635,15 +3594,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 118; 255; 3
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3682,15 +3647,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 100; 221; 23
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3729,15 +3700,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 255; 145; 0
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3776,15 +3753,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 213; 0; 249
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3823,15 +3806,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 255; 255; 255
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3870,15 +3859,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 255; 234; 0
-              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Class: autoware_perception_rviz_plugin/DetectedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -3917,15 +3912,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 0; 230; 118
-              Class: autoware_auto_perception_rviz_plugin/TrackedObjects
+              Class: autoware_perception_rviz_plugin/TrackedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: true
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Dynamic Status: All
               Enabled: true
               Line Width: 0.10000000149011612
@@ -3965,15 +3966,21 @@ Visualization Manager:
               CYCLIST:
                 Alpha: 0.9990000128746033
                 Color: 0; 176; 255
-              Class: autoware_auto_perception_rviz_plugin/PredictedObjects
+              Class: autoware_perception_rviz_plugin/PredictedObjects
+              Confidence Interval: 95%
               Display Acceleration: true
+              Display Existence Probability: false
               Display Label: true
-              Display PoseWithCovariance: false
+              Display Pose Covariance: true
               Display Predicted Path Confidence: true
               Display Predicted Paths: true
               Display Twist: true
+              Display Twist Covariance: false
               Display UUID: true
               Display Velocity: true
+              Display Yaw Covariance: false
+              Display Yaw Rate: false
+              Display Yaw Rate Covariance: false
               Enabled: true
               Line Width: 0.10000000149011612
               MOTORCYCLE:
@@ -4179,6 +4186,22 @@ Visualization Manager:
                   Value: true
               Enabled: true
               Name: Objects Of Interest
+            - Class: rviz_plugins/StringStampedOverlayDisplay
+              Enabled: true
+              Font Size: 15
+              Left: 1024
+              Max Letter Num: 100
+              Name: StringStampedOverlayDisplay
+              Text Color: 25; 255; 240
+              Top: 128
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/debug/internal_state
+              Value: true
+              Value height offset: 0
           Enabled: true
           Name: Planning
         - Class: rviz_common/Group
@@ -4189,31 +4212,6 @@ Visualization Manager:
       Name: Debug
     - Class: rviz_common/Group
       Displays:
-        - Class: rviz_default_plugins/MarkerArray
-          Enabled: true
-          Name: detection
-          Namespaces:
-            detection: true
-            detection_uuid: true
-          Topic:
-            Depth: 5
-            Durability Policy: Volatile
-            History Policy: Keep Last
-            Reliability Policy: Reliable
-            Value: /driving_log_replayer/marker/detection
-          Value: true
-        - Class: rviz_default_plugins/MarkerArray
-          Enabled: true
-          Name: non_detection
-          Namespaces:
-            intersection: true
-          Topic:
-            Depth: 5
-            Durability Policy: Volatile
-            History Policy: Keep Last
-            Reliability Policy: Reliable
-            Value: /driving_log_replayer/marker/non_detection
-          Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -4281,6 +4279,31 @@ Visualization Manager:
             Value: /driving_log_replayer/pcd/non_detection
           Use Fixed Frame: true
           Use rainbow: true
+          Value: true
+        - Class: rviz_default_plugins/MarkerArray
+          Enabled: true
+          Name: detection
+          Namespaces:
+            detection: true
+            detection_uuid: true
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /driving_log_replayer/marker/detection
+          Value: true
+        - Class: rviz_default_plugins/MarkerArray
+          Enabled: true
+          Name: non_detection
+          Namespaces:
+            intersection: true
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /driving_log_replayer/marker/non_detection
           Value: true
       Enabled: true
       Name: driving_log_replayer
@@ -4391,11 +4414,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 5.277318954467773
+      Scale: 10
       Target Frame: base_link
       Value: TopDownOrtho (rviz_default_plugins)
-      X: -87.636962890625
-      Y: -6.0703125
+      X: 0
+      Y: 0
     Saved:
       - Class: rviz_default_plugins/ThirdPersonFollower
         Distance: 18
@@ -4435,6 +4458,8 @@ Visualization Manager:
 Window Geometry:
   AutowareDateTimePanel:
     collapsed: false
+  AutowareStatePanel:
+    collapsed: false
   Displays:
     collapsed: false
   Height: 981
@@ -4442,7 +4467,7 @@ Window Geometry:
   Hide Right Dock: false
   PointcloudOnCamera:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000002d500000379fc0200000010fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003e00000129000000ca00fffffffc0000016d0000012f000000c40100001dfa000000000100000002fb0000000a0056006900650077007301000000000000033c0000010000fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000000ffffffff0000008a00fffffffb00000024004100750074006f00770061007200650053007400610074006500500061006e0065006c01000002a3000000f30000000000000000fb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000682000000eb0000000000000000fb0000000a0049006d0061006700650100000505000002680000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb00000030005200650063006f0067006e006900740069006f006e0052006500730075006c0074004f006e0049006d00610067006501000002a2000000bd0000002800fffffffb0000002a004100750074006f0077006100720065004400610074006500540069006d006500500061006e0065006c0100000365000000520000004200fffffffb000000240050006f0069006e00740063006c006f00750064004f006e00430061006d0065007200610000000311000000a60000002800ffffff000000010000015f000006fffc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000e7a0000005afc0100000001fb0000000a00560069006500770073030000004e00000080000002e1000001970000000300000e7a0000005afc0100000002fb0000000800540069006d0065010000000000000e7a0000000000000000fb0000000800540069006d00650100000000000004500000000000000000000004a30000037900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000002d500000379fc0200000010fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003e0000010b000000ca00fffffffc0000014f000000f4000000c40100001dfa000000000100000002fb0000000a0056006900650077007301000000000000033c0000010000fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000000ffffffff0000008a00fffffffb00000024004100750074006f00770061007200650053007400610074006500500061006e0065006c00000002380000017c0000017c00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000682000000eb0000000000000000fb0000000a0049006d0061006700650100000505000002680000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb00000030005200650063006f0067006e006900740069006f006e0052006500730075006c0074004f006e0049006d0061006700650100000249000001160000002800fffffffb0000002a004100750074006f0077006100720065004400610074006500540069006d006500500061006e0065006c0100000365000000520000004200fffffffb000000240050006f0069006e00740063006c006f00750064004f006e00430061006d0065007200610000000311000000a60000002800ffffff000000010000015f000006fffc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000e7a0000005afc0100000001fb0000000a00560069006500770073030000004e00000080000002e1000001970000000300000e7a0000005afc0100000002fb0000000800540069006d0065010000000000000e7a0000000000000000fb0000000800540069006d00650100000000000004500000000000000000000004a30000037900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RecognitionResultOnImage:
     collapsed: false
   Selection:
