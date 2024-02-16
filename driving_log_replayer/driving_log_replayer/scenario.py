@@ -15,9 +15,9 @@
 from pathlib import Path
 from typing import Any
 from typing import Callable
+from typing import Literal
 
 from pydantic import BaseModel
-from typing_extensions import Literal
 import yaml
 
 number = int | float

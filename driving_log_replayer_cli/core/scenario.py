@@ -1,9 +1,9 @@
 from os.path import expandvars
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel
 from pydantic import field_validator
-from typing_extensions import Literal
 import yaml
 
 from driving_log_replayer_cli.core.exception import UserError

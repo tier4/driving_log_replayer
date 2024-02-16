@@ -16,6 +16,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 import sys
+from typing import Literal
 
 from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Duration
@@ -38,7 +39,6 @@ from shapely.geometry import Polygon
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf2_geometry_msgs import do_transform_point
-from typing_extensions import Literal
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 import yaml
