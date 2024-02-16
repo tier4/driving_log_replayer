@@ -384,7 +384,7 @@ class PerceptionCriteria:
         ), f"Number of CriteriaMethod and CriteriaLevel must be same. Current methods: {methods}, levels: {levels}"
 
         self.methods = []
-        for method, level in zip(methods, levels):
+        for method, level in zip(methods, levels, strict=True):
             if method == CriteriaMethod.NUM_TP:
                 self.methods.append(NumTP(level))
             elif method == CriteriaMethod.METRICS_SCORE:
