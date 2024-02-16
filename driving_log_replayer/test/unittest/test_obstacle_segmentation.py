@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Callable
 from math import pi
-from typing import Callable
 
 from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Transform

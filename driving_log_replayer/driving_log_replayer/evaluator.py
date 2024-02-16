@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Callable
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
-from typing import Callable
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
