@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.13.1 (2024-02-16)
+-------------------
 * feat: rye (`#359 <https://github.com/tier4/driving_log_replayer/issues/359>`_)
 * Contributors: Hayato Mizushima
 
