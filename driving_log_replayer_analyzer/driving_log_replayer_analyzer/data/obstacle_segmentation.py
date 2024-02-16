@@ -341,7 +341,7 @@ class JsonlParser:
     def get_bb_dist_with_stamp(self) -> list:
         ret = []
         i = 0
-        for detection, frame, stamp in zip(self.detection, self.frame, self.stamp):
+        for detection, frame, stamp in zip(self.detection, self.frame, self.stamp, strict=True):
             for detection_info in detection.detection_info.values():
                 if detection_info.annotation_distance is not None:
                     ret.append(

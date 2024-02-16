@@ -16,6 +16,7 @@
 from dataclasses import dataclass
 import re
 from typing import ClassVar
+from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
@@ -23,7 +24,6 @@ from diagnostic_msgs.msg import KeyValue
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 from pydantic import BaseModel
-from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
