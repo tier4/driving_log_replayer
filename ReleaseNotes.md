@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.13.1
+
+Minor Tweak
+
+| Module | Feature         | Brief summary | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | --------------- | ------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | package manager | use rye       | [#359](https://github.com/tier4/driving_log_replayer/pull/359) | RT4-8797 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.13.0
 
 Breaking Change
