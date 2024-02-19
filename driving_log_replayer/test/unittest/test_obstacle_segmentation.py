@@ -15,6 +15,8 @@
 from collections.abc import Callable
 from math import pi
 
+from builtin_interfaces.msg import Duration
+from geometry_msgs.msg import Point
 from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Transform
 from geometry_msgs.msg import TransformStamped
@@ -33,11 +35,14 @@ from pydantic import ValidationError
 from pyquaternion import Quaternion as PyQuaternion
 import pytest
 from shapely.geometry import Polygon
+from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf_transformations import quaternion_from_euler
+from visualization_msgs.msg import Marker
 
 from driving_log_replayer.obstacle_segmentation import Detection
 from driving_log_replayer.obstacle_segmentation import DetectionCondition
+from driving_log_replayer.obstacle_segmentation import get_non_detection_area_in_base_link
 from driving_log_replayer.obstacle_segmentation import NonDetection
 from driving_log_replayer.obstacle_segmentation import NonDetectionCondition
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
@@ -272,7 +277,11 @@ def test_detection_fail_has_no_object(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     # add no detection_success_results, detection_fail_results
-    frame_dict, _, _, _ = evaluation_item.set_frame(result, header=Header(), topic_rate=True)
+    frame_dict, _, _, _ = evaluation_item.set_frame(
+        result,
+        header=Header(),
+        topic_rate=True,
+    )
     assert evaluation_item.success is False
     assert evaluation_item.summary == "Detection (Fail): 94 / 100 -> 94.00% (Warn: 0)"
     assert frame_dict == {
@@ -286,7 +295,11 @@ def test_detection_invalid(
 ) -> None:
     evaluation_item: Detection = Detection(condition=None)
     result: SensingFrameResult = create_frame_result
-    frame_dict, _, _, _ = evaluation_item.set_frame(result, header=Header(), topic_rate=True)
+    frame_dict, _, _, _ = evaluation_item.set_frame(
+        result,
+        header=Header(),
+        topic_rate=True,
+    )
     assert evaluation_item.success is True
     assert evaluation_item.summary == "Invalid"
     assert frame_dict == {
@@ -304,7 +317,9 @@ def test_detection_warn(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     annotation_dict: dict = create_annotation_dict
-    result.detection_warning_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_warning_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
         header=Header(),
@@ -336,7 +351,9 @@ def test_detection_success(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     annotation_dict: dict = create_annotation_dict
-    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
         header=Header(),
@@ -368,7 +385,9 @@ def test_detection_topic_rate_fail(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     annotation_dict: dict = create_annotation_dict
-    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
         header=Header(),
@@ -400,8 +419,12 @@ def test_detection_fail(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     annotation_dict: dict = create_annotation_dict
-    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
-    result.detection_fail_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
+    result.detection_fail_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
         header=Header(),
@@ -435,7 +458,11 @@ def test_detection_fail(
 def test_non_detection_invalid() -> None:
     evaluation_item: Detection = NonDetection(condition=None)
     pointcloud = np.array([[1.0, 1.0, 1.0, 0.5], [1.2, 1.2, 1.2, 0.5]])
-    frame_dict, _, _ = evaluation_item.set_frame([pointcloud], header=Header(), topic_rate=True)
+    frame_dict, _, _ = evaluation_item.set_frame(
+        [pointcloud],
+        header=Header(),
+        topic_rate=True,
+    )
     assert evaluation_item.success is True
     assert evaluation_item.summary == "Invalid"
     assert frame_dict == {
@@ -450,7 +477,11 @@ def test_non_detection_fail(
 ) -> None:
     evaluation_item: NonDetection = create_non_detection
     pointcloud = np.array([[1.0, 1.0, 1.0, 0.5], [1.2, 1.2, 1.2, 0.5]])
-    frame_dict, _, _ = evaluation_item.set_frame([pointcloud], header=Header(), topic_rate=True)
+    frame_dict, _, _ = evaluation_item.set_frame(
+        [pointcloud],
+        header=Header(),
+        topic_rate=True,
+    )
     assert evaluation_item.success is False
     assert evaluation_item.summary == "NonDetection (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
@@ -524,19 +555,32 @@ def test_transform_proposed_area() -> None:
     assert z == 0.0  # noqa
 
 
-"""
 def test_get_non_detection_area_in_base_link() -> None:
     header_base_link = Header(frame_id="base_link")
-    intersection_polygon = Polygon(((12.0, 8.0, 0.0), (10.0, 10.0, 0.0), (12.0, 12.0, 0.0)))
-    q = quaternion_from_euler(0.0, 0.0, -pi / 2)
+    intersection_polygon = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
     base_link_to_map = TransformStamped(
         header=header_base_link,
         child_frame_id="map",
         transform=Transform(
-            translation=Vector3(x=-10.0, y=-10.0, z=0.0),
-            rotation=Quaternion(x=q[0], y=q[1], z=q[2], w=-q[3]),
+            translation=Vector3(x=10.0, y=-10.000000000000002, z=0.0),
+            rotation=Quaternion(
+                x=0.0,
+                y=0.0,
+                z=0.7071067811865475,
+                w=0.7071067811865476,
+            ),
         ),
     )
+    ans_non_detection_list = [
+        [2.0000000000000027, 2.0, 0.0],
+        [1.7763568394002505e-15, 0.0, 0.0],
+        [-1.9999999999999964, 2.0000000000000018, 0.0],
+        [2.0000000000000027, 2.0, 0.0],
+        [2.0000000000000027, 2.0, 2.0],
+        [1.7763568394002505e-15, 0.0, 2.0],
+        [-1.9999999999999964, 2.0000000000000018, 2.0],
+        [2.0000000000000027, 2.0, 2.0],
+    ]
     line_strip, non_detection_list = get_non_detection_area_in_base_link(
         intersection_polygon,
         header_base_link,
@@ -546,40 +590,17 @@ def test_get_non_detection_area_in_base_link() -> None:
         base_link_to_map,
         1,
     )
-    print(line_strip)
-    print(non_detection_list)
-    assert line_strip == Marker()
-    assert non_detection_list == [
-        [2.0, 2.0, 0.0],
-        [0.0, 0.0, 0.0],
-        [-2.0, 2.0, 0.0],
-        [2.0, 2.0, 2.0],
-        [0.0, 0.0, 2.0],
-        [-2.0, 2.0, 2.0],
-    ]
-
-
-header_base_link = Header(frame_id="base_link")
-header_map = Header(frame_id="map")
-p_ori = PointStamped(header=header_base_link)
-q = quaternion_from_euler(0.0, 0.0, 1.0)
-map_to_base_link = TransformStamped(
-    header=header_map,
-    child_frame_id="base_link",
-    transform=Transform(
-        translation=Vector3(x=10.0, y=10.0, z=0.0),
-        rotation=Quaternion(x=q[0], y=q[1], z=q[2], w=q[3]),
-    ),
-)
-p_map = do_transform_point(p_ori, map_to_base_link)
-base_link_to_map = TransformStamped(
-    header=header_base_link,
-    child_frame_id="map",
-    transform=Transform(
-        translation=Vector3(x=-10.0, y=-10.0, z=0.0),
-        rotation=Quaternion(x=q[0], y=q[1], z=q[2], w=-q[3]),
-    ),
-)
-p_base_link = do_transform_point(p_map, base_link_to_map)
-assert p_ori == p_base_link
-"""
+    ans_line_strip = Marker(
+        header=header_base_link,
+        ns="intersection",
+        id=1,
+        type=Marker.LINE_STRIP,
+        action=Marker.ADD,
+        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3),
+        scale=Vector3(x=0.2, y=0.2, z=0.2),
+        lifetime=Duration(nanosec=200_000_000),
+    )
+    assert non_detection_list == ans_non_detection_list
+    for point in ans_non_detection_list:
+        ans_line_strip.points.append(Point(x=point[0], y=point[1], z=point[2]))
+    assert line_strip == ans_line_strip
