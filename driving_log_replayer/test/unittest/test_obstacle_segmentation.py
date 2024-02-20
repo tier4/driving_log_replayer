@@ -557,7 +557,7 @@ def test_transform_proposed_area() -> None:
 
 def test_get_non_detection_area_in_base_link() -> None:
     header_base_link = Header(frame_id="base_link")
-    intersection_polygon = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
+    poly_in_map = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
     base_link_to_map = TransformStamped(
         header=header_base_link,
         child_frame_id="map",
@@ -582,7 +582,7 @@ def test_get_non_detection_area_in_base_link() -> None:
         [2.0000000000000027, 2.0, 2.0],
     ]
     line_strip, non_detection_list = get_non_detection_area_in_base_link(
-        intersection_polygon,
+        poly_in_map,
         header_base_link,
         0.0,
         2.0,
@@ -604,3 +604,7 @@ def test_get_non_detection_area_in_base_link() -> None:
     for point in ans_non_detection_list:
         ans_line_strip.points.append(Point(x=point[0], y=point[1], z=point[2]))
     assert line_strip == ans_line_strip
+
+
+intersection_polygon = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
+print(intersection_polygon)
