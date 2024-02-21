@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.13.2 (2024-02-21)
+-------------------
 * feat: drop concatenated/pointcloud (`#362 <https://github.com/tier4/driving_log_replayer/issues/362>`_)
 * chore: add unit test (`#361 <https://github.com/tier4/driving_log_replayer/issues/361>`_)
 * Contributors: Hayato Mizushima
