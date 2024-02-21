@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.13.2
+
+Minor Tweak
+
+| Module                  | Feature   | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | --------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | unit test | add unit test                | [#361](https://github.com/tier4/driving_log_replayer/pull/361) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag`      | rosbag2   | drop concatenated/pointcloud | [#362](https://github.com/tier4/driving_log_replayer/pull/362) | RT4-8848 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.13.1
 
 Minor Tweak
