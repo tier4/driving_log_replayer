@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: drop concatenated/pointcloud (`#362 <https://github.com/tier4/driving_log_replayer/issues/362>`_)
+* chore: add unit test (`#361 <https://github.com/tier4/driving_log_replayer/issues/361>`_)
+* Contributors: Hayato Mizushima
+
 1.13.1 (2024-02-16)
 -------------------
 * feat: rye (`#359 <https://github.com/tier4/driving_log_replayer/issues/359>`_)
