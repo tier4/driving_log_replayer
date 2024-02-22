@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: unit test (`#364 <https://github.com/tier4/driving_log_replayer/issues/364>`_)
+* Contributors: Hayato Mizushima
+
 1.13.2 (2024-02-21)
 -------------------
 * feat: drop concatenated/pointcloud (`#362 <https://github.com/tier4/driving_log_replayer/issues/362>`_)
