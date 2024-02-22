@@ -34,7 +34,10 @@ from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrame
 from pydantic import ValidationError
 from pyquaternion import Quaternion as PyQuaternion
 import pytest
+from rosidl_runtime_py import message_to_ordereddict
+from shapely.geometry import Point as ShapelyPoint
 from shapely.geometry import Polygon
+from shapely.geometry.polygon import orient
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf_transformations import quaternion_from_euler
@@ -555,56 +558,71 @@ def test_transform_proposed_area() -> None:
     assert z == 0.0  # noqa
 
 
-def test_get_non_detection_area_in_base_link() -> None:
-    header_base_link = Header(frame_id="base_link")
-    poly_in_map = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
-    base_link_to_map = TransformStamped(
-        header=header_base_link,
-        child_frame_id="map",
-        transform=Transform(
-            translation=Vector3(x=10.0, y=-10.000000000000002, z=0.0),
-            rotation=Quaternion(
-                x=0.0,
-                y=0.0,
-                z=0.7071067811865475,
-                w=0.7071067811865476,
-            ),
+# def test_get_non_detection_area_in_base_link() -> None:
+header_base_link = Header(frame_id="base_link")
+poly_in_map = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
+base_link_to_map = TransformStamped(
+    header=header_base_link,
+    child_frame_id="map",
+    transform=Transform(
+        translation=Vector3(x=10.0, y=-10.000000000000002, z=0.0),
+        rotation=Quaternion(
+            x=0.0,
+            y=0.0,
+            z=0.7071067811865475,
+            w=0.7071067811865476,
         ),
-    )
-    ans_non_detection_list = [
-        [2.0000000000000027, 2.0, 0.0],
-        [1.7763568394002505e-15, 0.0, 0.0],
-        [-1.9999999999999964, 2.0000000000000018, 0.0],
-        [2.0000000000000027, 2.0, 0.0],
-        [2.0000000000000027, 2.0, 2.0],
-        [1.7763568394002505e-15, 0.0, 2.0],
-        [-1.9999999999999964, 2.0000000000000018, 2.0],
-        [2.0000000000000027, 2.0, 2.0],
-    ]
-    line_strip, non_detection_list = get_non_detection_area_in_base_link(
-        poly_in_map,
-        header_base_link,
-        0.0,
-        2.0,
-        0.0,
-        base_link_to_map,
-        1,
-    )
-    ans_line_strip = Marker(
-        header=header_base_link,
-        ns="intersection",
-        id=1,
-        type=Marker.LINE_STRIP,
-        action=Marker.ADD,
-        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3),
-        scale=Vector3(x=0.2, y=0.2, z=0.2),
-        lifetime=Duration(nanosec=200_000_000),
-    )
-    assert non_detection_list == ans_non_detection_list
-    for point in ans_non_detection_list:
-        ans_line_strip.points.append(Point(x=point[0], y=point[1], z=point[2]))
-    assert line_strip == ans_line_strip
+    ),
+)
+ans_non_detection_list = [
+    [2.0000000000000027, 2.0, 0.0],
+    [1.7763568394002505e-15, 0.0, 0.0],
+    [-1.9999999999999964, 2.0000000000000018, 0.0],
+    [2.0000000000000027, 2.0, 2.0],
+    [1.7763568394002505e-15, 0.0, 2.0],
+    [-1.9999999999999964, 2.0000000000000018, 2.0],
+]
+line_strip, non_detection_list = get_non_detection_area_in_base_link(
+    poly_in_map,
+    header_base_link,
+    0.0,
+    2.0,
+    0.0,
+    base_link_to_map,
+    1,
+)
+ans_line_strip = Marker(
+    header=header_base_link,
+    ns="intersection",
+    id=1,
+    type=Marker.LINE_STRIP,
+    action=Marker.ADD,
+    color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3),
+    scale=Vector3(x=0.2, y=0.2, z=0.2),
+    lifetime=Duration(nanosec=200_000_000),
+)
+assert non_detection_list == ans_non_detection_list
+for point in ans_non_detection_list:
+    ans_line_strip.points.append(Point(x=point[0], y=point[1], z=point[2]))
+print(message_to_ordereddict(line_strip))
+assert line_strip == ans_line_strip
 
 
-intersection_polygon = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
-print(intersection_polygon)
+# poly = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
+# print(orient(poly, -1))
+# print(poly.exterior.is_ccw)
+
+# c_poly = Polygon(((12.0, 8.0), (12.0, 12.0), (10.0, 10.0)))
+# print(c_poly.exterior.is_ccw)
+
+# a = ShapelyPoint(1, 1).buffer(1.5)
+# b = ShapelyPoint(2, 1).buffer(1.5)
+# i_poly: Polygon = a.intersection(b)
+# print(i_poly.exterior.is_ccw)
+
+# open_poly = Polygon(((12.0, 8.0), (12.0, 12.0), (10.0, 10.0)))
+# print(open_poly)
+# closed_poly = Polygon(((12.0, 8.0), (12.0, 12.0), (10.0, 10.0), (12.0, 8.0)))
+# print(closed_poly)
+# ng_poly = Polygon(((12.0, 8.0), (12.0, 12.0), (10.0, 10.0), (10.0, 10.0)))
+# print(ng_poly)
