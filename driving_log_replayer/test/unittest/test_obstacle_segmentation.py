@@ -34,7 +34,9 @@ from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrame
 from pydantic import ValidationError
 from pyquaternion import Quaternion as PyQuaternion
 import pytest
+from shapely.geometry import Point as ShapelyPoint
 from shapely.geometry import Polygon
+from shapely.geometry.polygon import orient
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
 from tf_transformations import quaternion_from_euler
@@ -557,7 +559,7 @@ def test_transform_proposed_area() -> None:
 
 def test_get_non_detection_area_in_base_link() -> None:
     header_base_link = Header(frame_id="base_link")
-    intersection_polygon = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
+    poly_in_map = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
     base_link_to_map = TransformStamped(
         header=header_base_link,
         child_frame_id="map",
@@ -575,14 +577,12 @@ def test_get_non_detection_area_in_base_link() -> None:
         [2.0000000000000027, 2.0, 0.0],
         [1.7763568394002505e-15, 0.0, 0.0],
         [-1.9999999999999964, 2.0000000000000018, 0.0],
-        [2.0000000000000027, 2.0, 0.0],
         [2.0000000000000027, 2.0, 2.0],
         [1.7763568394002505e-15, 0.0, 2.0],
         [-1.9999999999999964, 2.0000000000000018, 2.0],
-        [2.0000000000000027, 2.0, 2.0],
     ]
     line_strip, non_detection_list = get_non_detection_area_in_base_link(
-        intersection_polygon,
+        poly_in_map,
         header_base_link,
         0.0,
         2.0,
@@ -604,3 +604,22 @@ def test_get_non_detection_area_in_base_link() -> None:
     for point in ans_non_detection_list:
         ans_line_strip.points.append(Point(x=point[0], y=point[1], z=point[2]))
     assert line_strip == ans_line_strip
+
+
+def test_polygon_orientation() -> None:
+    poly = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
+    assert poly.exterior.is_ccw is False  # clockwise
+    assert poly == orient(poly, -1)
+
+
+def test_open_and_close_polygon() -> None:
+    open_poly = Polygon(((12.0, 8.0), (12.0, 12.0), (10.0, 10.0)))
+    closed_poly = Polygon(((12.0, 8.0), (12.0, 12.0), (10.0, 10.0), (12.0, 8.0)))
+    assert open_poly == closed_poly
+
+
+def test_intersection_polygon_orientation() -> None:
+    a = ShapelyPoint(1, 1).buffer(1.5)
+    b = ShapelyPoint(2, 1).buffer(1.5)
+    i_poly: Polygon = a.intersection(b)
+    assert i_poly.exterior.is_ccw is False  # clockwise
