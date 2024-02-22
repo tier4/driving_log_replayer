@@ -623,3 +623,12 @@ def test_intersection_polygon_orientation() -> None:
     b = ShapelyPoint(2, 1).buffer(1.5)
     i_poly: Polygon = a.intersection(b)
     assert i_poly.exterior.is_ccw is False  # clockwise
+
+
+def test_search_range() -> None:
+    proposed_area = ProposedAreaCondition(
+        polygon_2d=[[1.0, 1.0], [2.0, -2.0], [-3.0, -3.0], [-2.0, 4.0]],
+        z_min=0.0,
+        z_max=2.0,
+    )
+    assert proposed_area.search_range() == 5.0  # noqa
