@@ -33,6 +33,7 @@ from perception_eval.evaluation import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from pydantic import ValidationError
 from pyquaternion import Quaternion as PyQuaternion
+import pytest
 from shapely.geometry import Point as ShapelyPoint
 from shapely.geometry import Polygon
 from shapely.geometry.polygon import orient
