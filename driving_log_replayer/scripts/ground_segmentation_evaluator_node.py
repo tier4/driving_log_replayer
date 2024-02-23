@@ -31,6 +31,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
         )
 
     def eval_result_cb(self, msg: GroundSegmentationEvalResult):
+        self.get_logger().info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaas")
         self._result.set_frame(msg)
         self._result_writer.write_result(self._result)
 
