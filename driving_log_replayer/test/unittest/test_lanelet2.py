@@ -53,11 +53,11 @@ def test_intersection_no_overlapping() -> None:
 
 def test_get_lanelets_within_range() -> None:
     lanes = [get_a_lanelet(), get_a_lanelet(index=4)]
-    near_lanlets = getLaneletsWithinRange(lanes, Point(x=1.0, y=3.0, z=0.0), 1.0)
-    assert len(near_lanlets) == 2  # noqa
+    near_lanelets = getLaneletsWithinRange(lanes, Point(x=1.0, y=3.0, z=0.0), 1.0)
+    assert len(near_lanelets) == 2  # noqa
 
 
 def test_get_lanelets_within_range_no_lane() -> None:
     lanes = [get_a_lanelet(), get_a_lanelet(index=4)]
-    near_lanlets = getLaneletsWithinRange(lanes, Point(x=1.0, y=3.0, z=0.0), 0.5)
-    assert len(near_lanlets) == 0  # noqa
+    near_lanelets = getLaneletsWithinRange(lanes, Point(x=1.0, y=3.0, z=0.0), 0.5)
+    assert len(near_lanelets) == 0
