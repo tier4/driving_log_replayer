@@ -70,13 +70,13 @@ Subscribed topics:
 
 Published topics:
 
-| Topic name                                        | Data type                                                |
-| ------------------------------------------------- | -------------------------------------------------------- |
-| /driving_log_replayer/marker/detection            | visualization_msgs::msg::MarkerArray                     |
-| /driving_log_replayer/marker/non_detection        | visualization_msgs::msg::MarkerArray                     |
-| /driving_log_replayer/pcd/detection               | sensor_msgs::msg::PointCloud2                            |
-| /driving_log_replayer/pcd/non_detection           | sensor_msgs::msg::PointCloud2                            |
-| /planning/mission_planning/goal                   | geometry_msgs::msg::PoseStamped                          |
+| Topic name                                 | Data type                            |
+| ------------------------------------------ | ------------------------------------ |
+| /driving_log_replayer/marker/detection     | visualization_msgs::msg::MarkerArray |
+| /driving_log_replayer/marker/non_detection | visualization_msgs::msg::MarkerArray |
+| /driving_log_replayer/pcd/detection        | sensor_msgs::msg::PointCloud2        |
+| /driving_log_replayer/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
+| /planning/mission_planning/goal            | geometry_msgs::msg::PoseStamped      |
 
 ## Arguments passed to logging_simulator.launch
 
@@ -97,33 +97,33 @@ Must contain the required topics in `t4_dataset` format.
 The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
 The following example shows the topic list available in evaluation input rosbag when multiple LiDARs.
 
-| Topic name                                           | Data type                                    |
-| ---------------------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
-| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                  |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
-| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+| Topic name                         | Data type                                    |
+| ---------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /localization/kinematic_state      | Type: nav_msgs/msg/Odometry                  |
+| /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw      | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets | velodyne_msgs/VelodyneScan                   |
+| /tf                                | tf2_msgs/msg/TFMessage                       |
 
 The vehicle topics can be included instead of CAN.
 
-| Topic name                                           | Data type                                           |
-| ---------------------------------------------------- | --------------------------------------------------- |
-| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                         |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
-| /tf                                                  | tf2_msgs/msg/TFMessage                              |
-| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
-| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
-| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
-| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
-| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+| Topic name                             | Data type                                           |
+| -------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state          | Type: nav_msgs/msg/Odometry                         |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /tf                                    | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### Topics that must not be included in the input rosbag
 
