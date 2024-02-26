@@ -27,6 +27,10 @@ launch を立ち上げると以下のことが実行され、評価される。
 4. 評価ノードが点群と非検知エリアのpolygonをperception_eval に渡して評価する。結果をファイルに記録する
 5. bag の再生が終了すると自動で launch が終了して評価が終了する
 
+### 非検知エリアのpolygonの計算方法
+
+![search_range](./images/search_range.jpg)
+
 ## 評価結果
 
 topic の subscribe 1 回につき、以下に記述する判定結果が出力される。

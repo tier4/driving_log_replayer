@@ -632,3 +632,21 @@ def test_search_range() -> None:
         z_max=2.0,
     )
     assert proposed_area.search_range() == 5.0  # noqa
+
+
+def draw_search_range() -> None:
+    from matplotlib import patches
+    from matplotlib import pyplot as plt
+
+    points = [[1.0, 1.0], [2.0, -2.0], [-3.0, -3.0], [-2.0, 4.0], [1.0, 1.0]]
+    poly = patches.Polygon(xy=points, closed=True)
+    bound = patches.Rectangle(xy=(-3, -3), width=5, height=7, ec="g", linewidth="2.0", fill=False)
+    search_range = patches.Circle(xy=(0, 0), radius=5, fill=False, ec="r")
+
+    _, ax = plt.subplots(figsize=(7, 7))
+    ax.add_patch(poly)
+    ax.add_patch(bound)
+    ax.add_patch(search_range)
+    ax.autoscale()
+    ax.grid()
+    plt.show()
