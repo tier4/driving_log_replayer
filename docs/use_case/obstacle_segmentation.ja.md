@@ -21,12 +21,11 @@ Autoware の点群処理のプロセス(sensing→perception)が動作して、/
 `obstacle_segmentation.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で `C++の評価ノード`と、`Python の評価ノード`、`logging_simulator.launch`、`ros2 bag play` コマンドを立ち上げる
+1. launch で評価ノード(`obstacle_segmentation_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、/perception/obstacle_segmentation/pointcloud を出力する
-3. C++の評価ノードが/perception/obstacle_segmentation/pointcloud を subscribe して、header の時刻で非検知エリアの polygon を計算する。
-4. 非検知エリアのポリゴン、pointcloud を/driving_log_replayer/obstacle_segmentation/input に publish する
-5. Python の評価ノードが/driving_log_replayer/obstacle_segmentation/input を subscribe して、callback で perception_eval を使って評価する。結果をファイルに記録する
-6. bag の再生が終了すると自動で launch が終了して評価が終了する
+3. 評価ノードが/perception/obstacle_segmentation/pointcloud を subscribe して、header の時刻で非検知エリアの polygon を計算する。
+4. 評価ノードが点群と非検知エリアのpolygonをperception_eval に渡して評価する。結果をファイルに記録する
+5. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 ## 評価結果
 
@@ -52,7 +51,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 非検知エリアに点群が 1 点もないこと。
 
-非検知エリアは評価方法のステップ 3 で C++のノードで計算される領域。
+非検知エリアは評価方法のステップ 3 で計算される領域。
 
 ### 非検知異常
 
@@ -66,21 +65,19 @@ Subscribed topics:
 | ----------------------------------------------- | -------------------------------------------- |
 | /perception/obstacle_segmentation/pointcloud    | sensor_msgs::msg::PointCloud2                |
 | /diagnostics_agg                                | diagnostic_msgs::msg::DiagnosticArray        |
-| /map/vector_map                                 | autoware_auto_mapping_msgs::msg::HADMapBin   |
 | /tf                                             | tf2_msgs/msg/TFMessage                       |
 | /planning/scenario_planning/status/stop_reasons | tier4_planning_msgs::msg::StopReasonArray    |
 | /planning/scenario_planning/trajectory          | autoware_auto_planning_msgs::msg::Trajectory |
 
 Published topics:
 
-| topic 名                                          | データ型                                                 |
-| ------------------------------------------------- | -------------------------------------------------------- |
-| /driving_log_replayer/obstacle_segmentation/input | driving_log_replayer_msgs::msg:ObstacleSegmentationInput |
-| /driving_log_replayer/marker/detection            | visualization_msgs::msg::MarkerArray                     |
-| /driving_log_replayer/marker/non_detection        | visualization_msgs::msg::MarkerArray                     |
-| /driving_log_replayer/pcd/detection               | sensor_msgs::msg::PointCloud2                            |
-| /driving_log_replayer/pcd/non_detection           | sensor_msgs::msg::PointCloud2                            |
-| /planning/mission_planning/goal                   | geometry_msgs::msg::PoseStamped                          |
+| topic 名                                   | データ型                             |
+| ------------------------------------------ | ------------------------------------ |
+| /driving_log_replayer/marker/detection     | visualization_msgs::msg::MarkerArray |
+| /driving_log_replayer/marker/non_detection | visualization_msgs::msg::MarkerArray |
+| /driving_log_replayer/pcd/detection        | sensor_msgs::msg::PointCloud2        |
+| /driving_log_replayer/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
+| /planning/mission_planning/goal            | geometry_msgs::msg::PoseStamped      |
 
 ## logging_simulator.launch に渡す引数
 
@@ -101,39 +98,34 @@ t4_dataset で必要なトピックが含まれていること
 以下は例であり、違うセンサーを使っている場合は適宜読み替える。
 
 LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。
-CAMERA が複数ついている場合は、搭載されているすべての camera_info と image_rect_color_compressed を含める
 
-| topic 名                                             | データ型                                     |
-| ---------------------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
-| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                  |
-| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
-| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
-| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+| topic 名                           | データ型                                     |
+| ---------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /localization/kinematic_state      | Type: nav_msgs/msg/Odometry                  |
+| /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw      | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets | velodyne_msgs/VelodyneScan                   |
+| /tf                                | tf2_msgs/msg/TFMessage                       |
 
 CAN の代わりに vehicle の topic を含めても良い。
 
-| topic 名                                             | データ型                                            |
-| ---------------------------------------------------- | --------------------------------------------------- |
-| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                         |
-| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
-| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
-| /tf                                                  | tf2_msgs/msg/TFMessage                              |
-| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
-| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
-| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
-| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
-| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+| topic 名                               | データ型                                            |
+| -------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state          | Type: nav_msgs/msg/Odometry                         |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /tf                                    | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### 入力 rosbag に含まれてはいけない topic
 
