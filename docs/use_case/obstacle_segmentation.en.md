@@ -28,6 +28,20 @@ Launching the file executes the following steps:
 4. The evaluation node passes the point cloud and the polygon of the non-detected area to perception_eval for evaluation. The result is dumped into a file.
 5. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
+### How to calculate polygon for non-detectable area
+
+The non-detect area is calculated as the area where the polygon given in the scenario overlaps with the road_lanelet.
+It is calculated according to the following steps:
+
+1. get the transform of map_to_base_link at the time of the header.stamp in pointcloud, and transform the polygon to the map coordinate system.
+2. get the road_lanelet in the range of search_range (see the figure below) from the point where the vehicle is.
+3. take the intersection of the road_lanelet and polygon obtained in step 2.
+4. return the array of polygons obtained in step 3 to the base_link coordinate system (to match the coordinate system to filter the pointcloud).
+
+![search_range](./images/search_range.jpg)
+
+In step 2, by narrowing down to the lanelets in the range where polygons can exist, the intersection process with lanelets that are obvious to return empty polygons in step 3 is omitted.
+
 ## Evaluation Result
 
 The results are calculated for each subscription. The format and available states are described below.
