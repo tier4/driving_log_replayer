@@ -306,10 +306,13 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         map_to_baselink: TransformStamped,
         base_link_to_map: TransformStamped,
     ) -> tuple[MarkerArray, list]:
-        s_proposed_area = self._scenario.Evaluation.Conditions.NonDetection.ProposedArea
-        # get proposed_area in map
         non_detection_area_markers = MarkerArray()
         non_detection_areas = []
+        cond_non_detection = self._scenario.Evaluation.Conditions.NonDetection
+        if cond_non_detection is None:
+            return non_detection_area_markers, non_detection_areas
+        s_proposed_area = cond_non_detection.ProposedArea
+        # get proposed_area in map
         proposed_area_in_map, average_z = transform_proposed_area(
             s_proposed_area,
             header,
