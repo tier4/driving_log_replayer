@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.13.3
+
+Minor Tweak, Document update, Bug fix
+
+| Module                  | Feature       | Brief summary    | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ------------- | ---------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | unit test     | update unit test | [#364](https://github.com/tier4/driving_log_replayer/pull/364) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | documentation | update document  | [#367](https://github.com/tier4/driving_log_replayer/pull/367) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | unit test     | update unit test | [#368](https://github.com/tier4/driving_log_replayer/pull/368) | RT4-8937 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.13.2
 
 Minor Tweak
