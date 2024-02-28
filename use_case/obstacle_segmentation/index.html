@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
@@ -1634,11 +1634,10 @@ Multiple annotation tools can be used as long as a conversion tool can be create
 <p>The obstacle segmentation evaluation is executed by launching the <code>obstacle_segmentation.launch.py</code> file.
 Launching the file executes the following steps:</p>
 <ol>
-<li>Launch C++ evaluation node, Python evaluation node, launch <code>logging_simulator.launch</code> file, and execute <code>ros2 bag play</code> command.</li>
+<li>Execute launch of evaluation node (<code>obstacle_segmentation_evaluator_node</code>), <code>logging_simulator.launch</code> file and <code>ros2 bag play</code> command</li>
 <li>Autoware receives sensor data output from input rosbag and outputs <code>/perception/obstacle_segmentation/pointcloud</code> topic.</li>
-<li>The C++ evaluation node subscribes <code>/perception/obstacle_segmentation/pointcloud</code> topic and calculates the polygon of the non-detection area at the time specified in the header.</li>
-<li>The non-detection area polygon along with a pointcloud is published to <code>/driving_log_replayer/obstacle_segmentation/input</code> topic.</li>
-<li>Python evaluation node subscribes <code>/driving_log_replayer/obstacle_segmentation/input</code> and evaluates data. The result is dumped into a file.</li>
+<li>The evaluation node subscribes <code>/perception/obstacle_segmentation/pointcloud</code> topic and calculates the polygon of the non-detection area at the time specified in the header.</li>
+<li>The evaluation node passes the point cloud and the polygon of the non-detected area to perception_eval for evaluation. The result is dumped into a file.</li>
 <li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
 <h2 id="evaluation-result">Evaluation Result<a class="headerlink" href="#evaluation-result" title="Permanent link">#</a></h2>
@@ -1657,7 +1656,7 @@ Launching the file executes the following steps:</p>
 <h3 id="detection-error">Detection Error<a class="headerlink" href="#detection-error" title="Permanent link">#</a></h3>
 <p>The detection state is <code>Error</code> when neither conditions for <code>Normal</code> nor <code>Warning</code> state cannot be met.</p>
 <h3 id="non-detection-normal">Non-Detection Normal<a class="headerlink" href="#non-detection-normal" title="Permanent link">#</a></h3>
-<p>The state is <code>Normal</code> when no point is contained in the non-detection area, which is calculated by the C++ node in step 3 of the evaluation method.</p>
+<p>The state is <code>Normal</code> when no point is contained in the non-detection area, which is calculated by the node in step 3 of the evaluation method.</p>
 <h3 id="non-detection-error">Non-Detection Error<a class="headerlink" href="#non-detection-error" title="Permanent link">#</a></h3>
 <p>The state is <code>Error</code> when any point was found in the non-detection area.</p>
 <h2 id="topic-name-and-data-type-used-by-evaluation-node">Topic name and data type used by evaluation node<a class="headerlink" href="#topic-name-and-data-type-used-by-evaluation-node" title="Permanent link">#</a></h2>
@@ -1677,10 +1676,6 @@ Launching the file executes the following steps:</p>
 <tr>
 <td>/diagnostics_agg</td>
 <td>diagnostic_msgs::msg::DiagnosticArray</td>
-</tr>
-<tr>
-<td>/map/vector_map</td>
-<td>autoware_auto_mapping_msgs::msg::HADMapBin</td>
 </tr>
 <tr>
 <td>/tf</td>
@@ -1705,10 +1700,6 @@ Launching the file executes the following steps:</p>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>/driving_log_replayer/obstacle_segmentation/input</td>
-<td>driving_log_replayer_msgs::msg:ObstacleSegmentationInput</td>
-</tr>
 <tr>
 <td>/driving_log_replayer/marker/detection</td>
 <td>visualization_msgs::msg::MarkerArray</td>
@@ -1743,7 +1734,7 @@ The following parameters are set to <code>false</code>:</p>
 <h3 id="topic-to-be-included-in-the-input-rosbag">Topic to be included in the input rosbag<a class="headerlink" href="#topic-to-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
 <p>Must contain the required topics in <code>t4_dataset</code> format.</p>
 <p>The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
-The following example shows the topic list available in evaluation input rosbag when multiple LiDARs and Cameras are used in a real-world vehicle configuration.</p>
+The following example shows the topic list available in evaluation input rosbag when multiple LiDARs.</p>
 <table>
 <thead>
 <tr>
@@ -1759,14 +1750,6 @@ The following example shows the topic list available in evaluation input rosbag 
 <tr>
 <td>/localization/kinematic_state</td>
 <td>Type: nav_msgs/msg/Odometry</td>
-</tr>
-<tr>
-<td>/sensing/camera/camera*/camera_info</td>
-<td>sensor_msgs/msg/CameraInfo</td>
-</tr>
-<tr>
-<td>/sensing/camera/camera*/image_rect_color/compressed</td>
-<td>sensor_msgs/msg/CompressedImage</td>
 </tr>
 <tr>
 <td>/sensing/gnss/ublox/fix_velocity</td>
@@ -1806,14 +1789,6 @@ The following example shows the topic list available in evaluation input rosbag 
 <tr>
 <td>/localization/kinematic_state</td>
 <td>Type: nav_msgs/msg/Odometry</td>
-</tr>
-<tr>
-<td>/sensing/camera/camera*/camera_info</td>
-<td>sensor_msgs/msg/CameraInfo</td>
-</tr>
-<tr>
-<td>/sensing/camera/camera*/image_rect_color/compressed</td>
-<td>sensor_msgs/msg/CompressedImage</td>
 </tr>
 <tr>
 <td>/sensing/gnss/ublox/fix_velocity</td>

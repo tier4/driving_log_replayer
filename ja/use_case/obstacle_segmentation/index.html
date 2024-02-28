@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
@@ -1633,11 +1633,10 @@
 <p><code>obstacle_segmentation.launch.py</code> を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。</p>
 <ol>
-<li>launch で <code>C++の評価ノード</code>と、<code>Python の評価ノード</code>、<code>logging_simulator.launch</code>、<code>ros2 bag play</code> コマンドを立ち上げる</li>
+<li>launch で評価ノード(<code>obstacle_segmentation_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
 <li>bag から出力されたセンサーデータを autoware が受け取って、/perception/obstacle_segmentation/pointcloud を出力する</li>
-<li>C++の評価ノードが/perception/obstacle_segmentation/pointcloud を subscribe して、header の時刻で非検知エリアの polygon を計算する。</li>
-<li>非検知エリアのポリゴン、pointcloud を/driving_log_replayer/obstacle_segmentation/input に publish する</li>
-<li>Python の評価ノードが/driving_log_replayer/obstacle_segmentation/input を subscribe して、callback で perception_eval を使って評価する。結果をファイルに記録する</li>
+<li>評価ノードが/perception/obstacle_segmentation/pointcloud を subscribe して、header の時刻で非検知エリアの polygon を計算する。</li>
+<li>評価ノードが点群と非検知エリアのpolygonをperception_eval に渡して評価する。結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
 <h2 id="_3">評価結果<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
@@ -1657,7 +1656,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <p>検知警告でも、検知正常でもない場合</p>
 <h3 id="_7">非検知正常<a class="headerlink" href="#_7" title="Permanent link">#</a></h3>
 <p>非検知エリアに点群が 1 点もないこと。</p>
-<p>非検知エリアは評価方法のステップ 3 で C++のノードで計算される領域。</p>
+<p>非検知エリアは評価方法のステップ 3 で計算される領域。</p>
 <h3 id="_8">非検知異常<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
 <p>非検知エリアに点群が出ていること。</p>
 <h2 id="topic">評価ノードが使用する Topic 名とデータ型<a class="headerlink" href="#topic" title="Permanent link">#</a></h2>
@@ -1677,10 +1676,6 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <tr>
 <td>/diagnostics_agg</td>
 <td>diagnostic_msgs::msg::DiagnosticArray</td>
-</tr>
-<tr>
-<td>/map/vector_map</td>
-<td>autoware_auto_mapping_msgs::msg::HADMapBin</td>
 </tr>
 <tr>
 <td>/tf</td>
@@ -1705,10 +1700,6 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>/driving_log_replayer/obstacle_segmentation/input</td>
-<td>driving_log_replayer_msgs::msg:ObstacleSegmentationInput</td>
-</tr>
 <tr>
 <td>/driving_log_replayer/marker/detection</td>
 <td>visualization_msgs::msg::MarkerArray</td>
@@ -1743,8 +1734,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <p>t4_dataset で必要なトピックが含まれていること</p>
 <p>車両の ECU の CAN と、使用している sensor の topic が必要
 以下は例であり、違うセンサーを使っている場合は適宜読み替える。</p>
-<p>LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。
-CAMERA が複数ついている場合は、搭載されているすべての camera_info と image_rect_color_compressed を含める</p>
+<p>LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める。</p>
 <table>
 <thead>
 <tr>
@@ -1760,14 +1750,6 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 <tr>
 <td>/localization/kinematic_state</td>
 <td>Type: nav_msgs/msg/Odometry</td>
-</tr>
-<tr>
-<td>/sensing/camera/camera*/camera_info</td>
-<td>sensor_msgs/msg/CameraInfo</td>
-</tr>
-<tr>
-<td>/sensing/camera/camera*/image_rect_color/compressed</td>
-<td>sensor_msgs/msg/CompressedImage</td>
 </tr>
 <tr>
 <td>/sensing/gnss/ublox/fix_velocity</td>
@@ -1807,14 +1789,6 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 <tr>
 <td>/localization/kinematic_state</td>
 <td>Type: nav_msgs/msg/Odometry</td>
-</tr>
-<tr>
-<td>/sensing/camera/camera*/camera_info</td>
-<td>sensor_msgs/msg/CameraInfo</td>
-</tr>
-<tr>
-<td>/sensing/camera/camera*/image_rect_color/compressed</td>
-<td>sensor_msgs/msg/CompressedImage</td>
 </tr>
 <tr>
 <td>/sensing/gnss/ublox/fix_velocity</td>
