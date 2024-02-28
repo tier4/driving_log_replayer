@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.13.4
+
+Minor Tweak
+
+| Module                  | Feature     | Brief summary                     | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ----------- | --------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | performance | filter only lanelets close to ego | [#366](https://github.com/tier4/driving_log_replayer/pull/366) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                   | package.xml | Delete confusing comments         | [#371](https://github.com/tier4/driving_log_replayer/pull/371) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.13.3
 
 Minor Tweak, Document update, Bug fix

@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: filter only lanelets close to ego (`#366 <https://github.com/tier4/driving_log_replayer/issues/366>`_)
+* chore: Delete confusing comments (`#371 <https://github.com/tier4/driving_log_replayer/issues/371>`_)
+* Contributors: Hayato Mizushima
+
 1.13.3 (2024-02-28)
 -------------------
 * fix: add handling of cases where non_detection is disabled (`#368 <https://github.com/tier4/driving_log_replayer/issues/368>`_)
