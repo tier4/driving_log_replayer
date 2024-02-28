@@ -1153,6 +1153,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="評価方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#polygon" class="md-nav__link">
+    <span class="md-ellipsis">
+      非検知エリアのpolygonの計算方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1450,6 +1465,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="評価方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#polygon" class="md-nav__link">
+    <span class="md-ellipsis">
+      非検知エリアのpolygonの計算方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1639,6 +1669,17 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <li>評価ノードが点群と非検知エリアのpolygonをperception_eval に渡して評価する。結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
+<h3 id="polygon">非検知エリアのpolygonの計算方法<a class="headerlink" href="#polygon" title="Permanent link">#</a></h3>
+<p>非検知エリアは、シナリオで与えられたpolygonと、走行路(road_lanelet)の重なり合ったエリアとして算出される。
+以下のステップに従って計算される。</p>
+<ol>
+<li>pointcloudのheader.stampの時刻でのmap_to_base_linkのtransformを取得して、polygonをmap座標系に変換する</li>
+<li>車両のいるpointから、search_range(下図参照)の範囲のroad_laneletを取得する</li>
+<li>2で取得したroad_laneletとpolygonのintersectionを取る</li>
+<li>3で取得したpolygonの配列をbase_link座標系へ戻す(pointcloudをフィルタするために座標系を一致させる)</li>
+</ol>
+<p><img alt="search_range" src="../../../use_case/images/search_range.jpg" /></p>
+<p>ステップ2で、polygonが存在し得る範囲のlaneletに絞ることで、ステップ3で空のpolygonが返ってくるとわかりきっているlaneletとのintersection処理を省いている。</p>
 <h2 id="_3">評価結果<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
 <p>topic の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
 <h3 id="_4">検知正常<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>

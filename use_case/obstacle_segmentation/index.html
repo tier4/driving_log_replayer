@@ -1153,6 +1153,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Evaluation method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-calculate-polygon-for-non-detectable-area" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to calculate polygon for non-detectable area
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1450,6 +1465,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Evaluation method">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-calculate-polygon-for-non-detectable-area" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to calculate polygon for non-detectable area
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1640,6 +1670,17 @@ Launching the file executes the following steps:</p>
 <li>The evaluation node passes the point cloud and the polygon of the non-detected area to perception_eval for evaluation. The result is dumped into a file.</li>
 <li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
+<h3 id="how-to-calculate-polygon-for-non-detectable-area">How to calculate polygon for non-detectable area<a class="headerlink" href="#how-to-calculate-polygon-for-non-detectable-area" title="Permanent link">#</a></h3>
+<p>The non-detect area is calculated as the area where the polygon given in the scenario overlaps with the road_lanelet.
+It is calculated according to the following steps:</p>
+<ol>
+<li>get the transform of map_to_base_link at the time of the header.stamp in pointcloud, and transform the polygon to the map coordinate system.</li>
+<li>get the road_lanelet in the range of search_range (see the figure below) from the point where the vehicle is.</li>
+<li>take the intersection of the road_lanelet and polygon obtained in step 2.</li>
+<li>return the array of polygons obtained in step 3 to the base_link coordinate system (to match the coordinate system to filter the pointcloud).</li>
+</ol>
+<p><img alt="search_range" src="../images/search_range.jpg" /></p>
+<p>In step 2, by narrowing down to the lanelets in the range where polygons can exist, the intersection process with lanelets that are obvious to return empty polygons in step 3 is omitted.</p>
 <h2 id="evaluation-result">Evaluation Result<a class="headerlink" href="#evaluation-result" title="Permanent link">#</a></h2>
 <p>The results are calculated for each subscription. The format and available states are described below.</p>
 <h3 id="detection-normal">Detection Normal<a class="headerlink" href="#detection-normal" title="Permanent link">#</a></h3>
