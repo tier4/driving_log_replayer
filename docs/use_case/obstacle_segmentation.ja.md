@@ -27,6 +27,20 @@ launch を立ち上げると以下のことが実行され、評価される。
 4. 評価ノードが点群と非検知エリアのpolygonをperception_eval に渡して評価する。結果をファイルに記録する
 5. bag の再生が終了すると自動で launch が終了して評価が終了する
 
+### 非検知エリアのpolygonの計算方法
+
+非検知エリアは、シナリオで与えられたpolygonと、走行路(road_lanelet)の重なり合ったエリアとして算出される。
+以下のステップに従って計算される。
+
+1. pointcloudのheader.stampの時刻でのmap_to_base_linkのtransformを取得して、polygonをmap座標系に変換する
+2. 車両のいるpointから、search_range(下図参照)の範囲のroad_laneletを取得する
+3. 2で取得したroad_laneletとpolygonのintersectionを取る
+4. 3で取得したpolygonの配列をbase_link座標系へ戻す(pointcloudをフィルタするために座標系を一致させる)
+
+![search_range](./images/search_range.jpg)
+
+ステップ2で、polygonが存在し得る範囲のlaneletに絞ることで、ステップ3で空のpolygonが返ってくるとわかりきっているlaneletとのintersection処理を省いている。
+
 ## 評価結果
 
 topic の subscribe 1 回につき、以下に記述する判定結果が出力される。

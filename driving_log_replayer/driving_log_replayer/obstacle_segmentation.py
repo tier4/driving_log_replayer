@@ -88,6 +88,16 @@ class ProposedAreaCondition(BaseModel):
     def to_float(cls, v: number) -> float:
         return float(v)
 
+    def search_range(self) -> float:
+        coord: list = []
+        for p in self.polygon_2d:
+            coord.append([p[0], p[1]])
+        poly = Polygon(coord)
+        min_x, min_y, max_x, max_y = poly.bounds
+        abs_max_x = max(abs(min_x), abs(max_x))
+        abs_max_y = max(abs(min_y), abs(max_y))
+        return np.sqrt(abs_max_x**2 + abs_max_y**2)
+
 
 class BoundingBoxCondition(BaseModel):
     Start: number | None = None
@@ -373,6 +383,11 @@ def get_non_detection_area_in_base_link(
             [p_base_link.point.x, p_base_link.point.y, p_base_link.point.z],
         )
     return line_strip, list_intersection_area
+
+
+def set_ego_point(map_to_baselink: TransformStamped) -> Point:
+    t = map_to_baselink.transform.translation
+    return Point(x=t.x, y=t.y, z=t.z)
 
 
 @dataclass

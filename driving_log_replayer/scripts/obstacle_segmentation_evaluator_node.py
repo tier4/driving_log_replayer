@@ -23,6 +23,8 @@ from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import TransformStamped
+import lanelet2  # noqa
+from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 import numpy as np
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.manager import SensingEvaluationManager
@@ -48,6 +50,7 @@ from driving_log_replayer.obstacle_segmentation import get_non_detection_area_in
 from driving_log_replayer.obstacle_segmentation import get_sensing_frame_config
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationResult
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
+from driving_log_replayer.obstacle_segmentation import set_ego_point
 from driving_log_replayer.obstacle_segmentation import transform_proposed_area
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer_analyzer.data import convert_str_to_dist_type
@@ -80,7 +83,12 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             "lanelet2_map.osm",
         ).as_posix()
         self.__road_lanelets = road_lanelets_from_file(map_path)
-
+        if self._scenario.Evaluation.Conditions.NonDetection is not None:
+            self.__search_range = (
+                self._scenario.Evaluation.Conditions.NonDetection.ProposedArea.search_range()
+            )
+        else:
+            self.__search_range = 0.0
         self.declare_parameter("vehicle_model", "")
         self.__vehicle_model = (
             self.get_parameter("vehicle_model").get_parameter_value().string_value
@@ -320,7 +328,13 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         )
         # get intersection
         marker_id = 0
-        for road in self.__road_lanelets:
+        ego_point = set_ego_point(map_to_baselink)
+        near_road_lanelets = getLaneletsWithinRange(
+            self.__road_lanelets,
+            ego_point,
+            self.__search_range,
+        )
+        for road in near_road_lanelets:
             poly_lanelet = to_shapely_polygon(road)
             i_area = poly_lanelet.intersection(proposed_area_in_map)
             if not i_area.is_empty:
