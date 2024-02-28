@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Callable
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
-from typing import Callable
 from typing import ClassVar
 from typing import TYPE_CHECKING
 
@@ -299,11 +299,16 @@ class DLREvaluator(Node):
         # free self._initial_pose_running
         self._initial_pose_running = False
 
-    def lookup_transform(self, stamp: Stamp) -> TransformStamped:
+    def lookup_transform(
+        self,
+        stamp: Stamp,
+        from_: str = "map",
+        to: str = "base_link",
+    ) -> TransformStamped:
         try:
             return self._tf_buffer.lookup_transform(
-                "map",
-                "base_link",
+                from_,
+                to,
                 stamp,
                 Duration(seconds=0.5),
             )

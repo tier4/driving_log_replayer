@@ -17,6 +17,7 @@ from dataclasses import field
 from functools import singledispatchmethod
 import statistics
 from typing import ClassVar
+from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
 from example_interfaces.msg import Float64
@@ -26,7 +27,6 @@ from pydantic import BaseModel
 from rosidl_runtime_py import message_to_ordereddict
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
-from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase

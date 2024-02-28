@@ -1,5 +1,50 @@
 # Release Notes
 
+## Version 1.13.4
+
+Minor Tweak
+
+| Module                  | Feature     | Brief summary                     | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ----------- | --------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | performance | filter only lanelets close to ego | [#366](https://github.com/tier4/driving_log_replayer/pull/366) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                   | package.xml | Delete confusing comments         | [#371](https://github.com/tier4/driving_log_replayer/pull/371) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.3
+
+Minor Tweak, Document update, Bug fix
+
+| Module                  | Feature        | Brief summary                                         | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | -------------- | ----------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | unit test      | update unit test                                      | [#364](https://github.com/tier4/driving_log_replayer/pull/364) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | documentation  | update document                                       | [#367](https://github.com/tier4/driving_log_replayer/pull/367) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | run time error | add handling of cases where non_detection is disabled | [#368](https://github.com/tier4/driving_log_replayer/pull/368) | RT4-8937 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.2
+
+Minor Tweak
+
+| Module                  | Feature   | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | --------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | unit test | add unit test                | [#361](https://github.com/tier4/driving_log_replayer/pull/361) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag`      | rosbag2   | drop concatenated/pointcloud | [#362](https://github.com/tier4/driving_log_replayer/pull/362) | RT4-8848 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.1
+
+Minor Tweak
+
+| Module | Feature         | Brief summary | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | --------------- | ------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | package manager | use rye       | [#359](https://github.com/tier4/driving_log_replayer/pull/359) | RT4-8797 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.0
+
+Breaking Change
+To use this version, you need to have `lanelet2-extension-python` in your autoware workspace
+
+| Module                  | Feature  | Brief summary                 | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | -------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | lanelet2 | use lanelet2-extension-python | [#356](https://github.com/tier4/driving_log_replayer/pull/356) | RT4-8497 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.12.5
 
 Minor Tweak

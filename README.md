@@ -36,10 +36,10 @@ Use pipx
 pipx install git+https://github.com/tier4/driving_log_replayer.git
 
 # upgrade
-pipx upgrade driving_log_replayer_cli
+pipx upgrade driving-log-replayer
 
 # uninstall
-pipx uninstall driving_log_replayer_cli
+pipx uninstall driving-log-replayer
 ```
 
 ### Shell Completion

@@ -29,6 +29,7 @@
     "nums",
     "pydantic",
     "Kotaro",
-    "Uetake"
+    "Uetake",
+    "conlist"
   ]
 }

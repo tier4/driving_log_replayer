@@ -2,6 +2,35 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.13.4 (2024-02-28)
+-------------------
+* feat: filter only lanelets close to ego (`#366 <https://github.com/tier4/driving_log_replayer/issues/366>`_)
+* chore: Delete confusing comments (`#371 <https://github.com/tier4/driving_log_replayer/issues/371>`_)
+* Contributors: Hayato Mizushima
+
+1.13.3 (2024-02-28)
+-------------------
+* fix: add handling of cases where non_detection is disabled (`#368 <https://github.com/tier4/driving_log_replayer/issues/368>`_)
+* docs: update obstacle_segmentation document (`#367 <https://github.com/tier4/driving_log_replayer/issues/36y>`_)
+* chore: unit test (`#364 <https://github.com/tier4/driving_log_replayer/issues/364>`_)
+* Contributors: Hayato Mizushima
+
+1.13.2 (2024-02-21)
+-------------------
+* feat: drop concatenated/pointcloud (`#362 <https://github.com/tier4/driving_log_replayer/issues/362>`_)
+* chore: add unit test (`#361 <https://github.com/tier4/driving_log_replayer/issues/361>`_)
+* Contributors: Hayato Mizushima
+
+1.13.1 (2024-02-16)
+-------------------
+* feat: rye (`#359 <https://github.com/tier4/driving_log_replayer/issues/359>`_)
+* Contributors: Hayato Mizushima
+
+1.13.0 (2024-02-15)
+-------------------
+* feat: `#348 <https://github.com/tier4/driving_log_replayer/issues/348>`_ use lanelet2 extension python (`#356 <https://github.com/tier4/driving_log_replayer/issues/356>`_)
+* Contributors: Hayato Mizushima
+
 1.12.5 (2024-02-14)
 -------------------
 * chore: record tracking delay in perception sim (`#357 <https://github.com/tier4/driving_log_replayer/issues/357>`_)

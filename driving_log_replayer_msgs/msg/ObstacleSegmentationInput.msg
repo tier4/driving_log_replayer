@@ -1,4 +1,0 @@
-sensor_msgs/PointCloud2 pointcloud
-visualization_msgs/MarkerArray marker_array
-geometry_msgs/TransformStamped map_to_baselink
-bool topic_rate

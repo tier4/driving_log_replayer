@@ -12,23 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 import sys
+from typing import Literal
 
 from ament_index_python.packages import get_package_share_directory
+from builtin_interfaces.msg import Duration
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import Vector3
 import numpy as np
 from perception_eval.common.object import DynamicObject
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
 from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_result import DynamicObjectWithSensingResult
 from pydantic import BaseModel
+from pydantic import conlist
+from pydantic import field_validator
 import ros2_numpy
 from rosidl_runtime_py import message_to_ordereddict
 from sensor_msgs.msg import PointCloud2
+from shapely.geometry import Polygon
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
-from typing_extensions import Literal
+from tf2_geometry_msgs import do_transform_point
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
 import yaml
@@ -49,9 +59,44 @@ from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 
 
 class ProposedAreaCondition(BaseModel):
-    polygon_2d: list[list[number]]
+    polygon_2d: list[conlist(number, min_length=2, max_length=2)]
     z_min: number
     z_max: number
+
+    @field_validator("polygon_2d")
+    @classmethod
+    def is_clockwise(cls, v: list[list[number]]) -> list | None:
+        v_float = []
+        if len(v) < 3:  # noqa
+            err_msg = "polygon requires 3 or more elements"
+            raise ValueError(err_msg)
+        check_clock_wise: float = 0.0
+        # convert int value to float
+        for p_2d in v:
+            v_float.append([float(p_2d[0]), float(p_2d[1])])
+        for i, _ in enumerate(v_float):
+            p1 = v_float[i]
+            p2 = v_float[(i + 1) % len(v_float)]
+            check_clock_wise += (p2[0] - p1[0]) * (p2[1] + p2[1])
+        if check_clock_wise <= 0.0:  # noqa
+            err_msg = "polygon_2d is not clockwise"
+            raise ValueError(err_msg)
+        return v_float
+
+    @field_validator("z_min", "z_max")
+    @classmethod
+    def to_float(cls, v: number) -> float:
+        return float(v)
+
+    def search_range(self) -> float:
+        coord: list = []
+        for p in self.polygon_2d:
+            coord.append([p[0], p[1]])
+        poly = Polygon(coord)
+        min_x, min_y, max_x, max_y = poly.bounds
+        abs_max_x = max(abs(min_x), abs(max_x))
+        abs_max_y = max(abs(min_y), abs(max_y))
+        return np.sqrt(abs_max_x**2 + abs_max_y**2)
 
 
 class BoundingBoxCondition(BaseModel):
@@ -247,6 +292,102 @@ def get_sensing_frame_config(
         min_points_threshold=e_conf["min_points_threshold"],
     )
     return True, sensing_frame_config
+
+
+def get_proposed_area_list_point_stamped(
+    proposed_area: ProposedAreaCondition,
+    header: Header,
+) -> list[PointStamped]:
+    points: list[PointStamped] = []
+    for point in proposed_area.polygon_2d:
+        points.append(PointStamped(header=header, point=Point(x=point[0], y=point[1], z=0.0)))
+    return points
+
+
+def list_point_stamped_to_line_strip(
+    list_point_stamped: list[PointStamped],
+    marker_id: int,
+) -> Marker:
+    line_strip = Marker(
+        header=list_point_stamped[0].header,
+        type=Marker.LINE_STRIP,
+        action=Marker.ADD,
+        ns="intersection",
+        id=marker_id,
+        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3, x=0.2, y=0.2, z=0.2),
+    )
+    for point_stamped in list_point_stamped:
+        line_strip.points.append(point_stamped.point)
+    return line_strip
+
+
+def transform_proposed_area(
+    proposed_area: ProposedAreaCondition,
+    header: Header,
+    tf: TransformStamped,
+) -> tuple[Polygon, float]:
+    proposed_area_list: list = []
+    sum_z = 0.0
+    count_point = 0
+
+    list_point_stamped = get_proposed_area_list_point_stamped(proposed_area, header)
+    for point_stamped in list_point_stamped:
+        count_point += 1
+        point_stamped_in_map = do_transform_point(point_stamped, tf)
+        proposed_area_list.append([point_stamped_in_map.point.x, point_stamped_in_map.point.y])
+        sum_z += point_stamped_in_map.point.z
+    average_z = sum_z / count_point
+    return Polygon(proposed_area_list), average_z
+
+
+def get_non_detection_area_in_base_link(
+    intersection_polygon: Polygon,
+    header: Header,
+    z_min: float,
+    z_max: float,
+    average_z: float,
+    base_link_to_map: TransformStamped,
+    marker_id: int,
+) -> tuple[Marker, list]:
+    line_strip = Marker(
+        header=header,
+        type=Marker.LINE_STRIP,
+        action=Marker.ADD,
+        ns="intersection",
+        id=marker_id,
+        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3),
+        scale=Vector3(x=0.2, y=0.2, z=0.2),
+        lifetime=Duration(nanosec=200_000_000),
+    )
+    list_intersection_area = []
+    list_p_stamped_base_link: list[PointStamped] = []
+    for i, shapely_point in enumerate(intersection_polygon.exterior.coords):
+        if i != len(intersection_polygon.exterior.coords) - 1:
+            p_stamped_map = PointStamped(
+                header=header,
+                point=Point(x=shapely_point[0], y=shapely_point[1], z=average_z),
+            )
+            list_p_stamped_base_link.append(do_transform_point(p_stamped_map, base_link_to_map))
+    # create floor polygon
+    for p_base_link in list_p_stamped_base_link:
+        p_base_link.point.z = z_min
+        line_strip.points.append(deepcopy(p_base_link.point))
+        list_intersection_area.append(
+            [p_base_link.point.x, p_base_link.point.y, p_base_link.point.z],
+        )
+    # create roof polygon
+    for p_base_link in list_p_stamped_base_link:
+        p_base_link.point.z = z_max
+        line_strip.points.append(p_base_link.point)
+        list_intersection_area.append(
+            [p_base_link.point.x, p_base_link.point.y, p_base_link.point.z],
+        )
+    return line_strip, list_intersection_area
+
+
+def set_ego_point(map_to_baselink: TransformStamped) -> Point:
+    t = map_to_baselink.transform.translation
+    return Point(x=t.x, y=t.y, z=t.z)
 
 
 @dataclass

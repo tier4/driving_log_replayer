@@ -15,11 +15,11 @@
 from dataclasses import dataclass
 import logging
 from pathlib import Path
+from typing import Literal
 
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
 import simplejson as json
-from typing_extensions import Literal
 
 from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.result import EvaluationItem
