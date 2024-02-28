@@ -83,10 +83,12 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             "lanelet2_map.osm",
         ).as_posix()
         self.__road_lanelets = road_lanelets_from_file(map_path)
-        self.__search_range = (
-            self._scenario.Evaluation.Conditions.NonDetection.ProposedArea.search_range()
-        )
-
+        if self._scenario.Evaluation.Conditions.NonDetection is not None:
+            self.__search_range = (
+                self._scenario.Evaluation.Conditions.NonDetection.ProposedArea.search_range()
+            )
+        else:
+            self.__search_range = 0.0
         self.declare_parameter("vehicle_model", "")
         self.__vehicle_model = (
             self.get_parameter("vehicle_model").get_parameter_value().string_value
