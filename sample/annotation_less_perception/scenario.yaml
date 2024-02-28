@@ -1,0 +1,12 @@
+ScenarioFormatVersion: 2.2.0
+ScenarioName: sample_annotation_less_perception
+ScenarioDescription: sample_annotation_less_perception
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+VehicleId: default
+LocalMapPath: $HOME/autoware_map/sample-map-planning
+Evaluation:
+  UseCaseName: annotation_less_perception
+  UseCaseFormatVersion: 0.1.0
+  Conditions: null
+
