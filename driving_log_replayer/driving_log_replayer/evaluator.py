@@ -81,7 +81,10 @@ class DLREvaluator(Node):
         try:
             self._scenario = load_scenario(Path(self._scenario_path), scenario_class)
             evaluation_condition = {}
-            if hasattr(self._scenario.Evaluation, "Conditions"):
+            if (
+                hasattr(self._scenario.Evaluation, "Conditions")
+                and self._scenario.Evaluation.Conditions is not None
+            ):
                 evaluation_condition = self._scenario.Evaluation.Conditions
             self._result_writer = ResultWriter(
                 self._result_json_path,

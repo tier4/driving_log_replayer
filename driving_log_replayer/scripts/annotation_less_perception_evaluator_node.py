@@ -17,15 +17,15 @@
 
 from diagnostic_msgs.msg import DiagnosticArray
 
-from driving_log_replayer.annotation_lees_perception import AnnotationLessResult
-from driving_log_replayer.annotation_lees_perception import AnnotationLessScenario
+from driving_log_replayer.annotation_lees_perception import AnnotationLessPerceptionResult
+from driving_log_replayer.annotation_lees_perception import AnnotationLessPerceptionScenario
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 
 
 class AnnotationLessPerceptionEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
-        super().__init__(name, AnnotationLessScenario, AnnotationLessResult)
+        super().__init__(name, AnnotationLessPerceptionScenario, AnnotationLessPerceptionResult)
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,

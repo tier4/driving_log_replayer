@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import ClassVar
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -31,7 +30,7 @@ class Evaluation(BaseModel):
     Conditions: dict | None
 
 
-class AnnotationLessPercpetionSenario(Scenario):
+class AnnotationLessPerceptionScenario(Scenario):
     Evaluation: Evaluation
 
 
@@ -52,7 +51,7 @@ class Deviation(EvaluationItem):
         return rtn_dict
 
 
-class AnnotationLessPercpetionResult(ResultBase):
+class AnnotationLessPerceptionResult(ResultBase):
     def __init__(self, condition) -> None:  # noqa
         # condition is for future extensibility and code commonality
         super().__init__()
