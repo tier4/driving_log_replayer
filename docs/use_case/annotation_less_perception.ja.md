@@ -16,33 +16,18 @@ launch を立ち上げると以下のことが実行され、評価される。
 4. 評価ノードが topic を subscribe して、各基準を満たしているかを判定して結果をファイルに記録する
 5. bag の再生が終了すると自動で launch が終了して評価が終了する
 
-### YabLoc の可用性
-
-本項目では、YabLocの可用性を評価するために用意されている。これは、具体的には、下記のようなケースを検知することを目的とする。
-
-- Runtime error等により `image_processing` が落ちている
-- Runtime error等により `particle_filter` が落ちている
-
-そのために、本項目では下記の出力が定期的に出力されているかどうかを評価する。
-
-- /localization/pose_estimator/yabloc/pf/pose
-
-これは、YabLoc MonitorというAutoware内のパッケージを間接的に利用することによって実現される。本ツールは、下記のトピックを監視することによってその情報を取得する。
-
-- /diagnostics
-
 ## 評価結果
 
 topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
 
-### 可用性正常
+### 偏差正常
 
-YabLoc Monitorが出力する `/diagnostics` の中から、監視トピックに関する情報を抽出する。
-最新の情報におけるAvailabilityが `OK` である場合、正常であると判断する。
+`/diagnostic/perception_online_evaluator/metrics` のstatus.name毎にmin, max, meanの値を記録する。
+記録された値の平均と標準偏差が起動時に引数で指定された基準値以下であれば正常とする。
 
-### 可用性異常
+### 偏差異常
 
-可用性正常の条件を満たさない場合
+偏差正常の条件を満たさないとき
 
 ## 評価ノードが使用する Topic 名とデータ型
 
@@ -73,12 +58,39 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 ### 入力 rosbag に含まれるべき topic
 
-| topic 名                                           | データ型                                      |
-| -------------------------------------------------- | --------------------------------------------- |
-| /sensing/camera/traffic_light/camera_info          | sensor_msgs/msg/CameraInfo                    |
-| /sensing/camera/traffic_light/image_raw/compressed | sensor_msgs/msg/CompressedImage               |
-| /sensing/imu/tamagawa/imu_raw                      | sensor_msgs/msg/Imu                           |
-| /vehicle/status/velocity_status                    | autoware_auto_vehicle_msgs/msg/VelocityReport |
+| topic 名                                             | データ型                                     |
+| ---------------------------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /localization/kinematic_state                        | nav_msgs/msg/Odometry                        |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                  |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
+| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+
+CAN の代わりに vehicle の topic を含めても良い。
+
+| topic 名                                             | データ型                                            |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state                        | nav_msgs/msg/Odometry                               |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                         |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
+| /tf                                                  | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### 入力 rosbag に含まれてはいけない topic
 
@@ -94,22 +106,19 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/yabloc/scenario.yaml)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotation_less_perception/scenario.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/yabloc/result.json)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotation_less_perception/result.json)参照
 
 以下に、それぞれの評価の例を記述する。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
 
-Availabilityの結果(Frame の中に Availability 項目がある場合)
-
 ```json
 {
-  "Availability": {
-    "Result": { "Total": "Success or Fail", "Frame": "Success, Fail, or Warn" },
-    "Info": {}
-  }
+  "Deviation": {
+    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail"},
+    "Info": {"lateral_deviation": {"min": "最小距離", "max": "最大距離", "mean": "平均距離"}, "yaw_deviation": {"min": "最小角度差", "max": "最大角度差", "mean": "平均角度差"}, "predicted_path_deviation_5.00": {"min": 0.0, "max": 9.004125, "mean": 1.599311}, "predicted_path_deviation_3.00": {"min": 0.0, "max": 4.852187, "mean": 0.879066}, "predicted_path_deviation_2.00": {"min": 0.0, "max": 3.100269, "mean": 0.53916}, "predicted_path_deviation_1.00": {"min": 0.0, "max": 1.52117, "mean": 0.256058}}}
 }
 ```
