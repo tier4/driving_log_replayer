@@ -25,7 +25,7 @@
   <depend>geometry_msgs</depend>
   <depend>lanelet2_extension</depend>
   <depend>nav_msgs</depend>
-  <depend>perception_online_evaluator</depned>
+  <depend>perception_online_evaluator</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
   <depend>sensor_msgs</depend>
