@@ -18,16 +18,34 @@ from typing import Literal
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from pydantic import BaseModel
+from pydantic import field_validator
+import simplejson as json
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import Scenario
 
 
+class Criteria(BaseModel):
+    Threshold: dict
+
+    @field_validator("Threshold")
+    def create_default_threshold(cls) -> dict:
+        return {}
+
+    def set_threshold_from_arg(self, arg: str) -> None:
+        self.Threshold = json.loads(arg)
+
+
+class Conditions(BaseModel):
+    LaunchSensing: bool
+    Criteria: Criteria
+
+
 class Evaluation(BaseModel):
     UseCaseName: Literal["annotation_less_perception"]
     UseCaseFormatVersion: Literal["0.1.0"]
-    Conditions: dict | None
+    Conditions: Conditions
 
 
 class AnnotationLessPerceptionScenario(Scenario):

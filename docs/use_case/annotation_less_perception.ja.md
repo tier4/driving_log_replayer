@@ -1,16 +1,20 @@
 # 認識機能の評価(Annotation Less)
 
-Autoware のYabLoc自己位置推定が安定して動作しているかを評価する。
+perception_online_evaluatorを利用して、Autowareの認識機能(perception)を、アノテーションなしで評価する。
+
+以下のPRの機能を導入済みのautowareが必要。
+<https://github.com/autowarefoundation/autoware.universe/pull/6493>
 
 ## 評価方法
 
-`yabloc.launch.py` を使用して評価する。
+`annotation_less_perception.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で評価ノード(`yabloc_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、自己位置推定を行う
-3. 評価ノードが topic を subscribe して、各基準を満たしているかを判定して結果をファイルに記録する
-4. bag の再生が終了すると自動で launch が終了して評価が終了する
+1. launch で評価ノード(`annotation_less_perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
+2. bag から出力されたセンサーデータを autoware が受け取って、perception モジュールが認識を行う
+3. perception_online_evaluator が `/diagnostic/perception_online_evaluator/metrics`に診断結果を出力する
+4. 評価ノードが topic を subscribe して、各基準を満たしているかを判定して結果をファイルに記録する
+5. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 ### YabLoc の可用性
 
@@ -46,19 +50,13 @@ Subscribed topics:
 
 | Topic name   | Data type                             |
 | ------------ | ------------------------------------- |
-| /diagnostics | diagnostic_msgs::msg::DiagnosticArray |
+| /diagnostic/perception_online_evaluator/metrics | diagnostic_msgs::msg::DiagnosticArray |
 
 Published topics:
 
 | Topic name | Data type |
 | ---------- | --------- |
 | N/A        | N/A       |
-
-## 評価ノードが使用する Service 名とデータ型
-
-| service 名                   | データ型               |
-| ---------------------------- | ---------------------- |
-| /api/localization/initialize | InitializeLocalization |
 
 ## logging_simulator.launch に渡す引数
 
@@ -67,6 +65,7 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 - perception: false
 - planning: false
 - control: false
+- sensing: false / true (デフォルト false、シナリオの `LaunchSensing` キーで指定する)
 
 ## simulation
 
