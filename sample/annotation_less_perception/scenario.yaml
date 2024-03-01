@@ -8,5 +8,4 @@ LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: annotation_less_perception
   UseCaseFormatVersion: 0.1.0
-  Conditions:
-    LaunchSensing: false # Specifies whether the sensing module should be activated. if false, use concatenated/pointcloud in bag
+  Conditions: null
