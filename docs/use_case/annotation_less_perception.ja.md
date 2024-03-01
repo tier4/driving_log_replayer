@@ -33,8 +33,8 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 Subscribed topics:
 
-| Topic name   | Data type                             |
-| ------------ | ------------------------------------- |
+| Topic name                                      | Data type                             |
+| ----------------------------------------------- | ------------------------------------- |
 | /diagnostic/perception_online_evaluator/metrics | diagnostic_msgs::msg::DiagnosticArray |
 
 Published topics:
@@ -50,7 +50,39 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 - perception: false
 - planning: false
 - control: false
-- sensing: false / true (デフォルト false、シナリオの `LaunchSensing` キーで指定する)
+- sensing: false / true (デフォルト false、launch引数で与える)
+
+### sensingの引数指定方法
+
+#### driving-log-replayer-cli
+
+```shell
+dlr simulation run -p annnotation_less_perception -l "sensing:=true"
+```
+
+#### WebAutoCLI
+
+```shell
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides sensing=true
+```
+
+#### Autoware Evaluator
+
+.webuato-ci.ymlのsimulatorの設定でparametersに追加する。
+
+```yaml
+simulations:
+  - name: annotation_less_perception
+    type: annotation_less_perception
+    simulator:
+      deployment:
+        type: container
+        artifact: main
+      runtime:
+        type: simulator/standard1/amd64/medium
+      parameters:
+        sensing: "true"
+```
 
 ## simulation
 
@@ -118,7 +150,21 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 ```json
 {
   "Deviation": {
-    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail"},
-    "Info": {"lateral_deviation": {"min": "最小距離", "max": "最大距離", "mean": "平均距離"}, "yaw_deviation": {"min": "最小角度差", "max": "最大角度差", "mean": "平均角度差"}, "predicted_path_deviation_5.00": {"min": 0.0, "max": 9.004125, "mean": 1.599311}, "predicted_path_deviation_3.00": {"min": 0.0, "max": 4.852187, "mean": 0.879066}, "predicted_path_deviation_2.00": {"min": 0.0, "max": 3.100269, "mean": 0.53916}, "predicted_path_deviation_1.00": {"min": 0.0, "max": 1.52117, "mean": 0.256058}}}
+    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // TotalとFrameの結果は同じ。他の評価と形式を同じにするために同じ値を出力する。
+    "Info": {
+      "lateral_deviation": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
+      "yaw_deviation": { "min": "最小角度差", "max": "最大角度差", "mean": "平均角度差" },
+      "predicted_path_deviation_5.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
+      "predicted_path_deviation_3.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
+      "predicted_path_deviation_2.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
+      "predicted_path_deviation_1.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" }
+    }
+  }
 }
 ```
+
+項目の意味は以下の図を参照
+
+![lateral_deviation](./images/lateral_deviation.png)
+
+![predicted_path_deviation](./images/predicted_path_deviation.png)
