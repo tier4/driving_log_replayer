@@ -30,6 +30,7 @@ class Criteria(BaseModel):
     Threshold: dict
 
     @field_validator("Threshold")
+    @classmethod
     def create_default_threshold(cls) -> dict:
         return {}
 
