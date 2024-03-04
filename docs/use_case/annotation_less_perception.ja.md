@@ -22,10 +22,12 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ### 偏差正常
 
-`/diagnostic/perception_online_evaluator/metrics` のstatus.name毎にmin, max, meanの値を記録する。
-記録された値の平均値がシナリオで指定された基準値、または起動時に引数で指定された基準値を以下であれば正常とする。
+`/diagnostic/perception_online_evaluator/metrics` のstatus.name毎にmin, max, meanの値を加算し、平均値を算出する。
+算出された平均値が基準値以下であれば正常とする。
 
-ここに絵
+イメージ図を以下に示す
+
+![metrics](./images/annotation_less_metrics.drawio.svg)
 
 ### 偏差異常
 
@@ -70,6 +72,10 @@ Evaluation:
 
 こちらの方法をメインに使う想定。
 Autoware Evaluatorで、テストを実行し、出力されたresult.jsonlのファイルパスを指定すると、指定したファイルに記述されている最後のMetrics値を判定基準値として利用する。
+
+利用のイメージを以下に示す。
+
+![threshold](./images/annotation_less_threshold.drawio.svg)
 
 ##### driving-log-replayer-cli
 
