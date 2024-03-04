@@ -56,12 +56,12 @@ Evaluation:
   Conditions:
     # Threshold: {} # Metricsを引数指定する場合はここの値は無視される。空の辞書で可。
     Threshold: # 実行時引数で閾値が指定しない場合はdiagのstatus.nameをkeyにmin, max, meanの指定する
-      lateral_deviation: {min: 10.0, max: 10.0, mean: 10.0 }
-      yaw_deviation: {min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_5.00: {min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_3.00: {min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_2.00: {min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_1.00: {min: 10.0, max: 10.0, mean: 10.0 }
+      lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+      yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+      predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
+      predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
+      predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
+      predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
 ```
 
 #### 実行時の引数として与える
@@ -97,12 +97,12 @@ simulations:
         type: simulator/standard1/amd64/medium
       parameters:
         annotation_less_threshold:
-          lateral_deviation: {min: 10.0, max: 10.0, mean: 10.0 }
-          yaw_deviation: {min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_5.00: {min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_3.00: {min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_2.00: {min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_1.00: {min: 10.0, max: 10.0, mean: 10.0 }
+          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
 ```
 
 ## logging_simulator.launch に渡す引数
@@ -222,12 +222,36 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
       "predicted_path_deviation_1.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" }
     },
     "Metrics": {
-      "lateral_deviation": { "min": "最小距離平均値", "max": "最大距離平均値", "mean": "平均距離平均値" },
-      "yaw_deviation": {"min": "最小角度差平均値", "max": "最大角度差平均値", "mean": "平均角度差平均値"},
-      "predicted_path_deviation_5.00": { "min": "最小距離平均値", "max": "最大距離平均値", "mean": "平均距離平均値" },
-      "predicted_path_deviation_3.00": { "min": "最小距離平均値", "max": "最大距離平均値", "mean": "平均距離平均値" },
-      "predicted_path_deviation_2.00": { "min": "最小距離平均値", "max": "最大距離平均値", "mean": "平均距離平均値" },
-      "predicted_path_deviation_1.00": { "min": "最小距離平均値", "max": "最大距離平均値", "mean": "平均距離平均値" },
+      "lateral_deviation": {
+        "min": "最小距離平均値",
+        "max": "最大距離平均値",
+        "mean": "平均距離平均値"
+      },
+      "yaw_deviation": {
+        "min": "最小角度差平均値",
+        "max": "最大角度差平均値",
+        "mean": "平均角度差平均値"
+      },
+      "predicted_path_deviation_5.00": {
+        "min": "最小距離平均値",
+        "max": "最大距離平均値",
+        "mean": "平均距離平均値"
+      },
+      "predicted_path_deviation_3.00": {
+        "min": "最小距離平均値",
+        "max": "最大距離平均値",
+        "mean": "平均距離平均値"
+      },
+      "predicted_path_deviation_2.00": {
+        "min": "最小距離平均値",
+        "max": "最大距離平均値",
+        "mean": "平均距離平均値"
+      },
+      "predicted_path_deviation_1.00": {
+        "min": "最小距離平均値",
+        "max": "最大距離平均値",
+        "mean": "平均距離平均値"
+      }
     }
   }
 }

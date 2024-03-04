@@ -11,10 +11,9 @@ Evaluation:
   Conditions:
     # Threshold: {} # Metricsを引数指定する場合はここの値は無視される。空の辞書で可。
     Threshold: # 実行時引数で閾値が指定しない場合はdiagのstatus.nameをkeyにmin, max, meanの指定する
-      lateral_deviation: {min: 10.0, max: 10.0, mean: 10.0 }
-      yaw_deviation: {min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_5.00: {min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_3.00: {min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_2.00: {min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_1.00: {min: 10.0, max: 10.0, mean: 10.0 }
-
+      lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+      yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+      predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
+      predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
+      predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
+      predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
