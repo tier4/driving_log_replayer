@@ -28,7 +28,6 @@
     "pydantic",
     "Kotaro",
     "Uetake",
-    "conlist",
-    "webuato"
+    "conlist"
   ]
 }
