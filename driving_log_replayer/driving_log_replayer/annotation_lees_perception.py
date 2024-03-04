@@ -15,6 +15,7 @@
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
+import sys
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -71,9 +72,17 @@ class Deviation(EvaluationItem):
             }  # min, max, mean
             self.add(diag_status.name, values)
             info_dict[diag_status.name] = values
+            threshold = self.condition.Threshold.get(
+                diag_status.name,
+                {
+                    "min": sys.float_info.max,
+                    "max": sys.float_info.max,
+                    "mean": sys.float_info.max,
+                },
+            )
             metrics_dict[diag_status.name], diag_success = self.calc_average_and_success(
                 diag_status.name,
-                self.condition.Threshold[diag_status.name],
+                threshold,
             )
             frame_success = frame_success and diag_success
         self.success = frame_success

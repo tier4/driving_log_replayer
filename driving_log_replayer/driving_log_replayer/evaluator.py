@@ -96,7 +96,6 @@ class DLREvaluator(Node):
                         .get_parameter_value()
                         .string_value
                     )
-                    self.get_logger().error(f"{threshold_file=}")
                     self._scenario.Evaluation.Conditions.set_threshold_from_file(threshold_file)
             self._result_writer = ResultWriter(
                 self._result_json_path,
