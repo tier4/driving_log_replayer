@@ -37,7 +37,12 @@ def generate_launch_description() -> launch.LaunchDescription:
         localization="false",
     )
     rviz_node = cmn.get_rviz("autoware.rviz")
-    evaluator_node = cmn.get_evaluator_node("annotation_less_perception")
+    evaluator_node = cmn.get_evaluator_node(
+        "annotation_less_perception",
+        addition_parameter={
+            "annotation_less_threshold_file": LaunchConfiguration("annotation_less_threshold_file"),
+        },
+    )
 
     player_normal = cmn.get_player(
         condition=UnlessCondition(LaunchConfiguration("sensing")),
