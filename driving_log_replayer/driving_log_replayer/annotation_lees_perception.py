@@ -14,6 +14,7 @@
 
 from dataclasses import dataclass
 from dataclasses import field
+from pathlib import Path
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -29,9 +30,20 @@ from driving_log_replayer.scenario import Scenario
 class Conditions(BaseModel):
     Threshold: dict
 
-    def set_threshold_from_arg(self, arg: str) -> None:
-        if arg != "":
-            self.Threshold = json.loads(arg)
+    def set_threshold_from_file(self, file_path: str) -> None:
+        print("ファイルから敷居値設定")
+        result_file = Path(file_path)
+        print(result_file)
+        if file_path != "" and result_file.exists():  # Path("") is current path
+            with result_file.open() as f:
+                last_line = f.readlines()[-1]
+                try:
+                    print("メトリックス呼び出し")
+                    result_json_dict = json.loads(last_line)
+                    print("敷居値更新")
+                    self.Threshold = result_json_dict["Frame"]["Deviation"]["Metrics"]
+                except json.JSONDecodeError:
+                    self.Threshold = {}
 
 
 class Evaluation(BaseModel):
