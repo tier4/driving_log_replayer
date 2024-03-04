@@ -53,6 +53,7 @@ from tf_transformations import euler_from_quaternion
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 import yaml
 
+from driving_log_replayer.annotation_lees_perception import AnnotationLessPerceptionScenario
 from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultWriter
 from driving_log_replayer.scenario import InitialPose
@@ -86,6 +87,13 @@ class DLREvaluator(Node):
                 and self._scenario.Evaluation.Conditions is not None
             ):
                 evaluation_condition = self._scenario.Evaluation.Conditions
+                if isinstance(self._scenario, AnnotationLessPerceptionScenario):
+                    self.declare_parameter("annotation_less_threshold", "")
+                    self._scenario.Evaluation.Conditions.set_threshold_from_arg(
+                        self.get_parameter("annotation_less_threshold")
+                        .get_parameter_value()
+                        .string_value,
+                    )
             self._result_writer = ResultWriter(
                 self._result_json_path,
                 self.get_clock(),

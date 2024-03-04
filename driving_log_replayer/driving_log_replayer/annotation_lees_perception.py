@@ -30,7 +30,8 @@ class Conditions(BaseModel):
     Threshold: dict
 
     def set_threshold_from_arg(self, arg: str) -> None:
-        self.Threshold = json.loads(arg)
+        if arg != "":
+            self.Threshold = json.loads(arg)
 
 
 class Evaluation(BaseModel):
