@@ -25,6 +25,8 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 `/diagnostic/perception_online_evaluator/metrics` のstatus.name毎にmin, max, meanの値を記録する。
 記録された値の平均値がシナリオで指定された基準値、または起動時に引数で指定された基準値を以下であれば正常とする。
 
+ここに絵
+
 ### 偏差異常
 
 偏差正常の条件を満たさないとき
@@ -54,8 +56,8 @@ Evaluation:
   UseCaseName: annotation_less_perception
   UseCaseFormatVersion: 0.1.0
   Conditions:
-    # Threshold: {} # Metricsを引数指定する場合はここの値は無視される。空の辞書で可。
-    Threshold: # 実行時引数で閾値が指定しない場合はdiagのstatus.nameをkeyにmin, max, meanの指定する
+    # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
+    Threshold: # 初回実行時などシナリオで指定したい場合はシナリオで指定する
       lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
       yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
       predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
@@ -64,21 +66,21 @@ Evaluation:
       predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
 ```
 
-#### 実行時の引数として与える
+#### 以前のテスト結果ファイルから与える
 
 こちらの方法をメインに使う想定。
-Autoware Evaluatorで、テストを実行し、result.jsonlに記述されているMetricsの文字列を次回実行時の判定基準値としてセットして使う想定。
+Autoware Evaluatorで、テストを実行し、出力されたresult.jsonlのファイルパスを指定すると、指定したファイルに記述されている最後のMetrics値を判定基準値として利用する。
 
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annnotation_less_perception -l "annotation_less_thresold:=long_json_string"
+dlr simulation run -p annnotation_less_perception -l "annotation_less_thresold_file:=${previous_test_result.jsonl_path}"
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotation_less_thresold=long_json_string
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotation_less_thresold_file=${previous_test_result.jsonl_path}
 ```
 
 ##### Autoware Evaluator
@@ -96,13 +98,7 @@ simulations:
       runtime:
         type: simulator/standard1/amd64/medium
       parameters:
-        annotation_less_threshold:
-          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+        annotation_less_threshold_file: ${previous_test_result.jsonl_path}
 ```
 
 ## logging_simulator.launch に渡す引数
