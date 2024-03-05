@@ -44,18 +44,18 @@ class Conditions(BaseModel):
 
 
 class Evaluation(BaseModel):
-    UseCaseName: Literal["annotation_less_perception"]
+    UseCaseName: Literal["annotationless_perception"]
     UseCaseFormatVersion: Literal["0.1.0"]
     Conditions: Conditions
 
 
-class AnnotationLessPerceptionScenario(Scenario):
+class AnnotationlessPerceptionScenario(Scenario):
     Evaluation: Evaluation
 
 
 @dataclass
 class Deviation(EvaluationItem):
-    name: str = "AnnotationLessPerception Deviation"
+    name: str = "AnnotationlessPerception Deviation"
     success: bool = True
     received_data: dict = field(default_factory=dict)
     # received_data = {lateral_deviation: {min: sum_min, max: sum_max, mean: sum_mean} ... }
@@ -117,7 +117,7 @@ class Deviation(EvaluationItem):
         return {"min": a_min, "max": a_max, "mean": a_mean}, is_success
 
 
-class AnnotationLessPerceptionResult(ResultBase):
+class AnnotationlessPerceptionResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
         self.__deviation = Deviation(condition=condition)

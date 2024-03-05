@@ -14,16 +14,16 @@
 
 from pathlib import Path
 
-from driving_log_replayer.annotation_lees_perception import AnnotationLessPerceptionScenario
+from driving_log_replayer.annotationlees_perception import AnnotationlessPerceptionScenario
 from driving_log_replayer.scenario import load_sample_scenario
 
 
 def test_scenario() -> None:
-    scenario: AnnotationLessPerceptionScenario = load_sample_scenario(
-        "annotation_less_perception",
-        AnnotationLessPerceptionScenario,
+    scenario: AnnotationlessPerceptionScenario = load_sample_scenario(
+        "annotationless_perception",
+        AnnotationlessPerceptionScenario,
     )
-    assert scenario.ScenarioName == "sample_annotation_less_perception"
+    assert scenario.ScenarioName == "sample_annotationless_perception"
 
 
 def test_path_with_empty_str() -> None:

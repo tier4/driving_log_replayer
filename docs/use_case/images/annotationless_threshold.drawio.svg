@@ -112,7 +112,7 @@
                         <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 110px; margin-left: 292px;">
                             <div data-drawio-colors="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                                 <div style="display: inline-block; font-size: 11px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; background-color: rgb(255, 255, 255); white-space: nowrap;">
-                                    ros2 launch driving_log_replayer annotation_less_percepition.launch.py .. annotation_less_threshold_file:=result_1.jsonl
+                                    ros2 launch driving_log_replayer annotationless_percepition.launch.py .. annotationless_threshold_file:=result_1.jsonl
                                     <br/>
                                     set threshold from previous result.jsonl
                                 </div>
@@ -120,7 +120,7 @@
                         </div>
                     </foreignObject>
                     <text x="292" y="114" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="11px" text-anchor="middle">
-                        ros2 launch driving_log_replayer annotation_less_percepition.launch.py .. annotation_less_threshold_file:=result_1.jsonl...
+                        ros2 launch driving_log_replayer annotationless_percepition.launch.py .. annotationless_threshold_file:=result_1.jsonl...
                     </text>
                 </switch>
             </g>

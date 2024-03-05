@@ -30,7 +30,7 @@ def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
     launch_arguments.append(DeclareLaunchArgument("sensing", default_value="false"))
     launch_arguments.append(
-        DeclareLaunchArgument("annotation_less_threshold_file", default_value=""),
+        DeclareLaunchArgument("annotationless_threshold_file", default_value=""),
     )
     autoware_launch = cmn.get_autoware_launch(
         sensing=LaunchConfiguration("sensing"),
@@ -38,9 +38,9 @@ def generate_launch_description() -> launch.LaunchDescription:
     )
     rviz_node = cmn.get_rviz("autoware.rviz")
     evaluator_node = cmn.get_evaluator_node(
-        "annotation_less_perception",
+        "annotationless_perception",
         addition_parameter={
-            "annotation_less_threshold_file": LaunchConfiguration("annotation_less_threshold_file"),
+            "annotationless_threshold_file": LaunchConfiguration("annotationless_threshold_file"),
         },
     )
 

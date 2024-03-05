@@ -29,7 +29,7 @@ install(PROGRAMS
   scripts/yabloc_evaluator_node.py
   scripts/eagleye_evaluator_node.py
   scripts/ar_tag_based_localizer_evaluator_node.py
-  scripts/annotation_less_perception_evaluator_node.py
+  scripts/annotationless_perception_evaluator_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -7,10 +7,10 @@ perception_online_evaluatorを利用して、Autowareの認識機能(perception)
 
 ## 評価方法
 
-`annotation_less_perception.launch.py` を使用して評価する。
+`annotationless_perception.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
-1. launch で評価ノード(`annotation_less_perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
+1. launch で評価ノード(`annotationless_perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、perception モジュールが認識を行う
 3. perception_online_evaluator が `/diagnostic/perception_online_evaluator/metrics`に診断結果を出力する
 4. 評価ノードが topic を subscribe して、各基準を満たしているかを判定して結果をファイルに記録する
@@ -27,7 +27,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 イメージ図を以下に示す
 
-![metrics](./images/annotation_less_metrics.drawio.svg)
+![metrics](./images/annotationless_metrics.drawio.svg)
 
 ### 偏差異常
 
@@ -55,7 +55,7 @@ Published topics:
 
 ```yaml
 Evaluation:
-  UseCaseName: annotation_less_perception
+  UseCaseName: annotationless_perception
   UseCaseFormatVersion: 0.1.0
   Conditions:
     # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
@@ -75,18 +75,18 @@ Autoware Evaluatorで、テストを実行し、出力されたresult.jsonlの�
 
 利用のイメージを以下に示す。
 
-![threshold](./images/annotation_less_threshold.drawio.svg)
+![threshold](./images/annotationless_threshold.drawio.svg)
 
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annnotation_less_perception -l "annotation_less_thresold_file:=${previous_test_result.jsonl_path}"
+dlr simulation run -p annnotation_less_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path}"
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotation_less_thresold_file=${previous_test_result.jsonl_path}
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path}
 ```
 
 ##### Autoware Evaluator
@@ -95,8 +95,8 @@ webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} 
 
 ```yaml
 simulations:
-  - name: annotation_less_perception
-    type: annotation_less_perception
+  - name: annotationless_perception
+    type: annotationless_perception
     simulator:
       deployment:
         type: container
@@ -104,7 +104,7 @@ simulations:
       runtime:
         type: simulator/standard1/amd64/medium
       parameters:
-        annotation_less_threshold_file: ${previous_test_result.jsonl_path}
+        annotationless_threshold_file: ${previous_test_result.jsonl_path}
 ```
 
 ## logging_simulator.launch に渡す引数
@@ -136,8 +136,8 @@ webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} 
 
 ```yaml
 simulations:
-  - name: annotation_less_perception
-    type: annotation_less_perception
+  - name: annotationless_perception
+    type: annotationless_perception
     simulator:
       deployment:
         type: container
@@ -202,11 +202,11 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotation_less_perception/scenario.yaml)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotation_less_perception/result.json)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/result.json)参照
 
 以下に、それぞれの評価の例を記述する。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
