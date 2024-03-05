@@ -15,21 +15,24 @@
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
-import sys
+from typing import ClassVar
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from pydantic import BaseModel
+from pydantic import field_validator
 import simplejson as json
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
+from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
 
 class Conditions(BaseModel):
     Threshold: dict
+    PassRange: tuple[float, float]
 
     def set_threshold_from_file(self, file_path: str) -> None:
         result_file = Path(file_path)
@@ -41,6 +44,22 @@ class Conditions(BaseModel):
                     self.Threshold = result_json_dict["Frame"]["Deviation"]["Metrics"]
                 except json.JSONDecodeError:
                     self.Threshold = {}
+
+    @field_validator("PassRange", mode="before")
+    @classmethod
+    def validate_pass_range(cls, v: str) -> tuple[number, number]:
+        boundary = 1.0
+        s_lower, s_upper = v.split("-")
+        lower = float(s_lower)
+        upper = float(s_upper)
+
+        if lower > boundary:
+            lower_error = f"lower value must be <= {boundary}"
+            raise ValueError(lower_error)
+        if upper < boundary:
+            upper_error = f"upper value must be >= {boundary}"
+            raise ValueError(upper_error)
+        return (lower, upper)
 
 
 class Evaluation(BaseModel):
@@ -59,6 +78,9 @@ class Deviation(EvaluationItem):
     success: bool = True
     received_data: dict = field(default_factory=dict)
     # received_data = {lateral_deviation: {min: sum_min, max: sum_max, mean: sum_mean} ... }
+    DEFAULT_THRESHOLD: ClassVar[str] = (
+        1000.0  # A value that does not overflow when multiplied by a factor of range and is large enough to be a threshold value.
+    )
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
         self.total += 1
@@ -75,9 +97,9 @@ class Deviation(EvaluationItem):
             threshold = self.condition.Threshold.get(
                 diag_status.name,
                 {
-                    "min": sys.float_info.max,
-                    "max": sys.float_info.max,
-                    "mean": sys.float_info.max,
+                    "min": Deviation.DEFAULT_THRESHOLD,
+                    "max": Deviation.DEFAULT_THRESHOLD,
+                    "mean": Deviation.DEFAULT_THRESHOLD,
                 },
             )
             metrics_dict[diag_status.name], diag_success = self.calc_average_and_success(
@@ -109,10 +131,13 @@ class Deviation(EvaluationItem):
         a_min = self.received_data[key]["min"] / self.total
         a_max = self.received_data[key]["max"] / self.total
         a_mean = self.received_data[key]["mean"] / self.total
+        self.condition: Conditions
+        lower = self.condition.PassRange[0]
+        upper = self.condition.PassRange[1]
         is_success = (
-            (a_min <= threshold["min"])
-            and (a_max <= threshold["max"])
-            and (a_mean <= threshold["mean"])
+            (threshold["min"] * lower <= a_min <= threshold["min"] * upper)
+            and (threshold["max"] * lower <= a_max <= threshold["max"] * upper)
+            and (threshold["mean"] * lower <= a_mean <= threshold["mean"] * upper)
         )
         return {"min": a_min, "max": a_max, "mean": a_mean}, is_success
 
