@@ -85,8 +85,7 @@ class ResultWriter:
         self._result_file = self._result_path.open("w")
         self._ros_clock = ros_clock
         self._system_clock = Clock(clock_type=ClockType.SYSTEM_TIME)
-        condition_dict = condition if isinstance(condition, dict) else condition.model_dump()
-        self.write_line({"Condition": condition_dict})
+        self.write_condition(condition)
         self.write_line(self.get_header())
 
     @property
@@ -112,6 +111,13 @@ class ResultWriter:
 
     def write_result(self, result: ResultBase) -> None:
         self.write_line(self.get_result(result))
+
+    def write_condition(self, condition: BaseModel | dict, *, updated: bool = False) -> None:
+        condition_dict = condition if isinstance(condition, dict) else condition.model_dump()
+        key = "Condition"
+        if updated:
+            key = "UpdatedCondition"
+        self.write_line({key: condition_dict})
 
     def get_header(self) -> dict:
         system_time = self._system_clock.now()

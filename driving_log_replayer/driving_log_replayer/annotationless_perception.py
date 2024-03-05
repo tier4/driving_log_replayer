@@ -61,6 +61,9 @@ class Conditions(BaseModel):
             raise ValueError(upper_error)
         return (lower, upper)
 
+    def set_pass_range(self, v: str) -> None:
+        self.PassRange = Conditions.validate_pass_range(v)
+
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["annotationless_perception"]

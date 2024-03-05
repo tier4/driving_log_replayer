@@ -77,8 +77,6 @@ class DLREvaluator(Node):
         self._result_json_path = expandvars(
             self.get_parameter("result_json_path").get_parameter_value().string_value,
         )
-        self.get_logger().error(f"{self._scenario_path=}")
-        self.get_logger().error(f"{self._result_json_path=}")
 
         self._scenario = None
         try:
@@ -89,14 +87,6 @@ class DLREvaluator(Node):
                 and self._scenario.Evaluation.Conditions is not None
             ):
                 evaluation_condition = self._scenario.Evaluation.Conditions
-                if isinstance(self._scenario, AnnotationlessPerceptionScenario):
-                    self.declare_parameter("annotationless_threshold_file", "")
-                    threshold_file = (
-                        self.get_parameter("annotationless_threshold_file")
-                        .get_parameter_value()
-                        .string_value
-                    )
-                    self._scenario.Evaluation.Conditions.set_threshold_from_file(threshold_file)
             self._result_writer = ResultWriter(
                 self._result_json_path,
                 self.get_clock(),

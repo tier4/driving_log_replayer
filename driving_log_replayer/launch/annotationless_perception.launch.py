@@ -32,6 +32,9 @@ def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments.append(
         DeclareLaunchArgument("annotationless_threshold_file", default_value=""),
     )
+    launch_arguments.append(
+        DeclareLaunchArgument("annotationless_pass_range", default_value="0.5-1.05"),
+    )
     autoware_launch = cmn.get_autoware_launch(
         sensing=LaunchConfiguration("sensing"),
         localization="false",
@@ -41,6 +44,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         "annotationless_perception",
         addition_parameter={
             "annotationless_threshold_file": LaunchConfiguration("annotationless_threshold_file"),
+            "annotationless_pass_range": LaunchConfiguration("annotationless_pass_range"),
         },
     )
 
