@@ -80,7 +80,7 @@ Autoware Evaluatorで、テストを実行し、出力されたresult.jsonlの�
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annnotation_less_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path}"
+dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path}"
 ```
 
 ##### WebAutoCLI
@@ -121,7 +121,7 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 #### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annnotation_less_perception -l "sensing:=true"
+dlr simulation run -p annotationless_perception -l "sensing:=true"
 ```
 
 #### WebAutoCLI
