@@ -54,9 +54,9 @@ Published topics:
 | ---------- | --------- |
 | N/A        | N/A       |
 
-### 偏差の判定基準値を与える方法
+### 偏差の成否判定条件を指定する方法
 
-判定の基準値は以下の2通りの方法で与えることができる
+判定条件は以下の2通りの方法で与えることができる
 
 #### シナリオに記述する
 
@@ -73,12 +73,14 @@ Evaluation:
       predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
       predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
       predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+    PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperならテストは合格とする。
 ```
 
-#### 以前のテスト結果ファイルから与える
+#### 引数で指定する
 
 こちらの方法をメインに使う想定。
-Autoware Evaluatorで、テストを実行し、出力されたresult.jsonlのファイルパスを指定すると、指定したファイルに記述されている最後のMetrics値を判定基準値として利用する。
+Autoware Evaluatorで、テストを実行し、出力されたresult.jsonlのファイルパスを指定すると、指定したファイルに記述されている最後のMetrics値を閾値として利用する。
+また合格範囲も同様に引数で指定可能。
 
 利用のイメージを以下に示す。
 
@@ -87,13 +89,13 @@ Autoware Evaluatorで、テストを実行し、出力されたresult.jsonlの�
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path}"
+dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path},annotationless_pass_range:=${lower-upper}
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path}
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path},annotaionless_pass_rate=${lower-upper}
 ```
 
 ##### Autoware Evaluator
@@ -112,6 +114,7 @@ simulations:
         type: simulator/standard1/amd64/medium
       parameters:
         annotationless_threshold_file: ${previous_test_result.jsonl_path}
+        annotationless_pass_range: ${upper-lower}
 ```
 
 ## logging_simulator.launch に渡す引数

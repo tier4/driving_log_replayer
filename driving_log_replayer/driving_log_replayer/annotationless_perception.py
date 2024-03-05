@@ -62,7 +62,8 @@ class Conditions(BaseModel):
         return (lower, upper)
 
     def set_pass_range(self, v: str) -> None:
-        self.PassRange = Conditions.validate_pass_range(v)
+        if v != "":  # skip if launch arg is not set
+            self.PassRange = Conditions.validate_pass_range(v)
 
 
 class Evaluation(BaseModel):
