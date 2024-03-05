@@ -111,7 +111,7 @@ simulations:
 
 autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
 
-- perception: false
+- perception: true
 - planning: false
 - control: false
 - sensing: false / true (デフォルト false、launch引数で与える)
