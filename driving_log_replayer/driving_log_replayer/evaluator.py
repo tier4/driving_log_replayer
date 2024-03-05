@@ -53,7 +53,7 @@ from tf_transformations import euler_from_quaternion
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 import yaml
 
-from driving_log_replayer.annotationlees_perception import AnnotationlessPerceptionScenario
+from driving_log_replayer.annotationless_perception import AnnotationlessPerceptionScenario
 from driving_log_replayer.result import PickleWriter
 from driving_log_replayer.result import ResultWriter
 from driving_log_replayer.scenario import InitialPose

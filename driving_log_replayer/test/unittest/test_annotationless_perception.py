@@ -14,7 +14,7 @@
 
 from pathlib import Path
 
-from driving_log_replayer.annotationlees_perception import AnnotationlessPerceptionScenario
+from driving_log_replayer.annotationless_perception import AnnotationlessPerceptionScenario
 from driving_log_replayer.scenario import load_sample_scenario
 
 

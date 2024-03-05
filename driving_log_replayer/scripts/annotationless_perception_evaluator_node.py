@@ -17,8 +17,8 @@
 
 from diagnostic_msgs.msg import DiagnosticArray
 
-from driving_log_replayer.annotationlees_perception import AnnotationlessPerceptionResult
-from driving_log_replayer.annotationlees_perception import AnnotationlessPerceptionScenario
+from driving_log_replayer.annotationless_perception import AnnotationlessPerceptionResult
+from driving_log_replayer.annotationless_perception import AnnotationlessPerceptionScenario
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 
