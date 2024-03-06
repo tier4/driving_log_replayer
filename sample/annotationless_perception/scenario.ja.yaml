@@ -9,7 +9,7 @@ Evaluation:
   UseCaseName: annotationless_perception
   UseCaseFormatVersion: 0.1.0
   Conditions:
-    # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
+    # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
     Threshold:
       lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
       yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
@@ -17,4 +17,4 @@ Evaluation:
       predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
       predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
       predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
-    PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
+    PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。

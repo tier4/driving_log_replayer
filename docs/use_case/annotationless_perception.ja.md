@@ -2,7 +2,7 @@
 
 perception_online_evaluatorを利用して、Autowareの認識機能(perception)を、アノテーションなしで評価する。
 
-以下のPRの機能を導入済みのautowareが必要。
+以下のPRの機能を持つAutowareが必要。
 <https://github.com/autowarefoundation/autoware.universe/pull/6493>
 
 ## 評価方法
@@ -54,9 +54,9 @@ Published topics:
 | ---------- | --------- |
 | N/A        | N/A       |
 
-### 偏差の成否判定条件を指定する方法
+### 条件を指定する方法
 
-判定条件は以下の2通りの方法で与えることができる
+条件は以下の2通りの方法で与えることができる
 
 #### シナリオに記述する
 
@@ -65,8 +65,8 @@ Evaluation:
   UseCaseName: annotationless_perception
   UseCaseFormatVersion: 0.1.0
   Conditions:
-    # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
-    Threshold: # 初回実行時などシナリオで指定したい場合はシナリオで指定する
+    # Threshold: {} # Metricsを過去のテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
+    Threshold:
       lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
       yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
       predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
@@ -76,13 +76,13 @@ Evaluation:
     PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperならテストは合格とする。
 ```
 
-#### 引数で指定する
+#### launch引数で指定する
 
 こちらの方法をメインに使う想定。
-Autoware Evaluatorで、テストを実行し、出力されたresult.jsonlのファイルパスを指定すると、指定したファイルに記述されている最後のMetrics値を閾値として利用する。
-また合格範囲も同様に引数で指定可能。
+過去のテストで出力されたresult.jsonlのファイルパスを指定すると、過去のテストのMetrics値を閾値として利用
+また合格範囲も引数で指定可能。
 
-利用のイメージを以下に示す。
+利用イメージを以下に示す。
 
 ![threshold](./images/annotationless_threshold.drawio.svg)
 
@@ -164,39 +164,35 @@ simulations:
 
 ### 入力 rosbag に含まれるべき topic
 
-| topic 名                                             | データ型                                     |
-| ---------------------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
-| /localization/kinematic_state                        | nav_msgs/msg/Odometry                        |
-| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
-| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
-| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                  |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
-| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+| topic 名                               | データ型                                     |
+| -------------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                     | can_msgs/msg/Frame                           |
+| /localization/kinematic_state          | nav_msgs/msg/Odometry                        |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/concatenated/pointcloud | sensor_msgs/msg/PointCloud2                  |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                   |
+| /tf                                    | tf2_msgs/msg/TFMessage                       |
 
 CAN の代わりに vehicle の topic を含めても良い。
 
-| topic 名                                             | データ型                                            |
-| ---------------------------------------------------- | --------------------------------------------------- |
-| /localization/kinematic_state                        | nav_msgs/msg/Odometry                               |
-| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
-| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                         |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
-| /tf                                                  | tf2_msgs/msg/TFMessage                              |
-| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
-| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
-| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
-| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
-| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+| topic 名                               | データ型                                            |
+| -------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state          | nav_msgs/msg/Odometry                               |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/concatenated/pointcloud | sensor_msgs/msg/PointCloud2                         |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /tf                                    | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### 入力 rosbag に含まれてはいけない topic
 
@@ -212,7 +208,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.yaml)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
@@ -224,7 +220,7 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 ```json
 {
   "Deviation": {
-    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // TotalとFrameの結果は同じ。他の評価と形式を同じにするために同じ値を出力する。
+    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // TotalとFrameの結果は同じ。他の評価とデータ構造を同じにするために同じ値を出力している
     "Info": {
       "lateral_deviation": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
       "yaw_deviation": { "min": "最小角度差", "max": "最大角度差", "mean": "平均角度差" },
