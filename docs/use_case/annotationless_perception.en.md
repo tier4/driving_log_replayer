@@ -165,41 +165,41 @@ State the information required to run the simulation.
 
 ### Topic to be included in the input rosbag
 
-| Topic name | Data type               |
-| ---------------------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
-| /localization/kinematic_state                        | nav_msgs/msg/Odometry                        |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
-| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                  |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
-| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+| Topic name                             | Data type                                    |
+| -------------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                     | can_msgs/msg/Frame                           |
+| /localization/kinematic_state          | nav_msgs/msg/Odometry                        |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/concatenated/pointcloud | sensor_msgs/msg/PointCloud2                  |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                   |
+| /tf                                    | tf2_msgs/msg/TFMessage                       |
 
 The vehicle topics can be included instead of CAN.
 
-| Topic name | Data type               |
-| ---------------------------------------------------- | --------------------------------------------------- |
-| /localization/kinematic_state                        | nav_msgs/msg/Odometry                               |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                         |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
-| /tf                                                  | tf2_msgs/msg/TFMessage                              |
-| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
-| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
-| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
-| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
-| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+| Topic name                             | Data type                                           |
+| -------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state          | nav_msgs/msg/Odometry                               |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/concatenated/pointcloud | sensor_msgs/msg/PointCloud2                         |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /tf                                    | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### Topics that must not be included in the input rosbag
 
 | Topic name | Data type               |
-| -------- | ----------------------- |
-| /clock   | rosgraph_msgs/msg/Clock |
+| ---------- | ----------------------- |
+| /clock     | rosgraph_msgs/msg/Clock |
 
 The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.
 
@@ -218,18 +218,41 @@ See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/anno
 The format of each frame and the metrics format are shown below.
 **NOTE: common part of the result file format, which has already been explained, is omitted.**
 
-
 ```json
 {
   "Deviation": {
     "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // The results for Total and Frame are the same. The same values are output to make the data structure the same as other evaluations.
     "Info": {
-      "lateral_deviation": { "min": "Minimum distance", "max": "Maximum distance", "mean": "Mean distance" },
-      "yaw_deviation": { "min": "Minimum Angle Difference", "max": "Maximum Angle Difference", "mean": "Mean Angle Difference" },
-      "predicted_path_deviation_5.00": { "min": "Minimum distance", "max": "Maximum distance", "mean": "Mean distance" },
-      "predicted_path_deviation_3.00": { "min": "Minimum distance", "max": "Maximum distance", "mean": "Mean distance" },
-      "predicted_path_deviation_2.00": { "min": "Minimum distance", "max": "Maximum distance", "mean": "Mean distance" },
-      "predicted_path_deviation_1.00": { "min": "Minimum distance", "max": "Maximum distance", "mean": "Mean distance" }
+      "lateral_deviation": {
+        "min": "Minimum distance",
+        "max": "Maximum distance",
+        "mean": "Mean distance"
+      },
+      "yaw_deviation": {
+        "min": "Minimum Angle Difference",
+        "max": "Maximum Angle Difference",
+        "mean": "Mean Angle Difference"
+      },
+      "predicted_path_deviation_5.00": {
+        "min": "Minimum distance",
+        "max": "Maximum distance",
+        "mean": "Mean distance"
+      },
+      "predicted_path_deviation_3.00": {
+        "min": "Minimum distance",
+        "max": "Maximum distance",
+        "mean": "Mean distance"
+      },
+      "predicted_path_deviation_2.00": {
+        "min": "Minimum distance",
+        "max": "Maximum distance",
+        "mean": "Mean distance"
+      },
+      "predicted_path_deviation_1.00": {
+        "min": "Minimum distance",
+        "max": "Maximum distance",
+        "mean": "Mean distance"
+      }
     },
     "Metrics": {
       "lateral_deviation": {
