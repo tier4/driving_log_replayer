@@ -1,4 +1,4 @@
-# Evaluate Perception (Annotationless)
+# Evaluate Annotationless Perception
 
 Evaluate Autoware's recognition features (perception) without annotations using the perception_online_evaluator.
 

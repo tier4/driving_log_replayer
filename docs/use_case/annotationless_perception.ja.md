@@ -1,4 +1,4 @@
-# 認識機能の評価(Annotationless)
+# Annotationless認識機能の評価
 
 perception_online_evaluatorを利用して、Autowareの認識機能(perception)を、アノテーションなしで評価する。
 

@@ -1,4 +1,4 @@
-# 認識機能の評価(Annotationless)
+# Annotationless認識機能の評価
 
 ## 準備
 
