@@ -28,6 +28,7 @@
     "pydantic",
     "Kotaro",
     "Uetake",
-    "conlist"
+    "conlist",
+    "annotationless"
   ]
 }
