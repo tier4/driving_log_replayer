@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/use_case/localization/">
+        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/use_case/annotationless_perception/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../performance_diag/">
       
       
-        <link rel="next" href="../yabloc/">
+        <link rel="next" href="../../analyzer/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Evaluate NDT estimation - Driving Log Replayer Documentation</title>
+        <title>Evaluate Annotationless Perception - Driving Log Replayer Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#evaluate-ndt-estimation" class="md-skip">
+        <a href="#evaluate-annotationless-perception" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Evaluate NDT estimation
+              Evaluate Annotationless Perception
             
           </span>
         </div>
@@ -167,7 +167,7 @@
           </li>
         
           <li class="md-select__item">
-            <a href="../../ja/use_case/localization/" hreflang="ja" class="md-select__link">
+            <a href="../../ja/use_case/annotationless_perception/" hreflang="ja" class="md-select__link">
               日本語
             </a>
           </li>
@@ -1039,30 +1039,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Evaluate NDT estimation
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../localization/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1071,230 +1051,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#evaluation-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      Evaluation method
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Evaluation method">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#reliability-of-ndt" class="md-nav__link">
-    <span class="md-ellipsis">
-      Reliability of NDT
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#convergence-of-ndt" class="md-nav__link">
-    <span class="md-ellipsis">
-      Convergence of NDT
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#availability-of-ndt" class="md-nav__link">
-    <span class="md-ellipsis">
-      Availability of NDT
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#evaluation-result" class="md-nav__link">
-    <span class="md-ellipsis">
-      Evaluation Result
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Evaluation Result">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#reliability-normal" class="md-nav__link">
-    <span class="md-ellipsis">
-      Reliability Normal
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#reliability-error" class="md-nav__link">
-    <span class="md-ellipsis">
-      Reliability Error
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#convergence-normal" class="md-nav__link">
-    <span class="md-ellipsis">
-      Convergence Normal
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#convergence-error" class="md-nav__link">
-    <span class="md-ellipsis">
-      Convergence Error
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ndt-availability-normal" class="md-nav__link">
-    <span class="md-ellipsis">
-      NDT Availability Normal
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ndt-availability-error" class="md-nav__link">
-    <span class="md-ellipsis">
-      NDT Availability Error
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#topic-name-and-data-type-used-by-evaluation-node" class="md-nav__link">
-    <span class="md-ellipsis">
-      Topic name and data type used by evaluation node
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#service-name-and-data-type-used-by-the-evaluation-node" class="md-nav__link">
-    <span class="md-ellipsis">
-      Service name and data type used by the evaluation node
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
-    <span class="md-ellipsis">
-      Arguments passed to logging_simulator.launch
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#about-simulation" class="md-nav__link">
-    <span class="md-ellipsis">
-      About simulation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="About simulation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#topic-to-be-included-in-the-input-rosbag" class="md-nav__link">
-    <span class="md-ellipsis">
-      Topic to be included in the input rosbag
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#topics-that-must-not-be-included-in-the-input-rosbag" class="md-nav__link">
-    <span class="md-ellipsis">
-      Topics that must not be included in the input rosbag
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#about-evaluation" class="md-nav__link">
-    <span class="md-ellipsis">
-      About Evaluation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="About Evaluation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#scenario-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario Format
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#evaluation-result-format" class="md-nav__link">
-    <span class="md-ellipsis">
-      Evaluation Result Format
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1430,10 +1186,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../annotationless_perception/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Evaluate Annotationless Perception
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1442,6 +1218,182 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation results
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evaluation results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deviation-normal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deviation Normal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deviation-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deviation Error
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-name-and-data-type-used-by-evaluation-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic name and data type used by evaluation node
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topic name and data type used by evaluation node">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-of-specifying-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method of specifying conditions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arguments-passed-to-logging_simulatorlaunch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arguments passed to logging_simulator.launch
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Arguments passed to logging_simulator.launch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-specify-the-sensing-argument" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to specify the sensing argument
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      simulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topic-to-be-included-in-the-input-rosbag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topic to be included in the input rosbag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topics-that-must-not-be-included-in-the-input-rosbag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topics that must not be included in the input rosbag
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      evaluation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="evaluation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario Format
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluation-result-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Result Format
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1547,100 +1499,31 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Evaluation method">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#reliability-of-ndt" class="md-nav__link">
-    <span class="md-ellipsis">
-      Reliability of NDT
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#convergence-of-ndt" class="md-nav__link">
-    <span class="md-ellipsis">
-      Convergence of NDT
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#availability-of-ndt" class="md-nav__link">
-    <span class="md-ellipsis">
-      Availability of NDT
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#evaluation-result" class="md-nav__link">
+  <a href="#evaluation-results" class="md-nav__link">
     <span class="md-ellipsis">
-      Evaluation Result
+      Evaluation results
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Evaluation Result">
+    <nav class="md-nav" aria-label="Evaluation results">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#reliability-normal" class="md-nav__link">
+  <a href="#deviation-normal" class="md-nav__link">
     <span class="md-ellipsis">
-      Reliability Normal
+      Deviation Normal
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#reliability-error" class="md-nav__link">
+  <a href="#deviation-error" class="md-nav__link">
     <span class="md-ellipsis">
-      Reliability Error
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#convergence-normal" class="md-nav__link">
-    <span class="md-ellipsis">
-      Convergence Normal
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#convergence-error" class="md-nav__link">
-    <span class="md-ellipsis">
-      Convergence Error
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ndt-availability-normal" class="md-nav__link">
-    <span class="md-ellipsis">
-      NDT Availability Normal
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ndt-availability-error" class="md-nav__link">
-    <span class="md-ellipsis">
-      NDT Availability Error
+      Deviation Error
     </span>
   </a>
   
@@ -1658,14 +1541,20 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#service-name-and-data-type-used-by-the-evaluation-node" class="md-nav__link">
+    <nav class="md-nav" aria-label="Topic name and data type used by evaluation node">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-of-specifying-conditions" class="md-nav__link">
     <span class="md-ellipsis">
-      Service name and data type used by the evaluation node
+      Method of specifying conditions
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1676,16 +1565,31 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#about-simulation" class="md-nav__link">
+    <nav class="md-nav" aria-label="Arguments passed to logging_simulator.launch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-to-specify-the-sensing-argument" class="md-nav__link">
     <span class="md-ellipsis">
-      About simulation
+      How to specify the sensing argument
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="About simulation">
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      simulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="simulation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1712,13 +1616,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#about-evaluation" class="md-nav__link">
+  <a href="#evaluation" class="md-nav__link">
     <span class="md-ellipsis">
-      About Evaluation
+      evaluation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="About Evaluation">
+    <nav class="md-nav" aria-label="evaluation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1762,65 +1666,40 @@
   
 
 
-<h1 id="evaluate-ndt-estimation">Evaluate NDT estimation<a class="headerlink" href="#evaluate-ndt-estimation" title="Permanent link">#</a></h1>
-<p>Evaluate whether Autoware's localization by NDT is working stably.</p>
-<p>In the evaluation of NDT, the reliability, convergence, and availability of NDT are evaluated.</p>
+<h1 id="evaluate-annotationless-perception">Evaluate Annotationless Perception<a class="headerlink" href="#evaluate-annotationless-perception" title="Permanent link">#</a></h1>
+<p>Evaluate Autoware's recognition features (perception) without annotations using the perception_online_evaluator.</p>
+<p>Requires Autoware with the following PR features.
+<a href="https://github.com/autowarefoundation/autoware.universe/pull/6493">https://github.com/autowarefoundation/autoware.universe/pull/6493</a></p>
 <h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
-<p>The localization's evaluation is executed by launching the <code>localization.launch.py</code> file.
+<p>The annotationless_perception evaluation is executed by launching the <code>annotationless_perception.launch.py</code> file.
 Launching the file executes the following steps:</p>
 <ol>
-<li>Execute launch of evaluation node (<code>localization_evaluator_node</code>), <code>logging_simulator.launch</code> file and <code>ros2 bag play</code> command</li>
-<li>Autoware receives sensor data input from previously prepared rosbag and performs localization estimation</li>
-<li>Evaluation node subscribes to Autoware's output topics, determines whether NDT reliability, convergence, and availability meet the criteria, and dumps the results to a file</li>
+<li>Execute launch of evaluation node (<code>annotationless_perception_evaluator_node</code>), <code>logging_simulator.launch</code> file and <code>ros2 bag play</code> command</li>
+<li>Autoware receives sensor data output from input rosbag and the perception module performs recognition.</li>
+<li>The perception_online_evaluator publishes diagnostic topic to <code>/diagnostic/perception_online_evaluator/metrics</code></li>
+<li>The evaluation node subscribes to the topic and evaluates data. The result is dumped into a file.</li>
 <li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
-<h3 id="reliability-of-ndt">Reliability of NDT<a class="headerlink" href="#reliability-of-ndt" title="Permanent link">#</a></h3>
-<p>Of the following two topics, the one specified in the scenario will be used for evaluation.</p>
-<ul>
-<li><code>/localization/pose_estimator/transform_probability</code></li>
-<li><code>/localization/pose_estimator/nearest_voxel_transformation_likelihood</code></li>
-</ul>
-<h3 id="convergence-of-ndt">Convergence of NDT<a class="headerlink" href="#convergence-of-ndt" title="Permanent link">#</a></h3>
-<p>Convergence evaluation is based on the following topics:</p>
-<ul>
-<li><code>/localization/pose_estimator/initial_to_result_relative_pose</code></li>
-</ul>
-<h3 id="availability-of-ndt">Availability of NDT<a class="headerlink" href="#availability-of-ndt" title="Permanent link">#</a></h3>
-<p>We also evaluate whether the output of <code>ndt_scan_matcher</code> is available. This is mainly useful for detecting some cases where NDT is not capable of publishing the appropriate outputs, for example due to:</p>
-<ul>
-<li>failure in <code>pointcloud_preprocessor</code> due to runtime error (which would result in unavailability of LiDAR scan inputs for <code>ndt_scan_matcher</code>)</li>
-<li>failure in <code>ndt_scan_matcher</code> due to runtime error</li>
-</ul>
-<p>Here we evaluate whether the following output is being output regularly:</p>
-<ul>
-<li><code>/localization/pose_estimator/exe_time_ms</code></li>
-</ul>
-<p>This is accomplished by indirectly using a package within Autoware called Component State Monitor. The evaluator subscribes the following topic for the information:</p>
-<ul>
-<li><code>/diagnostics_agg</code></li>
-</ul>
-<p>The reason why <code>/localization/pose_estimator/exe_time_ms</code> was chosen from the output topics of NDT is that it is possible to detect the aforementioned failure by confirming that messages are being output to the topic regularly.
-For example, <code>/localization/pose_estimator/pose</code> is not suitable as a monitoring topic this time. This is because the topic may not output if the score of NVTL or TP is low, and it is difficult to isolate the cause to the failure by just monitoring the output.</p>
-<h2 id="evaluation-result">Evaluation Result<a class="headerlink" href="#evaluation-result" title="Permanent link">#</a></h2>
+<h2 id="evaluation-results">Evaluation results<a class="headerlink" href="#evaluation-results" title="Permanent link">#</a></h2>
 <p>The results are calculated for each subscription. The format and available states are described below.</p>
-<h3 id="reliability-normal">Reliability Normal<a class="headerlink" href="#reliability-normal" title="Permanent link">#</a></h3>
-<p>If the data in <code>/localization/pose_estimator/transform_probability</code> or <code>/localization/pose_estimator/nearest_voxel_transformation_likelihood</code> is greater than or equal the <code>AllowableLikelihood</code> described in the scenario.</p>
-<h3 id="reliability-error">Reliability Error<a class="headerlink" href="#reliability-error" title="Permanent link">#</a></h3>
-<p>If the data in <code>/localization/pose_estimator/transform_probability</code> or <code>/localization/pose_estimator/nearest_voxel_transformation_likelihood</code> is less than the <code>AllowableLikelihood</code> described in the scenario.</p>
-<h3 id="convergence-normal">Convergence Normal<a class="headerlink" href="#convergence-normal" title="Permanent link">#</a></h3>
-<p>If all of the following conditions are met, the convergence is reported as Normal:</p>
-<ol>
-<li>The lateral distance of <code>/localization/pose_estimator/initial_to_result_relative_pose</code> is less than or equal to <code>AllowableDistance</code> described in the scenario</li>
-<li>Execution time published to <code>/localization/pose_estimator/exe_time_ms</code> is less than or equal to <code>AllowableExeTimeMs</code> described in the scenario</li>
-<li>Number of iterations published to <code>/localization/pose_estimator/iteration_num</code> is less than or equal to <code>AllowableIterationNum</code> described in the scenario</li>
-</ol>
-<p>The lateral distance obtained in the step 1 is published as <code>/driving_log_replayer/localization/lateral_distance</code>.</p>
-<h3 id="convergence-error">Convergence Error<a class="headerlink" href="#convergence-error" title="Permanent link">#</a></h3>
-<p>The convergence evaluation output is marked as <code>Error</code> when conditions for <code>Convergence Normal</code> are not met.</p>
-<h3 id="ndt-availability-normal">NDT Availability Normal<a class="headerlink" href="#ndt-availability-normal" title="Permanent link">#</a></h3>
-<p>Information related to the monitored topic is extracted from <code>/diagnostics_agg</code> which Component State Monitor outputs. If the most recent information NOT Timeout nor NotReceived, it is considered as pass.</p>
-<h3 id="ndt-availability-error">NDT Availability Error<a class="headerlink" href="#ndt-availability-error" title="Permanent link">#</a></h3>
-<p>The NDT availability evaluation output is marked as <code>Error</code> when conditions for <code>NDT Availability Normal</code> are not met.</p>
+<h3 id="deviation-normal">Deviation Normal<a class="headerlink" href="#deviation-normal" title="Permanent link">#</a></h3>
+<p>The following two values specified in the scenario or launch argument are used to judge</p>
+<ul>
+<li>Threshold<ul>
+<li>Threshold for judging the success or failure of each item</li>
+</ul>
+</li>
+<li>PassRange(Coefficient to correct threshold)<ul>
+<li>The range between <code>threshold * lower_limit</code> and <code>threshold * upper limit</code> is considered to pass the test.</li>
+</ul>
+</li>
+</ul>
+<p>Add the min, max, and mean values for each status.name in <code>/diagnostic/perception_online_evaluator/metrics</code> and calculate the average value.
+If the <code>threshold * lower limit</code> &lt;= <code>calculated_average</code> &lt;= <code>threshold value * upper_limit</code>, it is assumed to be normal.</p>
+<p>An illustration is shown below.</p>
+<p><img alt="metrics" src="../images/annotationless_metrics.drawio.svg" /></p>
+<h3 id="deviation-error">Deviation Error<a class="headerlink" href="#deviation-error" title="Permanent link">#</a></h3>
+<p>When the deviation normal condition is not met</p>
 <h2 id="topic-name-and-data-type-used-by-evaluation-node">Topic name and data type used by evaluation node<a class="headerlink" href="#topic-name-and-data-type-used-by-evaluation-node" title="Permanent link">#</a></h2>
 <p>Subscribed topics:</p>
 <table>
@@ -1832,40 +1711,8 @@ For example, <code>/localization/pose_estimator/pose</code> is not suitable as a
 </thead>
 <tbody>
 <tr>
-<td>/diagnostics_agg</td>
+<td>/diagnostic/perception_online_evaluator/metrics</td>
 <td>diagnostic_msgs::msg::DiagnosticArray</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/transform_probability</td>
-<td>tier4_debug_msgs::msg::Float32Stamped</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/nearest_voxel_transformation_likelihood</td>
-<td>tier4_debug_msgs::msg::Float32Stamped</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/initial_to_result_relative_pose</td>
-<td>geometry_msgs::msg::PoseStamped</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/exe_time_ms</td>
-<td>tier4_debug_msgs::msg::Float32Stamped</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/iteration_num</td>
-<td>tier4_debug_msgs::msg::Int32Stamped</td>
-</tr>
-<tr>
-<td>/tf</td>
-<td>tf2_msgs/msg/TFMessage</td>
-</tr>
-<tr>
-<td>/localization/util/downsample/pointcloud</td>
-<td>sensor_msgs::msg::PointCloud2</td>
-</tr>
-<tr>
-<td>/localization/pose_estimator/points_aligned</td>
-<td>sensor_msgs::msg::PointCloud2</td>
 </tr>
 </tbody>
 </table>
@@ -1879,39 +1726,88 @@ For example, <code>/localization/pose_estimator/pose</code> is not suitable as a
 </thead>
 <tbody>
 <tr>
-<td>/driving_log_replayer/localization/lateral_distance</td>
-<td>example_interfaces::msg::Float64</td>
+<td>N/A</td>
+<td>N/A</td>
 </tr>
 </tbody>
 </table>
-<h2 id="service-name-and-data-type-used-by-the-evaluation-node">Service name and data type used by the evaluation node<a class="headerlink" href="#service-name-and-data-type-used-by-the-evaluation-node" title="Permanent link">#</a></h2>
-<table>
-<thead>
-<tr>
-<th>Service name</th>
-<th>Data type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>/api/localization/initialize</td>
-<td>InitializeLocalization</td>
-</tr>
-</tbody>
-</table>
+<h3 id="method-of-specifying-conditions">Method of specifying conditions<a class="headerlink" href="#method-of-specifying-conditions" title="Permanent link">#</a></h3>
+<p>The conditions can be given in two ways</p>
+<h4 id="describe-in-scenario">Describe in scenario<a class="headerlink" href="#describe-in-scenario" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1.0</span>
+<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.</span>
+<span class="w">    </span><span class="nt">Threshold</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">lateral_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">yaw_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">predicted_path_deviation_5.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">predicted_path_deviation_3.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">predicted_path_deviation_2.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">predicted_path_deviation_1.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">PassRange</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5-1.05</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0] # The test will pass under the following `condition threshold * lower &lt;= Σ deviation / len(deviation) &lt;= threshold * upper`</span>
+</code></pre></div>
+<h4 id="specify-by-launch-argument">Specify by launch argument<a class="headerlink" href="#specify-by-launch-argument" title="Permanent link">#</a></h4>
+<p>This method is assumed to be used mainly.
+If the file path of result.jsonl output from a past test is specified, the metrics values from past tests can be used as threshold values.
+The passing range can also be specified as an argument.</p>
+<p>An image of its use is shown below.</p>
+<p><img alt="threshold" src="../images/annotationless_threshold.drawio.svg" /></p>
+<h5 id="driving-log-replayer-cli">driving-log-replayer-cli<a class="headerlink" href="#driving-log-replayer-cli" title="Permanent link">#</a></h5>
+<div class="highlight"><pre><span></span><code>dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;annotationless_thresold_file:=</span><span class="si">${</span><span class="nv">previous_test_result</span><span class="p">.jsonl_path</span><span class="si">}</span><span class="s2">,annotationless_pass_range:=</span><span class="si">${</span><span class="nv">lower</span><span class="p">-upper</span><span class="si">}</span>
+</code></pre></div>
+<h5 id="webautocli">WebAutoCLI<a class="headerlink" href="#webautocli" title="Permanent link">#</a></h5>
+<div class="highlight"><pre><span></span><code>webauto<span class="w"> </span>ci<span class="w"> </span>scenario<span class="w"> </span>run<span class="w"> </span>--project-id<span class="w"> </span><span class="si">${</span><span class="nv">project</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-version-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-version-id</span><span class="si">}</span><span class="w"> </span>--simulator-parameter-overrides<span class="w"> </span><span class="nv">annotationless_thresold_file</span><span class="o">=</span><span class="si">${</span><span class="nv">previous_test_result</span><span class="p">.jsonl_path</span><span class="si">}</span>,annotaionless_pass_rate<span class="o">=</span><span class="si">${</span><span class="nv">lower</span><span class="p">-upper</span><span class="si">}</span>
+</code></pre></div>
+<h5 id="autoware-evaluator">Autoware Evaluator<a class="headerlink" href="#autoware-evaluator" title="Permanent link">#</a></h5>
+<p>Add to parameters in the simulator configuration in <code>.webauto-ci.yml</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">simulations</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">    </span><span class="nt">simulator</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">deployment</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">container</span>
+<span class="w">        </span><span class="nt">artifact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simulator/standard1/amd64/medium</span>
+<span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">annotationless_threshold_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${previous_test_result.jsonl_path}</span>
+<span class="w">        </span><span class="nt">annotationless_pass_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${upper-lower}</span>
+</code></pre></div>
 <h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
 The following parameters are set to <code>false</code>:</p>
 <ul>
-<li>perception: false</li>
+<li>perception: true</li>
 <li>planning: false</li>
 <li>control: false</li>
+<li>sensing: false / true (default false, set by launch argument)</li>
 </ul>
-<h2 id="about-simulation">About simulation<a class="headerlink" href="#about-simulation" title="Permanent link">#</a></h2>
+<h3 id="how-to-specify-the-sensing-argument">How to specify the sensing argument<a class="headerlink" href="#how-to-specify-the-sensing-argument" title="Permanent link">#</a></h3>
+<h4 id="driving-log-replayer-cli_1">driving-log-replayer-cli<a class="headerlink" href="#driving-log-replayer-cli_1" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;sensing:=true&quot;</span>
+</code></pre></div>
+<h4 id="webautocli_1">WebAutoCLI<a class="headerlink" href="#webautocli_1" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>webauto<span class="w"> </span>ci<span class="w"> </span>scenario<span class="w"> </span>run<span class="w"> </span>--project-id<span class="w"> </span><span class="si">${</span><span class="nv">project</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-version-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-version-id</span><span class="si">}</span><span class="w"> </span>--simulator-parameter-overrides<span class="w"> </span><span class="nv">sensing</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<h4 id="autoware-evaluator_1">Autoware Evaluator<a class="headerlink" href="#autoware-evaluator_1" title="Permanent link">#</a></h4>
+<p>Add to parameters in the simulator configuration in <code>.webauto-ci.yml</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">simulations</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">    </span><span class="nt">simulator</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">deployment</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">container</span>
+<span class="w">        </span><span class="nt">artifact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simulator/standard1/amd64/medium</span>
+<span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">sensing</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
+<h2 id="simulation">simulation<a class="headerlink" href="#simulation" title="Permanent link">#</a></h2>
 <p>State the information required to run the simulation.</p>
 <h3 id="topic-to-be-included-in-the-input-rosbag">Topic to be included in the input rosbag<a class="headerlink" href="#topic-to-be-included-in-the-input-rosbag" title="Permanent link">#</a></h3>
-<p>The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
-The following example shows the topic list available in evaluation input rosbag when multiple LiDARs are used in a real-world vehicle configuration.</p>
 <table>
 <thead>
 <tr>
@@ -1925,6 +1821,10 @@ The following example shows the topic list available in evaluation input rosbag 
 <td>can_msgs/msg/Frame</td>
 </tr>
 <tr>
+<td>/localization/kinematic_state</td>
+<td>nav_msgs/msg/Odometry</td>
+</tr>
+<tr>
 <td>/sensing/gnss/ublox/fix_velocity</td>
 <td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
 </tr>
@@ -1941,8 +1841,16 @@ The following example shows the topic list available in evaluation input rosbag 
 <td>sensor_msgs/msg/Imu</td>
 </tr>
 <tr>
+<td>/sensing/lidar/concatenated/pointcloud</td>
+<td>sensor_msgs/msg/PointCloud2</td>
+</tr>
+<tr>
 <td>/sensing/lidar/*/velodyne_packets</td>
 <td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/tf</td>
+<td>tf2_msgs/msg/TFMessage</td>
 </tr>
 </tbody>
 </table>
@@ -1956,6 +1864,10 @@ The following example shows the topic list available in evaluation input rosbag 
 </thead>
 <tbody>
 <tr>
+<td>/localization/kinematic_state</td>
+<td>nav_msgs/msg/Odometry</td>
+</tr>
+<tr>
 <td>/sensing/gnss/ublox/fix_velocity</td>
 <td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
 </tr>
@@ -1972,8 +1884,16 @@ The following example shows the topic list available in evaluation input rosbag 
 <td>sensor_msgs/msg/Imu</td>
 </tr>
 <tr>
+<td>/sensing/lidar/concatenated/pointcloud</td>
+<td>sensor_msgs/msg/PointCloud2</td>
+</tr>
+<tr>
 <td>/sensing/lidar/*/velodyne_packets</td>
 <td>velodyne_msgs/VelodyneScan</td>
+</tr>
+<tr>
+<td>/tf</td>
+<td>tf2_msgs/msg/TFMessage</td>
 </tr>
 <tr>
 <td>/vehicle/status/control_mode</td>
@@ -2013,60 +1933,87 @@ The following example shows the topic list available in evaluation input rosbag 
 </tbody>
 </table>
 <p>The clock is output by the --clock option of ros2 bag play, so if it is recorded in the bag itself, it is output twice, so it is not included in the bag.</p>
-<h2 id="about-evaluation">About Evaluation<a class="headerlink" href="#about-evaluation" title="Permanent link">#</a></h2>
+<h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
 <p>State the information necessary for the evaluation.</p>
 <h3 id="scenario-format">Scenario Format<a class="headerlink" href="#scenario-format" title="Permanent link">#</a></h3>
-<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.yaml">sample</a>.</p>
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.yaml">sample</a></p>
 <h3 id="evaluation-result-format">Evaluation Result Format<a class="headerlink" href="#evaluation-result-format" title="Permanent link">#</a></h3>
-<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json">sample</a>.</p>
-<p>Since localization evaluates convergence, reliability, and availability, each line contains the result of convergence, reliability, or availability.
-The Result is <code>true</code> if convergence, reliability, and availability all pass, and <code>false</code> otherwise.</p>
-<p>Examples of each evaluation are described below.
+<p>See <a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/result.json">sample</a></p>
+<p>The format of each frame and the metrics format are shown below.
 <strong>NOTE: common part of the result file format, which has already been explained, is omitted.</strong></p>
-<p>Convergence Result example:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Convergence&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;Deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="c1">// The results for Total and Frame are the same. The same values are output to make the data structure the same as other evaluations.</span>
 <span class="w">    </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;LateralDistance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;initial_to_result_relative_pose.pose.position.y&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;HorizontalDistance&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Horizontal distance of initial_to_result_relative_pose.pose.position&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;ExeTimeMs&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Time taken to calculate ndt&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;IterationNum&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of recalculations of ndt&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>Reliability Result example:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Reliability&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;Value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;stamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;sec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sec of stamp&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;nanosec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nanosec of stamp&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Value of NVTL or TP&quot;</span>
+<span class="w">      </span><span class="nt">&quot;lateral_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;Reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;stamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;sec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sec of stamp&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;nanosec&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nanosec of stamp&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Likelihood not used in the evaluation. Reference value; if Value is NVTL, TP is entered.&quot;</span>
+<span class="w">      </span><span class="nt">&quot;yaw_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum Angle Difference&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum Angle Difference&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean Angle Difference&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_5.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_3.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_2.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_1.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;Metrics&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;lateral_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;yaw_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum Angle Difference&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum Angle Difference&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean Angle Difference&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_5.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_3.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_2.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_1.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Availability Result example:</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Availability&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Warn&quot;</span><span class="w"> </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
+<p>See the figure below for the meaning of items</p>
+<p><img alt="lateral_deviation" src="../images/lateral_deviation.png" /></p>
+<p><img alt="predicted_path_deviation" src="../images/predicted_path_deviation.png" /></p>
 
 
 
@@ -2102,7 +2049,7 @@ The Result is <code>true</code> if convergence, reliability, and availability al
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Evaluation Use Cases">
+          <a href="../performance_diag/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Evaluate diagnostics">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2112,20 +2059,20 @@ The Result is <code>true</code> if convergence, reliability, and availability al
                 Previous
               </span>
               <div class="md-ellipsis">
-                Evaluation Use Cases
+                Evaluate diagnostics
               </div>
             </div>
           </a>
         
         
           
-          <a href="../yabloc/" class="md-footer__link md-footer__link--next" aria-label="Next: Evaluate YabLoc estimation">
+          <a href="../../analyzer/" class="md-footer__link md-footer__link--next" aria-label="Next: Driving Log Replayer Analyzer">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Evaluate YabLoc estimation
+                Driving Log Replayer Analyzer
               </div>
             </div>
             <div class="md-footer__button md-icon">

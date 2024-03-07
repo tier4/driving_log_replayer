@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/use_case/performance_diag/">
+        <link rel="canonical" href="https://tier4.github.io/driving_log_replayer/ja/use_case/annotationless_perception/">
       
       
-        <link rel="prev" href="../perception/">
+        <link rel="prev" href="../performance_diag/">
       
       
-        <link rel="next" href="../annotationless_perception/">
+        <link rel="next" href="../../analyzer/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>診断機能の評価 - Driving Log Replayer Documentation</title>
+        <title>Annotationless認識機能の評価 - Driving Log Replayer Documentation</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#annotationless" class="md-skip">
           コンテンツにスキップ
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              診断機能の評価
+              Annotationless認識機能の評価
             
           </span>
         </div>
@@ -161,7 +161,7 @@
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="../../../use_case/performance_diag/" hreflang="en" class="md-select__link">
+            <a href="../../../use_case/annotationless_perception/" hreflang="en" class="md-select__link">
               English
             </a>
           </li>
@@ -1165,6 +1165,27 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance_diag/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    診断機能の評価
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1181,7 +1202,7 @@
           
   
   <span class="md-ellipsis">
-    診断機能の評価
+    Annotationless認識機能の評価
   </span>
   
 
@@ -1192,7 +1213,7 @@
         
   
   <span class="md-ellipsis">
-    診断機能の評価
+    Annotationless認識機能の評価
   </span>
   
 
@@ -1214,40 +1235,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       評価方法
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="評価方法">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#visibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      visibility 評価
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#blockage" class="md-nav__link">
-    <span class="md-ellipsis">
-      blockage 評価
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       評価結果
     </span>
@@ -1257,36 +1254,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tp" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      TP 正常
+      偏差正常
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#tp_1" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      TP 異常
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fp" class="md-nav__link">
-    <span class="md-ellipsis">
-      FP 正常
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fp_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      FP 異常
+      偏差異常
     </span>
   </a>
   
@@ -1304,14 +1283,20 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#service" class="md-nav__link">
+    <nav class="md-nav" aria-label="評価ノードが使用する Topic 名とデータ型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
-      評価ノードが使用する Service 名とデータ型
+      条件を指定する方法
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1321,6 +1306,21 @@
       logging_simulator.launch に渡す引数
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="logging_simulator.launch に渡す引数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensing" class="md-nav__link">
+    <span class="md-ellipsis">
+      sensingの引数指定方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1368,7 +1368,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       シナリオフォーマット
     </span>
@@ -1377,7 +1377,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       評価結果フォーマット
     </span>
@@ -1394,27 +1394,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../annotationless_perception/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Annotationless認識機能の評価
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1514,40 +1493,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       評価方法
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="評価方法">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#visibility" class="md-nav__link">
-    <span class="md-ellipsis">
-      visibility 評価
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#blockage" class="md-nav__link">
-    <span class="md-ellipsis">
-      blockage 評価
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       評価結果
     </span>
@@ -1557,36 +1512,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tp" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      TP 正常
+      偏差正常
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#tp_1" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      TP 異常
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fp" class="md-nav__link">
-    <span class="md-ellipsis">
-      FP 正常
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#fp_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      FP 異常
+      偏差異常
     </span>
   </a>
   
@@ -1604,14 +1541,20 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#service" class="md-nav__link">
+    <nav class="md-nav" aria-label="評価ノードが使用する Topic 名とデータ型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
-      評価ノードが使用する Service 名とデータ型
+      条件を指定する方法
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1621,6 +1564,21 @@
       logging_simulator.launch に渡す引数
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="logging_simulator.launch に渡す引数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensing" class="md-nav__link">
+    <span class="md-ellipsis">
+      sensingの引数指定方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1668,7 +1626,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_7" class="md-nav__link">
     <span class="md-ellipsis">
       シナリオフォーマット
     </span>
@@ -1677,7 +1635,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       評価結果フォーマット
     </span>
@@ -1708,67 +1666,53 @@
   
 
 
-<h1 id="_1">診断機能の評価<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
-<p>Autoware の診断機能(diagnostics)が意図通りに機能しているかを評価する。</p>
-<p>現在は、lidar の visibility と blockage の評価に対応している。</p>
-<ul>
-<li>visibility: 霧や雨などで視界が悪くなっていないかを判定する機能</li>
-<li>blockage: LiDAR に葉っぱなどが付着して計測の妨げをしていないかを判定する機能</li>
-</ul>
-<h2 id="_2">評価方法<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p><code>performance_diag.launch.py</code> を使用して評価する。
+<h1 id="annotationless">Annotationless認識機能の評価<a class="headerlink" href="#annotationless" title="Permanent link">#</a></h1>
+<p>perception_online_evaluatorを利用して、Autowareの認識機能(perception)を、アノテーションなしで評価する。</p>
+<p>以下のPRの機能を持つAutowareが必要。
+<a href="https://github.com/autowarefoundation/autoware.universe/pull/6493">https://github.com/autowarefoundation/autoware.universe/pull/6493</a></p>
+<h2 id="_1">評価方法<a class="headerlink" href="#_1" title="Permanent link">#</a></h2>
+<p><code>annotationless_perception.launch.py</code> を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。</p>
 <ol>
-<li>launch で評価ノード(<code>performance_diag_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
-<li>bag から出力されたセンサーデータを autoware が受け取って、/diagnostics_agg を出力する</li>
-<li>評価ノードが/diagnostics_agg を subscribe して、コールバックで評価を行い結果をファイルに記録する。</li>
+<li>launch で評価ノード(<code>annotationless_perception_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
+<li>bag から出力されたセンサーデータを autoware が受け取って、perception モジュールが認識を行う</li>
+<li>perception_online_evaluator が <code>/diagnostic/perception_online_evaluator/metrics</code>に診断結果を出力する</li>
+<li>評価ノードが topic を subscribe して、各基準を満たしているかを判定して結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
-<h3 id="visibility">visibility 評価<a class="headerlink" href="#visibility" title="Permanent link">#</a></h3>
-<p>visibility の評価では、雨天時や人工的に雨を降らせられる施設で取得したデータを用いて visibility の ERROR が一定数以上出力されることを確認する。
-また、晴天時のデータを利用して、ERROR が一度も出ないことを確認する。</p>
-<p><code>/diagnostics_agg</code>の<code>status.name</code>が<code>/autoware/sensing/lidar/performance_monitoring/visibility/\*</code>に該当するものを判定に利用する。</p>
-<h3 id="blockage">blockage 評価<a class="headerlink" href="#blockage" title="Permanent link">#</a></h3>
-<p>blockage の評価では、LiDAR を意図的にレーザー光を通さない素材(箱など)で覆った状態でデータを取得し blockage の ERROR が一定数以上出力されることを確認する。
-また、覆ってない LiDAR については ERROR が一度も出ないことを確認する。</p>
-<p><code>/diagnostics_agg</code>の<code>status.name</code>が<code>/autoware/sensing/lidar/performance_monitoring/blockage/*</code>に該当するものを判定に利用する。</p>
-<h2 id="_3">評価結果<a class="headerlink" href="#_3" title="Permanent link">#</a></h2>
-<p>LiDAR の診断結果の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
-<p>評価したい内容によって ERROR が出る場合を成功とするか失敗とするかが分かれるので、シナリオにタイプを記述することで変更できるようになっている。</p>
+<h2 id="_2">評価結果<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
+<p>topic の subscribe 1 回につき、以下に記述する判定結果が出力される。</p>
+<h3 id="_3">偏差正常<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
+<p>判定には、シナリオまたはlaunchの引数で指定された以下の2つの値を利用する</p>
 <ul>
-<li>シナリオ種類が TP の場合は Diag が ERROR になれば成功</li>
-<li>シナリオ種類が FP の場合は Diag が ERROR にならなければ成功</li>
-<li>シナリオ種類が null の場合はテストを省略する</li>
+<li>閾値<ul>
+<li>各項目の成否を判定する基準となる値</li>
 </ul>
-<h3 id="tp">TP 正常<a class="headerlink" href="#tp" title="Permanent link">#</a></h3>
-<p>シナリオ種類が TP の場合で、診断情報の level が ERROR(=2)の場合</p>
-<h3 id="tp_1">TP 異常<a class="headerlink" href="#tp_1" title="Permanent link">#</a></h3>
-<p>シナリオ種類が TP の場合で、診断情報の level が ERROR でない(!=2)の場合</p>
-<h3 id="fp">FP 正常<a class="headerlink" href="#fp" title="Permanent link">#</a></h3>
-<p>シナリオ種類が FP の場合で、診断情報の level が ERROR でない(!=2)の場合</p>
-<h3 id="fp_1">FP 異常<a class="headerlink" href="#fp_1" title="Permanent link">#</a></h3>
-<p>シナリオ種類が FP の場合で、診断情報の level が ERROR(=2)の場合</p>
+</li>
+<li>合格範囲(閾値を補正する係数)<ul>
+<li>閾値×下限値　〜　閾値×上限値の間の範囲をテスト合格とする</li>
+</ul>
+</li>
+</ul>
+<p><code>/diagnostic/perception_online_evaluator/metrics</code> のstatus.name毎にmin, max, meanの値を加算し、平均値を算出する。
+閾値×下限値　＜＝　算出された平均値　＜＝　閾値×上限値であれば正常とする。</p>
+<p>イメージ図を以下に示す</p>
+<p><img alt="metrics" src="../../../use_case/images/annotationless_metrics.drawio.svg" /></p>
+<h3 id="_4">偏差異常<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
+<p>偏差正常の条件を満たさないとき</p>
 <h2 id="topic">評価ノードが使用する Topic 名とデータ型<a class="headerlink" href="#topic" title="Permanent link">#</a></h2>
 <p>Subscribed topics:</p>
 <table>
 <thead>
 <tr>
-<th>topic 名</th>
-<th>データ型</th>
+<th>Topic name</th>
+<th>Data type</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>/perception/obstacle_segmentation/pointcloud</td>
-<td>sensor_msgs::msg::PointCloud2</td>
-</tr>
-<tr>
-<td>/diagnostics_agg</td>
+<td>/diagnostic/perception_online_evaluator/metrics</td>
 <td>diagnostic_msgs::msg::DiagnosticArray</td>
-</tr>
-<tr>
-<td>/tf</td>
-<td>tf2_msgs/msg/TFMessage</td>
 </tr>
 </tbody>
 </table>
@@ -1776,62 +1720,93 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <table>
 <thead>
 <tr>
-<th>topic 名</th>
-<th>データ型</th>
+<th>Topic name</th>
+<th>Data type</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>/driving_log_replayer/visibility/value</td>
-<td>example_interfaces::msg::Float64</td>
-</tr>
-<tr>
-<td>/driving_log_replayer/visibility/level</td>
-<td>example_interfaces::msg::Byte</td>
-</tr>
-<tr>
-<td>/driving_log_replayer/blockage/{lidar_name}/ground/ratio</td>
-<td>example_interfaces::msg::Float64</td>
-</tr>
-<tr>
-<td>/driving_log_replayer/blockage/{lidar_name}/sky/ratio</td>
-<td>example_interfaces::msg::Float64</td>
-</tr>
-<tr>
-<td>/driving_log_replayer/blockage/{lidar_name}/level</td>
-<td>example_interfaces::msg::Byte</td>
+<td>N/A</td>
+<td>N/A</td>
 </tr>
 </tbody>
 </table>
-<p>{lidar_name}には、搭載されている lidar の名前が入る。</p>
-<h2 id="service">評価ノードが使用する Service 名とデータ型<a class="headerlink" href="#service" title="Permanent link">#</a></h2>
-<table>
-<thead>
-<tr>
-<th>service 名</th>
-<th>データ型</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>/api/localization/initialize</td>
-<td>InitializeLocalization</td>
-</tr>
-</tbody>
-</table>
+<h3 id="_5">条件を指定する方法<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
+<p>条件は以下の2通りの方法で与えることができる</p>
+<h4 id="_6">シナリオに記述する<a class="headerlink" href="#_6" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1.0</span>
+<span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Threshold: {} # Metricsを過去のテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。</span>
+<span class="w">    </span><span class="nt">Threshold</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">lateral_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">yaw_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">predicted_path_deviation_5.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">predicted_path_deviation_3.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">predicted_path_deviation_2.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">predicted_path_deviation_1.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">PassRange</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5-1.05</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0] # threshold * lower &lt;= Σ deviation / len(deviation) &lt;= threshold * upperならテストは合格とする。</span>
+</code></pre></div>
+<h4 id="launch">launch引数で指定する<a class="headerlink" href="#launch" title="Permanent link">#</a></h4>
+<p>こちらの方法をメインに使う想定。
+過去のテストで出力されたresult.jsonlのファイルパスを指定すると、過去のテストのMetrics値を閾値として利用
+また合格範囲も引数で指定可能。</p>
+<p>利用イメージを以下に示す。</p>
+<p><img alt="threshold" src="../../../use_case/images/annotationless_threshold.drawio.svg" /></p>
+<h5 id="driving-log-replayer-cli">driving-log-replayer-cli<a class="headerlink" href="#driving-log-replayer-cli" title="Permanent link">#</a></h5>
+<div class="highlight"><pre><span></span><code>dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;annotationless_thresold_file:=</span><span class="si">${</span><span class="nv">previous_test_result</span><span class="p">.jsonl_path</span><span class="si">}</span><span class="s2">,annotationless_pass_range:=</span><span class="si">${</span><span class="nv">lower</span><span class="p">-upper</span><span class="si">}</span>
+</code></pre></div>
+<h5 id="webautocli">WebAutoCLI<a class="headerlink" href="#webautocli" title="Permanent link">#</a></h5>
+<div class="highlight"><pre><span></span><code>webauto<span class="w"> </span>ci<span class="w"> </span>scenario<span class="w"> </span>run<span class="w"> </span>--project-id<span class="w"> </span><span class="si">${</span><span class="nv">project</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-version-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-version-id</span><span class="si">}</span><span class="w"> </span>--simulator-parameter-overrides<span class="w"> </span><span class="nv">annotationless_thresold_file</span><span class="o">=</span><span class="si">${</span><span class="nv">previous_test_result</span><span class="p">.jsonl_path</span><span class="si">}</span>,annotaionless_pass_rate<span class="o">=</span><span class="si">${</span><span class="nv">lower</span><span class="p">-upper</span><span class="si">}</span>
+</code></pre></div>
+<h5 id="autoware-evaluator">Autoware Evaluator<a class="headerlink" href="#autoware-evaluator" title="Permanent link">#</a></h5>
+<p>.webauto-ci.ymlのsimulatorの設定でparametersに追加する。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">simulations</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">    </span><span class="nt">simulator</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">deployment</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">container</span>
+<span class="w">        </span><span class="nt">artifact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simulator/standard1/amd64/medium</span>
+<span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">annotationless_threshold_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${previous_test_result.jsonl_path}</span>
+<span class="w">        </span><span class="nt">annotationless_pass_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${upper-lower}</span>
+</code></pre></div>
 <h2 id="logging_simulatorlaunch">logging_simulator.launch に渡す引数<a class="headerlink" href="#logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。</p>
 <ul>
+<li>perception: true</li>
 <li>planning: false</li>
 <li>control: false</li>
-<li>localization: false / true (デフォルト false、シナリオで指定する)</li>
+<li>sensing: false / true (デフォルト false、launch引数で与える)</li>
 </ul>
+<h3 id="sensing">sensingの引数指定方法<a class="headerlink" href="#sensing" title="Permanent link">#</a></h3>
+<h4 id="driving-log-replayer-cli_1">driving-log-replayer-cli<a class="headerlink" href="#driving-log-replayer-cli_1" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;sensing:=true&quot;</span>
+</code></pre></div>
+<h4 id="webautocli_1">WebAutoCLI<a class="headerlink" href="#webautocli_1" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>webauto<span class="w"> </span>ci<span class="w"> </span>scenario<span class="w"> </span>run<span class="w"> </span>--project-id<span class="w"> </span><span class="si">${</span><span class="nv">project</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-version-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-version-id</span><span class="si">}</span><span class="w"> </span>--simulator-parameter-overrides<span class="w"> </span><span class="nv">sensing</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<h4 id="autoware-evaluator_1">Autoware Evaluator<a class="headerlink" href="#autoware-evaluator_1" title="Permanent link">#</a></h4>
+<p>.webauto-ci.ymlのsimulatorの設定でparametersに追加する。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">simulations</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
+<span class="w">    </span><span class="nt">simulator</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">deployment</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">container</span>
+<span class="w">        </span><span class="nt">artifact</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+<span class="w">      </span><span class="nt">runtime</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simulator/standard1/amd64/medium</span>
+<span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">sensing</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+</code></pre></div>
 <h2 id="simulation">simulation<a class="headerlink" href="#simulation" title="Permanent link">#</a></h2>
 <p>シミュレーション実行に必要な情報を述べる。</p>
 <h3 id="rosbag-topic">入力 rosbag に含まれるべき topic<a class="headerlink" href="#rosbag-topic" title="Permanent link">#</a></h3>
-<p>車両の ECU の CAN と、使用している sensor の topic が必要
-以下は例であり、違うセンサーを使っている場合は適宜読み替える。</p>
-<p>LiDAR が複数ついている場合は、搭載されているすべての LiDAR の packets を含める</p>
 <table>
 <thead>
 <tr>
@@ -1843,6 +1818,10 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <tr>
 <td>/gsm8/from_can_bus</td>
 <td>can_msgs/msg/Frame</td>
+</tr>
+<tr>
+<td>/localization/kinematic_state</td>
+<td>nav_msgs/msg/Odometry</td>
 </tr>
 <tr>
 <td>/sensing/gnss/ublox/fix_velocity</td>
@@ -1859,6 +1838,10 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <tr>
 <td>/sensing/imu/tamagawa/imu_raw</td>
 <td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/concatenated/pointcloud</td>
+<td>sensor_msgs/msg/PointCloud2</td>
 </tr>
 <tr>
 <td>/sensing/lidar/*/velodyne_packets</td>
@@ -1880,6 +1863,10 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </thead>
 <tbody>
 <tr>
+<td>/localization/kinematic_state</td>
+<td>nav_msgs/msg/Odometry</td>
+</tr>
+<tr>
 <td>/sensing/gnss/ublox/fix_velocity</td>
 <td>geometry_msgs/msg/TwistWithCovarianceStamped</td>
 </tr>
@@ -1894,6 +1881,10 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <tr>
 <td>/sensing/imu/tamagawa/imu_raw</td>
 <td>sensor_msgs/msg/Imu</td>
+</tr>
+<tr>
+<td>/sensing/lidar/concatenated/pointcloud</td>
+<td>sensor_msgs/msg/PointCloud2</td>
 </tr>
 <tr>
 <td>/sensing/lidar/*/velodyne_packets</td>
@@ -1925,7 +1916,6 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </tr>
 </tbody>
 </table>
-<p><strong>注:localization が false(デフォルトで false)の場合は/tf が使用される。</strong></p>
 <h3 id="rosbag-topic_1">入力 rosbag に含まれてはいけない topic<a class="headerlink" href="#rosbag-topic_1" title="Permanent link">#</a></h3>
 <table>
 <thead>
@@ -1944,51 +1934,61 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <p>clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない</p>
 <h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
 <p>評価に必要な情報を述べる。</p>
-<h3 id="_4">シナリオフォーマット<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
-<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.ja.yaml">サンプル</a>参照</p>
-<h3 id="_5">評価結果フォーマット<a class="headerlink" href="#_5" title="Permanent link">#</a></h3>
-<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/result.json">サンプル</a>参照</p>
-<p>performance_diag では、visibility と blockage の 2 つを評価している。
-Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。</p>
-<p>以下に、フォーマットを示す。
+<h3 id="_7">シナリオフォーマット<a class="headerlink" href="#_7" title="Permanent link">#</a></h3>
+<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.ja.yaml">サンプル</a>参照</p>
+<h3 id="_8">評価結果フォーマット<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
+<p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/result.json">サンプル</a>参照</p>
+<p>以下に、それぞれの評価の例を記述する。
 <strong>注:結果ファイルフォーマットで解説済みの共通部分については省略する。</strong></p>
-<p>visibilityの結果(Frame に Visibility の項目がある場合)</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success, Fail, or Invalid&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;Deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="c1">// TotalとFrameの結果は同じ。他の評価とデータ構造を同じにするために同じ値を出力している</span>
 <span class="w">    </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;Visibility&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;visibilityの値&quot;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-<p>blockageの結果(Frame に Blockage の項目がある場合)</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Blockage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;LiDAR1の名前&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;GroundBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;地上側のblockage比率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;GroundBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;SkyBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;空中側のblockage比率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;SkyBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span>
-<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="nt">&quot;lateral_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;yaw_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小角度差&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大角度差&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均角度差&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_5.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_3.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_2.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_1.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離&quot;</span><span class="w"> </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;LiDAR2の名前&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;Level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;diagのレベル&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;GroundBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;地上側のblockage比率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;GroundBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;SkyBlockageRatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;空中側のblockage比率&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;SkyBlockageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;参考値&quot;</span>
+<span class="w">    </span><span class="nt">&quot;Metrics&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;lateral_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離平均値&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;yaw_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小角度差平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大角度差平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均角度差平均値&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_5.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離平均値&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_3.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離平均値&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_2.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離平均値&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_1.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最小距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;最大距離平均値&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;平均距離平均値&quot;</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<p>項目の意味は以下の図を参照</p>
+<p><img alt="lateral_deviation" src="../../../use_case/images/lateral_deviation.png" /></p>
+<p><img alt="predicted_path_deviation" src="../../../use_case/images/predicted_path_deviation.png" /></p>
 
 
 
@@ -2024,7 +2024,7 @@ Result は visibility と blockage の両方をパスしていれば true でそ
       <nav class="md-footer__inner md-grid" aria-label="フッター" >
         
           
-          <a href="../perception/" class="md-footer__link md-footer__link--prev" aria-label="前: 認識機能の評価">
+          <a href="../performance_diag/" class="md-footer__link md-footer__link--prev" aria-label="前: 診断機能の評価">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2034,20 +2034,20 @@ Result は visibility と blockage の両方をパスしていれば true でそ
                 前
               </span>
               <div class="md-ellipsis">
-                認識機能の評価
+                診断機能の評価
               </div>
             </div>
           </a>
         
         
           
-          <a href="../annotationless_perception/" class="md-footer__link md-footer__link--next" aria-label="次: Annotationless認識機能の評価">
+          <a href="../../analyzer/" class="md-footer__link md-footer__link--next" aria-label="次: Driving Log Replayer Analyzer">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 次
               </span>
               <div class="md-ellipsis">
-                Annotationless認識機能の評価
+                Driving Log Replayer Analyzer
               </div>
             </div>
             <div class="md-footer__button md-icon">
