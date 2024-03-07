@@ -33,10 +33,7 @@
           "mean": 10.0
         }
       },
-      "PassRange": [
-        0.5,
-        1.05
-      ]
+      "PassRange": [0.5, 1.05]
     }
   },
   {
@@ -83,10 +80,7 @@
           "mean": 0.1291048181818183
         }
       },
-      "PassRange": [
-        0.4,
-        1.1
-      ]
+      "PassRange": [0.4, 1.1]
     }
   },
   {
@@ -605,7 +599,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 1.7e-05,
+            "min": 1.7e-5,
             "max": 0.015908,
             "mean": 0.006341
           },
@@ -637,7 +631,7 @@
         },
         "Metrics": {
           "lateral_deviation": {
-            "min": 2.4285714285714284e-06,
+            "min": 2.4285714285714284e-6,
             "max": 0.010935428571428572,
             "mean": 0.0028557142857142856
           },
@@ -720,7 +714,7 @@
         },
         "Metrics": {
           "lateral_deviation": {
-            "min": 8.387499999999999e-05,
+            "min": 8.387499999999999e-5,
             "max": 0.011591,
             "mean": 0.003029
           },
@@ -1186,7 +1180,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.7e-05,
+            "min": 7.7e-5,
             "max": 0.038505,
             "mean": 0.011356
           },
@@ -1767,7 +1761,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 1e-06,
+            "min": 1e-6,
             "max": 0.033166,
             "mean": 0.007524
           },
@@ -2182,7 +2176,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6e-06,
+            "min": 6e-6,
             "max": 0.020751,
             "mean": 0.008932
           },
@@ -3095,7 +3089,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6.9e-05,
+            "min": 6.9e-5,
             "max": 0.021824,
             "mean": 0.005754
           },
@@ -3925,7 +3919,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 1.8e-05,
+            "min": 1.8e-5,
             "max": 0.011355,
             "mean": 0.004331
           },
@@ -4672,7 +4666,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.6e-05,
+            "min": 7.6e-5,
             "max": 0.010227,
             "mean": 0.004105
           },
@@ -6664,7 +6658,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 5.6e-05,
+            "min": 5.6e-5,
             "max": 0.058627,
             "mean": 0.016802
           },
@@ -7328,7 +7322,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.8e-05,
+            "min": 8.8e-5,
             "max": 0.025828,
             "mean": 0.008019
           },
@@ -8324,7 +8318,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 1e-05,
+            "min": 1e-5,
             "max": 0.010808,
             "mean": 0.005354
           },
@@ -8573,7 +8567,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 9.5e-05,
+            "min": 9.5e-5,
             "max": 0.01219,
             "mean": 0.007203
           },
@@ -11644,7 +11638,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3e-06,
+            "min": 3e-6,
             "max": 0.015254,
             "mean": 0.006011
           },
@@ -12225,7 +12219,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 4.2e-05,
+            "min": 4.2e-5,
             "max": 0.025861,
             "mean": 0.011211
           },
@@ -12308,7 +12302,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.4e-05,
+            "min": 8.4e-5,
             "max": 0.017727,
             "mean": 0.010216
           },
@@ -14964,7 +14958,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6.6e-05,
+            "min": 6.6e-5,
             "max": 0.043694,
             "mean": 0.012176
           },
@@ -15047,7 +15041,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6e-06,
+            "min": 6e-6,
             "max": 0.042512,
             "mean": 0.01787
           },
@@ -16541,7 +16535,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 4.6e-05,
+            "min": 4.6e-5,
             "max": 0.041093,
             "mean": 0.013259
           },
@@ -16707,7 +16701,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3.9e-05,
+            "min": 3.9e-5,
             "max": 0.018128,
             "mean": 0.006534
           },
@@ -17039,7 +17033,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 2.9e-05,
+            "min": 2.9e-5,
             "max": 0.048166,
             "mean": 0.012918
           },
@@ -18699,7 +18693,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3.3e-05,
+            "min": 3.3e-5,
             "max": 0.075311,
             "mean": 0.019613
           },
@@ -18948,7 +18942,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.7e-05,
+            "min": 8.7e-5,
             "max": 0.056402,
             "mean": 0.015466
           },
@@ -19197,7 +19191,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.9e-05,
+            "min": 8.9e-5,
             "max": 0.004098,
             "mean": 0.00203
           },
@@ -19363,7 +19357,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.9e-05,
+            "min": 8.9e-5,
             "max": 0.040925,
             "mean": 0.009154
           },
@@ -19451,7 +19445,7 @@
             "mean": 0.005263
           },
           "yaw_deviation": {
-            "min": 4.5e-05,
+            "min": 4.5e-5,
             "max": 3.011292,
             "mean": 1.112557
           },
@@ -20193,7 +20187,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6.9e-05,
+            "min": 6.9e-5,
             "max": 0.005593,
             "mean": 0.00163
           },
@@ -20276,7 +20270,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 9e-06,
+            "min": 9e-6,
             "max": 0.012121,
             "mean": 0.003494
           },
@@ -20442,7 +20436,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6.9e-05,
+            "min": 6.9e-5,
             "max": 0.015716,
             "mean": 0.006858
           },
@@ -20940,7 +20934,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 5.7e-05,
+            "min": 5.7e-5,
             "max": 0.036748,
             "mean": 0.007674
           },
@@ -21106,7 +21100,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 4.6e-05,
+            "min": 4.6e-5,
             "max": 0.025491,
             "mean": 0.008421
           },
@@ -21272,7 +21266,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6e-06,
+            "min": 6e-6,
             "max": 0.000999,
             "mean": 0.000541
           },
@@ -22019,7 +22013,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6.5e-05,
+            "min": 6.5e-5,
             "max": 0.004983,
             "mean": 0.002052
           },
@@ -23015,7 +23009,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.9e-05,
+            "min": 8.9e-5,
             "max": 0.022135,
             "mean": 0.006558
           },
@@ -23430,7 +23424,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6.8e-05,
+            "min": 6.8e-5,
             "max": 0.002044,
             "mean": 0.000997
           },
@@ -23596,7 +23590,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3.4e-05,
+            "min": 3.4e-5,
             "max": 0.002641,
             "mean": 0.001256
           },
@@ -26584,7 +26578,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 1.7e-05,
+            "min": 1.7e-5,
             "max": 0.003785,
             "mean": 0.001588
           },
@@ -27829,7 +27823,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.4e-05,
+            "min": 7.4e-5,
             "max": 0.002849,
             "mean": 0.001393
           },
@@ -28327,7 +28321,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 4.5e-05,
+            "min": 4.5e-5,
             "max": 0.008651,
             "mean": 0.002933
           },
@@ -29655,7 +29649,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 5.2e-05,
+            "min": 5.2e-5,
             "max": 0.004371,
             "mean": 0.002388
           },
@@ -29738,7 +29732,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 2e-06,
+            "min": 2e-6,
             "max": 0.006547,
             "mean": 0.003489
           },
@@ -30734,7 +30728,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 9.8e-05,
+            "min": 9.8e-5,
             "max": 0.007608,
             "mean": 0.002473
           },
@@ -31232,7 +31226,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 9.8e-05,
+            "min": 9.8e-5,
             "max": 0.004566,
             "mean": 0.003201
           },
@@ -31730,7 +31724,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 5.7e-05,
+            "min": 5.7e-5,
             "max": 0.022024,
             "mean": 0.008477
           },
@@ -33473,7 +33467,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3e-06,
+            "min": 3e-6,
             "max": 0.01408,
             "mean": 0.004287
           },
@@ -34469,7 +34463,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 5.3e-05,
+            "min": 5.3e-5,
             "max": 0.009642,
             "mean": 0.00303
           },
@@ -34552,7 +34546,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 2e-06,
+            "min": 2e-6,
             "max": 0.002329,
             "mean": 0.001066
           },
@@ -35133,7 +35127,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.6e-05,
+            "min": 7.6e-5,
             "max": 0.00675,
             "mean": 0.002499
           },
@@ -35714,7 +35708,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 5.5e-05,
+            "min": 5.5e-5,
             "max": 0.008488,
             "mean": 0.003713
           },
@@ -35880,7 +35874,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.1e-05,
+            "min": 7.1e-5,
             "max": 0.009427,
             "mean": 0.005837
           },
@@ -36295,7 +36289,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.6e-05,
+            "min": 8.6e-5,
             "max": 0.008588,
             "mean": 0.003606
           },
@@ -38536,7 +38530,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3.9e-05,
+            "min": 3.9e-5,
             "max": 0.001928,
             "mean": 0.000859
           },
@@ -38619,7 +38613,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 2.5e-05,
+            "min": 2.5e-5,
             "max": 0.015893,
             "mean": 0.006162
           },
@@ -39034,7 +39028,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.2e-05,
+            "min": 7.2e-5,
             "max": 0.005995,
             "mean": 0.002601
           },
@@ -39864,7 +39858,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 5.2e-05,
+            "min": 5.2e-5,
             "max": 0.001242,
             "mean": 0.000666
           },
@@ -39947,7 +39941,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 1.7e-05,
+            "min": 1.7e-5,
             "max": 0.000856,
             "mean": 0.000284
           },
@@ -40113,7 +40107,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 4.4e-05,
+            "min": 4.4e-5,
             "max": 0.004411,
             "mean": 0.002156
           },
@@ -40196,7 +40190,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 2.9e-05,
+            "min": 2.9e-5,
             "max": 0.006055,
             "mean": 0.001838
           },
@@ -40362,7 +40356,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.8e-05,
+            "min": 7.8e-5,
             "max": 0.005032,
             "mean": 0.002449
           },
@@ -40528,7 +40522,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 2.7e-05,
+            "min": 2.7e-5,
             "max": 0.005016,
             "mean": 0.001873
           },
@@ -40694,7 +40688,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.9e-05,
+            "min": 7.9e-5,
             "max": 0.01164,
             "mean": 0.003255
           },
@@ -42852,7 +42846,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 4e-06,
+            "min": 4e-6,
             "max": 0.011674,
             "mean": 0.007328
           },
@@ -44927,7 +44921,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 1.5e-05,
+            "min": 1.5e-5,
             "max": 0.012932,
             "mean": 0.006261
           },
@@ -45259,7 +45253,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3.1e-05,
+            "min": 3.1e-5,
             "max": 0.006526,
             "mean": 0.002918
           },
@@ -45508,12 +45502,12 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3.9e-05,
+            "min": 3.9e-5,
             "max": 0.006959,
             "mean": 0.004013
           },
           "yaw_deviation": {
-            "min": 3.5e-05,
+            "min": 3.5e-5,
             "max": 3.121018,
             "mean": 1.950687
           },
@@ -46670,7 +46664,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3e-06,
+            "min": 3e-6,
             "max": 0.011961,
             "mean": 0.004695
           },
@@ -46753,7 +46747,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 2e-06,
+            "min": 2e-6,
             "max": 0.004074,
             "mean": 0.002256
           },
@@ -47417,7 +47411,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 5e-06,
+            "min": 5e-6,
             "max": 0.019294,
             "mean": 0.006001
           },
@@ -47754,7 +47748,7 @@
             "mean": 0.0042
           },
           "yaw_deviation": {
-            "min": 4.3e-05,
+            "min": 4.3e-5,
             "max": 3.002727,
             "mean": 1.034441
           },
@@ -47837,7 +47831,7 @@
             "mean": 0.005251
           },
           "yaw_deviation": {
-            "min": 4.4e-05,
+            "min": 4.4e-5,
             "max": 0.303634,
             "mean": 0.140767
           },
@@ -48579,7 +48573,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.8e-05,
+            "min": 8.8e-5,
             "max": 0.006267,
             "mean": 0.003095
           },
@@ -48662,7 +48656,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8.2e-05,
+            "min": 8.2e-5,
             "max": 0.005116,
             "mean": 0.00309
           },
@@ -48999,7 +48993,7 @@
             "mean": 0.002957
           },
           "yaw_deviation": {
-            "min": 2.6e-05,
+            "min": 2.6e-5,
             "max": 3.080339,
             "mean": 0.637477
           },
@@ -49082,7 +49076,7 @@
             "mean": 0.005493
           },
           "yaw_deviation": {
-            "min": 2.7e-05,
+            "min": 2.7e-5,
             "max": 3.128942,
             "mean": 0.623237
           },
@@ -49907,7 +49901,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 6e-06,
+            "min": 6e-6,
             "max": 0.078133,
             "mean": 0.018684
           },
@@ -50654,7 +50648,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 8e-06,
+            "min": 8e-6,
             "max": 0.021532,
             "mean": 0.005851
           },
@@ -51152,7 +51146,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 2.4e-05,
+            "min": 2.4e-5,
             "max": 0.023293,
             "mean": 0.006171
           },
@@ -51235,7 +51229,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 9.5e-05,
+            "min": 9.5e-5,
             "max": 0.007996,
             "mean": 0.003052
           },
@@ -51318,7 +51312,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 4.8e-05,
+            "min": 4.8e-5,
             "max": 0.024481,
             "mean": 0.006334
           },
@@ -51650,7 +51644,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 7.2e-05,
+            "min": 7.2e-5,
             "max": 0.004604,
             "mean": 0.001435
           },
@@ -51982,7 +51976,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 3.7e-05,
+            "min": 3.7e-5,
             "max": 0.031471,
             "mean": 0.012705
           },
@@ -52148,7 +52142,7 @@
         },
         "Info": {
           "lateral_deviation": {
-            "min": 4.3e-05,
+            "min": 4.3e-5,
             "max": 0.028643,
             "mean": 0.009136
           },
