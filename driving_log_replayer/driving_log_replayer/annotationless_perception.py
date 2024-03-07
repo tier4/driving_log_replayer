@@ -29,21 +29,24 @@ from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
+OBJECT_CLASSIFICATION = Literal[
+    "UNKNOWN",
+    "CAR",
+    "TRUCK",
+    "BUS",
+    "TRAILER",
+    "MOTORCYCLE",
+    "BICYCLE",
+    "PEDESTRIAN",
+]
 
-class Conditions(BaseModel):
+
+class ClassConditionValue(BaseModel):
     Threshold: dict
     PassRange: tuple[float, float]
 
-    def set_threshold_from_file(self, file_path: str) -> None:
-        result_file = Path(file_path)
-        if file_path != "" and result_file.exists():  # Path("") is current path
-            with result_file.open() as f:
-                last_line = f.readlines()[-1]
-                try:
-                    result_json_dict = json.loads(last_line)
-                    self.Threshold = result_json_dict["Frame"]["Deviation"]["Metrics"]
-                except json.JSONDecodeError:
-                    self.Threshold = {}
+    def set_threshold(self, threshold: dict) -> None:
+        self.Threshold = threshold
 
     @field_validator("PassRange", mode="before")
     @classmethod
@@ -63,7 +66,23 @@ class Conditions(BaseModel):
 
     def set_pass_range(self, v: str) -> None:
         if v != "":  # skip if launch arg is not set
-            self.PassRange = Conditions.validate_pass_range(v)
+            self.PassRange = ClassConditionValue.validate_pass_range(v)
+
+
+class Conditions(BaseModel):
+    ClassConditions: dict[OBJECT_CLASSIFICATION, ClassConditionValue]
+
+    def set_threshold_from_file(self, file_path: str) -> None:
+        result_file = Path(file_path)
+        if file_path != "" and result_file.exists():  # Path("") is current path
+            with result_file.open() as f:
+                last_line = f.readlines()[-1]
+                try:
+                    result_json_dict = json.loads(last_line)
+                    self.Threshold = result_json_dict["Frame"]["Deviation"]["Metrics"]
+                    # ここ考える
+                except json.JSONDecodeError:
+                    self.Threshold = {}
 
 
 class Evaluation(BaseModel):

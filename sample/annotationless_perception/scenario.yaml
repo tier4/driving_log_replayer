@@ -9,12 +9,14 @@ Evaluation:
   UseCaseName: annotationless_perception
   UseCaseFormatVersion: 0.1.0
   Conditions:
-    # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
-    Threshold:
-      lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-      yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
-    PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
+    ClassConditions:
+      CAR: # classification key
+        # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
+        Threshold:
+          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
