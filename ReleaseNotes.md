@@ -5,8 +5,8 @@
 Major Changes
 To use this version, you need to have `perception_online_evaluator` in your Autoware workspace
 
-| Module                  | Feature     | Brief summary                     | Pull request                                                   | Jira     | Contributor                                   |
-| ----------------------- | ----------- | --------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| Module                      | Feature  | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | -------- | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
 | `annotationless_perception` | use_case | add annotationless_perception evaluation | [#373](https://github.com/tier4/driving_log_replayer/pull/373) | RT4-8943 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.13.4
