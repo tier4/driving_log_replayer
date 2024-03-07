@@ -26,6 +26,20 @@ from rclpy.clock import ClockType
 import simplejson as json
 
 
+def get_sample_result_path(
+    use_case_name: str,
+    result_file_name: str = "result.json",
+) -> Path:
+    from ament_index_python.packages import get_package_share_directory
+
+    return Path(
+        get_package_share_directory("driving_log_replayer"),
+        "sample",
+        use_case_name,
+        result_file_name,
+    )
+
+
 @dataclass
 class EvaluationItem(ABC):
     name: str
