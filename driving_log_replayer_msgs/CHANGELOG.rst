@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.14.0 (2024-03-07)
+-------------------
 * feat: `#370 <https://github.com/tier4/driving_log_replayer/issues/370>`_ annotation less perception evaluator (`#373 <https://github.com/tier4/driving_log_replayer/issues/373>`_)
 * Contributors: Hayato Mizushima
 
