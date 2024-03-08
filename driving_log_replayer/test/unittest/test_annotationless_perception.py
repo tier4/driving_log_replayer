@@ -25,6 +25,7 @@ from driving_log_replayer.annotationless_perception import AnnotationlessPercept
 from driving_log_replayer.annotationless_perception import ClassConditionValue
 from driving_log_replayer.annotationless_perception import Conditions
 from driving_log_replayer.annotationless_perception import Deviation
+from driving_log_replayer.annotationless_perception import DiagValue
 from driving_log_replayer.result import get_sample_result_path
 from driving_log_replayer.scenario import load_sample_scenario
 
@@ -35,11 +36,9 @@ def test_scenario() -> None:
         AnnotationlessPerceptionScenario,
     )
     assert scenario.ScenarioName == "sample_annotationless_perception"
-    assert scenario.Evaluation.Conditions.ClassConditions["CAR"].Threshold["lateral_deviation"] == {
-        "min": 10.0,
-        "max": 10.0,
-        "mean": 10.0,
-    }
+    assert scenario.Evaluation.Conditions.ClassConditions["CAR"].Threshold[
+        "lateral_deviation"
+    ] == DiagValue(min=10.0, max=10.0, mean=10.0)
     assert scenario.Evaluation.Conditions.ClassConditions["CAR"].PassRange == (0.5, 1.05)
 
 
@@ -64,18 +63,20 @@ def test_set_threshold() -> None:
         AnnotationlessPerceptionScenario,
     )
     input_threshold = {
-        "min": 0.0007570793650793651,
-        "max": 0.01905171904761904,
-        "mean": 0.006783434920634924,
+        "lateral_deviation": DiagValue(
+            min=0.0007570793650793651,
+            max=0.01905171904761904,
+            mean=0.006783434920634924,
+        ),
     }
 
     scenario.Evaluation.Conditions.ClassConditions["CAR"].set_threshold(input_threshold)
     threshold = scenario.Evaluation.Conditions.ClassConditions["CAR"].Threshold
-    assert threshold["lateral_deviation"] == {
-        "min": 0.0007570793650793651,
-        "max": 0.01905171904761904,
-        "mean": 0.006783434920634924,
-    }
+    assert threshold["lateral_deviation"] == DiagValue(
+        min=0.0007570793650793651,
+        max=0.01905171904761904,
+        mean=0.006783434920634924,
+    )
 
 
 def test_set_pass_range() -> None:
@@ -83,35 +84,39 @@ def test_set_pass_range() -> None:
         "annotationless_perception",
         AnnotationlessPerceptionScenario,
     )
-    scenario.Evaluation.Conditions.set_pass_range("0.4-1.1")
+    scenario.Evaluation.Conditions.ClassConditions["CAR"].set_pass_range("0.4-1.1")
     assert scenario.Evaluation.Conditions.ClassConditions["CAR"].PassRange == (0.4, 1.1)
 
 
-# @pytest.fixture()
-# def create_deviation() -> Deviation:
-#     condition = Conditions(
-#         Threshold={"lateral_deviation": {"min": 10.0, "max": 10.0, "mean": 10.0}},
-#         PassRange="0.5-1.05",
-#     )
-#     return Deviation(
-#         condition=condition,
-#         total=9,
-#         received_data={"lateral_deviation": {"min": 49.0, "max": 100.0, "mean": 70.0}},
-#     )
+@pytest.fixture()
+def create_deviation() -> Deviation:
+    condition = Conditions(
+        ClassConditions={
+            "CAR": ClassConditionValue(
+                Threshold={"lateral_deviation": DiagValue(min=10.0, max=10.0, mean=10.0)},
+                PassRange="0.5-1.05",
+            ),
+        },
+    )
+    return Deviation(
+        condition=condition,
+        total=9,
+        received_data={"lateral_deviation": {"min": 49.0, "max": 100.0, "mean": 70.0}},
+    )
 
 
-# def test_deviation_success(create_deviation: Callable) -> None:
-#     evaluation_item: Deviation = create_deviation
-#     status = DiagnosticStatus(
-#         name="lateral_deviation",
-#         values=[
-#             KeyValue(key="min", value="1.0"),
-#             KeyValue(key="max", value="1.0"),
-#             KeyValue(key="mean", value="1.0"),
-#         ],
-#     )
-#     evaluation_item.set_frame(DiagnosticArray(status=[status]))
-#     assert evaluation_item.success is True
+def test_deviation_success(create_deviation: Callable) -> None:
+    evaluation_item: Deviation = create_deviation
+    status = DiagnosticStatus(
+        name="lateral_deviation_CAR",
+        values=[
+            KeyValue(key="min", value="1.0"),
+            KeyValue(key="max", value="1.0"),
+            KeyValue(key="mean", value="1.0"),
+        ],
+    )
+    evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    assert evaluation_item.success is True
 
 
 # def test_deviation_fail_upper_limit(create_deviation: Callable) -> None:
