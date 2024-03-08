@@ -41,11 +41,17 @@ OBJECT_CLASSIFICATION = Literal[
 ]
 
 
+class DiagValue(BaseModel):
+    min: float
+    max: float
+    mean: float
+
+
 class ClassConditionValue(BaseModel):
-    Threshold: dict
+    Threshold: dict[str, DiagValue]
     PassRange: tuple[float, float]
 
-    def set_threshold(self, threshold: dict) -> None:
+    def set_threshold(self, threshold: dict[str, DiagValue]) -> None:
         self.Threshold = threshold
 
     @field_validator("PassRange", mode="before")
@@ -168,16 +174,20 @@ class Deviation(EvaluationItem):
 class AnnotationlessPerceptionResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__deviation = Deviation(condition=condition)
+        self.__deviation: dict[Deviation] = {}
+        for k, v in condition.ClassConditions.items():
+            self.__deviation[k] = Deviation(name=k, condition=v)
 
     def update(self) -> None:
-        summary_str = f"{self.__deviation.summary}"
-        if self.__deviation.success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
+        tmp_success = True
+        tmp_summary = ""
+        for v in self.__deviation.values():
+            tmp_summary += " " + v.summary
+            if not v.success:
+                tmp_success = False
+        prefix_str = "Passed: " if tmp_success else "Failed: "
+        self._success = tmp_success
+        self._summary = prefix_str + tmp_summary
 
     def set_frame(self, msg: DiagnosticArray) -> None:
         self._frame = self.__deviation.set_frame(msg)
