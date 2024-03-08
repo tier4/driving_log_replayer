@@ -103,8 +103,6 @@ class AnnotationlessPerceptionScenario(Scenario):
 
 @dataclass
 class Deviation(EvaluationItem):
-    name: str = "AnnotationlessPerception Deviation"
-    success: bool = True
     received_data: dict = field(default_factory=dict)
     # received_data = {lateral_deviation: {min: sum_min, max: sum_max, mean: sum_mean} ... }
     DEFAULT_THRESHOLD: ClassVar[str] = (
@@ -171,23 +169,36 @@ class Deviation(EvaluationItem):
         return {"min": a_min, "max": a_max, "mean": a_mean}, is_success
 
 
+class DeviationClassContainer:
+    def __init__(self, condition: Conditions) -> None:
+        self.__container: Deviation = {}
+        for k, v in condition.ClassConditions.items():
+            self.__container[k] = Deviation(
+                name=k,
+                condition=v,
+            )  # ここdiagに入ってくるclassが設定にない可能性がある。
+
+    def set_frame(self, msg: DiagnosticArray) -> None:
+        diag_array_class: dict[OBJECT_CLASSIFICATION, dict[str, DiagValue]] = {}
+
+    @classmethod
+    def get_classname_and_value(cls, diag: DiagnosticStatus) -> tuple[str, dict[str, DiagValue]]:
+        return "CAR", {"lateral_deviation": DiagValue(min=0.0, max=0.0, mean=0.0)}
+
+
 class AnnotationlessPerceptionResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__deviation: dict[Deviation] = {}
-        for k, v in condition.ClassConditions.items():
-            self.__deviation[k] = Deviation(name=k, condition=v)
+        self.__deviation = DeviationClassContainer(condition=condition)
 
     def update(self) -> None:
-        tmp_success = True
-        tmp_summary = ""
-        for v in self.__deviation.values():
-            tmp_summary += " " + v.summary
-            if not v.success:
-                tmp_success = False
-        prefix_str = "Passed: " if tmp_success else "Failed: "
-        self._success = tmp_success
-        self._summary = prefix_str + tmp_summary
+        summary_str = f"{self.__deviation.summary}"
+        if self.__deviation.success:
+            self._success = True
+            self._summary = f"Passed: {summary_str}"
+        else:
+            self._success = False
+            self._summary = f"Failed: {summary_str}"
 
     def set_frame(self, msg: DiagnosticArray) -> None:
         self._frame = self.__deviation.set_frame(msg)
