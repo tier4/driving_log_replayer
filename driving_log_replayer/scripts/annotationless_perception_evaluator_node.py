@@ -28,15 +28,15 @@ class AnnotationlessPerceptionEvaluator(DLREvaluator):
         super().__init__(name, AnnotationlessPerceptionScenario, AnnotationlessPerceptionResult)
         self._scenario: AnnotationlessPerceptionScenario
         # update condition using launch argument
-        self.declare_parameter("annotationless_threshold_file", "")
-        self._scenario.Evaluation.Conditions.set_threshold_from_file(
-            self.get_parameter("annotationless_threshold_file").get_parameter_value().string_value,
-        )
-        self.declare_parameter("annotationless_pass_range", "")
-        self._scenario.Evaluation.Conditions.set_pass_range(
-            self.get_parameter("annotationless_pass_range").get_parameter_value().string_value,
-        )
-        self._result_writer.write_condition(self._scenario.Evaluation.Conditions, updated=True)
+        # self.declare_parameter("annotationless_threshold_file", "")
+        # self._scenario.Evaluation.Conditions.set_threshold_from_file(
+        #     self.get_parameter("annotationless_threshold_file").get_parameter_value().string_value,
+        # )
+        # self.declare_parameter("annotationless_pass_range", "")
+        # self._scenario.Evaluation.Conditions.set_pass_range(
+        #     self.get_parameter("annotationless_pass_range").get_parameter_value().string_value,
+        # )
+        # self._result_writer.write_condition(self._scenario.Evaluation.Conditions, updated=True)
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,

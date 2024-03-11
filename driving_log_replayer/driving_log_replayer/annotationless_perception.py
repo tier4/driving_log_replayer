@@ -93,7 +93,7 @@ class Conditions(BaseModel):
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["annotationless_perception"]
-    UseCaseFormatVersion: Literal["0.1.0"]
+    UseCaseFormatVersion: Literal["0.2.0"]
     Conditions: Conditions
 
 
@@ -108,29 +108,30 @@ class Deviation(EvaluationItem):
     DEFAULT_THRESHOLD: ClassVar[str] = (
         1000.0  # A value that does not overflow when multiplied by a factor of range and is large enough to be a threshold value.
     )
+    DEFAULT_RANGE: ClassVar[tuple[float, float]] = (0.0, 1.0)
 
-    def set_frame(self, msg: DiagnosticArray) -> dict:
+    @classmethod
+    def get_default_condition(cls) -> ClassConditionValue:
+        return ClassConditionValue()
+
+    def set_frame(self, msg: dict[str, dict]) -> dict:
         self.total += 1
         frame_success = True
         info_dict = {}
         metrics_dict = {}
-        for diag_status in msg.status:
-            diag_status: DiagnosticStatus
-            values = {
-                value.key: float(value.value) for value in diag_status.values
-            }  # min, max, mean
-            self.add(diag_status.name, values)
-            info_dict[diag_status.name] = values
+        for status_name, values in msg.items():
+            self.add(status_name, values)
+            info_dict[status_name] = values
             threshold = self.condition.Threshold.get(
-                diag_status.name,
+                status_name,
                 {
                     "min": Deviation.DEFAULT_THRESHOLD,
                     "max": Deviation.DEFAULT_THRESHOLD,
                     "mean": Deviation.DEFAULT_THRESHOLD,
                 },
             )
-            metrics_dict[diag_status.name], diag_success = self.calc_average_and_success(
-                diag_status.name,
+            metrics_dict[status_name], diag_success = self.calc_average_and_success(
+                status_name,
                 threshold,
             )
             frame_success = frame_success and diag_success
@@ -176,14 +177,32 @@ class DeviationClassContainer:
             self.__container[k] = Deviation(
                 name=k,
                 condition=v,
-            )  # ここdiagに入ってくるclassが設定にない可能性がある。
+            )
 
     def set_frame(self, msg: DiagnosticArray) -> None:
-        diag_array_class: dict[OBJECT_CLASSIFICATION, dict[str, DiagValue]] = {}
+        diag_array_class: dict[OBJECT_CLASSIFICATION, dict[str, dict]] = {}
+        for diag_status in msg.status:
+            diag_status: DiagnosticStatus
+            class_name, diag_dict = DeviationClassContainer.get_classname_and_value(diag_status)
+            diag_array_class[class_name] = diag_dict
+        for class_name in diag_array_class:
+            if self.__container.get(class_name) is None:
+                self.__container[class_name] = Deviation(
+                    name=class_name,
+                    condition=Deviation.get_default_condition(),
+                )
+            self.__container[class_name].set_frame(diag_array_class[diag_array_class])
 
     @classmethod
-    def get_classname_and_value(cls, diag: DiagnosticStatus) -> tuple[str, dict[str, DiagValue]]:
-        return "CAR", {"lateral_deviation": DiagValue(min=0.0, max=0.0, mean=0.0)}
+    def get_classname_and_value(cls, diag: DiagnosticStatus) -> tuple[str, dict[str, dict]]:
+        rtn_class_name = ""
+        for class_name in OBJECT_CLASSIFICATION:
+            if class_name in diag.name:
+                rtn_class_name = class_name
+                break
+        status_name_removed_class = diag.name.replace(f"_{rtn_class_name}", "")
+        values = {value.key: float(value.value) for value in diag.values}  # min, max, mean
+        return rtn_class_name, {status_name_removed_class: values}
 
 
 class AnnotationlessPerceptionResult(ResultBase):
