@@ -140,12 +140,9 @@ class Deviation(EvaluationItem):
         self.success = frame_success
         self.summary = f"{self.name} ({self.success_str()})"
         return {
-            "Ego": {},
-            "Deviation": {
-                "Result": {"Total": self.success_str(), "Frame": self.success_str()},
-                "Info": info_dict,
-                "Metrics": metrics_dict,
-            },
+            "Result": {"Total": self.success_str(), "Frame": self.success_str()},
+            "Info": info_dict,
+            "Metrics": metrics_dict,
         }
 
     def add(self, key: str, values: dict) -> None:
@@ -181,8 +178,9 @@ class DeviationClassContainer:
                 condition=v,
             )
 
-    def set_frame(self, msg: DiagnosticArray) -> None:
+    def set_frame(self, msg: DiagnosticArray) -> dict:
         diag_array_class: dict[OBJECT_CLASSIFICATION, dict[str, dict]] = {}
+        frame_result: dict[OBJECT_CLASSIFICATION, dict] = {"Ego": {}}
         for diag_status in msg.status:
             diag_status: DiagnosticStatus
             class_name, diag_dict = DeviationClassContainer.get_classname_and_value(diag_status)
@@ -193,7 +191,10 @@ class DeviationClassContainer:
                     name=class_name,
                     condition=Deviation.get_default_condition(),
                 )
-            self.__container[class_name].set_frame(diag_array_class[class_name])
+            frame_result[class_name] = self.__container[class_name].set_frame(
+                diag_array_class[class_name],
+            )
+        return frame_result
 
     @classmethod
     def get_classname_and_value(cls, diag: DiagnosticStatus) -> tuple[str, dict[str, dict]]:
