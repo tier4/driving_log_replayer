@@ -110,7 +110,6 @@ class Deviation(EvaluationItem):
     DEFAULT_THRESHOLD: ClassVar[str] = (
         1000.0  # A value that does not overflow when multiplied by a factor of range and is large enough to be a threshold value.
     )
-    DEFAULT_RANGE: ClassVar[tuple[float, float]] = (0.0, 1.0)
 
     @classmethod
     def get_default_condition(cls) -> ClassConditionValue:
@@ -124,17 +123,15 @@ class Deviation(EvaluationItem):
         for status_name, values in msg.items():
             self.add(status_name, values)
             info_dict[status_name] = values
-            threshold = self.condition.Threshold.get(
-                status_name,
-                DiagValue(
+            if self.condition.Threshold.get(status_name) is None:
+                self.condition.Threshold[status_name] = DiagValue(
                     min=Deviation.DEFAULT_THRESHOLD,
                     max=Deviation.DEFAULT_THRESHOLD,
                     mean=Deviation.DEFAULT_THRESHOLD,
-                ),
-            )
+                )
             metrics_dict[status_name], diag_success = self.calc_average_and_success(
                 status_name,
-                threshold,
+                self.condition.Threshold[status_name],
             )
             frame_success = frame_success and diag_success
         self.success = frame_success
