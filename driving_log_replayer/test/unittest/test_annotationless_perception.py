@@ -14,6 +14,7 @@
 
 from collections.abc import Callable
 from pathlib import Path
+from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
@@ -145,3 +146,32 @@ def test_deviation_success(create_deviation: Callable) -> None:
 #     )
 #     evaluation_item.set_frame(DiagnosticArray(status=[status]))
 #     assert evaluation_item.success is False
+
+
+def test_create_literal_from_tuple() -> None:
+    class_tuple = (
+        "UNKNOWN",
+        "CAR",
+        "TRUCK",
+        "BUS",
+        "TRAILER",
+        "MOTORCYCLE",
+        "BICYCLE",
+        "PEDESTRIAN",
+    )
+    class_list = list(class_tuple)
+    class_literal = Literal[
+        "UNKNOWN",
+        "CAR",
+        "TRUCK",
+        "BUS",
+        "TRAILER",
+        "MOTORCYCLE",
+        "BICYCLE",
+        "PEDESTRIAN",
+    ]
+
+    literal_using_tuple = Literal[class_tuple]
+    literal_using_list = Literal[class_list]
+    assert literal_using_tuple == class_literal
+    assert literal_using_list != class_literal

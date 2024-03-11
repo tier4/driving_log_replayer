@@ -29,7 +29,7 @@ from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
-OBJECT_CLASSIFICATION_LIST = [
+OBJECT_CLASSIFICATION_TUPLE = (
     "UNKNOWN",
     "CAR",
     "TRUCK",
@@ -38,9 +38,9 @@ OBJECT_CLASSIFICATION_LIST = [
     "MOTORCYCLE",
     "BICYCLE",
     "PEDESTRIAN",
-]
+)
 
-OBJECT_CLASSIFICATION = Literal[tuple(OBJECT_CLASSIFICATION_LIST)]  # noqa
+OBJECT_CLASSIFICATION = Literal[OBJECT_CLASSIFICATION_TUPLE]
 
 
 class DiagValue(BaseModel):
@@ -198,7 +198,7 @@ class DeviationClassContainer:
     @classmethod
     def get_classname_and_value(cls, diag: DiagnosticStatus) -> tuple[str, dict[str, dict]]:
         rtn_class_name = ""
-        for class_name in OBJECT_CLASSIFICATION_LIST:
+        for class_name in OBJECT_CLASSIFICATION_TUPLE:
             if class_name in diag.name:
                 rtn_class_name = class_name
                 break
