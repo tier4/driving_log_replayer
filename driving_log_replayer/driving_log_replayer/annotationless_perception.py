@@ -171,7 +171,7 @@ class Deviation(EvaluationItem):
 
 class DeviationClassContainer:
     def __init__(self, condition: Conditions) -> None:
-        self.__container: dict[str, Deviation] = {}
+        self.__container: dict[OBJECT_CLASSIFICATION, Deviation] = {}
         for k, v in condition.ClassConditions.items():
             self.__container[k] = Deviation(
                 name=k,
@@ -181,10 +181,14 @@ class DeviationClassContainer:
     def set_frame(self, msg: DiagnosticArray) -> dict:
         diag_array_class: dict[OBJECT_CLASSIFICATION, dict[str, dict]] = {}
         frame_result: dict[OBJECT_CLASSIFICATION, dict] = {"Ego": {}}
+        # Add diag data separately for each class.
         for diag_status in msg.status:
             diag_status: DiagnosticStatus
             class_name, diag_dict = DeviationClassContainer.get_classname_and_value(diag_status)
-            diag_array_class[class_name] = diag_dict
+            if diag_array_class.get(class_name) is None:
+                diag_array_class[class_name] = {}
+            diag_array_class[class_name].update(diag_dict)
+        # evaluate for each class
         for class_name in diag_array_class:
             if self.__container.get(class_name) is None:
                 self.__container[class_name] = Deviation(
