@@ -49,6 +49,13 @@ class AnnotationlessPerceptionEvaluator(DLREvaluator):
         self._result.set_frame(msg)
         self._result_writer.write_result(self._result)
 
+    def timer_cb(self) -> None:
+        super().timer_cb(register_shutdown_func=self.write_metrics)
+
+    def write_metrics(self) -> None:
+        self._result.set_final_metrics()
+        self._result_writer.write_result(self._result)
+
 
 @evaluator_main
 def main() -> DLREvaluator:

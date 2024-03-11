@@ -110,6 +110,7 @@ class Deviation(EvaluationItem):
     DEFAULT_THRESHOLD: ClassVar[str] = (
         1000.0  # A value that does not overflow when multiplied by a factor of range and is large enough to be a threshold value.
     )
+    metrics_dict: dict = field(default_factory=dict)
 
     @classmethod
     def get_default_condition(cls) -> ClassConditionValue:
@@ -119,7 +120,7 @@ class Deviation(EvaluationItem):
         self.total += 1
         frame_success = True
         info_dict = {}
-        metrics_dict = {}
+        self.metrics_dict = {}
         for status_name, values in msg.items():
             self.add(status_name, values)
             info_dict[status_name] = values
@@ -129,7 +130,7 @@ class Deviation(EvaluationItem):
                     max=Deviation.DEFAULT_THRESHOLD,
                     mean=Deviation.DEFAULT_THRESHOLD,
                 )
-            metrics_dict[status_name], diag_success = self.calc_average_and_success(
+            self.metrics_dict[status_name], diag_success = self.calc_average_and_success(
                 status_name,
                 self.condition.Threshold[status_name],
             )
@@ -139,7 +140,7 @@ class Deviation(EvaluationItem):
         return {
             "Result": {"Total": self.success_str(), "Frame": self.success_str()},
             "Info": info_dict,
-            "Metrics": metrics_dict,
+            "Metrics": self.metrics_dict,
         }
 
     def add(self, key: str, values: dict) -> None:
@@ -219,6 +220,12 @@ class DeviationClassContainer:
         rtn_summary = prefix_str + rtn_summary
         return (rtn_success, rtn_summary)
 
+    def final_metrics(self) -> dict:
+        rtn_dict = {}
+        for class_name, evaluation_item in self.__container.items():
+            rtn_dict[class_name] = evaluation_item.metrics_dict
+        return rtn_dict
+
 
 class AnnotationlessPerceptionResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
@@ -231,3 +238,6 @@ class AnnotationlessPerceptionResult(ResultBase):
     def set_frame(self, msg: DiagnosticArray) -> None:
         self._frame = self.__deviation.set_frame(msg)
         self.update()
+
+    def set_final_metrics(self) -> None:
+        self._frame = {"FinalMetrics": self.__deviation.final_metrics()}
