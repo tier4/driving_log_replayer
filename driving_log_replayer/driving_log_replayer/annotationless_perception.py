@@ -29,7 +29,7 @@ from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
-OBJECT_CLASSIFICATION = Literal[
+OBJECT_CLASSIFICATION_LIST = [
     "UNKNOWN",
     "CAR",
     "TRUCK",
@@ -39,6 +39,8 @@ OBJECT_CLASSIFICATION = Literal[
     "BICYCLE",
     "PEDESTRIAN",
 ]
+
+OBJECT_CLASSIFICATION = Literal[tuple(OBJECT_CLASSIFICATION_LIST)]  # noqa
 
 
 class DiagValue(BaseModel):
@@ -112,7 +114,7 @@ class Deviation(EvaluationItem):
 
     @classmethod
     def get_default_condition(cls) -> ClassConditionValue:
-        return ClassConditionValue()
+        return ClassConditionValue(Threshold={}, PassRange="0.0-1.0")
 
     def set_frame(self, msg: dict[str, dict]) -> dict:
         self.total += 1
@@ -124,11 +126,11 @@ class Deviation(EvaluationItem):
             info_dict[status_name] = values
             threshold = self.condition.Threshold.get(
                 status_name,
-                {
-                    "min": Deviation.DEFAULT_THRESHOLD,
-                    "max": Deviation.DEFAULT_THRESHOLD,
-                    "mean": Deviation.DEFAULT_THRESHOLD,
-                },
+                DiagValue(
+                    min=Deviation.DEFAULT_THRESHOLD,
+                    max=Deviation.DEFAULT_THRESHOLD,
+                    mean=Deviation.DEFAULT_THRESHOLD,
+                ),
             )
             metrics_dict[status_name], diag_success = self.calc_average_and_success(
                 status_name,
@@ -153,7 +155,7 @@ class Deviation(EvaluationItem):
         self.received_data[key]["max"] += values["max"]
         self.received_data[key]["mean"] += values["mean"]
 
-    def calc_average_and_success(self, key: str, threshold: dict) -> tuple[dict, bool]:
+    def calc_average_and_success(self, key: str, threshold: DiagValue) -> tuple[dict, bool]:
         if self.received_data.get(key) is None or self.total == 0:
             return {"min": 0.0, "max": 0.0, "mean": 0.0}
         a_min = self.received_data[key]["min"] / self.total
@@ -163,16 +165,16 @@ class Deviation(EvaluationItem):
         lower = self.condition.PassRange[0]
         upper = self.condition.PassRange[1]
         is_success = (
-            (threshold["min"] * lower <= a_min <= threshold["min"] * upper)
-            and (threshold["max"] * lower <= a_max <= threshold["max"] * upper)
-            and (threshold["mean"] * lower <= a_mean <= threshold["mean"] * upper)
+            (threshold.min * lower <= a_min <= threshold.min * upper)
+            and (threshold.max * lower <= a_max <= threshold.max * upper)
+            and (threshold.mean * lower <= a_mean <= threshold.mean * upper)
         )
         return {"min": a_min, "max": a_max, "mean": a_mean}, is_success
 
 
 class DeviationClassContainer:
     def __init__(self, condition: Conditions) -> None:
-        self.__container: Deviation = {}
+        self.__container: dict[str, Deviation] = {}
         for k, v in condition.ClassConditions.items():
             self.__container[k] = Deviation(
                 name=k,
@@ -191,18 +193,29 @@ class DeviationClassContainer:
                     name=class_name,
                     condition=Deviation.get_default_condition(),
                 )
-            self.__container[class_name].set_frame(diag_array_class[diag_array_class])
+            self.__container[class_name].set_frame(diag_array_class[class_name])
 
     @classmethod
     def get_classname_and_value(cls, diag: DiagnosticStatus) -> tuple[str, dict[str, dict]]:
         rtn_class_name = ""
-        for class_name in OBJECT_CLASSIFICATION:
+        for class_name in OBJECT_CLASSIFICATION_LIST:
             if class_name in diag.name:
                 rtn_class_name = class_name
                 break
         status_name_removed_class = diag.name.replace(f"_{rtn_class_name}", "")
         values = {value.key: float(value.value) for value in diag.values}  # min, max, mean
         return rtn_class_name, {status_name_removed_class: values}
+
+    def update(self) -> tuple[bool, str]:
+        rtn_success = True
+        rtn_summary = ""
+        for evaluation_item in self.__container.values():
+            rtn_summary += " " + evaluation_item.summary
+            if not evaluation_item.success:
+                rtn_success = False
+        prefix_str = "Passed:" if rtn_success else "Failed:"
+        rtn_summary = prefix_str + rtn_summary
+        return (rtn_success, rtn_summary)
 
 
 class AnnotationlessPerceptionResult(ResultBase):
@@ -211,13 +224,7 @@ class AnnotationlessPerceptionResult(ResultBase):
         self.__deviation = DeviationClassContainer(condition=condition)
 
     def update(self) -> None:
-        summary_str = f"{self.__deviation.summary}"
-        if self.__deviation.success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
+        self._success, self._summary = self.__deviation.update()
 
     def set_frame(self, msg: DiagnosticArray) -> None:
         self._frame = self.__deviation.set_frame(msg)
