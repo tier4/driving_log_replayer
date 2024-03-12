@@ -95,7 +95,7 @@ class TrafficLightEvaluator(DLREvaluator):
         self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
         self.__sub_traffic_signals = self.create_subscription(
             TrafficSignalArray,
-            "/perception/traffic_light_recognition/traffic_signals",
+            "/perception/traffic_light_recognition/internal/traffic_signals",
             self.traffic_signals_cb,
             1,
         )
@@ -153,9 +153,9 @@ class TrafficLightEvaluator(DLREvaluator):
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
-                frame_id=FrameID.TRAFFIC_LIGHT
-                if self.__use_regulatory_element
-                else self.__camera_type,
+                frame_id=(
+                    FrameID.TRAFFIC_LIGHT if self.__use_regulatory_element else self.__camera_type
+                ),
                 semantic_score=confidence,
                 semantic_label=label,
                 roi=None,
