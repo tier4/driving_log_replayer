@@ -53,9 +53,6 @@ class ClassConditionValue(BaseModel):
     Threshold: dict[str, DiagValue]
     PassRange: tuple[float, float]
 
-    def set_threshold(self, threshold: dict[str, DiagValue]) -> None:
-        self.Threshold = threshold
-
     @field_validator("PassRange", mode="before")
     @classmethod
     def validate_pass_range(cls, v: str) -> tuple[number, number]:
@@ -72,6 +69,16 @@ class ClassConditionValue(BaseModel):
             raise ValueError(upper_error)
         return (lower, upper)
 
+    @classmethod
+    def get_default_condition(cls) -> "ClassConditionValue":
+        return ClassConditionValue(Threshold={}, PassRange="0.0-1.0")
+
+    def set_threshold(self, threshold_dict: dict[str, dict]) -> None:
+        threshold_diag: dict[str, DiagValue] = {}
+        for k, v in threshold_dict.items():
+            threshold_dict[k] = DiagValue(**v)
+        self.Threshold = threshold_diag
+
     def set_pass_range(self, v: str) -> None:
         if v != "":  # skip if launch arg is not set
             self.PassRange = ClassConditionValue.validate_pass_range(v)
@@ -82,15 +89,31 @@ class Conditions(BaseModel):
 
     def set_threshold_from_file(self, file_path: str) -> None:
         result_file = Path(file_path)
-        if file_path != "" and result_file.exists():  # Path("") is current path
-            with result_file.open() as f:
-                last_line = f.readlines()[-1]
-                try:
-                    result_json_dict = json.loads(last_line)
-                    self.Threshold = result_json_dict["Frame"]["Deviation"]["Metrics"]
-                    # ここ考える
-                except json.JSONDecodeError:
-                    self.Threshold = {}
+        if file_path == "" or not result_file.exists():  # Path("") is current path
+            return
+        with result_file.open() as f:
+            last_line = f.readlines()[-1]
+        try:
+            result_json_dict = json.loads(last_line)
+            final_metrics = result_json_dict["Frame"]["FinalMetrics"]
+            for class_name in final_metrics:
+                if self.ClassConditions.get(class_name) is None:
+                    self.ClassConditions[class_name] = ClassConditionValue.get_default_condition()
+                self.ClassConditions[class_name].set_threshold(final_metrics[class_name])
+        except json.JSONDecodeError:
+            pass
+
+    def set_pass_range(self, v: str) -> None:
+        if v == "":  # skip if launch arg is not set
+            return
+        try:
+            range_dict = json.loads(v)
+            for class_name, range_str in range_dict.items():
+                if self.ClassConditions.get(class_name) is None:
+                    self.ClassConditions[class_name] = ClassConditionValue.get_default_condition()
+                self.ClassConditions[class_name].set_pass_range(range_str)
+        except json.JSONDecodeError:
+            pass
 
 
 class Evaluation(BaseModel):
@@ -112,11 +135,8 @@ class Deviation(EvaluationItem):
     )
     metrics_dict: dict = field(default_factory=dict)
 
-    @classmethod
-    def get_default_condition(cls) -> ClassConditionValue:
-        return ClassConditionValue(Threshold={}, PassRange="0.0-1.0")
-
     def set_frame(self, msg: dict[str, dict]) -> dict:
+        self.condition: ClassConditionValue
         self.total += 1
         frame_success = True
         info_dict = {}
@@ -156,7 +176,6 @@ class Deviation(EvaluationItem):
         a_min = self.received_data[key]["min"] / self.total
         a_max = self.received_data[key]["max"] / self.total
         a_mean = self.received_data[key]["mean"] / self.total
-        self.condition: Conditions
         lower = self.condition.PassRange[0]
         upper = self.condition.PassRange[1]
         is_success = (
@@ -191,7 +210,7 @@ class DeviationClassContainer:
             if self.__container.get(class_name) is None:
                 self.__container[class_name] = Deviation(
                     name=class_name,
-                    condition=Deviation.get_default_condition(),
+                    condition=ClassConditionValue.get_default_condition(),
                 )
             frame_result[class_name] = self.__container[class_name].set_frame(
                 diag_array_class[class_name],

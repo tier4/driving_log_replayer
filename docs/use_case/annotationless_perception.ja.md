@@ -63,17 +63,29 @@ Published topics:
 ```yaml
 Evaluation:
   UseCaseName: annotationless_perception
-  UseCaseFormatVersion: 0.1.0
+  UseCaseFormatVersion: 0.2.0
   Conditions:
-    # Threshold: {} # Metricsを過去のテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
-    Threshold:
-      lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-      yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
-    PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperならテストは合格とする。
+    ClassConditions:
+      CAR: # classification key
+        # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
+        Threshold:
+          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
+      BUS: # classification key
+        # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
+        Threshold:
+          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
 ```
 
 #### launch引数で指定する
@@ -89,13 +101,13 @@ Evaluation:
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path},annotationless_pass_range:=${lower-upper}
+dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path},annotationless_pass_range:=${range_dict}
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path},annotaionless_pass_rate=${lower-upper}
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path},annotaionless_pass_rate=${range_dict}
 ```
 
 ##### Autoware Evaluator
@@ -114,7 +126,10 @@ simulations:
         type: simulator/standard1/amd64/medium
       parameters:
         annotationless_threshold_file: ${previous_test_result.jsonl_path}
-        annotationless_pass_range: ${upper-lower}
+        annotationless_pass_range:
+          CAR: 0.5-1.05
+          BUS: 0.4-1.1
+          ...
 ```
 
 ## logging_simulator.launch に渡す引数
