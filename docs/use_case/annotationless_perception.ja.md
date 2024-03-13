@@ -71,6 +71,7 @@ Evaluation:
   UseCaseFormatVersion: 0.2.0
   Conditions:
     ClassConditions:
+      # クラス毎の条件を記述する。クラスの条件を設定しない状態でdiagが設定していないクラスのdiagを出力した場合はデフォルトの条件が適用される
       CAR: # classification key
         # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
         Threshold:
@@ -97,7 +98,7 @@ Evaluation:
 
 こちらの方法をメインに使う想定。
 過去のテストで出力されたresult.jsonlのファイルパスを指定すると、過去のテストのMetrics値を閾値として利用
-また合格範囲も引数で指定可能。
+合格範囲は、現在引数から設定できない。（方式検討中）
 
 利用イメージを以下に示す。
 
@@ -106,13 +107,13 @@ Evaluation:
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path},annotationless_pass_range:=${range_dict}
+dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path}
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path},annotaionless_pass_rate=${range_dict}
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path}
 ```
 
 ##### Autoware Evaluator
@@ -131,10 +132,6 @@ simulations:
         type: simulator/standard1/amd64/medium
       parameters:
         annotationless_threshold_file: ${previous_test_result.jsonl_path}
-        annotationless_pass_range:
-          CAR: 0.5-1.05
-          BUS: 0.4-1.1
-          ...
 ```
 
 ## logging_simulator.launch に渡す引数
@@ -239,46 +236,49 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ```json
 {
-  "Deviation": {
-    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // TotalとFrameの結果は同じ。他の評価とデータ構造を同じにするために同じ値を出力している
-    "Info": {
-      "lateral_deviation": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-      "yaw_deviation": { "min": "最小角度差", "max": "最大角度差", "mean": "平均角度差" },
-      "predicted_path_deviation_5.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-      "predicted_path_deviation_3.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-      "predicted_path_deviation_2.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-      "predicted_path_deviation_1.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" }
-    },
-    "Metrics": {
-      "lateral_deviation": {
-        "min": "最小距離平均値",
-        "max": "最大距離平均値",
-        "mean": "平均距離平均値"
+  "Frame": {
+    "Ego": {},
+    "OBJECT_CLASSIFICATION": { // 認識したクラス
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // TotalとFrameの結果は同じ。他の評価とデータ構造を同じにするために同じ値を出力している
+      "Info": {
+        "lateral_deviation": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
+        "yaw_deviation": { "min": "最小角度差", "max": "最大角度差", "mean": "平均角度差" },
+        "predicted_path_deviation_5.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
+        "predicted_path_deviation_3.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
+        "predicted_path_deviation_2.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
+        "predicted_path_deviation_1.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" }
       },
-      "yaw_deviation": {
-        "min": "最小角度差平均値",
-        "max": "最大角度差平均値",
-        "mean": "平均角度差平均値"
-      },
-      "predicted_path_deviation_5.00": {
-        "min": "最小距離平均値",
-        "max": "最大距離平均値",
-        "mean": "平均距離平均値"
-      },
-      "predicted_path_deviation_3.00": {
-        "min": "最小距離平均値",
-        "max": "最大距離平均値",
-        "mean": "平均距離平均値"
-      },
-      "predicted_path_deviation_2.00": {
-        "min": "最小距離平均値",
-        "max": "最大距離平均値",
-        "mean": "平均距離平均値"
-      },
-      "predicted_path_deviation_1.00": {
-        "min": "最小距離平均値",
-        "max": "最大距離平均値",
-        "mean": "平均距離平均値"
+      "Metrics": {
+        "lateral_deviation": {
+          "min": "最小距離平均値",
+          "max": "最大距離平均値",
+          "mean": "平均距離平均値"
+        },
+        "yaw_deviation": {
+          "min": "最小角度差平均値",
+          "max": "最大角度差平均値",
+          "mean": "平均角度差平均値"
+        },
+        "predicted_path_deviation_5.00": {
+          "min": "最小距離平均値",
+          "max": "最大距離平均値",
+          "mean": "平均距離平均値"
+        },
+        "predicted_path_deviation_3.00": {
+          "min": "最小距離平均値",
+          "max": "最大距離平均値",
+          "mean": "平均距離平均値"
+        },
+        "predicted_path_deviation_2.00": {
+          "min": "最小距離平均値",
+          "max": "最大距離平均値",
+          "mean": "平均距離平均値"
+        },
+        "predicted_path_deviation_1.00": {
+          "min": "最小距離平均値",
+          "max": "最大距離平均値",
+          "mean": "平均距離平均値"
+        }
       }
     }
   }
