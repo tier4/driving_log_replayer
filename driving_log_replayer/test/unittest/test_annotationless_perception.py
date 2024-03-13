@@ -16,15 +16,11 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Literal
 
-from diagnostic_msgs.msg import DiagnosticArray
-from diagnostic_msgs.msg import DiagnosticStatus
-from diagnostic_msgs.msg import KeyValue
 from pydantic import ValidationError
 import pytest
 
 from driving_log_replayer.annotationless_perception import AnnotationlessPerceptionScenario
 from driving_log_replayer.annotationless_perception import ClassConditionValue
-from driving_log_replayer.annotationless_perception import Conditions
 from driving_log_replayer.annotationless_perception import Deviation
 from driving_log_replayer.annotationless_perception import DiagValue
 from driving_log_replayer.result import get_sample_result_path
