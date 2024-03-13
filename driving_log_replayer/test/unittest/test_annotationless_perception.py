@@ -76,10 +76,37 @@ def test_set_threshold() -> None:
     )
 
 
+def test_set_threshold_from_file() -> None:
+    scenario: AnnotationlessPerceptionScenario = load_sample_scenario(
+        "annotationless_perception",
+        AnnotationlessPerceptionScenario,
+    )
+    scenario.Evaluation.Conditions.set_threshold_from_file(
+        get_sample_result_path("annotationless_perception", "result.jsonl").as_posix(),
+    )
+    car_threshold = scenario.Evaluation.Conditions.ClassConditions["CAR"].Threshold
+    assert car_threshold["lateral_deviation"] == DiagValue(
+        min=0.0015509205087440377,
+        max=0.017589887122416534,
+        mean=0.007646777424483304,
+    )
+
+
 def test_set_pass_range() -> None:
     class_cond = ClassConditionValue.get_default_condition()
     class_cond.set_pass_range("0.4-1.1")
     assert class_cond.PassRange == (0.4, 1.1)
+
+
+def test_set_pass_range_from_launch_arg() -> None:
+    scenario: AnnotationlessPerceptionScenario = load_sample_scenario(
+        "annotationless_perception",
+        AnnotationlessPerceptionScenario,
+    )
+    scenario.Evaluation.Conditions.set_pass_range('{"CAR": "0.3-1.2", "BUS": "0.2-1.3"}')
+    cond = scenario.Evaluation.Conditions
+    assert cond.ClassConditions["CAR"].PassRange == (0.3, 1.2)
+    assert cond.ClassConditions["BUS"].PassRange == (0.2, 1.3)
 
 
 @pytest.fixture()
@@ -103,32 +130,20 @@ def test_deviation_success(create_deviation: Callable) -> None:
     assert evaluation_item.success is True
 
 
-# def test_deviation_fail_upper_limit(create_deviation: Callable) -> None:
-#     evaluation_item: Deviation = create_deviation
-#     status = DiagnosticStatus(
-#         name="lateral_deviation",
-#         values=[
-#             KeyValue(key="min", value="10.0"),
-#             KeyValue(key="max", value="10.0"),  # 110 / 10 = 11 > 10.5
-#             KeyValue(key="mean", value="10.0"),
-#         ],
-#     )
-#     evaluation_item.set_frame(DiagnosticArray(status=[status]))
-#     assert evaluation_item.success is False
+def test_deviation_fail_upper_limit(create_deviation: Callable) -> None:
+    evaluation_item: Deviation = create_deviation
+    # max 110 / 10 = 11 > 10.5
+    status_dict = {"lateral_deviation": {"min": 10.0, "max": 10.0, "mean": 10.0}}
+    evaluation_item.set_frame(status_dict)
+    assert evaluation_item.success is False
 
 
-# def test_deviation_fail_lower_limit(create_deviation: Callable) -> None:
-#     evaluation_item: Deviation = create_deviation
-#     status = DiagnosticStatus(
-#         name="lateral_deviation",
-#         values=[
-#             KeyValue(key="min", value="0.0"),  # 49.0 / 10 = 4.9 < 5.0
-#             KeyValue(key="max", value="1.0"),
-#             KeyValue(key="mean", value="1.0"),
-#         ],
-#     )
-#     evaluation_item.set_frame(DiagnosticArray(status=[status]))
-#     assert evaluation_item.success is False
+def test_deviation_fail_lower_limit(create_deviation: Callable) -> None:
+    evaluation_item: Deviation = create_deviation
+    # min 49.0 / 10 = 4.9 < 5.0
+    status_dict = {"lateral_deviation": {"min": 0.0, "max": 1.0, "mean": 1.0}}
+    evaluation_item.set_frame(status_dict)
+    assert evaluation_item.success is False
 
 
 def test_create_literal_from_tuple() -> None:
