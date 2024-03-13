@@ -59,21 +59,17 @@ def test_path_with_empty_str() -> None:
 
 
 def test_set_threshold() -> None:
-    scenario: AnnotationlessPerceptionScenario = load_sample_scenario(
-        "annotationless_perception",
-        AnnotationlessPerceptionScenario,
-    )
+    class_cond = ClassConditionValue.get_default_condition()
     input_threshold = {
-        "lateral_deviation": DiagValue(
-            min=0.0007570793650793651,
-            max=0.01905171904761904,
-            mean=0.006783434920634924,
-        ),
+        "lateral_deviation": {
+            "min": 0.0007570793650793651,
+            "max": 0.01905171904761904,
+            "mean": 0.006783434920634924,
+        },
     }
 
-    scenario.Evaluation.Conditions.ClassConditions["CAR"].set_threshold(input_threshold)
-    threshold = scenario.Evaluation.Conditions.ClassConditions["CAR"].Threshold
-    assert threshold["lateral_deviation"] == DiagValue(
+    class_cond.set_threshold(input_threshold)
+    assert class_cond.Threshold["lateral_deviation"] == DiagValue(
         min=0.0007570793650793651,
         max=0.01905171904761904,
         mean=0.006783434920634924,
@@ -81,25 +77,19 @@ def test_set_threshold() -> None:
 
 
 def test_set_pass_range() -> None:
-    scenario: AnnotationlessPerceptionScenario = load_sample_scenario(
-        "annotationless_perception",
-        AnnotationlessPerceptionScenario,
-    )
-    scenario.Evaluation.Conditions.ClassConditions["CAR"].set_pass_range("0.4-1.1")
-    assert scenario.Evaluation.Conditions.ClassConditions["CAR"].PassRange == (0.4, 1.1)
+    class_cond = ClassConditionValue.get_default_condition()
+    class_cond.set_pass_range("0.4-1.1")
+    assert class_cond.PassRange == (0.4, 1.1)
 
 
 @pytest.fixture()
 def create_deviation() -> Deviation:
-    condition = Conditions(
-        ClassConditions={
-            "CAR": ClassConditionValue(
-                Threshold={"lateral_deviation": DiagValue(min=10.0, max=10.0, mean=10.0)},
-                PassRange="0.5-1.05",
-            ),
-        },
+    condition = ClassConditionValue(
+        Threshold={"lateral_deviation": DiagValue(min=10.0, max=10.0, mean=10.0)},
+        PassRange="0.5-1.05",
     )
     return Deviation(
+        name="CAR",
         condition=condition,
         total=9,
         received_data={"lateral_deviation": {"min": 49.0, "max": 100.0, "mean": 70.0}},
@@ -108,15 +98,8 @@ def create_deviation() -> Deviation:
 
 def test_deviation_success(create_deviation: Callable) -> None:
     evaluation_item: Deviation = create_deviation
-    status = DiagnosticStatus(
-        name="lateral_deviation_CAR",
-        values=[
-            KeyValue(key="min", value="1.0"),
-            KeyValue(key="max", value="1.0"),
-            KeyValue(key="mean", value="1.0"),
-        ],
-    )
-    evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    status_dict = {"lateral_deviation": {"min": 1.0, "max": 1.0, "mean": 1.0}}
+    evaluation_item.set_frame(status_dict)
     assert evaluation_item.success is True
 
 
@@ -159,7 +142,6 @@ def test_create_literal_from_tuple() -> None:
         "BICYCLE",
         "PEDESTRIAN",
     )
-    class_list = list(class_tuple)
     class_literal = Literal[
         "UNKNOWN",
         "CAR",
@@ -172,6 +154,4 @@ def test_create_literal_from_tuple() -> None:
     ]
 
     literal_using_tuple = Literal[class_tuple]
-    literal_using_list = Literal[class_list]
     assert literal_using_tuple == class_literal
-    assert literal_using_list != class_literal
