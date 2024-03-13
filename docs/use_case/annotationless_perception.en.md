@@ -3,7 +3,7 @@
 Evaluate Autoware's recognition features (perception) without annotations using the perception_online_evaluator.
 
 Requires Autoware with the following PR features.
-<https://github.com/autowarefoundation/autoware.universe/pull/6493>
+<https://github.com/autowarefoundation/autoware.universe/pull/6556>
 
 ## Evaluation method
 

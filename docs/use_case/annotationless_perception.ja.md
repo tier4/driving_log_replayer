@@ -3,7 +3,7 @@
 perception_online_evaluatorを利用して、Autowareの認識機能(perception)を、アノテーションなしで評価する。
 
 以下のPRの機能を持つAutowareが必要。
-<https://github.com/autowarefoundation/autoware.universe/pull/6493>
+<https://github.com/autowarefoundation/autoware.universe/pull/6556>
 
 ## 評価方法
 
@@ -18,7 +18,12 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 ## 評価結果
 
-topic の subscribe 1 回につき、以下に記述する判定結果が出力される。
+perception_online_evaluatorが出力するtopicは以下のサンプルのような形式となっている。
+[topicサンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/diag_topic.txt)
+
+topic の subscribe 1 回につき、認識クラス毎に以下に記述する判定結果が出力される。
+
+全てのクラスで正常と判定されると全体として正常と判定される。一つでも異常があると異常となる。
 
 ### 偏差正常
 
