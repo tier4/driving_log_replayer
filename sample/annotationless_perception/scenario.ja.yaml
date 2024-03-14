@@ -10,6 +10,7 @@ Evaluation:
   UseCaseFormatVersion: 0.2.0
   Conditions:
     ClassConditions:
+      # クラス毎の条件を記述する。条件を設定しないクラスが出力された場合はデフォルトの条件が適用される
       CAR: # classification key
         # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
         Threshold:

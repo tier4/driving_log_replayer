@@ -10,6 +10,7 @@ Evaluation:
   UseCaseFormatVersion: 0.2.0
   Conditions:
     ClassConditions:
+      # Describe the conditions for each class. If a class with no condition is output, the default condition will be applied.
       CAR: # classification key
         # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
         Threshold:
