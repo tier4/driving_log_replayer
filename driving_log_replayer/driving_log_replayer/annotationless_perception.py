@@ -226,7 +226,7 @@ class DeviationClassContainer:
                 break
         status_name_removed_class = diag.name.replace(f"_{rtn_class_name}", "")
         values = {value.key: float(value.value) for value in diag.values}  # min, max, mean
-        return rtn_class_name, {status_name_removed_class: values}  # DiagValue(**values)
+        return rtn_class_name, {status_name_removed_class: values}
 
     def update(self) -> tuple[bool, str]:
         rtn_success = True
