@@ -238,15 +238,32 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 {
   "Frame": {
     "Ego": {},
-    "OBJECT_CLASSIFICATION": { // 認識したクラス
+    "OBJECT_CLASSIFICATION": {
+      // 認識したクラス
       "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // TotalとFrameの結果は同じ。他の評価とデータ構造を同じにするために同じ値を出力している
       "Info": {
         "lateral_deviation": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
         "yaw_deviation": { "min": "最小角度差", "max": "最大角度差", "mean": "平均角度差" },
-        "predicted_path_deviation_5.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-        "predicted_path_deviation_3.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-        "predicted_path_deviation_2.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-        "predicted_path_deviation_1.00": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" }
+        "predicted_path_deviation_5.00": {
+          "min": "最小距離",
+          "max": "最大距離",
+          "mean": "平均距離"
+        },
+        "predicted_path_deviation_3.00": {
+          "min": "最小距離",
+          "max": "最大距離",
+          "mean": "平均距離"
+        },
+        "predicted_path_deviation_2.00": {
+          "min": "最小距離",
+          "max": "最大距離",
+          "mean": "平均距離"
+        },
+        "predicted_path_deviation_1.00": {
+          "min": "最小距離",
+          "max": "最大距離",
+          "mean": "平均距離"
+        }
       },
       "Metrics": {
         "lateral_deviation": {
