@@ -23,7 +23,7 @@ perception_online_evaluatorが出力するtopicは以下のサンプルのよう
 
 topic の subscribe 1 回につき、認識クラス毎に以下に記述する判定結果が出力される。
 
-全てのクラスで正常と判定されると全体として正常と判定される。一つでも異常があると異常となる。
+全てのクラスで正常となった場合、テストは正常となる。
 
 ### 偏差正常
 
@@ -71,7 +71,7 @@ Evaluation:
   UseCaseFormatVersion: 0.2.0
   Conditions:
     ClassConditions:
-      # クラス毎の条件を記述する。クラスの条件を設定しない状態でdiagが設定していないクラスのdiagを出力した場合はデフォルトの条件が適用される
+      # クラス毎の条件を記述する。条件を設定しないクラスが出力された場合はデフォルトの条件が適用される
       CAR: # classification key
         # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
         Threshold:
