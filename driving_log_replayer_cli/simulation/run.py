@@ -109,20 +109,34 @@ def get_scenario_file(dataset_path: Path) -> Path | None:
 
 
 def extract_arg(launch_args: str) -> str:
-    if launch_args == "":
-        return ""
-    extract_launch_arg = ""
-    keys_values_list = launch_args.split(",")
-    for kv_str in keys_values_list:
-        if len(kv_str.split(":=")) != 2:  # noqa
-            # invalid argument
-            termcolor.cprint(
-                f"{kv_str} is ignored because it is invalid",
-                "red",
-            )
+    # key value is separated by a comma, but cannot be simply split because value contains a json format string.
+    s_key_value: str = ""
+    temp_value = ""
+    in_json = False
+
+    for char in launch_args:
+        # Nested dict does not work correctly.
+        if char == "{":
+            in_json = True
+            # add open single quotation
+            temp_value += "'{"
+            continue
+        if char == "}":
+            in_json = False
+            # add close single quotation
+            temp_value += "}'"
+            continue
+        if char == "," and not in_json:
+            # check temp_value format is key:=value
+            if len(temp_value.split(":=")) == 2:  # noqa
+                s_key_value += f" {temp_value}"
+            temp_value = ""
         else:
-            extract_launch_arg += f" {kv_str}"
-    return extract_launch_arg
+            temp_value += char
+    # last key value not separated by comma add last key value
+    if len(temp_value.split(":=")) == 2:  # noqa
+        s_key_value += f" {temp_value}"
+    return s_key_value
 
 
 def clean_up_cmd() -> str:

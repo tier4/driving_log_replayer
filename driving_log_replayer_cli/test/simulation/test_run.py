@@ -14,3 +14,13 @@ def test_extract_multiple_args() -> None:
 def test_extract_no_arg() -> None:
     args = extract_arg("not_arg")
     assert args == ""
+
+
+def test_extract_dict() -> None:
+    args = extract_arg(
+        'annotationless_threshold_file:=/home/autoware/result.jsonl,annotationless_pass_range:={"CAR":"0.0-1.1","BUS":"0.2-1.2"}',
+    )
+    assert (
+        args
+        == ' annotationless_threshold_file:=/home/autoware/result.jsonl annotationless_pass_range:=\'{"CAR":"0.0-1.1","BUS":"0.2-1.2"}\''
+    )
