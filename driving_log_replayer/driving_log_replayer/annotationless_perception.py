@@ -15,7 +15,6 @@
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
-from typing import ClassVar
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
