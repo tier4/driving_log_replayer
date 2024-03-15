@@ -15,6 +15,8 @@
 # limitations under the License.
 
 
+from os.path import expandvars
+
 from diagnostic_msgs.msg import DiagnosticArray
 
 from driving_log_replayer.annotationless_perception import AnnotationlessPerceptionResult
@@ -30,7 +32,11 @@ class AnnotationlessPerceptionEvaluator(DLREvaluator):
         # update condition using launch argument
         self.declare_parameter("annotationless_threshold_file", "")
         self._scenario.Evaluation.Conditions.set_threshold_from_file(
-            self.get_parameter("annotationless_threshold_file").get_parameter_value().string_value,
+            expandvars(
+                self.get_parameter("annotationless_threshold_file")
+                .get_parameter_value()
+                .string_value,
+            ),
         )
         self.declare_parameter("annotationless_pass_range", "")
         self._scenario.Evaluation.Conditions.set_pass_range(

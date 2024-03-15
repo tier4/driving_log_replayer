@@ -98,7 +98,7 @@ Evaluation:
 
 This method is assumed to be used mainly.
 If the file path of result.jsonl output from a past test is specified, the metrics values from past tests can be used as threshold values.
-The pass range cannot currently be set from the argument. (Method under consideration)
+The passing range can also be specified as an argument.
 
 An image of its use is shown below.
 
@@ -107,13 +107,16 @@ An image of its use is shown below.
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path}
+dlr simulation run -p annotationless_perception -l 'annotationless_thresold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
+
+# example
+dlr simulation run -p annotationless -l 'annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={"CAR":"0.2-1.2","BUS":"0.3-1.3"}'
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path}
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides 'annotationless_thresold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
 ```
 
 ##### Autoware Evaluator
@@ -132,6 +135,9 @@ simulations:
         type: simulator/standard1/amd64/medium
       parameters:
         annotationless_threshold_file: ${previous_test_result.jsonl_path}
+        annotationless_pass_range:
+          KEY1: VALUE1
+          KEY2: VALUE2
 ```
 
 ## Arguments passed to logging_simulator.launch

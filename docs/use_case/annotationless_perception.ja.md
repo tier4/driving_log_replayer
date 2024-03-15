@@ -98,7 +98,7 @@ Evaluation:
 
 こちらの方法をメインに使う想定。
 過去のテストで出力されたresult.jsonlのファイルパスを指定すると、過去のテストのMetrics値を閾値として利用
-合格範囲は、現在引数から設定できない。（方式検討中）
+また合格範囲も引数で指定可能。
 
 利用イメージを以下に示す。
 
@@ -107,13 +107,16 @@ Evaluation:
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path}
+dlr simulation run -p annotationless_perception -l 'annotationless_thresold_file:=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
+
+# example
+dlr simulation run -p annotationless -l 'annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={"CAR":"0.2-1.2","BUS":"0.3-1.3"}'
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path}
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides 'annotationless_thresold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
 ```
 
 ##### Autoware Evaluator
@@ -132,6 +135,9 @@ simulations:
         type: simulator/standard1/amd64/medium
       parameters:
         annotationless_threshold_file: ${previous_test_result.jsonl_path}
+        annotationless_pass_range:
+          KEY1: VALUE1
+          KEY2: VALUE2
 ```
 
 ## logging_simulator.launch に渡す引数
