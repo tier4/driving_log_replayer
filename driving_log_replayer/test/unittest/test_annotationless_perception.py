@@ -80,12 +80,29 @@ def test_set_threshold_from_file() -> None:
     scenario.Evaluation.Conditions.set_threshold_from_file(
         get_sample_result_path("annotationless_perception", "result.jsonl").as_posix(),
     )
-    car_threshold = scenario.Evaluation.Conditions.ClassConditions["CAR"].Threshold
-    assert car_threshold["lateral_deviation"] == DiagValue(
-        min=0.0015509205087440377,
-        max=0.017589887122416534,
-        mean=0.007646777424483304,
+    # set_threshold_from_file completely override condition from result.jsonl
+    # condition on TRUCK is not specified in sample scenario.yaml
+    truck_threshold = scenario.Evaluation.Conditions.ClassConditions["TRUCK"].Threshold
+    assert truck_threshold["lateral_deviation"] == DiagValue(
+        min=0.013153343750000001,
+        max=0.013153343750000001,
+        mean=0.013153343750000001,
     )
+
+
+def test_update_threshold_from_file() -> None:
+    scenario: AnnotationlessPerceptionScenario = load_sample_scenario(
+        "annotationless_perception",
+        AnnotationlessPerceptionScenario,
+    )
+    scenario.Evaluation.Conditions.update_threshold_from_file(
+        get_sample_result_path("annotationless_perception", "result.jsonl").as_posix(),
+    )
+    # update_threshold_from_file update only keys written in scenario.yaml
+    bus_threshold = scenario.Evaluation.Conditions.ClassConditions["BUS"].Threshold
+    assert bus_threshold == {
+        "lateral_deviation": DiagValue(max=0.002148912891986063),
+    }
 
 
 def test_set_pass_range() -> None:

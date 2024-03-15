@@ -75,6 +75,8 @@ Evaluation:
     ClassConditions:
       # Describe the conditions for each class. If a class with no conditions is output, only the metrics are calculated. It does not affect the evaluation.
       # In the sample data, the class of TRUCK is also output, but the condition is not described, so TRUCK is always Success.
+      # When specifying conditions from result.jsonl, only keys described here will be updated.
+      # Even though TRUCK metrics appear in result.jsonl, they are not added to the evaluation condition because the TRUCK key is not specified in this example.
       CAR: # classification key
         Threshold:
           # Keys not described will not be evaluated (will always be a success)
@@ -97,7 +99,7 @@ Evaluation:
 This method is assumed to be used mainly.
 
 If the file path of result.jsonl output from past tests is specified, the metrics values from past tests are used as threshold values.
-However, since the metrics for all classes output by past tests are described, this function cannot be used if you wish to exclude specific classes from evaluation.
+The values are updated from result.jsonl only for the thresholds listed in the scenario.
 
 The passing range can also be specified as an argument.
 

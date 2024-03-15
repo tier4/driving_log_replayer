@@ -12,6 +12,8 @@ Evaluation:
     ClassConditions:
       # クラス毎の条件を記述する。条件を設定がないクラスが出力された場合はメトリクスだけ計算される。評価には影響しない
       # サンプルデータではTRUCKのclassも出力されるが条件を記述してないので、TRUCKは必ずSuccessになる
+      # result.jsonlから条件指定を行う場合、ここに記述があるキーのみ更新される。
+      # result.jsonlにTRUCKのメトリクスが出ていても、この例ではTRUCKのキーを指定していないので評価条件には追加されない。
       CAR: # classification key
         Threshold:
           # 記述のないキーについては評価されない（必ず成功になる）

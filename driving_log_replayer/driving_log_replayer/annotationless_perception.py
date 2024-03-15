@@ -78,6 +78,19 @@ class ClassConditionValue(BaseModel):
             threshold_diag[k] = DiagValue(**v)
         self.Threshold = threshold_diag
 
+    def update_threshold(self, threshold_dict: dict[str, dict]) -> None:
+        for k, v in self.Threshold.items():
+            if threshold_dict.get(k) is None:
+                continue
+            diag_value = DiagValue(**threshold_dict[k])
+            if v.min is None:
+                diag_value.min = None
+            if v.max is None:
+                diag_value.max = None
+            if v.mean is None:
+                diag_value.mean = None
+            self.Threshold[k] = diag_value
+
     def set_pass_range(self, v: str) -> None:
         if v != "":  # skip if launch arg is not set
             self.PassRange = ClassConditionValue.validate_pass_range(v)
@@ -87,20 +100,36 @@ class Conditions(BaseModel):
     ClassConditions: dict[OBJECT_CLASSIFICATION, ClassConditionValue]
 
     def set_threshold_from_file(self, file_path: str) -> None:
+        # this method overwrite all condition
+        final_metrics = Conditions.load_final_metrics(file_path)
+        if final_metrics is None:
+            return
+        for class_name in final_metrics:
+            if self.ClassConditions.get(class_name) is None:
+                self.ClassConditions[class_name] = ClassConditionValue.get_default_condition()
+            self.ClassConditions[class_name].set_threshold(final_metrics[class_name])
+
+    def update_threshold_from_file(self, file_path: str) -> None:
+        # this method update condition only in scenario
+        final_metrics = Conditions.load_final_metrics(file_path)
+        if final_metrics is None:
+            return
+        for class_name in self.ClassConditions:
+            if final_metrics.get(class_name) is not None:
+                self.ClassConditions[class_name].update_threshold(final_metrics[class_name])
+
+    @classmethod
+    def load_final_metrics(cls, file_path: str) -> dict | None:
         result_file = Path(file_path)
         if file_path == "" or not result_file.exists():  # Path("") is current path
-            return
+            return None
         with result_file.open() as f:
             last_line = f.readlines()[-1]
         try:
             result_json_dict = json.loads(last_line)
-            final_metrics = result_json_dict["Frame"]["FinalMetrics"]
-            for class_name in final_metrics:
-                if self.ClassConditions.get(class_name) is None:
-                    self.ClassConditions[class_name] = ClassConditionValue.get_default_condition()
-                self.ClassConditions[class_name].set_threshold(final_metrics[class_name])
+            return result_json_dict["Frame"]["FinalMetrics"]
         except json.JSONDecodeError:
-            pass
+            return None
 
     def set_pass_range(self, v: str) -> None:
         if v == "":  # skip if launch arg is not set
