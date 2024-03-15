@@ -37,6 +37,8 @@ The following two values specified in the scenario or launch argument are used t
 Add the min, max, and mean values for each status.name in `/diagnostic/perception_online_evaluator/metrics` and calculate the average value.
 If the `threshold * lower limit` <= `calculated_average` <= `threshold value * upper_limit`, it is assumed to be normal.
 
+Items for which no threshold is set (min, max, mean) are always judged as normal. Only those items for which a threshold is specified are subject to evaluation.
+
 An illustration is shown below.
 
 ![metrics](./images/annotationless_metrics.drawio.svg)
@@ -71,10 +73,11 @@ Evaluation:
   UseCaseFormatVersion: 0.2.0
   Conditions:
     ClassConditions:
-      # Describe the conditions for each class. If a class with no condition is output, the default condition will be applied.
+      # Describe the conditions for each class. If a class with no conditions is output, only the metrics are calculated. It does not affect the evaluation.
+      # In the sample data, the class of TRUCK is also output, but the condition is not described, so TRUCK is always Success.
       CAR: # classification key
-        # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
         Threshold:
+          # Keys not described will not be evaluated (will always be a success)
           lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
           yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
           predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
@@ -83,21 +86,19 @@ Evaluation:
           predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
         PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
       BUS: # classification key
-        # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
         Threshold:
-          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          # Only lateral_deviation is evaluated.
+          lateral_deviation: { max: 10.0 } # Only max is evaluated.
         PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
 ```
 
 #### Specify by launch argument
 
 This method is assumed to be used mainly.
-If the file path of result.jsonl output from a past test is specified, the metrics values from past tests can be used as threshold values.
+
+If the file path of result.jsonl output from past tests is specified, the metrics values from past tests are used as threshold values.
+However, since the metrics for all classes output by past tests are described, this function cannot be used if you wish to exclude specific classes from evaluation.
+
 The passing range can also be specified as an argument.
 
 An image of its use is shown below.

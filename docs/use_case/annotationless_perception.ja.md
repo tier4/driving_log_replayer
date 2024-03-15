@@ -27,7 +27,7 @@ topic の subscribe 1 回につき、認識クラス毎に以下に記述する�
 
 ### 偏差正常
 
-判定には、シナリオまたはlaunchの引数で指定された以下の2つの値を利用する
+判定には、シナリオまたはlaunchの引数で指定された以下の2つの値を利用する。
 
 - 閾値
   - 各項目の成否を判定する基準となる値
@@ -36,6 +36,8 @@ topic の subscribe 1 回につき、認識クラス毎に以下に記述する�
 
 `/diagnostic/perception_online_evaluator/metrics` のstatus.name毎にmin, max, meanの値を加算し、平均値を算出する。
 閾値×下限値　＜＝　算出された平均値　＜＝　閾値×上限値であれば正常とする。
+
+閾値が設定されてない項目(min, max, mean)に関しては常に正常と判定される。指定があるもののみが評価対象になる。
 
 イメージ図を以下に示す
 
@@ -71,10 +73,11 @@ Evaluation:
   UseCaseFormatVersion: 0.2.0
   Conditions:
     ClassConditions:
-      # クラス毎の条件を記述する。条件を設定しないクラスが出力された場合はデフォルトの条件が適用される
+      # クラス毎の条件を記述する。条件を設定がないクラスが出力された場合はメトリクスだけ計算される。評価には影響しない
+      # サンプルデータではTRUCKのclassも出力されるが条件を記述してないので、TRUCKは必ずSuccessになる
       CAR: # classification key
-        # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
         Threshold:
+          # 記述のないキーについては評価されない（必ず成功になる）
           lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
           yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
           predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
@@ -83,21 +86,19 @@ Evaluation:
           predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
         PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
       BUS: # classification key
-        # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
         Threshold:
-          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          # lateral_deviationしか評価対象にしない
+          lateral_deviation: { max: 10.0 } # maxしか評価対象にしない
         PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
 ```
 
 #### launch引数で指定する
 
 こちらの方法をメインに使う想定。
-過去のテストで出力されたresult.jsonlのファイルパスを指定すると、過去のテストのMetrics値を閾値として利用
+
+過去のテストで出力されたresult.jsonlのファイルパスを指定すると、過去のテストのメトリクス値を閾値として利用する。
+ただし、過去のテストで出力された全クラスのメトリクスが記述されているので、特定のクラスは評価対象外としたい場合には利用できない。
+
 また合格範囲も引数で指定可能。
 
 利用イメージを以下に示す。

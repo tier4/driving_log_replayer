@@ -33,10 +33,10 @@ def test_scenario() -> None:
         AnnotationlessPerceptionScenario,
     )
     assert scenario.ScenarioName == "sample_annotationless_perception"
-    assert scenario.Evaluation.Conditions.ClassConditions["CAR"].Threshold[
+    assert scenario.Evaluation.Conditions.ClassConditions["BUS"].Threshold[
         "lateral_deviation"
-    ] == DiagValue(min=10.0, max=10.0, mean=10.0)
-    assert scenario.Evaluation.Conditions.ClassConditions["CAR"].PassRange == (0.5, 1.05)
+    ] == DiagValue(max=10.0)
+    assert scenario.Evaluation.Conditions.ClassConditions["BUS"].PassRange == (0.5, 1.05)
 
 
 def test_range_validation_upper_limit() -> None:
@@ -99,7 +99,7 @@ def test_set_pass_range_from_launch_arg() -> None:
         "annotationless_perception",
         AnnotationlessPerceptionScenario,
     )
-    scenario.Evaluation.Conditions.set_pass_range('{"CAR": "0.3-1.2", "BUS": "0.2-1.3"}')
+    scenario.Evaluation.Conditions.set_pass_range('{"CAR":"0.3-1.2","BUS":"0.2-1.3"}')
     cond = scenario.Evaluation.Conditions
     assert cond.ClassConditions["CAR"].PassRange == (0.3, 1.2)
     assert cond.ClassConditions["BUS"].PassRange == (0.2, 1.3)
@@ -108,20 +108,21 @@ def test_set_pass_range_from_launch_arg() -> None:
 @pytest.fixture()
 def create_deviation() -> Deviation:
     condition = ClassConditionValue(
-        Threshold={"lateral_deviation": DiagValue(min=10.0, max=10.0, mean=10.0)},
+        Threshold={"lateral_deviation": DiagValue(min=10.0, max=10.0)},
         PassRange="0.5-1.05",
     )
     return Deviation(
         name="CAR",
         condition=condition,
         total=9,
-        received_data={"lateral_deviation": {"min": 49.0, "max": 100.0, "mean": 70.0}},
+        received_data={"lateral_deviation": {"min": 49.0, "max": 100.0, "mean": 100.0}},
     )
 
 
 def test_deviation_success(create_deviation: Callable) -> None:
     evaluation_item: Deviation = create_deviation
-    status_dict = {"lateral_deviation": {"min": 1.0, "max": 1.0, "mean": 1.0}}
+    # mean 110 / 10 = 11. but Mean is not subject to evaluation
+    status_dict = {"lateral_deviation": {"min": 1.0, "max": 1.0, "mean": 10.0}}
     evaluation_item.set_frame(status_dict)
     assert evaluation_item.success is True
 

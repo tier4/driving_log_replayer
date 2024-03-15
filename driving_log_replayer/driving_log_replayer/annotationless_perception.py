@@ -44,9 +44,9 @@ OBJECT_CLASSIFICATION = Literal[OBJECT_CLASSIFICATION_TUPLE]
 
 
 class DiagValue(BaseModel):
-    min: float
-    max: float
-    mean: float
+    min: float | None = None
+    max: float | None = None
+    mean: float | None = None
 
 
 class ClassConditionValue(BaseModel):
@@ -130,9 +130,6 @@ class AnnotationlessPerceptionScenario(Scenario):
 class Deviation(EvaluationItem):
     received_data: dict = field(default_factory=dict)
     # received_data = {lateral_deviation: {min: sum_min, max: sum_max, mean: sum_mean} ... }
-    DEFAULT_THRESHOLD: ClassVar[str] = (
-        1000.0  # A value that does not overflow when multiplied by a factor of range and is large enough to be a threshold value.
-    )
     metrics_dict: dict = field(default_factory=dict)
 
     def set_frame(self, msg: dict[str, dict]) -> dict:
@@ -144,15 +141,9 @@ class Deviation(EvaluationItem):
         for status_name, values in msg.items():
             self.add(status_name, values)
             info_dict[status_name] = values
-            if self.condition.Threshold.get(status_name) is None:
-                self.condition.Threshold[status_name] = DiagValue(
-                    min=Deviation.DEFAULT_THRESHOLD,
-                    max=Deviation.DEFAULT_THRESHOLD,
-                    mean=Deviation.DEFAULT_THRESHOLD,
-                )
             self.metrics_dict[status_name], diag_success = self.calc_average_and_success(
                 status_name,
-                self.condition.Threshold[status_name],
+                self.condition.Threshold.get(status_name),
             )
             frame_success = frame_success and diag_success
         self.success = frame_success
@@ -170,19 +161,27 @@ class Deviation(EvaluationItem):
         self.received_data[key]["max"] += values["max"]
         self.received_data[key]["mean"] += values["mean"]
 
-    def calc_average_and_success(self, key: str, threshold: DiagValue) -> tuple[dict, bool]:
-        if self.received_data.get(key) is None or self.total == 0:
-            return {"min": 0.0, "max": 0.0, "mean": 0.0}
+    def calc_average_and_success(self, key: str, threshold: DiagValue | None) -> tuple[dict, bool]:
+        # calc metrics
         a_min = self.received_data[key]["min"] / self.total
         a_max = self.received_data[key]["max"] / self.total
         a_mean = self.received_data[key]["mean"] / self.total
         lower = self.condition.PassRange[0]
         upper = self.condition.PassRange[1]
-        is_success = (
-            (threshold.min * lower <= a_min <= threshold.min * upper)
-            and (threshold.max * lower <= a_max <= threshold.max * upper)
-            and (threshold.mean * lower <= a_mean <= threshold.mean * upper)
-        )
+        # evaluate
+        if threshold is None:
+            is_success = True  # Calculate metrics only, return always True
+        else:
+            is_success_min = True  # if threshold min is not set
+            is_success_max = True  # if threshold max is not set
+            is_success_mean = True  # if threshold mean is not set
+            if threshold.min is not None:
+                is_success_min = threshold.min * lower <= a_min <= threshold.min * upper
+            if threshold.max is not None:
+                is_success_max = threshold.max * lower <= a_max <= threshold.max * upper
+            if threshold.mean is not None:
+                is_success_mean = threshold.mean * lower <= a_mean <= threshold.mean * upper
+            is_success = is_success_min and is_success_max and is_success_mean
         return {"min": a_min, "max": a_max, "mean": a_mean}, is_success
 
 

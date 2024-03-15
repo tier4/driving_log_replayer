@@ -10,10 +10,11 @@ Evaluation:
   UseCaseFormatVersion: 0.2.0
   Conditions:
     ClassConditions:
-      # クラス毎の条件を記述する。条件を設定しないクラスが出力された場合はデフォルトの条件が適用される
+      # クラス毎の条件を記述する。条件を設定がないクラスが出力された場合はメトリクスだけ計算される。評価には影響しない
+      # サンプルデータではTRUCKのclassも出力されるが条件を記述してないので、TRUCKは必ずSuccessになる
       CAR: # classification key
-        # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
         Threshold:
+          # 記述のないキーについては評価されない（必ず成功になる）
           lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
           yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
           predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
@@ -22,12 +23,7 @@ Evaluation:
           predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
         PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
       BUS: # classification key
-        # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
         Threshold:
-          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          # lateral_deviationしか評価対象にしない
+          lateral_deviation: { max: 10.0 } # maxしか評価対象にしない
         PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。

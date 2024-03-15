@@ -10,10 +10,11 @@ Evaluation:
   UseCaseFormatVersion: 0.2.0
   Conditions:
     ClassConditions:
-      # Describe the conditions for each class. If a class with no condition is output, the default condition will be applied.
+      # Describe the conditions for each class. If a class with no conditions is output, only the metrics are calculated. It does not affect the evaluation.
+      # In the sample data, the class of TRUCK is also output, but the condition is not described, so TRUCK is always Success.
       CAR: # classification key
-        # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
         Threshold:
+          # Keys not described will not be evaluated (will always be a success)
           lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
           yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
           predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
@@ -22,12 +23,7 @@ Evaluation:
           predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
         PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
       BUS: # classification key
-        # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
         Threshold:
-          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
+          # Only lateral_deviation is evaluated.
+          lateral_deviation: { max: 10.0 } # Only max is evaluated.
         PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
