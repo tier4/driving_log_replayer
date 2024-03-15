@@ -113,7 +113,7 @@ Evaluation:
 dlr simulation run -p annotationless_perception -l 'annotationless_thresold_file:=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
 
 # example
-dlr simulation run -p annotationless -l 'annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={"CAR":"0.2-1.2","BUS":"0.3-1.3"}'
+dlr simulation run -p annotationless_perception -l 'annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={"CAR":"0.2-1.2","BUS":"0.3-1.3"}'
 ```
 
 ##### WebAutoCLI
