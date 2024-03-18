@@ -99,16 +99,6 @@ class ClassConditionValue(BaseModel):
 class Conditions(BaseModel):
     ClassConditions: dict[OBJECT_CLASSIFICATION, ClassConditionValue]
 
-    def set_threshold_from_file(self, file_path: str) -> None:
-        # this method overwrite all condition
-        final_metrics = Conditions.load_final_metrics(file_path)
-        if final_metrics is None:
-            return
-        for class_name in final_metrics:
-            if self.ClassConditions.get(class_name) is None:
-                self.ClassConditions[class_name] = ClassConditionValue.get_default_condition()
-            self.ClassConditions[class_name].set_threshold(final_metrics[class_name])
-
     def update_threshold_from_file(self, file_path: str) -> None:
         # this method update condition only in scenario
         final_metrics = Conditions.load_final_metrics(file_path)

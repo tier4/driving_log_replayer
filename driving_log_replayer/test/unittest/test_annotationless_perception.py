@@ -72,24 +72,6 @@ def test_set_threshold() -> None:
     )
 
 
-def test_set_threshold_from_file() -> None:
-    scenario: AnnotationlessPerceptionScenario = load_sample_scenario(
-        "annotationless_perception",
-        AnnotationlessPerceptionScenario,
-    )
-    scenario.Evaluation.Conditions.set_threshold_from_file(
-        get_sample_result_path("annotationless_perception", "result.jsonl").as_posix(),
-    )
-    # set_threshold_from_file completely override condition from result.jsonl
-    # condition on TRUCK is not specified in sample scenario.yaml
-    truck_threshold = scenario.Evaluation.Conditions.ClassConditions["TRUCK"].Threshold
-    assert truck_threshold["lateral_deviation"] == DiagValue(
-        min=0.013153343750000001,
-        max=0.013153343750000001,
-        mean=0.013153343750000001,
-    )
-
-
 def test_update_threshold_from_file() -> None:
     scenario: AnnotationlessPerceptionScenario = load_sample_scenario(
         "annotationless_perception",
