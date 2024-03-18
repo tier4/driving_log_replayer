@@ -156,6 +156,7 @@ class Deviation(EvaluationItem):
         frame_success = True
         info_dict = {}
         self.metrics_dict = {}
+        frame_fail_items = ""
         for status_name, values in msg.items():
             self.add(status_name, values)
             info_dict[status_name] = values
@@ -163,9 +164,14 @@ class Deviation(EvaluationItem):
                 status_name,
                 self.condition.Threshold.get(status_name),
             )
+            if diag_success is False:
+                frame_fail_items += f", {status_name}"
             frame_success = frame_success and diag_success
         self.success = frame_success
-        self.summary = f"{self.name} ({self.success_str()})"
+        if self.condition.Threshold == {}:
+            self.summary = f"{self.name} (NotTested)"
+        else:
+            self.summary = f"{self.name} ({self.success_str()}{frame_fail_items})"
         return {
             "Result": {"Total": self.success_str(), "Frame": self.success_str()},
             "Info": info_dict,

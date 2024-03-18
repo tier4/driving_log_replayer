@@ -17,15 +17,15 @@ Evaluation:
       CAR: # classification key
         Threshold:
           # 記述のないキーについては評価されない（必ず成功になる）
-          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
-        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
+          lateral_deviation: { min: 0.0015, max: 0.0182, mean: 0.0077 }
+          yaw_deviation: { min: 0.1531, max: 2.3218, mean: 1.0022 }
+          predicted_path_deviation_5.00: { max: 4.8334, mean: 0.9050 }
+          predicted_path_deviation_3.00: { max: 2.5191, mean: 0.4879 }
+          predicted_path_deviation_2.00: { max: 1.5110, mean: 0.3092 }
+          predicted_path_deviation_1.00: { max: 0.6801, mean: 0.1528 }
+        PassRange: 0.5-10.0 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
       BUS: # classification key
         Threshold:
-          # lateral_deviationしか評価対象にしない
-          lateral_deviation: { max: 10.0 } # maxしか評価対象にしない
-        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
+          # Only lateral_deviation is evaluated.
+          lateral_deviation: { max: 0.00235 } # Only max is evaluated.
+        PassRange: 0.5-10.0 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
