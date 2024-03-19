@@ -15,6 +15,7 @@
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
+import sys
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -147,8 +148,10 @@ class AnnotationlessPerceptionScenario(Scenario):
 @dataclass
 class Deviation(EvaluationItem):
     received_data: dict = field(default_factory=dict)
-    # received_data = {lateral_deviation: {min: sum_min, max: sum_max, mean: sum_mean} ... }
+    # received_data = {lateral_deviation: {min: minimum_min, max: maximum_max, mean: sum_mean} ... }
     metrics_dict: dict = field(default_factory=dict)
+    min_success: dict = field(default_factory=dict)
+    max_success: dict = field(default_factory=dict)
 
     def set_frame(self, msg: dict[str, dict]) -> dict:
         self.condition: ClassConditionValue
@@ -158,11 +161,10 @@ class Deviation(EvaluationItem):
         self.metrics_dict = {}
         frame_fail_items = ""
         for status_name, values in msg.items():
-            self.add(status_name, values)
             info_dict[status_name] = values
             self.metrics_dict[status_name], diag_success = self.calc_average_and_success(
                 status_name,
-                self.condition.Threshold.get(status_name),
+                values,
             )
             if diag_success is False:
                 frame_fail_items += f", {status_name}"
@@ -178,35 +180,45 @@ class Deviation(EvaluationItem):
             "Metrics": self.metrics_dict,
         }
 
-    def add(self, key: str, values: dict) -> None:
+    def calc_average_and_success(
+        self,
+        key: str,
+        values: dict,
+    ) -> tuple[dict, bool]:
+        threshold_key: DiagValue | None = self.condition.Threshold.get(key)
+        # initialize
         if self.received_data.get(key) is None:
-            self.received_data[key] = {"min": 0.0, "max": 0.0, "mean": 0.0}  # initialize
-        self.received_data[key]["min"] += values["min"]
-        self.received_data[key]["max"] += values["max"]
-        self.received_data[key]["mean"] += values["mean"]
-
-    def calc_average_and_success(self, key: str, threshold: DiagValue | None) -> tuple[dict, bool]:
+            self.received_data[key] = {"min": sys.float_info.max, "max": 0.0, "mean": 0.0}
+            self.min_success[key] = True
+            self.max_success[key] = True
+        rdk = self.received_data[key]
+        # add
+        rdk["min"] = min(rdk["min"], values["min"])
+        rdk["max"] = max(rdk["max"], values["max"])
+        rdk["mean"] += values["mean"]
         # calc metrics
-        a_min = self.received_data[key]["min"] / self.total
-        a_max = self.received_data[key]["max"] / self.total
-        a_mean = self.received_data[key]["mean"] / self.total
+        a_mean = rdk["mean"] / self.total
         lower = self.condition.PassRange[0]
         upper = self.condition.PassRange[1]
         # evaluate
-        if threshold is None:
+        if threshold_key is None:
             is_success = True  # Calculate metrics only, return always True
         else:
-            is_success_min = True  # if threshold min is not set
-            is_success_max = True  # if threshold max is not set
             is_success_mean = True  # if threshold mean is not set
-            if threshold.min is not None:
-                is_success_min = threshold.min * lower <= a_min <= threshold.min * upper
-            if threshold.max is not None:
-                is_success_max = threshold.max * lower <= a_max <= threshold.max * upper
-            if threshold.mean is not None:
-                is_success_mean = threshold.mean * lower <= a_mean <= threshold.mean * upper
-            is_success = is_success_min and is_success_max and is_success_mean
-        return {"min": a_min, "max": a_max, "mean": a_mean}, is_success
+            if self.min_success[key] and threshold_key.min is not None:
+                # Once min_success is false, it is not calculated thereafter.
+                self.min_success[key] = (
+                    threshold_key.min * lower <= rdk["min"] <= threshold_key.min * upper
+                )
+            if self.max_success[key] and threshold_key.max is not None:
+                # Once max_success is false, it is not calculated thereafter.
+                self.max_success[key] = (
+                    threshold_key.max * lower <= rdk["max"] <= threshold_key.max * upper
+                )
+            if threshold_key.mean is not None:
+                is_success_mean = threshold_key.mean * lower <= a_mean <= threshold_key.mean * upper
+            is_success = self.min_success[key] and self.max_success[key] and is_success_mean
+        return {"min": rdk["min"], "max": rdk["max"], "mean": a_mean}, is_success
 
 
 class DeviationClassContainer:

@@ -34,10 +34,20 @@ topic の subscribe 1 回につき、認識クラス毎に以下に記述する�
 - 合格範囲(閾値を補正する係数)
   - 閾値×下限値　〜　閾値×上限値の間の範囲をテスト合格とする
 
-`/diagnostic/perception_online_evaluator/metrics` のstatus.name毎にmin, max, meanの値を加算し、平均値を算出する。
-閾値×下限値　＜＝　算出された平均値　＜＝　閾値×上限値であれば正常とする。
-
+`/diagnostic/perception_online_evaluator/metrics` のstatus.name毎に以下のルールに従い成否の判定が行われる。
 閾値が設定されてない項目(min, max, mean)に関しては常に正常と判定される。指定があるもののみが評価対象になる。
+
+#### min
+
+閾値×下限値　＜＝　minの最小値　＜＝　閾値×上限値であれば正常とする。
+
+#### max
+
+閾値×下限値　＜＝　maxの最大値　＜＝　閾値×上限値であれば正常とする。
+
+#### mean
+
+閾値×下限値　＜＝　meanの平均値　＜＝　閾値×上限値であれば正常とする。
 
 イメージ図を以下に示す
 
@@ -86,12 +96,12 @@ Evaluation:
           predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
           predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
           predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
-        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
+        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0]
       BUS: # classification key
         Threshold:
           # lateral_deviationしか評価対象にしない
           lateral_deviation: { max: 10.0 } # maxしか評価対象にしない
-        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
+        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0]
 ```
 
 #### launch引数で指定する
@@ -276,34 +286,34 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
       },
       "Metrics": {
         "lateral_deviation": {
-          "min": "最小距離平均値",
-          "max": "最大距離平均値",
-          "mean": "平均距離平均値"
+          "min": "最小距離の最小値",
+          "max": "最大距離の最大値",
+          "mean": "平均距離の平均値"
         },
         "yaw_deviation": {
-          "min": "最小角度差平均値",
-          "max": "最大角度差平均値",
-          "mean": "平均角度差平均値"
+          "min": "最小角度差の最小値",
+          "max": "最大角度差の最大値",
+          "mean": "平均角度差の平均値"
         },
         "predicted_path_deviation_5.00": {
-          "min": "最小距離平均値",
-          "max": "最大距離平均値",
-          "mean": "平均距離平均値"
+          "min": "最小距離の最小値",
+          "max": "最大距離の最大値",
+          "mean": "平均距離の平均値"
         },
         "predicted_path_deviation_3.00": {
-          "min": "最小距離平均値",
-          "max": "最大距離平均値",
-          "mean": "平均距離平均値"
+          "min": "最小距離の最小値",
+          "max": "最大距離の最大値",
+          "mean": "平均距離の平均値"
         },
         "predicted_path_deviation_2.00": {
-          "min": "最小距離平均値",
-          "max": "最大距離平均値",
-          "mean": "平均距離平均値"
+          "min": "最小距離の最小値",
+          "max": "最大距離の最大値",
+          "mean": "平均距離の平均値"
         },
         "predicted_path_deviation_1.00": {
-          "min": "最小距離平均値",
-          "max": "最大距離平均値",
-          "mean": "平均距離平均値"
+          "min": "最小距離の最小値",
+          "max": "最大距離の最大値",
+          "mean": "平均距離の平均値"
         }
       }
     }

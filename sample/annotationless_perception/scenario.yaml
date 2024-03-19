@@ -17,15 +17,15 @@ Evaluation:
       CAR: # classification key
         Threshold:
           # Keys not described will not be evaluated (will always be a success)
-          lateral_deviation: { min: 0.0015, max: 0.0182, mean: 0.0077 }
-          yaw_deviation: { min: 0.1531, max: 2.3218, mean: 1.0022 }
-          predicted_path_deviation_5.00: { max: 4.8334, mean: 0.9050 }
-          predicted_path_deviation_3.00: { max: 2.5191, mean: 0.4879 }
-          predicted_path_deviation_2.00: { max: 1.5110, mean: 0.3092 }
-          predicted_path_deviation_1.00: { max: 0.6801, mean: 0.1528 }
-        PassRange: 0.5-10.0 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
+          lateral_deviation: { max: 0.1912, mean: 0.0077 }
+          yaw_deviation: { max: 3.1411, mean: 0.9474 }
+          predicted_path_deviation_5.00: { max: 16.464, mean: 0.9062 }
+          predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
+          predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
+          predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
+        PassRange: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
       BUS: # classification key
         Threshold:
           # Only lateral_deviation is evaluated.
-          lateral_deviation: { max: 0.00235 } # Only max is evaluated.
-        PassRange: 0.5-10.0 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
+          lateral_deviation: { max: 0.050 } # Only max is evaluated.
+        PassRange: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
