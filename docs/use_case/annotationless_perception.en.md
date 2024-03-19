@@ -30,20 +30,18 @@ If all classes are normal, the test is successful.
 The following two values specified in the scenario or launch argument are used to judge
 
 - Threshold
-  - Threshold for judging the success or failure of each item
 - PassRange(Coefficient to correct threshold)
-  - The range between `threshold * lower_limit` and `threshold * upper limit` is considered to pass the test.
 
 Success or failure is determined for each status.name in `/diagnostic/perception_online_evaluator/metrics` according to the following rules.
 Items for which no threshold is set (min, max, mean) are always judged as normal. Only those items for which a threshold is specified are subject to evaluation.
 
 #### min
 
-If `threshold * lower_limit` <= `minimum value of min` <= `threshold * upper_limit`, it is assumed to be normal.
+If `maximum value of min` <= `threshold * upper_limit`, it is assumed to be normal.
 
 #### max
 
-If `threshold * lower_limit` <= `maximum value of min` <= `threshold * upper_limit`, it is assumed to be normal.
+If `maximum value of max` <= `threshold * upper_limit`, it is assumed to be normal.
 
 #### mean
 
@@ -295,32 +293,32 @@ The format of each frame and the metrics format are shown below.
       },
       "Metrics": {
         "lateral_deviation": {
-          "min": "Minimum value of Minimum distance",
+          "min": "Maximum value of Minimum distance",
           "max": "Maximum value of Maximum distance",
           "mean": "Average value of Mean distance"
         },
         "yaw_deviation": {
-          "min": "Minimum value of Minimum Angle Difference",
+          "min": "Maximum value of Minimum Angle Difference",
           "max": "Maximum value of Maximum Angle Difference",
           "mean": "Average value of Mean Angle Difference"
         },
         "predicted_path_deviation_5.00": {
-          "min": "Minimum value of Minimum distance",
+          "min": "Maximum value of Minimum distance",
           "max": "Maximum value of Maximum distance",
           "mean": "Average value of Mean distance"
         },
         "predicted_path_deviation_3.00": {
-          "min": "Minimum value of Minimum distance",
+          "min": "Maximum value of Minimum distance",
           "max": "Maximum value of Maximum distance",
           "mean": "Average value of Mean distance"
         },
         "predicted_path_deviation_2.00": {
-          "min": "Minimum value of Minimum distance",
+          "min": "Maximum value of Minimum distance",
           "max": "Maximum value of Maximum distance",
           "mean": "Average value of Mean distance"
         },
         "predicted_path_deviation_1.00": {
-          "min": "Minimum value of Minimum distance",
+          "min": "Maximum value of Minimum distance",
           "max": "Maximum value of Maximum distance",
           "mean": "Average value of Mean distance"
         }
