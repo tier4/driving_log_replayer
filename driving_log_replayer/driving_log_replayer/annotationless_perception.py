@@ -15,7 +15,6 @@
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
-import sys
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -188,12 +187,12 @@ class Deviation(EvaluationItem):
         threshold_key: DiagValue | None = self.condition.Threshold.get(key)
         # initialize
         if self.received_data.get(key) is None:
-            self.received_data[key] = {"min": sys.float_info.max, "max": 0.0, "mean": 0.0}
+            self.received_data[key] = {"min": 0.0, "max": 0.0, "mean": 0.0}
             self.min_success[key] = True
             self.max_success[key] = True
         rdk = self.received_data[key]
         # add
-        rdk["min"] = min(rdk["min"], values["min"])
+        rdk["min"] = max(rdk["min"], values["min"])
         rdk["max"] = max(rdk["max"], values["max"])
         rdk["mean"] += values["mean"]
         # calc metrics
@@ -207,14 +206,10 @@ class Deviation(EvaluationItem):
             is_success_mean = True  # if threshold mean is not set
             if self.min_success[key] and threshold_key.min is not None:
                 # Once min_success is false, it is not calculated thereafter.
-                self.min_success[key] = (
-                    threshold_key.min * lower <= rdk["min"] <= threshold_key.min * upper
-                )
+                self.min_success[key] = rdk["min"] <= threshold_key.min * upper
             if self.max_success[key] and threshold_key.max is not None:
                 # Once max_success is false, it is not calculated thereafter.
-                self.max_success[key] = (
-                    threshold_key.max * lower <= rdk["max"] <= threshold_key.max * upper
-                )
+                self.max_success[key] = rdk["max"] <= threshold_key.max * upper
             if threshold_key.mean is not None:
                 is_success_mean = threshold_key.mean * lower <= a_mean <= threshold_key.mean * upper
             is_success = self.min_success[key] and self.max_success[key] and is_success_mean

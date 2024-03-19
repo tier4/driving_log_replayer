@@ -23,9 +23,9 @@ Evaluation:
           predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
           predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
           predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
-        PassRange: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+        PassRange: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
       BUS: # classification key
         Threshold:
           # Only lateral_deviation is evaluated.
           lateral_deviation: { max: 0.050 } # Only max is evaluated.
-        PassRange: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+        PassRange: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
