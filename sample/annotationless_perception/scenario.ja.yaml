@@ -7,14 +7,31 @@ VehicleId: default
 LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: annotationless_perception
-  UseCaseFormatVersion: 0.1.0
+  UseCaseFormatVersion: 0.2.0
   Conditions:
-    # Threshold: {} # Metricsを過去に実行したテストのresult.jsonlから指定する場合はここの値は上書きされる。辞書型であれば空でも可。
-    Threshold:
-      lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-      yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
-    PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # threshold * lower <= Σ deviation / len(deviation) <= threshold * upperの条件でテストは合格となる。
+    ClassConditions:
+      # クラス毎の条件を記述する。条件を設定がないクラスが出力された場合はメトリクスだけ計算される。評価には影響しない
+      # サンプルデータではTRUCKのclassも出力されるが条件を記述してないので、TRUCKは必ずSuccessになる
+      # result.jsonlから条件指定を行う場合、ここに記述があるキーのみ更新される。
+      # result.jsonlにTRUCKのメトリクスが出ていても、この例ではTRUCKのキーを指定していないので評価条件には追加されない。
+      CAR: # classification key
+        Threshold:
+          # 記述のないキーについては評価されない（必ず成功になる）
+          lateral_deviation: { max: 0.1912, mean: 0.0077 }
+          yaw_deviation: { max: 3.1411, mean: 0.9474 }
+          predicted_path_deviation_5.00: { max: 16.464, mean: 0.9062 }
+          predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
+          predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
+          predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
+        PassRange:
+          min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
+      BUS: # classification key
+        Threshold:
+          # Only lateral_deviation is evaluated.
+          lateral_deviation: { max: 0.050 } # Only max is evaluated.
+        PassRange:
+          min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]

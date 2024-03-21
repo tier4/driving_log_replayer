@@ -19,6 +19,7 @@ dependencies = [
     "kaleido>=0.2.1",
     "simplejson>=3.19.2",
     "pydantic>=2.6.1",
+    "pytest>=8.1.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"

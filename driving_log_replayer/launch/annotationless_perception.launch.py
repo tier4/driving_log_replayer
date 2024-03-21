@@ -17,6 +17,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
+from launch_ros.descriptions import ParameterValue
 
 import driving_log_replayer.launch_common as cmn
 
@@ -44,7 +45,13 @@ def generate_launch_description() -> launch.LaunchDescription:
         "annotationless_perception",
         addition_parameter={
             "annotationless_threshold_file": LaunchConfiguration("annotationless_threshold_file"),
-            "annotationless_pass_range": LaunchConfiguration("annotationless_pass_range"),
+            # annotationless_pass_range is json format string. Avoid interpreting json format strings as dict
+            # [ERROR] [launch]: Caught exception in launch (see debug for traceback): Allowed value types are bytes, bool, int, float, str, Sequence[bool], Sequence[int], Sequence[float], Sequence[str].
+            # Got <class 'dict'>.If the parameter is meant to be a string, try wrapping it in launch_ros.parameter_descriptions.ParameterValue(value, value_type=str)
+            "annotationless_pass_range": ParameterValue(
+                LaunchConfiguration("annotationless_pass_range"),
+                value_type=str,
+            ),
         },
     )
 

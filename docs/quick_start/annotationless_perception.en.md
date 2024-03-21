@@ -31,5 +31,5 @@
    scenario: sample
    --------------------------------------------------
    TestResult: Passed
-   Failed: AnnotationlessPerception Deviation (Success)
+   Passed: CAR (Success) BUS (Success) TRUCK (NotTested)
    ```
