@@ -37,11 +37,15 @@ Items for which no threshold is set (min, max, mean) are always judged as normal
 
 #### min
 
-If `maximum value of min` <= `threshold * upper_limit`, it is assumed to be normal.
+If `threshold * lower_limit` <= `maximum value of min` <= `threshold * upper_limit`, it is assumed to be normal.
+
+Lower limit recommended to be 0.0
 
 #### max
 
-If `maximum value of max` <= `threshold * upper_limit`, it is assumed to be normal.
+If `threshold * lower_limit` <= `maximum value of max` <= `threshold * upper_limit`, it is assumed to be normal.
+
+Lower limit recommended to be 0.0
 
 #### mean
 
@@ -88,18 +92,24 @@ Evaluation:
       CAR: # classification key
         Threshold:
           # Keys not described will not be evaluated (will always be a success)
-          lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-          predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
-        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0]
+          lateral_deviation: { max: 0.1912, mean: 0.0077 }
+          yaw_deviation: { max: 3.1411, mean: 0.9474 }
+          predicted_path_deviation_5.00: { max: 16.464, mean: 0.9062 }
+          predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
+          predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
+          predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
+        PassRange:
+          min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
       BUS: # classification key
         Threshold:
           # Only lateral_deviation is evaluated.
-          lateral_deviation: { max: 10.0 } # Only max is evaluated.
-        PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0]
+          lateral_deviation: { max: 0.050 } # Only max is evaluated.
+        PassRange:
+          min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
 ```
 
 #### Specify by launch argument
@@ -121,7 +131,7 @@ An image of its use is shown below.
 dlr simulation run -p annotationless_perception -l 'annotationless_threshold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
 
 # example
-dlr simulation run -p annotationless_perception -l 'annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={"CAR":"0.2-1.2","BUS":"0.3-1.3"}'
+dlr simulation run -p annotationless_perception -l 'annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}'
 ```
 
 ##### WebAutoCLI
