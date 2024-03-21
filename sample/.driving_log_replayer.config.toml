@@ -32,3 +32,8 @@ autoware_path = "$HOME/autoware"
 data_directory = "$HOME/driving_log_replayer_data/perception"
 output_directory = "$HOME/driving_log_replayer_output/perception"
 autoware_path = "$HOME/autoware"
+
+[annotationless_perception]
+data_directory = "$HOME/driving_log_replayer_data/annotationless_perception"
+output_directory = "$HOME/driving_log_replayer_output/annotationless_perception"
+autoware_path = "$HOME/autoware"

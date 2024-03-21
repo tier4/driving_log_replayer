@@ -1,0 +1,72 @@
+header:
+  stamp:
+    sec: 1649138857
+    nanosec: 407263017
+  frame_id: ''
+status:
+- level: "\0"
+  name: lateral_deviation
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.000000'
+  - key: max
+    value: '0.000000'
+  - key: mean
+    value: '0.000000'
+- level: "\0"
+  name: yaw_deviation
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.050185'
+  - key: max
+    value: '3.104073'
+  - key: mean
+    value: '1.588328'
+- level: "\0"
+  name: predicted_path_deviation_5.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.000000'
+  - key: max
+    value: '9.122784'
+  - key: mean
+    value: '1.852040'
+- level: "\0"
+  name: predicted_path_deviation_3.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.000000'
+  - key: max
+    value: '4.244334'
+  - key: mean
+    value: '1.024938'
+- level: "\0"
+  name: predicted_path_deviation_2.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.000000'
+  - key: max
+    value: '3.112135'
+  - key: mean
+    value: '0.689176'
+- level: "\0"
+  name: predicted_path_deviation_1.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.000000'
+  - key: max
+    value: '1.721511'
+  - key: mean
+    value: '0.356997'
