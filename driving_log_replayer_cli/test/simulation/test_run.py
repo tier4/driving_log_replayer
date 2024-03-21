@@ -28,4 +28,4 @@ def test_extract_dict_and_string() -> None:
     json_str = '{"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}'
     import json
 
-    dict_arg = json.loads(json_str)
+    json.loads(json_str)  # check valid json string
