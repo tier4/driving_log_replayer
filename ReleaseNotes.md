@@ -4,8 +4,8 @@
 
 Minor Tweak
 
-| Module                      | Feature  | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
-| --------------------------- | -------- | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| Module                      | Feature    | Brief summary                 | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ---------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
 | `annotationless_perception` | evaluation | support object classification | [#377](https://github.com/tier4/driving_log_replayer/pull/377) | RT4-9083 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.14.0
