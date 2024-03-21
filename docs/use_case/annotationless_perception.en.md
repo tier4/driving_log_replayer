@@ -3,7 +3,7 @@
 Evaluate Autoware's recognition features (perception) without annotations using the perception_online_evaluator.
 
 Requires Autoware with the following PR features.
-<https://github.com/autowarefoundation/autoware.universe/pull/6493>
+<https://github.com/autowarefoundation/autoware.universe/pull/6556>
 
 ## Evaluation method
 
@@ -18,19 +18,38 @@ Launching the file executes the following steps:
 
 ## Evaluation results
 
-The results are calculated for each subscription. The format and available states are described below.
+The output topic of perception_online_evaluator is in the form of the following sample.
+[topic sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/diag_topic.txt)
+
+For each subscription, the following judgment results are output for each recognition class.
+
+If all classes are normal, the test is successful.
 
 ### Deviation Normal
 
 The following two values specified in the scenario or launch argument are used to judge
 
 - Threshold
-  - Threshold for judging the success or failure of each item
 - PassRange(Coefficient to correct threshold)
-  - The range between `threshold * lower_limit` and `threshold * upper limit` is considered to pass the test.
 
-Add the min, max, and mean values for each status.name in `/diagnostic/perception_online_evaluator/metrics` and calculate the average value.
-If the `threshold * lower limit` <= `calculated_average` <= `threshold value * upper_limit`, it is assumed to be normal.
+Success or failure is determined for each status.name in `/diagnostic/perception_online_evaluator/metrics` according to the following rules.
+Items for which no threshold is set (min, max, mean) are always judged as normal. Only those items for which a threshold is specified are subject to evaluation.
+
+#### min
+
+If `threshold * lower_limit` <= `maximum value of min` <= `threshold * upper_limit`, it is assumed to be normal.
+
+Lower limit recommended to be 0.0
+
+#### max
+
+If `threshold * lower_limit` <= `maximum value of max` <= `threshold * upper_limit`, it is assumed to be normal.
+
+Lower limit recommended to be 0.0
+
+#### mean
+
+If `threshold * lower_limit` <= `average value of mean` <= `threshold * upper_limit`, it is assumed to be normal.
 
 An illustration is shown below.
 
@@ -63,23 +82,43 @@ The conditions can be given in two ways
 ```yaml
 Evaluation:
   UseCaseName: annotationless_perception
-  UseCaseFormatVersion: 0.1.0
+  UseCaseFormatVersion: 0.2.0
   Conditions:
-    # Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.
-    Threshold:
-      lateral_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-      yaw_deviation: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_5.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_3.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_2.00: { min: 10.0, max: 10.0, mean: 10.0 }
-      predicted_path_deviation_1.00: { min: 10.0, max: 10.0, mean: 10.0 }
-    PassRange: 0.5-1.05 # lower[<=1.0]-upper[>=1.0] # The test will pass under the following `condition threshold * lower <= Σ deviation / len(deviation) <= threshold * upper`
+    ClassConditions:
+      # Describe the conditions for each class. If a class with no conditions is output, only the metrics are calculated. It does not affect the evaluation.
+      # In the sample data, the class of TRUCK is also output, but the condition is not described, so TRUCK is always Success.
+      # When specifying conditions from result.jsonl, only keys described here will be updated.
+      # Even though TRUCK metrics appear in result.jsonl, they are not added to the evaluation condition because the TRUCK key is not specified in this example.
+      CAR: # classification key
+        Threshold:
+          # Keys not described will not be evaluated (will always be a success)
+          lateral_deviation: { max: 0.1912, mean: 0.0077 }
+          yaw_deviation: { max: 3.1411, mean: 0.9474 }
+          predicted_path_deviation_5.00: { max: 16.464, mean: 0.9062 }
+          predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
+          predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
+          predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
+        PassRange:
+          min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
+      BUS: # classification key
+        Threshold:
+          # Only lateral_deviation is evaluated.
+          lateral_deviation: { max: 0.050 } # Only max is evaluated.
+        PassRange:
+          min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
 ```
 
 #### Specify by launch argument
 
 This method is assumed to be used mainly.
-If the file path of result.jsonl output from a past test is specified, the metrics values from past tests can be used as threshold values.
+
+If the file path of result.jsonl output from past tests is specified, the metrics values from past tests are used as threshold values.
+The values are updated from result.jsonl only for the thresholds listed in the scenario.
+
 The passing range can also be specified as an argument.
 
 An image of its use is shown below.
@@ -89,13 +128,16 @@ An image of its use is shown below.
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l "annotationless_thresold_file:=${previous_test_result.jsonl_path},annotationless_pass_range:=${lower-upper}
+dlr simulation run -p annotationless_perception -l 'annotationless_threshold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
+
+# example
+dlr simulation run -p annotationless_perception -l 'annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}'
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides annotationless_thresold_file=${previous_test_result.jsonl_path},annotaionless_pass_rate=${lower-upper}
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides 'annotationless_threshold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
 ```
 
 ##### Autoware Evaluator
@@ -114,7 +156,9 @@ simulations:
         type: simulator/standard1/amd64/medium
       parameters:
         annotationless_threshold_file: ${previous_test_result.jsonl_path}
-        annotationless_pass_range: ${upper-lower}
+        annotationless_pass_range:
+          KEY1: VALUE1
+          KEY2: VALUE2
 ```
 
 ## Arguments passed to logging_simulator.launch
@@ -220,70 +264,74 @@ The format of each frame and the metrics format are shown below.
 
 ```json
 {
-  "Deviation": {
-    "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // The results for Total and Frame are the same. The same values are output to make the data structure the same as other evaluations.
-    "Info": {
-      "lateral_deviation": {
-        "min": "Minimum distance",
-        "max": "Maximum distance",
-        "mean": "Mean distance"
+  "Frame": {
+    "Ego": {},
+    "OBJECT_CLASSIFICATION": {
+      // Recognized class
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // The results for Total and Frame are the same. The same values are output to make the data structure the same as other evaluations.
+      "Info": {
+        "lateral_deviation": {
+          "min": "Minimum distance",
+          "max": "Maximum distance",
+          "mean": "Mean distance"
+        },
+        "yaw_deviation": {
+          "min": "Minimum Angle Difference",
+          "max": "Maximum Angle Difference",
+          "mean": "Mean Angle Difference"
+        },
+        "predicted_path_deviation_5.00": {
+          "min": "Minimum distance",
+          "max": "Maximum distance",
+          "mean": "Mean distance"
+        },
+        "predicted_path_deviation_3.00": {
+          "min": "Minimum distance",
+          "max": "Maximum distance",
+          "mean": "Mean distance"
+        },
+        "predicted_path_deviation_2.00": {
+          "min": "Minimum distance",
+          "max": "Maximum distance",
+          "mean": "Mean distance"
+        },
+        "predicted_path_deviation_1.00": {
+          "min": "Minimum distance",
+          "max": "Maximum distance",
+          "mean": "Mean distance"
+        }
       },
-      "yaw_deviation": {
-        "min": "Minimum Angle Difference",
-        "max": "Maximum Angle Difference",
-        "mean": "Mean Angle Difference"
-      },
-      "predicted_path_deviation_5.00": {
-        "min": "Minimum distance",
-        "max": "Maximum distance",
-        "mean": "Mean distance"
-      },
-      "predicted_path_deviation_3.00": {
-        "min": "Minimum distance",
-        "max": "Maximum distance",
-        "mean": "Mean distance"
-      },
-      "predicted_path_deviation_2.00": {
-        "min": "Minimum distance",
-        "max": "Maximum distance",
-        "mean": "Mean distance"
-      },
-      "predicted_path_deviation_1.00": {
-        "min": "Minimum distance",
-        "max": "Maximum distance",
-        "mean": "Mean distance"
-      }
-    },
-    "Metrics": {
-      "lateral_deviation": {
-        "min": "Average Minimum distance",
-        "max": "Average Maximum distance",
-        "mean": "Average Mean distance"
-      },
-      "yaw_deviation": {
-        "min": "Average Minimum Angle Difference",
-        "max": "Average Maximum Angle Difference",
-        "mean": "Average Mean Angle Difference"
-      },
-      "predicted_path_deviation_5.00": {
-        "min": "Average Minimum distance",
-        "max": "Average Maximum distance",
-        "mean": "Average Mean distance"
-      },
-      "predicted_path_deviation_3.00": {
-        "min": "Average Minimum distance",
-        "max": "Average Maximum distance",
-        "mean": "Average Mean distance"
-      },
-      "predicted_path_deviation_2.00": {
-        "min": "Average Minimum distance",
-        "max": "Average Maximum distance",
-        "mean": "Average Mean distance"
-      },
-      "predicted_path_deviation_1.00": {
-        "min": "Average Minimum distance",
-        "max": "Average Maximum distance",
-        "mean": "Average Mean distance"
+      "Metrics": {
+        "lateral_deviation": {
+          "min": "Maximum value of Minimum distance",
+          "max": "Maximum value of Maximum distance",
+          "mean": "Average value of Mean distance"
+        },
+        "yaw_deviation": {
+          "min": "Maximum value of Minimum Angle Difference",
+          "max": "Maximum value of Maximum Angle Difference",
+          "mean": "Average value of Mean Angle Difference"
+        },
+        "predicted_path_deviation_5.00": {
+          "min": "Maximum value of Minimum distance",
+          "max": "Maximum value of Maximum distance",
+          "mean": "Average value of Mean distance"
+        },
+        "predicted_path_deviation_3.00": {
+          "min": "Maximum value of Minimum distance",
+          "max": "Maximum value of Maximum distance",
+          "mean": "Average value of Mean distance"
+        },
+        "predicted_path_deviation_2.00": {
+          "min": "Maximum value of Minimum distance",
+          "max": "Maximum value of Maximum distance",
+          "mean": "Average value of Mean distance"
+        },
+        "predicted_path_deviation_1.00": {
+          "min": "Maximum value of Minimum distance",
+          "max": "Maximum value of Maximum distance",
+          "mean": "Average value of Mean distance"
+        }
       }
     }
   }

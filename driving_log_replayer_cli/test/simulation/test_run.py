@@ -14,3 +14,18 @@ def test_extract_multiple_args() -> None:
 def test_extract_no_arg() -> None:
     args = extract_arg("not_arg")
     assert args == ""
+
+
+def test_extract_dict_and_string() -> None:
+    args = extract_arg(
+        'annotationless_pass_range:={"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}},annotationless_threshold_file:=/home/autoware/result.jsonl',
+    )
+    assert (
+        args
+        == ' annotationless_pass_range:=\'{"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}\' annotationless_threshold_file:=/home/autoware/result.jsonl'
+    )
+    # confirm json load
+    json_str = '{"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}'
+    import json
+
+    json.loads(json_str)  # check valid json string

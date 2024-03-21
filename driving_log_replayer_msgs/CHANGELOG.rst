@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.14.1 (2024-03-21)
+-------------------
+* feat: `#376 <https://github.com/tier4/driving_log_replayer/issues/376>`_ annotationless support perception class (`#377 <https://github.com/tier4/driving_log_replayer/issues/377>`_)
+  Co-authored-by: Kosuke Takeuchi <kosuke.tnp@gmail.com>
+* Contributors: Hayato Mizushima
+
 1.14.0 (2024-03-07)
 -------------------
 * feat: `#370 <https://github.com/tier4/driving_log_replayer/issues/370>`_ annotation less perception evaluator (`#373 <https://github.com/tier4/driving_log_replayer/issues/373>`_)

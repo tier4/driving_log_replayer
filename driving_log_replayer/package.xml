@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>driving_log_replayer</name>
-  <version>1.14.0</version>
+  <version>1.14.1</version>
   <description>The driving_log_replayer package</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
   <maintainer email="kotaro.uetake@tier4.jp">Kotaro Uetake</maintainer>
@@ -24,11 +24,7 @@
   <depend>driving_log_replayer_msgs</depend>
   <depend>example_interfaces</depend>
   <depend>geometry_msgs</depend>
-  <depend>lanelet2_extension</depend>
   <depend>nav_msgs</depend>
-  <depend>perception_online_evaluator</depend>
-  <depend>rclcpp</depend>
-  <depend>rclcpp_components</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>tf2_geometry_msgs</depend>
@@ -37,9 +33,7 @@
   <depend>tier4_debug_msgs</depend>
   <depend>tier4_localization_msgs</depend>
   <depend>visualization_msgs</depend>
-  <depend>yaml_cpp_vendor</depend>
 
-  <exec_depend>autoware_launch</exec_depend>
   <exec_depend>driving_log_replayer_analyzer</exec_depend>
   <exec_depend>lanelet2_extension_python</exec_depend>
   <exec_depend>perception_eval</exec_depend>
@@ -54,6 +48,9 @@
   <exec_depend>simple_lanelet_loader</exec_depend>
   <exec_depend>tf_transformations</exec_depend>
 
+  <!-- to avoid rosdep install error -->
+  <!-- <exec_depend>autoware_launch</exec_depend> -->
+  <!-- <exec_depend>perception_online_evaluator</exec_depend> -->
   <!-- The version of python3-pydantic is old, so use pip to install it when building with CMake -->
   <!-- <exec_depend>python3-pydantic</exec_depend> -->
 
