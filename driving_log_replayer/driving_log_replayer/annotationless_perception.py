@@ -25,7 +25,6 @@ import simplejson as json
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
 OBJECT_CLASSIFICATION_TUPLE = (
@@ -41,6 +40,9 @@ OBJECT_CLASSIFICATION_TUPLE = (
 
 OBJECT_CLASSIFICATION = Literal[OBJECT_CLASSIFICATION_TUPLE]
 
+METRICS_KEY_TUPLE = ("min", "max", "mean")
+METRICS_KEY = Literal[METRICS_KEY_TUPLE]
+
 
 class DiagValue(BaseModel):
     min: float | None = None
@@ -50,27 +52,36 @@ class DiagValue(BaseModel):
 
 class ClassConditionValue(BaseModel):
     Threshold: dict[str, DiagValue]
-    PassRange: tuple[float, float]
+    PassRange: dict[METRICS_KEY, tuple[float, float]]
 
     @field_validator("PassRange", mode="before")
     @classmethod
-    def validate_pass_range(cls, v: str) -> tuple[number, number]:
-        boundary = 1.0
-        s_lower, s_upper = v.split("-")
-        lower = float(s_lower)
-        upper = float(s_upper)
+    def validate_pass_range(cls, range_dict: dict) -> dict[METRICS_KEY, tuple[float, float]]:
+        rtn_dict = {}
+        for k, v in range_dict.items():
+            if k not in METRICS_KEY_TUPLE:
+                key_error = "pass_range key must be 'min', 'max', and 'mean'"
+                raise ValueError(key_error)
+            boundary = 1.0
+            s_lower, s_upper = v.split("-")
+            lower = float(s_lower)
+            upper = float(s_upper)
 
-        if lower > boundary:
-            lower_error = f"lower value must be <= {boundary}"
-            raise ValueError(lower_error)
-        if upper < boundary:
-            upper_error = f"upper value must be >= {boundary}"
-            raise ValueError(upper_error)
-        return (lower, upper)
+            if lower > boundary:
+                lower_error = f"lower value must be <= {boundary}"
+                raise ValueError(lower_error)
+            if upper < boundary:
+                upper_error = f"upper value must be >= {boundary}"
+                raise ValueError(upper_error)
+            rtn_dict[k] = (lower, upper)
+        return rtn_dict
 
     @classmethod
     def get_default_condition(cls) -> "ClassConditionValue":
-        return ClassConditionValue(Threshold={}, PassRange="0.0-1.0")
+        return ClassConditionValue(
+            Threshold={},
+            PassRange={"min": "0.0-1.0", "max": "0.0-1.0", "mean": "0.5-1.0"},
+        )
 
     def set_threshold(self, threshold_dict: dict[str, dict]) -> None:
         threshold_diag: dict[str, DiagValue] = {}
@@ -91,7 +102,7 @@ class ClassConditionValue(BaseModel):
                 diag_value.mean = None
             self.Threshold[k] = diag_value
 
-    def set_pass_range(self, v: str) -> None:
+    def set_pass_range(self, v: dict) -> None:
         if v != "":  # skip if launch arg is not set
             self.PassRange = ClassConditionValue.validate_pass_range(v)
 
@@ -197,8 +208,7 @@ class Deviation(EvaluationItem):
         rdk["mean"] += values["mean"]
         # calc metrics
         a_mean = rdk["mean"] / self.total
-        lower = self.condition.PassRange[0]
-        upper = self.condition.PassRange[1]
+        pass_range = self.condition.PassRange
         # evaluate
         if threshold_key is None:
             is_success = True  # Calculate metrics only, return always True
@@ -206,12 +216,24 @@ class Deviation(EvaluationItem):
             is_success_mean = True  # if threshold mean is not set
             if self.min_success[key] and threshold_key.min is not None:
                 # Once min_success is false, it is not calculated thereafter.
-                self.min_success[key] = rdk["min"] <= threshold_key.min * upper
+                self.min_success[key] = (
+                    threshold_key.min * pass_range["min"][0]
+                    <= rdk["min"]
+                    <= threshold_key.min * pass_range["min"][1]
+                )
             if self.max_success[key] and threshold_key.max is not None:
                 # Once max_success is false, it is not calculated thereafter.
-                self.max_success[key] = rdk["max"] <= threshold_key.max * upper
+                self.max_success[key] = (
+                    threshold_key.max * pass_range["max"][0]
+                    <= rdk["max"]
+                    <= threshold_key.max * pass_range["max"][1]
+                )
             if threshold_key.mean is not None:
-                is_success_mean = threshold_key.mean * lower <= a_mean <= threshold_key.mean * upper
+                is_success_mean = (
+                    threshold_key.mean * pass_range["mean"][0]
+                    <= a_mean
+                    <= threshold_key.mean * pass_range["mean"][1]
+                )
             is_success = self.min_success[key] and self.max_success[key] and is_success_mean
         return {"min": rdk["min"], "max": rdk["max"], "mean": a_mean}, is_success
 

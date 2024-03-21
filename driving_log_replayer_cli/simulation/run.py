@@ -112,28 +112,31 @@ def extract_arg(launch_args: str) -> str:
     # key value is separated by a comma, but cannot be simply split because value contains a json format string.
     s_key_value: str = ""
     temp_value = ""
-    in_json = False
+    json_count = 0
 
     for char in launch_args:
-        # Nested dict does not work correctly.
         if char == "{":
-            in_json = True
-            # add open single quotation
-            temp_value += "'{"
+            if json_count == 0:
+                # add open single quotation
+                temp_value += "'"
+            temp_value += "{"
+            json_count += 1
             continue
         if char == "}":
-            in_json = False
-            # add close single quotation
-            temp_value += "}'"
+            temp_value += "}"
+            json_count -= 1
+            if json_count == 0:
+                # add close single quotation
+                temp_value += "'"
             continue
-        if char == "," and not in_json:
+        if char == "," and json_count == 0:
             # check temp_value format is key:=value
             if len(temp_value.split(":=")) == 2:  # noqa
                 s_key_value += f" {temp_value}"
             temp_value = ""
         else:
             temp_value += char
-    # last key value not separated by comma add last key value
+    # last key value not separated by comma. add last key value
     if len(temp_value.split(":=")) == 2:  # noqa
         s_key_value += f" {temp_value}"
     return s_key_value

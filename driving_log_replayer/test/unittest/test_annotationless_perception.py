@@ -36,17 +36,27 @@ def test_scenario() -> None:
     assert scenario.Evaluation.Conditions.ClassConditions["BUS"].Threshold == {
         "lateral_deviation": DiagValue(max=0.050),
     }
-    assert scenario.Evaluation.Conditions.ClassConditions["BUS"].PassRange == (0.5, 2.0)
+    assert scenario.Evaluation.Conditions.ClassConditions["BUS"].PassRange == {
+        "min": (0.0, 2.0),
+        "max": (0.0, 2.0),
+        "mean": (0.5, 2.0),
+    }
 
 
 def test_range_validation_upper_limit() -> None:
     with pytest.raises(ValidationError):
-        ClassConditionValue(Threshold={}, PassRange=("0.5-0.95"))
+        ClassConditionValue(
+            Threshold={},
+            PassRange={"min": "0.0-0.95", "max": "0.0-2.0", "mean": "0.5-2.0"},
+        )
 
 
 def test_range_validation_lower_limit() -> None:
     with pytest.raises(ValidationError):
-        ClassConditionValue(Threshold={}, PassRange=("1.05-1.5"))
+        ClassConditionValue(
+            Threshold={},
+            PassRange={"min": "1.1-2.0", "max": "0.0-2.0", "mean": "0.5-2.0"},
+        )
 
 
 def test_path_with_empty_str() -> None:
@@ -89,8 +99,8 @@ def test_update_threshold_from_file() -> None:
 
 def test_set_pass_range() -> None:
     class_cond = ClassConditionValue.get_default_condition()
-    class_cond.set_pass_range("0.4-1.1")
-    assert class_cond.PassRange == (0.4, 1.1)
+    class_cond.set_pass_range({"min": "0.0-1.1", "max": "0.0-1.2", "mean": "0.4-1.3"})
+    assert class_cond.PassRange == {"min": (0.0, 1.1), "max": (0.0, 1.2), "mean": (0.4, 1.3)}
 
 
 def test_set_pass_range_from_launch_arg() -> None:
@@ -98,17 +108,23 @@ def test_set_pass_range_from_launch_arg() -> None:
         "annotationless_perception",
         AnnotationlessPerceptionScenario,
     )
-    scenario.Evaluation.Conditions.set_pass_range('{"CAR":"0.3-1.2","BUS":"0.2-1.3"}')
+    scenario.Evaluation.Conditions.set_pass_range(
+        '{"CAR":{"min":"0.3-1.2","max":"0.3-1.2","mean":"0.3-1.2"},"BUS":{"max":"0.2-1.3"}}',
+    )
     cond = scenario.Evaluation.Conditions
-    assert cond.ClassConditions["CAR"].PassRange == (0.3, 1.2)
-    assert cond.ClassConditions["BUS"].PassRange == (0.2, 1.3)
+    assert cond.ClassConditions["CAR"].PassRange == {
+        "min": (0.3, 1.2),
+        "max": (0.3, 1.2),
+        "mean": (0.3, 1.2),
+    }
+    assert cond.ClassConditions["BUS"].PassRange == {"max": (0.2, 1.3)}
 
 
 @pytest.fixture()
 def create_deviation() -> Deviation:
     condition = ClassConditionValue(
         Threshold={"lateral_deviation": DiagValue(min=1.0, max=10.0, mean=5.0)},
-        PassRange="0.95-1.05",
+        PassRange={"min": "0.0-1.05", "max": "0.0-1.05", "mean": "0.95-1.05"},
     )
     return Deviation(
         name="CAR",
