@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.13">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.14">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.10ba22f1.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -1669,7 +1669,7 @@
 <h1 id="evaluate-annotationless-perception">Evaluate Annotationless Perception<a class="headerlink" href="#evaluate-annotationless-perception" title="Permanent link">#</a></h1>
 <p>Evaluate Autoware's recognition features (perception) without annotations using the perception_online_evaluator.</p>
 <p>Requires Autoware with the following PR features.
-<a href="https://github.com/autowarefoundation/autoware.universe/pull/6493">https://github.com/autowarefoundation/autoware.universe/pull/6493</a></p>
+<a href="https://github.com/autowarefoundation/autoware.universe/pull/6556">https://github.com/autowarefoundation/autoware.universe/pull/6556</a></p>
 <h2 id="evaluation-method">Evaluation method<a class="headerlink" href="#evaluation-method" title="Permanent link">#</a></h2>
 <p>The annotationless_perception evaluation is executed by launching the <code>annotationless_perception.launch.py</code> file.
 Launching the file executes the following steps:</p>
@@ -1681,21 +1681,26 @@ Launching the file executes the following steps:</p>
 <li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
 <h2 id="evaluation-results">Evaluation results<a class="headerlink" href="#evaluation-results" title="Permanent link">#</a></h2>
-<p>The results are calculated for each subscription. The format and available states are described below.</p>
+<p>The output topic of perception_online_evaluator is in the form of the following sample.
+<a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/diag_topic.txt">topic sample</a></p>
+<p>For each subscription, the following judgment results are output for each recognition class.</p>
+<p>If all classes are normal, the test is successful.</p>
 <h3 id="deviation-normal">Deviation Normal<a class="headerlink" href="#deviation-normal" title="Permanent link">#</a></h3>
 <p>The following two values specified in the scenario or launch argument are used to judge</p>
 <ul>
-<li>Threshold<ul>
-<li>Threshold for judging the success or failure of each item</li>
+<li>Threshold</li>
+<li>PassRange(Coefficient to correct threshold)</li>
 </ul>
-</li>
-<li>PassRange(Coefficient to correct threshold)<ul>
-<li>The range between <code>threshold * lower_limit</code> and <code>threshold * upper limit</code> is considered to pass the test.</li>
-</ul>
-</li>
-</ul>
-<p>Add the min, max, and mean values for each status.name in <code>/diagnostic/perception_online_evaluator/metrics</code> and calculate the average value.
-If the <code>threshold * lower limit</code> &lt;= <code>calculated_average</code> &lt;= <code>threshold value * upper_limit</code>, it is assumed to be normal.</p>
+<p>Success or failure is determined for each status.name in <code>/diagnostic/perception_online_evaluator/metrics</code> according to the following rules.
+Items for which no threshold is set (min, max, mean) are always judged as normal. Only those items for which a threshold is specified are subject to evaluation.</p>
+<h4 id="min">min<a class="headerlink" href="#min" title="Permanent link">#</a></h4>
+<p>If <code>threshold * lower_limit</code> &lt;= <code>maximum value of min</code> &lt;= <code>threshold * upper_limit</code>, it is assumed to be normal.</p>
+<p>Lower limit recommended to be 0.0</p>
+<h4 id="max">max<a class="headerlink" href="#max" title="Permanent link">#</a></h4>
+<p>If <code>threshold * lower_limit</code> &lt;= <code>maximum value of max</code> &lt;= <code>threshold * upper_limit</code>, it is assumed to be normal.</p>
+<p>Lower limit recommended to be 0.0</p>
+<h4 id="mean">mean<a class="headerlink" href="#mean" title="Permanent link">#</a></h4>
+<p>If <code>threshold * lower_limit</code> &lt;= <code>average value of mean</code> &lt;= <code>threshold * upper_limit</code>, it is assumed to be normal.</p>
 <p>An illustration is shown below.</p>
 <p><img alt="metrics" src="../images/annotationless_metrics.drawio.svg" /></p>
 <h3 id="deviation-error">Deviation Error<a class="headerlink" href="#deviation-error" title="Permanent link">#</a></h3>
@@ -1736,29 +1741,50 @@ If the <code>threshold * lower limit</code> &lt;= <code>calculated_average</code
 <h4 id="describe-in-scenario">Describe in scenario<a class="headerlink" href="#describe-in-scenario" title="Permanent link">#</a></h4>
 <div class="highlight"><pre><span></span><code><span class="nt">Evaluation</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">UseCaseName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">annotationless_perception</span>
-<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1.0</span>
+<span class="w">  </span><span class="nt">UseCaseFormatVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2.0</span>
 <span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<span class="w">    </span><span class="c1"># Threshold: {} # If Metrics are specified from result.jsonl of a previous test, the value here will be overwritten. If it is a dictionary type, it can be empty.</span>
-<span class="w">    </span><span class="nt">Threshold</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">lateral_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">      </span><span class="nt">yaw_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">      </span><span class="nt">predicted_path_deviation_5.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">      </span><span class="nt">predicted_path_deviation_3.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">      </span><span class="nt">predicted_path_deviation_2.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">      </span><span class="nt">predicted_path_deviation_1.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> min</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">10.0</span><span class="w"> </span><span class="p p-Indicator">}</span>
-<span class="w">    </span><span class="nt">PassRange</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5-1.05</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0] # The test will pass under the following `condition threshold * lower &lt;= Σ deviation / len(deviation) &lt;= threshold * upper`</span>
+<span class="w">    </span><span class="nt">ClassConditions</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># Describe the conditions for each class. If a class with no conditions is output, only the metrics are calculated. It does not affect the evaluation.</span>
+<span class="w">      </span><span class="c1"># In the sample data, the class of TRUCK is also output, but the condition is not described, so TRUCK is always Success.</span>
+<span class="w">      </span><span class="c1"># When specifying conditions from result.jsonl, only keys described here will be updated.</span>
+<span class="w">      </span><span class="c1"># Even though TRUCK metrics appear in result.jsonl, they are not added to the evaluation condition because the TRUCK key is not specified in this example.</span>
+<span class="w">      </span><span class="nt">CAR</span><span class="p">:</span><span class="w"> </span><span class="c1"># classification key</span>
+<span class="w">        </span><span class="nt">Threshold</span><span class="p">:</span>
+<span class="w">          </span><span class="c1"># Keys not described will not be evaluated (will always be a success)</span>
+<span class="w">          </span><span class="nt">lateral_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">0.1912</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">0.0077</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">yaw_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">3.1411</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">0.9474</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">predicted_path_deviation_5.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">16.464</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">0.9062</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">predicted_path_deviation_3.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">8.3292</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">0.4893</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">predicted_path_deviation_2.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">5.3205</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">0.3109</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">predicted_path_deviation_1.00</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">2.5231</span><span class="p p-Indicator">,</span><span class="nt"> mean</span><span class="p">:</span><span class="w"> </span><span class="nv">0.1544</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="nt">PassRange</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0-2.0</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0]</span>
+<span class="w">          </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0-2.0</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0]</span>
+<span class="w">          </span><span class="nt">mean</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5-2.0</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0]</span>
+<span class="w">      </span><span class="nt">BUS</span><span class="p">:</span><span class="w"> </span><span class="c1"># classification key</span>
+<span class="w">        </span><span class="nt">Threshold</span><span class="p">:</span>
+<span class="w">          </span><span class="c1"># Only lateral_deviation is evaluated.</span>
+<span class="w">          </span><span class="nt">lateral_deviation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> max</span><span class="p">:</span><span class="w"> </span><span class="nv">0.050</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="c1"># Only max is evaluated.</span>
+<span class="w">        </span><span class="nt">PassRange</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">min</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0-2.0</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0]</span>
+<span class="w">          </span><span class="nt">max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0-2.0</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0]</span>
+<span class="w">          </span><span class="nt">mean</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5-2.0</span><span class="w"> </span><span class="c1"># lower[&lt;=1.0]-upper[&gt;=1.0]</span>
 </code></pre></div>
 <h4 id="specify-by-launch-argument">Specify by launch argument<a class="headerlink" href="#specify-by-launch-argument" title="Permanent link">#</a></h4>
-<p>This method is assumed to be used mainly.
-If the file path of result.jsonl output from a past test is specified, the metrics values from past tests can be used as threshold values.
-The passing range can also be specified as an argument.</p>
+<p>This method is assumed to be used mainly.</p>
+<p>If the file path of result.jsonl output from past tests is specified, the metrics values from past tests are used as threshold values.
+The values are updated from result.jsonl only for the thresholds listed in the scenario.</p>
+<p>The passing range can also be specified as an argument.</p>
 <p>An image of its use is shown below.</p>
 <p><img alt="threshold" src="../images/annotationless_threshold.drawio.svg" /></p>
 <h5 id="driving-log-replayer-cli">driving-log-replayer-cli<a class="headerlink" href="#driving-log-replayer-cli" title="Permanent link">#</a></h5>
-<div class="highlight"><pre><span></span><code>dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;annotationless_thresold_file:=</span><span class="si">${</span><span class="nv">previous_test_result</span><span class="p">.jsonl_path</span><span class="si">}</span><span class="s2">,annotationless_pass_range:=</span><span class="si">${</span><span class="nv">lower</span><span class="p">-upper</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code>dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-l<span class="w"> </span><span class="s1">&#39;annotationless_threshold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={&quot;KEY1&quot;:VALUE1&quot;[,&quot;KEY2&quot;:&quot;VALUE2&quot;...]}&#39;</span>
+
+<span class="c1"># example</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-l<span class="w"> </span><span class="s1">&#39;annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={&quot;CAR&quot;:{&quot;min&quot;:&quot;0.0-1.1&quot;,&quot;max&quot;:&quot;0.0-1.2&quot;,&quot;mean&quot;:&quot;0.5-1.3&quot;},&quot;BUS&quot;:{&quot;min&quot;:&quot;0.0-1.1&quot;,&quot;max&quot;:&quot;0.0-1.2&quot;,&quot;mean&quot;:&quot;0.5-1.3&quot;}}&#39;</span>
 </code></pre></div>
 <h5 id="webautocli">WebAutoCLI<a class="headerlink" href="#webautocli" title="Permanent link">#</a></h5>
-<div class="highlight"><pre><span></span><code>webauto<span class="w"> </span>ci<span class="w"> </span>scenario<span class="w"> </span>run<span class="w"> </span>--project-id<span class="w"> </span><span class="si">${</span><span class="nv">project</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-version-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-version-id</span><span class="si">}</span><span class="w"> </span>--simulator-parameter-overrides<span class="w"> </span><span class="nv">annotationless_thresold_file</span><span class="o">=</span><span class="si">${</span><span class="nv">previous_test_result</span><span class="p">.jsonl_path</span><span class="si">}</span>,annotaionless_pass_rate<span class="o">=</span><span class="si">${</span><span class="nv">lower</span><span class="p">-upper</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code>webauto<span class="w"> </span>ci<span class="w"> </span>scenario<span class="w"> </span>run<span class="w"> </span>--project-id<span class="w"> </span><span class="si">${</span><span class="nv">project</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-id</span><span class="si">}</span><span class="w"> </span>--scenario-version-id<span class="w"> </span><span class="si">${</span><span class="nv">scenario</span><span class="p">-version-id</span><span class="si">}</span><span class="w"> </span>--simulator-parameter-overrides<span class="w"> </span><span class="s1">&#39;annotationless_threshold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={&quot;KEY1&quot;:VALUE1&quot;[,&quot;KEY2&quot;:&quot;VALUE2&quot;...]}&#39;</span>
 </code></pre></div>
 <h5 id="autoware-evaluator">Autoware Evaluator<a class="headerlink" href="#autoware-evaluator" title="Permanent link">#</a></h5>
 <p>Add to parameters in the simulator configuration in <code>.webauto-ci.yml</code>.</p>
@@ -1773,7 +1799,9 @@ The passing range can also be specified as an argument.</p>
 <span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simulator/standard1/amd64/medium</span>
 <span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">annotationless_threshold_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${previous_test_result.jsonl_path}</span>
-<span class="w">        </span><span class="nt">annotationless_pass_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${upper-lower}</span>
+<span class="w">        </span><span class="nt">annotationless_pass_range</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">KEY1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VALUE1</span>
+<span class="w">          </span><span class="nt">KEY2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VALUE2</span>
 </code></pre></div>
 <h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
@@ -1942,70 +1970,74 @@ The following parameters are set to <code>false</code>:</p>
 <p>The format of each frame and the metrics format are shown below.
 <strong>NOTE: common part of the result file format, which has already been explained, is omitted.</strong></p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;Deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="c1">// The results for Total and Frame are the same. The same values are output to make the data structure the same as other evaluations.</span>
-<span class="w">    </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;lateral_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">  </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Ego&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">&quot;OBJECT_CLASSIFICATION&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// Recognized class</span>
+<span class="w">      </span><span class="nt">&quot;Result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;Total&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;Frame&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Success or Fail&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="c1">// The results for Total and Frame are the same. The same values are output to make the data structure the same as other evaluations.</span>
+<span class="w">      </span><span class="nt">&quot;Info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;lateral_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;yaw_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum Angle Difference&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum Angle Difference&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean Angle Difference&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;predicted_path_deviation_5.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;predicted_path_deviation_3.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;predicted_path_deviation_2.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;predicted_path_deviation_1.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;yaw_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum Angle Difference&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum Angle Difference&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean Angle Difference&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_5.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_3.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_2.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_1.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Mean distance&quot;</span>
-<span class="w">      </span><span class="p">}</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;Metrics&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;lateral_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;yaw_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum Angle Difference&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum Angle Difference&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean Angle Difference&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_5.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_3.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_2.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
-<span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;predicted_path_deviation_1.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Minimum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Maximum distance&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average Mean distance&quot;</span>
+<span class="w">      </span><span class="nt">&quot;Metrics&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;lateral_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average value of Mean distance&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;yaw_deviation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Minimum Angle Difference&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Maximum Angle Difference&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average value of Mean Angle Difference&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;predicted_path_deviation_5.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average value of Mean distance&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;predicted_path_deviation_3.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average value of Mean distance&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;predicted_path_deviation_2.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average value of Mean distance&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;predicted_path_deviation_1.00&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Minimum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Maximum value of Maximum distance&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;mean&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Average value of Mean distance&quot;</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
@@ -2113,7 +2145,7 @@ The following parameters are set to <code>false</code>:</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
+      <script src="../../assets/javascripts/bundle.bd41221c.min.js"></script>
       
     
   </body>
