@@ -16,6 +16,7 @@
 from dataclasses import dataclass
 import re
 from typing import ClassVar
+from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
@@ -23,7 +24,6 @@ from diagnostic_msgs.msg import KeyValue
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 from pydantic import BaseModel
-from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
@@ -90,9 +90,9 @@ class PerformanceDiagScenario(Scenario):
 class Visibility(EvaluationItem):
     name: str = "Visibility"
     success: bool = True
-    REGEX_VISIBILITY_DIAG_NAME: ClassVar[
-        str
-    ] = "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
+    REGEX_VISIBILITY_DIAG_NAME: ClassVar[str] = (
+        "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
+    )
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
     def __post_init__(self) -> None:
@@ -158,9 +158,9 @@ class Visibility(EvaluationItem):
 class Blockage(EvaluationItem):
     success: bool = True
     # sample /autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar right_upper: blockage_validation
-    BLOCKAGE_DIAG_BASE_NAME: ClassVar[
-        str
-    ] = "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar "
+    BLOCKAGE_DIAG_BASE_NAME: ClassVar[str] = (
+        "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar "
+    )
     BLOCKAGE_DIAG_POSTFIX: ClassVar[str] = ": blockage_validation"
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 

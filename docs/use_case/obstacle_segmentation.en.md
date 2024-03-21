@@ -22,12 +22,25 @@ Multiple annotation tools can be used as long as a conversion tool can be create
 The obstacle segmentation evaluation is executed by launching the `obstacle_segmentation.launch.py` file.
 Launching the file executes the following steps:
 
-1. Launch C++ evaluation node, Python evaluation node, launch `logging_simulator.launch` file, and execute `ros2 bag play` command.
+1. Execute launch of evaluation node (`obstacle_segmentation_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
 2. Autoware receives sensor data output from input rosbag and outputs `/perception/obstacle_segmentation/pointcloud` topic.
-3. The C++ evaluation node subscribes `/perception/obstacle_segmentation/pointcloud` topic and calculates the polygon of the non-detection area at the time specified in the header.
-4. The non-detection area polygon along with a pointcloud is published to `/driving_log_replayer/obstacle_segmentation/input` topic.
-5. Python evaluation node subscribes `/driving_log_replayer/obstacle_segmentation/input` and evaluates data. The result is dumped into a file.
-6. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
+3. The evaluation node subscribes `/perception/obstacle_segmentation/pointcloud` topic and calculates the polygon of the non-detection area at the time specified in the header.
+4. The evaluation node passes the point cloud and the polygon of the non-detected area to perception_eval for evaluation. The result is dumped into a file.
+5. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
+
+### How to calculate polygon for non-detectable area
+
+The non-detect area is calculated as the area where the polygon given in the scenario overlaps with the road_lanelet.
+It is calculated according to the following steps:
+
+1. get the transform of map_to_base_link at the time of the header.stamp in pointcloud, and transform the polygon to the map coordinate system.
+2. get the road_lanelet in the range of search_range (see the figure below) from the point where the vehicle is.
+3. take the intersection of the road_lanelet and polygon obtained in step 2.
+4. return the array of polygons obtained in step 3 to the base_link coordinate system (to match the coordinate system to filter the pointcloud).
+
+![search_range](./images/search_range.jpg)
+
+In step 2, by narrowing down to the lanelets in the range where polygons can exist, the intersection process with lanelets that are obvious to return empty polygons in step 3 is omitted.
 
 ## Evaluation Result
 
@@ -51,7 +64,7 @@ The detection state is `Error` when neither conditions for `Normal` nor `Warning
 
 ### Non-Detection Normal
 
-The state is `Normal` when no point is contained in the non-detection area, which is calculated by the C++ node in step 3 of the evaluation method.
+The state is `Normal` when no point is contained in the non-detection area, which is calculated by the node in step 3 of the evaluation method.
 
 ### Non-Detection Error
 
@@ -65,21 +78,19 @@ Subscribed topics:
 | ----------------------------------------------- | -------------------------------------------- |
 | /perception/obstacle_segmentation/pointcloud    | sensor_msgs::msg::PointCloud2                |
 | /diagnostics_agg                                | diagnostic_msgs::msg::DiagnosticArray        |
-| /map/vector_map                                 | autoware_auto_mapping_msgs::msg::HADMapBin   |
 | /tf                                             | tf2_msgs/msg/TFMessage                       |
 | /planning/scenario_planning/status/stop_reasons | tier4_planning_msgs::msg::StopReasonArray    |
 | /planning/scenario_planning/trajectory          | autoware_auto_planning_msgs::msg::Trajectory |
 
 Published topics:
 
-| Topic name                                        | Data type                                                |
-| ------------------------------------------------- | -------------------------------------------------------- |
-| /driving_log_replayer/obstacle_segmentation/input | driving_log_replayer_msgs::msg:ObstacleSegmentationInput |
-| /driving_log_replayer/marker/detection            | visualization_msgs::msg::MarkerArray                     |
-| /driving_log_replayer/marker/non_detection        | visualization_msgs::msg::MarkerArray                     |
-| /driving_log_replayer/pcd/detection               | sensor_msgs::msg::PointCloud2                            |
-| /driving_log_replayer/pcd/non_detection           | sensor_msgs::msg::PointCloud2                            |
-| /planning/mission_planning/goal                   | geometry_msgs::msg::PoseStamped                          |
+| Topic name                                 | Data type                            |
+| ------------------------------------------ | ------------------------------------ |
+| /driving_log_replayer/marker/detection     | visualization_msgs::msg::MarkerArray |
+| /driving_log_replayer/marker/non_detection | visualization_msgs::msg::MarkerArray |
+| /driving_log_replayer/pcd/detection        | sensor_msgs::msg::PointCloud2        |
+| /driving_log_replayer/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
+| /planning/mission_planning/goal            | geometry_msgs::msg::PoseStamped      |
 
 ## Arguments passed to logging_simulator.launch
 
@@ -98,39 +109,35 @@ State the information required to run the simulation.
 Must contain the required topics in `t4_dataset` format.
 
 The vehicle's ECU CAN and sensors data topics are required for the evaluation to be run correctly.
-The following example shows the topic list available in evaluation input rosbag when multiple LiDARs and Cameras are used in a real-world vehicle configuration.
+The following example shows the topic list available in evaluation input rosbag when multiple LiDARs.
 
-| Topic name                                           | Data type                                    |
-| ---------------------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
-| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                  |
-| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
-| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                    |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                        |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                          |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                   |
-| /tf                                                  | tf2_msgs/msg/TFMessage                       |
+| Topic name                         | Data type                                    |
+| ---------------------------------- | -------------------------------------------- |
+| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /localization/kinematic_state      | Type: nav_msgs/msg/Odometry                  |
+| /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
+| /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
+| /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
+| /sensing/imu/tamagawa/imu_raw      | sensor_msgs/msg/Imu                          |
+| /sensing/lidar/\*/velodyne_packets | velodyne_msgs/VelodyneScan                   |
+| /tf                                | tf2_msgs/msg/TFMessage                       |
 
 The vehicle topics can be included instead of CAN.
 
-| Topic name                                           | Data type                                           |
-| ---------------------------------------------------- | --------------------------------------------------- |
-| /localization/kinematic_state                        | Type: nav_msgs/msg/Odometry                         |
-| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
-| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
-| /tf                                                  | tf2_msgs/msg/TFMessage                              |
-| /vehicle/status/control_mode                         | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
-| /vehicle/status/gear_status                          | autoware_auto_vehicle_msgs/msg/GearReport           |
-| /vehicle/status/steering_status                      | autoware_auto_vehicle_msgs/SteeringReport           |
-| /vehicle/status/turn_indicators_status               | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
-| /vehicle/status/velocity_status                      | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+| Topic name                             | Data type                                           |
+| -------------------------------------- | --------------------------------------------------- |
+| /localization/kinematic_state          | Type: nav_msgs/msg/Odometry                         |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
+| /tf                                    | tf2_msgs/msg/TFMessage                              |
+| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
 
 ### Topics that must not be included in the input rosbag
 

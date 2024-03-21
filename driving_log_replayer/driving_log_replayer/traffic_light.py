@@ -15,11 +15,11 @@
 from dataclasses import dataclass
 import logging
 from pathlib import Path
+from typing import Literal
 
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
 import simplejson as json
-from typing_extensions import Literal
 
 from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.result import EvaluationItem
@@ -85,14 +85,14 @@ class Perception(EvaluationItem):
     def __post_init__(self) -> None:
         self.condition: Conditions
         self.criteria: PerceptionCriteria = PerceptionCriteria(
-            method=self.condition.CriteriaMethod,
-            level=self.condition.CriteriaLevel,
+            methods=self.condition.CriteriaMethod,
+            levels=self.condition.CriteriaLevel,
         )
 
     def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
         self.total += 1
         frame_success = "Fail"
-        result = self.criteria.get_result(frame)
+        result, _ = self.criteria.get_result(frame)
 
         if result.is_success():
             self.passed += 1

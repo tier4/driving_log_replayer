@@ -36,5 +36,5 @@ analysis, config, data に use_case_name.py ファイルを追加する。
 ## 使い方
 
 ```shell
-dlr_analyzer analysis ${use-case-name} ${result.jsonl_path} [-c ${config_path}]
+dlr-analyzer analysis ${use-case-name} ${result.jsonl_path} [-c ${config_path}]
 ```

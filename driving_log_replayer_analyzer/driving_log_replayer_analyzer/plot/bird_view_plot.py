@@ -86,6 +86,7 @@ class BirdViewPlot(PlotBase):
             xlabel (str, optional): x軸のラベル. Defaults to "".
             ylabel (str, optional): y軸のラベル. Defaults to "".
             origin (bool, optional): 原点中心にする場合はTrue. Defaults to True.
+
         """
         self._fig = px.scatter(
             self._df,
@@ -126,6 +127,7 @@ class BirdViewPlot(PlotBase):
             xlabel (str, optional): x軸のラベル. Defaults to "".
             ylabel (str, optional): y軸のラベル. Defaults to "".
             origin (bool, optional): 原点中心にする場合はTrue. Defaults to True.
+
         """
         # hover dataをdfから抽出
         hover_list = self._get_hover_column()

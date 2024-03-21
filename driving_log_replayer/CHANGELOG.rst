@@ -2,6 +2,89 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.14.0 (2024-03-07)
+-------------------
+* feat: `#370 <https://github.com/tier4/driving_log_replayer/issues/370>`_ annotation less perception evaluator (`#373 <https://github.com/tier4/driving_log_replayer/issues/373>`_)
+* Contributors: Hayato Mizushima
+
+1.13.4 (2024-02-28)
+-------------------
+* feat: filter only lanelets close to ego (`#366 <https://github.com/tier4/driving_log_replayer/issues/366>`_)
+* chore: Delete confusing comments (`#371 <https://github.com/tier4/driving_log_replayer/issues/371>`_)
+* Contributors: Hayato Mizushima
+
+1.13.3 (2024-02-28)
+-------------------
+* fix: add handling of cases where non_detection is disabled (`#368 <https://github.com/tier4/driving_log_replayer/issues/368>`_)
+* docs: update obstacle_segmentation document (`#367 <https://github.com/tier4/driving_log_replayer/issues/36y>`_)
+* chore: unit test (`#364 <https://github.com/tier4/driving_log_replayer/issues/364>`_)
+* Contributors: Hayato Mizushima
+
+1.13.2 (2024-02-21)
+-------------------
+* feat: drop concatenated/pointcloud (`#362 <https://github.com/tier4/driving_log_replayer/issues/362>`_)
+* chore: add unit test (`#361 <https://github.com/tier4/driving_log_replayer/issues/361>`_)
+* Contributors: Hayato Mizushima
+
+1.13.1 (2024-02-16)
+-------------------
+* feat: rye (`#359 <https://github.com/tier4/driving_log_replayer/issues/359>`_)
+* Contributors: Hayato Mizushima
+
+1.13.0 (2024-02-15)
+-------------------
+* feat: `#348 <https://github.com/tier4/driving_log_replayer/issues/348>`_ use lanelet2 extension python (`#356 <https://github.com/tier4/driving_log_replayer/issues/356>`_)
+* Contributors: Hayato Mizushima
+
+1.12.5 (2024-02-14)
+-------------------
+* chore: record tracking delay in perception sim (`#357 <https://github.com/tier4/driving_log_replayer/issues/357>`_)
+* Contributors: Yoshi Ri
+
+1.12.4 (2024-02-09)
+-------------------
+* feat(traffic_light): change recorded topics (`#353 <https://github.com/tier4/driving_log_replayer/issues/353>`_)
+* Contributors: kminoda
+
+1.12.3 (2024-02-08)
+-------------------
+* chore: update ci (`#351 <https://github.com/tier4/driving_log_replayer/issues/351>`_)
+* Contributors: Hayato Mizushima
+
+1.12.2 (2024-02-08)
+-------------------
+* feat: enable to interpolate gt when scenario is tracking (`#349 <https://github.com/tier4/driving_log_replayer/issues/349>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Yoshi Ri
+
+1.12.1 (2024-01-23)
+-------------------
+* chore: update rviz (`#346 <https://github.com/tier4/driving_log_replayer/issues/346>`_)
+* Contributors: Hayato Mizushima
+
+1.12.0 (2024-01-15)
+-------------------
+* feat: perception criteria upper limit (`#344 <https://github.com/tier4/driving_log_replayer/issues/344>`_)
+* feat!: criteria per distance (`#339 <https://github.com/tier4/driving_log_replayer/issues/339>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Hayato Mizushima, Kotaro Uetake
+
+1.11.1 (2023-12-20)
+-------------------
+* feat: add maph criteria (`#337 <https://github.com/tier4/driving_log_replayer/issues/337>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: kminoda
+
+1.11.0 (2023-12-19)
+-------------------
+* feat: cli allow arbitrary arguments (`#333 <https://github.com/tier4/driving_log_replayer/issues/333>`_)
+* Contributors: Hayato Mizushima
+
+1.10.6 (2023-12-15)
+-------------------
+* fix: `#331 <https://github.com/tier4/driving_log_replayer/issues/331>`_ check footprint length (`#332 <https://github.com/tier4/driving_log_replayer/issues/332>`_)
+* Contributors: Hayato Mizushima
+
 1.10.5 (2023-12-08)
 -------------------
 * chore: Stop PLAYER after standing for 1 second.

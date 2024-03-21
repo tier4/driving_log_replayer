@@ -3,7 +3,7 @@ from pathlib import Path
 
 from pydantic import BaseModel
 from pydantic import field_serializer
-from pydantic import validator
+from pydantic import field_validator
 import toml
 
 from driving_log_replayer_cli.core.exception import UserError
@@ -16,16 +16,18 @@ class Config(BaseModel):
     output_directory: Path
     autoware_path: Path
 
-    @validator("data_directory", "autoware_path")
-    def validate_path(cls, v: str) -> Path:  # noqa
+    @field_validator("data_directory", "autoware_path", mode="before")
+    @classmethod
+    def validate_path(cls, v: str) -> Path:
         normal_path = Path(expandvars(v))
         if normal_path.exists():
             return normal_path
         err_msg = f"{v} is not valid path"
         raise UserError(err_msg)
 
-    @validator("output_directory")
-    def validate_out_dir(cls, v: str) -> Path:  # noqa
+    @field_validator("output_directory", mode="before")
+    @classmethod
+    def validate_out_dir(cls, v: str) -> Path:
         normal_path = Path(expandvars(v))
         normal_path.mkdir(parents=True, exist_ok=True)
         if normal_path.exists():

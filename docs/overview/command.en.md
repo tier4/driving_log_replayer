@@ -43,14 +43,95 @@ Available commands to run the Autoware evaluation:
 # simulation run, both jsonl and json result files are output
 dlr simulation run -p ${profile}
 
-# simulation run, do not convert jsonl to json
-dlr simulation run -p ${profile} --no-json
-
 # Check results and display summary of result files under output_directory
 dlr simulation show-result ${output_directory}
 
 # Convert result files to json
 dlr simulation convert-result ${output_directory}
+```
+
+#### dlr simulation run launch argument option
+
+The driving_log_replayer cli reads the necessary launch arguments such as sensor_model from the scenario file and generates the launch command.
+On the other hand, launch arguments that you want to change at runtime, such as bag playback speed, can be specified by passing them as options.
+Multiple arguments can be specified by arranging them in a comma-separated list.
+
+An example is shown below.
+
+```shell
+# The playback speed of bag, i.e., simulation time, is set to 0.5x speed.
+dlr simulation run -p default -l "play_rate:=0.5"
+
+# Set bag playback speed to 0.5x and input_pointcloud to /sensing/lidar/concatenated/pointcloud
+dlr simulation run -p default -l "play_rate:=0.5,input_pointcloud:=/sensing/lidar/concatenated/pointcloud"
+
+# Set perception_mode to camera_lidar_fusion
+dlr simulation run -p default -l "perception_mode:=camera_lidar_fusion"
+```
+
+The arguments that can be specified can be displayed by using the -s option of ros2 launch.
+
+```shell
+# ❯ ros2 launch driving_log_replayer ${use_case}.launch.py -s
+❯ ros2 launch driving_log_replayer localization.launch.py -s
+Arguments (pass arguments as '<name>:=<value>'):
+
+    'with_autoware':
+        Whether to launch autoware or not
+        (default: 'true')
+
+    'scenario_path':
+        scenario path
+...
+```
+
+However, some arguments are fixed on the driving_log_replayer side so that they cannot be inconsistently set, such as localization:=false in the localization evaluation, even if they are displayed as launch arguments.
+Fixed arguments are ignored even if specified. See the following file for fixed arguments.
+
+```shell
+get_autoware_launch fucntion in driving_log_replayer/driving_log_replayer/launch_common.py　
+argument of get_autoware_launch in driving_log_replayer/launch/${use_case}.launch.py
+```
+
+#### Files created by simulation run
+
+When the simulation run command is executed, a run time directory is created in the output folder of the profile, and the files are output under the directory.
+An example of the output file is shown below.
+
+```shell
+# t4_datasetを使用しない場合
+output_direcotry
+└── YYYY-mmDD-HHMMSS               // Execution time
+    └── TC01                       // Name of test case
+    │   ├── console.log           // Log output to the terminal
+    │   ├── result.json　         // Converted result file
+    │   ├── result.jsonl          // Original result file
+    │   ├── result_bag            // recorded bag
+    │   │   ├── metadata.yaml
+    │   │   └── result_bag_0.db3
+    │   └── run.bash              // Simulation execution command
+    └── TC02
+...
+```
+
+```shell
+output_direcotry
+└── YYYY-mmDD-HHMMSS                         // Execution time
+    └── TC01                                 // Name of test case
+│       ├── console.log                     // Log output to the terminal
+│       ├── run.bash                        // Simulation execution command
+│       ├── DATASET01
+│       │   ├── perception_eval_log        // Log files of percepiton_eval
+│       │   │   ...
+│       │   ├── result.json                // Converted result file
+│       │   ├── result.jsonl               // Original result file
+│       │   ├── result_archive             // Directory to output evaluation results other than json
+│       │   │   └── scene_result.pkl      // Object file of frame_results evaluated by perception_eval
+│       │   └── result_bag                 // recorded bag
+│       │       ├── metadata.yaml
+│       │       └── result_bag_0.db3
+│       └── DATASET02
+...
 ```
 
 ## Run driving_log_replayer with wasim

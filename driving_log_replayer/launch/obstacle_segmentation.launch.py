@@ -14,10 +14,8 @@
 
 import launch
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
 
 import driving_log_replayer.launch_common as cmn
-from driving_log_replayer.shutdown_once import ShutdownOnce
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
@@ -39,16 +37,10 @@ def generate_launch_description() -> launch.LaunchDescription:
     rviz_node = cmn.get_rviz("obstacle_segmentation.rviz")
     evaluator_node = cmn.get_evaluator_node(
         "obstacle_segmentation",
-        addition_parameter={"vehicle_model": LaunchConfiguration("vehicle_model")},
-    )
-    evaluator_sub_node = Node(
-        package="driving_log_replayer",
-        namespace="/driving_log_replayer",
-        executable="obstacle_segmentation_evaluator_node",
-        output="screen",
-        name="obstacle_segmentation_sub",
-        parameters=[{"use_sim_time": True, "scenario_path": LaunchConfiguration("scenario_path")}],
-        on_exit=ShutdownOnce(),
+        addition_parameter={
+            "vehicle_model": LaunchConfiguration("vehicle_model"),
+            "map_path": LaunchConfiguration("map_path"),
+        },
     )
     player = cmn.get_player(
         additional_argument=[
@@ -68,7 +60,6 @@ def generate_launch_description() -> launch.LaunchDescription:
             rviz_node,
             autoware_launch,
             evaluator_node,
-            evaluator_sub_node,
             player,
             recorder,
             recorder_override,

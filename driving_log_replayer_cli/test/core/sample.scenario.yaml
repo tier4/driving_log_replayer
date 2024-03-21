@@ -1,0 +1,17 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: perception_use_bag_concat_data
+ScenarioDescription: sensing_module_off_and_use_pointcloud_in_the_rosbag
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: perception
+  UseCaseFormatVersion: 0.6.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default # Specify VehicleId for each data set.
+        LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
+        LocalMapPath: . # Specify LocalMapPath for each data set.
+  Conditions:
+    PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)

@@ -12,8 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Callable
+from collections.abc import Callable
+from math import pi
 
+from builtin_interfaces.msg import Duration
+from geometry_msgs.msg import Point
+from geometry_msgs.msg import Quaternion
+from geometry_msgs.msg import Transform
+from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import Vector3
 import numpy as np
 from perception_eval.common import DynamicObject
 from perception_eval.common.label import AutowareLabel
@@ -24,16 +31,25 @@ from perception_eval.common.shape import ShapeType
 from perception_eval.evaluation import DynamicObjectWithSensingResult
 from perception_eval.evaluation import SensingFrameResult
 from perception_eval.evaluation.sensing.sensing_frame_config import SensingFrameConfig
-from pyquaternion import Quaternion
+from pydantic import ValidationError
+from pyquaternion import Quaternion as PyQuaternion
 import pytest
+from shapely.geometry import Point as ShapelyPoint
+from shapely.geometry import Polygon
+from shapely.geometry.polygon import orient
+from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
+from tf_transformations import quaternion_from_euler
+from visualization_msgs.msg import Marker
 
 from driving_log_replayer.obstacle_segmentation import Detection
 from driving_log_replayer.obstacle_segmentation import DetectionCondition
+from driving_log_replayer.obstacle_segmentation import get_non_detection_area_in_base_link
 from driving_log_replayer.obstacle_segmentation import NonDetection
 from driving_log_replayer.obstacle_segmentation import NonDetectionCondition
 from driving_log_replayer.obstacle_segmentation import ObstacleSegmentationScenario
 from driving_log_replayer.obstacle_segmentation import ProposedAreaCondition
+from driving_log_replayer.obstacle_segmentation import transform_proposed_area
 from driving_log_replayer.scenario import load_sample_scenario
 
 
@@ -48,6 +64,23 @@ def test_scenario() -> None:
         ].Start
         is None
     )
+
+
+def test_polygon_clockwise_ok() -> None:
+    ProposedAreaCondition(
+        polygon_2d=[[10.0, 1.5], [10.0, -1.5], [0.0, -1.5], [0.0, 1.5]],
+        z_min=0.0,
+        z_max=1.5,
+    )
+
+
+def test_polygon_clockwise_ng() -> None:
+    with pytest.raises(ValidationError):
+        ProposedAreaCondition(
+            polygon_2d=[[10.0, 1.5], [0.0, 1.5], [0.0, -1.5], [10.0, -1.5]],
+            z_min=0.0,
+            z_max=1.5,
+        )
 
 
 @pytest.fixture()
@@ -95,7 +128,7 @@ def create_dynamic_object() -> DynamicObjectWithSensingResult:
         unix_time=123,
         frame_id=FrameID.BASE_LINK,
         position=(0.0, 0.0, 0.0),
-        orientation=Quaternion(),
+        orientation=PyQuaternion(),
         shape=Shape(ShapeType.BOUNDING_BOX, (10.0, 10.0, 10.0)),
         velocity=(1.0, 2.0, 3.0),
         semantic_score=0.5,
@@ -246,7 +279,11 @@ def test_detection_fail_has_no_object(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     # add no detection_success_results, detection_fail_results
-    frame_dict, _, _, _ = evaluation_item.set_frame(result, header=Header(), topic_rate=True)
+    frame_dict, _, _, _ = evaluation_item.set_frame(
+        result,
+        header=Header(),
+        topic_rate=True,
+    )
     assert evaluation_item.success is False
     assert evaluation_item.summary == "Detection (Fail): 94 / 100 -> 94.00% (Warn: 0)"
     assert frame_dict == {
@@ -260,7 +297,11 @@ def test_detection_invalid(
 ) -> None:
     evaluation_item: Detection = Detection(condition=None)
     result: SensingFrameResult = create_frame_result
-    frame_dict, _, _, _ = evaluation_item.set_frame(result, header=Header(), topic_rate=True)
+    frame_dict, _, _, _ = evaluation_item.set_frame(
+        result,
+        header=Header(),
+        topic_rate=True,
+    )
     assert evaluation_item.success is True
     assert evaluation_item.summary == "Invalid"
     assert frame_dict == {
@@ -278,7 +319,9 @@ def test_detection_warn(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     annotation_dict: dict = create_annotation_dict
-    result.detection_warning_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_warning_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
         header=Header(),
@@ -310,7 +353,9 @@ def test_detection_success(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     annotation_dict: dict = create_annotation_dict
-    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
         header=Header(),
@@ -342,7 +387,9 @@ def test_detection_topic_rate_fail(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     annotation_dict: dict = create_annotation_dict
-    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
         header=Header(),
@@ -374,8 +421,12 @@ def test_detection_fail(
     evaluation_item: Detection = create_detection
     result: SensingFrameResult = create_frame_result
     annotation_dict: dict = create_annotation_dict
-    result.detection_success_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
-    result.detection_fail_results: list[DynamicObjectWithSensingResult] = [create_dynamic_object]
+    result.detection_success_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
+    result.detection_fail_results: list[DynamicObjectWithSensingResult] = [
+        create_dynamic_object,
+    ]
     frame_dict, _, _, _ = evaluation_item.set_frame(
         result,
         header=Header(),
@@ -409,7 +460,11 @@ def test_detection_fail(
 def test_non_detection_invalid() -> None:
     evaluation_item: Detection = NonDetection(condition=None)
     pointcloud = np.array([[1.0, 1.0, 1.0, 0.5], [1.2, 1.2, 1.2, 0.5]])
-    frame_dict, _, _ = evaluation_item.set_frame([pointcloud], header=Header(), topic_rate=True)
+    frame_dict, _, _ = evaluation_item.set_frame(
+        [pointcloud],
+        header=Header(),
+        topic_rate=True,
+    )
     assert evaluation_item.success is True
     assert evaluation_item.summary == "Invalid"
     assert frame_dict == {
@@ -424,7 +479,11 @@ def test_non_detection_fail(
 ) -> None:
     evaluation_item: NonDetection = create_non_detection
     pointcloud = np.array([[1.0, 1.0, 1.0, 0.5], [1.2, 1.2, 1.2, 0.5]])
-    frame_dict, _, _ = evaluation_item.set_frame([pointcloud], header=Header(), topic_rate=True)
+    frame_dict, _, _ = evaluation_item.set_frame(
+        [pointcloud],
+        header=Header(),
+        topic_rate=True,
+    )
     assert evaluation_item.success is False
     assert evaluation_item.summary == "NonDetection (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
@@ -468,3 +527,126 @@ def test_non_detection_success(
         "Result": {"Total": "Success", "Frame": "Success"},
         "Info": {},
     }
+
+
+def test_transform_proposed_area() -> None:
+    header_base_link = Header(frame_id="base_link")
+    header_map = Header(frame_id="map")
+    q = quaternion_from_euler(0.0, 0.0, -pi / 2)
+    map_to_baselink = TransformStamped(
+        header=header_map,
+        child_frame_id="base_link",
+        transform=Transform(
+            translation=Vector3(x=10.0, y=10.0, z=0.0),
+            rotation=Quaternion(x=q[0], y=q[1], z=q[2], w=q[3]),
+        ),
+    )
+    proposed_area = ProposedAreaCondition(
+        polygon_2d=[[2.0, 2.0], [0.0, 0.0], [-2.0, 2.0]],
+        z_min=0.0,
+        z_max=2.0,
+    )
+    proposed_area_in_map, z = transform_proposed_area(
+        proposed_area,
+        header_base_link,
+        map_to_baselink,
+    )
+    assert proposed_area_in_map == Polygon(
+        ((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)),
+    )  # do not set z. Polygon and Polygon Z is different.
+    assert z == 0.0  # noqa
+
+
+def test_get_non_detection_area_in_base_link() -> None:
+    header_base_link = Header(frame_id="base_link")
+    poly_in_map = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
+    base_link_to_map = TransformStamped(
+        header=header_base_link,
+        child_frame_id="map",
+        transform=Transform(
+            translation=Vector3(x=10.0, y=-10.000000000000002, z=0.0),
+            rotation=Quaternion(
+                x=0.0,
+                y=0.0,
+                z=0.7071067811865475,
+                w=0.7071067811865476,
+            ),
+        ),
+    )
+    ans_non_detection_list = [
+        [2.0000000000000027, 2.0, 0.0],
+        [1.7763568394002505e-15, 0.0, 0.0],
+        [-1.9999999999999964, 2.0000000000000018, 0.0],
+        [2.0000000000000027, 2.0, 2.0],
+        [1.7763568394002505e-15, 0.0, 2.0],
+        [-1.9999999999999964, 2.0000000000000018, 2.0],
+    ]
+    line_strip, non_detection_list = get_non_detection_area_in_base_link(
+        poly_in_map,
+        header_base_link,
+        0.0,
+        2.0,
+        0.0,
+        base_link_to_map,
+        1,
+    )
+    ans_line_strip = Marker(
+        header=header_base_link,
+        ns="intersection",
+        id=1,
+        type=Marker.LINE_STRIP,
+        action=Marker.ADD,
+        color=ColorRGBA(r=1.0, g=0.0, b=0.0, a=0.3),
+        scale=Vector3(x=0.2, y=0.2, z=0.2),
+        lifetime=Duration(nanosec=200_000_000),
+    )
+    assert non_detection_list == ans_non_detection_list
+    for point in ans_non_detection_list:
+        ans_line_strip.points.append(Point(x=point[0], y=point[1], z=point[2]))
+    assert line_strip == ans_line_strip
+
+
+def test_polygon_orientation() -> None:
+    poly = Polygon(((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)))
+    assert poly.exterior.is_ccw is False  # clockwise
+    assert poly == orient(poly, -1)
+
+
+def test_open_and_close_polygon() -> None:
+    open_poly = Polygon(((12.0, 8.0), (12.0, 12.0), (10.0, 10.0)))
+    closed_poly = Polygon(((12.0, 8.0), (12.0, 12.0), (10.0, 10.0), (12.0, 8.0)))
+    assert open_poly == closed_poly
+
+
+def test_intersection_polygon_orientation() -> None:
+    a = ShapelyPoint(1, 1).buffer(1.5)
+    b = ShapelyPoint(2, 1).buffer(1.5)
+    i_poly: Polygon = a.intersection(b)
+    assert i_poly.exterior.is_ccw is False  # clockwise
+
+
+def test_search_range() -> None:
+    proposed_area = ProposedAreaCondition(
+        polygon_2d=[[1.0, 1.0], [2.0, -2.0], [-3.0, -3.0], [-2.0, 4.0]],
+        z_min=0.0,
+        z_max=2.0,
+    )
+    assert proposed_area.search_range() == 5.0  # noqa
+
+
+def draw_search_range() -> None:
+    from matplotlib import patches
+    from matplotlib import pyplot as plt
+
+    points = [[1.0, 1.0], [2.0, -2.0], [-3.0, -3.0], [-2.0, 4.0], [1.0, 1.0]]
+    poly = patches.Polygon(xy=points, closed=True)
+    bound = patches.Rectangle(xy=(-3, -3), width=5, height=7, ec="g", linewidth="2.0", fill=False)
+    search_range = patches.Circle(xy=(0, 0), radius=5, fill=False, ec="r")
+
+    _, ax = plt.subplots(figsize=(7, 7))
+    ax.add_patch(poly)
+    ax.add_patch(bound)
+    ax.add_patch(search_range)
+    ax.autoscale()
+    ax.grid()
+    plt.show()

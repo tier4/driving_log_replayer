@@ -75,10 +75,27 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ### 正常
 
-perception_eval の評価関数を実行して以下の条件を満たすとき
+シナリオのCriterionタグのCriteriaを満たすこと。
 
-1. frame_result.pass_fail_result に object が最低 1 つ入っている (`tp_object_results != [] and fp_object_results != [] and fn_objects != []`)
-2. 評価失敗のオブジェクトが 0 個 (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
+sampleのscenario.yamlは以下のようなっており、
+
+```yaml
+Criterion:
+  - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+    Filter:
+      Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+  - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+    Filter:
+      Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+```
+
+- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、0.0-50.0[m]の距離にあるobjectで、tpのobject数がhard(75.0%)以上の場合。ResultのFrameがSuccessになる。
+- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、50.0-1.7976931348623157e+308[m]の距離にあるobjectで、tpのobject数がeasy(25.0%)以上の場合。ResultのFrameがSuccessになる。
+- また、`PassRate >= 正常数 / 全受信数 * 100`の条件を満たすとき、ResultのTotalがSuccessになる。
 
 ### 異常
 
@@ -214,15 +231,24 @@ perception では、シナリオに指定した条件で perception_eval が評�
 ```json
 {
   "Frame": {
-    "FrameName": "評価に使用したt4_datasetのフレーム番号",
-    "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
-    "PassFail": {
-      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
-      "Info": {
-        "TP": "TPと判定された数",
-        "FP": "FPと判定された数",
-        "FN": "FNと判定された数"
+    "criteria0": {
+      // criteria0の結果
+      "Filter": {
+        "Distance": "距離の条件"
+      },
+      "FrameName": "評価に使用したt4_datasetのフレーム番号",
+      "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
+      "PassFail": {
+        "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+        "Info": {
+          "TP": "フィルタ済みobjectの中でTPと判定された数",
+          "FP": "フィルタ済みobjectの中でFPと判定された数",
+          "FN": "フィルタ済みobjectの中でFNと判定された数"
+        }
       }
+    },
+    "criteria1": {
+      // criteria0の結果、criteria0と同様の内容
     }
   }
 }

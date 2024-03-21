@@ -1,5 +1,133 @@
 # Release Notes
 
+## Version 1.14.0
+
+Major Changes
+To use this version, you need to have `perception_online_evaluator` in your Autoware workspace
+
+| Module                      | Feature  | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | -------- | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `annotationless_perception` | use_case | add annotationless_perception evaluation | [#373](https://github.com/tier4/driving_log_replayer/pull/373) | RT4-8943 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.4
+
+Minor Tweak
+
+| Module                  | Feature     | Brief summary                     | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ----------- | --------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | performance | filter only lanelets close to ego | [#366](https://github.com/tier4/driving_log_replayer/pull/366) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                   | package.xml | Delete confusing comments         | [#371](https://github.com/tier4/driving_log_replayer/pull/371) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.3
+
+Minor Tweak, Document update, Bug fix
+
+| Module                  | Feature        | Brief summary                                         | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | -------------- | ----------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | unit test      | update unit test                                      | [#364](https://github.com/tier4/driving_log_replayer/pull/364) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | documentation  | update document                                       | [#367](https://github.com/tier4/driving_log_replayer/pull/367) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | run time error | add handling of cases where non_detection is disabled | [#368](https://github.com/tier4/driving_log_replayer/pull/368) | RT4-8937 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.2
+
+Minor Tweak
+
+| Module                  | Feature   | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | --------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | unit test | add unit test                | [#361](https://github.com/tier4/driving_log_replayer/pull/361) | RT4-8792 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag`      | rosbag2   | drop concatenated/pointcloud | [#362](https://github.com/tier4/driving_log_replayer/pull/362) | RT4-8848 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.1
+
+Minor Tweak
+
+| Module | Feature         | Brief summary | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | --------------- | ------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | package manager | use rye       | [#359](https://github.com/tier4/driving_log_replayer/pull/359) | RT4-8797 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.13.0
+
+Breaking Change
+To use this version, you need to have `lanelet2-extension-python` in your autoware workspace
+
+| Module                  | Feature  | Brief summary                 | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | -------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | lanelet2 | use lanelet2-extension-python | [#356](https://github.com/tier4/driving_log_replayer/pull/356) | RT4-8497 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.12.5
+
+Minor Tweak
+
+| Module          | Feature | Brief summary          | Pull request                                                   | Jira | Contributor                           |
+| --------------- | ------- | ---------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `traffic_light` | rosbag2 | change recorded topics | [#357](https://github.com/tier4/driving_log_replayer/pull/357) | -    | [YoshiRi](https://github.com/YoshiRi) |
+
+## Version 1.12.4
+
+Minor Tweak
+
+| Module          | Feature | Brief summary          | Pull request                                                   | Jira | Contributor                           |
+| --------------- | ------- | ---------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `traffic_light` | rosbag2 | change recorded topics | [#353](https://github.com/tier4/driving_log_replayer/pull/353) | -    | [kminoda](https://github.com/kminoda) |
+
+## Version 1.12.3
+
+Minor Tweak
+
+| Module | Feature | Brief summary     | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ----------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | CI      | update CI setting | [#351](https://github.com/tier4/driving_log_replayer/pull/351) | RT4-8497 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.12.2
+
+Minor Tweak
+
+| Module       | Feature      | Brief summary                                      | Pull request                                                   | Jira | Contributor                           |
+| ------------ | ------------ | -------------------------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | Ground Truth | enable to interpolate gt when scenario is tracking | [#349](https://github.com/tier4/driving_log_replayer/pull/349) | -    | [YoshiRi](https://github.com/YoshiRi) |
+
+## Version 1.12.1
+
+Minor Tweak
+
+| Module | Feature | Brief summary      | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------- | ------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | rviz    | update config/rviz | [#346](https://github.com/tier4/driving_log_replayer/pull/346) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.12.0
+
+Breaking change
+This update includes breaking changes to the `perception` scenario
+
+| Module       | Feature  | Brief summary                                | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | -------- | -------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception` | criteria | allow setting of criteria for each distance. | [#339](https://github.com/tier4/driving_log_replayer/pull/339) | RT4-8120 | [ktro2828](https://github.com/ktro2828)       |
+| `perception` | criteria | allow omission of distance upper limit       | [#344](https://github.com/tier4/driving_log_replayer/pull/339) | RT4-8120 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.11.1
+
+Minor Tweak
+
+| Module       | Feature  | Brief summary                                  | Pull request                                                   | Jira | Contributor                           |
+| ------------ | -------- | ---------------------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | criteria | add maph criteria and allow multiple criterion | [#337](https://github.com/tier4/driving_log_replayer/pull/337) | -    | [kminoda](https://github.com/kminoda) |
+
+## Version 1.11.0
+
+Major change
+
+| Module | Feature | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | cli     | allow arbitrary arguments | [#333](https://github.com/tier4/driving_log_replayer/pull/333) | RT4-7955 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.10.6
+
+Bug fix
+
+| Module       | Feature         | Brief summary          | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | --------------- | ---------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception` | data validation | check footprint length | [#332](https://github.com/tier4/driving_log_replayer/pull/332) | RT4-7993 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.10.5
 
 Minor Tweak
@@ -272,12 +400,12 @@ Breaking change
 
 Breaking change
 
-| Module                                     | Feature         | Brief summary            | Pull request                                                   | Jira                                           | Contributor                                   |
-| ------------------------------------------ | --------------- | ------------------------ | -------------------------------------------------------------- | ---------------------------------------------- | --------------------------------------------- |
-| `perception`                               | `fp validation` | add `fp validation` mode | [#200](https://github.com/tier4/driving_log_replayer/pull/200) | RT4-5559                                       | [hayato-m126](https://github.com/hayato-m126) |
-| `perception, perception_2d, traffic_light` | `object shape`  | support `unknown` label  | [#198](https://github.com/tier4/driving_log_replayer/pull/198) | RT4-5880                                       | [hayato-m126](https://github.com/hayato-m126) |
-| `eagleye`                                  | `eagleye`       | add `eagleye` evaluation | [#203](https://github.com/tier4/driving_log_replayer/pull/203) | RT1-3254 [kminoda](https://github.com/kminoda) |
-| `perception, perception_2d, traffic_light` | `scenario`      | update `sample scenario` | [#204](https://github.com/tier4/driving_log_replayer/pull/204) | RT4-6041                                       | [hayato-m126](https://github.com/hayato-m126) |
+| Module                                     | Feature         | Brief summary            | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | --------------- | ------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception`                               | `fp validation` | add `fp validation` mode | [#200](https://github.com/tier4/driving_log_replayer/pull/200) | RT4-5559 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | `object shape`  | support `unknown` label  | [#198](https://github.com/tier4/driving_log_replayer/pull/198) | RT4-5880 | [hayato-m126](https://github.com/hayato-m126) |
+| `eagleye`                                  | `eagleye`       | add `eagleye` evaluation | [#203](https://github.com/tier4/driving_log_replayer/pull/203) | RT1-3254 | [kminoda](https://github.com/kminoda)         |
+| `perception, perception_2d, traffic_light` | `scenario`      | update `sample scenario` | [#204](https://github.com/tier4/driving_log_replayer/pull/204) | RT4-6041 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.4.1
 
