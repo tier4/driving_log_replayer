@@ -162,6 +162,7 @@ class Deviation(EvaluationItem):
     metrics_dict: dict = field(default_factory=dict)
     min_success: dict = field(default_factory=dict)
     max_success: dict = field(default_factory=dict)
+    fail_details: dict = field(default_factory=dict)
 
     def set_frame(self, msg: dict[str, dict]) -> dict:
         self.condition: ClassConditionValue
@@ -235,6 +236,29 @@ class Deviation(EvaluationItem):
                     <= threshold_key.mean * pass_range["mean"][1]
                 )
             is_success = self.min_success[key] and self.max_success[key] and is_success_mean
+
+            # Store the measured value and threshold value for
+            if not self.min_success[key]:
+                self.fail_details[key + "_min"] = (
+                    rdk["min"],
+                    threshold_key.min * pass_range["min"][0],
+                    threshold_key.min * pass_range["min"][1],
+                )
+            if not self.max_success[key]:
+                self.fail_details[key + "_max"] = (
+                    rdk["max"],
+                    threshold_key.max * pass_range["max"][0],
+                    threshold_key.max * pass_range["max"][1],
+                )
+            if is_success_mean:
+                # If mean is successful, remove it from fail_details if it exists
+                self.fail_details.pop(key + "_mean", None)
+            else:
+                self.fail_details[key + "_mean"] = (
+                    a_mean,
+                    threshold_key.mean * pass_range["mean"][0],
+                    threshold_key.mean * pass_range["mean"][1],
+                )
         return {"min": rdk["min"], "max": rdk["max"], "mean": a_mean}, is_success
 
 
@@ -282,14 +306,23 @@ class DeviationClassContainer:
 
     def update(self) -> tuple[bool, str]:
         rtn_success = True
-        rtn_summary = ""
-        for evaluation_item in self.__container.values():
-            rtn_summary += " " + evaluation_item.summary
+        rtn_summary = []
+        for class_name, evaluation_item in self.__container.items():
             if not evaluation_item.success:
                 rtn_success = False
-        prefix_str = "Passed:" if rtn_success else "Failed:"
-        rtn_summary = prefix_str + rtn_summary
-        return (rtn_success, rtn_summary)
+                fail_info = "\n\t".join(
+                    [
+                        f"{key}: value={val[0]}, threshold=({val[1]}-{val[2]})"
+                        for key, val in evaluation_item.fail_details.items()
+                    ],
+                )
+                rtn_summary.append(f"{class_name} (Fail):\n\t{fail_info}")
+            else:
+                rtn_summary.append(f"{class_name} (Success)")
+
+        prefix_str = "Passed" if rtn_success else "Failed"
+        rtn_summary_str = prefix_str + ":\n" + "\n".join(rtn_summary)
+        return (rtn_success, rtn_summary_str)
 
     def final_metrics(self) -> dict:
         rtn_dict = {}
