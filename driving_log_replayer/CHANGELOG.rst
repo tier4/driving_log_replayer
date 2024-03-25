@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat(annotationless_perception): output details of fail items (`#379 <https://github.com/tier4/driving_log_replayer/issues/379>`_)
+* Contributors: Kosuke Takeuchi
+
 1.14.1 (2024-03-21)
 -------------------
 * feat: `#376 <https://github.com/tier4/driving_log_replayer/issues/376>`_ annotationless support perception class (`#377 <https://github.com/tier4/driving_log_replayer/issues/377>`_)

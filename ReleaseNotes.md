@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.14.2
+
+Minor Tweak
+
+| Module                      | Feature | Brief summary                | Pull request                                                   | Jira | Contributor                             |
+| --------------------------- | ------- | ---------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `annotationless_perception` | result  | output details of fail items | [#379](https://github.com/tier4/driving_log_replayer/pull/379) | -    | [kosuke55](https://github.com/kosuke55) |
+
 ## Version 1.14.1
 
 Minor Tweak
