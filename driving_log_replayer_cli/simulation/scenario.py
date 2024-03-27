@@ -1,26 +1,27 @@
-import argparse
+import contextlib
 from datetime import datetime
 import json
+from pathlib import Path
 import shutil
 
+import termcolor
 import yaml
 
 
-def load_jsonl_data(jsonl_file_path):
-    data = []
-    with open(jsonl_file_path, "r") as file:
-        for line in file:
-            data.append(json.loads(line))
-    return data[-1]["Frame"]["FinalMetrics"]
+def load_metrics_data(jsonl_file_path: Path) -> dict:
+    with jsonl_file_path.open("r") as file:
+        last_line = file.readlines()[-1]
+        with contextlib.suppress(json.JSONDecodeError):
+            result_json_dict = json.loads(last_line)
+            return result_json_dict["Frame"]["FinalMetrics"]
 
 
-def load_scenario_file(scenario_file_path):
-    with open(scenario_file_path, "r") as file:
-        data = yaml.safe_load(file)
-    return data
+def load_scenario_file(scenario_file_path: Path) -> dict:
+    with scenario_file_path.open("r") as file:
+        return yaml.safe_load(file)
 
 
-def update_conditions(scenario_data, metrics_data, keys_to_update):
+def update_conditions(scenario_data: dict, metrics_data: dict, keys_to_update: dict) -> None:
     # Convert comma-separated string to a set for filtering
     keys_set = set(keys_to_update.split(","))
 
@@ -37,57 +38,27 @@ def update_conditions(scenario_data, metrics_data, keys_to_update):
             del scenario_data["Evaluation"]["Conditions"]["ClassConditions"][class_name]
 
 
-def save_scenario_file(scenario_data, scenario_file_path):
-    with open(scenario_file_path, "w") as file:
+def save_scenario_file(scenario_data: dict, scenario_file_path: Path) -> None:
+    with scenario_file_path.open("w") as file:
         yaml.safe_dump(scenario_data, file, sort_keys=False)
 
 
-def backup_scenario_file(scenario_file_path):
-    backup_file_path = f"{scenario_file_path}.{datetime.now().strftime('%Y%m%d%H%M%S')}.bak"
+def backup_scenario_file(scenario_file_path: Path) -> None:
+    bak_name = scenario_file_path.name + f".{datetime.now().strftime('%Y%m%d%H%M%S')}.bak"  # noqa
+    backup_file_path = scenario_file_path.parent.joinpath(bak_name)
     shutil.copy(scenario_file_path, backup_file_path)
     return backup_file_path
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Updates scenario file conditions with data from JSONL results.",
-    )
-    parser.add_argument(
-        "-s",
-        "--scenario",
-        required=True,
-        help="Path to the scenario YAML file",
-    )
-    parser.add_argument(
-        "-r",
-        "--result",
-        required=True,
-        help="Path to the result JSONL file",
-    )
-    parser.add_argument(
-        "-k",
-        "--keys",
-        default="min,max,mean",
-        help="Metrics to update (specified as a comma-separated list, e.g., 'min,max,mean')",
-    )
-
-    args = parser.parse_args()
-
+def update_annotationless_scenario_condition(scenario: Path, result: Path, keys: str) -> None:
     # Backup the original file
-    backup_file_path = backup_scenario_file(args.scenario)
-    print(f"Original scenario file backed up to: {backup_file_path}")
-
+    backup_file_path = backup_scenario_file(scenario)
+    termcolor.cprint(f"Original scenario file backed up to: {backup_file_path}", "yellow")
     # Load data
-    metrics_data = load_jsonl_data(args.result)
-    scenario_data = load_scenario_file(args.scenario)
-
+    metrics_data = load_metrics_data(result)
+    scenario_data = load_scenario_file(scenario)
     # Update scenario file conditions
-    update_conditions(scenario_data, metrics_data, args.keys)
-
+    update_conditions(scenario_data, metrics_data, keys)
     # Save the updated scenario file
-    save_scenario_file(scenario_data, args.scenario)
-    print("Scenario file updated with new conditions.")
-
-
-if __name__ == "__main__":
-    main()
+    save_scenario_file(scenario_data, scenario)
+    termcolor.cprint(f"{scenario.as_posix()} updated with new conditions.", "green")
