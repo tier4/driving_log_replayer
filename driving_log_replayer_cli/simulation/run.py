@@ -34,6 +34,8 @@ def run_with_log(cmd: list, log_path: Path) -> None:
 def run(
     config: Config,
     launch_args: str,
+    *,
+    update_scenario: bool = False,
 ) -> None:
     output_dir_by_time = create_output_dir_by_time(config.output_directory)
     for dataset_path in config.data_directory.glob("*"):
@@ -79,6 +81,9 @@ def run(
         except KeyboardInterrupt:
             termcolor.cprint("Simulation execution canceled by Ctrl+C", "red")
             break
+        if update_scenario:  # and usecase type is annotationless_perception
+            pass
+            # update_scenario_condition()
 
     # convert result file and display result
     convert_all(output_dir_by_time)
