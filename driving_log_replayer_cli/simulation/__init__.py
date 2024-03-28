@@ -4,8 +4,8 @@ import click
 
 from driving_log_replayer_cli.core.config import Config
 from driving_log_replayer_cli.core.config import load_config
-from driving_log_replayer_cli.simulation.result import convert_all
-from driving_log_replayer_cli.simulation.result import display_all
+from driving_log_replayer_cli.core.result import convert_all
+from driving_log_replayer_cli.core.result import display_all
 from driving_log_replayer_cli.simulation.run import run as sim_run
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}

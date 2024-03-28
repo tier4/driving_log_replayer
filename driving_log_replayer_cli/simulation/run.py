@@ -7,11 +7,11 @@ from pydantic import ValidationError
 import termcolor
 
 from driving_log_replayer_cli.core.config import Config
+from driving_log_replayer_cli.core.result import convert_all
+from driving_log_replayer_cli.core.result import display_all
 from driving_log_replayer_cli.core.scenario import Datasets
 from driving_log_replayer_cli.core.scenario import load_scenario
 from driving_log_replayer_cli.core.scenario import Scenario
-from driving_log_replayer_cli.simulation.result import convert_all
-from driving_log_replayer_cli.simulation.result import display_all
 
 USE_T4_DATASET = ("perception", "obstacle_segmentation", "perception_2d", "traffic_light")
 
