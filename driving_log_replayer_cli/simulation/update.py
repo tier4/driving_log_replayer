@@ -26,7 +26,7 @@ def update_class_conditions(scenario: Scenario, final_metrics: dict, keys_to_upd
 def update_annotationless_scenario_condition(
     scenario_path: Path,
     result_path: Path,
-    keys: str,
+    keys: str = "min,max,mean",
 ) -> None:
     # Backup the original file
     backup_file_path = backup_scenario_file(scenario_path)

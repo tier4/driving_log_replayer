@@ -20,7 +20,12 @@ def simulation() -> None:
 @simulation.command(context_settings=CONTEXT_SETTINGS)
 @click.option("--profile", "-p", type=str, default="default")
 @click.option("--launch_args", "-l", type=str, default="")
-@click.option("--update_scenario", "-u", is_flag=True)
+@click.option(
+    "--update_scenario",
+    "-u",
+    is_flag=True,
+    help="Automatically update scenario conditions after simulation runs. Valid only with annotationless_perception. Otherwise this option is ignored.",
+)
 def run(
     profile: str,
     launch_args: str,
