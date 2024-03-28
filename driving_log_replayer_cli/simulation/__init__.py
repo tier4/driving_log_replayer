@@ -7,7 +7,7 @@ from driving_log_replayer_cli.core.config import load_config
 from driving_log_replayer_cli.core.result import convert_all
 from driving_log_replayer_cli.core.result import display_all
 from driving_log_replayer_cli.simulation.run import run as sim_run
-from driving_log_replayer_cli.simulation.scenario import update_annotationless_scenario_condition
+from driving_log_replayer_cli.simulation.update import update_annotationless_scenario_condition
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 

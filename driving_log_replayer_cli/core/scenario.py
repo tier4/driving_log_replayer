@@ -1,5 +1,7 @@
+from datetime import datetime
 from os.path import expandvars
 from pathlib import Path
+import shutil
 from typing import Literal
 
 from pydantic import BaseModel
@@ -36,6 +38,13 @@ def load_scenario(scenario_path: Path) -> Scenario:
         scenario_path = scenario_path.resolve()
     with scenario_path.open() as scenario_file:
         return Scenario(**yaml.safe_load(scenario_file))
+
+
+def backup_scenario_file(scenario_path: Path) -> None:
+    bak_name = scenario_path.name + f".{datetime.now().strftime('%Y%m%d%H%M%S')}.bak"  # noqa
+    backup_file_path = scenario_path.parent.joinpath(bak_name)
+    shutil.copy(scenario_path, backup_file_path)
+    return backup_file_path
 
 
 class Dataset(BaseModel):

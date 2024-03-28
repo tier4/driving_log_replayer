@@ -1,8 +1,6 @@
 import contextlib
-from datetime import datetime
 import json
 from pathlib import Path
-import shutil
 
 import termcolor
 import yaml
@@ -14,11 +12,6 @@ def load_metrics_data(jsonl_file_path: Path) -> dict:
         with contextlib.suppress(json.JSONDecodeError):
             result_json_dict = json.loads(last_line)
             return result_json_dict["Frame"]["FinalMetrics"]
-
-
-def load_scenario_file(scenario_file_path: Path) -> dict:
-    with scenario_file_path.open("r") as file:
-        return yaml.safe_load(file)
 
 
 def update_conditions(scenario_data: dict, metrics_data: dict, keys_to_update: dict) -> None:
@@ -41,13 +34,6 @@ def update_conditions(scenario_data: dict, metrics_data: dict, keys_to_update: d
 def save_scenario_file(scenario_data: dict, scenario_file_path: Path) -> None:
     with scenario_file_path.open("w") as file:
         yaml.safe_dump(scenario_data, file, sort_keys=False)
-
-
-def backup_scenario_file(scenario_file_path: Path) -> None:
-    bak_name = scenario_file_path.name + f".{datetime.now().strftime('%Y%m%d%H%M%S')}.bak"  # noqa
-    backup_file_path = scenario_file_path.parent.joinpath(bak_name)
-    shutil.copy(scenario_file_path, backup_file_path)
-    return backup_file_path
 
 
 def update_annotationless_scenario_condition(scenario: Path, result: Path, keys: str) -> None:
