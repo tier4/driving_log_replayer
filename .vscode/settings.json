@@ -39,6 +39,7 @@
     "${env:HOME}/ros_ws/awf/install/tier4_localization_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/tier4_api_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/tier4_perception_msgs/local/lib/python3.10/dist-packages",
+    "${env:HOME}/ros_ws/awf/install/autoware_perception_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/lanelet2_extension_python/local/lib/python3.10/dist-packages"
   ],
   "python.analysis.extraPaths": [
@@ -56,6 +57,7 @@
     "${env:HOME}/ros_ws/awf/install/tier4_localization_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/tier4_api_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/tier4_perception_msgs/local/lib/python3.10/dist-packages",
+    "${env:HOME}/ros_ws/awf/install/autoware_perception_msgs/local/lib/python3.10/dist-packages",
     "${env:HOME}/ros_ws/awf/install/lanelet2_extension_python/local/lib/python3.10/dist-packages"
   ],
   "files.associations": {
