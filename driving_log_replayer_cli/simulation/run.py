@@ -44,15 +44,16 @@ def run(
         scenario_file = get_scenario_file(dataset_path)
         if scenario_file is None:
             continue
+        scenario = load_scenario(scenario_file)
         launch_cmd = None
-        if scenario_file.parent.joinpath("t4_dataset").exists():
+        if scenario.Evaluation["UseCaseName"] in USE_T4_DATASET:
             launch_cmd = cmd_use_t4_dataset(
                 scenario_file,
                 output_case,
                 config.autoware_path,
                 launch_args,
             )
-        if scenario_file.parent.joinpath("input_bag").exists():
+        else:
             launch_cmd = cmd_use_bag_only(
                 scenario_file,
                 output_case,
