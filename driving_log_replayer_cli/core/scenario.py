@@ -32,6 +32,10 @@ class Scenario(BaseModel):
         err_msg = f"{v} is not valid path"
         raise UserError(err_msg)
 
+    def dump(self, save_path: Path) -> None:
+        with save_path.open("w") as file:
+            yaml.safe_dump(self.model_dump(), file, sort_keys=False)
+
 
 def load_scenario(scenario_path: Path) -> Scenario:
     if scenario_path.is_symlink():
