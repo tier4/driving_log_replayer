@@ -5,6 +5,7 @@ import shutil
 from typing import Literal
 
 from pydantic import BaseModel
+from pydantic import field_serializer
 from pydantic import field_validator
 import yaml
 
@@ -31,6 +32,10 @@ class Scenario(BaseModel):
             return normal_path
         err_msg = f"{v} is not valid path"
         raise UserError(err_msg)
+
+    @field_serializer("LocalMapPath")
+    def serialize_path(self, v: Path) -> None:
+        return v.as_posix()
 
     def dump(self, save_path: Path) -> None:
         with save_path.open("w") as file:
