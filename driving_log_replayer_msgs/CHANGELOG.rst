@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.14.3 (2024-03-30)
+-------------------
 * feat: cli update scenario condition
 * Contributors: Hayato Mizushima
 
