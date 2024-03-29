@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 1.14.3
+
+Minor Tweak
+
+This release is only an update of the CLI.
+
+| Module                      | Feature | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ------- | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`                       | cli     | cli change structure                     | [#382](https://github.com/tier4/driving_log_replayer/pull/382) | RT4-9377 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                       | cli     | fix package name                         | [#383](https://github.com/tier4/driving_log_replayer/pull/383) | RT4-9377 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                       | cli     | check UseCaseName to create command      | [#384](https://github.com/tier4/driving_log_replayer/pull/384) | RT4-9377 | [hayato-m126](https://github.com/hayato-m126) |
+| `annotationless_perception` | cli     | add command to update scenario condition | [#385](https://github.com/tier4/driving_log_replayer/pull/385) | RT4-9377 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.14.2
 
 Minor Tweak
