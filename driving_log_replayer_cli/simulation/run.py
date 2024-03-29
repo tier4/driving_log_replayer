@@ -35,8 +35,7 @@ def run_with_log(cmd: list, log_path: Path) -> None:
 def run(
     config: Config,
     launch_args: str,
-    *,
-    update_scenario: bool = False,
+    update_method: str,
 ) -> None:
     output_dir_by_time = create_output_dir_by_time(config.output_directory)
     for dataset_path in config.data_directory.glob("*"):
@@ -82,10 +81,11 @@ def run(
         except KeyboardInterrupt:
             termcolor.cprint("Simulation execution canceled by Ctrl+C", "red")
             break
-        if update_scenario and scenario.Evaluation["UseCaseName"] == "annotationless_perception":
+        if scenario.Evaluation["UseCaseName"] == "annotationless_perception":
             update_annotationless_scenario_condition(
                 scenario_file,
                 output_case.joinpath("result.jsonl"),
+                update_method,
             )
 
     # convert result file and display result

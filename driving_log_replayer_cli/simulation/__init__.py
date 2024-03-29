@@ -23,19 +23,20 @@ def simulation() -> None:
 @click.option(
     "--update_scenario",
     "-u",
-    is_flag=True,
-    help="Automatically update scenario conditions after simulation runs. Valid only with annotationless_perception. Otherwise this option is ignored.",
+    type=click.Choice(["keep", "existing", "all"]),
+    default="keep",
+    help="Automatically update scenario conditions after simulation runs. keep do nothing. Valid only with annotationless_perception. Otherwise this option is ignored.",
 )
 def run(
     profile: str,
     launch_args: str,
-    update_scenario: bool,  # noqa
+    update_scenario: str,
 ) -> None:
     config: Config = load_config(profile)
     sim_run(
         config,
         launch_args,
-        update_scenario=update_scenario,
+        update_scenario,
     )
 
 
@@ -75,12 +76,12 @@ def convert_result(output_directory: Path) -> None:
     help="Path to the result JSONL file",
 )
 @click.option(
-    "--keys",
-    "-k",
-    type=str,
-    default="min,max,mean",
-    help="Metrics to update (specified as a comma-separated list, e.g., 'min,max,mean')",
+    "--update_method",
+    "-u",
+    type=click.Choice(["existing", "all"]),
+    default="existing",
+    help="choice update method. EXISTING updates only the keys listed in the scenario. all updates all keys",
 )
-def update_condition(scenario: Path, result: Path, keys: str) -> None:
+def update_condition(scenario: Path, result: Path, update_method: str) -> None:
     """Update annotationless_perception scenario file conditions with data from JSONL results."""
-    update_annotationless_scenario_condition(scenario, result, keys)
+    update_annotationless_scenario_condition(scenario, result, update_method)
