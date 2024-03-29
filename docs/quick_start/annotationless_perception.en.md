@@ -31,5 +31,8 @@
    scenario: sample
    --------------------------------------------------
    TestResult: Passed
-   Passed: CAR (Success) BUS (Success) TRUCK (NotTested)
+   Passed:
+   CAR (Success)
+   BUS (Success)
+   TRUCK (Success)
    ```

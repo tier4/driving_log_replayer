@@ -12,6 +12,7 @@ from driving_log_replayer_cli.core.result import display_all
 from driving_log_replayer_cli.core.scenario import Datasets
 from driving_log_replayer_cli.core.scenario import load_scenario
 from driving_log_replayer_cli.core.scenario import Scenario
+from driving_log_replayer_cli.simulation.update import update_annotationless_scenario_condition
 
 USE_T4_DATASET = ("perception", "obstacle_segmentation", "perception_2d", "traffic_light")
 
@@ -34,6 +35,7 @@ def run_with_log(cmd: list, log_path: Path) -> None:
 def run(
     config: Config,
     launch_args: str,
+    update_method: str,
 ) -> None:
     output_dir_by_time = create_output_dir_by_time(config.output_directory)
     for dataset_path in config.data_directory.glob("*"):
@@ -79,6 +81,12 @@ def run(
         except KeyboardInterrupt:
             termcolor.cprint("Simulation execution canceled by Ctrl+C", "red")
             break
+        if scenario.Evaluation["UseCaseName"] == "annotationless_perception":
+            update_annotationless_scenario_condition(
+                scenario_file,
+                output_case.joinpath("result.jsonl"),
+                update_method,
+            )
 
     # convert result file and display result
     convert_all(output_dir_by_time)

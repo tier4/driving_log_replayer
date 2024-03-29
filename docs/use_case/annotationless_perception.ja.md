@@ -161,6 +161,29 @@ simulations:
           KEY2: VALUE2
 ```
 
+#### シナリオの条件を更新する方法
+
+driving-log-replayer-cliではプロファイルのdata_directory配下に存在する複数のシナリオを連続で実行する機能を備えている。
+一方で、評価条件を引数で与える場合、複数のシナリオに対して同じ引数が適用されてしまい不都合がある。
+
+driving-log-replayer-cliを用いたローカルテストの場合は、引数指定ではなく、シナリオの条件を随時更新して利用できるように、以下のようなコマンドが用意されている。
+
+- 手動でシナリオの条件を更新するupdate-conditionコマンド
+- シミュレーション実行後に自動でシナリオの条件を更新するrunの-uのオプション
+
+更新方法は以下の2通りがある
+
+- existing シナリオに記述のある項目のみ更新
+- all メトリクスに出ている値で全て更新
+
+```shell
+# manual update
+dlr simulation update-condition -s ${scenario_path} -r ${result.jsonl_path} -u ${existing|all}
+
+# automatically update scenario after simulation run
+dlr simulation run -p annotationless_perception -u ${existing|all}
+```
+
 ## logging_simulator.launch に渡す引数
 
 autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
