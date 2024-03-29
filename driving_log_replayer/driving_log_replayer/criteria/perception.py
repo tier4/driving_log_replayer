@@ -22,6 +22,7 @@ from enum import Enum
 from numbers import Number
 from typing import TYPE_CHECKING
 
+import numpy as np
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
 from perception_eval.evaluation.matching.objects_filter import filter_object_results
@@ -136,11 +137,13 @@ class CriteriaMethod(Enum):
     Enum object represents methods of criteria .
 
     - NUM_TP: Number of TP (or TN).
+    - LABEL: Whether label is correct or not.
     - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
     - METRICS_SCORE_MAPH: mAPH score.
     """
 
     NUM_TP = "num_tp"
+    LABEL = "label"
     METRICS_SCORE = "metrics_score"
     METRICS_SCORE_MAPH = "metrics_score_maph"
 
@@ -242,6 +245,23 @@ class NumTP(CriteriaMethodImpl):
         num_success: int = frame.pass_fail_result.get_num_success()
         num_objects: int = num_success + frame.pass_fail_result.get_num_fail()
         return 100.0 * num_success / num_objects if num_objects != 0 else 0.0
+
+
+class Label(CriteriaMethodImpl):
+    name = CriteriaMethod.LABEL
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        is_label_corrects = [
+            result.is_label_correct
+            for result in frame.object_results
+            if result.ground_truth_object is not None
+        ]
+
+        return 100.0 if len(is_label_corrects) == 0 else 100.0 * np.mean(is_label_corrects)
 
 
 class MetricsScore(CriteriaMethodImpl):
