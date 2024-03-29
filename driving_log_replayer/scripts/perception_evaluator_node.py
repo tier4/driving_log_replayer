@@ -37,6 +37,8 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer3D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
+from rclpy.clock import Clock
+from rclpy.clock import ClockType
 from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.evaluator import DLREvaluator
@@ -175,9 +177,21 @@ class PerceptionEvaluator(DLREvaluator):
 
             # check footprint length
             if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
-                self.get_logger().error(
-                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}",
+                err_msg = (
+                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}"
                 )
+                self.get_logger().error(err_msg)
+                error_dict = {
+                    "Result": {"Success": False, "Summary": "RuntimeError"},
+                    "Stamp": {
+                        "System": Clock(clock_type=ClockType.SYSTEM_TIME).now().nanoseconds
+                        / pow(10, 9),
+                        "ROS": self.get_clock().now().nanoseconds / pow(10, 9),
+                    },
+                    "Frame": {"ErrorMsg": err_msg},
+                }
+                self._result_writer.write_line(error_dict)
+                self._result_writer.close()
                 rclpy.shutdown()
 
             shape_type = ShapeType.BOUNDING_BOX
