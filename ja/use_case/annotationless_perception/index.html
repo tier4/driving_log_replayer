@@ -1368,7 +1368,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       シナリオフォーマット
     </span>
@@ -1377,7 +1377,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       評価結果フォーマット
     </span>
@@ -1626,7 +1626,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       シナリオフォーマット
     </span>
@@ -1635,7 +1635,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       評価結果フォーマット
     </span>
@@ -1803,6 +1803,25 @@ dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w">
 <span class="w">          </span><span class="nt">KEY1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VALUE1</span>
 <span class="w">          </span><span class="nt">KEY2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VALUE2</span>
 </code></pre></div>
+<h4 id="_7">シナリオの条件を更新する方法<a class="headerlink" href="#_7" title="Permanent link">#</a></h4>
+<p>driving-log-replayer-cliではプロファイルのdata_directory配下に存在する複数のシナリオを連続で実行する機能を備えている。
+一方で、評価条件を引数で与える場合、複数のシナリオに対して同じ引数が適用されてしまい不都合がある。</p>
+<p>driving-log-replayer-cliを用いたローカルテストの場合は、引数指定ではなく、シナリオの条件を随時更新して利用できるように、以下のようなコマンドが用意されている。</p>
+<ul>
+<li>手動でシナリオの条件を更新するupdate-conditionコマンド</li>
+<li>シミュレーション実行後に自動でシナリオの条件を更新するrunの-uのオプション</li>
+</ul>
+<p>更新方法は以下の2通りがある</p>
+<ul>
+<li>existing シナリオに記述のある項目のみ更新</li>
+<li>all メトリクスに出ている値で全て更新</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># manual update</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>update-condition<span class="w"> </span>-s<span class="w"> </span><span class="si">${</span><span class="nv">scenario_path</span><span class="si">}</span><span class="w"> </span>-r<span class="w"> </span><span class="si">${</span><span class="nv">result</span><span class="p">.jsonl_path</span><span class="si">}</span><span class="w"> </span>-u<span class="w"> </span><span class="si">${</span><span class="nv">existing</span><span class="p">|all</span><span class="si">}</span>
+
+<span class="c1"># automatically update scenario after simulation run</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-u<span class="w"> </span><span class="si">${</span><span class="nv">existing</span><span class="p">|all</span><span class="si">}</span>
+</code></pre></div>
 <h2 id="logging_simulatorlaunch">logging_simulator.launch に渡す引数<a class="headerlink" href="#logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。</p>
 <ul>
@@ -1962,9 +1981,9 @@ dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w">
 <p>clock は、ros2 bag play の--clock オプションによって出力しているので、bag 自体に記録されていると 2 重に出力されてしまうので bag には含めない</p>
 <h2 id="evaluation">evaluation<a class="headerlink" href="#evaluation" title="Permanent link">#</a></h2>
 <p>評価に必要な情報を述べる。</p>
-<h3 id="_7">シナリオフォーマット<a class="headerlink" href="#_7" title="Permanent link">#</a></h3>
+<h3 id="_8">シナリオフォーマット<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
 <p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.ja.yaml">サンプル</a>参照</p>
-<h3 id="_8">評価結果フォーマット<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
+<h3 id="_9">評価結果フォーマット<a class="headerlink" href="#_9" title="Permanent link">#</a></h3>
 <p><a href="https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/result.json">サンプル</a>参照</p>
 <p>以下に、それぞれの評価の例を記述する。
 <strong>注:結果ファイルフォーマットで解説済みの共通部分については省略する。</strong></p>

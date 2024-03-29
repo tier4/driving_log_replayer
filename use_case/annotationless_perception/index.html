@@ -1803,6 +1803,25 @@ dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w">
 <span class="w">          </span><span class="nt">KEY1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VALUE1</span>
 <span class="w">          </span><span class="nt">KEY2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VALUE2</span>
 </code></pre></div>
+<h4 id="how-to-update-scenario-conditions">How to update scenario conditions<a class="headerlink" href="#how-to-update-scenario-conditions" title="Permanent link">#</a></h4>
+<p>The driving-log-replayer-cli has the ability to run multiple scenarios in succession that exist under the data_directory of a profile.
+On the other hand, when evaluation conditions are given as arguments, the same arguments are applied to multiple scenarios, which is inconvenient.</p>
+<p>In the case of local testing using driving-log-replayer-cli, instead of specifying arguments, the following commands are provided so that scenario conditions can be updated as needed.</p>
+<ul>
+<li>update-condition command to manually update scenario conditions</li>
+<li>run's -u option to automatically update scenario conditions after a simulation run</li>
+</ul>
+<p>There are two ways to update</p>
+<ul>
+<li>existing Update only those items that appear in the scenario</li>
+<li>all Update all values in the metrics</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># manual update</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>update-condition<span class="w"> </span>-s<span class="w"> </span><span class="si">${</span><span class="nv">scenario_path</span><span class="si">}</span><span class="w"> </span>-r<span class="w"> </span><span class="si">${</span><span class="nv">result</span><span class="p">.jsonl_path</span><span class="si">}</span><span class="w"> </span>-u<span class="w"> </span><span class="si">${</span><span class="nv">existing</span><span class="p">|all</span><span class="si">}</span>
+
+<span class="c1"># automatically update scenario after simulation run</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>annotationless_perception<span class="w"> </span>-u<span class="w"> </span><span class="si">${</span><span class="nv">existing</span><span class="p">|all</span><span class="si">}</span>
+</code></pre></div>
 <h2 id="arguments-passed-to-logging_simulatorlaunch">Arguments passed to logging_simulator.launch<a class="headerlink" href="#arguments-passed-to-logging_simulatorlaunch" title="Permanent link">#</a></h2>
 <p>To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the <code>false</code> parameter as a launch argument.
 The following parameters are set to <code>false</code>:</p>
