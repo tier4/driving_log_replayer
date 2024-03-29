@@ -161,6 +161,29 @@ simulations:
           KEY2: VALUE2
 ```
 
+#### How to update scenario conditions
+
+The driving-log-replayer-cli has the ability to run multiple scenarios in succession that exist under the data_directory of a profile.
+On the other hand, when evaluation conditions are given as arguments, the same arguments are applied to multiple scenarios, which is inconvenient.
+
+In the case of local testing using driving-log-replayer-cli, instead of specifying arguments, the following commands are provided so that scenario conditions can be updated as needed.
+
+- update-condition command to manually update scenario conditions
+- run's -u option to automatically update scenario conditions after a simulation run
+
+There are two ways to update
+
+- existing Update only those items that appear in the scenario
+- all Update all values in the metrics
+
+```shell
+# manual update
+dlr simulation update-condition -s ${scenario_path} -r ${result.jsonl_path} -u ${existing|all}
+
+# automatically update scenario after simulation run
+dlr simulation run -p annotationless_perception -u ${existing|all}
+```
+
 ## Arguments passed to logging_simulator.launch
 
 To make Autoware processing less resource-consuming, modules that are not relevant to evaluation are disabled by passing the `false` parameter as a launch argument.
