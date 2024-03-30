@@ -407,6 +407,8 @@ class PerceptionCriteria:
         for method, level in zip(methods, levels, strict=True):
             if method == CriteriaMethod.NUM_TP:
                 self.methods.append(NumTP(level))
+            elif method == CriteriaMethod.LABEL:
+                self.methods.append(Label(level))
             elif method == CriteriaMethod.METRICS_SCORE:
                 self.methods.append(MetricsScore(level))
             elif method == CriteriaMethod.METRICS_SCORE_MAPH:
