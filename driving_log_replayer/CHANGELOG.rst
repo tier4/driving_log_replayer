@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.14.3 (2024-03-30)
+-------------------
+* feat: cli update scenario condition
+* Contributors: Hayato Mizushima
+
 1.14.2 (2024-03-25)
 -------------------
 * feat(annotationless_perception): output details of fail items (`#379 <https://github.com/tier4/driving_log_replayer/issues/379>`_)
