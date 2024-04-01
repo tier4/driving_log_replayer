@@ -19,7 +19,7 @@ def simulation() -> None:
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)
 @click.option("--profile", "-p", type=str, default="default")
-@click.option("--launch_args", "-l", type=str, default="")
+@click.option("--launch_args", "-l", multiple=True, default=[])
 @click.option(
     "--update_scenario",
     "-u",
@@ -29,7 +29,7 @@ def simulation() -> None:
 )
 def run(
     profile: str,
-    launch_args: str,
+    launch_args: list[str],
     update_scenario: str,
 ) -> None:
     config: Config = load_config(profile)

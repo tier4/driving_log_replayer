@@ -60,13 +60,13 @@ An example is shown below.
 
 ```shell
 # The playback speed of bag, i.e., simulation time, is set to 0.5x speed.
-dlr simulation run -p default -l "play_rate:=0.5"
+dlr simulation run -p default -l play_rate:=0.5
 
 # Set bag playback speed to 0.5x and input_pointcloud to /sensing/lidar/concatenated/pointcloud
-dlr simulation run -p default -l "play_rate:=0.5,input_pointcloud:=/sensing/lidar/concatenated/pointcloud"
+dlr simulation run -p default -l play_rate:=0.5 -l input_pointcloud:=/sensing/lidar/concatenated/pointcloud
 
 # Set perception_mode to camera_lidar_fusion
-dlr simulation run -p default -l "perception_mode:=camera_lidar_fusion"
+dlr simulation run -p default -l perception_mode:=camera_lidar_fusion
 ```
 
 The arguments that can be specified can be displayed by using the -s option of ros2 launch.
