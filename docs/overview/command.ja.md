@@ -60,13 +60,13 @@ driving_log_replayerのcliは、シナリオファイルからsensor_modelなど
 
 ```shell
 # bagの再生速度、すなわち、simulation時間を0.5倍速にする
-dlr simulation run -p default -l "play_rate:=0.5"
+dlr simulation run -p default -l play_rate:=0.5
 
 # bagの再生速度を0.5倍速、かつ、input_pointcloudを /sensing/lidar/concatenated/pointcloudにする
-dlr simulation run -p default -l "play_rate:=0.5,input_pointcloud:=/sensing/lidar/concatenated/pointcloud"
+dlr simulation run -p default -l play_rate:=0.5 -l input_pointcloud:=/sensing/lidar/concatenated/pointcloud
 
 # perception_modeをcamera_lidar_fusionにする
-dlr simulation run -p default -l "perception_mode:=camera_lidar_fusion"
+dlr simulation run -p default -l perception_mode:=camera_lidar_fusion
 ```
 
 指定可能な引数は、ros2 launchの-sオプションを使うことで表示できる。

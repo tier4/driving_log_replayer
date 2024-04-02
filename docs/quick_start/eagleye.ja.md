@@ -28,7 +28,7 @@
 1. シミュレーションの実行
 
    ```shell
-   dlr simulation run -p eagleye  -l "play_rate:=0.5"
+   dlr simulation run -p eagleye -l play_rate:=0.5
    ```
 
 2. 結果の確認
