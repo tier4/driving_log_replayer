@@ -2,6 +2,14 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: change failure details message (`#393 <https://github.com/tier4/driving_log_replayer/issues/393>`_)
+* feat: #391 update cli run option (`#392 <https://github.com/tier4/driving_log_replayer/issues/392>`_)
+* feat: set Result False when run time error occurs (`#387 <https://github.com/tier4/driving_log_replayer/issues/387>`_)
+* revert: `#319 <https://github.com/tier4/driving_log_replayer/issues/319>`_ bag controller (`#390 <https://github.com/tier4/driving_log_replayer/issues/390>`_)
+* Contributors: Hayato Mizushima, Kosuke Takeuchi
+
 1.14.3 (2024-03-30)
 -------------------
 * feat: cli update scenario condition
