@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.15">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bcfcd587.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -1483,13 +1483,13 @@ On the other hand, launch arguments that you want to change at runtime, such as 
 Multiple arguments can be specified by arranging them in a comma-separated list.</p>
 <p>An example is shown below.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># The playback speed of bag, i.e., simulation time, is set to 0.5x speed.</span>
-dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;play_rate:=0.5&quot;</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span>play_rate:<span class="o">=</span><span class="m">0</span>.5
 
 <span class="c1"># Set bag playback speed to 0.5x and input_pointcloud to /sensing/lidar/concatenated/pointcloud</span>
-dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;play_rate:=0.5,input_pointcloud:=/sensing/lidar/concatenated/pointcloud&quot;</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span>play_rate:<span class="o">=</span><span class="m">0</span>.5<span class="w"> </span>-l<span class="w"> </span>input_pointcloud:<span class="o">=</span>/sensing/lidar/concatenated/pointcloud
 
 <span class="c1"># Set perception_mode to camera_lidar_fusion</span>
-dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;perception_mode:=camera_lidar_fusion&quot;</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span>perception_mode:<span class="o">=</span>camera_lidar_fusion
 </code></pre></div>
 <p>The arguments that can be specified can be displayed by using the -s option of ros2 launch.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># ❯ ros2 launch driving_log_replayer ${use_case}.launch.py -s</span>
@@ -1649,7 +1649,7 @@ For scenarios not registered in the cloud, use <code>driving_log_replayer_cli</c
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.bd41221c.min.js"></script>
+      <script src="../../assets/javascripts/bundle.1e8ae164.min.js"></script>
       
     
   </body>
