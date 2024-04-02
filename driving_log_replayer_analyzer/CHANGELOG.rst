@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.14.5 (2024-04-02)
+-------------------
 * feat: add support of label metrics (`#386 <https://github.com/tier4/driving_log_replayer/issues/386>`_)
 * Contributors: Kotaro Uetake
 
