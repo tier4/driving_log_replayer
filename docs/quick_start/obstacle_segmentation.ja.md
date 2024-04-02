@@ -21,7 +21,7 @@
 1. シミュレーションの実行
 
    ```shell
-   dlr simulation run -p obstacle_segmentation  -l "play_rate:=0.5"
+   dlr simulation run -p obstacle_segmentation  -l play_rate:=0.5
    ```
 
    ![obstacle_segmentation](images/obstacle_segmentation.png)

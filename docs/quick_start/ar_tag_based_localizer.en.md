@@ -40,7 +40,7 @@ mv sliced_bag input_bag
 1. Run the simulation
 
    ```shell
-   dlr simulation run -p ar_tag_based_localizer -l "play_rate:=0.5"
+   dlr simulation run -p ar_tag_based_localizer -l play_rate:=0.5
    ```
 
 2. Check the results

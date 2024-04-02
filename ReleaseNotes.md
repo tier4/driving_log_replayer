@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 1.14.5
+
+Minor Tweak
+
+| Module       | Feature | Brief summary                | Pull request                                                   | Jira | Contributor                             |
+| ------------ | ------- | ---------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `perception` | metrics | add support of label metrics | [#386](https://github.com/tier4/driving_log_replayer/pull/386) | -    | [ktro2828](https://github.com/ktro2828) |
+
+## Version 1.14.4
+
+Minor Tweak
+
+| Module                      | Feature        | Brief summary                               | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | -------------- | ------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization`              | initial pose   | revert #319 bag play pause                  | [#390](https://github.com/tier4/driving_log_replayer/pull/390) | RT4-8507 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                       | cli            | update cli run option                       | [#392](https://github.com/tier4/driving_log_replayer/pull/392) | RT4-8507 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`                | error handling | set Result False when run time error occurs | [#387](https://github.com/tier4/driving_log_replayer/pull/387) | RT4-9407 | [hayato-m126](https://github.com/hayato-m126) |
+| `annotationless_perception` | result         | add command to update scenario condition    | [#393](https://github.com/tier4/driving_log_replayer/pull/393) | RT4-9377 | [kosuke55](https://github.com/kosuke55)       |
+
 ## Version 1.14.3
 
 Minor Tweak

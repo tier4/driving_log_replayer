@@ -34,7 +34,7 @@ def run_with_log(cmd: list, log_path: Path) -> None:
 
 def run(
     config: Config,
-    launch_args: str,
+    launch_args: list[str],
     update_method: str,
 ) -> None:
     output_dir_by_time = create_output_dir_by_time(config.output_directory)
@@ -117,38 +117,22 @@ def get_scenario_file(dataset_path: Path) -> Path | None:
     return scenario_file_path
 
 
-def extract_arg(launch_args: str) -> str:
-    # key value is separated by a comma, but cannot be simply split because value contains a json format string.
-    s_key_value: str = ""
-    temp_value = ""
-    json_count = 0
-
-    for char in launch_args:
-        if char == "{":
-            if json_count == 0:
-                # add open single quotation
-                temp_value += "'"
-            temp_value += "{"
-            json_count += 1
-            continue
-        if char == "}":
-            temp_value += "}"
-            json_count -= 1
-            if json_count == 0:
-                # add close single quotation
-                temp_value += "'"
-            continue
-        if char == "," and json_count == 0:
-            # check temp_value format is key:=value
-            if len(temp_value.split(":=")) == 2:  # noqa
-                s_key_value += f" {temp_value}"
-            temp_value = ""
-        else:
-            temp_value += char
-    # last key value not separated by comma. add last key value
-    if len(temp_value.split(":=")) == 2:  # noqa
-        s_key_value += f" {temp_value}"
-    return s_key_value
+def extract_arg(launch_args: list[str]) -> str:
+    extract_launch_arg = ""
+    for l_arg in launch_args:
+        if len(l_arg.split(":=")) != 2:  # noqa
+            # invalid argument
+            termcolor.cprint(
+                f"{l_arg} is ignored because it is invalid",
+                "red",
+            )
+        else:  # noqa
+            # Enclose in single quotes to avoid being treated as special characters by shell
+            if "{" in l_arg or "[" in l_arg:
+                extract_launch_arg += f" '{l_arg}'"
+            else:
+                extract_launch_arg += f" {l_arg}"
+    return extract_launch_arg
 
 
 def clean_up_cmd() -> str:

@@ -32,7 +32,7 @@
 1. シミュレーションの実行
 
    ```shell
-   dlr simulation run -p localization  -l "play_rate:=0.5"
+   dlr simulation run -p localization  -l play_rate:=0.5
    ```
 
    ![localization](images/localization.png)
