@@ -128,10 +128,10 @@ Evaluation:
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l 'annotationless_threshold_file:=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
+dlr simulation run -p annotationless_perception -l annotationless_threshold_file:=${previous_test_result.jsonl_path} -l 'annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
 
 # example
-dlr simulation run -p annotationless_perception -l 'annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl,annotationless_pass_range:={"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}'
+dlr simulation run -p annotationless_perception -l annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl -l 'annotationless_pass_range:={"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}'
 ```
 
 ##### WebAutoCLI
@@ -198,7 +198,7 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 #### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l "sensing:=true"
+dlr simulation run -p annotationless_perception -l sensing:=true
 ```
 
 #### WebAutoCLI

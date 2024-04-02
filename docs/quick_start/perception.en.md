@@ -32,7 +32,7 @@
 1. Run the simulation
 
    ```shell
-   dlr simulation run -p perception  -l "play_rate:=0.5"
+   dlr simulation run -p perception  -l play_rate:=0.5
    ```
 
    ![perception](images/perception.png)
