@@ -1,6 +1,6 @@
 [project]
 name = "driving-log-replayer"
-version = "1.14.4"
+version = "1.14.5"
 description = "command line tool for driving_log_replayer"
 authors = [
   { name = "Hayato Mizushima", email = "hayato.mizushima@tier4.jp" },

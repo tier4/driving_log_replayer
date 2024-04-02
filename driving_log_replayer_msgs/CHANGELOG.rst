@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add support of label metrics (`#386 <https://github.com/tier4/driving_log_replayer/issues/386>`_)
+* Contributors: Kotaro Uetake
+
+
 1.14.4 (2024-04-02)
 -------------------
 * feat: change failure details message (`#393 <https://github.com/tier4/driving_log_replayer/issues/393>`_)
