@@ -312,7 +312,7 @@ class DeviationClassContainer:
                 rtn_success = False
                 fail_info = "\n\t".join(
                     [
-                        f"{key}: value={val[0]}, threshold=({val[1]}-{val[2]})"
+                        f"{key}: actual_value={val[0]}, expected_value=({val[1]}-{val[2]})"
                         for key, val in evaluation_item.fail_details.items()
                     ],
                 )
