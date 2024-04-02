@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.14.5
+
+Minor Tweak
+
+| Module       | Feature | Brief summary                | Pull request                                                   | Jira | Contributor                             |
+| ------------ | ------- | ---------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `perception` | metrics | add support of label metrics | [#386](https://github.com/tier4/driving_log_replayer/pull/386) | -    | [ktro2828](https://github.com/ktro2828) |
+
 ## Version 1.14.4
 
 Minor Tweak
