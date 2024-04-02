@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer_analyzer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.14.4 (2024-04-02)
+-------------------
 * feat: change failure details message (`#393 <https://github.com/tier4/driving_log_replayer/issues/393>`_)
 * feat: #391 update cli run option (`#392 <https://github.com/tier4/driving_log_replayer/issues/392>`_)
 * feat: set Result False when run time error occurs (`#387 <https://github.com/tier4/driving_log_replayer/issues/387>`_)
