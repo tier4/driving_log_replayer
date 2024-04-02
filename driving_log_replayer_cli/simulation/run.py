@@ -126,7 +126,7 @@ def extract_arg(launch_args: list[str]) -> str:
                 f"{l_arg} is ignored because it is invalid",
                 "red",
             )
-        else:
+        else:  # noqa
             # Enclose in single quotes to avoid being treated as special characters by shell
             if "{" in l_arg or "[" in l_arg:
                 extract_launch_arg += f" '{l_arg}'"
