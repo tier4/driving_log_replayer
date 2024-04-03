@@ -260,7 +260,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
 {
   "Frame": {
     "Warning": "警告のメッセージ",
-    "FrameSkip": "評価が飛ばされた回数の合計。objectの評価を依頼したがdatasetに75msec以内の真値がなく場合、または、footprint.pointsの数が1か2の場合に発生する",
+    "FrameSkip": "評価が飛ばされた回数の合計。objectの評価を依頼したがdatasetに75msec以内の真値がなく場合、または、footprint.pointsの数が1か2の場合に発生する"
   }
 }
 ```
