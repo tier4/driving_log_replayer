@@ -164,6 +164,12 @@ class PerceptionResult(ResultBase):
         marker_ground_truth, marker_results = self.create_ros_msg(frame, header)
         return marker_ground_truth, marker_results
 
+    def set_error_frame(self, error_msg: str, skip: int) -> None:
+        self._frame = {
+            "RuntimeError": error_msg,
+            "FrameSkip": skip,
+        }
+
     def create_ros_msg(
         self,
         frame: PerceptionFrameResult,
