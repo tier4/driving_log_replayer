@@ -154,6 +154,7 @@ class PerceptionResult(ResultBase):
         header: Header,
         map_to_baselink: dict,
     ) -> tuple[MarkerArray, MarkerArray]:
+        self._frame = {}  # initialize
         for criterion in self.__perception_criterion:
             self._frame[criterion.name] = criterion.set_frame(
                 frame,
