@@ -241,7 +241,7 @@ class PerceptionEvaluator(DLREvaluator):
             # estimated_objects is error_msg
             self.__skip_counter += 1
             self.get_logger().error(estimated_objects)
-            self._result.set_error_frame(estimated_objects, self.__skip_counter)
+            self._result.set_warn_frame(estimated_objects, self.__skip_counter)
             self._result_writer.write_result(self._result)
             return
         ros_critical_ground_truth_objects = ground_truth_now_frame.objects
