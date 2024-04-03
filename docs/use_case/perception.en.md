@@ -237,7 +237,7 @@ Format of each frame:
         "Distance": "Condition for Distance"
       },
       "FrameName": "Frame number of t4_dataset used for evaluation",
-      "FrameSkip": "Number of times that an object was requested to be evaluated but the evaluation was skipped because there was no ground truth in the dataset within 75msec",
+      "FrameSkip": "The total number of times the evaluation was skipped, which occurs when the evaluation of an object is requested but there is no Ground Truth in the dataset within 75msec, or when the number of footprint.points is 1 or 2.",
       "PassFail": {
         "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
         "Info": {
@@ -250,6 +250,17 @@ Format of each frame:
     "criteria1": {
       // result of criteria 1. contents of this section is same as criteria 0.
     }
+  }
+}
+```
+
+Warning Data Format:
+
+```json
+{
+  "Frame": {
+    "Warning": "Warning Message",
+    "FrameSkip": "The total number of times the evaluation was skipped, which occurs when the evaluation of an object is requested but there is no Ground Truth in the dataset within 75msec, or when the number of footprint.points is 1 or 2.",
   }
 }
 ```
