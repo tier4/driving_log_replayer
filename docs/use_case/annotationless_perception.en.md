@@ -37,9 +37,7 @@ Items for which no threshold is set (min, max, mean) are always judged as normal
 
 #### min
 
-If `threshold * lower_limit` <= `maximum value of min` <= `threshold * upper_limit`, it is assumed to be normal.
-
-Lower limit recommended to be 0.0
+If `threshold * lower_limit` <= `minimum value of min` <= `threshold * upper_limit`, it is assumed to be normal.
 
 #### max
 
