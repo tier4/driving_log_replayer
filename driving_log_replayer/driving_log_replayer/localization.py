@@ -16,7 +16,6 @@ from dataclasses import dataclass
 from dataclasses import field
 from functools import singledispatchmethod
 import statistics
-from typing import Any
 from typing import ClassVar
 from typing import Literal
 
