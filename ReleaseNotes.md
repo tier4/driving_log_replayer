@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 1.14.7
+
+Bug fix
+
+| Module                      | Feature | Brief summary   | Pull request                                                   | Jira | Contributor                             |
+| --------------------------- | ------- | --------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `annotationless_perception` | metrics | fix min metrics | [#400](https://github.com/tier4/driving_log_replayer/pull/400) | -    | [kosuke55](https://github.com/kosuke55) |
+
+## Version 1.14.6
+
+Minor Tweak
+
+| Module       | Feature   | Brief summary                                       | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | --------- | --------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception` | exception | skip evaluation when 1 <= len(footprint.points) < 3 | [#397](https://github.com/tier4/driving_log_replayer/pull/397) | RT4-9407 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.14.5
 
 Minor Tweak

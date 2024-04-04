@@ -1,12 +1,22 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package driving_log_replayer_analyzer
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package driving_log_replayer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1.14.7 (2024-04-05)
+-------------------
+* fix: annotationless_perception min metrics (`#400 <https://github.com/tier4/driving_log_replayer/issues/400>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Kosuke Takeuchi
+
+1.14.6 (2024-04-04)
+-------------------
+* feat: `#396 <https://github.com/tier4/driving_log_replayer/issues/396>`_ drop topic footprint 1or2 (`#397 <https://github.com/tier4/driving_log_replayer/issues/397>`_)
+* Contributors: Hayato Mizushima
 
 1.14.5 (2024-04-02)
 -------------------
 * feat: add support of label metrics (`#386 <https://github.com/tier4/driving_log_replayer/issues/386>`_)
 * Contributors: Kotaro Uetake
-
 
 1.14.4 (2024-04-02)
 -------------------
@@ -42,7 +52,6 @@ Changelog for package driving_log_replayer_analyzer
 * feat: filter only lanelets close to ego (`#366 <https://github.com/tier4/driving_log_replayer/issues/366>`_)
 * chore: Delete confusing comments (`#371 <https://github.com/tier4/driving_log_replayer/issues/371>`_)
 * Contributors: Hayato Mizushima
-
 
 1.13.3 (2024-02-28)
 -------------------
@@ -251,6 +260,7 @@ Changelog for package driving_log_replayer_analyzer
 * feat: localization test (`#248 <https://github.com/tier4/driving_log_replayer/issues/248>`_)
 * feat: result test (`#246 <https://github.com/tier4/driving_log_replayer/issues/246>`_)
 * Contributors: Hayato Mizushima, SakodaShintaro
+
 1.6.1 (2023-09-12)
 ------------------
 * fix: restore default value (`#244 <https://github.com/tier4/driving_log_replayer/issues/244>`_)
@@ -623,3 +633,99 @@ Changelog for package driving_log_replayer_analyzer
 * fix: pre-commit-check (`#43 <https://github.com/tier4/driving_log_replayer/issues/43>`_)
 * add driving_log_replayer_analyzer (`#42 <https://github.com/tier4/driving_log_replayer/issues/42>`_)
 * Contributors: Hayato Mizushima, Keisuke Shima
+
+1.1.0 (2022-11-29)
+------------------
+* feat(obstacle_segmentation): `#39 <https://github.com/tier4/driving_log_replayer/issues/39>`_ update diagnostic status name (`#40 <https://github.com/tier4/driving_log_replayer/issues/40>`_)
+  closes: `#39 <https://github.com/tier4/driving_log_replayer/issues/39>`_
+* Contributors: Hayato Mizushima
+
+1.0.12 (2022-11-11)
+-------------------
+* fix: obstacle segmentation frame result (`#37 <https://github.com/tier4/driving_log_replayer/issues/37>`_)
+* Contributors: Hayato Mizushima
+
+1.0.11 (2022-11-11)
+-------------------
+* feat: `#33 <https://github.com/tier4/driving_log_replayer/issues/33>`_ test mode for obstacle segmentation (`#35 <https://github.com/tier4/driving_log_replayer/issues/35>`_)
+  closes: `#33 <https://github.com/tier4/driving_log_replayer/issues/33>`_
+* Contributors: Hayato Mizushima
+
+1.0.10 (2022-11-07)
+-------------------
+* docs: update Japanese Documentation
+* Contributors: Hayato Mizushima
+
+1.0.9 (2022-11-04)
+------------------
+* fix: MkDocs Dependency
+* Contributors: Hayato Mizushima
+
+1.0.8 (2022-11-04)
+------------------
+* docs: English document
+* Contributors: Hayato Mizushima
+
+1.0.7 (2022-10-30)
+------------------
+* fix: frame pass fail logic (`#25 <https://github.com/tier4/driving_log_replayer/issues/25>`_)
+  closes: `#24 <https://github.com/tier4/driving_log_replayer/issues/24>`_
+* Contributors: Hayato Mizushima
+
+1.0.6 (2022-10-27)
+------------------
+* fix: cast number from yaml file (`#22 <https://github.com/tier4/driving_log_replayer/issues/22>`_)
+  closes: `#21 <https://github.com/tier4/driving_log_replayer/issues/21>`_
+* Contributors: Hayato Mizushima
+
+1.0.5 (2022-10-19)
+------------------
+* Fix/`#16 <https://github.com/tier4/driving_log_replayer/issues/16>`_ database result node failure 1 (`#18 <https://github.com/tier4/driving_log_replayer/issues/18>`_)
+  * chore: git mv
+  * fix: change database result generation command
+* Feat/`#16 <https://github.com/tier4/driving_log_replayer/issues/16>`_ perception database evaluation result (`#17 <https://github.com/tier4/driving_log_replayer/issues/17>`_)
+  * feat: save database result as file
+  * fix: add command
+  * fix: parameter
+  * fix: arg name
+  * fix: typo
+  * fix: get pkl file and add debug program
+  * fix: shutdown
+  * fix: lint
+  * fix: lint
+* Contributors: Hayato Mizushima
+
+1.0.4 (2022-10-14)
+------------------
+* docs: use MkDocs
+* Contributors: Hayato Mizushima
+
+1.0.3 (2022-10-13)
+------------------
+* feat: delete use pointcloud container false (`#12 <https://github.com/tier4/driving_log_replayer/issues/12>`_)
+  closes: `#11 <https://github.com/tier4/driving_log_replayer/issues/11>`_
+* Contributors: Hayato Mizushima
+
+1.0.2 (2022-10-12)
+------------------
+* docs: update sample
+* Contributors: Hayato Mizushima
+
+1.0.1 (2022-10-11)
+------------------
+* Feat/obstacle segmentation remap topic in t4 dataset bag (`#4 <https://github.com/tier4/driving_log_replayer/issues/4>`_)
+  * feat(obstacle_segmentation): remap concatenated_pointcloud
+  * feat(obstacle_segmentation): remap tf_static
+  * feat: use tf_static in bag
+* Revert "chore: remap tf in bag (`#3 <https://github.com/tier4/driving_log_replayer/issues/3>`_)"
+  This reverts commit e6dac86f53fa239f53df069f7da9b3bc66c31f07.
+* chore: remap tf in bag (`#3 <https://github.com/tier4/driving_log_replayer/issues/3>`_)
+* Chore/perception UUID (`#2 <https://github.com/tier4/driving_log_replayer/issues/2>`_)
+  * feat(perception): shorten bounding box uuid
+  * chore: change log
+* Contributors: Hayato Mizushima
+
+1.0.0 (2022-09-28)
+------------------
+* oss
+* Contributors: Hayato Mizushima
