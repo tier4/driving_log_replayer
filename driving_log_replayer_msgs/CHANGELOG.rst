@@ -1,12 +1,16 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package driving_log_replayer_msgs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package driving_log_replayer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* feat: `#396 <https://github.com/tier4/driving_log_replayer/issues/396>`_ drop topic footprint 1or2 (`#397 <https://github.com/tier4/driving_log_replayer/issues/397>`_)
+* Contributors: Hayato Mizushima
 
 1.14.5 (2024-04-02)
 -------------------
 * feat: add support of label metrics (`#386 <https://github.com/tier4/driving_log_replayer/issues/386>`_)
 * Contributors: Kotaro Uetake
-
 
 1.14.4 (2024-04-02)
 -------------------
