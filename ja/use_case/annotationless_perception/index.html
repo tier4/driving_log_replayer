@@ -1694,8 +1694,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <p><code>/diagnostic/perception_online_evaluator/metrics</code> のstatus.name毎に以下のルールに従い成否の判定が行われる。
 閾値が設定されてない項目(min, max, mean)に関しては常に正常と判定される。指定があるもののみが評価対象になる。</p>
 <h4 id="min">min<a class="headerlink" href="#min" title="Permanent link">#</a></h4>
-<p>閾値×下限値　＜＝　minの最大値　＜＝　閾値×上限値であれば正常とする。</p>
-<p>下限値は0.0にすることを推奨</p>
+<p>閾値×下限値　＜＝　minの最小値　＜＝　閾値×上限値であれば正常とする。</p>
 <h4 id="max">max<a class="headerlink" href="#max" title="Permanent link">#</a></h4>
 <p>閾値×下限値　＜＝　maxの最大値　＜＝　閾値×上限値であれば正常とする。</p>
 <p>下限値は0.0にすることを推奨</p>

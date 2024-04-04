@@ -1694,8 +1694,7 @@ Launching the file executes the following steps:</p>
 <p>Success or failure is determined for each status.name in <code>/diagnostic/perception_online_evaluator/metrics</code> according to the following rules.
 Items for which no threshold is set (min, max, mean) are always judged as normal. Only those items for which a threshold is specified are subject to evaluation.</p>
 <h4 id="min">min<a class="headerlink" href="#min" title="Permanent link">#</a></h4>
-<p>If <code>threshold * lower_limit</code> &lt;= <code>maximum value of min</code> &lt;= <code>threshold * upper_limit</code>, it is assumed to be normal.</p>
-<p>Lower limit recommended to be 0.0</p>
+<p>If <code>threshold * lower_limit</code> &lt;= <code>minimum value of min</code> &lt;= <code>threshold * upper_limit</code>, it is assumed to be normal.</p>
 <h4 id="max">max<a class="headerlink" href="#max" title="Permanent link">#</a></h4>
 <p>If <code>threshold * lower_limit</code> &lt;= <code>maximum value of max</code> &lt;= <code>threshold * upper_limit</code>, it is assumed to be normal.</p>
 <p>Lower limit recommended to be 0.0</p>
