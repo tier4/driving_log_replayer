@@ -124,13 +124,13 @@ def test_set_pass_range_from_launch_arg() -> None:
 def create_deviation() -> Deviation:
     condition = ClassConditionValue(
         Threshold={"lateral_deviation": DiagValue(min=1.0, max=10.0, mean=5.0)},
-        PassRange={"min": "0.0-1.05", "max": "0.0-1.05", "mean": "0.95-1.05"},
+        PassRange={"min": "0.2-1.05", "max": "0.0-1.05", "mean": "0.95-1.05"},
     )
     return Deviation(
         name="CAR",
         condition=condition,
         total=9,
-        received_data={"lateral_deviation": {"min": 0.0, "max": 0.0, "mean": 45.0}},
+        received_data={"lateral_deviation": {"min": 1.0, "max": 0.0, "mean": 45.0}},
         min_success={"lateral_deviation": True},
         max_success={"lateral_deviation": True},
     )
@@ -143,9 +143,9 @@ def test_deviation_success(create_deviation: Callable) -> None:
     assert evaluation_item.success is True
 
 
-def test_deviation_fail_upper_limit_min(create_deviation: Callable) -> None:
+def test_deviation_fail_lower_limit_min(create_deviation: Callable) -> None:
     evaluation_item: Deviation = create_deviation
-    status_dict = {"lateral_deviation": {"min": 2.0, "max": 10.0, "mean": 5.0}}
+    status_dict = {"lateral_deviation": {"min": 0.1, "max": 10.0, "mean": 5.0}}
     evaluation_item.set_frame(status_dict)
     assert evaluation_item.success is False
 
