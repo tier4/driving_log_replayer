@@ -37,8 +37,6 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer3D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from rclpy.clock import Clock
-from rclpy.clock import ClockType
 from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.evaluator import DLREvaluator
@@ -52,6 +50,7 @@ class PerceptionEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, PerceptionScenario, PerceptionResult)
         self._scenario: PerceptionScenario
+        self._result: PerceptionResult
 
         self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
@@ -161,9 +160,16 @@ class PerceptionEvaluator(DLREvaluator):
         self,
         unix_time: int,
         objects: list[DetectedObject] | list[TrackedObject],
-    ) -> list[DynamicObject]:
+    ) -> list[DynamicObject] | str:
+        # return str(error_msg) when footprint points are invalid
         estimated_objects: list[DynamicObject] = []
         for perception_object in objects:
+            # check footprint length
+            if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
+                return (
+                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}"
+                )
+
             most_probable_classification = DLREvaluator.get_most_probable_classification(
                 perception_object.classification,
             )
@@ -174,25 +180,6 @@ class PerceptionEvaluator(DLREvaluator):
             uuid = None
             if isinstance(perception_object, TrackedObject):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
-
-            # check footprint length
-            if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
-                err_msg = (
-                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}"
-                )
-                self.get_logger().error(err_msg)
-                error_dict = {
-                    "Result": {"Success": False, "Summary": "RuntimeError"},
-                    "Stamp": {
-                        "System": Clock(clock_type=ClockType.SYSTEM_TIME).now().nanoseconds
-                        / pow(10, 9),
-                        "ROS": self.get_clock().now().nanoseconds / pow(10, 9),
-                    },
-                    "Frame": {"ErrorMsg": err_msg},
-                }
-                self._result_writer.write_line(error_dict)
-                self._result_writer.close()
-                rclpy.shutdown()
 
             shape_type = ShapeType.BOUNDING_BOX
             shape_type_num = perception_object.shape.type
@@ -246,10 +233,17 @@ class PerceptionEvaluator(DLREvaluator):
             self.__skip_counter += 1
             return
 
-        estimated_objects: list[DynamicObject] = self.list_dynamic_object_from_ros_msg(
+        estimated_objects: list[DynamicObject] | str = self.list_dynamic_object_from_ros_msg(
             unix_time,
             msg.objects,
         )
+        if isinstance(estimated_objects, str):
+            # estimated_objects is error_msg
+            self.__skip_counter += 1
+            self.get_logger().error(estimated_objects)
+            self._result.set_warn_frame(estimated_objects, self.__skip_counter)
+            self._result_writer.write_result(self._result)
+            return
         ros_critical_ground_truth_objects = ground_truth_now_frame.objects
         # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
         # 動的に変える条件をかけるようになるまでは、初期化時に一括設定

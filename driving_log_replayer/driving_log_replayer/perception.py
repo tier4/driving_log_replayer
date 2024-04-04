@@ -154,6 +154,7 @@ class PerceptionResult(ResultBase):
         header: Header,
         map_to_baselink: dict,
     ) -> tuple[MarkerArray, MarkerArray]:
+        self._frame = {}  # initialize
         for criterion in self.__perception_criterion:
             self._frame[criterion.name] = criterion.set_frame(
                 frame,
@@ -163,6 +164,12 @@ class PerceptionResult(ResultBase):
         self.update()
         marker_ground_truth, marker_results = self.create_ros_msg(frame, header)
         return marker_ground_truth, marker_results
+
+    def set_warn_frame(self, msg: str, skip: int) -> None:
+        self._frame = {
+            "Warning": msg,
+            "FrameSkip": skip,
+        }
 
     def create_ros_msg(
         self,
