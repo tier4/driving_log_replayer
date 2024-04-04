@@ -204,7 +204,7 @@ class Deviation(EvaluationItem):
             self.max_success[key] = True
         rdk = self.received_data[key]
         # add
-        rdk["min"] = max(rdk["min"], values["min"])
+        rdk["min"] = min(rdk["min"], values["min"])
         rdk["max"] = max(rdk["max"], values["max"])
         rdk["mean"] += values["mean"]
         # calc metrics
