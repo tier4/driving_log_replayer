@@ -70,7 +70,7 @@ class Evaluation(BaseModel):
     UseCaseFormatVersion: Literal["1.2.0", "1.3.0"]
     Conditions: Conditions
     InitialPose: InitialPose | None
-    DirectInitialPose: str | None
+    DirectInitialPose: str | None = None
 
     @model_validator(mode="after")
     def mutually_exclusive(self) -> "Evaluation":
