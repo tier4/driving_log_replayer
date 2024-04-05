@@ -1,0 +1,12 @@
+ScenarioFormatVersion: 2.2.0
+ScenarioName: dummy_annotationless_perception
+ScenarioDescription: dummy_annotationless_perception
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+VehicleId: default
+LocalMapPath: $HOME/map/sample-map-planning
+Evaluation:
+  UseCaseName: annotationless_perception
+  UseCaseFormatVersion: 0.2.0
+  Conditions:
+    ClassConditions: {}

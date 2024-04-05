@@ -10,6 +10,7 @@ from driving_log_replayer_cli.core.config import Config
 from driving_log_replayer_cli.core.result import convert_all
 from driving_log_replayer_cli.core.result import display_all
 from driving_log_replayer_cli.core.scenario import Datasets
+from driving_log_replayer_cli.core.scenario import get_dry_run_scenario_path
 from driving_log_replayer_cli.core.scenario import load_scenario
 from driving_log_replayer_cli.core.scenario import Scenario
 from driving_log_replayer_cli.simulation.update import update_annotationless_scenario_condition
@@ -88,6 +89,53 @@ def run(
                 update_method,
             )
 
+    # convert result file and display result
+    convert_all(output_dir_by_time)
+    display_all(output_dir_by_time)
+
+
+def dry_run(
+    config: Config,
+    use_case: str,
+    launch_args: list[str],
+) -> None:
+    output_dir_by_time = create_output_dir_by_time(config.output_directory)
+    output_case = output_dir_by_time.joinpath("dry_run")
+    scenario_file = get_dry_run_scenario_path(use_case)
+    scenario = load_scenario(scenario_file)
+    launch_cmd = None
+    if scenario.Evaluation["UseCaseName"] in USE_T4_DATASET:
+        launch_cmd = cmd_use_t4_dataset(
+            scenario_file,
+            output_case,
+            config.autoware_path,
+            launch_args,
+        )
+    else:
+        launch_cmd = cmd_use_bag_only(
+            scenario_file,
+            output_case,
+            config.autoware_path,
+            launch_args,
+        )
+
+    if launch_cmd is None:
+        return
+
+    # create dir for output bag and result.jsonl
+    output_case.mkdir(exist_ok=True)
+
+    # save command as bash script
+    run_script = output_case.joinpath("run.bash")
+    with run_script.open("w") as f:
+        f.write(launch_cmd)
+
+    # run simulation
+    cmd = ["/bin/bash", run_script.as_posix()]
+    try:
+        run_with_log(cmd, output_case.joinpath("console.log"))
+    except KeyboardInterrupt:
+        termcolor.cprint("Simulation execution canceled by Ctrl+C", "red")
     # convert result file and display result
     convert_all(output_dir_by_time)
     display_all(output_dir_by_time)

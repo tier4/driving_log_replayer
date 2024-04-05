@@ -49,6 +49,14 @@ def load_scenario(scenario_path: Path) -> Scenario:
         return Scenario(**yaml.safe_load(scenario_file))
 
 
+def get_dry_run_scenario_path(use_case: str) -> Path:
+    return (
+        Path(__file__)
+        .parent.parent.resolve()
+        .joinpath("resources", "sample", use_case, "dry_run.yaml")
+    )
+
+
 def backup_scenario_file(scenario_path: Path) -> None:
     bak_name = scenario_path.name + f".{datetime.now().strftime('%Y%m%d%H%M%S')}.bak"  # noqa
     backup_file_path = scenario_path.parent.joinpath(bak_name)
