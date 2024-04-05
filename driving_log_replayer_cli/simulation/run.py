@@ -49,19 +49,20 @@ def run(
             continue
         scenario = load_scenario(scenario_file)
         launch_cmd = None
+        launch_arg_dict = args_to_dict(launch_args)
         if scenario.Evaluation["UseCaseName"] in USE_T4_DATASET:
             launch_cmd = cmd_use_t4_dataset(
                 scenario_file,
                 output_case,
                 config.autoware_path,
-                launch_args,
+                launch_arg_dict,
             )
         else:
             launch_cmd = cmd_use_bag_only(
                 scenario_file,
                 output_case,
                 config.autoware_path,
-                launch_args,
+                launch_arg_dict,
             )
 
         if launch_cmd is None:
@@ -104,19 +105,20 @@ def dry_run(
     scenario_file = get_dry_run_scenario_path(use_case)
     scenario = load_scenario(scenario_file)
     launch_cmd = None
+    launch_arg_dict = args_to_dict(launch_args)
     if scenario.Evaluation["UseCaseName"] in USE_T4_DATASET:
         launch_cmd = cmd_use_t4_dataset(
             scenario_file,
             output_case,
             config.autoware_path,
-            launch_args,
+            launch_arg_dict,
         )
     else:
         launch_cmd = cmd_use_bag_only(
             scenario_file,
             output_case,
             config.autoware_path,
-            launch_args,
+            launch_arg_dict,
         )
 
     if launch_cmd is None:
@@ -165,22 +167,29 @@ def get_scenario_file(dataset_path: Path) -> Path | None:
     return scenario_file_path
 
 
-def extract_arg(launch_args: list[str]) -> str:
-    extract_launch_arg = ""
+def args_to_dict(launch_args: list[str]) -> dict[str, str]:
+    launch_arg_dict = {}
     for l_arg in launch_args:
-        if len(l_arg.split(":=")) != 2:  # noqa
+        try:
+            key, value = l_arg.split(":=")
+            launch_arg_dict[key] = value
+        except ValueError:
             # invalid argument
             termcolor.cprint(
                 f"{l_arg} is ignored because it is invalid",
                 "red",
             )
-        else:  # noqa
-            # Enclose in single quotes to avoid being treated as special characters by shell
-            if "{" in l_arg or "[" in l_arg:
-                extract_launch_arg += f" '{l_arg}'"
-            else:
-                extract_launch_arg += f" {l_arg}"
-    return extract_launch_arg
+    return launch_arg_dict
+
+
+def launch_dict_to_str(launch_arg_dict: dict) -> str:
+    rtn_str = ""
+    for k, v in launch_arg_dict:
+        if "{" in v or "[" in v:
+            rtn_str += f" '{k}:={v}'"
+        else:
+            rtn_str += f" {k}:={v}"
+    return rtn_str
 
 
 def clean_up_cmd() -> str:
@@ -203,16 +212,27 @@ def cmd_use_bag_only(
     scenario_path: Path,
     output_path: Path,
     autoware_path: Path,
-    launch_args: str,
+    launch_args_dict: dict[str, str],
 ) -> str | None:
     scenario: Scenario = load_scenario(scenario_path)
     launch_command = f"source {autoware_path.joinpath('install', 'setup.bash').as_posix()}\n"
-    launch_command += f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py map_path:={scenario.LocalMapPath} vehicle_model:={scenario.VehicleModel} sensor_model:={scenario.SensorModel} vehicle_id:={scenario.VehicleId}"
-    launch_command += f" scenario_path:={scenario_path.as_posix()} result_json_path:={output_path.joinpath('result.json').as_posix()} input_bag:={scenario_path.parent.joinpath('input_bag').as_posix()} result_bag_path:={output_path.joinpath('result_bag').as_posix()}"
+    launch_command += (
+        f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py"
+    )
+    launch_arg_dict_scenario = {
+        "map_path": scenario.LocalMapPath,
+        "vehicle_model": scenario.VehicleModel,
+        "sensor_model": scenario.SensorModel,
+        "vehicle_id": scenario.VehicleId,
+        "scenario_path": scenario_path.as_posix(),
+        "result_json_path": output_path.joinpath("result.json").as_posix(),
+        "input_bag": scenario_path.parent.joinpath("input_bag").as_posix(),
+        "result_bag_path": output_path.joinpath("result_bag").as_posix(),
+    }
     launch_localization = scenario.Evaluation.get("LaunchLocalization")
     if launch_localization is not None:
-        launch_command += f" localization:={launch_localization}"
-    launch_command += extract_arg(launch_args)
+        launch_arg_dict_scenario["localization"] = launch_localization
+    launch_command += launch_dict_to_str(launch_arg_dict_scenario.update(launch_args_dict)) + "\n"
     return launch_command + clean_up_cmd()
 
 
@@ -220,7 +240,7 @@ def cmd_use_t4_dataset(
     scenario_path: Path,
     output_path: Path,
     autoware_path: Path,
-    launch_args: str,
+    launch_args_dict: dict[str, str],
 ) -> str | None:
     dataset_path = scenario_path.parent
     scenario: Scenario = load_scenario(scenario_path)
@@ -250,12 +270,25 @@ def cmd_use_t4_dataset(
                 )
                 continue
 
-            launch_command = f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py map_path:={map_path} vehicle_model:={scenario.VehicleModel} sensor_model:={scenario.SensorModel} vehicle_id:={vehicle_id}"
-            launch_command += f" scenario_path:={scenario_path.as_posix()} result_json_path:={output_dir_per_dataset.joinpath('result.json').as_posix()} input_bag:={t4_dataset_path.joinpath('input_bag').as_posix()} result_bag_path:={output_dir_per_dataset.joinpath('result_bag').as_posix()}"
-            launch_command += f" t4_dataset_path:={t4_dataset_path} result_archive_path:={output_dir_per_dataset.joinpath('result_archive').as_posix()}"
+            launch_command = (
+                f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py"
+            )
+            launch_arg_dict_dataset = {
+                "map_path": map_path,
+                "vehicle_model": scenario.VehicleModel,
+                "sensor_model": scenario.SensorModel,
+                "vehicle_id": vehicle_id,
+                "scenario_path": scenario_path.as_posix(),
+                "result_json_path": output_dir_per_dataset.joinpath("result.json").as_posix(),
+                "input_bag": t4_dataset_path.joinpath("input_bag").as_posix(),
+                "result_bag_path": output_dir_per_dataset.joinpath("result_bag").as_posix(),
+                "t4_dataset_path": t4_dataset_path,
+                "result_archive_path": output_dir_per_dataset.joinpath("result_archive").as_posix(),
+            }
             if t4_dataset[key].LaunchSensing is not None:
-                launch_command += f" sensing:={t4_dataset[key].LaunchSensing}"
-            launch_command += extract_arg(launch_args)
+                launch_arg_dict_dataset["sensing"] = t4_dataset[key].LaunchSensing
+            launch_arg_dict_dataset.update(launch_args_dict)
+            launch_command += launch_dict_to_str(launch_arg_dict_dataset)
             launch_command += clean_up_cmd()
             launch_command_for_all_dataset += launch_command
         if is_database_evaluation:
