@@ -19,14 +19,14 @@ class Scenario(BaseModel):
     SensorModel: str
     VehicleModel: str
     VehicleId: str | None = None
-    LocalMapPath: Path | None = None
+    LocalMapPath: Path | str = ""
     Evaluation: dict
 
     @field_validator("LocalMapPath", mode="before")
     @classmethod
-    def validate_local_path(cls, v: str | None) -> Path | None:
-        if v is None:
-            return None
+    def validate_local_path(cls, v: str | None) -> Path | str:
+        if v == "":
+            return ""
         normal_path = Path(expandvars(v))
         if normal_path.exists():
             return normal_path

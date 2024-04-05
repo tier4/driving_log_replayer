@@ -184,7 +184,7 @@ def args_to_dict(launch_args: list[str]) -> dict[str, str]:
 
 def launch_dict_to_str(launch_arg_dict: dict) -> str:
     rtn_str = ""
-    for k, v in launch_arg_dict:
+    for k, v in launch_arg_dict.items():
         if "{" in v or "[" in v:
             rtn_str += f" '{k}:={v}'"
         else:
@@ -232,7 +232,8 @@ def cmd_use_bag_only(
     launch_localization = scenario.Evaluation.get("LaunchLocalization")
     if launch_localization is not None:
         launch_arg_dict_scenario["localization"] = launch_localization
-    launch_command += launch_dict_to_str(launch_arg_dict_scenario.update(launch_args_dict)) + "\n"
+    launch_arg_dict_scenario.update(launch_args_dict)
+    launch_command += launch_dict_to_str(launch_arg_dict_scenario) + "\n"
     return launch_command + clean_up_cmd()
 
 
@@ -288,7 +289,7 @@ def cmd_use_t4_dataset(
             if t4_dataset[key].LaunchSensing is not None:
                 launch_arg_dict_dataset["sensing"] = t4_dataset[key].LaunchSensing
             launch_arg_dict_dataset.update(launch_args_dict)
-            launch_command += launch_dict_to_str(launch_arg_dict_dataset)
+            launch_command += launch_dict_to_str(launch_arg_dict_dataset) + "\n"
             launch_command += clean_up_cmd()
             launch_command_for_all_dataset += launch_command
         if is_database_evaluation:
