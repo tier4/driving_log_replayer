@@ -70,7 +70,7 @@ dlr simulation run -p default -l perception_mode:=camera_lidar_fusion
 
 # Dry-run mode to obtain metrics without creating a scenario file
 # set bag, map, sensor_model, vehicle_model, [and vehicle_id] from arguments
-bag, map, sensor_model, vehicle_model[, vehicle_id], which are originally developed from the scenario, are directly specified as arguments
+dlr simulation dry-run -p ${profile} -u ${use_case} -l sensor_model:=${sensor_model} -l vehicle_model:=${vehicle_model} -l map_path:=${map_path} -l input_bag:=${bag_path} [-l vehicle_id:=${vehicle_id}]
 
 # Command example
 # The -p option is used to determine the output destination for bag and result.jsonl. If omitted, the output is sent to the output_directory of the default profile.
