@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: annotationless_perception unit test (`#402 <https://github.com/tier4/driving_log_replayer/issues/402>`_)
+* Contributors: Hayato Mizushima
+
 1.14.7 (2024-04-05)
 -------------------
 * fix: annotationless_perception min metrics (`#400 <https://github.com/tier4/driving_log_replayer/issues/400>`_)
