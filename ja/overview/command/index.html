@@ -1476,6 +1476,15 @@ dlr<span class="w"> </span>simulation<span class="w"> </span>show-result<span cl
 
 <span class="c1"># 結果ファイルをjsonに変換する</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>convert-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
+
+<span class="c1"># シナリオファイルを作成せずに、メトリクスを得るために実行する予行演習モード</span>
+<span class="c1"># bag, map, sensor_model, vehicle_model [, vehicle_id] を引数で指定する</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>dry-run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="w"> </span>-u<span class="w"> </span><span class="si">${</span><span class="nv">use_case</span><span class="si">}</span><span class="w"> </span>-l<span class="w"> </span>sensor_model:<span class="o">=</span><span class="si">${</span><span class="nv">sensor_model</span><span class="si">}</span><span class="w"> </span>-l<span class="w"> </span>vehicle_model:<span class="o">=</span><span class="si">${</span><span class="nv">vehicle_model</span><span class="si">}</span><span class="w"> </span>-l<span class="w"> </span>map_path:<span class="o">=</span><span class="si">${</span><span class="nv">map_path</span><span class="si">}</span><span class="w"> </span>-l<span class="w"> </span>input_bag:<span class="o">=</span><span class="si">${</span><span class="nv">bag_path</span><span class="si">}</span><span class="w"> </span><span class="o">[</span>-l<span class="w"> </span>vehicle_id:<span class="o">=</span><span class="si">${</span><span class="nv">vehicle_id</span><span class="si">}</span><span class="o">]</span>
+
+<span class="c1"># コマンド例</span>
+<span class="c1"># -pのオプションは、bagとresult.jsonlの出力先を決めるために使われる。省略するとdefaultプロファイルのoutput_directoryに出力される。</span>
+<span class="c1"># 現時点ではuse_caseはannotationless_perceptionのみなので-uを省略すると自動でanontationless_perceptionになる</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>dry-run<span class="w"> </span>-l<span class="w"> </span>input_bag:<span class="o">=</span><span class="nv">$HOME</span>/dlr_data/auto/annotationless/sample/input_bag<span class="w"> </span>-l<span class="w"> </span>sensor_model:<span class="o">=</span>sample_sensor_kit<span class="w"> </span>-l<span class="w"> </span>vehicle_model:<span class="o">=</span>sample_vehicle<span class="w"> </span>-l<span class="w"> </span>map_path:<span class="o">=</span><span class="nv">$HOME</span>/map/sample_map
 </code></pre></div>
 <h4 id="dlr-simulation-run-launch-argument-option">dlr simulation run launch argument option<a class="headerlink" href="#dlr-simulation-run-launch-argument-option" title="Permanent link">#</a></h4>
 <p>driving_log_replayerのcliは、シナリオファイルからsensor_modelなどlaunchに必要な引数を読み取って、launchコマンドを生成する。

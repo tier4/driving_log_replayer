@@ -1490,6 +1490,15 @@ dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w">
 
 <span class="c1"># Set perception_mode to camera_lidar_fusion</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>default<span class="w"> </span>-l<span class="w"> </span>perception_mode:<span class="o">=</span>camera_lidar_fusion
+
+<span class="c1"># Dry-run mode to obtain metrics without creating a scenario file</span>
+<span class="c1"># set bag, map, sensor_model, vehicle_model, [and vehicle_id] from arguments</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>dry-run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span><span class="w"> </span>-u<span class="w"> </span><span class="si">${</span><span class="nv">use_case</span><span class="si">}</span><span class="w"> </span>-l<span class="w"> </span>sensor_model:<span class="o">=</span><span class="si">${</span><span class="nv">sensor_model</span><span class="si">}</span><span class="w"> </span>-l<span class="w"> </span>vehicle_model:<span class="o">=</span><span class="si">${</span><span class="nv">vehicle_model</span><span class="si">}</span><span class="w"> </span>-l<span class="w"> </span>map_path:<span class="o">=</span><span class="si">${</span><span class="nv">map_path</span><span class="si">}</span><span class="w"> </span>-l<span class="w"> </span>input_bag:<span class="o">=</span><span class="si">${</span><span class="nv">bag_path</span><span class="si">}</span><span class="w"> </span><span class="o">[</span>-l<span class="w"> </span>vehicle_id:<span class="o">=</span><span class="si">${</span><span class="nv">vehicle_id</span><span class="si">}</span><span class="o">]</span>
+
+<span class="c1"># Command example</span>
+<span class="c1"># The -p option is used to determine the output destination for bag and result.jsonl. If omitted, the output is sent to the output_directory of the default profile.</span>
+<span class="c1"># Currently, use_case is only annotationless_perception, so if -u is omitted, it automatically becomes annotationless_perception.</span>
+dlr<span class="w"> </span>simulation<span class="w"> </span>dry-run<span class="w"> </span>-l<span class="w"> </span>input_bag:<span class="o">=</span><span class="nv">$HOME</span>/dlr_data/auto/annotationless/sample/input_bag<span class="w"> </span>-l<span class="w"> </span>sensor_model:<span class="o">=</span>sample_sensor_kit<span class="w"> </span>-l<span class="w"> </span>vehicle_model:<span class="o">=</span>sample_vehicle<span class="w"> </span>-l<span class="w"> </span>map_path:<span class="o">=</span><span class="nv">$HOME</span>/map/sample_map
 </code></pre></div>
 <p>The arguments that can be specified can be displayed by using the -s option of ros2 launch.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># ❯ ros2 launch driving_log_replayer ${use_case}.launch.py -s</span>
