@@ -67,6 +67,15 @@ dlr simulation run -p default -l play_rate:=0.5 -l input_pointcloud:=/sensing/li
 
 # Set perception_mode to camera_lidar_fusion
 dlr simulation run -p default -l perception_mode:=camera_lidar_fusion
+
+# Dry-run mode to obtain metrics without creating a scenario file
+# set bag, map, sensor_model, vehicle_model, [and vehicle_id] from arguments
+bag, map, sensor_model, vehicle_model[, vehicle_id], which are originally developed from the scenario, are directly specified as arguments
+
+# Command example
+# The -p option is used to determine the output destination for bag and result.jsonl. If omitted, the output is sent to the output_directory of the default profile.
+# Currently, use_case is only annotationless_perception, so if -u is omitted, it automatically becomes annotationless_perception.
+dlr simulation dry-run -l input_bag:=$HOME/dlr_data/auto/annotationless/sample/input_bag -l sensor_model:=sample_sensor_kit -l vehicle_model:=sample_vehicle -l map_path:=$HOME/map/sample_map
 ```
 
 The arguments that can be specified can be displayed by using the -s option of ros2 launch.

@@ -48,6 +48,15 @@ dlr simulation show-result ${output_directory}
 
 # 結果ファイルをjsonに変換する
 dlr simulation convert-result ${output_directory}
+
+# シナリオファイルを作成せずに、メトリクスを得るために実行する予行演習モード
+# bag, map, sensor_model, vehicle_model [, vehicle_id] を引数で指定する
+dlr simulation dry-run -p ${profile} -u ${use_case} -l sensor_model:=${sensor_model} -l vehicle_model:=${vehicle_model} -l map_path:=${map_path} -l input_bag:=${bag_path} [-l vehicle_id:=${vehicle_id}]
+
+# コマンド例
+# -pのオプションは、bagとresult.jsonlの出力先を決めるために使われる。省略するとdefaultプロファイルのoutput_directoryに出力される。
+# 現時点ではuse_caseはannotationless_perceptionのみなので-uを省略すると自動でanontationless_perceptionになる
+dlr simulation dry-run -l input_bag:=$HOME/dlr_data/auto/annotationless/sample/input_bag -l sensor_model:=sample_sensor_kit -l vehicle_model:=sample_vehicle -l map_path:=$HOME/map/sample_map
 ```
 
 #### dlr simulation run launch argument option
