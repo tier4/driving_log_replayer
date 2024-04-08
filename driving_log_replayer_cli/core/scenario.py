@@ -19,14 +19,14 @@ class Scenario(BaseModel):
     SensorModel: str
     VehicleModel: str
     VehicleId: str | None = None
-    LocalMapPath: Path | None = None
+    LocalMapPath: Path | str = ""
     Evaluation: dict
 
     @field_validator("LocalMapPath", mode="before")
     @classmethod
-    def validate_local_path(cls, v: str | None) -> Path | None:
-        if v is None:
-            return None
+    def validate_local_path(cls, v: str | None) -> Path | str:
+        if v == "":
+            return ""
         normal_path = Path(expandvars(v))
         if normal_path.exists():
             return normal_path
@@ -47,6 +47,14 @@ def load_scenario(scenario_path: Path) -> Scenario:
         scenario_path = scenario_path.resolve()
     with scenario_path.open() as scenario_file:
         return Scenario(**yaml.safe_load(scenario_file))
+
+
+def get_dry_run_scenario_path(use_case: str) -> Path:
+    return (
+        Path(__file__)
+        .parent.parent.resolve()
+        .joinpath("resources", "sample", use_case, "dry_run.yaml")
+    )
 
 
 def backup_scenario_file(scenario_path: Path) -> None:
