@@ -185,7 +185,7 @@ def args_to_dict(launch_args: list[str]) -> dict[str, str]:
 def launch_dict_to_str(launch_arg_dict: dict) -> str:
     rtn_str = ""
     for k, v in launch_arg_dict.items():
-        if "{" in v or "[" in v:
+        if isinstance(v, str) and ("{" in v or "[" in v):
             rtn_str += f" '{k}:={v}'"
         else:
             rtn_str += f" {k}:={v}"
@@ -215,7 +215,7 @@ def cmd_use_bag_only(
     launch_args_dict: dict[str, str],
 ) -> str | None:
     scenario: Scenario = load_scenario(scenario_path)
-    launch_command = f"source {autoware_path.joinpath('install', 'setup.bash').as_posix()}\n"
+    launch_command = f"source {autoware_path.joinpath('install', 'setup.bash')}\n"
     launch_command += (
         f"ros2 launch driving_log_replayer {scenario.Evaluation['UseCaseName']}.launch.py"
     )
@@ -224,10 +224,10 @@ def cmd_use_bag_only(
         "vehicle_model": scenario.VehicleModel,
         "sensor_model": scenario.SensorModel,
         "vehicle_id": scenario.VehicleId,
-        "scenario_path": scenario_path.as_posix(),
-        "result_json_path": output_path.joinpath("result.json").as_posix(),
-        "input_bag": scenario_path.parent.joinpath("input_bag").as_posix(),
-        "result_bag_path": output_path.joinpath("result_bag").as_posix(),
+        "scenario_path": scenario_path,
+        "result_json_path": output_path.joinpath("result.json"),
+        "input_bag": scenario_path.parent.joinpath("input_bag"),
+        "result_bag_path": output_path.joinpath("result_bag"),
     }
     launch_localization = scenario.Evaluation.get("LaunchLocalization")
     if launch_localization is not None:
@@ -245,9 +245,7 @@ def cmd_use_t4_dataset(
 ) -> str | None:
     dataset_path = scenario_path.parent
     scenario: Scenario = load_scenario(scenario_path)
-    launch_command_for_all_dataset = (
-        f"source {autoware_path.joinpath('install', 'setup.bash').as_posix()}\n"
-    )
+    launch_command_for_all_dataset = f"source {autoware_path.joinpath('install', 'setup.bash')}\n"
     t4_dataset_base_path = dataset_path.joinpath("t4_dataset")
     try:
         t4_datasets: Datasets = Datasets(Datasets=scenario.Evaluation["Datasets"])
@@ -279,12 +277,12 @@ def cmd_use_t4_dataset(
                 "vehicle_model": scenario.VehicleModel,
                 "sensor_model": scenario.SensorModel,
                 "vehicle_id": vehicle_id,
-                "scenario_path": scenario_path.as_posix(),
-                "result_json_path": output_dir_per_dataset.joinpath("result.json").as_posix(),
-                "input_bag": t4_dataset_path.joinpath("input_bag").as_posix(),
-                "result_bag_path": output_dir_per_dataset.joinpath("result_bag").as_posix(),
+                "scenario_path": scenario_path,
+                "result_json_path": output_dir_per_dataset.joinpath("result.json"),
+                "input_bag": t4_dataset_path.joinpath("input_bag"),
+                "result_bag_path": output_dir_per_dataset.joinpath("result_bag"),
                 "t4_dataset_path": t4_dataset_path,
-                "result_archive_path": output_dir_per_dataset.joinpath("result_archive").as_posix(),
+                "result_archive_path": output_dir_per_dataset.joinpath("result_archive"),
             }
             if t4_dataset[key].LaunchSensing is not None:
                 launch_arg_dict_dataset["sensing"] = t4_dataset[key].LaunchSensing
@@ -300,6 +298,8 @@ def cmd_use_t4_dataset(
                 "driving_log_replayer",
                 "perception_database_result.py",
             )
-            database_result_command = f"python3 {database_result_script_path.as_posix()} -s {scenario_path} -r {output_path}\n"
+            database_result_command = (
+                f"python3 {database_result_script_path} -s {scenario_path} -r {output_path}\n"
+            )
             launch_command_for_all_dataset += database_result_command
         return launch_command_for_all_dataset
