@@ -1,12 +1,21 @@
 # Release Notes
 
+## Version 1.14.8
+
+Minor Tweak, Bug fix
+
+| Module                      | Feature        | Brief summary              | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | -------------- | -------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `annotationless_perception` | unit test      | fix unit test              | [#402](https://github.com/tier4/driving_log_replayer/pull/402) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                       | pyproject.toml | update dependency          | [#404](https://github.com/tier4/driving_log_replayer/pull/404) | RT4-9477 | [hayato-m126](https://github.com/hayato-m126) |
+| `annotationless_perception` | cli            | support scenario less mode | [#405](https://github.com/tier4/driving_log_replayer/pull/405) | RT4-9477 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.14.7
 
 Bug fix
-
-| Module                      | Feature | Brief summary   | Pull request                                                   | Jira | Contributor                             |
+| Module | Feature | Brief summary | Pull request | Jira | Contributor |
 | --------------------------- | ------- | --------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
-| `annotationless_perception` | metrics | fix min metrics | [#400](https://github.com/tier4/driving_log_replayer/pull/400) | -    | [kosuke55](https://github.com/kosuke55) |
+| `annotationless_perception` | metrics | fix min metrics | [#400](https://github.com/tier4/driving_log_replayer/pull/400) | - | [kosuke55](https://github.com/kosuke55) |
 
 ## Version 1.14.6
 
