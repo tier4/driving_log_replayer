@@ -6,6 +6,7 @@ from driving_log_replayer_cli.core.config import Config
 from driving_log_replayer_cli.core.config import load_config
 from driving_log_replayer_cli.core.result import convert_all
 from driving_log_replayer_cli.core.result import display_all
+from driving_log_replayer_cli.simulation.run import dry_run as sim_dry_run
 from driving_log_replayer_cli.simulation.run import run as sim_run
 from driving_log_replayer_cli.simulation.update import update_annotationless_scenario_condition
 
@@ -37,6 +38,28 @@ def run(
         config,
         launch_args,
         update_scenario,
+    )
+
+
+@simulation.command(context_settings=CONTEXT_SETTINGS)
+@click.option("--profile", "-p", type=str, default="default")
+@click.option(
+    "--use-case",
+    "-u",
+    type=click.Choice(["annotationless_perception"]),
+    default="annotationless_perception",
+)
+@click.option("--launch_args", "-l", multiple=True, default=[])
+def dry_run(
+    profile: str,
+    use_case: str,
+    launch_args: list[str],
+) -> None:
+    config: Config = load_config(profile)
+    sim_dry_run(
+        config,
+        use_case,
+        launch_args,
     )
 
 
