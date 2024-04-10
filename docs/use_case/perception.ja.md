@@ -101,6 +101,17 @@ Criterion:
 
 正常の条件を満たさない場合
 
+### 評価スキップ
+
+以下の場合に、評価をせずに評価が飛ばされた回数のカウント(FrameSkip)を1足す処理のみ行う
+
+- 受信したobjectのヘッダー時刻の前後75msec以内に真値が存在しない場合
+- 受信したobjectのfootprint.pointsの数が1か2の場合(この条件はperception_evalが更新されたらなくなる予定)
+
+### 評価スキップNoGT
+
+- datasetに75msec以内に真値は存在するが、フィルタによって真値が存在しなくなった場合
+
 ## 評価ノードが使用する Topic 名とデータ型
 
 Subscribed topics:
@@ -237,7 +248,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
         "Distance": "距離の条件"
       },
       "FrameName": "評価に使用したt4_datasetのフレーム番号",
-      "FrameSkip": "評価が飛ばされた回数の合計。objectの評価を依頼したがdatasetに75msec以内の真値がなく場合、または、footprint.pointsの数が1か2の場合に発生する",
+      "FrameSkip": "評価が飛ばされた回数の合計。発生する条件は評価結果の項目を参照",
       "PassFail": {
         "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
         "Info": {
