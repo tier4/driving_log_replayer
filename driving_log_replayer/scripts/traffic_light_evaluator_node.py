@@ -21,6 +21,8 @@ from typing import TYPE_CHECKING
 
 from autoware_perception_msgs.msg import TrafficSignal
 from autoware_perception_msgs.msg import TrafficSignalArray
+import lanelet2  # noqa
+from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.common.schema import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
@@ -31,10 +33,10 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from simple_lanelet_loader.traffic_light_loader import TrafficLightLoader
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
+from driving_log_replayer.lanelet2_util import traffic_light_from_file
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.traffic_light import FailResultHolder
 from driving_log_replayer.traffic_light import TrafficLightResult
@@ -47,7 +49,15 @@ if TYPE_CHECKING:
 class TrafficLightEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, TrafficLightScenario, TrafficLightResult)
-        self.use_map_interface()
+        self.declare_parameter("map_path", "")
+        map_path = Path(
+            expandvars(
+                self.get_parameter("map_path").get_parameter_value().string_value,
+            ),
+            "lanelet2_map.osm",
+        )
+        self.__traffic_light_lanelet = traffic_light_from_file(map_path)
+        self.fail_result_holder = FailResultHolder(self._perception_eval_log_path)
 
         self._scenario: TrafficLightScenario
         self._result: TrafficLightResult
@@ -109,18 +119,6 @@ class TrafficLightEvaluator(DLREvaluator):
             return False
         return True
 
-    def use_map_interface(self) -> None:
-        self.declare_parameter("map_path", "")
-        map_path = Path(
-            expandvars(
-                self.get_parameter("map_path").get_parameter_value().string_value,
-            ),
-            "lanelet2_map.osm",
-        )
-        self.__traffic_light_obj = TrafficLightLoader(map_path)
-        self.__use_regulatory_element: bool = True
-        self.fail_result_holder = FailResultHolder(self._perception_eval_log_path)
-
     def timer_cb(self) -> None:
         super().timer_cb(register_shutdown_func=self.write_metrics)
 
@@ -155,9 +153,7 @@ class TrafficLightEvaluator(DLREvaluator):
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
-                frame_id=(
-                    FrameID.TRAFFIC_LIGHT if self.__use_regulatory_element else self.__camera_type
-                ),
+                frame_id=FrameID.TRAFFIC_LIGHT,
                 semantic_score=confidence,
                 semantic_label=label,
                 roi=None,
