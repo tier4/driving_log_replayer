@@ -86,6 +86,8 @@ class PerceptionScenario(Scenario):
 
 @dataclass
 class Perception(EvaluationItem):
+    no_gt: int = 0
+
     def __post_init__(self) -> None:
         self.criteria = PerceptionCriteria(
             methods=self.condition.CriteriaMethod,
@@ -96,26 +98,29 @@ class Perception(EvaluationItem):
     def set_frame(
         self,
         frame: PerceptionFrameResult,
-        skip: int,
-        map_to_baselink: dict,
     ) -> dict:
-        self.total += 1
         frame_success = "Fail"
         # ret_frame might be filtered frame result or original frame result.
         result, ret_frame = self.criteria.get_result(frame)
 
+        if result is None:
+            self.no_gt += 1
+            return {
+                "Filter": self.condition.Filter.model_dump(),
+                "FrameName": ret_frame.frame_name,
+                "NoGTCount": self.no_gt,
+            }
         if result.is_success():
             self.passed += 1
             frame_success = "Success"
 
+        self.total += 1
         self.success: bool = self.rate() >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
             "Filter": self.condition.Filter.model_dump(),
-            "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": ret_frame.frame_name,
-            "FrameSkip": skip,
             "PassFail": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {
@@ -154,13 +159,9 @@ class PerceptionResult(ResultBase):
         header: Header,
         map_to_baselink: dict,
     ) -> tuple[MarkerArray, MarkerArray]:
-        self._frame = {}  # initialize
+        self._frame = {"Ego": {"TransformStamped": map_to_baselink}, "FrameSkip": skip}
         for criterion in self.__perception_criterion:
-            self._frame[criterion.name] = criterion.set_frame(
-                frame,
-                skip,
-                map_to_baselink,
-            )
+            self._frame[criterion.name] = criterion.set_frame(frame)
         self.update()
         marker_ground_truth, marker_results = self.create_ros_msg(frame, header)
         return marker_ground_truth, marker_results
