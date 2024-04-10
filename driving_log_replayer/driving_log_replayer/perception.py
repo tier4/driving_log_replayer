@@ -106,8 +106,6 @@ class Perception(EvaluationItem):
         if result is None:
             self.no_gt += 1
             return {
-                "Filter": self.condition.Filter.model_dump(),
-                "FrameName": ret_frame.frame_name,
                 "NoGTCount": self.no_gt,
             }
         if result.is_success():
@@ -119,8 +117,6 @@ class Perception(EvaluationItem):
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
-            "Filter": self.condition.Filter.model_dump(),
-            "FrameName": ret_frame.frame_name,
             "PassFail": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {
@@ -147,7 +143,7 @@ class PerceptionResult(ResultBase):
         for criterion in self.__perception_criterion:
             tmp_success = criterion.success
             prefix_str = "Passed: " if tmp_success else "Failed: "
-            all_summary.append(prefix_str + " " + criterion.summary)
+            all_summary.append(prefix_str + criterion.summary)
             all_success.append(tmp_success)
         self._summary = ", ".join(all_summary)
         self._success = all(all_success)
@@ -159,7 +155,11 @@ class PerceptionResult(ResultBase):
         header: Header,
         map_to_baselink: dict,
     ) -> tuple[MarkerArray, MarkerArray]:
-        self._frame = {"Ego": {"TransformStamped": map_to_baselink}, "FrameSkip": skip}
+        self._frame = {
+            "Ego": {"TransformStamped": map_to_baselink},
+            "FrameName": frame.frame_name,
+            "FrameSkip": skip,
+        }
         for criterion in self.__perception_criterion:
             self._frame[criterion.name] = criterion.set_frame(frame)
         self.update()
