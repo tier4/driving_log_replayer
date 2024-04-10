@@ -133,18 +133,9 @@ def test_perception_fail_has_no_object(
     result: PerceptionFrameResult = create_frame_result
     # add no tp_object_results, fp_object_results
     frame_dict = evaluation_item.set_frame(result)
-    assert evaluation_item.success is True
-    assert evaluation_item.summary == "cam_front (Success): 95 / 100 -> 95.00%"
-    assert frame_dict == {
-        "PassFail": {
-            "Result": {"Total": "Success", "Frame": "Success"},
-            "Info": {
-                "TP": 0,
-                "FP": 0,
-                "FN": 0,
-            },
-        },
-    }
+    # check total is not changed (skip count)
+    assert evaluation_item.total == 99  # noqa
+    assert frame_dict == {"NoGTCount": 1}
 
 
 def test_perception_success_tp_normal(
