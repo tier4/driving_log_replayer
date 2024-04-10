@@ -103,9 +103,7 @@ class Perception(EvaluationItem):
 
         if result is None:
             self.no_gt += 1
-            return {
-                "NoGTCount": self.no_gt,
-            }
+            return {"NoGTCount": self.no_gt}
         if result.is_success():
             self.passed += 1
             frame_success = "Success"
