@@ -86,8 +86,6 @@ class PerceptionScenario(Scenario):
 
 @dataclass
 class Perception(EvaluationItem):
-    no_gt: int = 0
-
     def __post_init__(self) -> None:
         self.criteria = PerceptionCriteria(
             methods=self.condition.CriteriaMethod,

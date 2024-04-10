@@ -49,6 +49,7 @@ class EvaluationItem(ABC):
     passed: int = 0
     summary: str = "NotTested"
     success: bool = False
+    no_gt: int = 0  # for perception, perception_2d, traffic_light
 
     def success_str(self) -> str:
         return "Success" if self.success else "Fail"
