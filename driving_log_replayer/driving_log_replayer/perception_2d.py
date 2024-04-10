@@ -92,7 +92,7 @@ class Perception(EvaluationItem):
 class Perception2DResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__cameras: dict[Perception] = {}
+        self.__cameras: dict[str, Perception] = {}
         for camera_type in condition.TargetCameras:
             self.__cameras[camera_type] = Perception(name=camera_type, condition=condition)
 

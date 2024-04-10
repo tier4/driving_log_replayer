@@ -73,9 +73,6 @@ class Perception(EvaluationItem):
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
             "PassFail": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {
