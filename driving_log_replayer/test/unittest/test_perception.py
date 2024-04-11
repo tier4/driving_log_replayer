@@ -178,7 +178,7 @@ def test_perception_fail_has_no_object(
     frame_dict = evaluation_item.set_frame(result)
     # check total is not changed (skip count)
     assert evaluation_item.total == 99  # noqa
-    assert frame_dict == {"NoGTCount": 1}
+    assert frame_dict == {"NoGTNoObj": 1}
 
 
 def test_perception_success_tp_normal(
