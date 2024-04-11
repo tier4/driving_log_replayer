@@ -345,9 +345,9 @@ When the `evaluation_task` is detection or tracking
           "label1": "APH(Plane Distance) rate of label1"
         }
       },
-      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#tracking"},
-      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#tracking"},
-      "IDswitch": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#id-switch"},
+      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/metrics.md#tracking"},
+      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/metrics.md#tracking"},
+      "IDswitch": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/metrics.md#id-switch"},
       "Error": {
         "ALL": {
           "average": {
