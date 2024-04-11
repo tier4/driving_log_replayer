@@ -103,7 +103,8 @@ Criterion:
 
 ### 評価スキップ
 
-以下の場合に、評価をせずに評価が飛ばされた回数のカウント(FrameSkip)を1足す処理のみ行う
+以下の場合に、FrameSkipに1足す処理のみ行う。
+FrameSkipは評価をskipした回数のカウンタ。
 
 - 受信したobjectのヘッダー時刻の前後75msec以内に真値が存在しない場合
 - 受信したobjectのfootprint.pointsの数が1か2の場合(この条件はperception_evalが更新されたらなくなる予定)
@@ -257,7 +258,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
     },
     "criteria1": {
       // criteria1の結果、真値と認識結果が存在しない場合
-      "NoGTNoObj": "真値と評価結果がフィルタされて評価できなかった回数",
+      "NoGTNoObj": "真値と認識結果がフィルタされて評価できなかった回数",
     }
   }
 }
