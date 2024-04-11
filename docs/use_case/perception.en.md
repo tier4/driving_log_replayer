@@ -247,7 +247,7 @@ Format of each frame:
     "FrameSkip": "The total number of times the evaluation was skipped, which occurs when the evaluation of an object is requested but there is no Ground Truth in the dataset within 75msec, or when the number of footprint.points is 1 or 2.",
     "criteria0": {
       // result of criteria 0, If the Ground Truth and recognition objects exist
-     "PassFail": {
+      "PassFail": {
         "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
         "Info": {
           "TP": "Number of filtered objects determined to be TP",
@@ -258,7 +258,7 @@ Format of each frame:
     },
     "criteria1": {
       // result of criteria 1. If the Ground Truth and the recognition objects do not exist
-      "NoGTNoObj": "Number of times that the Ground Truth and the recognition objects were filtered and could not be evaluated.",
+      "NoGTNoObj": "Number of times that the Ground Truth and the recognition objects were filtered and could not be evaluated."
     }
   }
 }

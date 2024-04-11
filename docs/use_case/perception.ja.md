@@ -247,7 +247,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
     "FrameSkip": "評価が飛ばされた回数の合計。発生する条件は評価結果の項目を参照",
     "criteria0": {
       // criteria0の結果、真値と認識結果が存在する場合
-     "PassFail": {
+      "PassFail": {
         "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
         "Info": {
           "TP": "フィルタ済みobjectの中でTPと判定された数",
@@ -258,7 +258,7 @@ perception では、シナリオに指定した条件で perception_eval が評�
     },
     "criteria1": {
       // criteria1の結果、真値と認識結果が存在しない場合
-      "NoGTNoObj": "真値と認識結果がフィルタされて評価できなかった回数",
+      "NoGTNoObj": "真値と認識結果がフィルタされて評価できなかった回数"
     }
   }
 }
