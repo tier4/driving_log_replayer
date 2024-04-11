@@ -20,18 +20,18 @@ def generate_launch_description() -> launch.LaunchDescription:
         perception_mode="lidar",
     )
     rviz_node = cmn.get_rviz("ground_segmentation.rviz")
-    evaluator_node = cmn.get_evaluator_node(
-        "ground_segmentation",
-        addition_parameter={"vehicle_model": LaunchConfiguration("vehicle_model")},
-    )
-    evaluator_node_sub = Node(
-        package="driving_log_replayer",
-        namespace="/driving_log_replayer",
-        executable="ground_segmentation_evaluator_node",
-        output="screen",
-        name="ground_segmentation_sub",
-        on_exit=ShutdownOnce(),
-    )
+    # evaluator_node = cmn.get_evaluator_node(
+    #     "ground_segmentation",
+    #     addition_parameter={"vehicle_model": LaunchConfiguration("vehicle_model")},
+    # )
+    # evaluator_node_sub = Node(
+    #     package="driving_log_replayer",
+    #     namespace="/driving_log_replayer",
+    #     executable="ground_segmentation_evaluator_node",
+    #     output="screen",
+    #     name="ground_segmentation_sub",
+    #     on_exit=ShutdownOnce(),
+    # )
     player = cmn.get_player()
 
     recorder, recorder_override = cmn.get_regex_recorders(
@@ -44,8 +44,8 @@ def generate_launch_description() -> launch.LaunchDescription:
             *launch_arguments,
             rviz_node,
             autoware_launch,
-            evaluator_node,
-            evaluator_node_sub,
+            # evaluator_node,
+            # evaluator_node_sub,
             player,
             recorder,
             recorder_override,
