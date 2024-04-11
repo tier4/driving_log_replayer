@@ -49,6 +49,9 @@ if TYPE_CHECKING:
 class TrafficLightEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, TrafficLightScenario, TrafficLightResult)
+        self._scenario: TrafficLightScenario
+        self._result: TrafficLightResult
+
         self.declare_parameter("map_path", "")
         map_path = Path(
             expandvars(
