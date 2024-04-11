@@ -193,7 +193,7 @@ class CriteriaMethodImpl(ABC):
             SuccessFail: Success or fail.
 
         """
-        # no ground truth and no result is considered as success
+        # No ground truth and No result is considered as Not Available, return None.
         if self.has_objects(frame) is False:
             return None
         score: float = self.calculate_score(frame)
