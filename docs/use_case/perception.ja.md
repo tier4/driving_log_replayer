@@ -108,9 +108,9 @@ Criterion:
 - 受信したobjectのヘッダー時刻の前後75msec以内に真値が存在しない場合
 - 受信したobjectのfootprint.pointsの数が1か2の場合(この条件はperception_evalが更新されたらなくなる予定)
 
-### 評価スキップNoGT
+### 評価スキップNoGTNoObject
 
-- datasetに75msec以内に真値は存在するが、フィルタによって真値が存在しなくなった場合
+- フィルタ条件によって真値と認識結果がフィルタされ評価されなかった場合(評価結果PassFailのオブジェクトの中身が空の場合)
 
 ## 評価ノードが使用する Topic 名とデータ型
 

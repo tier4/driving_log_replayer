@@ -102,8 +102,8 @@ class Perception(EvaluationItem):
         result, ret_frame = self.criteria.get_result(frame)
 
         if result is None:
-            self.no_gt += 1
-            return {"NoGTCount": self.no_gt}
+            self.no_gt_no_obj += 1
+            return {"NoGTNoObj": self.no_gt_no_obj}
         if result.is_success():
             self.passed += 1
             frame_success = "Success"
