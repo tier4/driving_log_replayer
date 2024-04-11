@@ -242,14 +242,11 @@ perception では、シナリオに指定した条件で perception_eval が評�
 ```json
 {
   "Frame": {
+    "FrameName": "評価に使用したt4_datasetのフレーム番号",
+    "FrameSkip": "評価が飛ばされた回数の合計。発生する条件は評価結果の項目を参照",
     "criteria0": {
-      // criteria0の結果
-      "Filter": {
-        "Distance": "距離の条件"
-      },
-      "FrameName": "評価に使用したt4_datasetのフレーム番号",
-      "FrameSkip": "評価が飛ばされた回数の合計。発生する条件は評価結果の項目を参照",
-      "PassFail": {
+      // criteria0の結果、真値と認識結果が存在する場合
+     "PassFail": {
         "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
         "Info": {
           "TP": "フィルタ済みobjectの中でTPと判定された数",
@@ -259,7 +256,8 @@ perception では、シナリオに指定した条件で perception_eval が評�
       }
     },
     "criteria1": {
-      // criteria0の結果、criteria0と同様の内容
+      // criteria1の結果、真値と認識結果が存在しない場合
+      "NoGTNoObj": "真値と評価結果がフィルタされて評価できなかった回数",
     }
   }
 }
@@ -346,6 +344,9 @@ evaluation_taskがdetectionまたはtrackingの場合
           "label1": "label1のAPH率(Plane Distance)"
         }
       },
+      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#tracking"},
+      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#tracking"},
+      "IDswitch": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#id-switch"},
       "Error": {
         "ALL": {
           "average": {
