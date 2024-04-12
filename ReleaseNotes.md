@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.14.9
+
+Minor Tweak
+
+| Module                                     | Feature          | Brief summary                    | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | ---------------- | -------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`                                      | test             | fix pytest version               | [#408](https://github.com/tier4/driving_log_replayer/pull/408) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | evaluation logic | do not count no gt and no object | [#409](https://github.com/tier4/driving_log_replayer/pull/409) | RT4-9572 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.14.8
 
 Minor Tweak, Bug fix

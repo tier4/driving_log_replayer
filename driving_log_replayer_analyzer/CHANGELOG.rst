@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: colcon test error (`#408 <https://github.com/tier4/driving_log_replayer/issues/408>`_)
+* feat: do not count no gt no object (`#409 <https://github.com/tier4/driving_log_replayer/issues/409>`_)
+* Contributors: Hayato Mizushima
+
 1.14.8 (2024-04-09)
 -------------------
 * fix: annotationless_perception unit test (`#402 <https://github.com/tier4/driving_log_replayer/issues/402>`_)
