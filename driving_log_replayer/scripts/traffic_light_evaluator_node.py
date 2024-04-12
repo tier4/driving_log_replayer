@@ -62,7 +62,6 @@ class TrafficLightEvaluator(DLREvaluator):
         self.__traffic_light_lanelet = traffic_light_from_file(map_path)
         self.fail_result_holder = FailResultHolder(self._perception_eval_log_path)
 
-        self._scenario: TrafficLightScenario
         self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
         self.__f_cfg = self._scenario.Evaluation.PerceptionPassFailConfig

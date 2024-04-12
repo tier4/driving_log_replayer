@@ -180,7 +180,7 @@ class CriteriaMethodImpl(ABC):
         super().__init__()
         self.level: CriteriaLevel = level
 
-    def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
+    def get_result(self, frame: PerceptionFrameResult) -> SuccessFail | None:
         """
         Return `SuccessFail` instance from the frame result.
 
@@ -193,9 +193,9 @@ class CriteriaMethodImpl(ABC):
             SuccessFail: Success or fail.
 
         """
-        # no ground truth and no result is considered as success
+        # No ground truth and No result is considered as Not Available, return None.
         if self.has_objects(frame) is False:
-            return SuccessFail.SUCCESS
+            return None
         score: float = self.calculate_score(frame)
         return SuccessFail.SUCCESS if self.level.is_valid(score) else SuccessFail.FAIL
 
@@ -482,7 +482,10 @@ class PerceptionCriteria:
             assert isinstance(level, CriteriaLevel), f"Invalid type of level: {type(level)}"
         return levels_output
 
-    def get_result(self, frame: PerceptionFrameResult) -> tuple[SuccessFail, PerceptionFrameResult]:
+    def get_result(
+        self,
+        frame: PerceptionFrameResult,
+    ) -> tuple[SuccessFail | None, PerceptionFrameResult]:
         """
         Return Success/Fail result from `PerceptionFrameResult`.
 
@@ -500,5 +503,8 @@ class PerceptionCriteria:
         result: SuccessFail = SuccessFail.SUCCESS
 
         for method in self.methods:
+            method_result = method.get_result(ret_frame)
+            if method_result is None:
+                return None, ret_frame
             result &= method.get_result(ret_frame)
         return result, ret_frame

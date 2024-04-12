@@ -105,6 +105,18 @@ Criterion:
 
 The perception evaluation output is marked as `Error` when condition for `Normal` is not met.
 
+### Skipping evaluation
+
+Only add 1 to FrameSkip in the following cases.
+FrameSkip is a counter for the number of times evaluation is skipped.
+
+- No Ground Truth exists within 75msec before or after the received object's header time.
+- If the number of footprint.points of the received object is 1 or 2 (this condition will be removed when "perception_eval" is updated)
+
+### Skipping evaluation(NoGTNoObject)
+
+- When the Ground Truth and the recognition objects are filtered by the filter condition and not evaluated (when the content of the evaluation result PassFail object is empty).
+
 ## Topic name and data type used by evaluation node
 
 Subscribed topics:
@@ -231,13 +243,10 @@ Format of each frame:
 ```json
 {
   "Frame": {
+    "FrameName": "Frame number of t4_dataset used for evaluation",
+    "FrameSkip": "The total number of times the evaluation was skipped, which occurs when the evaluation of an object is requested but there is no Ground Truth in the dataset within 75msec, or when the number of footprint.points is 1 or 2.",
     "criteria0": {
-      // result of criteria 0
-      "Filter": {
-        "Distance": "Condition for Distance"
-      },
-      "FrameName": "Frame number of t4_dataset used for evaluation",
-      "FrameSkip": "The total number of times the evaluation was skipped, which occurs when the evaluation of an object is requested but there is no Ground Truth in the dataset within 75msec, or when the number of footprint.points is 1 or 2.",
+      // result of criteria 0, If the Ground Truth and recognition objects exist
       "PassFail": {
         "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
         "Info": {
@@ -248,7 +257,8 @@ Format of each frame:
       }
     },
     "criteria1": {
-      // result of criteria 1. contents of this section is same as criteria 0.
+      // result of criteria 1. If the Ground Truth and the recognition objects do not exist
+      "NoGTNoObj": "Number of times that the Ground Truth and the recognition objects were filtered and could not be evaluated."
     }
   }
 }
@@ -335,6 +345,9 @@ When the `evaluation_task` is detection or tracking
           "label1": "APH(Plane Distance) rate of label1"
         }
       },
+      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/metrics.md#tracking"},
+      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/metrics.md#tracking"},
+      "IDswitch": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/metrics.md#id-switch"},
       "Error": {
         "ALL": {
           "average": {
