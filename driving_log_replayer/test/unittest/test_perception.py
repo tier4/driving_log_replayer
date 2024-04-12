@@ -175,27 +175,10 @@ def test_perception_fail_has_no_object(
     evaluation_item: Perception = create_tp_normal
     result: PerceptionFrameResult = create_frame_result
     # add no tp_object_results, fp_object_results
-    frame_dict = evaluation_item.set_frame(
-        result,
-        skip=3,
-        map_to_baselink={},
-    )
-    assert evaluation_item.success is True
-    assert evaluation_item.summary == "criteria0 (Success): 95 / 100 -> 95.00%"
-    assert frame_dict == {
-        "Ego": {"TransformStamped": {}},
-        "Filter": {"Distance": None},
-        "FrameName": "12",
-        "FrameSkip": 3,
-        "PassFail": {
-            "Result": {"Total": "Success", "Frame": "Success"},
-            "Info": {
-                "TP": 0,
-                "FP": 0,
-                "FN": 0,
-            },
-        },
-    }
+    frame_dict = evaluation_item.set_frame(result)
+    # check total is not changed (skip count)
+    assert evaluation_item.total == 99  # noqa
+    assert frame_dict == {"NoGTNoObj": 1}
 
 
 def test_perception_success_tp_normal(
@@ -214,18 +197,10 @@ def test_perception_success_tp_normal(
     result.pass_fail_result.tp_object_results = tp_objects_results
     result.pass_fail_result.fp_object_results = fp_objects_results
     # score 50.0 >= NORMAL(50.0)
-    frame_dict = evaluation_item.set_frame(
-        result,
-        skip=3,
-        map_to_baselink={},
-    )
+    frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is True
     assert evaluation_item.summary == "criteria0 (Success): 95 / 100 -> 95.00%"
     assert frame_dict == {
-        "Ego": {"TransformStamped": {}},
-        "Filter": {"Distance": None},
-        "FrameName": "12",
-        "FrameSkip": 3,
         "PassFail": {
             "Result": {"Total": "Success", "Frame": "Success"},
             "Info": {
@@ -253,18 +228,10 @@ def test_perception_fail_tp_normal(
     result.pass_fail_result.tp_object_results = tp_objects_results
     result.pass_fail_result.fp_object_results = fp_objects_results
     # score 33.3 < NORMAL(50.0)
-    frame_dict = evaluation_item.set_frame(
-        result,
-        skip=3,
-        map_to_baselink={},
-    )
+    frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is False
     assert evaluation_item.summary == "criteria0 (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
-        "Ego": {"TransformStamped": {}},
-        "Filter": {"Distance": None},
-        "FrameName": "12",
-        "FrameSkip": 3,
         "PassFail": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {
@@ -292,18 +259,10 @@ def test_perception_fail_tp_hard(
     result.pass_fail_result.tp_object_results = tp_objects_results
     result.pass_fail_result.fp_object_results = fp_objects_results
     # score 50.0 < HARD(75.0)
-    frame_dict = evaluation_item.set_frame(
-        result,
-        skip=3,
-        map_to_baselink={},
-    )
+    frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is False
     assert evaluation_item.summary == "criteria0 (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
-        "Ego": {"TransformStamped": {}},
-        "Filter": {"Distance": None},
-        "FrameName": "12",
-        "FrameSkip": 3,
         "PassFail": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {

@@ -44,6 +44,8 @@ class TrafficLightEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, TrafficLightScenario, TrafficLightResult)
         self._scenario: TrafficLightScenario
+        self._result: TrafficLightResult
+
         self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
         self.__f_cfg = self._scenario.Evaluation.PerceptionPassFailConfig

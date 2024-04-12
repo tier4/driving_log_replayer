@@ -56,22 +56,23 @@ class Perception(EvaluationItem):
             levels=self.condition.CriteriaLevel,
         )
 
-    def set_frame(self, frame: PerceptionFrameResult, skip: int, map_to_baselink: dict) -> dict:
-        self.total += 1
+    def set_frame(self, frame: PerceptionFrameResult) -> dict:
         frame_success = "Fail"
         result, _ = self.criteria.get_result(frame)
+
+        if result is None:
+            self.no_gt_no_obj += 1
+            return {"NoGTNoObj": self.no_gt_no_obj}
 
         if result.is_success():
             self.passed += 1
             frame_success = "Success"
 
+        self.total += 1
         self.success = self.rate() >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
             "PassFail": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {
@@ -103,7 +104,12 @@ class TrafficLightResult(ResultBase):
         skip: int,
         map_to_baselink: dict,
     ) -> None:
-        self._frame = self.__perception.set_frame(frame, skip, map_to_baselink)
+        self._frame = {
+            "Ego": {"TransformStamped": map_to_baselink},
+            "FrameName": frame.frame_name,
+            "FrameSkip": skip,
+        }
+        self._frame |= self.__perception.set_frame(frame)
         self.update()
 
     def set_final_metrics(self, final_metrics: dict) -> None:
