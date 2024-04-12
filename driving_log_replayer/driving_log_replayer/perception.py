@@ -93,10 +93,7 @@ class Perception(EvaluationItem):
             distance_range=self.condition.Filter.Distance,
         )
 
-    def set_frame(
-        self,
-        frame: PerceptionFrameResult,
-    ) -> dict:
+    def set_frame(self, frame: PerceptionFrameResult) -> dict:
         frame_success = "Fail"
         # ret_frame might be filtered frame result or original frame result.
         result, ret_frame = self.criteria.get_result(frame)
