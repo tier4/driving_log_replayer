@@ -15,10 +15,14 @@
 from dataclasses import dataclass
 import logging
 from pathlib import Path
+from typing import Any
 from typing import Literal
 
+import lanelet2  # noqa
+from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
+from pydantic import field_validator
 import simplejson as json
 
 from driving_log_replayer.criteria import PerceptionCriteria
@@ -28,15 +32,48 @@ from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
 
-class Conditions(BaseModel):
+class Filter(BaseModel):
+    Distance: tuple[float, float] | None = None
+    # add filter condition here
+
+    @field_validator("Distance", mode="before")
+    @classmethod
+    def validate_distance_range(cls, v: str | None) -> tuple[number, number] | None:
+        if v is None:
+            return None
+
+        err_msg = f"{v} is not valid distance range, expected ordering min-max with min < max."
+
+        s_lower, s_upper = v.split("-")
+        if s_upper == "":
+            s_upper = 202.0
+
+        lower = float(s_lower)
+        upper = float(s_upper)
+
+        if lower >= upper:
+            raise ValueError(err_msg)
+        return (lower, upper)
+
+
+class Criteria(BaseModel):
     PassRate: number
-    CriteriaMethod: Literal["num_tp", "metrics_score"] | None = None
-    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | number | None = None
+    CriteriaMethod: (
+        Literal["num_tp", "label", "metrics_score", "metrics_score_maph"] | list[str] | None
+    ) = None
+    CriteriaLevel: (
+        Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[number] | None
+    ) = None
+    Filter: Filter
+
+
+class Conditions(BaseModel):
+    Criterion: list[Criteria]
 
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["traffic_light"]
-    UseCaseFormatVersion: Literal["0.2.0", "0.3.0"]
+    UseCaseFormatVersion: Literal["1.0.0"]
     Datasets: list[dict]
     Conditions: Conditions
     PerceptionEvaluationConfig: dict
@@ -88,11 +125,12 @@ class Perception(EvaluationItem):
         self.criteria: PerceptionCriteria = PerceptionCriteria(
             methods=self.condition.CriteriaMethod,
             levels=self.condition.CriteriaLevel,
+            distance_range=self.condition.Filter.Distance,
         )
 
-    def set_frame(self, frame: PerceptionFrameResult) -> dict:
+    def set_frame(self, frame: PerceptionFrameResult, map_to_baselink) -> dict:
         frame_success = "Fail"
-        result, _ = self.criteria.get_result(frame)
+        result, ret_frame = self.criteria.get_result(frame)
 
         if result is None:
             self.no_gt_no_obj += 1
@@ -110,9 +148,9 @@ class Perception(EvaluationItem):
             "PassFail": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {
-                    "TP": len(frame.pass_fail_result.tp_object_results),
-                    "FP": len(frame.pass_fail_result.fp_object_results),
-                    "FN": len(frame.pass_fail_result.fn_objects),
+                    "TP": len(ret_frame.pass_fail_result.tp_object_results),
+                    "FP": len(ret_frame.pass_fail_result.fp_object_results),
+                    "FN": len(ret_frame.pass_fail_result.fn_objects),
                 },
             },
         }
@@ -121,29 +159,41 @@ class Perception(EvaluationItem):
 class TrafficLightResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__perception = Perception(condition=condition)
+        self.__perception_criterion: list[Perception] = []
+        for i, criteria in enumerate(condition.Criterion):
+            self.__perception_criterion.append(
+                Perception(name=f"criteria{i}", condition=criteria),
+            )
 
     def update(self) -> None:
-        summary_str = f"{self.__perception.summary}"
-        if self.__perception.success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
+        all_summary: list[str] = []
+        all_success: list[bool] = []
+        for criterion in self.__perception_criterion:
+            tmp_success = criterion.success
+            prefix_str = "Passed: " if tmp_success else "Failed: "
+            all_summary.append(prefix_str + criterion.summary)
+            all_success.append(tmp_success)
+        self._summary = ", ".join(all_summary)
+        self._success = all(all_success)
 
     def set_frame(
         self,
         frame: PerceptionFrameResult,
         skip: int,
         map_to_baselink: dict,
+        traffic_light_lanelet: Any,
     ) -> None:
         self._frame = {
             "Ego": {"TransformStamped": map_to_baselink},
             "FrameName": frame.frame_name,
             "FrameSkip": skip,
         }
-        self._frame |= self.__perception.set_frame(frame)
+        for criterion in self.__perception_criterion:
+            self._frame[criterion.name] = criterion.set_frame(
+                frame,
+                map_to_baselink["transform"]["translation"],
+                traffic_light_lanelet,  # all traffic_light
+            )
         self.update()
 
     def set_final_metrics(self, final_metrics: dict) -> None:
