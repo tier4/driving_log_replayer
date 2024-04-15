@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: set success True (`#412 <https://github.com/tier4/driving_log_replayer/issues/412>`_)
+* Contributors: Hayato Mizushima
+
 1.14.9 (2024-04-12)
 -------------------
 * fix: colcon test error (`#408 <https://github.com/tier4/driving_log_replayer/issues/408>`_)
