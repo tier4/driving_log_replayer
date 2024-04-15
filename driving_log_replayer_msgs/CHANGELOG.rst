@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.14.10 (2024-04-15)
+--------------------
 * fix: set success True (`#412 <https://github.com/tier4/driving_log_replayer/issues/412>`_)
 * Contributors: Hayato Mizushima
 
