@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.14.10
+
+Bug Fix
+
+| Module                                     | Feature          | Brief summary                   | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | ---------------- | ------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, perception_2d, traffic_light` | evaluation logic | set EvaluationItem.success True | [#412](https://github.com/tier4/driving_log_replayer/pull/412) | RT4-9572 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.14.9
 
 Minor Tweak
