@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from geometry_msgs.msg import Point
 import lanelet2  # noqa
-from lanelet2.core import getId
-from lanelet2.core import Lanelet
-from lanelet2.core import LineString3d
-from lanelet2.core import Point3d
+from geometry_msgs.msg import Point
+from lanelet2.core import Lanelet, LineString3d, Point3d, getId, BasicPoint2d
+from lanelet2.geometry import distance
 from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from shapely.geometry import Polygon
 
@@ -32,7 +30,11 @@ def get_linestring_at_y(y: float) -> LineString3d:
 
 
 def get_a_lanelet(index: float = 0) -> Lanelet:
-    return Lanelet(getId(), get_linestring_at_y(2 + index), get_linestring_at_y(0 + index))
+    return Lanelet(
+        getId(),
+        get_linestring_at_y(2 + index),
+        get_linestring_at_y(0 + index),
+    )
 
 
 def test_intersection() -> None:
@@ -61,3 +63,10 @@ def test_get_lanelets_within_range_no_lane() -> None:
     lanes = [get_a_lanelet(), get_a_lanelet(index=4)]
     near_lanelets = getLaneletsWithinRange(lanes, Point(x=1.0, y=3.0, z=0.0), 0.5)
     assert len(near_lanelets) == 0
+
+
+def test_calc_distance() -> None:
+    lanelet = get_a_lanelet()
+    p2d = BasicPoint2d(0.0, 3.0)
+    distance_to_lanelet = distance(lanelet, p2d)
+    assert distance_to_lanelet == 1.0  # noqa
