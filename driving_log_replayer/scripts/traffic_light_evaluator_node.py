@@ -22,7 +22,8 @@ from typing import TYPE_CHECKING
 from autoware_perception_msgs.msg import TrafficSignal
 from autoware_perception_msgs.msg import TrafficSignalArray
 import lanelet2  # noqa
-from lanelet2_extension_python.utility.query import getLaneletsWithinRange
+from lanelet2.core import BasicPoint2d
+from lanelet2.geometry import distance
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.common.schema import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
@@ -172,18 +173,17 @@ class TrafficLightEvaluator(DLREvaluator):
 
         # extract all traffic lights closer than 202[m]
         # TODO: avoid using magic number
-        max_distance_threshold = 202.0  # [m]
+        max_distance_threshold = 202.0
         filtered_gt_objects = []
         valid_gt_distances = []
 
         ground_truth_objects = ground_truth_now_frame.objects
         ground_truth_distances = []
         for obj in ground_truth_objects:
+            traffic_light_lane = self.__traffic_light_lanelet.get(obj.uuid)
             ego_position = map_to_baselink.transform.translation
-            distance_to_gt = self.__traffic_light_obj.get_distance_to_traffic_light_group(
-                obj.uuid,
-                [ego_position.x, ego_position.y, ego_position.z],
-            )
+            p2d = BasicPoint2d(ego_position.x, ego_position.y)
+            distance_to_gt = distance(traffic_light_lane, p2d)
             ground_truth_distances.append(distance_to_gt)
             if distance_to_gt is not None and distance_to_gt < max_distance_threshold:
                 filtered_gt_objects.append(obj)
