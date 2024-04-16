@@ -21,9 +21,13 @@ from lanelet2_extension_python.utility import query
 from shapely.geometry import Polygon
 
 
-def load_all_lanelets(map_path: str) -> Any:
+def load_map(map_path: str) -> Any:
     projection = MGRSProjector(lanelet2.io.Origin(0.0, 0.0))
-    lanelet_map = lanelet2.io.load(map_path, projection)
+    return lanelet2.io.load(map_path, projection)
+
+
+def load_all_lanelets(map_path: str) -> Any:
+    lanelet_map = load_map(map_path)
     return query.laneletLayer(lanelet_map)
 
 
@@ -33,7 +37,7 @@ def road_lanelets_from_file(map_path: str) -> Any:
 
 
 def traffic_light_from_file(map_path: str) -> Any:
-    # return type lanelet2_extension_python._lanelet2_extension_python_boost_python_utility.lanelet::ConstLanelets
+    # return type list
     return query.trafficLights(load_all_lanelets(map_path))
 
 

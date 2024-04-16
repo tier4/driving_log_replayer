@@ -20,6 +20,7 @@ from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from shapely.geometry import Polygon
 
 from driving_log_replayer.lanelet2_util import to_shapely_polygon
+from driving_log_replayer.lanelet2_util import traffic_light_from_file
 
 # refer lanelet2_example
 # https://github.com/fzi-forschungszentrum-informatik/Lanelet2/blob/master/lanelet2_examples/scripts/tutorial.py
@@ -70,3 +71,12 @@ def test_calc_distance() -> None:
     p2d = BasicPoint2d(0.0, 3.0)
     distance_to_lanelet = distance(lanelet, p2d)
     assert distance_to_lanelet == 1.0  # noqa
+
+
+map_file = "/home/hyt/map/678-20230824042714824504/lanelet2_map.osm"
+# all_lanelets = load_all_lanelets(map_file)  # ConstLanelets
+# road_lanelets = road_lanelets_from_file(map_file)
+traffic_light_lanelets = traffic_light_from_file(map_file)  # list
+# lanelet_map = load_map(map_file)
+# lane1504 = lanelet_map.laneletLayer.get(21014)
+print(traffic_light_lanelets)
