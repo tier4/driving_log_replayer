@@ -59,7 +59,7 @@ class TrafficLightEvaluator(DLREvaluator):
                 self.get_parameter("map_path").get_parameter_value().string_value,
             ),
             "lanelet2_map.osm",
-        )
+        ).as_posix()
         self.__traffic_light_lanelet = traffic_light_from_file(map_path)
         self.fail_result_holder = FailResultHolder(self._perception_eval_log_path)
 
@@ -183,7 +183,9 @@ class TrafficLightEvaluator(DLREvaluator):
         ground_truth_objects = ground_truth_now_frame.objects
         ground_truth_distances = []
         for obj in ground_truth_objects:
-            traffic_light_lane = self.__traffic_light_lanelet.get(obj.uuid)
+            traffic_light_lane = self.__traffic_light_lanelet.laneletLayer.get(
+                obj.uuid,
+            )  # no working __traffic_light_lanelet is list
             ego_position = map_to_baselink.transform.translation
             p2d = BasicPoint2d(ego_position.x, ego_position.y)
             distance_to_gt = distance(traffic_light_lane, p2d)
