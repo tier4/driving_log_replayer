@@ -6,7 +6,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include <driving_log_replayer_msgs/msg/ground_segmentation_eval_result.hpp>
-#include <driving_log_replayer_msgs/msg/process_time.hpp>
+// #include <driving_log_replayer_msgs/msg/process_time.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <sensor_msgs/point_cloud2_iterator.hpp>
 #include <tier4_debug_msgs/msg/float64_stamped.hpp>
