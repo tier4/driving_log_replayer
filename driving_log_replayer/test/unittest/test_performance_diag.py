@@ -64,10 +64,12 @@ def test_visibility_has_no_target_diag() -> None:
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
-    assert evaluation_item.success is True
+    assert (
+        evaluation_item.success is False
+    )  # If there is no target status in the diag, SUCCESS is not updated. Default is false.
     assert evaluation_item.summary == "NotTested"
     assert frame_dict == {
-        "Result": {"Total": "Success", "Frame": "Warn"},
+        "Result": {"Total": "Fail", "Frame": "Warn"},
         "Info": {"Reason": "diagnostics does not contain visibility"},
     }
     assert msg_visibility_value is None
@@ -230,10 +232,12 @@ def test_blockage_has_no_target_diag_not_target_lidar() -> None:
     ) = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
-    assert evaluation_item.success is True
+    assert (
+        evaluation_item.success is False
+    )  # If there is no target status in the diag, SUCCESS is not updated. Default is false.
     assert evaluation_item.summary == "NotTested"
     assert frame_dict == {
-        "Result": {"Total": "Success", "Frame": "Warn"},
+        "Result": {"Total": "Fail", "Frame": "Warn"},
         "Info": {"Reason": "diagnostics does not contain blockage"},
     }
     assert msg_blockage_sky_ratio is None

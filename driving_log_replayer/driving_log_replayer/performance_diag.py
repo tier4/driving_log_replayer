@@ -89,7 +89,6 @@ class PerformanceDiagScenario(Scenario):
 @dataclass
 class Visibility(EvaluationItem):
     name: str = "Visibility"
-    success: bool = True
     REGEX_VISIBILITY_DIAG_NAME: ClassVar[str] = (
         "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
     )
@@ -102,20 +101,19 @@ class Visibility(EvaluationItem):
 
     def set_frame(self, msg: DiagnosticArray) -> tuple[dict, Float64 | None, Byte | None]:
         if not self.valid:
+            self.success = True
             self.summary = "Invalid"
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
                 None,
                 None,
             )
-        include_target_status = False
         frame_success = "Fail"
         diag_status: DiagnosticStatus
         for diag_status in msg.status:
             if not re.fullmatch(Visibility.REGEX_VISIBILITY_DIAG_NAME, diag_status.name):
                 continue
             self.total += 1
-            include_target_status = True
             visibility_value = get_diag_value(diag_status, "value")
             diag_level = diag_status.level
             if self.scenario_type == "TP":
@@ -129,8 +127,6 @@ class Visibility(EvaluationItem):
                     self.passed += 1
                 self.success = self.passed == self.total
             self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total}"
-            break
-        if include_target_status:
             float_value = convert_str_to_float(visibility_value)
             valid_value = float_value >= Visibility.VALID_VALUE_THRESHOLD
             return (
@@ -156,7 +152,6 @@ class Visibility(EvaluationItem):
 
 @dataclass
 class Blockage(EvaluationItem):
-    success: bool = True
     # sample /autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar right_upper: blockage_validation
     BLOCKAGE_DIAG_BASE_NAME: ClassVar[str] = (
         "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar "
@@ -179,6 +174,7 @@ class Blockage(EvaluationItem):
         msg: DiagnosticStatus,
     ) -> tuple[dict, Float64 | None, Float64 | None, Byte | None]:
         if not self.valid:
+            self.success = True
             self.summary = "Invalid"
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
@@ -186,13 +182,11 @@ class Blockage(EvaluationItem):
                 None,
                 None,
             )
-        include_target_status = False
         diag_status: DiagnosticStatus
+        frame_success = "Fail"
         for diag_status in msg.status:
             if diag_status.name != self.blockage_name:
                 continue
-            include_target_status = True
-            frame_success = "Fail"
             self.total += 1
             ground_ratio = get_diag_value(diag_status, "ground_blockage_ratio")
             sky_ratio = get_diag_value(diag_status, "sky_blockage_ratio")
@@ -214,8 +208,6 @@ class Blockage(EvaluationItem):
                     self.passed += 1
                 self.success = self.passed == self.total
             self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total}"
-            break
-        if include_target_status:
             float_sky_ratio = convert_str_to_float(sky_ratio)
             float_ground_ratio = convert_str_to_float(ground_ratio)
             valid_ratio = (
