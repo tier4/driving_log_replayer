@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.15.0
+
+Bug Fix
+
+| Module             | Feature          | Brief summary                                    | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------ | ---------------- | ------------------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `performance_diag` | evaluation logic | set EvaluationItem.success False                 | [#415](https://github.com/tier4/driving_log_replayer/pull/415) | RT4-9627 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag` | target topic     | Change topic from diagnostics_agg to diagnostics | [#417](https://github.com/tier4/driving_log_replayer/pull/417) | RT4-9627 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.14.10
 
 Bug Fix
