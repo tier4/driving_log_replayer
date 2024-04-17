@@ -90,7 +90,7 @@ class PerformanceDiagScenario(Scenario):
 class Visibility(EvaluationItem):
     name: str = "Visibility"
     REGEX_VISIBILITY_DIAG_NAME: ClassVar[str] = (
-        "/autoware/sensing/lidar/performance_monitoring/visibility/.*"
+        "dual_return_filter: /sensing/lidar/.*: visibility_validation"
     )
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
@@ -152,10 +152,8 @@ class Visibility(EvaluationItem):
 
 @dataclass
 class Blockage(EvaluationItem):
-    # sample /autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar right_upper: blockage_validation
-    BLOCKAGE_DIAG_BASE_NAME: ClassVar[str] = (
-        "/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar "
-    )
+    # sample: blockage_return_diag: /sensing/lidar/left_lower: blockage_validation
+    BLOCKAGE_DIAG_BASE_NAME: ClassVar[str] = "blockage_return_diag: /sensing/lidar/"
     BLOCKAGE_DIAG_POSTFIX: ClassVar[str] = ": blockage_validation"
     VALID_VALUE_THRESHOLD: ClassVar[float] = 0.0
 
