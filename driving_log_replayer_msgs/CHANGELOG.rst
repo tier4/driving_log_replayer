@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: `#416 <https://github.com/tier4/driving_log_replayer/issues/416>`_ diagnocstics_agg to diagnoctics (`#417 <https://github.com/tier4/driving_log_replayer/issues/417>`_)
+* fix: default success is False (`#415 <https://github.com/tier4/driving_log_replayer/issues/415>`_)
+* Contributors: Hayato Mizushima
+
 1.14.10 (2024-04-15)
 --------------------
 * fix: set success True (`#412 <https://github.com/tier4/driving_log_replayer/issues/412>`_)
