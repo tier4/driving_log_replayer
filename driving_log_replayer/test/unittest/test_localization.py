@@ -98,12 +98,12 @@ def test_availability_has_no_target_diag() -> None:
     status = DiagnosticStatus(name="not_localization_diag_name")
     evaluation_item = Availability()
     frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
-    assert evaluation_item.success is True
+    assert evaluation_item.success is False
     assert evaluation_item.summary == "NotTested"
     assert frame_dict == {
         "Ego": {},
         "Availability": {
-            "Result": {"Total": "Success", "Frame": "Warn"},
+            "Result": {"Total": "Fail", "Frame": "Warn"},
             "Info": {"Reason": "diagnostics does not contain localization_topic_status"},
         },
     }
