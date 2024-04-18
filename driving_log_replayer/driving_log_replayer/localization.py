@@ -77,7 +77,6 @@ class LocalizationScenario(Scenario):
 @dataclass
 class Convergence(EvaluationItem):
     name: str = "Convergence"
-    success: bool = True
 
     def set_frame(
         self,
@@ -126,7 +125,6 @@ class Convergence(EvaluationItem):
 @dataclass
 class Reliability(EvaluationItem):
     name: str = "Reliability"
-    success: bool = True
     ng_seq: int = 0
     received_data: list[float] = field(default_factory=list)
 
@@ -167,7 +165,6 @@ class Reliability(EvaluationItem):
 @dataclass
 class Availability(EvaluationItem):
     name: str = "NDT Availability"
-    success: bool = True
     TARGET_DIAG_NAME: ClassVar[str] = (
         "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
     )
