@@ -40,7 +40,7 @@ Here we evaluate whether the following output is being output regularly:
 
 This is accomplished by indirectly using a package within Autoware called Component State Monitor. The evaluator subscribes the following topic for the information:
 
-- `/diagnostics_agg`
+- `/diagnostics`
 
 The reason why `/localization/pose_estimator/exe_time_ms` was chosen from the output topics of NDT is that it is possible to detect the aforementioned failure by confirming that messages are being output to the topic regularly.
 For example, `/localization/pose_estimator/pose` is not suitable as a monitoring topic this time. This is because the topic may not output if the score of NVTL or TP is low, and it is difficult to isolate the cause to the failure by just monitoring the output.
@@ -73,7 +73,7 @@ The convergence evaluation output is marked as `Error` when conditions for `Conv
 
 ### NDT Availability Normal
 
-Information related to the monitored topic is extracted from `/diagnostics_agg` which Component State Monitor outputs. If the most recent information NOT Timeout nor NotReceived, it is considered as pass.
+Information related to the monitored topic is extracted from `/diagnostics` which Component State Monitor outputs. If the most recent information NOT Timeout nor NotReceived, it is considered as pass.
 
 ### NDT Availability Error
 
@@ -85,7 +85,7 @@ Subscribed topics:
 
 | Topic name                                                           | Data type                             |
 | -------------------------------------------------------------------- | ------------------------------------- |
-| /diagnostics_agg                                                     | diagnostic_msgs::msg::DiagnosticArray |
+| /diagnostics                                                         | diagnostic_msgs::msg::DiagnosticArray |
 | /localization/pose_estimator/transform_probability                   | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/initial_to_result_relative_pose         | geometry_msgs::msg::PoseStamped       |
