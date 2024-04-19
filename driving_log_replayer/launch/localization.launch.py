@@ -18,6 +18,7 @@ import driving_log_replayer.launch_common as cmn
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
+|^/diagnostics$\
 |^/localization/pose_estimator/transform_probability$\
 |^/localization/pose_estimator/nearest_voxel_transformation_likelihood$\
 |^/localization/pose_estimator/pose$\

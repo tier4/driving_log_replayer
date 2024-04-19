@@ -76,9 +76,9 @@ class LocalizationEvaluator(DLREvaluator):
             self.iteration_num_cb,
             1,
         )
-        self.__sub_diagnostics_agg = self.create_subscription(
+        self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
-            "/diagnostics_agg",
+            "/diagnostics",
             self.diagnostics_cb,
             1,
         )
