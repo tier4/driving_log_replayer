@@ -188,11 +188,15 @@ class TrafficLightEvaluator(DLREvaluator):
         ground_truth_objects = ground_truth_now_frame.objects
         ground_truth_distances = []
         for obj in ground_truth_objects:
-            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int(obj.uuid))
-            l2d = to2D(traffic_light_obj.trafficLights[0])
-            ego_position = map_to_baselink.transform.translation
-            p2d = BasicPoint2d(ego_position.x, ego_position.y)
-            distance_to_gt = distance(l2d, p2d)
+            try:
+                int_uuid = int(obj.uuid)
+                traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
+                l2d = to2D(traffic_light_obj.trafficLights[0])
+                ego_position = map_to_baselink.transform.translation
+                p2d = BasicPoint2d(ego_position.x, ego_position.y)
+                distance_to_gt = distance(l2d, p2d)
+            except ValueError:
+                distance_to_gt = max_distance_threshold + 1.0
             ground_truth_distances.append(distance_to_gt)
             if distance_to_gt is not None and distance_to_gt < max_distance_threshold:
                 filtered_gt_objects.append(obj)
@@ -207,11 +211,15 @@ class TrafficLightEvaluator(DLREvaluator):
 
         estimation_distances = []
         for obj in estimated_objects:
-            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int(obj.uuid))
-            l2d = to2D(traffic_light_obj.trafficLights[0])
-            ego_position = map_to_baselink.transform.translation
-            p2d = BasicPoint2d(ego_position.x, ego_position.y)
-            distance_to_est = distance(l2d, p2d)
+            try:
+                int_uuid = int(obj.uuid)
+                traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
+                l2d = to2D(traffic_light_obj.trafficLights[0])
+                ego_position = map_to_baselink.transform.translation
+                p2d = BasicPoint2d(ego_position.x, ego_position.y)
+                distance_to_est = distance(l2d, p2d)
+            except ValueError:
+                distance_to_gt = max_distance_threshold + 1.0
             estimation_distances.append(distance_to_est)
             if distance_to_est is not None and distance_to_est < max_distance_threshold:
                 filtered_est_objects.append(obj)
