@@ -393,7 +393,6 @@ def set_ego_point(map_to_baselink: TransformStamped) -> Point:
 @dataclass
 class Detection(EvaluationItem):
     name: str = "Detection"
-    success: bool = True
     warn: int = 0
 
     def set_frame(
@@ -409,6 +408,7 @@ class Detection(EvaluationItem):
         ObstacleSegmentationMarkerArray | None,
     ]:
         if self.condition is None:
+            self.success = True
             self.summary = "Invalid"
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},
@@ -508,7 +508,6 @@ class Detection(EvaluationItem):
 @dataclass
 class NonDetection(EvaluationItem):
     name: str = "NonDetection"
-    success: bool = True
 
     def set_frame(
         self,
@@ -518,6 +517,7 @@ class NonDetection(EvaluationItem):
         topic_rate: bool,
     ) -> tuple[dict, PointCloud2 | None, ObstacleSegmentationMarker | None]:
         if self.condition is None:
+            self.success = True
             self.summary = "Invalid"
             return (
                 {"Result": {"Total": self.success_str(), "Frame": "Invalid"}, "Info": {}},

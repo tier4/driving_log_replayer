@@ -80,6 +80,7 @@ class FailResultHolder:
 
 @dataclass
 class Perception(EvaluationItem):
+    success: bool = True
     name: str = "Traffic Light Perception"
 
     def __post_init__(self) -> None:

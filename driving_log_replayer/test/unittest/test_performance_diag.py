@@ -37,7 +37,7 @@ def test_scenario() -> None:
 
 def test_visibility_invalid() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/visibility/dual_return_filter:  sensing lidar left_upper: visibility_validation",
+        name="dual_return_filter: /sensing/lidar/front_lower: visibility_validation",
         level=DiagnosticStatus.OK,
     )
     evaluation_item = Visibility(
@@ -64,10 +64,12 @@ def test_visibility_has_no_target_diag() -> None:
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
-    assert evaluation_item.success is True
+    assert (
+        evaluation_item.success is False
+    )  # If there is no target status in the diag, SUCCESS is not updated. Default is false.
     assert evaluation_item.summary == "NotTested"
     assert frame_dict == {
-        "Result": {"Total": "Success", "Frame": "Warn"},
+        "Result": {"Total": "Fail", "Frame": "Warn"},
         "Info": {"Reason": "diagnostics does not contain visibility"},
     }
     assert msg_visibility_value is None
@@ -76,7 +78,7 @@ def test_visibility_has_no_target_diag() -> None:
 
 def test_visibility_tp_success() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/visibility/dual_return_filter:  sensing lidar left_upper: visibility_validation",
+        name="dual_return_filter: /sensing/lidar/front_lower: visibility_validation",
         level=DiagnosticStatus.ERROR,
         values=[KeyValue(key="value", value="-1.00")],
     )
@@ -104,7 +106,7 @@ def test_visibility_tp_success() -> None:
 
 def test_visibility_tp_fail() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/visibility/dual_return_filter:  sensing lidar left_upper: visibility_validation",
+        name="dual_return_filter: /sensing/lidar/front_lower: visibility_validation",
         level=DiagnosticStatus.OK,
         values=[KeyValue(key="value", value="1.00")],
     )
@@ -132,7 +134,7 @@ def test_visibility_tp_fail() -> None:
 
 def test_visibility_fp_success() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/visibility/dual_return_filter:  sensing lidar left_upper: visibility_validation",
+        name="dual_return_filter: /sensing/lidar/front_lower: visibility_validation",
         level=DiagnosticStatus.OK,
         values=[KeyValue(key="value", value="1.00")],
     )
@@ -160,7 +162,7 @@ def test_visibility_fp_success() -> None:
 
 def test_visibility_fp_fail() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/visibility/dual_return_filter:  sensing lidar left_upper: visibility_validation",
+        name="dual_return_filter: /sensing/lidar/front_lower: visibility_validation",
         level=DiagnosticStatus.ERROR,
         values=[KeyValue(key="value", value="-1.00")],
     )
@@ -188,7 +190,7 @@ def test_visibility_fp_fail() -> None:
 
 def test_blockage_invalid() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar front_lower: blockage_validation",
+        name="blockage_return_diag: /sensing/lidar/front_lower: blockage_validation",
         level=DiagnosticStatus.OK,
     )
     evaluation_item = Blockage(
@@ -216,7 +218,7 @@ def test_blockage_invalid() -> None:
 
 def test_blockage_has_no_target_diag_not_target_lidar() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar rear_upper: blockage_validation",
+        name="blockage_return_diag: /sensing/lidar/rear_upper: blockage_validation",
     )
     evaluation_item = Blockage(
         name="front_lower",
@@ -230,10 +232,12 @@ def test_blockage_has_no_target_diag_not_target_lidar() -> None:
     ) = evaluation_item.set_frame(
         DiagnosticArray(status=[status]),
     )
-    assert evaluation_item.success is True
+    assert (
+        evaluation_item.success is False
+    )  # If there is no target status in the diag, SUCCESS is not updated. Default is false.
     assert evaluation_item.summary == "NotTested"
     assert frame_dict == {
-        "Result": {"Total": "Success", "Frame": "Warn"},
+        "Result": {"Total": "Fail", "Frame": "Warn"},
         "Info": {"Reason": "diagnostics does not contain blockage"},
     }
     assert msg_blockage_sky_ratio is None
@@ -243,7 +247,7 @@ def test_blockage_has_no_target_diag_not_target_lidar() -> None:
 
 def test_blockage_tp_success() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar front_lower: blockage_validation",
+        name="blockage_return_diag: /sensing/lidar/front_lower: blockage_validation",
         level=DiagnosticStatus.ERROR,
         message="ERROR: LIDAR both blockage",
         values=[
@@ -287,7 +291,7 @@ def test_blockage_tp_success() -> None:
 
 def test_blockage_tp_fail() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar front_lower: blockage_validation",
+        name="blockage_return_diag: /sensing/lidar/front_lower: blockage_validation",
         level=DiagnosticStatus.ERROR,
         message="ERROR: LIDAR ground blockage",
         values=[
@@ -331,7 +335,7 @@ def test_blockage_tp_fail() -> None:
 
 def test_blockage_fp_success() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar front_lower: blockage_validation",
+        name="blockage_return_diag: /sensing/lidar/front_lower: blockage_validation",
         level=DiagnosticStatus.OK,
         message="OK: LIDAR sky blockage",
         values=[
@@ -375,7 +379,7 @@ def test_blockage_fp_success() -> None:
 
 def test_blockage_fp_fail() -> None:
     status = DiagnosticStatus(
-        name="/autoware/sensing/lidar/performance_monitoring/blockage/blockage_return_diag:  sensing lidar front_lower: blockage_validation",
+        name="blockage_return_diag: /sensing/lidar/front_lower: blockage_validation",
         level=DiagnosticStatus.ERROR,
         message="ERROR: LIDAR both blockage",
         values=[

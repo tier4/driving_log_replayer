@@ -48,6 +48,8 @@ class Perception2DScenario(Scenario):
 
 @dataclass
 class Perception(EvaluationItem):
+    success: bool = True
+
     def __post_init__(self) -> None:
         self.condition: Conditions
         self.criteria: PerceptionCriteria = PerceptionCriteria(
