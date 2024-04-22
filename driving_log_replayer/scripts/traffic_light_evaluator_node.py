@@ -19,31 +19,30 @@ from os.path import expandvars
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from autoware_perception_msgs.msg import TrafficSignal
+from autoware_perception_msgs.msg import TrafficSignalArray
 import lanelet2  # noqa
-import rclpy
-from autoware_perception_msgs.msg import TrafficSignal, TrafficSignalArray
 from lanelet2.core import BasicPoint2d
 from lanelet2.geometry import distance
+from lanelet2.geometry import to2D
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.common.schema import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation.metrics import MetricsScore
-from perception_eval.evaluation.result.perception_frame_config import (
-    CriticalObjectFilterConfig,
-    PerceptionPassFailConfig,
-)
+from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
+from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
+import rclpy
 
-import driving_log_replayer.perception_eval_conversions as eval_conversions
-from driving_log_replayer.evaluator import DLREvaluator, evaluator_main
+from driving_log_replayer.evaluator import DLREvaluator
+from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.lanelet2_util import load_map
-from driving_log_replayer.traffic_light import (
-    FailResultHolder,
-    TrafficLightResult,
-    TrafficLightScenario,
-)
+import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.traffic_light import FailResultHolder
+from driving_log_replayer.traffic_light import TrafficLightResult
+from driving_log_replayer.traffic_light import TrafficLightScenario
 
 if TYPE_CHECKING:
     from perception_eval.evaluation import PerceptionFrameResult
@@ -68,9 +67,7 @@ class TrafficLightEvaluator(DLREvaluator):
         self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
         self.__f_cfg = self._scenario.Evaluation.PerceptionPassFailConfig
-        self.__evaluation_task = self.__p_cfg["evaluation_config_dict"][
-            "evaluation_task"
-        ]
+        self.__evaluation_task = self.__p_cfg["evaluation_config_dict"]["evaluation_task"]
         self.__p_cfg["evaluation_config_dict"][
             "label_prefix"
         ] = "traffic_light"  # Add a fixed value setting
@@ -105,14 +102,12 @@ class TrafficLightEvaluator(DLREvaluator):
             )
         )
         # Pass fail を決めるパラメータ
-        self.__frame_pass_fail_config: PerceptionPassFailConfig = (
-            PerceptionPassFailConfig(
-                evaluator_config=evaluation_config,
-                target_labels=self.__f_cfg["target_labels"],
-            )
+        self.__frame_pass_fail_config: PerceptionPassFailConfig = PerceptionPassFailConfig(
+            evaluator_config=evaluation_config,
+            target_labels=self.__f_cfg["target_labels"],
         )
         self.__evaluator = PerceptionEvaluationManager(
-            evaluation_config=evaluation_config
+            evaluation_config=evaluation_config,
         )
         self.__sub_traffic_signals = self.create_subscription(
             TrafficSignalArray,
@@ -125,7 +120,7 @@ class TrafficLightEvaluator(DLREvaluator):
     def check_evaluation_task(self) -> bool:
         if self.__evaluation_task != "classification2d":
             self.get_logger().error(
-                f"Unexpected evaluation task: {self.__evaluation_task}"
+                f"Unexpected evaluation task: {self.__evaluation_task}",
             )
             return False
         return True
@@ -190,32 +185,30 @@ class TrafficLightEvaluator(DLREvaluator):
         ground_truth_objects = ground_truth_now_frame.objects
         ground_truth_distances = []
         for obj in ground_truth_objects:
-            traffic_light_lane = self.__lanelet_map.laneletLayer.get(
-                int(obj.uuid),
-            )  # no working __traffic_light_lanelet is list
+            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int(obj.uuid))
+            l2d = to2D(traffic_light_obj.trafficLights[0])
             ego_position = map_to_baselink.transform.translation
             p2d = BasicPoint2d(ego_position.x, ego_position.y)
-            distance_to_gt = distance(traffic_light_lane, p2d)
+            distance_to_gt = distance(l2d, p2d)
             ground_truth_distances.append(distance_to_gt)
             if distance_to_gt is not None and distance_to_gt < max_distance_threshold:
                 filtered_gt_objects.append(obj)
                 valid_gt_distances.append(distance_to_gt)
 
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(
-            unix_time, msg.signals
+            unix_time,
+            msg.signals,
         )
         filtered_est_objects = []
         valid_est_distances = []
 
         estimation_distances = []
         for obj in estimated_objects:
+            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int(obj.uuid))
+            l2d = to2D(traffic_light_obj.trafficLights[0])
             ego_position = map_to_baselink.transform.translation
-            distance_to_est = (
-                self.__traffic_light_obj.get_distance_to_traffic_light_group(
-                    obj.uuid,
-                    [ego_position.x, ego_position.y, ego_position.z],
-                )
-            )
+            p2d = BasicPoint2d(ego_position.x, ego_position.y)
+            distance_to_est = distance(l2d, p2d)
             estimation_distances.append(distance_to_est)
             if distance_to_est is not None and distance_to_est < max_distance_threshold:
                 filtered_est_objects.append(obj)

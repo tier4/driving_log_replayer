@@ -21,7 +21,7 @@ from lanelet2_extension_python.utility import query
 from shapely.geometry import Polygon
 
 
-def load_map(map_path: str) -> Any:
+def load_map(map_path: str) -> lanelet2.core.LaneletMap:
     projection = MGRSProjector(lanelet2.io.Origin(0.0, 0.0))
     return lanelet2.io.load(map_path, projection)
 
