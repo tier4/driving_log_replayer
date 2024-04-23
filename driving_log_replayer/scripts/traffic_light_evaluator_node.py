@@ -171,7 +171,8 @@ class TrafficLightEvaluator(DLREvaluator):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
+    def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:  # noqa
+        # PLR0915 Too many statements
         map_to_baselink = self.lookup_transform(msg.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_timestamp(msg.stamp)
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
