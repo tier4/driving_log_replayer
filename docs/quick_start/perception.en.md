@@ -43,8 +43,8 @@
    The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
 
    ```shell
-    scenario: sample_dataset
-    --------------------------------------------------
-    TestResult: Passed
-    Passed:  criteria0 (Success): 679 / 679 -> 100.00%, Passed:  criteria1 (Success): 679 / 679 -> 100.00%
+   scenario: sample_dataset
+   --------------------------------------------------
+   TestResult: Failed
+   Passed: criteria0 (Success): 215 / 215 -> 100.00%, Failed: criteria1 (Fail): 0 / 8 -> 0.00%
    ```

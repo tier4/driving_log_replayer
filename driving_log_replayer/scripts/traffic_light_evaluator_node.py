@@ -50,6 +50,8 @@ class TrafficLightEvaluator(DLREvaluator):
         self.use_map_interface()
 
         self._scenario: TrafficLightScenario
+        self._result: TrafficLightResult
+
         self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
         self.__f_cfg = self._scenario.Evaluation.PerceptionPassFailConfig

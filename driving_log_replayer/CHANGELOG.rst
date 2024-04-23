@@ -2,6 +2,31 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat(obstacle_segmentation): diagnostics_agg to diagnostics (`#422 <https://github.com/tier4/driving_log_replayer/issues/422>`_)
+* feat: ndt diagnostics agg to diagnostics (`#421 <https://github.com/tier4/driving_log_replayer/issues/421>`_)
+* fix: localization default success value (`#420 <https://github.com/tier4/driving_log_replayer/issues/420>`_)
+* fix: obstacle segmentation default success value is False (`#419 <https://github.com/tier4/driving_log_replayer/issues/419>`_)
+* Contributors: Hayato Mizushima
+
+1.15.0 (2024-04-17)
+-------------------
+* feat: `#416 <https://github.com/tier4/driving_log_replayer/issues/416>`_ diagnostics_agg to diagnostics (`#417 <https://github.com/tier4/driving_log_replayer/issues/417>`_)
+* fix: default success is False (`#415 <https://github.com/tier4/driving_log_replayer/issues/415>`_)
+* Contributors: Hayato Mizushima
+
+1.14.10 (2024-04-15)
+--------------------
+* fix: set success True (`#412 <https://github.com/tier4/driving_log_replayer/issues/412>`_)
+* Contributors: Hayato Mizushima
+
+1.14.9 (2024-04-12)
+-------------------
+* fix: colcon test error (`#408 <https://github.com/tier4/driving_log_replayer/issues/408>`_)
+* feat: do not count no gt no object (`#409 <https://github.com/tier4/driving_log_replayer/issues/409>`_)
+* Contributors: Hayato Mizushima
+
 1.14.8 (2024-04-09)
 -------------------
 * fix: annotationless_perception unit test (`#402 <https://github.com/tier4/driving_log_replayer/issues/402>`_)

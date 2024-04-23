@@ -13,8 +13,8 @@ Autoware の診断機能(diagnostics)が意図通りに機能しているかを�
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`performance_diag_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
-2. bag から出力されたセンサーデータを autoware が受け取って、/diagnostics_agg を出力する
-3. 評価ノードが/diagnostics_agg を subscribe して、コールバックで評価を行い結果をファイルに記録する。
+2. bag から出力されたセンサーデータを autoware が受け取って、/diagnostics を出力する
+3. 評価ノードが/diagnostics を subscribe して、コールバックで評価を行い結果をファイルに記録する。
 4. bag の再生が終了すると自動で launch が終了して評価が終了する
 
 ### visibility 評価
@@ -22,14 +22,14 @@ launch を立ち上げると以下のことが実行され、評価される。
 visibility の評価では、雨天時や人工的に雨を降らせられる施設で取得したデータを用いて visibility の ERROR が一定数以上出力されることを確認する。
 また、晴天時のデータを利用して、ERROR が一度も出ないことを確認する。
 
-`/diagnostics_agg`の`status.name`が`/autoware/sensing/lidar/performance_monitoring/visibility/\*`に該当するものを判定に利用する。
+`/diagnostics`の`status.name`が`dual_return_filter: /sensing/lidar/.*: visibility_validation`に該当するものを判定に利用する。
 
 ### blockage 評価
 
 blockage の評価では、LiDAR を意図的にレーザー光を通さない素材(箱など)で覆った状態でデータを取得し blockage の ERROR が一定数以上出力されることを確認する。
 また、覆ってない LiDAR については ERROR が一度も出ないことを確認する。
 
-`/diagnostics_agg`の`status.name`が`/autoware/sensing/lidar/performance_monitoring/blockage/*`に該当するものを判定に利用する。
+`/diagnostics`の`status.name`が`blockage_return_diag: /sensing/lidar/.*: blockage_validation`に該当するものを判定に利用する。
 
 ## 評価結果
 
@@ -64,7 +64,7 @@ Subscribed topics:
 | topic 名                                     | データ型                              |
 | -------------------------------------------- | ------------------------------------- |
 | /perception/obstacle_segmentation/pointcloud | sensor_msgs::msg::PointCloud2         |
-| /diagnostics_agg                             | diagnostic_msgs::msg::DiagnosticArray |
+| /diagnostics                                 | diagnostic_msgs::msg::DiagnosticArray |
 | /tf                                          | tf2_msgs/msg/TFMessage                |
 
 Published topics:

@@ -64,7 +64,9 @@ if TYPE_CHECKING:
 
 class ObstacleSegmentationEvaluator(DLREvaluator):
     COUNT_FINISH_PUB_GOAL_POSE = 5
-    TARGET_DIAG_NAME = "/autoware/perception/node_alive_monitoring/topic_status/topic_state_monitor_obstacle_segmentation_pointcloud: perception_topic_status"
+    TARGET_DIAG_NAME = (
+        "topic_state_monitor_obstacle_segmentation_pointcloud: perception_topic_status"
+    )
 
     def __init__(self, name: str) -> None:
         super().__init__(name, ObstacleSegmentationScenario, ObstacleSegmentationResult)
@@ -136,7 +138,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         )
         self.__sub_diag = self.create_subscription(
             DiagnosticArray,
-            "/diagnostics_agg",
+            "/diagnostics",
             self.diag_cb,
             1,
         )

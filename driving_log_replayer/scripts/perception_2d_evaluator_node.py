@@ -44,6 +44,7 @@ class Perception2DEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, Perception2DScenario, Perception2DResult)
         self._scenario: Perception2DScenario
+        self._result: Perception2DResult
 
         self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig

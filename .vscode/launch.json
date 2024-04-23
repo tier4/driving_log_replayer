@@ -6,7 +6,7 @@
   "configurations": [
     {
       "name": "Python: Current File",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${file}",
       "console": "integratedTerminal",
@@ -14,7 +14,7 @@
     },
     {
       "name": "load_perception_scene_result",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "driving_log_replayer/scripts/debug/perception_load_scene_result.py",
       "console": "integratedTerminal",
@@ -31,7 +31,7 @@
     },
     {
       "name": "load_perception_database_result",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "driving_log_replayer/scripts/perception_database_result.py",
       "console": "integratedTerminal",
@@ -44,7 +44,7 @@
     },
     {
       "name": "load_obstacle_segmentation_scene_result",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "driving_log_replayer/scripts/debug/obstacle_segmentation_load_scene_result.py",
       "console": "integratedTerminal",

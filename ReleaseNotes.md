@@ -1,5 +1,43 @@
 # Release Notes
 
+## Version 1.15.1
+
+Bug Fix, Minor Tweak
+
+| Module                  | Feature          | Brief summary                                    | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ---------------- | ------------------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | evaluation logic | set EvaluationItem.success False                 | [#419](https://github.com/tier4/driving_log_replayer/pull/419) | RT4-9627 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation` | target topic     | Change topic from diagnostics_agg to diagnostics | [#422](https://github.com/tier4/driving_log_replayer/pull/422) | RT4-9627 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization`          | evaluation logic | set EvaluationItem.success False                 | [#420](https://github.com/tier4/driving_log_replayer/pull/420) | RT4-9627 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization`          | target topic     | Change topic from diagnostics_agg to diagnostics | [#421](https://github.com/tier4/driving_log_replayer/pull/421) | RT4-9627 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                   | documentation    | Document reasons for using pipx                  | [#423](https://github.com/tier4/driving_log_replayer/pull/423) | RT4-9084 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.15.0
+
+Bug Fix
+
+| Module             | Feature          | Brief summary                                    | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------ | ---------------- | ------------------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `performance_diag` | evaluation logic | set EvaluationItem.success False                 | [#415](https://github.com/tier4/driving_log_replayer/pull/415) | RT4-9627 | [hayato-m126](https://github.com/hayato-m126) |
+| `performance_diag` | target topic     | Change topic from diagnostics_agg to diagnostics | [#417](https://github.com/tier4/driving_log_replayer/pull/417) | RT4-9627 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.14.10
+
+Bug Fix
+
+| Module                                     | Feature          | Brief summary                   | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | ---------------- | ------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception, perception_2d, traffic_light` | evaluation logic | set EvaluationItem.success True | [#412](https://github.com/tier4/driving_log_replayer/pull/412) | RT4-9572 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.14.9
+
+Minor Tweak
+
+| Module                                     | Feature          | Brief summary                    | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | ---------------- | -------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`                                      | test             | fix pytest version               | [#408](https://github.com/tier4/driving_log_replayer/pull/408) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | evaluation logic | do not count no gt and no object | [#409](https://github.com/tier4/driving_log_replayer/pull/409) | RT4-9572 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.14.8
 
 Minor Tweak, Bug fix

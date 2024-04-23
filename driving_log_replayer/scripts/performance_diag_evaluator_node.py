@@ -59,7 +59,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
 
         self.__sub_diag = self.create_subscription(
             DiagnosticArray,
-            "/diagnostics_agg",
+            "/diagnostics",
             self.diag_cb,
             1,
         )

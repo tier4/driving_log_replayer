@@ -77,7 +77,6 @@ class LocalizationScenario(Scenario):
 @dataclass
 class Convergence(EvaluationItem):
     name: str = "Convergence"
-    success: bool = True
 
     def set_frame(
         self,
@@ -126,7 +125,6 @@ class Convergence(EvaluationItem):
 @dataclass
 class Reliability(EvaluationItem):
     name: str = "Reliability"
-    success: bool = True
     ng_seq: int = 0
     received_data: list[float] = field(default_factory=list)
 
@@ -142,7 +140,7 @@ class Reliability(EvaluationItem):
         self.received_data.append(msg.data)
 
         # If the likelihood is lower than AllowableLikelihood for NGCount consecutive times, it is assumed to be a failure.
-        if self.success:
+        if self.ng_seq < self.condition.NGCount:
             # Update nq_seq only while reliability.result is true
             if msg.data >= self.condition.AllowableLikelihood:
                 self.ng_seq = 0
@@ -167,9 +165,8 @@ class Reliability(EvaluationItem):
 @dataclass
 class Availability(EvaluationItem):
     name: str = "NDT Availability"
-    success: bool = True
     TARGET_DIAG_NAME: ClassVar[str] = (
-        "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
+        "topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
     )
     ERROR_STATUS_LIST: ClassVar[list[str]] = ["Timeout", "NotReceived"]
 
@@ -200,7 +197,10 @@ class Availability(EvaluationItem):
             return {
                 "Ego": {},
                 "Availability": {
-                    "Result": {"Total": self.success_str(), "Frame": self.success_str()},
+                    "Result": {
+                        "Total": self.success_str(),
+                        "Frame": self.success_str(),
+                    },
                     "Info": {},
                 },
             }
@@ -208,7 +208,9 @@ class Availability(EvaluationItem):
             "Ego": {},
             "Availability": {
                 "Result": {"Total": self.success_str(), "Frame": "Warn"},
-                "Info": {"Reason": "diagnostics does not contain localization_topic_status"},
+                "Info": {
+                    "Reason": "diagnostics does not contain localization_topic_status",
+                },
             },
         }
 

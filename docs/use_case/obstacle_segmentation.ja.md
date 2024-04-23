@@ -78,7 +78,7 @@ Subscribed topics:
 | topic 名                                        | データ型                                     |
 | ----------------------------------------------- | -------------------------------------------- |
 | /perception/obstacle_segmentation/pointcloud    | sensor_msgs::msg::PointCloud2                |
-| /diagnostics_agg                                | diagnostic_msgs::msg::DiagnosticArray        |
+| /diagnostics                                    | diagnostic_msgs::msg::DiagnosticArray        |
 | /tf                                             | tf2_msgs/msg/TFMessage                       |
 | /planning/scenario_planning/status/stop_reasons | tier4_planning_msgs::msg::StopReasonArray    |
 | /planning/scenario_planning/trajectory          | autoware_auto_planning_msgs::msg::Trajectory |
