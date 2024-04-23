@@ -21,6 +21,7 @@ from typing import TYPE_CHECKING
 
 from autoware_perception_msgs.msg import TrafficSignal
 from autoware_perception_msgs.msg import TrafficSignalArray
+from geometry_msgs.msg import TransformStamped
 import lanelet2  # noqa
 from lanelet2.core import BasicPoint2d
 from lanelet2.geometry import distance
@@ -49,6 +50,8 @@ if TYPE_CHECKING:
 
 
 class TrafficLightEvaluator(DLREvaluator):
+    MAX_DISTANCE_THRESHOLD = 202.0
+
     def __init__(self, name: str) -> None:
         super().__init__(name, TrafficLightScenario, TrafficLightResult)
         self._scenario: TrafficLightScenario
@@ -171,8 +174,18 @@ class TrafficLightEvaluator(DLREvaluator):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:  # noqa
-        # PLR0915 Too many statements
+    def calc_distance(self, traffic_light_uuid: str, map_to_baselink: TransformStamped) -> float:
+        try:
+            int_uuid = int(traffic_light_uuid)
+            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
+            l2d = to2D(traffic_light_obj.trafficLights[0])
+            ego_position = map_to_baselink.transform.translation
+            p2d = BasicPoint2d(ego_position.x, ego_position.y)
+            return distance(l2d, p2d)
+        except ValueError:
+            return TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD + 1.0
+
+    def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
         map_to_baselink = self.lookup_transform(msg.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_timestamp(msg.stamp)
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
@@ -182,24 +195,18 @@ class TrafficLightEvaluator(DLREvaluator):
 
         # extract all traffic lights closer than 202[m]
         # TODO: avoid using magic number
-        max_distance_threshold = 202.0
         filtered_gt_objects = []
         valid_gt_distances = []
 
         ground_truth_objects = ground_truth_now_frame.objects
         ground_truth_distances = []
         for obj in ground_truth_objects:
-            try:
-                int_uuid = int(obj.uuid)
-                traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
-                l2d = to2D(traffic_light_obj.trafficLights[0])
-                ego_position = map_to_baselink.transform.translation
-                p2d = BasicPoint2d(ego_position.x, ego_position.y)
-                distance_to_gt = distance(l2d, p2d)
-            except ValueError:
-                distance_to_gt = max_distance_threshold + 1.0
+            distance_to_gt = self.calc_distance(obj.uuid, map_to_baselink)
             ground_truth_distances.append(distance_to_gt)
-            if distance_to_gt is not None and distance_to_gt < max_distance_threshold:
+            if (
+                distance_to_gt is not None
+                and distance_to_gt < TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD
+            ):
                 filtered_gt_objects.append(obj)
                 valid_gt_distances.append(distance_to_gt)
 
@@ -212,17 +219,12 @@ class TrafficLightEvaluator(DLREvaluator):
 
         estimation_distances = []
         for obj in estimated_objects:
-            try:
-                int_uuid = int(obj.uuid)
-                traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
-                l2d = to2D(traffic_light_obj.trafficLights[0])
-                ego_position = map_to_baselink.transform.translation
-                p2d = BasicPoint2d(ego_position.x, ego_position.y)
-                distance_to_est = distance(l2d, p2d)
-            except ValueError:
-                distance_to_gt = max_distance_threshold + 1.0
+            distance_to_est = self.calc_distance(obj.uuid, map_to_baselink)
             estimation_distances.append(distance_to_est)
-            if distance_to_est is not None and distance_to_est < max_distance_threshold:
+            if (
+                distance_to_est is not None
+                and distance_to_est < TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD
+            ):
                 filtered_est_objects.append(obj)
                 valid_est_distances.append(distance_to_est)
 
