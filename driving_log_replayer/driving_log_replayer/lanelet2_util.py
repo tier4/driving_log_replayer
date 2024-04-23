@@ -36,8 +36,7 @@ def road_lanelets_from_file(map_path: str) -> Any:
     return query.roadLanelets(load_all_lanelets(map_path))
 
 
-def traffic_light_from_file(map_path: str) -> Any:
-    # return type list
+def traffic_light_from_file(map_path: str) -> list:
     return query.trafficLights(load_all_lanelets(map_path))
 
 
