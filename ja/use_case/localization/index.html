@@ -1797,7 +1797,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </ul>
 <p>これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。本ツールは、下記のトピックを監視することによってその情報を取得する。</p>
 <ul>
-<li>/diagnostics_agg</li>
+<li>/diagnostics</li>
 </ul>
 <p>なお、NDTの出力トピックの中で <code>/localization/pose_estimator/exe_time_ms</code> が選ばれたのは、「トピックに定期的にメッセージが出力されている」ことを確認することで上記に述べた失敗を判定することができるからである。例えば <code>/localization/pose_estimator/pose</code> は今回の監視トピックとして適さない。何故ならば、同トピックはNVTLやTPなどのスコアが低い場合も出力されないので、出力を監視するだけでは、その原因が上記失敗であるかとうかを判定することが難しいからである。</p>
 <h2 id="_2">評価結果<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
@@ -1817,7 +1817,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <h3 id="_6">収束異常<a class="headerlink" href="#_6" title="Permanent link">#</a></h3>
 <p>収束正常の条件を満たさない場合</p>
 <h3 id="_7">可用性正常<a class="headerlink" href="#_7" title="Permanent link">#</a></h3>
-<p>Component State Monitorが出力する <code>/diagnostics_agg</code> の中から、監視トピックに関する情報を抽出する。
+<p>Component State Monitorが出力する <code>/diagnostics</code> の中から、監視トピックに関する情報を抽出する。
 最新の情報におけるStatusが <code>Timeout</code> または <code>NotReceived</code> 以外の場合、正常であると判断する。</p>
 <h3 id="_8">可用性異常<a class="headerlink" href="#_8" title="Permanent link">#</a></h3>
 <p>可用性正常の条件を満たさない場合</p>
@@ -1832,7 +1832,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </thead>
 <tbody>
 <tr>
-<td>/diagnostics_agg</td>
+<td>/diagnostics</td>
 <td>diagnostic_msgs::msg::DiagnosticArray</td>
 </tr>
 <tr>
