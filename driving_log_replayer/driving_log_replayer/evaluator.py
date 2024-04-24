@@ -387,13 +387,10 @@ class DLREvaluator(Node):
         cls,
         array_classification: list[ObjectClassification],
     ) -> ObjectClassification:
-        highest_probability = 0.0
-        highest_classification = None
-        for classification in array_classification:
-            if classification.probability >= highest_probability:
-                highest_probability = classification.probability
-                highest_classification = classification
-        return highest_classification
+        index: int = array_classification.index(
+            max(array_classification, key=lambda x: x.probability),
+        )
+        return array_classification[index]
 
     @classmethod
     def get_traffic_light_label_str(cls, elements: list[TrafficSignalElement]) -> str:  # noqa

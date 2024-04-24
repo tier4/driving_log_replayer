@@ -21,6 +21,11 @@ from typing import TYPE_CHECKING
 
 from autoware_perception_msgs.msg import TrafficSignal
 from autoware_perception_msgs.msg import TrafficSignalArray
+from geometry_msgs.msg import TransformStamped
+import lanelet2  # noqa
+from lanelet2.core import BasicPoint2d
+from lanelet2.geometry import distance
+from lanelet2.geometry import to2D
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.common.schema import FrameID
 from perception_eval.config import PerceptionEvaluationConfig
@@ -31,10 +36,10 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from simple_lanelet_loader.traffic_light_loader import TrafficLightLoader
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
+from driving_log_replayer.lanelet2_util import load_map
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.traffic_light import FailResultHolder
 from driving_log_replayer.traffic_light import TrafficLightResult
@@ -45,9 +50,22 @@ if TYPE_CHECKING:
 
 
 class TrafficLightEvaluator(DLREvaluator):
+    MAX_DISTANCE_THRESHOLD = 202.0
+
     def __init__(self, name: str) -> None:
         super().__init__(name, TrafficLightScenario, TrafficLightResult)
-        self.use_map_interface()
+        self._scenario: TrafficLightScenario
+        self._result: TrafficLightResult
+
+        self.declare_parameter("map_path", "")
+        map_path = Path(
+            expandvars(
+                self.get_parameter("map_path").get_parameter_value().string_value,
+            ),
+            "lanelet2_map.osm",
+        ).as_posix()
+        self.__lanelet_map = load_map(map_path)
+        self.fail_result_holder = FailResultHolder(self._perception_eval_log_path)
 
         self._scenario: TrafficLightScenario
         self._result: TrafficLightResult
@@ -94,10 +112,12 @@ class TrafficLightEvaluator(DLREvaluator):
             evaluator_config=evaluation_config,
             target_labels=self.__f_cfg["target_labels"],
         )
-        self.__evaluator = PerceptionEvaluationManager(evaluation_config=evaluation_config)
+        self.__evaluator = PerceptionEvaluationManager(
+            evaluation_config=evaluation_config,
+        )
         self.__sub_traffic_signals = self.create_subscription(
             TrafficSignalArray,
-            "/perception/traffic_light_recognition/traffic_signals",
+            "/perception/traffic_light_recognition/internal/traffic_signals",  # あとで戻す
             self.traffic_signals_cb,
             1,
         )
@@ -105,21 +125,11 @@ class TrafficLightEvaluator(DLREvaluator):
 
     def check_evaluation_task(self) -> bool:
         if self.__evaluation_task != "classification2d":
-            self.get_logger().error(f"Unexpected evaluation task: {self.__evaluation_task}")
+            self.get_logger().error(
+                f"Unexpected evaluation task: {self.__evaluation_task}",
+            )
             return False
         return True
-
-    def use_map_interface(self) -> None:
-        self.declare_parameter("map_path", "")
-        map_path = Path(
-            expandvars(
-                self.get_parameter("map_path").get_parameter_value().string_value,
-            ),
-            "lanelet2_map.osm",
-        )
-        self.__traffic_light_obj = TrafficLightLoader(map_path)
-        self.__use_regulatory_element: bool = True
-        self.fail_result_holder = FailResultHolder(self._perception_eval_log_path)
 
     def timer_cb(self) -> None:
         super().timer_cb(register_shutdown_func=self.write_metrics)
@@ -155,9 +165,7 @@ class TrafficLightEvaluator(DLREvaluator):
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
-                frame_id=(
-                    FrameID.TRAFFIC_LIGHT if self.__use_regulatory_element else self.__camera_type
-                ),
+                frame_id=FrameID.TRAFFIC_LIGHT,
                 semantic_score=confidence,
                 semantic_label=label,
                 roi=None,
@@ -165,6 +173,17 @@ class TrafficLightEvaluator(DLREvaluator):
             )
             estimated_objects.append(estimated_object)
         return estimated_objects
+
+    def calc_distance(self, traffic_light_uuid: str, map_to_baselink: TransformStamped) -> float:
+        try:
+            int_uuid = int(traffic_light_uuid)
+            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
+            l2d = to2D(traffic_light_obj.trafficLights[0])
+            ego_position = map_to_baselink.transform.translation
+            p2d = BasicPoint2d(ego_position.x, ego_position.y)
+            return distance(l2d, p2d)
+        except ValueError:
+            return TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD + 1.0
 
     def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
         map_to_baselink = self.lookup_transform(msg.stamp)
@@ -176,36 +195,36 @@ class TrafficLightEvaluator(DLREvaluator):
 
         # extract all traffic lights closer than 202[m]
         # TODO: avoid using magic number
-        max_distance_threshold = 202.0  # [m]
         filtered_gt_objects = []
         valid_gt_distances = []
 
         ground_truth_objects = ground_truth_now_frame.objects
         ground_truth_distances = []
         for obj in ground_truth_objects:
-            ego_position = map_to_baselink.transform.translation
-            distance_to_gt = self.__traffic_light_obj.get_distance_to_traffic_light_group(
-                obj.uuid,
-                [ego_position.x, ego_position.y, ego_position.z],
-            )
+            distance_to_gt = self.calc_distance(obj.uuid, map_to_baselink)
             ground_truth_distances.append(distance_to_gt)
-            if distance_to_gt is not None and distance_to_gt < max_distance_threshold:
+            if (
+                distance_to_gt is not None
+                and distance_to_gt < TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD
+            ):
                 filtered_gt_objects.append(obj)
                 valid_gt_distances.append(distance_to_gt)
 
-        estimated_objects = self.list_dynamic_object_2d_from_ros_msg(unix_time, msg.signals)
+        estimated_objects = self.list_dynamic_object_2d_from_ros_msg(
+            unix_time,
+            msg.signals,
+        )
         filtered_est_objects = []
         valid_est_distances = []
 
         estimation_distances = []
         for obj in estimated_objects:
-            ego_position = map_to_baselink.transform.translation
-            distance_to_est = self.__traffic_light_obj.get_distance_to_traffic_light_group(
-                obj.uuid,
-                [ego_position.x, ego_position.y, ego_position.z],
-            )
+            distance_to_est = self.calc_distance(obj.uuid, map_to_baselink)
             estimation_distances.append(distance_to_est)
-            if distance_to_est is not None and distance_to_est < max_distance_threshold:
+            if (
+                distance_to_est is not None
+                and distance_to_est < TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD
+            ):
                 filtered_est_objects.append(obj)
                 valid_est_distances.append(distance_to_est)
 
