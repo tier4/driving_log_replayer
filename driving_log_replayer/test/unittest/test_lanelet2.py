@@ -77,16 +77,19 @@ def test_calc_distance_point_to_lanelet() -> None:
 
 
 """
-def test_calc_distance_line_string_2d_to_point() -> None:
-    from lanelet2.geometry import to2D
-    from driving_log_replayer.lanelet2_util import load_map
-    map_file = "/home/hyt/map/678-20230824042714824504/lanelet2_map.osm"
-    lanelet_map = load_map(map_file)
-    re1504 = lanelet_map.regulatoryElementLayer.get(
-        1504,
-    )  # lanelet2_extension_python._lanelet2_extension_python_boost_python_regulatory_elements.AutowareTrafficLight
-    l2d = to2D(re1504.trafficLights[0])
+from lanelet2.geometry import to2D
+
+from driving_log_replayer.lanelet2_util import load_map
+
+map_file = "/home/hyt/map/678-20230824042714824504/lanelet2_map.osm"
+lanelet_map = load_map(map_file)
+re1504 = lanelet_map.regulatoryElementLayer.get(
+    1504,
+)  # lanelet2_extension_python._lanelet2_extension_python_boost_python_regulatory_elements.AutowareTrafficLight
+distance_to_gt = []
+for traffic_light in re1504.trafficLights:
+    l2d = to2D(traffic_light)
     p2d = BasicPoint2d(0.0, 0.0)
-    distance_to_gt = distance(l2d, p2d)
-    print(distance_to_gt)
+    distance_to_gt.append(distance(l2d, p2d))
+print(min(distance_to_gt))
 """
