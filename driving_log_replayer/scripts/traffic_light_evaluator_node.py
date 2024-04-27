@@ -175,15 +175,21 @@ class TrafficLightEvaluator(DLREvaluator):
         return estimated_objects
 
     def calc_distance(self, traffic_light_uuid: str, map_to_baselink: TransformStamped) -> float:
+        rtn_distance = TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD + 1.0
         try:
             int_uuid = int(traffic_light_uuid)
-            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
-            l2d = to2D(traffic_light_obj.trafficLights[0])
-            ego_position = map_to_baselink.transform.translation
-            p2d = BasicPoint2d(ego_position.x, ego_position.y)
-            return distance(l2d, p2d)
         except ValueError:
-            return TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD + 1.0
+            return rtn_distance
+        else:
+            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
+            ego_position = map_to_baselink.transform.translation
+            for traffic_light in traffic_light_obj.trafficLights:
+                l2d = to2D(traffic_light)
+                p2d = BasicPoint2d(ego_position.x, ego_position.y)
+                tmp_dist = distance(l2d, p2d)
+                if tmp_dist < rtn_distance:
+                    rtn_distance = tmp_dist
+            return rtn_distance
 
     def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
         map_to_baselink = self.lookup_transform(msg.stamp)
