@@ -94,12 +94,12 @@ class GroundSegmentationEvaluator(DLREvaluator):
         pointcloud[:, 1] = numpy_pcd["y"]
         pointcloud[:, 2] = numpy_pcd["z"]
 
-        self._logger.info('==count tp+fn, fp+tn==')
+        self._logger.info("==count tp+fn, fp+tn==")
         # count TP+FN, TN+FP
         tp_fn = np.count_nonzero(gt_frame_cloud[:, 5] == 6)
         fp_tn = np.count_nonzero(gt_frame_cloud[:, 5] == 7)
-        self._logger.info('== == == end == == ==')
-        self._logger.info('==count tn fn==')
+        self._logger.info("== == == end == == ==")
+        self._logger.info("==count tn fn==")
         TN: int = 0
         FN: int = 0
         for p in pointcloud:
@@ -108,7 +108,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
                 FN += 1
             elif gt_frame_cloud[idx][5] == 7:
                 TN += 1
-        self._logger.info('== == == end == == ==')
+        self._logger.info("== == == end == == ==")
         TP = tp_fn - FN
         FP = fp_tn - TN
 
