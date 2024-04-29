@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import driving_log_replayer.launch_common as cmn
 import launch
 from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
-from launch.conditions import UnlessCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
-
-import driving_log_replayer.launch_common as cmn
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
@@ -26,6 +24,14 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/object_recognition/detection/objects$\
 |^/perception/object_recognition/tracking/objects$\
 |^/perception/object_recognition/objects$\
+|^/sensing/camera/.*\
+|^/forward_camera/.*\
+|^/left_camera/.*\
+|^/right_camera/.*\
+|^/rl_camera/.*\
+|^/fr_camera/.*\
+|^/rr_camera/.*\
+|^/fl_camera/.*\
 |^/sensing/camera/.*\
 |^/driving_log_replayer/.*\
 """
