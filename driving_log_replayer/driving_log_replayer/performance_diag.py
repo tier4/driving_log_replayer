@@ -14,6 +14,7 @@
 
 
 from dataclasses import dataclass
+from functools import singledispatchmethod
 import re
 from typing import ClassVar
 from typing import Literal
@@ -265,6 +266,29 @@ class PerformanceDiagResult(ResultBase):
         prefix_str = "Passed: " if tmp_success else "Failed: "
         self._success = tmp_success
         self._summary = prefix_str + tmp_summary
+
+    @singledispatchmethod
+    def set_frame(self) -> None:
+        raise NotImplementedError
+
+    @set_frame.register
+    def set_visibility_frame(
+        self,
+        msg: DiagnosticStatus,
+        map_to_baselink: dict,
+    ) -> None:
+        self._frame = self.__visibility.set_frame(msg, map_to_baselink)
+        self.update()
+
+    @set_frame.register
+    def set_blockage_frame(
+        self,
+        msg: DiagnosticStatus,
+        map_to_baselink: dict,
+        lidar_name: str,
+    ) -> None:
+        self._frame = self.__blockage[lidar_name].set_frame(msg, map_to_baselink)
+        self.update()
 
     def set_frame(
         self,
