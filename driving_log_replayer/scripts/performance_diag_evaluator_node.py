@@ -30,6 +30,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, PerformanceDiagScenario, PerformanceDiagResult)
         self._scenario: PerformanceDiagScenario
+        self._result: PerformanceDiagResult
 
         self.__pub_visibility_value = self.create_publisher(Float64, "visibility/value", 1)
         self.__pub_visibility_level = self.create_publisher(Byte, "visibility/level", 1)
@@ -54,7 +55,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
                 self.__pub_blockage_levels[k] = self.create_publisher(
                     Byte,
                     f"blockage/{k}/level",
-                    1,
+                    100,
                 )
 
         self.__sub_diag = self.create_subscription(
@@ -65,8 +66,6 @@ class PerformanceDiagEvaluator(DLREvaluator):
         )
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
-        if msg.header == self.__diag_header_prev:
-            return
         self.__diag_header_prev = msg.header
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         (
