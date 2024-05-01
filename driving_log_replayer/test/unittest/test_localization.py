@@ -15,7 +15,6 @@
 from collections.abc import Callable
 
 from builtin_interfaces.msg import Time
-from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 from example_interfaces.msg import Float64
