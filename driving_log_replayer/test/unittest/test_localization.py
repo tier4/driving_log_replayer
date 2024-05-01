@@ -31,6 +31,8 @@ from driving_log_replayer.localization import Reliability
 from driving_log_replayer.localization import ReliabilityCondition
 from driving_log_replayer.scenario import load_sample_scenario
 
+TARGET_DIAG_NAME = "topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
+
 
 def test_scenario() -> None:
     scenario: LocalizationScenario = load_sample_scenario("localization", LocalizationScenario)
@@ -40,11 +42,11 @@ def test_scenario() -> None:
 
 def test_availability_success() -> None:
     status = DiagnosticStatus(
-        name=Availability.TARGET_DIAG_NAME,
+        name=TARGET_DIAG_NAME,
         values=[KeyValue(key="status", value="OK")],
     )
     evaluation_item = Availability()
-    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    frame_dict = evaluation_item.set_frame(status)
     assert evaluation_item.success is True
     assert evaluation_item.summary == "NDT Availability (Success): NDT available"
     assert frame_dict == {
@@ -58,13 +60,13 @@ def test_availability_success() -> None:
 
 def test_availability_fail() -> None:
     status = DiagnosticStatus(
-        name=Availability.TARGET_DIAG_NAME,
+        name=TARGET_DIAG_NAME,
         values=[
             KeyValue(key="not_availability_status", value="test"),
         ],
     )
     evaluation_item = Availability()
-    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    frame_dict = evaluation_item.set_frame(status)
     assert evaluation_item.success is False
     assert evaluation_item.summary == "NDT Availability (Fail): NDT Availability Key Not Found"
     assert frame_dict == {
@@ -78,11 +80,11 @@ def test_availability_fail() -> None:
 
 def test_availability_fail_key_not_found() -> None:
     status = DiagnosticStatus(
-        name=Availability.TARGET_DIAG_NAME,
+        name=TARGET_DIAG_NAME,
         values=[KeyValue(key="status", value=Availability.ERROR_STATUS_LIST[0])],
     )
     evaluation_item = Availability()
-    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
+    frame_dict = evaluation_item.set_frame(status)
     assert evaluation_item.success is False
     assert evaluation_item.summary == "NDT Availability (Fail): NDT not available"
     assert frame_dict == {
@@ -90,21 +92,6 @@ def test_availability_fail_key_not_found() -> None:
         "Availability": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {},
-        },
-    }
-
-
-def test_availability_has_no_target_diag() -> None:
-    status = DiagnosticStatus(name="not_localization_diag_name")
-    evaluation_item = Availability()
-    frame_dict = evaluation_item.set_frame(DiagnosticArray(status=[status]))
-    assert evaluation_item.success is False
-    assert evaluation_item.summary == "NotTested"
-    assert frame_dict == {
-        "Ego": {},
-        "Availability": {
-            "Result": {"Total": "Fail", "Frame": "Warn"},
-            "Info": {"Reason": "diagnostics does not contain localization_topic_status"},
         },
     }
 
