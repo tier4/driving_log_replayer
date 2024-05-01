@@ -303,7 +303,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
         diag_status: DiagnosticStatus = msg.status[0]
-        if diag_status.name == ObstacleSegmentationEvaluator.TARGET_DIAG_NAME:
+        if diag_status.name == TARGET_DIAG_NAME:
             return
         if diag_status.level >= DiagnosticStatus.ERROR:
             self.__topic_rate = False
