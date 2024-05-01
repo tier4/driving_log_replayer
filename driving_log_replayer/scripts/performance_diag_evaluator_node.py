@@ -84,7 +84,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
 
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         if is_visibility:
-            msg_visibility_value, msg_visibility_level = self._result.set_frame(
+            msg_visibility_value, msg_visibility_level = self._result.set_visibility_frame(
                 diag_status,
                 DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             )
