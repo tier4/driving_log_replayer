@@ -38,11 +38,12 @@ class EagleyeEvaluator(DLREvaluator):
         )
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
-        diag_status: DiagnosticStatus = msg.status[0]
-        if diag_status.name != TARGET_DIAG_NAME:
-            return
-        self._result.set_frame(diag_status)
-        self._result_writer.write_result(self._result)
+        # eagleye's diagnostics contains multiple statuses
+        for diag_status in msg.status:
+            diag_status: DiagnosticStatus
+            if diag_status.name == TARGET_DIAG_NAME:
+                self._result.set_frame(diag_status)
+                self._result_writer.write_result(self._result)
 
 
 @evaluator_main
