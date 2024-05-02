@@ -15,27 +15,35 @@
 # limitations under the License.
 
 from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 
 from driving_log_replayer.eagleye import EagleyeResult
 from driving_log_replayer.eagleye import EagleyeScenario
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 
+TARGET_DIAG_NAME = "monitor: eagleye_enu_absolute_pos_interpolate"
+
 
 class EagleyeEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, EagleyeScenario, EagleyeResult)
+        self._result: EagleyeResult
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
             "/diagnostics",
             self.diagnostics_cb,
-            1,
+            100,
         )
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
-        self._result.set_frame(msg)
-        self._result_writer.write_result(self._result)
+        # eagleye's diagnostics contains multiple statuses
+        for diag_status in msg.status:
+            diag_status: DiagnosticStatus
+            if diag_status.name == TARGET_DIAG_NAME:
+                self._result.set_frame(diag_status)
+                self._result_writer.write_result(self._result)
 
 
 @evaluator_main

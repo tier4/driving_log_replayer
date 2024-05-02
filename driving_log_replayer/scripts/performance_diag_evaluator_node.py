@@ -15,21 +15,32 @@
 # limitations under the License.
 
 
+from re import fullmatch
+
 from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
-from std_msgs.msg import Header
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.performance_diag import PerformanceDiagResult
 from driving_log_replayer.performance_diag import PerformanceDiagScenario
 
+REGEX_VISIBILITY_DIAG_NAME = "dual_return_filter: /sensing/lidar/.*: visibility_validation"
+BLOCKAGE_DIAG_NAME = "blockage_return_diag: /sensing/lidar/.*: blockage_validation"
+
+
+def extract_lidar_name(diag_name: str) -> str:
+    remove_prefix = diag_name.replace("blockage_return_diag: /sensing/lidar/", "")
+    return remove_prefix.replace(": blockage_validation", "")
+
 
 class PerformanceDiagEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, PerformanceDiagScenario, PerformanceDiagResult)
         self._scenario: PerformanceDiagScenario
+        self._result: PerformanceDiagResult
 
         self.__pub_visibility_value = self.create_publisher(Float64, "visibility/value", 1)
         self.__pub_visibility_level = self.create_publisher(Byte, "visibility/level", 1)
@@ -37,7 +48,6 @@ class PerformanceDiagEvaluator(DLREvaluator):
         self.__pub_blockage_ground_ratios = {}
         self.__pub_blockage_sky_ratios = {}
         self.__pub_blockage_levels = {}
-        self.__diag_header_prev = Header()
 
         for k, v in self._scenario.Evaluation.Conditions.LiDAR.Blockage.items():
             if v.ScenarioType is not None:
@@ -61,37 +71,42 @@ class PerformanceDiagEvaluator(DLREvaluator):
             DiagnosticArray,
             "/diagnostics",
             self.diag_cb,
-            1,
+            100,
         )
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
-        if msg.header == self.__diag_header_prev:
+        diag_status: DiagnosticStatus = msg.status[0]
+        is_visibility = bool(fullmatch(REGEX_VISIBILITY_DIAG_NAME, diag_status.name))
+        is_blockage = bool(fullmatch(BLOCKAGE_DIAG_NAME, diag_status.name))
+
+        if not (is_visibility or is_blockage):
             return
-        self.__diag_header_prev = msg.header
+
         map_to_baselink = self.lookup_transform(msg.header.stamp)
-        (
-            msg_visibility_value,
-            msg_visibility_level,
-            msg_blockage_sky_ratios,
-            msg_blockage_ground_ratios,
-            msg_blockage_levels,
-        ) = self._result.set_frame(
-            msg,
-            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
-        )
-        if msg_visibility_value is not None:
-            self.__pub_visibility_value.publish(msg_visibility_value)
-        if msg_visibility_level is not None:
-            self.__pub_visibility_level.publish(msg_visibility_level)
-        for k, v in msg_blockage_sky_ratios.items():
-            if v is not None:
-                self.__pub_blockage_sky_ratios[k].publish(v)
-        for k, v in msg_blockage_ground_ratios.items():
-            if v is not None:
-                self.__pub_blockage_ground_ratios[k].publish(v)
-        for k, v in msg_blockage_levels.items():
-            if v is not None:
-                self.__pub_blockage_levels[k].publish(v)
+        if is_visibility:
+            msg_visibility_value, msg_visibility_level = self._result.set_visibility_frame(
+                diag_status,
+                DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+            )
+            if msg_visibility_value is not None:
+                self.__pub_visibility_value.publish(msg_visibility_value)
+            if msg_visibility_level is not None:
+                self.__pub_visibility_level.publish(msg_visibility_level)
+        if is_blockage:
+            lidar_name = extract_lidar_name(diag_status.name)
+            msg_blockage_sky_ratio, msg_blockage_ground_ratio, msg_blockage_level = (
+                self._result.set_blockage_frame(
+                    diag_status,
+                    DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+                    lidar_name,
+                )
+            )
+            if msg_blockage_sky_ratio is not None:
+                self.__pub_blockage_sky_ratios[lidar_name].publish(msg_blockage_sky_ratio)
+            if msg_blockage_ground_ratio is not None:
+                self.__pub_blockage_ground_ratios[lidar_name].publish(msg_blockage_ground_ratio)
+            if msg_blockage_level is not None:
+                self.__pub_blockage_levels[lidar_name].publish(msg_blockage_level)
         self._result_writer.write_result(self._result)
 
 

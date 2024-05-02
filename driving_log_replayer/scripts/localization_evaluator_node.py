@@ -15,6 +15,7 @@
 # limitations under the License.
 
 from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
 from tier4_debug_msgs.msg import Float32Stamped
@@ -26,6 +27,8 @@ from driving_log_replayer.localization import calc_pose_horizontal_distance
 from driving_log_replayer.localization import calc_pose_lateral_distance
 from driving_log_replayer.localization import LocalizationResult
 from driving_log_replayer.localization import LocalizationScenario
+
+TARGET_DIAG_NAME = "topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
 
 
 class LocalizationEvaluator(DLREvaluator):
@@ -80,7 +83,7 @@ class LocalizationEvaluator(DLREvaluator):
             DiagnosticArray,
             "/diagnostics",
             self.diagnostics_cb,
-            1,
+            100,
         )
 
     def exe_time_cb(self, msg: Float32Stamped) -> None:
@@ -128,7 +131,10 @@ class LocalizationEvaluator(DLREvaluator):
         self._result_writer.write_result(self._result)
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
-        self._result.set_frame(msg)
+        diag_status: DiagnosticStatus = msg.status[0]
+        if diag_status.name != TARGET_DIAG_NAME:
+            return
+        self._result.set_frame(diag_status)
         self._result_writer.write_result(self._result)
 
 
