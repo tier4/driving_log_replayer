@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.15.2 (2024-05-02)
+-------------------
 * Merge branch 'main' into develop
 * fix: filter diagnostics (`#434 <https://github.com/tier4/driving_log_replayer/issues/434>`_)
 * feat: Change processing to match the diagnostics data structure (`#433 <https://github.com/tier4/driving_log_replayer/issues/433>`_)
