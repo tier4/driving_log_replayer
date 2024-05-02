@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.15.2
+
+Bug Fix
+
+| Module                                                                         | Feature     | Brief summary                                             | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------------------------------------------ | ----------- | --------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `performance_diag`                                                             | diagnostics | Change processing to match the diagnostics data structure | [#433](https://github.com/tier4/driving_log_replayer/pull/433) | RT4-9826 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation, localization, yabloc, eagleye, ar_tag_based_localizer` | diagnostics | Change topic from diagnostics_agg to diagnostics          | [#434](https://github.com/tier4/driving_log_replayer/pull/434) | RT4-9826 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.15.1
 
 Bug Fix, Minor Tweak
