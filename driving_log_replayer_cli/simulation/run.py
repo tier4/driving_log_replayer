@@ -56,6 +56,7 @@ def run(
         if scenario.Evaluation["UseCaseName"] in USE_T4_DATASET:
             launch_cmd = cmd_use_t4_dataset(
                 scenario_file,
+                dataset_path,
                 output_case,
                 config.autoware_path,
                 launch_arg_dict,
@@ -63,6 +64,7 @@ def run(
         else:
             launch_cmd = cmd_use_bag_only(
                 scenario_file,
+                dataset_path,
                 output_case,
                 config.autoware_path,
                 launch_arg_dict,
@@ -213,6 +215,7 @@ sleep 1
 
 def cmd_use_bag_only(
     scenario_path: Path,
+    dataset_path: Path,
     output_path: Path,
     autoware_path: Path,
     launch_args_dict: dict[str, str],
@@ -229,7 +232,7 @@ def cmd_use_bag_only(
         "vehicle_id": scenario.VehicleId,
         "scenario_path": scenario_path,
         "result_json_path": output_path.joinpath("result.json"),
-        "input_bag": scenario_path.parent.joinpath("input_bag"),
+        "input_bag": dataset_path.joinpath("input_bag"),
         "result_bag_path": output_path.joinpath("result_bag"),
     }
     launch_localization = scenario.Evaluation.get("LaunchLocalization")
@@ -242,11 +245,11 @@ def cmd_use_bag_only(
 
 def cmd_use_t4_dataset(
     scenario_path: Path,
+    dataset_path: Path,
     output_path: Path,
     autoware_path: Path,
     launch_args_dict: dict[str, str],
 ) -> str | None:
-    dataset_path = scenario_path.parent
     scenario: Scenario = load_scenario(scenario_path)
     launch_command_for_all_dataset = f"source {autoware_path.joinpath('install', 'setup.bash')}\n"
     t4_dataset_base_path = dataset_path.joinpath("t4_dataset")
