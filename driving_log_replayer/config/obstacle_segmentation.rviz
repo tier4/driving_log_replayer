@@ -308,36 +308,7 @@ Visualization Manager:
           Enabled: true
           Name: Lanelet2VectorMap
           Namespaces:
-            center_lane_line: true
-            center_line_arrows: true
-            crosswalk_lanelet_id: true
-            crosswalk_lanelets: true
-            detection_area: true
-            detection_area_stopline: true
-            lane_start_bound: true
-            lanelet direction: true
-            lanelet_id: true
-            left_lane_bound: true
-            no_stopping_area: true
-            no_stopping_area_stopline: true
-            parking_lots: true
-            parking_space: true
-            partitions: true
-            pedestrian_marking: true
-            right_lane_bound: true
-            road_lanelets: true
-            shoulder_center_lane_line: true
-            shoulder_center_line_arrows: true
-            shoulder_lane_start_bound: true
-            shoulder_left_lane_bound: true
-            shoulder_right_lane_bound: true
-            shoulder_road_lanelets: true
-            stop_lines: true
-            traffic_light: true
-            traffic_light_id: true
-            traffic_light_reg_elem_id: true
-            traffic_light_triangle: true
-            walkway_lanelets: true
+            {}
           Topic:
             Depth: 5
             Durability Policy: Transient Local
@@ -827,7 +798,15 @@ Visualization Manager:
                     Color: 119; 11; 32
                   Name: PredictedObjects
                   Namespaces:
-                    {}
+                    acceleration: true
+                    label: true
+                    path: true
+                    path confidence: true
+                    position covariance: true
+                    shape: true
+                    twist: true
+                    uuid: true
+                    velocity: true
                   PEDESTRIAN:
                     Alpha: 0.9990000128746033
                     Color: 255; 192; 203
@@ -930,11 +909,7 @@ Visualization Manager:
               Enabled: true
               Name: RouteArea
               Namespaces:
-                goal_lanelets: true
-                lane_start_bound: true
-                left_lane_bound: true
-                right_lane_bound: true
-                route_lanelets: true
+                {}
               Topic:
                 Depth: 5
                 Durability Policy: Transient Local
@@ -2901,6 +2876,19 @@ Visualization Manager:
             Constant Color: false
             Scale: 0.30000001192092896
             Value: false
+        - Class: rviz_default_plugins/Marker
+          Enabled: false
+          Name: Stop Reason
+          Namespaces:
+            {}
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            Filter size: 10
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /control/trajectory_follower/longitudinal/stop_reason
+          Value: false
         - Class: rviz_default_plugins/MarkerArray
           Enabled: false
           Name: Debug/MPC
@@ -2966,18 +2954,49 @@ Visualization Manager:
                   Debug/MPC: true
                   Debug/PurePursuit: true
                   Predicted Trajectory: true
+                  Stop Reason: true
                   Value: false
                 Debug:
                   Control: true
                   Localization:
-                    "": true
+                    EKFPoseHistory: true
+                    NDT pointclouds: true
+                    NDTLoadedPCDMap: true
+                    NDTPoseHistory: true
                     Value: true
                   Map: true
                   Perception:
-                    "": true
+                    CameraLidarFusion(purple): true
+                    Centerpoint(red1): true
+                    CenterpointROIFusion(red2): true
+                    CenterpointValidator(red3): true
+                    Detection(yellow): true
+                    DetectionByTracker(orange): true
+                    PointPainting(light_green1): true
+                    PointPaintingROIFusion(light_green2): true
+                    PointPaintingValidator(light_green3): true
+                    Prediction(light_blue): true
+                    RadarFarObjects(white): true
+                    Tracking(green): true
                     Value: true
                   Planning:
-                    "": true
+                    Objects Of Interest:
+                      AvoidanceByLCLeft: true
+                      AvoidanceByLCRight: true
+                      AvoidanceLeft: true
+                      AvoidanceRight: true
+                      BlindSpot: true
+                      Crosswalk: true
+                      DetectionArea: true
+                      GoalPlanner: true
+                      Intersection: true
+                      LaneChangeLeft: true
+                      LaneChangeRight: true
+                      NoStoppingArea: true
+                      StartPlanner: true
+                      TrafficLight: true
+                      Value: true
+                    StringStampedOverlayDisplay: true
                     Value: true
                   Sensing:
                     ConcatenatePointCloud: true
@@ -4462,12 +4481,12 @@ Window Geometry:
     collapsed: false
   Displays:
     collapsed: false
-  Height: 981
+  Height: 982
   Hide Left Dock: false
   Hide Right Dock: false
   PointcloudOnCamera:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000002d500000379fc0200000010fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003e0000010b000000ca00fffffffc0000014f000000f4000000c40100001dfa000000000100000002fb0000000a0056006900650077007301000000000000033c0000010000fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000000ffffffff0000008a00fffffffb00000024004100750074006f00770061007200650053007400610074006500500061006e0065006c00000002380000017c0000017c00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000682000000eb0000000000000000fb0000000a0049006d0061006700650100000505000002680000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb00000030005200650063006f0067006e006900740069006f006e0052006500730075006c0074004f006e0049006d0061006700650100000249000001160000002800fffffffb0000002a004100750074006f0077006100720065004400610074006500540069006d006500500061006e0065006c0100000365000000520000004200fffffffb000000240050006f0069006e00740063006c006f00750064004f006e00430061006d0065007200610000000311000000a60000002800ffffff000000010000015f000006fffc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000e7a0000005afc0100000001fb0000000a00560069006500770073030000004e00000080000002e1000001970000000300000e7a0000005afc0100000002fb0000000800540069006d0065010000000000000e7a0000000000000000fb0000000800540069006d00650100000000000004500000000000000000000004a30000037900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000002d50000037afc0200000010fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003e000000d7000000ca00fffffffc0000011b000000c4000000c40100001dfa000000000100000002fb0000000a0056006900650077007301000000000000033c0000010000fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000000ffffffff0000008a00fffffffb00000024004100750074006f00770061007200650053007400610074006500500061006e0065006c00000002380000017c0000017c00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000682000000eb0000000000000000fb0000000a0049006d0061006700650100000505000002680000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb00000030005200650063006f0067006e006900740069006f006e0052006500730075006c0074004f006e0049006d00610067006501000001e5000000df0000002800fffffffb0000002a004100750074006f0077006100720065004400610074006500540069006d006500500061006e0065006c01000002ca000000420000004200fffffffb000000240050006f0069006e00740063006c006f00750064004f006e00430061006d0065007200610100000312000000a60000002800ffffff000000010000015f000006fffc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000e7a0000005afc0100000001fb0000000a00560069006500770073030000004e00000080000002e1000001970000000300000e7a0000005afc0100000002fb0000000800540069006d0065010000000000000e7a0000000000000000fb0000000800540069006d00650100000000000004500000000000000000000004a50000037a00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RecognitionResultOnImage:
     collapsed: false
   Selection:
@@ -4476,6 +4495,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1918
+  Width: 1920
   X: 0
   Y: 0
