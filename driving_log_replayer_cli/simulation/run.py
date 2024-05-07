@@ -38,6 +38,7 @@ def run(
     launch_args: list[str],
     update_method: str,
 ) -> None:
+    base_scenario_path = config.data_directory.joinpath("base_scenario.yaml")
     output_dir_by_time = create_output_dir_by_time(config.output_directory)
     for dataset_path in config.data_directory.glob("*"):
         # open scenario file and make ros2 launch command
@@ -45,8 +46,10 @@ def run(
             continue
         output_case = output_dir_by_time.joinpath(dataset_path.name)
         scenario_file = get_scenario_file(dataset_path)
-        if scenario_file is None:
+        if scenario_file is None and not base_scenario_path.exists():
             continue
+        if scenario_file is None and base_scenario_path.exists():
+            scenario_file = base_scenario_path
         scenario = load_scenario(scenario_file)
         launch_cmd = None
         launch_arg_dict = args_to_dict(launch_args)
