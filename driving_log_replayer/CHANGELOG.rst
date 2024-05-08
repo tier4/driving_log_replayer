@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add object label list (`#432 <https://github.com/tier4/driving_log_replayer/issues/432>`_)
+* feat: cli support base scenario (`#437 <https://github.com/tier4/driving_log_replayer/issues/437>`_)
+* Contributors: Hayato Mizushima
+
 1.15.2 (2024-05-02)
 -------------------
 * Merge branch 'main' into develop

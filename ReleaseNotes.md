@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 1.15.3
+
+Bug Fix
+
+| Module       | Feature | Brief summary          | Pull request                                                   | Jira     | Contributor                                   |
+| ------------ | ------- | ---------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception` | result  | add object label list  | [#432](https://github.com/tier4/driving_log_replayer/pull/432) | RT4-9830 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`        | cli     | support base scenario  | [#437](https://github.com/tier4/driving_log_replayer/pull/437) | RT1-6169 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`        | cli     | fix suppress error msg | [#438](https://github.com/tier4/driving_log_replayer/pull/438) | RT1-6169 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.15.2
 
 Bug Fix
