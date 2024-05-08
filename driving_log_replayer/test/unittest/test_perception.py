@@ -163,7 +163,7 @@ def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
         Shape(ShapeType.BOUNDING_BOX, (1.0, 1.0, 1.0)),
         (1.0, 2.0, 3.0),
         0.5,
-        Label(AutowareLabel.CAR, "12"),
+        Label(AutowareLabel.CAR, "car"),
     )
     return DynamicObjectWithPerceptionResult(dynamic_obj, None)
 
@@ -205,9 +205,9 @@ def test_perception_success_tp_normal(
         "PassFail": {
             "Result": {"Total": "Success", "Frame": "Success"},
             "Info": {
-                "TP": 5,
-                "FP": 5,
-                "FN": 0,
+                "TP": "5 [car, car, car, car, car]",
+                "FP": "5 [car, car, car, car, car]",
+                "FN": "0 []",
             },
         },
     }
@@ -236,9 +236,9 @@ def test_perception_fail_tp_normal(
         "PassFail": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {
-                "TP": 5,
-                "FP": 10,
-                "FN": 0,
+                "TP": "5 [car, car, car, car, car]",
+                "FP": "10 [car, car, car, car, car, car, car, car, car, car]",
+                "FN": "0 []",
             },
         },
     }
@@ -267,9 +267,9 @@ def test_perception_fail_tp_hard(
         "PassFail": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {
-                "TP": 5,
-                "FP": 5,
-                "FN": 0,
+                "TP": "5 [car, car, car, car, car]",
+                "FP": "5 [car, car, car, car, car]",
+                "FN": "0 []",
             },
         },
     }
