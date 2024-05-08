@@ -45,11 +45,9 @@ def run(
         if not dataset_path.is_dir():
             continue
         output_case = output_dir_by_time.joinpath(dataset_path.name)
-        scenario_file = get_scenario_file(dataset_path)
-        if scenario_file is None and not base_scenario_path.exists():
+        scenario_file = get_scenario_file(dataset_path, base_scenario_path)
+        if scenario_file is None:
             continue
-        if scenario_file is None and base_scenario_path.exists():
-            scenario_file = base_scenario_path
         scenario = load_scenario(scenario_file)
         launch_cmd = None
         launch_arg_dict = args_to_dict(launch_args)
@@ -159,17 +157,21 @@ def create_output_dir_by_time(base_path: Path) -> Path:
     return output_dir_by_time
 
 
-def get_scenario_file(dataset_path: Path) -> Path | None:
+def get_scenario_file(dataset_path: Path, base_scenario_path: Path) -> Path | None:
     scenario_file_path = dataset_path.joinpath("scenario.yaml")
-    if not scenario_file_path.exists():
-        scenario_file_path = dataset_path.joinpath("scenario.yml")
-        if not scenario_file_path.exists():
-            termcolor.cprint(
-                scenario_file_path.as_posix() + " does not exist.",
-                "red",
-            )
-            return None
-    return scenario_file_path
+    if scenario_file_path.exists():
+        return scenario_file_path
+    scenario_file_path = dataset_path.joinpath("scenario.yml")
+    if scenario_file_path.exists():
+        return scenario_file_path
+    scenario_file_path = base_scenario_path
+    if scenario_file_path.exists():
+        return scenario_file_path
+    termcolor.cprint(
+        f"scenario file does not exist in {dataset_path.as_posix()} and no base_scenario",
+        "red",
+    )
+    return None
 
 
 def args_to_dict(launch_args: list[str]) -> dict[str, str]:
