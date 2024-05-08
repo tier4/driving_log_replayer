@@ -80,7 +80,7 @@ For each test case: a scenario, rosbag, and dataset are placed.
 ### Data Folder Structure for use case without t4_dataset
 
 ```shell
-driving_log_replayer_data             // .driving_log_replayer.config の data_directory
+profile_data_directory                // .driving_log_replayer.config の data_directory
 │
 ├── TC001                          // Test case directory. Directry name can be named arbitrarily
 │   ├── scenario.yaml             // Scenario
@@ -88,7 +88,7 @@ driving_log_replayer_data             // .driving_log_replayer.config の data_d
 │       ├── input_bag_0.db3       // Binary file of bag
 │       └── metadata.yaml         // Metadata file of bag
 │
-├── TC002                           // Test case directory. Same structure as TC001
+├── TC002                          // Test case directory. Same structure as TC001
 ...
 
 ```
@@ -96,7 +96,7 @@ driving_log_replayer_data             // .driving_log_replayer.config の data_d
 ### Data Folder Structure for use case with t4_dataset
 
 ```shell
-driving_log_replayer_data              // .driving_log_replayer.config の data_directory
+profile_data_directory                 // .driving_log_replayer.config の data_directory
 │
 ├── TC001                           // Test case directory. Directry name can be named arbitrarily
 │   ├── scenario.yaml              // Scenario
@@ -115,6 +115,30 @@ driving_log_replayer_data              // .driving_log_replayer.config の data_
 │
 ├── TC002                           // Test case directory. Same structure as TC001
 ...
+
+```
+
+### When you want to use a common scenario file in a profile
+
+This is used when you want to evaluate bag files acquired with the same map, vehicle, and sensor configuration in one common scenario.
+It can be used when you want to run simulations that only require metrics to determine threshold values with annotationless_perception.
+
+For example, in the following case, TC001 is evaluated in base_scenario.yaml and TC002 uses scenario.yaml in the directory
+
+```shell
+profile_data_directory                // .driving_log_replayer.config の data_directory
+├── base_scenario.yaml　　　　　　 // Common scenario used when no scenario file exists in the directory
+│
+├── TC001                          // Test case directory. Directry name can be named arbitrarily
+│   └── input_bag                 // Bag for input containing sensor data
+│       ├── input_bag_0.db3       // Binary file of bag
+│       └── metadata.yaml         // Metadata file of bag
+│
+├── TC002                          // Test case directory. Directry name can be named arbitrarily
+│   ├── scenario.yaml             // The scenario files in the directory are used. base_scenario.yaml is ignored
+│   └── input_bag                 // Bag for input containing sensor data
+│       ├── input_bag_0.db3       // Binary file of bag
+│       └── metadata.yaml         // Metadata file of bag
 
 ```
 
