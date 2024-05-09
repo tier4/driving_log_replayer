@@ -4,9 +4,10 @@ Changelog for package driving_log_replayer
 
 Forthcoming
 -----------
+* feat(annotationless_perception): record pointcloud and objects (`#440 <https://github.com/tier4/driving_log_replayer/issues/440>`_)
 * feat: add object label list (`#432 <https://github.com/tier4/driving_log_replayer/issues/432>`_)
 * feat: cli support base scenario (`#437 <https://github.com/tier4/driving_log_replayer/issues/437>`_)
-* Contributors: Hayato Mizushima
+* Contributors: Hayato Mizushima, Kosuke Takeuchi
 
 1.15.2 (2024-05-02)
 -------------------
