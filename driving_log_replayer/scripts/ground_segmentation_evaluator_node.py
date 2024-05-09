@@ -56,34 +56,21 @@ class GroundSegmentationEvaluator(DLREvaluator):
 
         self.__sub_pointcloud = self.create_subscription(
             PointCloud2,
-            "/perception/obstacle_segmentation/single_frame/pointcloud_raw",
+            "/perception/obstacle_segmentation/single_frame/pointcloud",
             self.pointcloud_cb,
             qos_profile_sensor_data,
         )
 
     def pointcloud_cb(self, msg: PointCloud2):
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
-        min_diff: int = abs(unix_time - int(list(self.ground_truth.keys())[0]))
+        gt_frame_ts = self.__get_gt_frame_ts(unix_time=unix_time)
 
-        min_ts: int = int(list(self.ground_truth.keys())[0])
-        for i in range(1, len(self.ground_truth)):
-            sample_ts = int(list(self.ground_truth.keys())[i])
-            diff_time = abs(unix_time - sample_ts)
-            # self._logger.warn(f'keys : {sample_ts}')
-            if diff_time < min_diff:
-                min_diff = diff_time
-                min_ts = sample_ts
-
-        self._logger.warn(f"unix_time : {unix_time}, min_ts : {min_ts}")
-        self._logger.warn(f"time diff {min_diff}")
-
-        if min_diff > 75000:
-            self._logger.warn(f"time diff {min_diff} is too big")
+        if gt_frame_ts < 0:
             return
 
         # get ground truth pointcloud in this frame
         # construct kd-tree from gt cloud
-        gt_frame_cloud: np.ndarray = self.ground_truth[min_ts]
+        gt_frame_cloud: np.ndarray = self.ground_truth[gt_frame_ts]
         self._logger.info(f"{gt_frame_cloud.shape}")
         kdtree = cKDTree(gt_frame_cloud[:, 0:3])
 
@@ -128,6 +115,23 @@ class GroundSegmentationEvaluator(DLREvaluator):
 
         self._result.set_frame(frame_result)
         self._result_writer.write_result(self._result)
+
+    def __get_gt_frame_ts(self, unix_time: int) -> int:
+        min_diff: int = abs(unix_time - int(list(self.ground_truth.keys())[0]))
+        ret_ts: int = int(list(self.ground_truth.keys())[0])
+        for i in range(1, len(self.ground_truth)):
+            sample_ts = int(list(self.ground_truth.keys())[i])
+            diff_time = abs(unix_time - sample_ts)
+            # self._logger.warn(f'keys : {sample_ts}')
+            if diff_time < min_diff:
+                min_diff = diff_time
+                ret_ts = sample_ts
+
+        if min_diff > 75000:
+            self._logger.warn(f"time diff {min_diff} is too big")
+            return -1
+
+        return ret_ts
 
     def __compute_metrics(self, tp: int, fp: int, tn: int, fn: int) -> List[float]:
         precision = float(tp) / float(tp + fp + 1e-5)
