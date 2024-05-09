@@ -1,0 +1,41 @@
+ScenarioFormatVersion: 0.0.0
+ScenarioName: sample_planning_control
+ScenarioDescription: sample_planning_control
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+VehicleId: default
+LocalMapPath: $HOME/autoware_map/sample-map-planning
+Evaluation:
+  UseCaseName: planning_control
+  UseCaseFormatVersion: 0.0.0
+  Hertz: 10
+  Conditions:
+    # 以下の3種類のDecisionに応じて評価を行う
+    #   StopDecision: 停止指示が出ていること評価
+    #   SlowDownDecision: 減速指示が出ていることの評価
+    #   NoneDecision: 停止・減速指示が出ていることの評価
+    # 各モジュールは、評価のための以下の要素を持ちうる
+    #   time_range: 評価対象となる時刻のレンジ (複数もちうる)
+    #   pos_x: map frameでの速度指示のターゲット位置x
+    #   pos_y: map frameでの速度指示のターゲット位置y
+    #   vel: 減速のターゲット速度 (SlowDownの時のみ)
+    StopDecision:
+      autonomous_emergency_braking: # module key
+        time_range: [{start: 0.0, end:1.0}, {start: 3.0, end:4.0}]
+      crosswalk: # module key
+        - time_range: [{start: 0.0, end:1.0}]
+          pos_x: 1.0-2.0
+          pos_y: 3.0-4.0
+        - time_range: [{start: 0.0, end:1.0}]
+          pos_x: 1.0-2.0
+          pos_y: 3.0-4.0
+    SlowDownDecision:
+      crosswalk: # module key
+        time_range: [{start: 0.0, end:1.0}, {start: 3.0, end:4.0}]
+        pos_x: 1.0-2.0
+        pos_y: 3.0-4.0
+        vel: 1.0-2.0
+    NoneDecision:
+      out_of_lane: # module key
+      crosswalk: # module key
+        time_range: [{start: 3.0, end:4.0}]
