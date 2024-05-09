@@ -23,7 +23,13 @@ import driving_log_replayer.launch_common as cmn
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
-|^/diagnostic/perception_online_evaluator/metrics\
+|^/sensing/lidar/concatenated/pointcloud$\
+|^/perception/object_recognition/detection/objects$\
+|^/perception/object_recognition/tracking/objects$\
+|^/perception/object_recognition/objects$\
+|^/perception/object_recognition/tracking/multi_object_tracker/debug/.*\
+|^/perception/object_recognition/detection/.*/debug/pipeline_latency_ms$\
+|^/diagnostic/perception_online_evaluator/.*\
 """
 
 

@@ -61,15 +61,15 @@ if TYPE_CHECKING:
     from perception_eval.common.dataset import FrameGroundTruth
     from perception_eval.evaluation.sensing.sensing_frame_result import SensingFrameResult
 
+TARGET_DIAG_NAME = "topic_state_monitor_obstacle_segmentation_pointcloud: perception_topic_status"
+
 
 class ObstacleSegmentationEvaluator(DLREvaluator):
     COUNT_FINISH_PUB_GOAL_POSE = 5
-    TARGET_DIAG_NAME = (
-        "topic_state_monitor_obstacle_segmentation_pointcloud: perception_topic_status"
-    )
 
     def __init__(self, name: str) -> None:
         super().__init__(name, ObstacleSegmentationScenario, ObstacleSegmentationResult)
+        self._result: ObstacleSegmentationResult
 
         self._scenario: ObstacleSegmentationScenario
         self.__s_cfg = self._scenario.Evaluation.SensingEvaluationConfig
@@ -140,7 +140,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             DiagnosticArray,
             "/diagnostics",
             self.diag_cb,
-            1,
+            100,
         )
 
         self.__pub_pcd_detection = self.create_publisher(PointCloud2, "pcd/detection", 1)
@@ -302,13 +302,13 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
                     self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
-        for diagnostic_status in msg.status:
-            diagnostic_status: DiagnosticStatus
-            if diagnostic_status.name == ObstacleSegmentationEvaluator.TARGET_DIAG_NAME:
-                if diagnostic_status.level >= DiagnosticStatus.ERROR:
-                    self.__topic_rate = False
-                else:
-                    self.__topic_rate = True
+        diag_status: DiagnosticStatus = msg.status[0]
+        if diag_status.name == TARGET_DIAG_NAME:
+            return
+        if diag_status.level >= DiagnosticStatus.ERROR:
+            self.__topic_rate = False
+        else:
+            self.__topic_rate = True
 
     def get_non_detection_area(
         self,

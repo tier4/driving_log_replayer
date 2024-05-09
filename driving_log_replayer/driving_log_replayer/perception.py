@@ -25,6 +25,7 @@ from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.criteria import PerceptionCriteria
 import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.perception_eval_conversions import summarize_pass_fail_result
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import number
@@ -114,11 +115,7 @@ class Perception(EvaluationItem):
         return {
             "PassFail": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
-                "Info": {
-                    "TP": len(ret_frame.pass_fail_result.tp_object_results),
-                    "FP": len(ret_frame.pass_fail_result.fp_object_results),
-                    "FN": len(ret_frame.pass_fail_result.fn_objects),
-                },
+                "Info": summarize_pass_fail_result(ret_frame.pass_fail_result),
             },
         }
 

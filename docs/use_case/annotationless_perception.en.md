@@ -5,6 +5,9 @@ Evaluate Autoware's recognition features (perception) without annotations using 
 Requires Autoware with the following PR features.
 <https://github.com/autowarefoundation/autoware.universe/pull/6556>
 
+Since it does not start by default, it is necessary to add use_perception_online_evaluator:=true to the launch argument.
+<https://github.com/autowarefoundation/autoware.universe/pull/6861>
+
 ## Evaluation method
 
 The annotationless_perception evaluation is executed by launching the `annotationless_perception.launch.py` file.
@@ -126,16 +129,16 @@ An image of its use is shown below.
 ##### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l annotationless_threshold_file=${previous_test_result.jsonl_path} -l 'annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
+dlr simulation run -p annotationless_perception -l use_perception_online_evaluator:=true -l annotationless_threshold_file:=${previous_test_result.jsonl_path} -l 'annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
 
 # example
-dlr simulation run -p annotationless_perception -l annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl -l 'annotationless_pass_range:={"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}'
+dlr simulation run -p annotationless_perception -l use_perception_online_evaluator:=true -l annotationless_threshold_file:=$HOME/out/annotationless/2024-0314-155106/sample/result.jsonl -l 'annotationless_pass_range:={"CAR":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"},"BUS":{"min":"0.0-1.1","max":"0.0-1.2","mean":"0.5-1.3"}}'
 ```
 
 ##### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides 'annotationless_threshold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides 'use_perception_online_evaluator=true,annotationless_threshold_file=${previous_test_result.jsonl_path},annotationless_pass_range:={"KEY1":VALUE1"[,"KEY2":"VALUE2"...]}'
 ```
 
 ##### Autoware Evaluator
@@ -153,6 +156,7 @@ simulations:
       runtime:
         type: simulator/standard1/amd64/medium
       parameters:
+        use_perception_online_evaluator: "true"
         annotationless_threshold_file: ${previous_test_result.jsonl_path}
         annotationless_pass_range:
           KEY1: VALUE1
@@ -197,13 +201,13 @@ The following parameters are set to `false`:
 #### driving-log-replayer-cli
 
 ```shell
-dlr simulation run -p annotationless_perception -l sensing:=true
+dlr simulation run -p annotationless_perception -l use_perception_online_evaluator:=true -l sensing:=true
 ```
 
 #### WebAutoCLI
 
 ```shell
-webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides sensing=true
+webauto ci scenario run --project-id ${project-id} --scenario-id ${scenario-id} --scenario-version-id ${scenario-version-id} --simulator-parameter-overrides 'use_perception_online_evaluator=true,sensing=true'
 ```
 
 #### Autoware Evaluator
@@ -221,6 +225,7 @@ simulations:
       runtime:
         type: simulator/standard1/amd64/medium
       parameters:
+        use_perception_online_evaluator: "true"
         sensing: "true"
 ```
 

@@ -38,13 +38,14 @@ def run(
     launch_args: list[str],
     update_method: str,
 ) -> None:
+    base_scenario_path = config.data_directory.joinpath("base_scenario.yaml")
     output_dir_by_time = create_output_dir_by_time(config.output_directory)
     for dataset_path in config.data_directory.glob("*"):
         # open scenario file and make ros2 launch command
         if not dataset_path.is_dir():
             continue
         output_case = output_dir_by_time.joinpath(dataset_path.name)
-        scenario_file = get_scenario_file(dataset_path)
+        scenario_file = get_scenario_file(dataset_path, base_scenario_path)
         if scenario_file is None:
             continue
         scenario = load_scenario(scenario_file)
@@ -53,6 +54,7 @@ def run(
         if scenario.Evaluation["UseCaseName"] in USE_T4_DATASET:
             launch_cmd = cmd_use_t4_dataset(
                 scenario_file,
+                dataset_path,
                 output_case,
                 config.autoware_path,
                 launch_arg_dict,
@@ -60,6 +62,7 @@ def run(
         else:
             launch_cmd = cmd_use_bag_only(
                 scenario_file,
+                dataset_path,
                 output_case,
                 config.autoware_path,
                 launch_arg_dict,
@@ -154,17 +157,21 @@ def create_output_dir_by_time(base_path: Path) -> Path:
     return output_dir_by_time
 
 
-def get_scenario_file(dataset_path: Path) -> Path | None:
+def get_scenario_file(dataset_path: Path, base_scenario_path: Path) -> Path | None:
     scenario_file_path = dataset_path.joinpath("scenario.yaml")
-    if not scenario_file_path.exists():
-        scenario_file_path = dataset_path.joinpath("scenario.yml")
-        if not scenario_file_path.exists():
-            termcolor.cprint(
-                scenario_file_path.as_posix() + " does not exist.",
-                "red",
-            )
-            return None
-    return scenario_file_path
+    if scenario_file_path.exists():
+        return scenario_file_path
+    scenario_file_path = dataset_path.joinpath("scenario.yml")
+    if scenario_file_path.exists():
+        return scenario_file_path
+    scenario_file_path = base_scenario_path
+    if scenario_file_path.exists():
+        return scenario_file_path
+    termcolor.cprint(
+        f"scenario file does not exist in {dataset_path.as_posix()} and no base_scenario",
+        "red",
+    )
+    return None
 
 
 def args_to_dict(launch_args: list[str]) -> dict[str, str]:
@@ -210,6 +217,7 @@ sleep 1
 
 def cmd_use_bag_only(
     scenario_path: Path,
+    dataset_path: Path,
     output_path: Path,
     autoware_path: Path,
     launch_args_dict: dict[str, str],
@@ -226,7 +234,7 @@ def cmd_use_bag_only(
         "vehicle_id": scenario.VehicleId,
         "scenario_path": scenario_path,
         "result_json_path": output_path.joinpath("result.json"),
-        "input_bag": scenario_path.parent.joinpath("input_bag"),
+        "input_bag": dataset_path.joinpath("input_bag"),
         "result_bag_path": output_path.joinpath("result_bag"),
     }
     launch_localization = scenario.Evaluation.get("LaunchLocalization")
@@ -239,11 +247,11 @@ def cmd_use_bag_only(
 
 def cmd_use_t4_dataset(
     scenario_path: Path,
+    dataset_path: Path,
     output_path: Path,
     autoware_path: Path,
     launch_args_dict: dict[str, str],
 ) -> str | None:
-    dataset_path = scenario_path.parent
     scenario: Scenario = load_scenario(scenario_path)
     launch_command_for_all_dataset = f"source {autoware_path.joinpath('install', 'setup.bash')}\n"
     t4_dataset_base_path = dataset_path.joinpath("t4_dataset")

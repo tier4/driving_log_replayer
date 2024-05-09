@@ -1,5 +1,25 @@
 # Release Notes
 
+## Version 1.15.3
+
+Bug Fix
+
+| Module                      | Feature    | Brief summary                 | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ---------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception`                | result     | add object label list         | [#432](https://github.com/tier4/driving_log_replayer/pull/432) | RT4-9830 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                       | cli        | support base scenario         | [#437](https://github.com/tier4/driving_log_replayer/pull/437) | RT1-6169 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                       | cli        | fix suppress error msg        | [#438](https://github.com/tier4/driving_log_replayer/pull/438) | RT1-6169 | [hayato-m126](https://github.com/hayato-m126) |
+| `annotationless_perception` | result bag | record pointcloud and objects | [#440](https://github.com/tier4/driving_log_replayer/pull/440) | -        | [kosuke55](https://github.com/kosuke55)       |
+
+## Version 1.15.2
+
+Bug Fix
+
+| Module                                                                         | Feature     | Brief summary                                             | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------------------------------------------ | ----------- | --------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `performance_diag`                                                             | diagnostics | Change processing to match the diagnostics data structure | [#433](https://github.com/tier4/driving_log_replayer/pull/433) | RT4-9826 | [hayato-m126](https://github.com/hayato-m126) |
+| `obstacle_segmentation, localization, yabloc, eagleye, ar_tag_based_localizer` | diagnostics | Change topic from diagnostics_agg to diagnostics          | [#434](https://github.com/tier4/driving_log_replayer/pull/434) | RT4-9826 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.15.1
 
 Bug Fix, Minor Tweak

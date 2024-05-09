@@ -19,6 +19,7 @@ from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
 import numpy as np
+from perception_eval.common import ObjectType
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.object import ObjectState
 from perception_eval.evaluation.result.object_result import DynamicObjectWithPerceptionResult
@@ -226,3 +227,32 @@ def pass_fail_result_to_ros_points_array(pass_fail: PassFailResult, header: Head
         )
         marker_results.markers.append(marker)
     return marker_results
+
+
+def summarize_pass_fail_result(pass_fail: PassFailResult) -> dict:
+    return {
+        "TP": f"{len(pass_fail.tp_object_results)} {result_label_list(pass_fail.tp_object_results)}",
+        "FP": f"{len(pass_fail.fp_object_results)} {result_label_list(pass_fail.fp_object_results)}",
+        "FN": f"{len(pass_fail.fn_objects)} {object_label_list(pass_fail.fn_objects)}",
+    }
+
+
+def result_label_list(results: list[DynamicObjectWithPerceptionResult]) -> str:
+    rtn_str = "["
+    for i, result in enumerate(results):
+        obj_type = result.estimated_object
+        if i > 0:
+            rtn_str += ", "
+        rtn_str += obj_type.semantic_label.name
+    rtn_str += "]"
+    return rtn_str
+
+
+def object_label_list(objects: list[ObjectType]) -> str:
+    rtn_str = "["
+    for i, obj in enumerate(objects):
+        if i > 0:
+            rtn_str += ", "
+        rtn_str += obj.semantic_label.name
+    rtn_str += "]"
+    return rtn_str

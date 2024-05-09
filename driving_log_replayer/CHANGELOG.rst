@@ -2,8 +2,22 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.15.3 (2024-05-09)
+-------------------
+* feat(annotationless_perception): record pointcloud and objects (`#440 <https://github.com/tier4/driving_log_replayer/issues/440>`_)
+* feat: add object label list (`#432 <https://github.com/tier4/driving_log_replayer/issues/432>`_)
+* feat: cli support base scenario (`#437 <https://github.com/tier4/driving_log_replayer/issues/437>`_)
+* Contributors: Hayato Mizushima, Kosuke Takeuchi
+
+1.15.2 (2024-05-02)
+-------------------
+* Merge branch 'main' into develop
+* fix: filter diagnostics (`#434 <https://github.com/tier4/driving_log_replayer/issues/434>`_)
+* feat: Change processing to match the diagnostics data structure (`#433 <https://github.com/tier4/driving_log_replayer/issues/433>`_)
+* Contributors: Hayato Mizushima
+
+1.15.1 (2024-05-02)
+-------------------
 * feat(obstacle_segmentation): diagnostics_agg to diagnostics (`#422 <https://github.com/tier4/driving_log_replayer/issues/422>`_)
 * feat: ndt diagnostics agg to diagnostics (`#421 <https://github.com/tier4/driving_log_replayer/issues/421>`_)
 * fix: localization default success value (`#420 <https://github.com/tier4/driving_log_replayer/issues/420>`_)
