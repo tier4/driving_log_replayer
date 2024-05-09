@@ -206,7 +206,7 @@ def clean_up_cmd() -> str:
     # sleep 1 sec
     # new line
     return """
-echo $?
+echo \"exit status: $?\"
 pgrep ros | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
 pgrep ros | awk \'{ print "kill -9 ", $1, " > /dev/null 2>&1" }\' | sh
 pgrep rviz | awk \'{ print "kill -9 $(pgrep -P ", $1, ") > /dev/null 2>&1" }\' | sh
