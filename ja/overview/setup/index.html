@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.20">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.21">
     
     
       
@@ -891,6 +891,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      profileで共通のシナリオファイルを使いまわす場合
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       マップフォルダ
@@ -1443,6 +1452,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      profileで共通のシナリオファイルを使いまわす場合
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       マップフォルダ
@@ -1534,7 +1552,7 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 <p>シミュレーションで使用するリソースを保存しておくフォルダ。</p>
 <p>テストケース毎に、シナリオと、bag、dataset を配置する。</p>
 <h3 id="t4_dataset">t4_datasetを使用しないユースケースのデータフォルダ構成<a class="headerlink" href="#t4_dataset" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code>driving_log_replayer_data<span class="w">             </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>data_directory
+<div class="highlight"><pre><span></span><code>profile_data_directory<span class="w">                </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>profile<span class="w"> </span>毎のdata_directory
 │
 ├──<span class="w"> </span>TC001<span class="w">                          </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>任意の名称をつけてよい
 │<span class="w">   </span>├──<span class="w"> </span>scenario.yaml<span class="w">             </span>//<span class="w"> </span>シナリオ
@@ -1546,7 +1564,7 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 ...
 </code></pre></div>
 <h3 id="t4_dataset_1">t4_datasetを使用するユースケースのデータフォルダ構成<a class="headerlink" href="#t4_dataset_1" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code>driving_log_replayer_data<span class="w">              </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>data_directory
+<div class="highlight"><pre><span></span><code>profile_data_directory<span class="w">                 </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>data_directory
 │
 ├──<span class="w"> </span>TC001<span class="w">                           </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>任意の名称をつけてよい
 │<span class="w">   </span>├──<span class="w"> </span>scenario.yaml<span class="w">              </span>//<span class="w"> </span>シナリオ
@@ -1564,6 +1582,25 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 │<span class="w">          </span>...
 │
 ├──<span class="w"> </span>TC002<span class="w">                           </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>S001と構成は同じ
+...
+</code></pre></div>
+<h3 id="profile">profileで共通のシナリオファイルを使いまわす場合<a class="headerlink" href="#profile" title="Permanent link">#</a></h3>
+<p>同じ地図、車両、センサー構成で取得したbagファイルを一つの共通シナリオで評価したい場合に使用する。
+annotationless_perceptionで閾値を決定するためにメトリクスを求めるだけのシミュレーションを実行したい場合に利用できる。</p>
+<p>例えば、以下の場合は、TC001はbase_scenario.yamlで評価されて、TC002はディレクトリにあるscenario.yamlが使われる</p>
+<div class="highlight"><pre><span></span><code>profile_data_directory<span class="w">                </span>//<span class="w"> </span>.driving_log_replayer.config<span class="w"> </span>の<span class="w"> </span>data_directory
+├──<span class="w"> </span>base_scenario.yaml<span class="w">　　　　　　 </span>//<span class="w"> </span>ディレクトリにシナリオファイルが存在しないときに使われる共通シナリオ
+│
+├──<span class="w"> </span>TC001<span class="w">                          </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>任意の名称をつけてよい
+│<span class="w">   </span>└──<span class="w"> </span>input_bag<span class="w">                 </span>//<span class="w"> </span>センサーデータが収録された入力用のbag
+│<span class="w">       </span>├──<span class="w"> </span>input_bag_0.db3<span class="w">       </span>//<span class="w"> </span>bagのバイナリファイル
+│<span class="w">       </span>└──<span class="w"> </span>metadata.yaml<span class="w">         </span>//<span class="w"> </span>bagのmetadata
+│
+├──<span class="w"> </span>TC002<span class="w">                          </span>//<span class="w"> </span>テストケースディレクトリ<span class="w"> </span>任意の名称をつけてよい
+│<span class="w">   </span>├──<span class="w"> </span>scenario.yaml<span class="w">             </span>//<span class="w"> </span>ディレクトリ内のシナリオファイルが使用される。base_scenario.yamlは無視される
+│<span class="w">   </span>└──<span class="w"> </span>input_bag<span class="w">                 </span>//<span class="w"> </span>センサーデータが収録された入力用のbag
+│<span class="w">       </span>├──<span class="w"> </span>input_bag_0.db3<span class="w">       </span>//<span class="w"> </span>bagのバイナリファイル
+│<span class="w">       </span>└──<span class="w"> </span>metadata.yaml<span class="w">         </span>//<span class="w"> </span>bagのmetadata
 ...
 </code></pre></div>
 <h3 id="_4">マップフォルダ<a class="headerlink" href="#_4" title="Permanent link">#</a></h3>
@@ -1676,7 +1713,7 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.dd8806f2.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.a7c05c9e.min.js"></script>
       
     
   </body>
