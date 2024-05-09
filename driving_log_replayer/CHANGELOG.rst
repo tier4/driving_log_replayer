@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.15.3 (2024-05-09)
+-------------------
 * feat(annotationless_perception): record pointcloud and objects (`#440 <https://github.com/tier4/driving_log_replayer/issues/440>`_)
 * feat: add object label list (`#432 <https://github.com/tier4/driving_log_replayer/issues/432>`_)
 * feat: cli support base scenario (`#437 <https://github.com/tier4/driving_log_replayer/issues/437>`_)
