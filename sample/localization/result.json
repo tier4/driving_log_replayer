@@ -9704,7 +9704,7 @@
           "Frame": "Success"
         },
         "Info": {
-          "LateralDistance": -1.6672762285452336e-05,
+          "LateralDistance": -1.6672762285452336e-5,
           "HorizontalDistance": 0.005444721082245777,
           "ExeTimeMs": 1.347000002861023,
           "IterationNum": 1
@@ -16172,7 +16172,7 @@
           "Frame": "Success"
         },
         "Info": {
-          "LateralDistance": -7.19806703273207e-05,
+          "LateralDistance": -7.19806703273207e-5,
           "HorizontalDistance": 0.0051637626682927585,
           "ExeTimeMs": 1.3580000400543213,
           "IterationNum": 1
@@ -17848,7 +17848,7 @@
           "Frame": "Success"
         },
         "Info": {
-          "LateralDistance": 6.614323501707986e-05,
+          "LateralDistance": 6.614323501707986e-5,
           "HorizontalDistance": 0.004438573799015595,
           "ExeTimeMs": 1.159000039100647,
           "IterationNum": 1
@@ -26248,7 +26248,7 @@
           "Frame": "Success"
         },
         "Info": {
-          "LateralDistance": 3.850959910778329e-05,
+          "LateralDistance": 3.850959910778329e-5,
           "HorizontalDistance": 0.004599439616782952,
           "ExeTimeMs": 1.319000005722046,
           "IterationNum": 1
@@ -26524,7 +26524,7 @@
           "Frame": "Success"
         },
         "Info": {
-          "LateralDistance": 4.718374111689627e-05,
+          "LateralDistance": 4.718374111689627e-5,
           "HorizontalDistance": 0.004430586614166653,
           "ExeTimeMs": 1.1030000448226929,
           "IterationNum": 1
