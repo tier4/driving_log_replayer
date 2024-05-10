@@ -19,6 +19,7 @@ from abc import ABC
 from abc import abstractmethod
 from copy import deepcopy
 from enum import Enum
+import math
 from numbers import Number
 from typing import TYPE_CHECKING
 
@@ -75,20 +76,21 @@ class CriteriaLevel(Enum):
 
     CUSTOM = None
 
-    def is_valid(self, score: Number) -> bool:
+    def is_valid(self, score: Number, is_greater: bool) -> bool:
         """
         Return whether the score satisfied the level.
 
         Args:
         ----
             score (Number): Calculated score.
+            is_greater (bool, optional): Whether the score is valid when it is greater than `self.value`. Defaults to True.
 
         Returns:
         -------
             bool: Whether the score satisfied the level.
 
         """
-        return score >= self.value
+        return score >= self.value if is_greater else score <= self.value
 
     @classmethod
     def from_str(cls, value: str) -> CriteriaLevel:
@@ -144,6 +146,9 @@ class CriteriaMethod(Enum):
 
     NUM_TP = "num_tp"
     LABEL = "label"
+    VELOCITY_X = "velocity_x"
+    VELOCITY_Y = "velocity_y"
+    VELOCITY_NORM = "velocity_norm"
     METRICS_SCORE = "metrics_score"
     METRICS_SCORE_MAPH = "metrics_score_maph"
 
@@ -197,7 +202,9 @@ class CriteriaMethodImpl(ABC):
         if self.has_objects(frame) is False:
             return None
         score: float = self.calculate_score(frame)
-        return SuccessFail.SUCCESS if self.level.is_valid(score) else SuccessFail.FAIL
+        return (
+            SuccessFail.SUCCESS if self.level.is_valid(score, self.is_greater) else SuccessFail.FAIL
+        )
 
     @staticmethod
     def has_objects(frame: PerceptionFrameResult) -> bool:
@@ -233,6 +240,18 @@ class CriteriaMethodImpl(ABC):
 
         """
 
+    @property
+    @abstractmethod
+    def is_greater(self) -> bool:
+        """
+        Whether the score is valid when it is greater than a threshold.
+
+        Returns
+        -------
+            bool: True means it is valid if score >= threshold .
+
+        """
+
 
 class NumTP(CriteriaMethodImpl):
     name = CriteriaMethod.NUM_TP
@@ -245,6 +264,10 @@ class NumTP(CriteriaMethodImpl):
         num_success: int = frame.pass_fail_result.get_num_success()
         num_objects: int = num_success + frame.pass_fail_result.get_num_fail()
         return 100.0 * num_success / num_objects if num_objects != 0 else 0.0
+
+    @property
+    def is_greater(self) -> bool:
+        return True
 
 
 class Label(CriteriaMethodImpl):
@@ -262,6 +285,76 @@ class Label(CriteriaMethodImpl):
         ]
 
         return 100.0 if len(is_label_corrects) == 0 else 100.0 * np.mean(is_label_corrects)
+
+    @property
+    def is_greater(self) -> bool:
+        return True
+
+
+class VelocityX(CriteriaMethodImpl):
+    name = CriteriaMethod.VELOCITY_X
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        errors = []
+        for result in frame.object_results:
+            if result.ground_truth_object is not None:
+                est_vx = result.estimated_object.state.velocity[0]
+                gt_vx = result.ground_truth_object.state.velocity[0]
+                err = abs(gt_vx - est_vx)
+                errors.append(err)
+        return 0.0 if len(errors) == 0 else np.mean(errors)
+
+    @property
+    def is_greater(self) -> bool:
+        return False
+
+
+class VelocityY(CriteriaMethodImpl):
+    name = CriteriaMethod.VELOCITY_Y
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        errors = []
+        for result in frame.object_results:
+            if result.ground_truth_object is not None:
+                est_vy = result.estimated_object.state.velocity[1]
+                gt_vy = result.ground_truth_object.state.velocity[1]
+                err = abs(gt_vy - est_vy)
+                errors.append(err)
+        return 0.0 if len(errors) == 0 else np.mean(errors)
+
+    @property
+    def is_greater(self) -> bool:
+        return False
+
+
+class VelocityNorm(CriteriaMethodImpl):
+    name = CriteriaMethod.VELOCITY_NORM
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        errors = []
+        for result in frame.object_results:
+            if result.ground_truth_object is not None:
+                est_norm = math.hypot(result.estimated_object.state.velocity[:2])
+                gt_norm = math.hypot(result.ground_truth_object.state.velocity[:2])
+                err = abs(gt_norm - est_norm)
+                errors.append(err)
+        return 0.0 if len(errors) == 0 else np.mean(errors)
+
+    @property
+    def is_greater(self) -> bool:
+        return False
 
 
 class MetricsScore(CriteriaMethodImpl):
@@ -288,6 +381,10 @@ class MetricsScore(CriteriaMethodImpl):
 
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
 
+    @property
+    def is_greater(self) -> bool:
+        return True
+
 
 class MetricsScoreMAPH(CriteriaMethodImpl):
     name = CriteriaMethod.METRICS_SCORE_MAPH
@@ -305,6 +402,10 @@ class MetricsScoreMAPH(CriteriaMethodImpl):
         ]
 
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
+
+    @property
+    def is_greater(self) -> bool:
+        return True
 
 
 class CriteriaFilter:
@@ -354,7 +455,7 @@ class CriteriaFilter:
             filtered_frame.target_labels,
             max_distance_list=max_distance_list,
             min_distance_list=min_distance_list,
-            ego2map=filtered_frame.frame_ground_truth.ego2map,
+            transforms=filtered_frame.frame_ground_truth.transforms,
         )
         frame_ground_truth = filtered_frame.frame_ground_truth
 
@@ -364,7 +465,7 @@ class CriteriaFilter:
             target_labels=frame.target_labels,
             max_distance_list=max_distance_list,
             min_distance_list=min_distance_list,
-            ego2map=frame_ground_truth.ego2map,
+            transforms=filtered_frame.frame_ground_truth.transforms,
         )
 
         filtered_frame.object_results = object_results
@@ -409,6 +510,12 @@ class PerceptionCriteria:
                 self.methods.append(NumTP(level))
             elif method == CriteriaMethod.LABEL:
                 self.methods.append(Label(level))
+            elif method == CriteriaMethod.VELOCITY_X:
+                self.methods.append(VelocityX(level))
+            elif method == CriteriaMethod.VELOCITY_Y:
+                self.methods.append(VelocityY(level))
+            elif method == CriteriaMethod.VELOCITY_NORM:
+                self.methods.append(VelocityNorm(level))
             elif method == CriteriaMethod.METRICS_SCORE:
                 self.methods.append(MetricsScore(level))
             elif method == CriteriaMethod.METRICS_SCORE_MAPH:
