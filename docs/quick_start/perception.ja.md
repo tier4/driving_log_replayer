@@ -32,7 +32,7 @@
 1. シミュレーションの実行
 
    ```shell
-   dlr simulation run -p perception  -l "play_rate:=0.5"
+   dlr simulation run -p perception  -l play_rate:=0.5
    ```
 
    ![perception](images/perception.png)
@@ -43,8 +43,8 @@
    PC の性能や CPU の負荷状況によってテスト回数が若干異なることがありますが、多少の差は問題ありません。
 
    ```shell
-    test case 1 / 1 : use case: sample
-    --------------------------------------------------
-    TestResult: Passed
-    Passed: 682 / 682 -> 100.00%
+   scenario: sample_dataset
+   --------------------------------------------------
+   TestResult: Failed
+   Passed: criteria0 (Success): 215 / 215 -> 100.00%, Failed: criteria1 (Fail): 0 / 8 -> 0.00%
    ```

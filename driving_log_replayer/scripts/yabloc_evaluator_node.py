@@ -22,20 +22,26 @@ from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.yabloc import YabLocResult
 from driving_log_replayer.yabloc import YablocScenario
 
+TARGET_DIAG_NAME = "yabloc_monitor: yabloc_status"
+
 
 class YabLocEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, YablocScenario, YabLocResult)
+        self._result: YabLocResult
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
             "/diagnostics",
             self.diagnostics_cb,
-            1,
+            100,
         )
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
-        self._result.set_frame(msg)
+        diag_status = msg.status[0]
+        if diag_status.name != TARGET_DIAG_NAME:
+            return
+        self._result.set_frame(diag_status)
         self._result_writer.write_result(self._result)
 
 

@@ -75,14 +75,43 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ### 正常
 
-perception_eval の評価関数を実行して以下の条件を満たすとき
+シナリオのCriterionタグのCriteriaを満たすこと。
 
-1. frame_result.pass_fail_result に object が最低 1 つ入っている (`tp_object_results != [] and fp_object_results != [] and fn_objects != []`)
-2. 評価失敗のオブジェクトが 0 個 (`frame_result.pass_fail_result.get_fail_object_num() == 0`)
+sampleのscenario.yamlは以下のようなっており、
+
+```yaml
+Criterion:
+  - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+    Filter:
+      Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+  - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+    Filter:
+      Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+```
+
+- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、0.0-50.0[m]の距離にあるobjectで、tpのobject数がhard(75.0%)以上の場合。ResultのFrameがSuccessになる。
+- `/perception/object_recognition/{detection, tracking}/objects`のsubscribe 1回に対して、50.0-1.7976931348623157e+308[m]の距離にあるobjectで、tpのobject数がeasy(25.0%)以上の場合。ResultのFrameがSuccessになる。
+- また、`PassRate >= 正常数 / 全受信数 * 100`の条件を満たすとき、ResultのTotalがSuccessになる。
 
 ### 異常
 
 正常の条件を満たさない場合
+
+### 評価スキップ
+
+以下の場合に、FrameSkipに1足す処理のみ行う。
+FrameSkipは評価をskipした回数のカウンタ。
+
+- 受信したobjectのヘッダー時刻の前後75msec以内に真値が存在しない場合
+- 受信したobjectのfootprint.pointsの数が1か2の場合(この条件はperception_evalが更新されたらなくなる予定)
+
+### 評価スキップNoGTNoObject
+
+- フィルタ条件によって真値と認識結果がフィルタされ評価されなかった場合(評価結果PassFailのオブジェクトの中身が空の場合)
 
 ## 評価ノードが使用する Topic 名とデータ型
 
@@ -215,15 +244,33 @@ perception では、シナリオに指定した条件で perception_eval が評�
 {
   "Frame": {
     "FrameName": "評価に使用したt4_datasetのフレーム番号",
-    "FrameSkip": "objectの評価を依頼したがdatasetに75msec以内の真値がなく評価を飛ばされた回数",
-    "PassFail": {
-      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
-      "Info": {
-        "TP": "TPと判定された数",
-        "FP": "FPと判定された数",
-        "FN": "FNと判定された数"
+    "FrameSkip": "評価が飛ばされた回数の合計。発生する条件は評価結果の項目を参照",
+    "criteria0": {
+      // criteria0の結果、真値と認識結果が存在する場合
+      "PassFail": {
+        "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
+        "Info": {
+          "TP": "フィルタ済みobjectの中でTPと判定された数",
+          "FP": "フィルタ済みobjectの中でFPと判定された数",
+          "FN": "フィルタ済みobjectの中でFNと判定された数"
+        }
       }
+    },
+    "criteria1": {
+      // criteria1の結果、真値と認識結果が存在しない場合
+      "NoGTNoObj": "真値と認識結果がフィルタされて評価できなかった回数"
     }
+  }
+}
+```
+
+警告のフォーマット
+
+```json
+{
+  "Frame": {
+    "Warning": "警告のメッセージ",
+    "FrameSkip": "評価が飛ばされた回数の合計。objectの評価を依頼したがdatasetに75msec以内の真値がなく場合、または、footprint.pointsの数が1か2の場合に発生する"
   }
 }
 ```
@@ -298,6 +345,9 @@ evaluation_taskがdetectionまたはtrackingの場合
           "label1": "label1のAPH率(Plane Distance)"
         }
       },
+      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#tracking"},
+      "MOTA": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#tracking"},
+      "IDswitch": {"https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/metrics.md#id-switch"},
       "Error": {
         "ALL": {
           "average": {

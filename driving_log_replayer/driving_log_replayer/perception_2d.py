@@ -13,10 +13,10 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+from typing import Literal
 
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
-from typing_extensions import Literal
 
 from driving_log_replayer.criteria import PerceptionCriteria
 from driving_log_replayer.result import EvaluationItem
@@ -48,6 +48,8 @@ class Perception2DScenario(Scenario):
 
 @dataclass
 class Perception(EvaluationItem):
+    success: bool = True
+
     def __post_init__(self) -> None:
         self.condition: Conditions
         self.criteria: PerceptionCriteria = PerceptionCriteria(
@@ -58,25 +60,23 @@ class Perception(EvaluationItem):
     def set_frame(
         self,
         frame: PerceptionFrameResult,
-        skip: int,
-        map_to_baselink: dict,
     ) -> dict:
-        self.total += 1
         frame_success = "Fail"
-        result = self.criteria.get_result(frame)
+        result, _ = self.criteria.get_result(frame)
+
+        if result is None:
+            self.no_gt_no_obj += 1
+            return {"NoGTNoObj": self.no_gt_no_obj}
 
         if result.is_success():
             self.passed += 1
             frame_success = "Success"
 
+        self.total += 1
         self.success = self.rate() >= self.condition.PassRate
         self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
 
         return {
-            "CameraType": self.name,
-            "Ego": {"TransformStamped": map_to_baselink},
-            "FrameName": frame.frame_name,
-            "FrameSkip": skip,
             "PassFail": {
                 "Result": {
                     "Total": self.success_str(),
@@ -94,7 +94,7 @@ class Perception(EvaluationItem):
 class Perception2DResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__cameras: dict[Perception] = {}
+        self.__cameras: dict[str, Perception] = {}
         for camera_type in condition.TargetCameras:
             self.__cameras[camera_type] = Perception(name=camera_type, condition=condition)
 
@@ -116,11 +116,13 @@ class Perception2DResult(ResultBase):
         map_to_baselink: dict,
         camera_type: str,
     ) -> None:
-        self._frame = self.__cameras[camera_type].set_frame(
-            frame,
-            skip,
-            map_to_baselink,
-        )
+        self._frame = {
+            "CameraType": camera_type,
+            "Ego": {"TransformStamped": map_to_baselink},
+            "FrameName": frame.frame_name,
+            "FrameSkip": skip,
+        }
+        self._frame |= self.__cameras[camera_type].set_frame(frame)
         self.update()
 
     def set_final_metrics(self, final_metrics: dict) -> None:

@@ -50,6 +50,7 @@ class PerceptionEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, PerceptionScenario, PerceptionResult)
         self._scenario: PerceptionScenario
+        self._result: PerceptionResult
 
         self.__p_cfg = self._scenario.Evaluation.PerceptionEvaluationConfig
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
@@ -159,9 +160,16 @@ class PerceptionEvaluator(DLREvaluator):
         self,
         unix_time: int,
         objects: list[DetectedObject] | list[TrackedObject],
-    ) -> list[DynamicObject]:
+    ) -> list[DynamicObject] | str:
+        # return str(error_msg) when footprint points are invalid
         estimated_objects: list[DynamicObject] = []
         for perception_object in objects:
+            # check footprint length
+            if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
+                return (
+                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}"
+                )
+
             most_probable_classification = DLREvaluator.get_most_probable_classification(
                 perception_object.classification,
             )
@@ -172,13 +180,6 @@ class PerceptionEvaluator(DLREvaluator):
             uuid = None
             if isinstance(perception_object, TrackedObject):
                 uuid = eval_conversions.uuid_from_ros_msg(perception_object.object_id.uuid)
-
-            # check footprint length
-            if 1 <= len(perception_object.shape.footprint.points) < 3:  # noqa
-                self.get_logger().error(
-                    f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}",
-                )
-                rclpy.shutdown()
 
             shape_type = ShapeType.BOUNDING_BOX
             shape_type_num = perception_object.shape.type
@@ -218,16 +219,31 @@ class PerceptionEvaluator(DLREvaluator):
         map_to_baselink = self.lookup_transform(msg.header.stamp)
         # DetectedObjectとTrackedObjectで違う型ではあるが、estimated_objectを作る上で使用している項目は共通で保持しているので同じ関数で処理できる
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
+        # Tracking objectはtimestampがズレていることがあるのでGTの補間を行う
+        if isinstance(msg, TrackedObjects):
+            interpolation: bool = True
+        else:
+            interpolation = False
         # 現frameに対応するGround truthを取得
-        ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
+        ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(
+            unix_time,
+            interpolate_ground_truth=interpolation,
+        )
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
             return
 
-        estimated_objects: list[DynamicObject] = self.list_dynamic_object_from_ros_msg(
+        estimated_objects: list[DynamicObject] | str = self.list_dynamic_object_from_ros_msg(
             unix_time,
             msg.objects,
         )
+        if isinstance(estimated_objects, str):
+            # estimated_objects is error_msg
+            self.__skip_counter += 1
+            self.get_logger().error(estimated_objects)
+            self._result.set_warn_frame(estimated_objects, self.__skip_counter)
+            self._result_writer.write_result(self._result)
+            return
         ros_critical_ground_truth_objects = ground_truth_now_frame.objects
         # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
         # 動的に変える条件をかけるようになるまでは、初期化時に一括設定

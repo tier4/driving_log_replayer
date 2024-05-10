@@ -26,8 +26,7 @@ import driving_log_replayer.launch_common as cmn
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
 |^/perception/obstacle_segmentation/pointcloud$\
-|^/sensing/lidar/concatenated/pointcloud$\
-|^/diagnostics_agg$\
+|^/diagnostics$\
 |^/sensing/lidar/.*/blockage_diag/debug/blockage_mask_image$\
 |^/driving_log_replayer/.*\
 """

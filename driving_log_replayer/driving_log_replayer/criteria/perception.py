@@ -17,12 +17,16 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
+from copy import deepcopy
 from enum import Enum
 from numbers import Number
 from typing import TYPE_CHECKING
 
+import numpy as np
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
+from perception_eval.evaluation.matching.objects_filter import filter_object_results
+from perception_eval.evaluation.matching.objects_filter import filter_objects
 
 if TYPE_CHECKING:
     from perception_eval.evaluation import PerceptionFrameResult
@@ -44,6 +48,7 @@ class SuccessFail(Enum):
         Returns
         -------
             bool: Success or fail.
+
         """
         return self == SuccessFail.SUCCESS
 
@@ -81,6 +86,7 @@ class CriteriaLevel(Enum):
         Returns:
         -------
             bool: Whether the score satisfied the level.
+
         """
         return score >= self.value
 
@@ -96,6 +102,7 @@ class CriteriaLevel(Enum):
         Returns:
         -------
             CriteriaLevel: _description_
+
         """
         name: str = value.upper()
         assert name != "CUSTOM", "If you want to use custom level, use from_number."
@@ -114,6 +121,7 @@ class CriteriaLevel(Enum):
         Returns:
         -------
             CriteriaLevel: `CriteriaLevel.CUSTOM` with custom value.
+
         """
         min_range = 0.0
         max_range = 100.0
@@ -129,11 +137,13 @@ class CriteriaMethod(Enum):
     Enum object represents methods of criteria .
 
     - NUM_TP: Number of TP (or TN).
+    - LABEL: Whether label is correct or not.
     - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
     - METRICS_SCORE_MAPH: mAPH score.
     """
 
     NUM_TP = "num_tp"
+    LABEL = "label"
     METRICS_SCORE = "metrics_score"
     METRICS_SCORE_MAPH = "metrics_score_maph"
 
@@ -149,6 +159,7 @@ class CriteriaMethod(Enum):
         Returns:
         -------
             CriteriaMode: `CriteriaMode` instance.
+
         """
         name: str = value.upper()
         assert name in cls.__members__, "value must be NUM_TP, METRICS_SCORE, or METRICS_SCORE_MAPH"
@@ -162,13 +173,14 @@ class CriteriaMethodImpl(ABC):
     Args:
     ----
         level (CriteriaLevel): Level of criteria.
+
     """
 
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__()
         self.level: CriteriaLevel = level
 
-    def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
+    def get_result(self, frame: PerceptionFrameResult) -> SuccessFail | None:
         """
         Return `SuccessFail` instance from the frame result.
 
@@ -179,10 +191,11 @@ class CriteriaMethodImpl(ABC):
         Returns:
         -------
             SuccessFail: Success or fail.
+
         """
-        # no ground truth and no result is considered as success
+        # No ground truth and No result is considered as Not Available, return None.
         if self.has_objects(frame) is False:
-            return SuccessFail.SUCCESS
+            return None
         score: float = self.calculate_score(frame)
         return SuccessFail.SUCCESS if self.level.is_valid(score) else SuccessFail.FAIL
 
@@ -198,6 +211,7 @@ class CriteriaMethodImpl(ABC):
         Returns:
         -------
             bool: Whether the frame result has objects is.
+
         """
         num_success: int = frame.pass_fail_result.get_num_success()
         num_fail: int = frame.pass_fail_result.get_num_fail()
@@ -216,6 +230,7 @@ class CriteriaMethodImpl(ABC):
         Returns:
         -------
             float: Calculated score.
+
         """
 
 
@@ -230,6 +245,23 @@ class NumTP(CriteriaMethodImpl):
         num_success: int = frame.pass_fail_result.get_num_success()
         num_objects: int = num_success + frame.pass_fail_result.get_num_fail()
         return 100.0 * num_success / num_objects if num_objects != 0 else 0.0
+
+
+class Label(CriteriaMethodImpl):
+    name = CriteriaMethod.LABEL
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        is_label_corrects = [
+            result.is_label_correct
+            for result in frame.object_results
+            if result.ground_truth_object is not None
+        ]
+
+        return 100.0 if len(is_label_corrects) == 0 else 100.0 * np.mean(is_label_corrects)
 
 
 class MetricsScore(CriteriaMethodImpl):
@@ -275,6 +307,73 @@ class MetricsScoreMAPH(CriteriaMethodImpl):
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
 
 
+class CriteriaFilter:
+    def __init__(self, distance_range: tuple(Number, Number) = None) -> None:
+        self.distance_range = distance_range
+
+    def is_all_none(self) -> bool:
+        """
+        Return True if all filter params are None.
+
+        Returns
+        -------
+            bool: True if all filter params are None.
+
+        """
+        return self.distance_range is None
+
+    def filter_frame_result(self, frame: PerceptionFrameResult) -> PerceptionFrameResult:
+        """
+        Filter PerceptionFrameResult by distance range.
+
+        If all filter params are None, do nothing and return original frame result.
+
+        Args:
+        ----
+            frame (PerceptionFrameResult): Frame result.
+
+        Returns:
+        -------
+            PerceptionFrameResult: Filtered result.
+
+        """
+        if self.is_all_none():
+            return frame
+
+        filtered_frame = deepcopy(frame)
+
+        if self.distance_range is not None:
+            min_distance_list = [self.distance_range[0]] * len(filtered_frame.target_labels)
+            max_distance_list = [self.distance_range[1]] * len(filtered_frame.target_labels)
+        else:
+            min_distance_list = None
+            max_distance_list = None
+
+        object_results = filter_object_results(
+            filtered_frame.object_results,
+            filtered_frame.target_labels,
+            max_distance_list=max_distance_list,
+            min_distance_list=min_distance_list,
+            ego2map=filtered_frame.frame_ground_truth.ego2map,
+        )
+        frame_ground_truth = filtered_frame.frame_ground_truth
+
+        frame_ground_truth.objects = filter_objects(
+            frame_ground_truth.objects,
+            is_gt=True,
+            target_labels=frame.target_labels,
+            max_distance_list=max_distance_list,
+            min_distance_list=min_distance_list,
+            ego2map=frame_ground_truth.ego2map,
+        )
+
+        filtered_frame.object_results = object_results
+        filtered_frame.frame_ground_truth = frame_ground_truth
+        filtered_frame.evaluate_frame(frame_ground_truth.objects)
+
+        return filtered_frame
+
+
 class PerceptionCriteria:
     """
     Criteria interface for perception evaluation.
@@ -285,18 +384,17 @@ class PerceptionCriteria:
             If None, `CriteriaMethod.NUM_TP` is used. Defaults to None.
         levels (str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel]): Criteria level instance or name.
             If None, `CriteriaLevel.Easy` is used. Defaults to None.
+        distance_range (tuple[Number, Number] | None): Range of distance to filter frame result. Defaults to None.
+
     """
 
     def __init__(
         self,
         methods: str | list[str] | CriteriaMethod | list[CriteriaMethod] | None = None,
-        levels: str
-        | list[str]
-        | Number
-        | list[Number]
-        | CriteriaLevel
-        | list[CriteriaLevel]
-        | None = None,
+        levels: (
+            str | list[str] | Number | list[Number] | CriteriaLevel | list[CriteriaLevel] | None
+        ) = None,
+        distance_range: tuple[Number, Number] | None = None,
     ) -> None:
         methods = [CriteriaMethod.NUM_TP] if methods is None else self.load_methods(methods)
         levels = [CriteriaLevel.EASY] if levels is None else self.load_levels(levels)
@@ -306,9 +404,11 @@ class PerceptionCriteria:
         ), f"Number of CriteriaMethod and CriteriaLevel must be same. Current methods: {methods}, levels: {levels}"
 
         self.methods = []
-        for method, level in zip(methods, levels):
+        for method, level in zip(methods, levels, strict=True):
             if method == CriteriaMethod.NUM_TP:
                 self.methods.append(NumTP(level))
+            elif method == CriteriaMethod.LABEL:
+                self.methods.append(Label(level))
             elif method == CriteriaMethod.METRICS_SCORE:
                 self.methods.append(MetricsScore(level))
             elif method == CriteriaMethod.METRICS_SCORE_MAPH:
@@ -316,6 +416,8 @@ class PerceptionCriteria:
             else:
                 error_msg: str = f"Unsupported method: {method}"
                 raise NotImplementedError(error_msg)
+
+        self.criteria_filter = CriteriaFilter(distance_range)
 
     @staticmethod
     def load_methods(
@@ -331,6 +433,7 @@ class PerceptionCriteria:
         Returns:
         -------
             list[CriteriaMethod]: Instance.
+
         """
         if isinstance(methods_input, str):
             loaded_methods = [CriteriaMethod.from_str(methods_input)]
@@ -360,6 +463,7 @@ class PerceptionCriteria:
         Returns:
         -------
             list[CriteriaLevel]: Instance.
+
         """
         if isinstance(levels_input, str):
             levels_output = [CriteriaLevel.from_str(levels_input)]
@@ -378,7 +482,10 @@ class PerceptionCriteria:
             assert isinstance(level, CriteriaLevel), f"Invalid type of level: {type(level)}"
         return levels_output
 
-    def get_result(self, frame: PerceptionFrameResult) -> SuccessFail:
+    def get_result(
+        self,
+        frame: PerceptionFrameResult,
+    ) -> tuple[SuccessFail | None, PerceptionFrameResult]:
         """
         Return Success/Fail result from `PerceptionFrameResult`.
 
@@ -388,9 +495,16 @@ class PerceptionCriteria:
 
         Returns:
         -------
-            SuccessFail: Success/Fail result.
+            tuple[SuccessFail, PerceptionFrameResult]: Success/Fail result and frame result.
+
         """
+        ret_frame = self.criteria_filter.filter_frame_result(frame)
+
         result: SuccessFail = SuccessFail.SUCCESS
+
         for method in self.methods:
-            result &= method.get_result(frame)
-        return result
+            method_result = method.get_result(ret_frame)
+            if method_result is None:
+                return None, ret_frame
+            result &= method.get_result(ret_frame)
+        return result, ret_frame

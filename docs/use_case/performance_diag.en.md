@@ -13,8 +13,8 @@ The diagnostics evaluation is executed by launching the `performance_diag.launch
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`performance_diag_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command.
-2. Autoware receives sensor data output from the input rosbag and outputs the`/diagnostics_agg` topic.
-3. The evaluation node subscribes to `/diagnostics_agg` topic, and evaluates data. The result is dumped into a file.
+2. Autoware receives sensor data output from the input rosbag and outputs the`/diagnostics` topic.
+3. The evaluation node subscribes to `/diagnostics` topic, and evaluates data. The result is dumped into a file.
 4. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
 ### visibility evaluation
@@ -22,14 +22,14 @@ Launching the file executes the following steps:
 The evaluation process confirms that more than a specified number of ERRORs for limited visibility are generated for rosbag input data obtained under rainy conditions (naturally or artificially generated).
 Also, using data obtained during sunny weather, it is confirmed that ERRORs are never generated.
 
-The `status.name` in `/diagnostics_agg` corresponding to `/autoware/sensing/lidar/performance_monitoring/visibility/\*` is used for judgment.
+The `status.name` in `/diagnostics` corresponding to `dual_return_filter: /sensing/lidar/.*: visibility_validation` is used for judgment.
 
 ### blockage evaluation
 
 For blockage evaluation, acquire data with LiDAR intentionally covered with a material that will not pass the laser beam (for example box). The evaluation confirms that ERROR for blockage is output more than a certain number of times for the considered situation.
 The node will also confirm that no ERROR is generated for not covered LiDAR.
 
-The `status.name` in `/diagnostics_agg` corresponding to `/autoware/sensing/lidar/performance_monitoring/blockage/*` is used for judgment.
+The `status.name` in `/diagnostics` corresponding to `blockage_return_diag: /sensing/lidar/.*: blockage_validation` is used for judgment.
 
 ## Evaluation Result
 
@@ -64,7 +64,7 @@ Subscribed topics:
 | Topic name                                   | Data type                             |
 | -------------------------------------------- | ------------------------------------- |
 | /perception/obstacle_segmentation/pointcloud | sensor_msgs::msg::PointCloud2         |
-| /diagnostics_agg                             | diagnostic_msgs::msg::DiagnosticArray |
+| /diagnostics                                 | diagnostic_msgs::msg::DiagnosticArray |
 | /tf                                          | tf2_msgs/msg/TFMessage                |
 
 Published topics:

@@ -1,6 +1,157 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package driving_log_replayer_msgs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package driving_log_replayer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1.15.3 (2024-05-09)
+-------------------
+* feat(annotationless_perception): record pointcloud and objects (`#440 <https://github.com/tier4/driving_log_replayer/issues/440>`_)
+* feat: add object label list (`#432 <https://github.com/tier4/driving_log_replayer/issues/432>`_)
+* feat: cli support base scenario (`#437 <https://github.com/tier4/driving_log_replayer/issues/437>`_)
+* Contributors: Hayato Mizushima, Kosuke Takeuchi
+
+1.15.2 (2024-05-02)
+-------------------
+* Merge branch 'main' into develop
+* fix: filter diagnostics (`#434 <https://github.com/tier4/driving_log_replayer/issues/434>`_)
+* feat: Change processing to match the diagnostics data structure (`#433 <https://github.com/tier4/driving_log_replayer/issues/433>`_)
+* Contributors: Hayato Mizushima
+
+1.15.1 (2024-05-02)
+-------------------
+* feat(obstacle_segmentation): diagnostics_agg to diagnostics (`#422 <https://github.com/tier4/driving_log_replayer/issues/422>`_)
+* feat: ndt diagnostics agg to diagnostics (`#421 <https://github.com/tier4/driving_log_replayer/issues/421>`_)
+* fix: localization default success value (`#420 <https://github.com/tier4/driving_log_replayer/issues/420>`_)
+* fix: obstacle segmentation default success value is False (`#419 <https://github.com/tier4/driving_log_replayer/issues/419>`_)
+* Contributors: Hayato Mizushima
+
+1.15.0 (2024-04-17)
+-------------------
+* feat: `#416 <https://github.com/tier4/driving_log_replayer/issues/416>`_ diagnocstics_agg to diagnoctics (`#417 <https://github.com/tier4/driving_log_replayer/issues/417>`_)
+* fix: default success is False (`#415 <https://github.com/tier4/driving_log_replayer/issues/415>`_)
+* Contributors: Hayato Mizushima
+
+1.14.10 (2024-04-15)
+--------------------
+* fix: set success True (`#412 <https://github.com/tier4/driving_log_replayer/issues/412>`_)
+* Contributors: Hayato Mizushima
+
+1.14.9 (2024-04-12)
+-------------------
+* fix: colcon test error (`#408 <https://github.com/tier4/driving_log_replayer/issues/408>`_)
+* feat: do not count no gt no object (`#409 <https://github.com/tier4/driving_log_replayer/issues/409>`_)
+* Contributors: Hayato Mizushima
+
+1.14.8 (2024-04-09)
+-------------------
+* fix: annotationless_perception unit test (`#402 <https://github.com/tier4/driving_log_replayer/issues/402>`_)
+* Contributors: Hayato Mizushima
+
+1.14.7 (2024-04-05)
+-------------------
+* fix: annotationless_perception min metrics (`#400 <https://github.com/tier4/driving_log_replayer/issues/400>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Kosuke Takeuchi
+
+1.14.6 (2024-04-04)
+-------------------
+* feat: `#396 <https://github.com/tier4/driving_log_replayer/issues/396>`_ drop topic footprint 1or2 (`#397 <https://github.com/tier4/driving_log_replayer/issues/397>`_)
+* Contributors: Hayato Mizushima
+
+1.14.5 (2024-04-02)
+-------------------
+* feat: add support of label metrics (`#386 <https://github.com/tier4/driving_log_replayer/issues/386>`_)
+* Contributors: Kotaro Uetake
+
+1.14.4 (2024-04-02)
+-------------------
+* feat: change failure details message (`#393 <https://github.com/tier4/driving_log_replayer/issues/393>`_)
+* feat: #391 update cli run option (`#392 <https://github.com/tier4/driving_log_replayer/issues/392>`_)
+* feat: set Result False when run time error occurs (`#387 <https://github.com/tier4/driving_log_replayer/issues/387>`_)
+* revert: `#319 <https://github.com/tier4/driving_log_replayer/issues/319>`_ bag controller (`#390 <https://github.com/tier4/driving_log_replayer/issues/390>`_)
+* Contributors: Hayato Mizushima, Kosuke Takeuchi
+
+1.14.3 (2024-03-30)
+-------------------
+* feat: cli update scenario condition
+* Contributors: Hayato Mizushima
+
+1.14.2 (2024-03-25)
+-------------------
+* feat(annotationless_perception): output details of fail items (`#379 <https://github.com/tier4/driving_log_replayer/issues/379>`_)
+* Contributors: Kosuke Takeuchi
+
+1.14.1 (2024-03-21)
+-------------------
+* feat: `#376 <https://github.com/tier4/driving_log_replayer/issues/376>`_ annotationless support perception class (`#377 <https://github.com/tier4/driving_log_replayer/issues/377>`_)
+  Co-authored-by: Kosuke Takeuchi <kosuke.tnp@gmail.com>
+* Contributors: Hayato Mizushima
+
+1.14.0 (2024-03-07)
+-------------------
+* feat: `#370 <https://github.com/tier4/driving_log_replayer/issues/370>`_ annotation less perception evaluator (`#373 <https://github.com/tier4/driving_log_replayer/issues/373>`_)
+* Contributors: Hayato Mizushima
+
+1.13.4 (2024-02-28)
+-------------------
+* feat: filter only lanelets close to ego (`#366 <https://github.com/tier4/driving_log_replayer/issues/366>`_)
+* chore: Delete confusing comments (`#371 <https://github.com/tier4/driving_log_replayer/issues/371>`_)
+* Contributors: Hayato Mizushima
+
+1.13.3 (2024-02-28)
+-------------------
+* fix: add handling of cases where non_detection is disabled (`#368 <https://github.com/tier4/driving_log_replayer/issues/368>`_)
+* docs: update obstacle_segmentation document (`#367 <https://github.com/tier4/driving_log_replayer/issues/36y>`_)
+* chore: unit test (`#364 <https://github.com/tier4/driving_log_replayer/issues/364>`_)
+* Contributors: Hayato Mizushima
+
+1.13.2 (2024-02-21)
+-------------------
+* feat: drop concatenated/pointcloud (`#362 <https://github.com/tier4/driving_log_replayer/issues/362>`_)
+* chore: add unit test (`#361 <https://github.com/tier4/driving_log_replayer/issues/361>`_)
+* Contributors: Hayato Mizushima
+
+1.13.1 (2024-02-16)
+-------------------
+* feat: rye (`#359 <https://github.com/tier4/driving_log_replayer/issues/359>`_)
+* Contributors: Hayato Mizushima
+
+1.13.0 (2024-02-15)
+-------------------
+* feat: `#348 <https://github.com/tier4/driving_log_replayer/issues/348>`_ use lanelet2 extension python (`#356 <https://github.com/tier4/driving_log_replayer/issues/356>`_)
+* Contributors: Hayato Mizushima
+
+1.12.5 (2024-02-14)
+-------------------
+* chore: record tracking delay in perception sim (`#357 <https://github.com/tier4/driving_log_replayer/issues/357>`_)
+* Contributors: Yoshi Ri
+
+1.12.4 (2024-02-09)
+-------------------
+* feat(traffic_light): change recorded topics (`#353 <https://github.com/tier4/driving_log_replayer/issues/353>`_)
+* Contributors: kminoda
+
+1.12.3 (2024-02-08)
+-------------------
+* chore: update ci (`#351 <https://github.com/tier4/driving_log_replayer/issues/351>`_)
+* Contributors: Hayato Mizushima
+
+1.12.2 (2024-02-08)
+-------------------
+* feat: enable to interpolate gt when scenario is tracking (`#349 <https://github.com/tier4/driving_log_replayer/issues/349>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Yoshi Ri
+
+1.12.1 (2024-01-23)
+-------------------
+* chore: update rviz (`#346 <https://github.com/tier4/driving_log_replayer/issues/346>`_)
+* Contributors: Hayato Mizushima
+
+1.12.0 (2024-01-15)
+-------------------
+* feat: perception criteria upper limit (`#344 <https://github.com/tier4/driving_log_replayer/issues/344>`_)
+* feat!: criteria per distance (`#339 <https://github.com/tier4/driving_log_replayer/issues/339>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Hayato Mizushima, Kotaro Uetake
 
 1.11.1 (2023-12-20)
 -------------------

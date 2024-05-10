@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Callable
 from os.path import expandvars
 from pathlib import Path
 from typing import Any
-from typing import Callable
 from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
@@ -40,9 +40,6 @@ from rclpy.node import Node
 from rclpy.task import Future
 from rclpy.time import Duration
 from rclpy.time import Time
-from rosbag2_interfaces.srv import IsPaused
-from rosbag2_interfaces.srv import Pause
-from rosbag2_interfaces.srv import Resume
 from rosidl_runtime_py import message_to_ordereddict
 import simplejson as json
 from std_msgs.msg import Header
@@ -81,7 +78,10 @@ class DLREvaluator(Node):
         try:
             self._scenario = load_scenario(Path(self._scenario_path), scenario_class)
             evaluation_condition = {}
-            if hasattr(self._scenario.Evaluation, "Conditions"):
+            if (
+                hasattr(self._scenario.Evaluation, "Conditions")
+                and self._scenario.Evaluation.Conditions is not None
+            ):
                 evaluation_condition = self._scenario.Evaluation.Conditions
             self._result_writer = ResultWriter(
                 self._result_json_path,
@@ -107,12 +107,6 @@ class DLREvaluator(Node):
 
         self.set_t4_dataset()
 
-        # bag player control client
-        self._bag_player_check_client = self.create_client(IsPaused, "/rosbag2_player/is_paused")
-        self._bag_player_pause_client = self.create_client(Pause, "/rosbag2_player/pause")
-        self._bag_player_resume_client = self.create_client(Resume, "/rosbag2_player/resume")
-        self._bag_player_is_paused = False
-
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
@@ -132,39 +126,6 @@ class DLREvaluator(Node):
             callback_group=self._timer_group,
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
-
-    def update_pause_state(self, future: Future) -> None:
-        res = future.result()
-        if res is not None:
-            self._bag_player_is_paused = res.paused
-            # debug print self.get_logger().info(f"IsPaused: {self._bag_player_is_paused}")
-        else:
-            self.get_logger().error(f"Exception while calling service: {future.exception()}")
-
-    def check_player(self) -> None:
-        req = IsPaused.Request()
-        future = self._bag_player_check_client.call_async(req)
-        future.add_done_callback(self.update_pause_state)
-
-    def trigger_result_cb(self, name: str) -> Callable:
-        def cb_func(future: Future) -> None:
-            res = future.result()
-            if res is not None:
-                self.get_logger().info(f"Response received for: {name}")
-            else:
-                self.get_logger().error(f"Exception for service: {future.exception()}")
-
-        return cb_func
-
-    def pause_player(self) -> None:
-        req = Pause.Request()
-        future = self._bag_player_pause_client.call_async(req)
-        future.add_done_callback(self.trigger_result_cb("Pause"))
-
-    def resume_player(self) -> None:
-        req = Resume.Request()
-        future = self._bag_player_resume_client.call_async(req)
-        future.add_done_callback(self.trigger_result_cb("Resume"))
 
     def set_t4_dataset(self) -> None:
         if self._scenario.ScenarioFormatVersion != "3.0.0":
@@ -197,16 +158,13 @@ class DLREvaluator(Node):
         # to debug callback use: self.get_logger().error(f"time: {self._current_time.sec}.{self._current_time.nanosec}")
         if self._current_time.sec <= 0:  # Stop PLAYER after standing for 1 second.
             return
-        self.check_player()
         if register_loop_func is not None:
             register_loop_func()
-        self.call_initialpose_service()
-        if self._current_time == self._prev_time:
-            if not self._bag_player_is_paused:
-                # Increase the counter only if current and prev are the same and bag_player is running.
-                self._clock_stop_counter += 1
-        else:
-            self._clock_stop_counter = 0
+        if self._initial_pose is not None:
+            self.call_initialpose_service()
+        self._clock_stop_counter = (
+            self._clock_stop_counter + 1 if self._current_time == self._prev_time else 0
+        )
         self._prev_time = self._current_time
         if self._clock_stop_counter >= DLREvaluator.COUNT_SHUTDOWN_NODE:
             if register_shutdown_func is not None:
@@ -234,7 +192,6 @@ class DLREvaluator(Node):
     def call_initialpose_service(self) -> None:
         if self._initial_pose is None or self._initial_pose_success or self._initial_pose_running:
             return
-        self.pause_player()
         self.get_logger().info(
             f"call initial_pose time: {self._current_time.sec}.{self._current_time.nanosec}",
         )
@@ -270,18 +227,21 @@ class DLREvaluator(Node):
             self.get_logger().info(
                 f"initial_pose_success: {self._initial_pose_success}",
             )  # debug msg
-            if self._initial_pose_success:
-                self.resume_player()  # resume bag play
         else:
             self.get_logger().error(f"Exception for service: {future.exception()}")
         # free self._initial_pose_running
         self._initial_pose_running = False
 
-    def lookup_transform(self, stamp: Stamp) -> TransformStamped:
+    def lookup_transform(
+        self,
+        stamp: Stamp,
+        from_: str = "map",
+        to: str = "base_link",
+    ) -> TransformStamped:
         try:
             return self._tf_buffer.lookup_transform(
-                "map",
-                "base_link",
+                from_,
+                to,
                 stamp,
                 Duration(seconds=0.5),
             )

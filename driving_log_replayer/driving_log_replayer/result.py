@@ -26,6 +26,20 @@ from rclpy.clock import ClockType
 import simplejson as json
 
 
+def get_sample_result_path(
+    use_case_name: str,
+    result_file_name: str = "result.json",
+) -> Path:
+    from ament_index_python.packages import get_package_share_directory
+
+    return Path(
+        get_package_share_directory("driving_log_replayer"),
+        "sample",
+        use_case_name,
+        result_file_name,
+    )
+
+
 @dataclass
 class EvaluationItem(ABC):
     name: str
@@ -35,6 +49,7 @@ class EvaluationItem(ABC):
     passed: int = 0
     summary: str = "NotTested"
     success: bool = False
+    no_gt_no_obj: int = 0  # for perception, perception_2d, traffic_light
 
     def success_str(self) -> str:
         return "Success" if self.success else "Fail"
@@ -85,8 +100,7 @@ class ResultWriter:
         self._result_file = self._result_path.open("w")
         self._ros_clock = ros_clock
         self._system_clock = Clock(clock_type=ClockType.SYSTEM_TIME)
-        condition_dict = condition if isinstance(condition, dict) else condition.model_dump()
-        self.write_line({"Condition": condition_dict})
+        self.write_condition(condition)
         self.write_line(self.get_header())
 
     @property
@@ -112,6 +126,13 @@ class ResultWriter:
 
     def write_result(self, result: ResultBase) -> None:
         self.write_line(self.get_result(result))
+
+    def write_condition(self, condition: BaseModel | dict, *, updated: bool = False) -> None:
+        condition_dict = condition if isinstance(condition, dict) else condition.model_dump()
+        key = "Condition"
+        if updated:
+            key = "UpdatedCondition"
+        self.write_line({key: condition_dict})
 
     def get_header(self) -> dict:
         system_time = self._system_clock.now()

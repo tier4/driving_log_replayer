@@ -48,6 +48,15 @@ dlr simulation show-result ${output_directory}
 
 # 結果ファイルをjsonに変換する
 dlr simulation convert-result ${output_directory}
+
+# シナリオファイルを作成せずに、メトリクスを得るために実行する予行演習モード
+# bag, map, sensor_model, vehicle_model [, vehicle_id] を引数で指定する
+dlr simulation dry-run -p ${profile} -u ${use_case} -l sensor_model:=${sensor_model} -l vehicle_model:=${vehicle_model} -l map_path:=${map_path} -l input_bag:=${bag_path} [-l vehicle_id:=${vehicle_id}]
+
+# コマンド例
+# -pのオプションは、bagとresult.jsonlの出力先を決めるために使われる。省略するとdefaultプロファイルのoutput_directoryに出力される。
+# 現時点ではuse_caseはannotationless_perceptionのみなので-uを省略すると自動でanontationless_perceptionになる
+dlr simulation dry-run -l input_bag:=$HOME/dlr_data/auto/annotationless/sample/input_bag -l sensor_model:=sample_sensor_kit -l vehicle_model:=sample_vehicle -l map_path:=$HOME/map/sample_map
 ```
 
 #### dlr simulation run launch argument option
@@ -60,13 +69,13 @@ driving_log_replayerのcliは、シナリオファイルからsensor_modelなど
 
 ```shell
 # bagの再生速度、すなわち、simulation時間を0.5倍速にする
-dlr simulation run -p default -l "play_rate:=0.5"
+dlr simulation run -p default -l play_rate:=0.5
 
 # bagの再生速度を0.5倍速、かつ、input_pointcloudを /sensing/lidar/concatenated/pointcloudにする
-dlr simulation run -p default -l "play_rate:=0.5,input_pointcloud:=/sensing/lidar/concatenated/pointcloud"
+dlr simulation run -p default -l play_rate:=0.5 -l input_pointcloud:=/sensing/lidar/concatenated/pointcloud
 
 # perception_modeをcamera_lidar_fusionにする
-dlr simulation run -p default -l "perception_mode:=camera_lidar_fusion"
+dlr simulation run -p default -l perception_mode:=camera_lidar_fusion
 ```
 
 指定可能な引数は、ros2 launchの-sオプションを使うことで表示できる。

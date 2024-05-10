@@ -25,6 +25,12 @@
     "pyproject",
     "CENTERDISTANCE",
     "nums",
-    "pydantic"
+    "pydantic",
+    "Kotaro",
+    "Uetake",
+    "conlist",
+    "annotationless",
+    "MOTP",
+    "MOTA"
   ]
 }

@@ -32,7 +32,7 @@
 1. Run the simulation
 
    ```shell
-   dlr simulation run -p perception  -l "play_rate:=0.5"
+   dlr simulation run -p perception  -l play_rate:=0.5
    ```
 
    ![perception](images/perception.png)
@@ -43,8 +43,8 @@
    The number of tests will vary slightly depending on PC performance and CPU load conditions, so slight differences are not a problem.
 
    ```shell
-    test case 1 / 1 : use case: sample
-    --------------------------------------------------
-    TestResult: Passed
-    Passed: 682 / 682 -> 100.00%
+   scenario: sample_dataset
+   --------------------------------------------------
+   TestResult: Failed
+   Passed: criteria0 (Success): 215 / 215 -> 100.00%, Failed: criteria1 (Fail): 0 / 8 -> 0.00%
    ```

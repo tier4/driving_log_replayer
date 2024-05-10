@@ -1,7 +1,24 @@
 [
   {
     "Condition": {
-      "PassRate": 99.0
+      "Criterion": [
+        {
+          "PassRate": 95.0,
+          "CriteriaMethod": "num_tp",
+          "CriteriaLevel": "hard",
+          "Filter": {
+            "Distance": [0.0, 50.0]
+          }
+        },
+        {
+          "PassRate": 95.0,
+          "CriteriaMethod": "num_tp",
+          "CriteriaLevel": "easy",
+          "Filter": {
+            "Distance": [50.0, 1.7976931348623157e308]
+          }
+        }
+      ]
     }
   },
   {
@@ -10,61 +27,114 @@
       "Summary": "NoData"
     },
     "Stamp": {
-      "System": 1699325570.1161637
+      "System": 1705038407.1164799
     },
     "Frame": {}
   },
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 1 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 1 / 1 -> 100.00%, Failed:  criteria1 (Fail): 0 / 1 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325585.4218738,
-      "ROS": 1686890777.6255763
+      "System": 1705038422.2768033,
+      "ROS": 1686890777.947095
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890777,
-              "nanosec": 450032640
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 450032640
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.005284654704,
-              "y": 684.6110709560425,
-              "z": 716.0409713439462
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.005284654704,
+                "y": 684.6110709560425,
+                "z": 716.0409713439462
+              },
+              "rotation": {
+                "x": -0.00461444671951176,
+                "y": 0.009981555647030226,
+                "z": 0.02238773904911126,
+                "w": 0.9996888838876857
+              }
             },
-            "rotation": {
-              "x": -0.00461444671951176,
-              "y": 0.009981555647030226,
-              "z": 0.02238773904911126,
-              "w": 0.9996888838876857
+            "rotation_euler": {
+              "roll": -0.008780991289684006,
+              "pitch": 0.020164881060876202,
+              "yaw": 0.04469339002875218
             }
+          }
+        },
+        "FrameName": "0",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008780991289684006,
-            "pitch": 0.020164881060876202,
-            "yaw": 0.04469339002875218
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "0",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 450032640
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.005284654704,
+                "y": 684.6110709560425,
+                "z": 716.0409713439462
+              },
+              "rotation": {
+                "x": -0.00461444671951176,
+                "y": 0.009981555647030226,
+                "z": 0.02238773904911126,
+                "w": 0.9996888838876857
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008780991289684006,
+              "pitch": 0.020164881060876202,
+              "yaw": 0.04469339002875218
+            }
+          }
+        },
+        "FrameName": "0",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -72,54 +142,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 2 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 2 / 2 -> 100.00%, Failed:  criteria1 (Fail): 0 / 2 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325585.6375105,
-      "ROS": 1686890777.735566
+      "System": 1705038422.467463,
+      "ROS": 1686890778.0440595
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890777,
-              "nanosec": 550075904
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 550075904
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.005365192264,
-              "y": 684.6110916633601,
-              "z": 716.0412860916304
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.005365192264,
+                "y": 684.6110916633601,
+                "z": 716.0412860916304
+              },
+              "rotation": {
+                "x": -0.004605063317779468,
+                "y": 0.009984572633610607,
+                "z": 0.022387759614028332,
+                "w": 0.9996888965676411
+              }
             },
-            "rotation": {
-              "x": -0.004605063317779468,
-              "y": 0.009984572633610607,
-              "z": 0.022387759614028332,
-              "w": 0.9996888965676411
+            "rotation_euler": {
+              "roll": -0.008762091366508531,
+              "pitch": 0.020170494594658722,
+              "yaw": 0.04469359655461036
             }
+          }
+        },
+        "FrameName": "1",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008762091366508531,
-            "pitch": 0.020170494594658722,
-            "yaw": 0.04469359655461036
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "1",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 550075904
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.005365192264,
+                "y": 684.6110916633601,
+                "z": 716.0412860916304
+              },
+              "rotation": {
+                "x": -0.004605063317779468,
+                "y": 0.009984572633610607,
+                "z": 0.022387759614028332,
+                "w": 0.9996888965676411
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008762091366508531,
+              "pitch": 0.020170494594658722,
+              "yaw": 0.04469359655461036
+            }
+          }
+        },
+        "FrameName": "1",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -127,54 +250,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 3 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 3 / 3 -> 100.00%, Failed:  criteria1 (Fail): 0 / 3 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325585.8281367,
-      "ROS": 1686890777.8280807
+      "System": 1705038422.7112164,
+      "ROS": 1686890778.1615667
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890777,
-              "nanosec": 650037504
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 650037504
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00526024097,
-              "y": 684.6111007932517,
-              "z": 716.0405397784184
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00526024097,
+                "y": 684.6111007932517,
+                "z": 716.0405397784184
+              },
+              "rotation": {
+                "x": -0.004605335286118828,
+                "y": 0.009976225137601177,
+                "z": 0.022386967655222603,
+                "w": 0.9996889963874317
+              }
             },
-            "rotation": {
-              "x": -0.004605335286118828,
-              "y": 0.009976225137601177,
-              "z": 0.022386967655222603,
-              "w": 0.9996889963874317
+            "rotation_euler": {
+              "roll": -0.008763022895681117,
+              "pitch": 0.020153808279728676,
+              "yaw": 0.04469207219238894
             }
+          }
+        },
+        "FrameName": "2",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008763022895681117,
-            "pitch": 0.020153808279728676,
-            "yaw": 0.04469207219238894
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "2",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 650037504
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00526024097,
+                "y": 684.6111007932517,
+                "z": 716.0405397784184
+              },
+              "rotation": {
+                "x": -0.004605335286118828,
+                "y": 0.009976225137601177,
+                "z": 0.022386967655222603,
+                "w": 0.9996889963874317
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008763022895681117,
+              "pitch": 0.020153808279728676,
+              "yaw": 0.04469207219238894
+            }
+          }
+        },
+        "FrameName": "2",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -182,54 +358,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 4 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 4 / 4 -> 100.00%, Failed:  criteria1 (Fail): 0 / 4 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325586.020049,
-      "ROS": 1686890777.9263608
+      "System": 1705038423.0665712,
+      "ROS": 1686890778.3440664
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890777,
-              "nanosec": 749900544
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 850023424
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.0050395421,
-              "y": 684.6110882216713,
-              "z": 716.0392322494679
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00481367562,
+                "y": 684.6110692053678,
+                "z": 716.0403587764331
+              },
+              "rotation": {
+                "x": -0.004576314099557418,
+                "y": 0.009973248323340683,
+                "z": 0.02238848163525196,
+                "w": 0.9996891254571149
+              }
             },
-            "rotation": {
-              "x": -0.0045812427307664084,
-              "y": 0.009967844102187462,
-              "z": 0.022387571407121814,
-              "w": 0.999689177167327
+            "rotation_euler": {
+              "roll": -0.008705087596298308,
+              "pitch": 0.020146572072452726,
+              "yaw": 0.04469570913476024
             }
+          }
+        },
+        "FrameName": "4",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008715202975726529,
-            "pitch": 0.02013597822154485,
-            "yaw": 0.04469383097789438
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "3",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 850023424
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00481367562,
+                "y": 684.6110692053678,
+                "z": 716.0403587764331
+              },
+              "rotation": {
+                "x": -0.004576314099557418,
+                "y": 0.009973248323340683,
+                "z": 0.02238848163525196,
+                "w": 0.9996891254571149
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008705087596298308,
+              "pitch": 0.020146572072452726,
+              "yaw": 0.04469570913476024
+            }
+          }
+        },
+        "FrameName": "4",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
+          }
         }
       }
     }
@@ -237,54 +466,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 5 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 5 / 5 -> 100.00%, Failed:  criteria1 (Fail): 0 / 5 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325586.2187598,
-      "ROS": 1686890778.028088
+      "System": 1705038423.3166504,
+      "ROS": 1686890778.4690711
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890777,
-              "nanosec": 850023424
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 950042880
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00481367562,
-              "y": 684.6110692053678,
-              "z": 716.0403587764331
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00488470575,
+                "y": 684.6110674235956,
+                "z": 716.0406388603086
+              },
+              "rotation": {
+                "x": -0.004574545989314534,
+                "y": 0.009974539290472822,
+                "z": 0.022390233649747997,
+                "w": 0.9996890814308438
+              }
             },
-            "rotation": {
-              "x": -0.004576314099557418,
-              "y": 0.009973248323340683,
-              "z": 0.02238848163525196,
-              "w": 0.9996891254571149
+            "rotation_euler": {
+              "roll": -0.008701458883216023,
+              "pitch": 0.02014908969548868,
+              "yaw": 0.04469924006820567
             }
+          }
+        },
+        "FrameName": "5",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008705087596298308,
-            "pitch": 0.020146572072452726,
-            "yaw": 0.04469570913476024
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "4",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 1,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890777,
+                "nanosec": 950042880
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00488470575,
+                "y": 684.6110674235956,
+                "z": 716.0406388603086
+              },
+              "rotation": {
+                "x": -0.004574545989314534,
+                "y": 0.009974539290472822,
+                "z": 0.022390233649747997,
+                "w": 0.9996890814308438
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008701458883216023,
+              "pitch": 0.02014908969548868,
+              "yaw": 0.04469924006820567
+            }
+          }
+        },
+        "FrameName": "5",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
+          }
         }
       }
     }
@@ -292,54 +574,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 6 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 6 / 6 -> 100.00%, Failed:  criteria1 (Fail): 0 / 6 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325586.41111,
-      "ROS": 1686890778.1230931
+      "System": 1705038423.6711042,
+      "ROS": 1686890778.6465638
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890777,
-              "nanosec": 950042880
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 150015488
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00488470575,
-              "y": 684.6110674235956,
-              "z": 716.0406388603086
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00468571643,
+                "y": 684.6110332713714,
+                "z": 716.0432856814343
+              },
+              "rotation": {
+                "x": -0.00459723382015831,
+                "y": 0.009997872697393174,
+                "z": 0.022399089836646277,
+                "w": 0.9996885458767742
+              }
             },
-            "rotation": {
-              "x": -0.004574545989314534,
-              "y": 0.009974539290472822,
-              "z": 0.022390233649747997,
-              "w": 0.9996890814308438
+            "rotation_euler": {
+              "roll": -0.008745612611386717,
+              "pitch": 0.0201968384058462,
+              "yaw": 0.044716319387941364
             }
+          }
+        },
+        "FrameName": "7",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008701458883216023,
-            "pitch": 0.02014908969548868,
-            "yaw": 0.04469924006820567
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "5",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 1,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 150015488
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00468571643,
+                "y": 684.6110332713714,
+                "z": 716.0432856814343
+              },
+              "rotation": {
+                "x": -0.00459723382015831,
+                "y": 0.009997872697393174,
+                "z": 0.022399089836646277,
+                "w": 0.9996885458767742
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008745612611386717,
+              "pitch": 0.0201968384058462,
+              "yaw": 0.044716319387941364
+            }
+          }
+        },
+        "FrameName": "7",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
+          }
         }
       }
     }
@@ -347,54 +682,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 7 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 7 / 7 -> 100.00%, Failed:  criteria1 (Fail): 0 / 7 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325586.6125968,
-      "ROS": 1686890778.223095
+      "System": 1705038423.9023552,
+      "ROS": 1686890778.7615733
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 50055680
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 250087680
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.004845185125,
-              "y": 684.6110444476618,
-              "z": 716.042434088578
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00455329998,
+                "y": 684.611006454502,
+                "z": 716.043883165945
+              },
+              "rotation": {
+                "x": -0.004607020330113487,
+                "y": 0.010003103168310205,
+                "z": 0.022401647074036062,
+                "w": 0.9996883911995039
+              }
             },
-            "rotation": {
-              "x": -0.004573553690061105,
-              "y": 0.009986491571948143,
-              "z": 0.022397065651435986,
-              "w": 0.9996888136029796
+            "rotation_euler": {
+              "roll": -0.008764899239590004,
+              "pitch": 0.02020775720347624,
+              "yaw": 0.04472119718851952
             }
+          }
+        },
+        "FrameName": "8",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.00869880432217163,
-            "pitch": 0.02017300439428785,
-            "yaw": 0.04471283618377349
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "6",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 1,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 250087680
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00455329998,
+                "y": 684.611006454502,
+                "z": 716.043883165945
+              },
+              "rotation": {
+                "x": -0.004607020330113487,
+                "y": 0.010003103168310205,
+                "z": 0.022401647074036062,
+                "w": 0.9996883911995039
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008764899239590004,
+              "pitch": 0.02020775720347624,
+              "yaw": 0.04472119718851952
+            }
+          }
+        },
+        "FrameName": "8",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
+          }
         }
       }
     }
@@ -402,54 +790,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 8 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 8 / 8 -> 100.00%, Failed:  criteria1 (Fail): 0 / 8 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325586.7907915,
-      "ROS": 1686890778.313083
+      "System": 1705038424.272139,
+      "ROS": 1686890778.9465609
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 150015488
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 450003456
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00468571643,
-              "y": 684.6110332713714,
-              "z": 716.0432856814343
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.004481711585,
+                "y": 684.6109469693524,
+                "z": 716.0427955545565
+              },
+              "rotation": {
+                "x": -0.004691947189151766,
+                "y": 0.010015208088826315,
+                "z": 0.022414744610716977,
+                "w": 0.9996875814285922
+              }
             },
-            "rotation": {
-              "x": -0.00459723382015831,
-              "y": 0.009997872697393174,
-              "z": 0.022399089836646277,
-              "w": 0.9996885458767742
+            "rotation_euler": {
+              "roll": -0.008933933950555419,
+              "pitch": 0.020235876938600524,
+              "yaw": 0.044745589952753864
             }
+          }
+        },
+        "FrameName": "10",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008745612611386717,
-            "pitch": 0.0201968384058462,
-            "yaw": 0.044716319387941364
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "7",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 1,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 450003456
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.004481711585,
+                "y": 684.6109469693524,
+                "z": 716.0427955545565
+              },
+              "rotation": {
+                "x": -0.004691947189151766,
+                "y": 0.010015208088826315,
+                "z": 0.022414744610716977,
+                "w": 0.9996875814285922
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008933933950555419,
+              "pitch": 0.020235876938600524,
+              "yaw": 0.044745589952753864
+            }
+          }
+        },
+        "FrameName": "10",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -457,54 +898,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 9 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 9 / 9 -> 100.00%, Failed:  criteria1 (Fail): 0 / 9 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325587.0174358,
-      "ROS": 1686890778.4231005
+      "System": 1705038424.5062153,
+      "ROS": 1686890779.0615668
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 250087680
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 550081536
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00455329998,
-              "y": 684.611006454502,
-              "z": 716.043883165945
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.004251329956,
+                "y": 684.6109268626332,
+                "z": 716.0432307208769
+              },
+              "rotation": {
+                "x": -0.004663144451037809,
+                "y": 0.010016254740087768,
+                "z": 0.02242228908639405,
+                "w": 0.9996875365217557
+              }
             },
-            "rotation": {
-              "x": -0.004607020330113487,
-              "y": 0.010003103168310205,
-              "z": 0.022401647074036062,
-              "w": 0.9996883911995039
+            "rotation_euler": {
+              "roll": -0.008876134028220468,
+              "pitch": 0.020236748015812777,
+              "yaw": 0.044761259028160506
             }
+          }
+        },
+        "FrameName": "11",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008764899239590004,
-            "pitch": 0.02020775720347624,
-            "yaw": 0.04472119718851952
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "8",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 1,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 550081536
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.004251329956,
+                "y": 684.6109268626332,
+                "z": 716.0432307208769
+              },
+              "rotation": {
+                "x": -0.004663144451037809,
+                "y": 0.010016254740087768,
+                "z": 0.02242228908639405,
+                "w": 0.9996875365217557
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008876134028220468,
+              "pitch": 0.020236748015812777,
+              "yaw": 0.044761259028160506
+            }
+          }
+        },
+        "FrameName": "11",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -512,54 +1006,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 10 -> 0.00%"
+      "Summary": "Passed:  criteria0 (Success): 10 / 10 -> 100.00%, Failed:  criteria1 (Fail): 0 / 10 -> 0.00%"
     },
     "Stamp": {
-      "System": 1699325587.2095745,
-      "ROS": 1686890778.5230975
+      "System": 1705038424.8675456,
+      "ROS": 1686890779.2440844
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 350021632
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 749985792
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00460587904,
-              "y": 684.6109800256753,
-              "z": 716.0428231771998
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00405271804,
+                "y": 684.6108900993722,
+                "z": 716.0447854797719
+              },
+              "rotation": {
+                "x": -0.00470288430719195,
+                "y": 0.010030793467409671,
+                "z": 0.02242691267093917,
+                "w": 0.9996871008718965
+              }
             },
-            "rotation": {
-              "x": -0.004686265083785475,
-              "y": 0.010012612771789099,
-              "z": 0.02240739800113927,
-              "w": 0.9996877987751303
+            "rotation_euler": {
+              "roll": -0.00895486491975365,
+              "pitch": 0.020267639585332956,
+              "yaw": 0.0447695889767843
             }
+          }
+        },
+        "FrameName": "13",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Success",
+            "Frame": "Success"
           },
-          "rotation_euler": {
-            "roll": -0.008922835082338489,
-            "pitch": 0.020230367568716493,
-            "yaw": 0.044731026669179795
+          "Info": {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
           }
         }
       },
-      "FrameName": "9",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 749985792
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00405271804,
+                "y": 684.6108900993722,
+                "z": 716.0447854797719
+              },
+              "rotation": {
+                "x": -0.00470288430719195,
+                "y": 0.010030793467409671,
+                "z": 0.02242691267093917,
+                "w": 0.9996871008718965
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.00895486491975365,
+              "pitch": 0.020267639585332956,
+              "yaw": 0.0447695889767843
+            }
+          }
+        },
+        "FrameName": "13",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -567,54 +1114,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 11 -> 0.00%"
+      "Summary": "Failed:  criteria0 (Fail): 10 / 11 -> 90.91%, Failed:  criteria1 (Fail): 1 / 11 -> 9.09%"
     },
     "Stamp": {
-      "System": 1699325587.3847215,
-      "ROS": 1686890778.609458
+      "System": 1705038425.090572,
+      "ROS": 1686890779.3518891
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 450003456
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 849870592
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.004481711585,
-              "y": 684.6109469693524,
-              "z": 716.0427955545565
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00385499479,
+                "y": 684.6108646220132,
+                "z": 716.0446244614934
+              },
+              "rotation": {
+                "x": -0.004708980759675406,
+                "y": 0.010029004855078136,
+                "z": 0.022428708643411076,
+                "w": 0.9996870498262997
+              }
             },
-            "rotation": {
-              "x": -0.004691947189151766,
-              "y": 0.010015208088826315,
-              "z": 0.022414744610716977,
-              "w": 0.9996875814285922
+            "rotation_euler": {
+              "roll": -0.00896710013795253,
+              "pitch": 0.02026435214465157,
+              "yaw": 0.0447730732732787
             }
+          }
+        },
+        "FrameName": "14",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
           },
-          "rotation_euler": {
-            "roll": -0.008933933950555419,
-            "pitch": 0.020235876938600524,
-            "yaw": 0.044745589952753864
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
           }
         }
       },
-      "FrameName": "10",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 849870592
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00385499479,
+                "y": 684.6108646220132,
+                "z": 716.0446244614934
+              },
+              "rotation": {
+                "x": -0.004708980759675406,
+                "y": 0.010029004855078136,
+                "z": 0.022428708643411076,
+                "w": 0.9996870498262997
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.00896710013795253,
+              "pitch": 0.02026435214465157,
+              "yaw": 0.0447730732732787
+            }
+          }
+        },
+        "FrameName": "14",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Success"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -622,54 +1222,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 12 -> 0.00%"
+      "Summary": "Failed:  criteria0 (Fail): 10 / 12 -> 83.33%, Failed:  criteria1 (Fail): 2 / 12 -> 16.67%"
     },
     "Stamp": {
-      "System": 1699325587.6194234,
-      "ROS": 1686890778.7280965
+      "System": 1705038425.264495,
+      "ROS": 1686890779.4415858
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 550081536
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 949758720
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.004251329956,
-              "y": 684.6109268626332,
-              "z": 716.0432307208769
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00398340225,
+                "y": 684.6108709407486,
+                "z": 716.0444961771012
+              },
+              "rotation": {
+                "x": -0.004725071274877609,
+                "y": 0.01002992353058816,
+                "z": 0.02242956451199937,
+                "w": 0.999686945484045
+              }
             },
-            "rotation": {
-              "x": -0.004663144451037809,
-              "y": 0.010016254740087768,
-              "z": 0.02242228908639405,
-              "w": 0.9996875365217557
+            "rotation_euler": {
+              "roll": -0.008999220091440377,
+              "pitch": 0.020266917221332843,
+              "yaw": 0.04477445236026213
             }
+          }
+        },
+        "FrameName": "15",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
           },
-          "rotation_euler": {
-            "roll": -0.008876134028220468,
-            "pitch": 0.020236748015812777,
-            "yaw": 0.044761259028160506
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
           }
         }
       },
-      "FrameName": "11",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890778,
+                "nanosec": 949758720
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00398340225,
+                "y": 684.6108709407486,
+                "z": 716.0444961771012
+              },
+              "rotation": {
+                "x": -0.004725071274877609,
+                "y": 0.01002992353058816,
+                "z": 0.02242956451199937,
+                "w": 0.999686945484045
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008999220091440377,
+              "pitch": 0.020266917221332843,
+              "yaw": 0.04477445236026213
+            }
+          }
+        },
+        "FrameName": "15",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Success"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -677,54 +1330,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 13 -> 0.00%"
+      "Summary": "Failed:  criteria0 (Fail): 10 / 13 -> 76.92%, Failed:  criteria1 (Fail): 3 / 13 -> 23.08%"
     },
     "Stamp": {
-      "System": 1699325587.8223495,
-      "ROS": 1686890778.828554
+      "System": 1705038425.5101366,
+      "ROS": 1686890779.5640898
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 650079488
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890779,
+                "nanosec": 49636608
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00401049948,
-              "y": 684.6108877822337,
-              "z": 716.045905695348
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.004099152524,
+                "y": 684.6108764770597,
+                "z": 716.0456679902536
+              },
+              "rotation": {
+                "x": -0.0047447730600887065,
+                "y": 0.010035224150192968,
+                "z": 0.022429857514021108,
+                "w": 0.9996867923988815
+              }
             },
-            "rotation": {
-              "x": -0.00467118093604093,
-              "y": 0.010041115808474802,
-              "z": 0.02242603070388875,
-              "w": 0.9996871656717674
+            "rotation_euler": {
+              "roll": -0.009038377949772013,
+              "pitch": 0.020278401014397724,
+              "yaw": 0.044774596391769096
             }
+          }
+        },
+        "FrameName": "16",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
           },
-          "rotation_euler": {
-            "roll": -0.008891021148320808,
-            "pitch": 0.02028685280174097,
-            "yaw": 0.0447683840657645
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
           }
         }
       },
-      "FrameName": "12",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890779,
+                "nanosec": 49636608
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.004099152524,
+                "y": 684.6108764770597,
+                "z": 716.0456679902536
+              },
+              "rotation": {
+                "x": -0.0047447730600887065,
+                "y": 0.010035224150192968,
+                "z": 0.022429857514021108,
+                "w": 0.9996867923988815
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.009038377949772013,
+              "pitch": 0.020278401014397724,
+              "yaw": 0.044774596391769096
+            }
+          }
+        },
+        "FrameName": "16",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Success"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
+          }
         }
       }
     }
@@ -732,54 +1438,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 14 -> 0.00%"
+      "Summary": "Failed:  criteria0 (Fail): 10 / 14 -> 71.43%, Failed:  criteria1 (Fail): 4 / 14 -> 28.57%"
     },
     "Stamp": {
-      "System": 1699325588.0277357,
-      "ROS": 1686890778.930607
+      "System": 1705038425.7224605,
+      "ROS": 1686890779.666597
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 749985792
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890779,
+                "nanosec": 149546496
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00405271804,
-              "y": 684.6108900993722,
-              "z": 716.0447854797719
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00414944549,
+                "y": 684.6108796665243,
+                "z": 716.0470237111127
+              },
+              "rotation": {
+                "x": -0.004726723221195294,
+                "y": 0.010052862828906694,
+                "z": 0.022429488241646967,
+                "w": 0.9996867089712412
+              }
             },
-            "rotation": {
-              "x": -0.00470288430719195,
-              "y": 0.010030793467409671,
-              "z": 0.02242691267093917,
-              "w": 0.9996871008718965
+            "rotation_euler": {
+              "roll": -0.009001502161709335,
+              "pitch": 0.020312859540498548,
+              "yaw": 0.04477408053544646
             }
+          }
+        },
+        "FrameName": "17",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
           },
-          "rotation_euler": {
-            "roll": -0.00895486491975365,
-            "pitch": 0.020267639585332956,
-            "yaw": 0.0447695889767843
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
           }
         }
       },
-      "FrameName": "13",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 2,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890779,
+                "nanosec": 149546496
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00414944549,
+                "y": 684.6108796665243,
+                "z": 716.0470237111127
+              },
+              "rotation": {
+                "x": -0.004726723221195294,
+                "y": 0.010052862828906694,
+                "z": 0.022429488241646967,
+                "w": 0.9996867089712412
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.009001502161709335,
+              "pitch": 0.020312859540498548,
+              "yaw": 0.04477408053544646
+            }
+          }
+        },
+        "FrameName": "17",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Success"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
+          }
         }
       }
     }
@@ -787,54 +1546,107 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 15 -> 0.00%"
+      "Summary": "Failed:  criteria0 (Fail): 10 / 15 -> 66.67%, Failed:  criteria1 (Fail): 5 / 15 -> 33.33%"
     },
     "Stamp": {
-      "System": 1699325588.220046,
-      "ROS": 1686890779.0256119
+      "System": 1705038426.086033,
+      "ROS": 1686890779.8515985
     },
     "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 849870592
+      "criteria0": {
+        "Filter": {
+          "Distance": [0.0, 50.0]
+        },
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890779,
+                "nanosec": 349511680
+              },
+              "frame_id": "map"
             },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00385499479,
-              "y": 684.6108646220132,
-              "z": 716.0446244614934
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00421387269,
+                "y": 684.6109135616247,
+                "z": 716.0430821557264
+              },
+              "rotation": {
+                "x": -0.0047087258729837135,
+                "y": 0.010014019906047581,
+                "z": 0.022422535575320424,
+                "w": 0.9996873397239499
+              }
             },
-            "rotation": {
-              "x": -0.004708980759675406,
-              "y": 0.010029004855078136,
-              "z": 0.022428708643411076,
-              "w": 0.9996870498262997
+            "rotation_euler": {
+              "roll": -0.008967383691792575,
+              "pitch": 0.02023432170706169,
+              "yaw": 0.04476084827053028
             }
+          }
+        },
+        "FrameName": "19",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Fail"
           },
-          "rotation_euler": {
-            "roll": -0.00896710013795253,
-            "pitch": 0.02026435214465157,
-            "yaw": 0.0447730732732787
+          "Info": {
+            "TP": 0,
+            "FP": 2,
+            "FN": 0
           }
         }
       },
-      "FrameName": "14",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
+      "criteria1": {
+        "Filter": {
+          "Distance": [50.0, 1.7976931348623157e308]
         },
-        "Info": {
-          "TP": 0,
-          "FP": 3,
-          "FN": 0
+        "Ego": {
+          "TransformStamped": {
+            "header": {
+              "stamp": {
+                "sec": 1686890779,
+                "nanosec": 349511680
+              },
+              "frame_id": "map"
+            },
+            "child_frame_id": "base_link",
+            "transform": {
+              "translation": {
+                "x": 65400.00421387269,
+                "y": 684.6109135616247,
+                "z": 716.0430821557264
+              },
+              "rotation": {
+                "x": -0.0047087258729837135,
+                "y": 0.010014019906047581,
+                "z": 0.022422535575320424,
+                "w": 0.9996873397239499
+              }
+            },
+            "rotation_euler": {
+              "roll": -0.008967383691792575,
+              "pitch": 0.02023432170706169,
+              "yaw": 0.04476084827053028
+            }
+          }
+        },
+        "FrameName": "19",
+        "FrameSkip": 8,
+        "PassFail": {
+          "Result": {
+            "Total": "Fail",
+            "Frame": "Success"
+          },
+          "Info": {
+            "TP": 0,
+            "FP": 1,
+            "FN": 0
+          }
         }
       }
     }
@@ -842,286 +1654,11 @@
   {
     "Result": {
       "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 16 -> 0.00%"
+      "Summary": "Failed:  criteria0 (Fail): 10 / 15 -> 66.67%, Failed:  criteria1 (Fail): 5 / 15 -> 33.33%"
     },
     "Stamp": {
-      "System": 1699325588.4209852,
-      "ROS": 1686890779.1256223
-    },
-    "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890778,
-              "nanosec": 949758720
-            },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00398340225,
-              "y": 684.6108709407486,
-              "z": 716.0444961771012
-            },
-            "rotation": {
-              "x": -0.004725071274877609,
-              "y": 0.01002992353058816,
-              "z": 0.02242956451199937,
-              "w": 0.999686945484045
-            }
-          },
-          "rotation_euler": {
-            "roll": -0.008999220091440377,
-            "pitch": 0.020266917221332843,
-            "yaw": 0.04477445236026213
-          }
-        }
-      },
-      "FrameName": "15",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
-        },
-        "Info": {
-          "TP": 0,
-          "FP": 3,
-          "FN": 0
-        }
-      }
-    }
-  },
-  {
-    "Result": {
-      "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 17 -> 0.00%"
-    },
-    "Stamp": {
-      "System": 1699325588.6242535,
-      "ROS": 1686890779.2257967
-    },
-    "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890779,
-              "nanosec": 49636608
-            },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.004099152524,
-              "y": 684.6108764770597,
-              "z": 716.0456679902536
-            },
-            "rotation": {
-              "x": -0.0047447730600887065,
-              "y": 0.010035224150192968,
-              "z": 0.022429857514021108,
-              "w": 0.9996867923988815
-            }
-          },
-          "rotation_euler": {
-            "roll": -0.009038377949772013,
-            "pitch": 0.020278401014397724,
-            "yaw": 0.044774596391769096
-          }
-        }
-      },
-      "FrameName": "16",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
-        },
-        "Info": {
-          "TP": 0,
-          "FP": 3,
-          "FN": 0
-        }
-      }
-    }
-  },
-  {
-    "Result": {
-      "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 18 -> 0.00%"
-    },
-    "Stamp": {
-      "System": 1699325588.8194163,
-      "ROS": 1686890779.3256245
-    },
-    "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890779,
-              "nanosec": 149546496
-            },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00414944549,
-              "y": 684.6108796665243,
-              "z": 716.0470237111127
-            },
-            "rotation": {
-              "x": -0.004726723221195294,
-              "y": 0.010052862828906694,
-              "z": 0.022429488241646967,
-              "w": 0.9996867089712412
-            }
-          },
-          "rotation_euler": {
-            "roll": -0.009001502161709335,
-            "pitch": 0.020312859540498548,
-            "yaw": 0.04477408053544646
-          }
-        }
-      },
-      "FrameName": "17",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
-        },
-        "Info": {
-          "TP": 0,
-          "FP": 3,
-          "FN": 0
-        }
-      }
-    }
-  },
-  {
-    "Result": {
-      "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 19 -> 0.00%"
-    },
-    "Stamp": {
-      "System": 1699325589.0180197,
-      "ROS": 1686890779.4231172
-    },
-    "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890779,
-              "nanosec": 249501696
-            },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00399874107,
-              "y": 684.6108877081133,
-              "z": 716.0435828919364
-            },
-            "rotation": {
-              "x": -0.004711612759720789,
-              "y": 0.010019400949867691,
-              "z": 0.022427110204026497,
-              "w": 0.9996871695874188
-            }
-          },
-          "rotation_euler": {
-            "roll": -0.008972824390856175,
-            "pitch": 0.02024525182957181,
-            "yaw": 0.044769899329009356
-          }
-        }
-      },
-      "FrameName": "18",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
-        },
-        "Info": {
-          "TP": 0,
-          "FP": 3,
-          "FN": 0
-        }
-      }
-    }
-  },
-  {
-    "Result": {
-      "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 20 -> 0.00%"
-    },
-    "Stamp": {
-      "System": 1699325589.2280555,
-      "ROS": 1686890779.5293906
-    },
-    "Frame": {
-      "Ego": {
-        "TransformStamped": {
-          "header": {
-            "stamp": {
-              "sec": 1686890779,
-              "nanosec": 349511680
-            },
-            "frame_id": "map"
-          },
-          "child_frame_id": "base_link",
-          "transform": {
-            "translation": {
-              "x": 65400.00421387269,
-              "y": 684.6109135616247,
-              "z": 716.0430821557264
-            },
-            "rotation": {
-              "x": -0.0047087258729837135,
-              "y": 0.010014019906047581,
-              "z": 0.022422535575320424,
-              "w": 0.9996873397239499
-            }
-          },
-          "rotation_euler": {
-            "roll": -0.008967383691792575,
-            "pitch": 0.02023432170706169,
-            "yaw": 0.04476084827053028
-          }
-        }
-      },
-      "FrameName": "19",
-      "FrameSkip": 16,
-      "PassFail": {
-        "Result": {
-          "Total": "Fail",
-          "Frame": "Fail"
-        },
-        "Info": {
-          "TP": 0,
-          "FP": 3,
-          "FN": 0
-        }
-      }
-    }
-  },
-  {
-    "Result": {
-      "Success": false,
-      "Summary": "Failed: Perception (Fail): 0 / 20 -> 0.00%"
-    },
-    "Stamp": {
-      "System": 1699325598.1338053,
-      "ROS": 1686890781.3406725
+      "System": 1705038434.157699,
+      "ROS": 1686890781.3416226
     },
     "Frame": {
       "FinalScore": {
@@ -1134,9 +1671,9 @@
               "FN": null
             },
             "frame_nums": {
-              "total": [0, 1, 2, 3],
+              "total": [0, 1, 2],
               "TP": [],
-              "FP": [0, 1, 2, 3],
+              "FP": [0, 1, 2],
               "TN": [],
               "FN": []
             }
@@ -1149,9 +1686,9 @@
               "FN": null
             },
             "frame_nums": {
-              "total": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+              "total": [0, 1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 15, 16, 17, 19],
               "TP": [],
-              "FP": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+              "FP": [0, 1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 15, 16, 17, 19],
               "TN": [],
               "FN": []
             }
@@ -1164,9 +1701,9 @@
               "FN": null
             },
             "frame_nums": {
-              "total": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+              "total": [10, 11, 13, 14, 15, 16, 17, 19],
               "TP": [],
-              "FP": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+              "FP": [10, 11, 13, 14, 15, 16, 17, 19],
               "TN": [],
               "FN": []
             }
@@ -1179,9 +1716,9 @@
               "FN": null
             },
             "frame_nums": {
-              "total": [14, 15, 16, 17, 18, 19],
+              "total": [14, 15, 16, 17, 19],
               "TP": [],
-              "FP": [14, 15, 16, 17, 18, 19],
+              "FP": [14, 15, 16, 17, 19],
               "TN": [],
               "FN": []
             }

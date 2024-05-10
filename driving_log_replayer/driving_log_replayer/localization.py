@@ -17,8 +17,9 @@ from dataclasses import field
 from functools import singledispatchmethod
 import statistics
 from typing import ClassVar
+from typing import Literal
 
-from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
 import numpy as np
@@ -26,7 +27,6 @@ from pydantic import BaseModel
 from rosidl_runtime_py import message_to_ordereddict
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
-from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
@@ -77,7 +77,6 @@ class LocalizationScenario(Scenario):
 @dataclass
 class Convergence(EvaluationItem):
     name: str = "Convergence"
-    success: bool = True
 
     def set_frame(
         self,
@@ -126,7 +125,6 @@ class Convergence(EvaluationItem):
 @dataclass
 class Reliability(EvaluationItem):
     name: str = "Reliability"
-    success: bool = True
     ng_seq: int = 0
     received_data: list[float] = field(default_factory=list)
 
@@ -142,7 +140,7 @@ class Reliability(EvaluationItem):
         self.received_data.append(msg.data)
 
         # If the likelihood is lower than AllowableLikelihood for NGCount consecutive times, it is assumed to be a failure.
-        if self.success:
+        if self.ng_seq < self.condition.NGCount:
             # Update nq_seq only while reliability.result is true
             if msg.data >= self.condition.AllowableLikelihood:
                 self.ng_seq = 0
@@ -167,48 +165,33 @@ class Reliability(EvaluationItem):
 @dataclass
 class Availability(EvaluationItem):
     name: str = "NDT Availability"
-    success: bool = True
-    TARGET_DIAG_NAME: ClassVar[
-        str
-    ] = "/autoware/localization/node_alive_monitoring/topic_status/topic_state_monitor_ndt_scan_matcher_exe_time: localization_topic_status"
     ERROR_STATUS_LIST: ClassVar[list[str]] = ["Timeout", "NotReceived"]
 
-    def set_frame(self, msg: DiagnosticArray) -> dict:
-        include_target_status = False
+    def set_frame(self, diag_status: DiagnosticStatus) -> dict:
         # Check if the NDT is available. Note that it does NOT check topic rate itself, but just the availability of the topic
-        for diag_status in msg.status:
-            if diag_status.name != Availability.TARGET_DIAG_NAME:
-                continue
-            include_target_status = True
-            values = {value.key: value.value for value in diag_status.values}
-            # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
-            # On the basis of this assumption, we only consider the latest diagnostics received.
-            # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
-            status_str: str | None = values.get("status")
-            if status_str is not None:
-                if status_str in Availability.ERROR_STATUS_LIST:
-                    self.success = False
-                    self.summary = f"{self.name} ({self.success_str()}): NDT not available"
-                else:
-                    self.success = True
-                    self.summary = f"{self.name} ({self.success_str()}): NDT available"
-            else:
+        values = {value.key: value.value for value in diag_status.values}
+        # Here we assume that, once a node (e.g. ndt_scan_matcher) fails, it will not be relaunched automatically.
+        # On the basis of this assumption, we only consider the latest diagnostics received.
+        # Possible status are OK, Timeout, NotReceived, WarnRate, and ErrorRate
+        status_str: str | None = values.get("status")
+        if status_str is not None:
+            if status_str in Availability.ERROR_STATUS_LIST:
                 self.success = False
-                self.summary = f"{self.name} ({self.success_str()}): NDT Availability Key Not Found"
-            break
-        if include_target_status:
-            return {
-                "Ego": {},
-                "Availability": {
-                    "Result": {"Total": self.success_str(), "Frame": self.success_str()},
-                    "Info": {},
-                },
-            }
+                self.summary = f"{self.name} ({self.success_str()}): NDT not available"
+            else:
+                self.success = True
+                self.summary = f"{self.name} ({self.success_str()}): NDT available"
+        else:
+            self.success = False
+            self.summary = f"{self.name} ({self.success_str()}): NDT Availability Key Not Found"
         return {
             "Ego": {},
             "Availability": {
-                "Result": {"Total": self.success_str(), "Frame": "Warn"},
-                "Info": {"Reason": "diagnostics does not contain localization_topic_status"},
+                "Result": {
+                    "Total": self.success_str(),
+                    "Frame": self.success_str(),
+                },
+                "Info": {},
             },
         }
 
@@ -267,6 +250,6 @@ class LocalizationResult(ResultBase):
         return msg_lateral_dist
 
     @set_frame.register
-    def set_ndt_availability_frame(self, msg: DiagnosticArray) -> None:
-        self._frame = self.__availability.set_frame(msg)
+    def set_ndt_availability_frame(self, diag_status: DiagnosticStatus) -> None:
+        self._frame = self.__availability.set_frame(diag_status)
         self.update()

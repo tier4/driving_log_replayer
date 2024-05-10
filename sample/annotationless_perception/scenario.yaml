@@ -1,0 +1,37 @@
+ScenarioFormatVersion: 2.2.0
+ScenarioName: sample_annotationless_perception
+ScenarioDescription: sample_annotationless_perception
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+VehicleId: default
+LocalMapPath: $HOME/autoware_map/sample-map-planning
+Evaluation:
+  UseCaseName: annotationless_perception
+  UseCaseFormatVersion: 0.2.0
+  Conditions:
+    ClassConditions:
+      # Describe the conditions for each class. If a class with no conditions is output, only the metrics are calculated. It does not affect the evaluation.
+      # In the sample data, the class of TRUCK is also output, but the condition is not described, so TRUCK is always Success.
+      # When specifying conditions from result.jsonl, only keys described here will be updated.
+      # Even though TRUCK metrics appear in result.jsonl, they are not added to the evaluation condition because the TRUCK key is not specified in this example.
+      CAR: # classification key
+        Threshold:
+          # Keys not described will not be evaluated (will always be a success)
+          lateral_deviation: { max: 0.1912, mean: 0.0077 }
+          yaw_deviation: { max: 3.1411, mean: 0.9474 }
+          predicted_path_deviation_5.00: { max: 16.464, mean: 0.9062 }
+          predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
+          predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
+          predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
+        PassRange:
+          min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
+      BUS: # classification key
+        Threshold:
+          # Only lateral_deviation is evaluated.
+          lateral_deviation: { max: 0.050 } # Only max is evaluated.
+        PassRange:
+          min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
+          mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]

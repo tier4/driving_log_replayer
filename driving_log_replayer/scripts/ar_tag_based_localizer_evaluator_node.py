@@ -14,28 +14,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 
 from driving_log_replayer.ar_tag_based_localizer import ArTagBasedLocalizerResult
 from driving_log_replayer.ar_tag_based_localizer import ArtagBasedLocalizerScenario
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 
+TARGET_DIAG_NAME = "localization: ar_tag_based_localizer"
+
 
 class ArTagBasedLocalizerEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, ArtagBasedLocalizerScenario, ArTagBasedLocalizerResult)
+        self._result: ArTagBasedLocalizerResult
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
             "/diagnostics",
             self.diagnostics_cb,
-            1,
+            100,
         )
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
-        self._result.set_frame(msg)
+        diag_status: DiagnosticStatus = msg.status[0]
+        if diag_status.name != TARGET_DIAG_NAME:
+            return
+        self._result.set_frame(diag_status)
         self._result_writer.write_result(self._result)
 
 

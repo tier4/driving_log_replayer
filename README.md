@@ -7,17 +7,14 @@ Driving Log Replayer is a ROS package that evaluates the functionality of Autowa
 - ROS 2 humble
 - [Python 3.10](https://www.python.org/)
 - [pipx](https://pipxproject.github.io/pipx/)
-  - **Please do not install pipx using apt**
-  - See the above link, and install pipx using pip
-- venv
-  - sudo apt install python3-venv
+  - pipx is installed automatically in Autoware setup.
 
 ### Optional
 
 If you want to change the rosbag format from ros1 to ros2.
 
 - [rosbags](https://gitlab.com/ternaris/rosbags)
-  - pip3 install rosbags
+  - `pip3 install rosbags`
 
 ## Installation
 
@@ -27,20 +24,33 @@ You need to install driving_log_replayer and driving_log_replayer_cli package.
 
 Use colcon build
 
+```shell
+colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release --packages-up-to driving_log_replayer
+```
+
 ### How to install driving_log_replayer_cli package
 
-Use pipx
+Use pipx **Do not use pip**
 
 ```shell
 # install
 pipx install git+https://github.com/tier4/driving_log_replayer.git
 
 # upgrade
-pipx upgrade driving_log_replayer_cli
+pipx upgrade driving-log-replayer
 
 # uninstall
-pipx uninstall driving_log_replayer_cli
+pipx uninstall driving-log-replayer
 ```
+
+### Why pipx, not pip
+
+For ros, driving_log_replayer uses numpy 1.22.0
+See requirements.txt
+
+On the other hand, cli uses pandas, and the version of numpy required by pandas is different from the version we want to use in ros.
+If you install with pip, the pandas-dependent numpy is installed under $HOME/.local/lib/python3.10/site-packages.
+This will cause version mismatch, so you need to install cli on an independent venv using pipx.
 
 ### Shell Completion
 

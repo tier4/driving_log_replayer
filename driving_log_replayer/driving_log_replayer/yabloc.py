@@ -13,11 +13,10 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from typing import ClassVar
+from typing import Literal
 
-from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 from pydantic import BaseModel
-from typing_extensions import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
@@ -38,32 +37,17 @@ class YablocScenario(Scenario):
 @dataclass
 class Availability(EvaluationItem):
     name: str = "Yabloc Availability"
-    TARGET_DIAG_NAME: ClassVar[str] = "yabloc_monitor: yabloc_status"
 
-    def set_frame(self, msg: DiagnosticArray) -> dict:
-        include_target_status = False
-        for diag_status in msg.status:
-            if diag_status.name != Availability.TARGET_DIAG_NAME:
-                continue
-            include_target_status = True
-            values = {value.key: value.value for value in diag_status.values}
-            status_str = values.get("Availability", "Availability Key Not Found")  # avoid KeyError
-            self.success = status_str == "OK"
-            self.summary = f"{self.name} ({self.success_str()}): {status_str}"
-            break
-        if include_target_status:
-            return {
-                "Ego": {},
-                "Availability": {
-                    "Result": {"Total": self.success_str(), "Frame": self.success_str()},
-                    "Info": {},
-                },
-            }
+    def set_frame(self, diag_status: DiagnosticStatus) -> dict:
+        values = {value.key: value.value for value in diag_status.values}
+        status_str = values.get("Availability", "Availability Key Not Found")  # avoid KeyError
+        self.success = status_str == "OK"
+        self.summary = f"{self.name} ({self.success_str()}): {status_str}"
         return {
             "Ego": {},
             "Availability": {
-                "Result": {"Total": self.success_str(), "Frame": "Warn"},
-                "Info": {"Reason": "diagnostics does not contain yabloc_status"},
+                "Result": {"Total": self.success_str(), "Frame": self.success_str()},
+                "Info": {},
             },
         }
 
@@ -83,6 +67,6 @@ class YabLocResult(ResultBase):
             self._success = False
             self._summary = f"Failed: {summary_str}"
 
-    def set_frame(self, msg: DiagnosticArray) -> None:
-        self._frame = self.__availability.set_frame(msg)
+    def set_frame(self, diag_status: DiagnosticStatus) -> None:
+        self._frame = self.__availability.set_frame(diag_status)
         self.update()

@@ -40,7 +40,7 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 これは、Component State MonitorというAutoware内のパッケージを間接的に利用することによって実現される。本ツールは、下記のトピックを監視することによってその情報を取得する。
 
-- /diagnostics_agg
+- /diagnostics
 
 なお、NDTの出力トピックの中で `/localization/pose_estimator/exe_time_ms` が選ばれたのは、「トピックに定期的にメッセージが出力されている」ことを確認することで上記に述べた失敗を判定することができるからである。例えば `/localization/pose_estimator/pose` は今回の監視トピックとして適さない。何故ならば、同トピックはNVTLやTPなどのスコアが低い場合も出力されないので、出力を監視するだけでは、その原因が上記失敗であるかとうかを判定することが難しいからである。
 
@@ -72,7 +72,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 ### 可用性正常
 
-Component State Monitorが出力する `/diagnostics_agg` の中から、監視トピックに関する情報を抽出する。
+Component State Monitorが出力する `/diagnostics` の中から、監視トピックに関する情報を抽出する。
 最新の情報におけるStatusが `Timeout` または `NotReceived` 以外の場合、正常であると判断する。
 
 ### 可用性異常
@@ -85,7 +85,7 @@ Subscribed topics:
 
 | topic 名                                                             | データ型                              |
 | -------------------------------------------------------------------- | ------------------------------------- |
-| /diagnostics_agg                                                     | diagnostic_msgs::msg::DiagnosticArray |
+| /diagnostics                                                         | diagnostic_msgs::msg::DiagnosticArray |
 | /localization/pose_estimator/transform_probability                   | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | tier4_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/initial_to_result_relative_pose         | geometry_msgs::msg::PoseStamped       |

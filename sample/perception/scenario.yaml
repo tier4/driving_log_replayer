@@ -5,16 +5,24 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: perception
-  UseCaseFormatVersion: 0.6.0
+  UseCaseFormatVersion: 1.0.0
   Datasets:
     - sample_dataset:
         VehicleId: default # Specify VehicleId for each data set.
         LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
         LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
-    PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score/metrics_score_maph)
-    CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+    Criterion:
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+        CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+        CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   PerceptionEvaluationConfig:
     evaluation_config_dict:
       evaluation_task: detection # detection or tracking. Evaluate the objects specified here

@@ -13,35 +13,67 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+import sys
+from typing import Literal
 
 from perception_eval.evaluation import PerceptionFrameResult
 from pydantic import BaseModel
+from pydantic import field_validator
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
-from typing_extensions import Literal
 from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.criteria import PerceptionCriteria
 import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.perception_eval_conversions import summarize_pass_fail_result
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
 
-class Conditions(BaseModel):
+class Filter(BaseModel):
+    Distance: tuple[float, float] | None = None
+    # add filter condition here
+
+    @field_validator("Distance", mode="before")
+    @classmethod
+    def validate_distance_range(cls, v: str | None) -> tuple[number, number] | None:
+        if v is None:
+            return None
+
+        err_msg = f"{v} is not valid distance range, expected ordering min-max with min < max."
+
+        s_lower, s_upper = v.split("-")
+        if s_upper == "":
+            s_upper = sys.float_info.max
+
+        lower = float(s_lower)
+        upper = float(s_upper)
+
+        if lower >= upper:
+            raise ValueError(err_msg)
+        return (lower, upper)
+
+
+class Criteria(BaseModel):
     PassRate: number
-    CriteriaMethod: Literal["num_tp", "metrics_score", "metrics_score_maph"] | list[
-        str
-    ] | None = None
-    CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[
-        number
-    ] | None = None
+    CriteriaMethod: (
+        Literal["num_tp", "label", "metrics_score", "metrics_score_maph"] | list[str] | None
+    ) = None
+    CriteriaLevel: (
+        Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[number] | None
+    ) = None
+    Filter: Filter
+
+
+class Conditions(BaseModel):
+    Criterion: list[Criteria]
 
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["perception"]
-    UseCaseFormatVersion: Literal["0.5.0", "0.6.0"]
+    UseCaseFormatVersion: Literal["1.0.0"]
     Datasets: list[dict]
     Conditions: Conditions
     PerceptionEvaluationConfig: dict
@@ -55,13 +87,61 @@ class PerceptionScenario(Scenario):
 
 @dataclass
 class Perception(EvaluationItem):
-    name: str = "Perception"
+    success: bool = True
 
     def __post_init__(self) -> None:
-        self.criteria: PerceptionCriteria = PerceptionCriteria(
+        self.criteria = PerceptionCriteria(
             methods=self.condition.CriteriaMethod,
             levels=self.condition.CriteriaLevel,
+            distance_range=self.condition.Filter.Distance,
         )
+
+    def set_frame(
+        self,
+        frame: PerceptionFrameResult,
+    ) -> dict:
+        frame_success = "Fail"
+        # ret_frame might be filtered frame result or original frame result.
+        result, ret_frame = self.criteria.get_result(frame)
+
+        if result is None:
+            self.no_gt_no_obj += 1
+            return {"NoGTNoObj": self.no_gt_no_obj}
+        if result.is_success():
+            self.passed += 1
+            frame_success = "Success"
+
+        self.total += 1
+        self.success: bool = self.rate() >= self.condition.PassRate
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
+
+        return {
+            "PassFail": {
+                "Result": {"Total": self.success_str(), "Frame": frame_success},
+                "Info": summarize_pass_fail_result(ret_frame.pass_fail_result),
+            },
+        }
+
+
+class PerceptionResult(ResultBase):
+    def __init__(self, condition: Conditions) -> None:
+        super().__init__()
+        self.__perception_criterion: list[Perception] = []
+        for i, criteria in enumerate(condition.Criterion):
+            self.__perception_criterion.append(
+                Perception(name=f"criteria{i}", condition=criteria),
+            )
+
+    def update(self) -> None:
+        all_summary: list[str] = []
+        all_success: list[bool] = []
+        for criterion in self.__perception_criterion:
+            tmp_success = criterion.success
+            prefix_str = "Passed: " if tmp_success else "Failed: "
+            all_summary.append(prefix_str + criterion.summary)
+            all_success.append(tmp_success)
+        self._summary = ", ".join(all_summary)
+        self._success = all(all_success)
 
     def set_frame(
         self,
@@ -69,15 +149,29 @@ class Perception(EvaluationItem):
         skip: int,
         header: Header,
         map_to_baselink: dict,
-    ) -> tuple[dict, MarkerArray, MarkerArray]:
-        self.total += 1
-        frame_success = "Fail"
-        result = self.criteria.get_result(frame)
+    ) -> tuple[MarkerArray, MarkerArray]:
+        self._frame = {
+            "Ego": {"TransformStamped": map_to_baselink},
+            "FrameName": frame.frame_name,
+            "FrameSkip": skip,
+        }
+        for criterion in self.__perception_criterion:
+            self._frame[criterion.name] = criterion.set_frame(frame)
+        self.update()
+        marker_ground_truth, marker_results = self.create_ros_msg(frame, header)
+        return marker_ground_truth, marker_results
 
-        if result.is_success():
-            self.passed += 1
-            frame_success = "Success"
+    def set_warn_frame(self, msg: str, skip: int) -> None:
+        self._frame = {
+            "Warning": msg,
+            "FrameSkip": skip,
+        }
 
+    def create_ros_msg(
+        self,
+        frame: PerceptionFrameResult,
+        header: Header,
+    ) -> tuple[MarkerArray, MarkerArray]:
         marker_ground_truth = MarkerArray()
         color_success = ColorRGBA(r=0.0, g=1.0, b=0.0, a=0.3)
 
@@ -97,57 +191,6 @@ class Perception(EvaluationItem):
             frame.pass_fail_result,
             header,
         )
-
-        self.success = self.rate() >= self.condition.PassRate
-        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {self.rate():.2f}%"
-
-        return (
-            {
-                "Ego": {"TransformStamped": map_to_baselink},
-                "FrameName": frame.frame_name,
-                "FrameSkip": skip,
-                "PassFail": {
-                    "Result": {"Total": self.success_str(), "Frame": frame_success},
-                    "Info": {
-                        "TP": len(frame.pass_fail_result.tp_object_results),
-                        "FP": len(frame.pass_fail_result.fp_object_results),
-                        "FN": len(frame.pass_fail_result.fn_objects),
-                    },
-                },
-            },
-            marker_ground_truth,
-            marker_results,
-        )
-
-
-class PerceptionResult(ResultBase):
-    def __init__(self, condition: Conditions) -> None:
-        super().__init__()
-        self.__perception = Perception(condition=condition)
-
-    def update(self) -> None:
-        summary_str = f"{self.__perception.summary}"
-        if self.__perception.success:
-            self._success = True
-            self._summary = f"Passed: {summary_str}"
-        else:
-            self._success = False
-            self._summary = f"Failed: {summary_str}"
-
-    def set_frame(
-        self,
-        frame: PerceptionFrameResult,
-        skip: int,
-        header: Header,
-        map_to_baselink: dict,
-    ) -> tuple[MarkerArray, MarkerArray]:
-        self._frame, marker_ground_truth, marker_results = self.__perception.set_frame(
-            frame,
-            skip,
-            header,
-            map_to_baselink,
-        )
-        self.update()
         return marker_ground_truth, marker_results
 
     def set_final_metrics(self, final_metrics: dict) -> None:

@@ -6,7 +6,7 @@ from driving_log_replayer_cli.configuration import configuration
 from driving_log_replayer_cli.simulation import simulation
 
 try:
-    __version__ = version(__package__)
+    __version__ = version("driving-log-replayer")
 except Exception:  # noqa
     __version__ = "0.0.0"
 
