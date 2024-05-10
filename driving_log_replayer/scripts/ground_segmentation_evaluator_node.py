@@ -14,9 +14,6 @@ from typing import List, Dict
 import ros2_numpy
 import numpy as np
 
-import glob
-import tqdm
-
 import json
 import os
 
@@ -32,12 +29,6 @@ class GroundSegmentationEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, GroundSegmentationScenario, GroundSegmentationResult)
 
-        # self.target_dataset_dir = "/home/toyozoshimada/perception_dataset/data/"
-        # t4 datasetには~/driving_log_replayer_data/ground_segmentation_pcd/sample/t4_dataset/sample_dataset
-        # self.target_pcd_file_path = "/home/toyozoshimada/perception_dataset/data/komatsu005_non_annotated_t4_format/komatsu005/data/LIDAR_CONCAT/*.bin"
-        self.get_logger().info(
-            "========================================================================="
-        )
         self.get_logger().info(f"{len(self._t4_dataset_paths)}")
         for path in self._t4_dataset_paths:
             self.get_logger().info(path)
@@ -48,7 +39,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
         sample_data = list(filter(lambda d: d["filename"].split(".")[-2] == "pcd", sample_data))
 
         self.ground_truth: Dict[int, np.ndarray] = {}
-        for i in tqdm.tqdm(range(len(sample_data))):
+        for i in range(len(sample_data)):
             pcd_file_path = os.path.join(self._t4_dataset_paths[0], sample_data[i]["filename"])
             raw_points = np.fromfile(pcd_file_path, dtype=np.float32)
             points: np.ndarray = raw_points.reshape((-1, self.CLOUD_DIM))
@@ -67,11 +58,11 @@ class GroundSegmentationEvaluator(DLREvaluator):
 
         if gt_frame_ts < 0:
             return
-
+        
+        self._logger.info(f"gt frame ts : {gt_frame_ts}")
         # get ground truth pointcloud in this frame
         # construct kd-tree from gt cloud
         gt_frame_cloud: np.ndarray = self.ground_truth[gt_frame_ts]
-        self._logger.info(f"{gt_frame_cloud.shape}")
         kdtree = cKDTree(gt_frame_cloud[:, 0:3])
 
         # convert ros2 pointcloud to numpy
@@ -81,12 +72,9 @@ class GroundSegmentationEvaluator(DLREvaluator):
         pointcloud[:, 1] = numpy_pcd["y"]
         pointcloud[:, 2] = numpy_pcd["z"]
 
-        self._logger.info("==count tp+fn, fp+tn==")
         # count TP+FN, TN+FP
         tp_fn = np.count_nonzero(gt_frame_cloud[:, 5] == 6)
         fp_tn = np.count_nonzero(gt_frame_cloud[:, 5] == 7)
-        self._logger.info("== == == end == == ==")
-        self._logger.info("==count tn fn==")
         TN: int = 0
         FN: int = 0
         for p in pointcloud:
@@ -95,11 +83,10 @@ class GroundSegmentationEvaluator(DLREvaluator):
                 FN += 1
             elif gt_frame_cloud[idx][5] == 7:
                 TN += 1
-        self._logger.info("== == == end == == ==")
         TP = tp_fn - FN
         FP = fp_tn - TN
 
-        self._logger.warn(f"TP {TP}, FP {FP}, TN {TN}, FN {FN}")
+        self._logger.info(f"TP {TP}, FP {FP}, TN {TN}, FN {FN}")
 
         metrics_list = self.__compute_metrics(TP, FP, TN, FN)
 
