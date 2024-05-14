@@ -29,9 +29,40 @@ from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import Scenario
 
+class DiagValue(BaseModel):
+    TimeRages: list[tuple[float, float]]
+
+
+
+class ClassConditionValue(BaseModel):
+    Threshold: dict[str, DiagValue]
+    PassRange: dict[METRICS_KEY, tuple[float, float]]
+
+    @field_validator("PassRange", mode="before")
+    @classmethod
+    def validate_pass_range(cls, range_dict: dict) -> dict[METRICS_KEY, tuple[float, float]]:
+        rtn_dict = {}
+        for k, v in range_dict.items():
+            if k not in METRICS_KEY_TUPLE:
+                key_error = "pass_range key must be 'min', 'max', and 'mean'"
+                raise ValueError(key_error)
+            boundary = 1.0
+            s_lower, s_upper = v.split("-")
+            lower = float(s_lower)
+            upper = float(s_upper)
+
+            if lower > boundary:
+                lower_error = f"lower value must be <= {boundary}"
+                raise ValueError(lower_error)
+            if upper < boundary:
+                upper_error = f"upper value must be >= {boundary}"
+                raise ValueError(upper_error)
+            rtn_dict[k] = (lower, upper)
+        return rtn_dict
+
 
 class ModuleConditionValue(BaseModel):
-    Threshold: dict[str, DiagValue]
+    Threshold: dict[str, DiagValue]\
     PassRange: dict[METRICS_KEY, tuple[float, float]]
 
     @field_validator("PassRange", mode="before")
