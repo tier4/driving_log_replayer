@@ -123,7 +123,7 @@ def object_state_to_ros_box_and_uuid(
         pose=pose,
         scale=Vector3(z=0.8),
         color=color,
-        text=text,
+        text=text[:8],
     )
     return bbox, uuid
 
