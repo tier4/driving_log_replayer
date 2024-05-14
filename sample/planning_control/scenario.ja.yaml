@@ -21,11 +21,12 @@ Evaluation:
     #   vel: 減速のターゲット速度 (SlowDownの時のみ)
     TimeRages:
       0.0-: # 時刻の条件を使わない(0.0-sys.float_info.max)
-        out_of_lane:
+        out_of_lane: # module keyは何個くらいあるか。Literal["out_of_lane", "crosswalk", ...]のようにチェックを入れたい。
           decision:
             none: null
       0.0-1.0:
-        crosswalk: # crosswalk_1, crosswalk_2...の前方一致で判定する
+        crosswalk: # crosswalk_1, crosswalk_2...の前方一致で判定する crosswalk_1, crosswalk_2のような_付きの場合、1や2が常に同じ横断歩道を表しているか？ある時点では crosswalk_1がx=10.0, y=10.0の位置の横断歩道で別の時点ではx=100.0 y=100.0みたいなことがあるか
+
           decision: # values[0]のkey
             slow_down: # values[0]のvalue
               pos_x: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
