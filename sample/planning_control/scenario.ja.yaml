@@ -23,25 +23,33 @@ Evaluation:
       crosswalk:
         decision:
           stop:
-            - TimeRange: [{start: 0.0, end: 1.0}]
-              pos_x: [{lower: 1.0, upper: 2.0}]
-              pos_y: [{lower: 3.0, upper: 4.0}]
-            - TimeRange: [{start: 0.0, end: 1.0}]
-              pos_x: [{lower: 1.0, upper: 2.0}]
-              pos_y: [{lower: 3.0, upper: 4.0}]
+            - TimeRange: 0.0-1.0
+              AdditionalCondition:
+                pos_x: {lower: 1.0, upper: 2.0}
+                pos_y: {lower: 3.0, upper: 4.0}
+            - TimeRange: 3.0-4.0
+              AdditionalCondition:
+                pos_x: [{lower: 1.0, upper: 2.0}]
+                pos_y: [{lower: 3.0, upper: 4.0}]
           slow_down:
-            - TimeRange: [{start: 0.0, end: 1.0},  [{start: 3.0, end: 4.0}]]
-              pos_x: [{lower: 1.0, upper: 2.0}]
-              pos_y: [{lower: 3.0, upper: 4.0}]
-              vel: [{lower: 1.0, upper: 2.0}]
+            - TimeRange: 0.0-1.0
+              AdditionalCondition:
+                pos_x: [{lower: 1.0, upper: 2.0}]
+                pos_y: [{lower: 3.0, upper: 4.0}]
+                vel: [{lower: 1.0, upper: 2.0}]
+            - TimeRange: 3.0-4.0
+              AdditionalCondition:
+                pos_x: [{lower: 1.0, upper: 2.0}]
+                pos_y: [{lower: 3.0, upper: 4.0}]
+                vel: [{lower: 1.0, upper: 2.0}]
           none:
-            - TimeRange: [{start: 3.0, end: 4.0}]
+            - TimeRange: [3.0-4.0]
       autonomous_emergency_braking:
         decision:
           stop:
-            - TimeRange: [{start: 0.0, end: 1.0}, {start: 3.0, end: 4.0}]
+            - TimeRange: [0.0-1.0, 3.0-4.0]
       out_of_lane:
         decision:
           none:
-            - TimeRange: [{start: 3.0, end: 4.0}]
+            - TimeRange: [3.0-4.0]
 
