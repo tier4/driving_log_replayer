@@ -19,37 +19,32 @@ Evaluation:
     #   pos_x: map frameでの速度指示のターゲット位置x
     #   pos_y: map frameでの速度指示のターゲット位置y
     #   vel: 減速のターゲット速度 (SlowDownの時のみ)
-    ModuleConditions:
-      crosswalk:
-        decision:
-          stop:
-            - TimeRange: 0.0-1.0
-              AdditionalCondition:
-                pos_x: {lower: 1.0, upper: 2.0}
-                pos_y: {lower: 3.0, upper: 4.0}
-            - TimeRange: 3.0-4.0
-              AdditionalCondition:
-                pos_x: [{lower: 1.0, upper: 2.0}]
-                pos_y: [{lower: 3.0, upper: 4.0}]
-          slow_down:
-            - TimeRange: 0.0-1.0
-              AdditionalCondition:
-                pos_x: [{lower: 1.0, upper: 2.0}]
-                pos_y: [{lower: 3.0, upper: 4.0}]
-                vel: [{lower: 1.0, upper: 2.0}]
-            - TimeRange: 3.0-4.0
-              AdditionalCondition:
-                pos_x: [{lower: 1.0, upper: 2.0}]
-                pos_y: [{lower: 3.0, upper: 4.0}]
-                vel: [{lower: 1.0, upper: 2.0}]
-          none:
-            - TimeRange: [3.0-4.0]
-      autonomous_emergency_braking:
-        decision:
-          stop:
-            - TimeRange: [0.0-1.0, 3.0-4.0]
-      out_of_lane:
-        decision:
-          none:
-            - TimeRange: [3.0-4.0]
-
+    TimeRages:
+      "*":
+        out_of_lane:
+          decision:
+            none: null
+      0.0-1.0:
+        crosswalk:
+          decision:
+            slow_down:
+              pos_x: 1.0-2.0
+              pos_y: 3.0-4.0
+              vel: 1.0-2.0
+            stop:
+              pos_x: 1.0-2.0
+              pos_y: 3.0-4.0
+        autonomous_emergency_braking:
+          decision:
+            stop: null
+      3.0-4.0:
+        crosswalk:
+          decision:
+            none: null
+            slow_down:
+              pos_x: 1.0-2.0
+              pos_y: 3.0-4.0
+              vel: 1.0-2.0
+        autonomous_emergency_braking:
+          decision:
+            stop: null
