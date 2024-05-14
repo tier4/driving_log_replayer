@@ -28,12 +28,12 @@ Evaluation:
         crosswalk: # crosswalk_1, crosswalk_2...の前方一致で判定する
           decision: # values[0]のkey
             slow_down: # values[0]のvalue
-              pos_x: 1.0-2.0 # values[1]以降で追加で判定したい条件
-              pos_y: 3.0-4.0 # values[1]以降で追加で判定したい条件
-              vel: 1.0-2.0 # values[1]以降で追加で判定したい条件
+              pos_x: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
+              pos_y: {lower: 3.0, upper: 4.0} # values[1]以降で追加で判定したい条件
+              vel: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
             stop:
-              pos_x: 1.0-2.0 # values[1]以降で追加で判定したい条件
-              pos_y: 3.0-4.0 # values[1]以降で追加で判定したい条件
+              pos_x: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
+              pos_y: {lower: 3.0, upper: 4.0} # values[1]以降で追加で判定したい条件
         autonomous_emergency_braking:
           decision:
             stop: null # values[1]以降の条件は使用しない。単にvalues[0].value==stopなら良い
@@ -42,9 +42,9 @@ Evaluation:
           decision:
             none: null
             slow_down:
-              pos_x: 1.0-2.0
-              pos_y: 3.0-4.0
-              vel: 1.0-2.0
+              pos_x: {lower: 1.0, upper: 2.0}
+              pos_y: {lower: 3.0, upper: 4.0}
+              vel: {lower: 1.0, upper: 2.0}
         autonomous_emergency_braking:
           decision:
             stop: null
