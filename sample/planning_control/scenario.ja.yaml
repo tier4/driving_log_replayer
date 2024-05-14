@@ -8,35 +8,35 @@ LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: planning_control
   UseCaseFormatVersion: 0.1.0
-  Hertz: 10
+  Hertz: 10.0 # TimeRange start-end なら (end - start) * Hertz * AllowableRate(=0.9) 以上の topicを受信しないと成功にならない。低レートを弾く。AllowableRateは一旦固定
   Conditions:
-    # 以下の3種類のDecisionに応じて評価を行う
-    #   StopDecision: 停止指示が出ていること評価
-    #   SlowDownDecision: 減速指示が出ていることの評価
-    #   NoneDecision: 停止・減速指示が出ていることの評価
+    # 以下の3種類のDecisionに応じて評価を行う。今後の拡張でdecision以外のキー対象とする可能性を考慮してモジュールの下にdecisionのキーを置く
+    #   decision.stop: 停止指示が出ていること評価
+    #   decision.slow_down: 減速指示が出ていることの評価
+    #   decision.none: 停止・減速指示が出ていないことの評価
     # 各モジュールは、評価のための以下の要素を持ちうる
     #   time_range: 評価対象となる時刻のレンジ (複数もちうる)
     #   pos_x: map frameでの速度指示のターゲット位置x
     #   pos_y: map frameでの速度指示のターゲット位置y
     #   vel: 減速のターゲット速度 (SlowDownの時のみ)
     TimeRages:
-      "*":
+      0.0-: # 時刻の条件を使わない(0.0-sys.float_info.max)
         out_of_lane:
           decision:
             none: null
       0.0-1.0:
-        crosswalk:
-          decision:
-            slow_down:
-              pos_x: 1.0-2.0
-              pos_y: 3.0-4.0
-              vel: 1.0-2.0
+        crosswalk: # crosswalk_1, crosswalk_2...の前方一致で判定する
+          decision: # values[0]のkey
+            slow_down: # values[0]のvalue
+              pos_x: 1.0-2.0 # values[1]以降で追加で判定したい条件
+              pos_y: 3.0-4.0 # values[1]以降で追加で判定したい条件
+              vel: 1.0-2.0 # values[1]以降で追加で判定したい条件
             stop:
-              pos_x: 1.0-2.0
-              pos_y: 3.0-4.0
+              pos_x: 1.0-2.0 # values[1]以降で追加で判定したい条件
+              pos_y: 3.0-4.0 # values[1]以降で追加で判定したい条件
         autonomous_emergency_braking:
           decision:
-            stop: null
+            stop: null # values[1]以降の条件は使用しない。単にvalues[0].value==stopなら良い
       3.0-4.0:
         crosswalk:
           decision:
