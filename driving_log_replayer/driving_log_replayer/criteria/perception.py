@@ -146,9 +146,9 @@ class CriteriaMethod(Enum):
 
     NUM_TP = "num_tp"
     LABEL = "label"
-    VELOCITY_X = "velocity_x"
-    VELOCITY_Y = "velocity_y"
-    VELOCITY_NORM = "velocity_norm"
+    VELOCITY_X_ERROR = "velocity_x_error"
+    VELOCITY_Y_ERROR = "velocity_y_error"
+    SPEED_ERROR = "speed_error"
     METRICS_SCORE = "metrics_score"
     METRICS_SCORE_MAPH = "metrics_score_maph"
 
@@ -291,8 +291,8 @@ class Label(CriteriaMethodImpl):
         return True
 
 
-class VelocityX(CriteriaMethodImpl):
-    name = CriteriaMethod.VELOCITY_X
+class VelocityXError(CriteriaMethodImpl):
+    name = CriteriaMethod.VELOCITY_X_ERROR
 
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__(level)
@@ -313,8 +313,8 @@ class VelocityX(CriteriaMethodImpl):
         return False
 
 
-class VelocityY(CriteriaMethodImpl):
-    name = CriteriaMethod.VELOCITY_Y
+class VelocityYError(CriteriaMethodImpl):
+    name = CriteriaMethod.VELOCITY_Y_ERROR
 
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__(level)
@@ -335,8 +335,8 @@ class VelocityY(CriteriaMethodImpl):
         return False
 
 
-class VelocityNorm(CriteriaMethodImpl):
-    name = CriteriaMethod.VELOCITY_NORM
+class SpeedError(CriteriaMethodImpl):
+    name = CriteriaMethod.SPEED_ERROR
 
     def __init__(self, level: CriteriaLevel) -> None:
         super().__init__(level)
@@ -510,12 +510,12 @@ class PerceptionCriteria:
                 self.methods.append(NumTP(level))
             elif method == CriteriaMethod.LABEL:
                 self.methods.append(Label(level))
-            elif method == CriteriaMethod.VELOCITY_X:
-                self.methods.append(VelocityX(level))
-            elif method == CriteriaMethod.VELOCITY_Y:
-                self.methods.append(VelocityY(level))
-            elif method == CriteriaMethod.VELOCITY_NORM:
-                self.methods.append(VelocityNorm(level))
+            elif method == CriteriaMethod.VELOCITY_X_ERROR:
+                self.methods.append(VelocityXError(level))
+            elif method == CriteriaMethod.VELOCITY_Y_ERROR:
+                self.methods.append(VelocityYError(level))
+            elif method == CriteriaMethod.SPEED_ERROR:
+                self.methods.append(SpeedError(level))
             elif method == CriteriaMethod.METRICS_SCORE:
                 self.methods.append(MetricsScore(level))
             elif method == CriteriaMethod.METRICS_SCORE_MAPH:
