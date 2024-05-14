@@ -19,23 +19,28 @@ Evaluation:
     #   pos_x: map frameでの速度指示のターゲット位置x
     #   pos_y: map frameでの速度指示のターゲット位置y
     #   vel: 減速のターゲット速度 (SlowDownの時のみ)
-    StopDecision:
-      autonomous_emergency_braking: # module key
-        time_range: [{start: 0.0, end: 1.0}, {start: 3.0, end: 4.0}]
-      crosswalk: # module key
-        - time_range: [{start: 0.0, end: 1.0}]
-          pos_x: [{lower: 1.0, upper: 2.0}]
-          pos_y: [{lower: 3.0, upper: 4.0}]
-        - time_range: [{start: 0.0, end: 1.0}]
-          pos_x: [{lower: 1.0, upper: 2.0}]
-          pos_y: [{lower: 3.0, upper: 4.0}]
-    SlowDownDecision:
-      crosswalk: # module key
-        time_range: [{start: 0.0, end: 1.0},  [{start: 3.0, end: 4.0}]]
-        pos_x: [{lower: 1.0, upper: 2.0}]
-        pos_y: [{lower: 3.0, upper: 4.0}]
-        vel: [{lower: 1.0, upper: 2.0}]
-    NoneDecision:
-      out_of_lane: # module key
-      crosswalk: # module key
-        time_range: [{start: 3.0, end: 4.0}]
+    crosswalk:
+      decision:
+        stop:
+          - TimeRange: [{start: 0.0, end: 1.0}]
+            pos_x: [{lower: 1.0, upper: 2.0}]
+            pos_y: [{lower: 3.0, upper: 4.0}]
+          - TimeRange: [{start: 0.0, end: 1.0}]
+            pos_x: [{lower: 1.0, upper: 2.0}]
+            pos_y: [{lower: 3.0, upper: 4.0}]
+        slow_down:
+          - TimeRange: [{start: 0.0, end: 1.0},  [{start: 3.0, end: 4.0}]]
+            pos_x: [{lower: 1.0, upper: 2.0}]
+            pos_y: [{lower: 3.0, upper: 4.0}]
+            vel: [{lower: 1.0, upper: 2.0}]
+        none:
+          - TimeRange: [{start: 3.0, end: 4.0}]
+    autonomous_emergency_braking:
+      decision:
+        stop:
+          - TimeRange: [{start: 0.0, end: 1.0}, {start: 3.0, end: 4.0}]
+    out_of_lane:
+      decision:
+        none:
+          - TimeRange: [{start: 3.0, end: 4.0}]
+
