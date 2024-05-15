@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.15.4 (2024-05-15)
+-------------------
 * chore: show full uuid (`#445 <https://github.com/tier4/driving_log_replayer/issues/445>`_)
 * fix(performance_diag): disable perception (`#444 <https://github.com/tier4/driving_log_replayer/issues/444>`_)
 * refactor: use a function in perception_eval (`#436 <https://github.com/tier4/driving_log_replayer/issues/436>`_)
