@@ -2,6 +2,14 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: show full uuid (`#445 <https://github.com/tier4/driving_log_replayer/issues/445>`_)
+* fix(performance_diag): disable perception (`#444 <https://github.com/tier4/driving_log_replayer/issues/444>`_)
+* refactor: use a function in perception_eval (`#436 <https://github.com/tier4/driving_log_replayer/issues/436>`_)
+* feat: cli show exit status (`#441 <https://github.com/tier4/driving_log_replayer/issues/441>`_)
+* Contributors: Hayato Mizushima, Kotaro Uetake
+
 1.15.3 (2024-05-09)
 -------------------
 * feat(annotationless_perception): record pointcloud and objects (`#440 <https://github.com/tier4/driving_log_replayer/issues/440>`_)
