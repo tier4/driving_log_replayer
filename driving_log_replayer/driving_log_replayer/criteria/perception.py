@@ -15,10 +15,9 @@
 
 from __future__ import annotations
 
-from abc import ABC
-from abc import abstractmethod
-from enum import Enum
 import logging
+from abc import ABC, abstractmethod
+from enum import Enum
 from numbers import Number
 from typing import TYPE_CHECKING
 
@@ -142,6 +141,7 @@ class CriteriaMethod(Enum):
     - VELOCITY_X_ERROR: Error of x direction velocity [m/s].
     - VELOCITY_Y_ERROR: Error of y direction velocity [m/s].
     - SPEED_ERROR: Error of speed [m/s].
+    - YAW_ERROR: Error yaw [rad].
     - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
     - METRICS_SCORE_MAPH: mAPH score.
     """
@@ -151,6 +151,7 @@ class CriteriaMethod(Enum):
     VELOCITY_X_ERROR = "velocity_x_error"
     VELOCITY_Y_ERROR = "velocity_y_error"
     SPEED_ERROR = "speed_error"
+    YAW_ERROR = "yaw_error"
     METRICS_SCORE = "metrics_score"
     METRICS_SCORE_MAPH = "metrics_score_maph"
 
@@ -371,6 +372,24 @@ class SpeedError(CriteriaMethodImpl):
         return True
 
 
+class YawError(CriteriaMethodImpl):
+    name = CriteriaMethod.YAW_ERROR
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        errors = []
+        for result in frame.object_results:
+            err = result.heading_error
+            if err is not None:
+                _, _, yaw_err = err
+                errors.append(yaw_err)
+
+        return 0.0 if len(errors) == 0 else np.mean(errors)
+
+
 class MetricsScore(CriteriaMethodImpl):
     name = CriteriaMethod.METRICS_SCORE
 
@@ -499,6 +518,8 @@ class PerceptionCriteria:
                 self.methods.append(VelocityYError(level))
             elif method == CriteriaMethod.SPEED_ERROR:
                 self.methods.append(SpeedError(level))
+            elif method == CriteriaMethod.YAW_ERROR:
+                self.methods.append(YawError(level))
             elif method == CriteriaMethod.METRICS_SCORE:
                 self.methods.append(MetricsScore(level))
             elif method == CriteriaMethod.METRICS_SCORE_MAPH:
