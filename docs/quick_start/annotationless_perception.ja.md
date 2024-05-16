@@ -20,7 +20,7 @@
 1. シミュレーションの実行
 
    ```shell
-   dlr simulation run -p annotationless_perception -l play_rate:=0.5
+   dlr simulation run -p annotationless_perception -l use_perception_online_evaluator:=true -l play_rate:=0.5
    ```
 
 2. 結果の確認
@@ -34,5 +34,10 @@
    Passed:
    CAR (Success)
    BUS (Success)
+   PEDESTRIAN (Success)
+   BICYCLE (Success)
+   MOTORCYCLE (Success)
+   TRAILER (Success)
+   UNKNOWN (Success)
    TRUCK (Success)
    ```
