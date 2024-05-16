@@ -2,11 +2,11 @@
 
 ## Version 1.15.5
 
-Document update
+Minor Tweak
 
-| Module                      | Feature       | Brief summary                    | Pull request                                                   | Jira | Contributor                                   |
-| --------------------------- | ------------- | -------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
-| `annotationless_perception` | documentation | update quick start's run command | [#447](https://github.com/tier4/driving_log_replayer/pull/447) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| Module                      | Feature | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ------- | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `annotationless_perception` | launch  | set use_perception_online_evaluator=true | [#449](https://github.com/tier4/driving_log_replayer/pull/449) | RT1-6339 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.15.4
 

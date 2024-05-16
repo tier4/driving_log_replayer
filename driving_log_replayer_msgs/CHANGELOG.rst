@@ -4,7 +4,7 @@ Changelog for package driving_log_replayer
 
 Forthcoming
 -----------
-* docs: update annotationless_perception quick start run command (`#447 <https://github.com/tier4/driving_log_replayer/issues/447>`_)
+* feat: set use_perception_online_evaluator=true by default (`#449 <https://github.com/tier4/driving_log_replayer/issues/449>`_)
 * Contributors: Hayato Mizushima
 
 1.15.4 (2024-05-15)
