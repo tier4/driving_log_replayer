@@ -76,7 +76,6 @@ def test_calc_distance_point_to_lanelet() -> None:
     assert distance_to_lanelet == 1.0  # noqa
 
 
-"""
 from lanelet2.geometry import to2D
 
 from driving_log_replayer.lanelet2_util import load_map
@@ -91,5 +90,10 @@ for traffic_light in re1504.trafficLights:
     l2d = to2D(traffic_light)
     p2d = BasicPoint2d(0.0, 0.0)
     distance_to_gt.append(distance(l2d, p2d))
-print(min(distance_to_gt))
-"""
+print(min(distance_to_gt))  # return nearest distance
+
+traffic_light_0 = re1504.trafficLights[0]
+p3d_l = traffic_light_0[0]
+p3d_r = traffic_light_0[1]
+print(len(traffic_light_0))
+print(f"`{p3d_l.x=},{p3d_l.y=},{p3d_l.z=}")

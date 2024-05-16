@@ -191,6 +191,23 @@ class TrafficLightEvaluator(DLREvaluator):
                     rtn_distance = tmp_dist
             return rtn_distance
 
+    def get_traffic_light_center_position(
+        self,
+        traffic_light_uuid: str,
+    ) -> tuple[float, float, float]:
+        try:
+            int_uuid = int(traffic_light_uuid)
+        except ValueError:
+            return (0.0, 0.0, 0.0)
+        else:
+            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
+            light_ls = traffic_light_obj.trafficLights[0]  # とりあえず1個目のline string
+            # 左右の端の位置が入っているので、真ん中を取っておく https://tech.tier4.jp/entry/2021/06/23/160000
+            x_center = (light_ls[0].x + light_ls[1].x) / 2
+            y_center = (light_ls[0].y + light_ls[1].y) / 2
+            z_center = (light_ls[0].z + light_ls[1].z) / 2
+            return (x_center, y_center, z_center)
+
     def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
         map_to_baselink = self.lookup_transform(msg.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_timestamp(msg.stamp)
@@ -199,68 +216,22 @@ class TrafficLightEvaluator(DLREvaluator):
             self.__skip_counter += 1
             return
 
-        # extract all traffic lights closer than 202[m]
-        # TODO: avoid using magic number
-        filtered_gt_objects = []
-        valid_gt_distances = []
-
-        ground_truth_objects = ground_truth_now_frame.objects
-        ground_truth_distances = []
-        for obj in ground_truth_objects:
-            distance_to_gt = self.calc_distance(obj.uuid, map_to_baselink)
-            ground_truth_distances.append(distance_to_gt)
-            if (
-                distance_to_gt is not None
-                and distance_to_gt < TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD
-            ):
-                filtered_gt_objects.append(obj)
-                valid_gt_distances.append(distance_to_gt)
+        for obj in ground_truth_now_frame.objects:
+            traffic_light_pos = self.calc_distance(obj.uuid)
+            obj.set_position(traffic_light_pos)
 
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(
             unix_time,
             msg.signals,
         )
-        filtered_est_objects = []
-        valid_est_distances = []
-
-        estimation_distances = []
-        for obj in estimated_objects:
-            distance_to_est = self.calc_distance(obj.uuid, map_to_baselink)
-            estimation_distances.append(distance_to_est)
-            if (
-                distance_to_est is not None
-                and distance_to_est < TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD
-            ):
-                filtered_est_objects.append(obj)
-                valid_est_distances.append(distance_to_est)
-
-        if len(filtered_gt_objects) == 0 and len(filtered_est_objects) == 0:
-            self.__skip_counter += 1
-            return
-        logging.info(
-            "[Before] "  # noqa
-            f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(ground_truth_objects, ground_truth_distances, strict=True)]}, "
-            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(estimated_objects, estimation_distances, strict=True)]}, ",
-        )
-        ground_truth_now_frame.objects = filtered_gt_objects
-        ros_critical_ground_truth_objects = filtered_gt_objects
-        logging.info(
-            f"[After] "  # noqa
-            f"GTs: {[(obj.uuid, f'{dist:.3f} [m]') for obj, dist in zip(filtered_gt_objects, valid_gt_distances, strict=True)]}, "
-            f"ESTs: {[(obj.uuid, f'{dist:.3f} [m]', f'{obj.semantic_score.confidence:.3f}') for obj, dist in zip(filtered_est_objects, valid_est_distances, strict=True)]}, ",
-        )
+        ros_critical_ground_truth_objects = ground_truth_now_frame.objects
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
             unix_time=unix_time,
             ground_truth_now_frame=ground_truth_now_frame,
-            estimated_objects=filtered_est_objects,
+            estimated_objects=estimated_objects,
             ros_critical_ground_truth_objects=ros_critical_ground_truth_objects,
             critical_object_filter_config=self.__critical_object_filter_config,
             frame_pass_fail_config=self.__frame_pass_fail_config,
-        )
-        logging.info(
-            f"TP: {len(frame_result.pass_fail_result.tp_object_results)}, "  # noqa
-            f"FP: {len(frame_result.pass_fail_result.fp_object_results)}, "
-            f"FN: {len(frame_result.pass_fail_result.fn_objects)}",
         )
         self._result.set_frame(
             frame_result,
