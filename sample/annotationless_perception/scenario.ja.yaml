@@ -30,7 +30,7 @@ Evaluation:
       BUS: # classification key
         Threshold:
           # Only lateral_deviation is evaluated.
-          lateral_deviation: { max: 0.050 } # Only max is evaluated.
+          total_objects_count_r50.00_h10.00: { max: 0.9 } # Only max is evaluated.
         PassRange:
           min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]

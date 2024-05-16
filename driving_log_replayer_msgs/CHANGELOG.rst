@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.15.5 (2024-05-16)
+-------------------
+* feat: set use_perception_online_evaluator=true by default (`#449 <https://github.com/tier4/driving_log_replayer/issues/449>`_)
+* Contributors: Hayato Mizushima
+
 1.15.4 (2024-05-15)
 -------------------
 * chore: show full uuid (`#445 <https://github.com/tier4/driving_log_replayer/issues/445>`_)

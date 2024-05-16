@@ -45,6 +45,7 @@ def generate_launch_description() -> launch.LaunchDescription:
     autoware_launch = cmn.get_autoware_launch(
         sensing=LaunchConfiguration("sensing"),
         localization="false",
+        use_perception_online_evaluator="true",
     )
     rviz_node = cmn.get_rviz("autoware.rviz")
     evaluator_node = cmn.get_evaluator_node(
