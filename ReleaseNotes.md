@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.15.5
+
+Minor Tweak
+
+| Module                      | Feature | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ------- | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `annotationless_perception` | launch  | set use_perception_online_evaluator=true | [#449](https://github.com/tier4/driving_log_replayer/pull/449) | RT1-6339 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.15.4
 
 Bug Fix
