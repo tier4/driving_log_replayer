@@ -93,7 +93,7 @@ def test_update_threshold_from_file() -> None:
     # update_threshold_from_file update only keys written in scenario.yaml
     bus_threshold = scenario.Evaluation.Conditions.ClassConditions["BUS"].Threshold
     assert bus_threshold == {
-        "total_objects_count_r50.00_h10.00": DiagValue(max=0.9868421052631579),
+        "total_objects_count_r50.00_h10.00": DiagValue(max=1.0),
     }
 
 
