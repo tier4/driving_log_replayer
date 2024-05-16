@@ -34,7 +34,7 @@ def test_scenario() -> None:
     )
     assert scenario.ScenarioName == "sample_annotationless_perception"
     assert scenario.Evaluation.Conditions.ClassConditions["BUS"].Threshold == {
-        "lateral_deviation": DiagValue(max=0.050),
+        "total_objects_count_r50.00_h10.00": DiagValue(max=0.9),
     }
     assert scenario.Evaluation.Conditions.ClassConditions["BUS"].PassRange == {
         "min": (0.0, 2.0),
