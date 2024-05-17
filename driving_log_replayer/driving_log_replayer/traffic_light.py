@@ -124,6 +124,7 @@ class Perception(EvaluationItem):
         self.criteria: PerceptionCriteria = PerceptionCriteria(
             methods=self.condition.CriteriaMethod,
             levels=self.condition.CriteriaLevel,
+            distance_range=self.condition.Filter.Distance,
         )
 
     def set_frame(self, frame: PerceptionFrameResult) -> dict:

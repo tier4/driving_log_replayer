@@ -174,39 +174,24 @@ class TrafficLightEvaluator(DLREvaluator):
             estimated_objects.append(estimated_object)
         return estimated_objects
 
-    def calc_distance(self, traffic_light_uuid: str, map_to_baselink: TransformStamped) -> float:
+    def get_traffic_light_pos_and_dist(
+        self,
+        traffic_light_uuid: str,
+        map_to_baselink: TransformStamped,
+    ) -> tuple[float, float, float, float]:
         rtn_distance = TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD + 1.0
         try:
             int_uuid = int(traffic_light_uuid)
         except ValueError:
-            return rtn_distance
+            return (0.0, 0.0, 0.0, rtn_distance)
         else:
             traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
             ego_position = map_to_baselink.transform.translation
-            for traffic_light in traffic_light_obj.trafficLights:
-                l2d = to2D(traffic_light)
-                p2d = BasicPoint2d(ego_position.x, ego_position.y)
-                tmp_dist = distance(l2d, p2d)
-                if tmp_dist < rtn_distance:
-                    rtn_distance = tmp_dist
-            return rtn_distance
-
-    def get_traffic_light_center_position(
-        self,
-        traffic_light_uuid: str,
-    ) -> tuple[float, float, float]:
-        try:
-            int_uuid = int(traffic_light_uuid)
-        except ValueError:
-            return (0.0, 0.0, 0.0)
-        else:
-            traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(int_uuid)
             light_ls = traffic_light_obj.trafficLights[0]  # とりあえず1個目のline string
-            # 左右の端の位置が入っているので、真ん中を取っておく https://tech.tier4.jp/entry/2021/06/23/160000
-            x_center = (light_ls[0].x + light_ls[1].x) / 2
-            y_center = (light_ls[0].y + light_ls[1].y) / 2
-            z_center = (light_ls[0].z + light_ls[1].z) / 2
-            return (x_center, y_center, z_center)
+            # 左右の端の位置が入っている。とりあえず大きな差はないとみなして0を取る https://tech.tier4.jp/entry/2021/06/23/160000
+            l2d = to2D(light_ls)
+            p2d = BasicPoint2d(ego_position.x, ego_position.y)
+            return (light_ls[0].x, light_ls[0].y, light_ls[0].z, distance(l2d, p2d))
 
     def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
         map_to_baselink = self.lookup_transform(msg.stamp)
@@ -217,8 +202,9 @@ class TrafficLightEvaluator(DLREvaluator):
             return
 
         for obj in ground_truth_now_frame.objects:
-            traffic_light_pos = self.get_traffic_light_center_position(obj.uuid)
-            obj.set_position(traffic_light_pos)
+            x, y, z, dist = self.get_traffic_light_pos_and_dist(obj.uuid, map_to_baselink)
+            self.get_logger().error(f"{dist=}")
+            obj.set_position((x, y, z))
 
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(
             unix_time,
