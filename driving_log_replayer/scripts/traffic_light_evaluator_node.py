@@ -162,6 +162,8 @@ class TrafficLightEvaluator(DLREvaluator):
                 DLREvaluator.get_traffic_light_label_str(signal.elements),
             )
             confidence: float = max(signal.elements, key=lambda x: x.confidence)
+            signal_pos = self.get_traffic_light_pos(signal.traffic_signal_id)
+            self.get_logger().error(f"{signal_pos=}")
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
@@ -170,9 +172,18 @@ class TrafficLightEvaluator(DLREvaluator):
                 semantic_label=label,
                 roi=None,
                 uuid=str(signal.traffic_signal_id),
+                position=signal_pos,
             )
             estimated_objects.append(estimated_object)
         return estimated_objects
+
+    def get_traffic_light_pos(
+        self,
+        traffic_light_uuid: int,
+    ) -> tuple[float, float, float, float]:
+        traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(traffic_light_uuid)
+        light_ls = traffic_light_obj.trafficLights[0]  # とりあえず1個目のline string
+        return (light_ls[0].x, light_ls[0].y, light_ls[0].z)
 
     def get_traffic_light_pos_and_dist(
         self,
