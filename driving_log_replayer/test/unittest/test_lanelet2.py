@@ -76,6 +76,7 @@ def test_calc_distance_point_to_lanelet() -> None:
     assert distance_to_lanelet == 1.0  # noqa
 
 
+"""
 from lanelet2.geometry import to2D
 
 from driving_log_replayer.lanelet2_util import load_map
@@ -97,3 +98,4 @@ p3d_l = traffic_light_0[0]
 p3d_r = traffic_light_0[1]
 print(len(traffic_light_0))
 print(f"`{p3d_l.x=},{p3d_l.y=},{p3d_l.z=}")
+"""
