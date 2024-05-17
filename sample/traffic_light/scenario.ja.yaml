@@ -29,11 +29,10 @@ Evaluation:
       evaluation_task: classification2d # 現状はclassification2d固定、今後detection2dに対応させる予定。
       target_labels: [green, red, yellow, unknown] # 評価ラベル 指定可能なラベルは以下を参照。https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#trafficlightlabel
       max_distance: 202.0 # 評価対象の信号機の最大距離
-      min_distance: 0.0   # 評価対象の信号機の最小距離
+      min_distance: 0.0 # 評価対象の信号機の最小距離
       allow_matching_unknown: true # ラベルがunknownのオブジェクトとマッチングさせるか
       merge_similar_labels: false # 類似のラベルをマージするか https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#%E9%A1%9E%E4%BC%BC%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8
   CriticalObjectFilterConfig:
     target_labels: [green, red, yellow, unknown]
   PerceptionPassFailConfig:
     target_labels: [green, red, yellow, unknown]
-
