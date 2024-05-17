@@ -217,7 +217,7 @@ class TrafficLightEvaluator(DLREvaluator):
             return
 
         for obj in ground_truth_now_frame.objects:
-            traffic_light_pos = self.calc_distance(obj.uuid)
+            traffic_light_pos = self.get_traffic_light_center_position(obj.uuid)
             obj.set_position(traffic_light_pos)
 
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(
