@@ -232,6 +232,121 @@ def summarize_pass_fail_result(pass_fail: PassFailResult) -> dict:
     }
 
 
+def object_to_description(obj: ObjectType) -> dict:
+    return {
+        "label": obj.semantic_label.name,
+        "uuid": obj.uuid,
+        "position": obj.state.position,
+        "velocity": obj.state.velocity,
+        "orientation": obj.state.orientation.q.tolist(),  # quaternion to list
+    }
+
+
+def dynamic_object_result_to_error_description(obj: DynamicObjectWithPerceptionResult) -> dict:
+    pose_error = obj.distance_error_bev
+    heading_error = obj.heading_error
+    velocity_error = obj.velocity_error
+    return {
+        "pose_error": pose_error,
+        "heading_error": heading_error,
+        "velocity_error": velocity_error,
+    }
+
+
+def extract_pass_fail_objects_description(
+    pass_fail: PassFailResult, map_to_base_link: dict = {}
+) -> dict:
+    """
+    Extracts detailed objects results from PassFailResult.
+    Output should dict contains
+    - "Objects"
+        - "status": "TP" | "FP" | "FN"
+        - "object_type": "GT" | "EST"
+        - "label": str
+        - "uuid": str
+        - "position": tuple[float, float, float]
+        - "velocity": tuple[float, float, float]
+        - "pose_error": optional[float]
+        - "heading_error": optional[float]
+        - "velocity_error": optional[float]
+        - "distance": float # distance between object center and ego vehicle
+        - "orientation": tuple[float, float, float, float]
+    """
+    has_map_to_base_link: bool = len(map_to_base_link) > 0
+    if has_map_to_base_link:
+        # convert dict to 4x4 matrix
+        translation_vector = map_to_base_link["transform"]["translation"]
+        rotation_quaternion = map_to_base_link["transform"]["rotation"]
+        map2ego_matrix = np.eye(4)
+        map2ego_matrix[:3, 3] = translation_vector
+        map2ego_matrix[:3, :3] = Quaternion(rotation_quaternion).rotation_matrix
+        ego2map_matrix = np.linalg.inv(map2ego_matrix)
+
+    gt_descriptions = []
+    est_descriptions = []
+
+    # for TP objects
+    for tp_object in pass_fail.tp_object_results:
+        tp_gt = tp_object.ground_truth_object
+        tp_est = tp_object.estimated_object
+        gt_distance_bev = tp_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+        est_distance_bev = tp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+        error_description = dynamic_object_result_to_error_description(tp_object)
+        tp_description = object_to_description(tp_gt)
+        # GT object dict
+        gt_tp_description = {
+            "status": "TP",
+            "object_type": "GT",
+            "distance": gt_distance_bev,
+            **tp_description,
+            **error_description,
+        }
+        # Estimated object dict
+        est_tp_description = {
+            "status": "TP",
+            "object_type": "EST",
+            "distance": est_distance_bev,
+            **object_to_description(tp_est),
+            **error_description,
+        }
+        gt_descriptions.append(gt_tp_description)
+        est_descriptions.append(est_tp_description)
+
+    # for FP objects
+    for fp_object in pass_fail.fp_object_results:
+        fp_est = fp_object.estimated_object
+        est_distance_bev = fp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+        error_description = dynamic_object_result_to_error_description(fp_object)
+        fp_description = object_to_description(fp_est)
+        # Estimated object dict
+        est_fp_description = {
+            "status": "FP",
+            "object_type": "EST",
+            "distance": est_distance_bev,
+            **fp_description,
+            **error_description,
+        }
+        est_descriptions.append(est_fp_description)
+
+    # for FN objects
+    for fn_object in pass_fail.fn_objects:
+        fn_gt = fn_object
+        gt_distance_bev = fn_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+        fn_description = object_to_description(fn_gt)
+        # GT object dict
+        gt_fn_description = {
+            "status": "FN",
+            "object_type": "GT",
+            "distance": gt_distance_bev,
+            **fn_description,
+        }
+        gt_descriptions.append(gt_fn_description)
+
+    return {
+        gt_descriptions.extend(est_descriptions),
+    }
+
+
 def result_label_list(results: list[DynamicObjectWithPerceptionResult]) -> str:
     rtn_str = "["
     for i, result in enumerate(results):
