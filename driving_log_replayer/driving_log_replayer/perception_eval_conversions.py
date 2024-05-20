@@ -253,34 +253,34 @@ def dynamic_object_result_to_error_description(obj: DynamicObjectWithPerceptionR
     }
 
 
-def extract_pass_fail_objects_description(
-    pass_fail: PassFailResult, map_to_base_link: dict = {}
-) -> list[dict]:
+def extract_pass_fail_objects_description(pass_fail: PassFailResult) -> list[dict]:
     """
-    Extracts detailed objects results from PassFailResult.
-    Output should dict contains
-    - "Objects"
-        - "status": "TP" | "FP" | "FN"
-        - "object_type": "GT" | "EST"
-        - "label": str
-        - "uuid": str
-        - "position": tuple[float, float, float]
-        - "velocity": tuple[float, float, float]
-        - "pose_error": optional[float]
-        - "heading_error": optional[float]
-        - "velocity_error": optional[float]
-        - "distance": float # distance between object center and ego vehicle
-        - "orientation": tuple[float, float, float, float]
+    Extract detailed objects results from PassFailResult.
+
+    Args:
+    ----
+        pass_fail (PassFailResult): PassFailResult object
+
+    Returns:
+    -------
+        list[dict]: List of objects descriptions.
+        Each element is a dictionary with the following keys:
+            - "Objects"
+                - "status": "TP" | "FP" | "FN"
+                - "object_type": "GT" | "EST"
+                - "label": str
+                - "uuid": str
+                - "position": tuple[float, float, float]
+                - "velocity": tuple[float, float, float]
+                - "pose_error": optional[float]
+                - "heading_error": optional[float]
+                - "velocity_error": optional[float]
+                - "distance": float # distance between object center and ego vehicle
+                - "orientation": tuple[float, float, float, float]
+
     """
-    has_map_to_base_link: bool = len(map_to_base_link) > 0
-    if has_map_to_base_link:
-        # convert dict to 4x4 matrix
-        translation_vector = map_to_base_link["transform"]["translation"]
-        rotation_quaternion = map_to_base_link["transform"]["rotation"]
-        map2ego_matrix = np.eye(4)
-        map2ego_matrix[:3, 3] = translation_vector
-        map2ego_matrix[:3, :3] = Quaternion(rotation_quaternion).rotation_matrix
-        ego2map_matrix = np.linalg.inv(map2ego_matrix)
+    ego2map_matrix = pass_fail.ego2map
+    has_map_to_base_link = len(ego2map_matrix) > 0
 
     gt_descriptions = []
     est_descriptions = []
@@ -342,7 +342,7 @@ def extract_pass_fail_objects_description(
         }
         gt_descriptions.append(gt_fn_description)
 
-    return gt_descriptions.extend(est_descriptions),
+    return gt_descriptions + est_descriptions
 
 
 def result_label_list(results: list[DynamicObjectWithPerceptionResult]) -> str:
