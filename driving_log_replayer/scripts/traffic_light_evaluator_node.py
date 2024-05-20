@@ -45,6 +45,7 @@ from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.lanelet2_util import load_map
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.traffic_light import FailResultHolder
+from driving_log_replayer.traffic_light import get_traffic_light_label_str
 from driving_log_replayer.traffic_light import TrafficLightResult
 from driving_log_replayer.traffic_light import TrafficLightScenario
 
@@ -163,7 +164,7 @@ class TrafficLightEvaluator(DLREvaluator):
         estimated_objects: list[DynamicObject2D] = []
         for signal in signals:
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                DLREvaluator.get_traffic_light_label_str(signal.elements),
+                get_traffic_light_label_str(signal.elements),
             )
             confidence: float = max(signal.elements, key=lambda x: x.confidence)
             signal_pos = self.get_traffic_light_pos(signal.traffic_signal_id, map_to_camera)
