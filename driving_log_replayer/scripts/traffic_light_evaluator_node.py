@@ -45,6 +45,7 @@ from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.lanelet2_util import load_map
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.traffic_light import FailResultHolder
+from driving_log_replayer.traffic_light import get_camera_frame_id_from_t4_dataset
 from driving_log_replayer.traffic_light import get_traffic_light_label_str
 from driving_log_replayer.traffic_light import TrafficLightResult
 from driving_log_replayer.traffic_light import TrafficLightScenario
@@ -84,7 +85,12 @@ class TrafficLightEvaluator(DLREvaluator):
         self.__p_cfg["evaluation_config_dict"][
             "count_label_number"
         ] = True  # Add a fixed value setting
-        self.__camera_type = self.__p_cfg["camera_type"]
+        self.__camera_type: str = self.__p_cfg["camera_type"]
+        self.__camera_frame_id = get_camera_frame_id_from_t4_dataset(
+            self._t4_dataset_paths[0],  # use case only
+            self.__camera_type.upper(),
+        )
+        self.get_logger().error(f"{self.__camera_frame_id=}")
         if not self.check_evaluation_task():
             rclpy.shutdown()
 
@@ -217,6 +223,7 @@ class TrafficLightEvaluator(DLREvaluator):
 
     def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
         map_to_baselink = self.lookup_transform(msg.stamp)
+        map_to_camera = self.lookup_transform(msg.stamp, from_="map", to=self.__camera_frame_id)
         unix_time: int = eval_conversions.unix_time_from_ros_timestamp(msg.stamp)
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
         if ground_truth_now_frame is None:
@@ -236,7 +243,7 @@ class TrafficLightEvaluator(DLREvaluator):
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(
             unix_time,
             msg.signals,
-            map_to_baselink,
+            map_to_camera,
         )
         ros_critical_ground_truth_objects = ground_truth_now_frame.objects
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
