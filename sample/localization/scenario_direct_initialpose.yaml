@@ -18,4 +18,13 @@ Evaluation:
       Method: NVTL # NVTL or TP which method to use for evaluation
       AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
       NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
-  DirectInitialPose: "[3839.340576171875,73731.3359375,19.639482498168945,-0.023971009814459248,0.005891999600528019,-0.9709848597542231,0.237863568369043]"
+  DirectInitialPose:
+    position:
+      x: 3839.340576171875
+      y: 73731.3359375
+      z: 19.639482498168945
+    orientation:
+      x: -0.023971009814459248
+      y: 0.005891999600528019
+      z: -0.9709848597542231
+      w: 0.237863568369043

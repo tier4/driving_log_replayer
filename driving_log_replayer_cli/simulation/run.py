@@ -240,9 +240,6 @@ def cmd_use_bag_only(
     launch_localization = scenario.Evaluation.get("LaunchLocalization")
     if launch_localization is not None:
         launch_arg_dict_scenario["localization"] = launch_localization
-    direct_initialpose = scenario.Evaluation.get("DirectInitialPose")
-    if direct_initialpose is not None:
-        launch_arg_dict_scenario["initial_pose"] = direct_initialpose
     launch_arg_dict_scenario.update(launch_args_dict)
     return launch_command + clean_up_cmd()
 
