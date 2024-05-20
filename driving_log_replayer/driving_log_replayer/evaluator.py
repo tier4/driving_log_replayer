@@ -24,7 +24,6 @@ from autoware_auto_perception_msgs.msg import TrafficLight
 from builtin_interfaces.msg import Time as Stamp
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
-from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovariance
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from geometry_msgs.msg import Quaternion
@@ -41,7 +40,6 @@ from rclpy.task import Future
 from rclpy.time import Duration
 from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
-import simplejson as json
 from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformException
@@ -251,27 +249,6 @@ class DLREvaluator(Node):
 
     def save_pkl(self, save_object: Any) -> None:
         PickleWriter(self._pkl_path, save_object)
-
-    @classmethod
-    def get_goal_pose_from_t4_dataset(cls, dataset_path: str) -> PoseStamped:
-        ego_pose_json_path = Path(dataset_path, "annotation", "ego_pose.json")
-        with ego_pose_json_path.open() as ego_pose_file:
-            ego_pose_json = json.load(ego_pose_file)
-            last_ego_pose = ego_pose_json[-1]
-            pose = Pose(
-                position=Point(
-                    x=last_ego_pose["translation"][0],
-                    y=last_ego_pose["translation"][1],
-                    z=last_ego_pose["translation"][2],
-                ),
-                orientation=Quaternion(
-                    x=last_ego_pose["rotation"][1],
-                    y=last_ego_pose["rotation"][2],
-                    z=last_ego_pose["rotation"][3],
-                    w=last_ego_pose["rotation"][0],
-                ),
-            )
-            return PoseStamped(header=Header(frame_id="map"), pose=pose)
 
     @classmethod
     def transform_stamped_with_euler_angle(cls, transform_stamped: TransformStamped) -> dict:

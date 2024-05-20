@@ -45,6 +45,7 @@ from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.lanelet2_util import road_lanelets_from_file
 from driving_log_replayer.lanelet2_util import to_shapely_polygon
 from driving_log_replayer.obstacle_segmentation import default_config_path
+from driving_log_replayer.obstacle_segmentation import get_goal_pose_from_t4_dataset
 from driving_log_replayer.obstacle_segmentation import get_graph_data
 from driving_log_replayer.obstacle_segmentation import get_non_detection_area_in_base_link
 from driving_log_replayer.obstacle_segmentation import get_sensing_frame_config
@@ -96,7 +97,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
             self.get_parameter("vehicle_model").get_parameter_value().string_value
         )
         self.__goal_pose_counter = 0
-        self.__goal_pose = DLREvaluator.get_goal_pose_from_t4_dataset(self._t4_dataset_paths[0])
+        self.__goal_pose = get_goal_pose_from_t4_dataset(self._t4_dataset_paths[0])
 
         evaluation_config: SensingEvaluationConfig = SensingEvaluationConfig(
             dataset_paths=self._t4_dataset_paths,
