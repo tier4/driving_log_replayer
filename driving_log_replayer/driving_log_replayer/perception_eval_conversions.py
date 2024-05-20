@@ -255,7 +255,7 @@ def dynamic_object_result_to_error_description(obj: DynamicObjectWithPerceptionR
 
 def extract_pass_fail_objects_description(
     pass_fail: PassFailResult, map_to_base_link: dict = {}
-) -> dict:
+) -> list[dict]:
     """
     Extracts detailed objects results from PassFailResult.
     Output should dict contains
@@ -342,9 +342,7 @@ def extract_pass_fail_objects_description(
         }
         gt_descriptions.append(gt_fn_description)
 
-    return {
-        gt_descriptions.extend(est_descriptions),
-    }
+    return gt_descriptions.extend(est_descriptions),
 
 
 def result_label_list(results: list[DynamicObjectWithPerceptionResult]) -> str:
