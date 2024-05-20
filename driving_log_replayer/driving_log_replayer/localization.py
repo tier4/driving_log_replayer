@@ -31,7 +31,7 @@ from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import InitialPose as InitialPoseModel
 from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
@@ -68,8 +68,8 @@ class Evaluation(BaseModel):
     UseCaseName: Literal["localization"]
     UseCaseFormatVersion: Literal["1.2.0", "1.3.0"]
     Conditions: Conditions
-    InitialPose: InitialPose | None
-    DirectInitialPose: str | None = None
+    InitialPose: InitialPoseModel | None
+    DirectInitialPose: InitialPoseModel | None
 
     @model_validator(mode="after")
     def mutually_exclusive(self) -> "Evaluation":
