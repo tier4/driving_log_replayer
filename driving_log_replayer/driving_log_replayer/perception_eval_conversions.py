@@ -232,7 +232,9 @@ def summarize_pass_fail_result(pass_fail: PassFailResult) -> dict:
     }
 
 
-def object_to_description(obj: ObjectType) -> dict:
+def object_to_description(obj: ObjectType | None) -> dict:
+    if obj is None:
+        return {}
     return {
         "label": obj.semantic_label.name,
         "uuid": obj.uuid,
