@@ -280,7 +280,7 @@ def extract_pass_fail_objects_description(pass_fail: PassFailResult) -> list[dic
 
     """
     ego2map_matrix = pass_fail.ego2map
-    has_map_to_base_link = len(ego2map_matrix) > 0
+    has_map_to_base_link = ego2map_matrix is not None and len(ego2map_matrix) > 0
 
     gt_descriptions = []
     est_descriptions = []
