@@ -18,7 +18,6 @@ from pathlib import Path
 from typing import Any
 from typing import TYPE_CHECKING
 
-from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from autoware_auto_perception_msgs.msg import ObjectClassification
 from autoware_auto_perception_msgs.msg import TrafficLight
 from builtin_interfaces.msg import Time as Stamp
@@ -45,7 +44,7 @@ from tf2_ros import Buffer
 from tf2_ros import TransformException
 from tf2_ros import TransformListener
 from tf_transformations import euler_from_quaternion
-from tier4_localization_msgs.srv import InitializeLocalization as T4InitializeLocalization
+from tier4_localization_msgs.srv import InitializeLocalization
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 import yaml
 
@@ -55,8 +54,7 @@ from driving_log_replayer.scenario import InitialPose
 from driving_log_replayer.scenario import load_scenario
 
 if TYPE_CHECKING:
-    from autoware_adapi_v1_msgs.msg import ResponseStatus
-    from autoware_common_msgs.msg import ResponseStatus as CommonResponseStatus
+    from autoware_common_msgs.msg import ResponseStatus
 
 
 class DLREvaluator(Node):
@@ -113,14 +111,8 @@ class DLREvaluator(Node):
         # initial pose estimation
         self._initial_pose_running: bool = False
         self._initial_pose_success: bool = False
-        self._initial_pose = self.set_initial_pose()
+        self._initial_pose, self._initial_pose_method = self.set_initial_pose()
         self.start_initialpose_service()
-
-        # initial pose estimation
-        self._direct_initial_pose_running: bool = False
-        self._direct_initial_pose_success: bool = False
-        self._direct_initial_pose = self.set_direct_initial_pose()
-        self.start_direct_initialpose_service()
 
         self._current_time = Time().to_msg()
         self._prev_time = Time().to_msg()
@@ -169,8 +161,6 @@ class DLREvaluator(Node):
             register_loop_func()
         if self._initial_pose is not None:
             self.call_initialpose_service()
-        if self._direct_initial_pose is not None:
-            self.call_direct_initialpose_service()
         self._clock_stop_counter = (
             self._clock_stop_counter + 1 if self._current_time == self._prev_time else 0
         )
@@ -186,29 +176,20 @@ class DLREvaluator(Node):
             return
         self._initial_pose_client = self.create_client(
             InitializeLocalization,
-            "/api/localization/initialize",
-        )
-        self._map_fit_client = self.create_client(
-            PoseWithCovarianceStampedSrv,
-            "/map/map_height_fitter/service",
-        )
-
-        while not self._initial_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("initial pose service not available, waiting again...")
-        while not self._map_fit_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("map height fitter service not available, waiting again...")
-
-    def start_direct_initialpose_service(self) -> None:
-        self.get_logger().info("start direct initialpose service")
-        if self._direct_initial_pose is None:
-            return
-        self._direct_initial_pose_client = self.create_client(
-            T4InitializeLocalization,
             "/localization/initialize",
         )
+        while not self._initial_pose_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning("initial pose service not available, waiting again...")
 
-        while not self._direct_initial_pose_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("direct initial pose service not available, waiting again...")
+        if self._initial_pose_method == InitializeLocalization.Request.AUTO:
+            self._map_fit_client = self.create_client(
+                PoseWithCovarianceStampedSrv,
+                "/map/map_height_fitter/service",
+            )
+            while not self._map_fit_client.wait_for_service(timeout_sec=1.0):
+                self.get_logger().warning(
+                    "map height fitter service not available, waiting again...",
+                )
 
     def call_initialpose_service(self) -> None:
         if self._initial_pose is None or self._initial_pose_success or self._initial_pose_running:
@@ -218,17 +199,29 @@ class DLREvaluator(Node):
         )
         self._initial_pose_running = True
         self._initial_pose.header.stamp = self._current_time
-        future_map_fit = self._map_fit_client.call_async(
-            PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose),
-        )
-        future_map_fit.add_done_callback(self.map_fit_cb)
+        if self._initial_pose_method == InitializeLocalization.Request.AUTO:
+            future_map_fit = self._map_fit_client.call_async(
+                PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose),
+            )
+            future_map_fit.add_done_callback(self.map_fit_cb)
+        else:
+            future_direct_init_pose = self._initial_pose_client.call_async(
+                InitializeLocalization.Request(
+                    method=self._initial_pose_method,
+                    pose_with_covariance=[self._initial_pose],
+                ),
+            )
+            future_direct_init_pose.add_done_callback(self.initial_pose_cb)
 
     def map_fit_cb(self, future: Future) -> None:
         result = future.result()
         if result is not None:
             if result.success:
                 future_init_pose = self._initial_pose_client.call_async(
-                    InitializeLocalization.Request(pose=[result.pose_with_covariance]),
+                    InitializeLocalization.Request(
+                        method=self._initial_pose_method,
+                        pose_with_covariance=[result.pose_with_covariance],
+                    ),
                 )
                 future_init_pose.add_done_callback(self.initial_pose_cb)
             else:
@@ -239,26 +232,6 @@ class DLREvaluator(Node):
             # free self._initial_pose_running when the service call fails
             self._initial_pose_running = False
             self.get_logger().error(f"Exception for service: {future.exception()}")
-
-    def call_direct_initialpose_service(self) -> None:
-        if (
-            self._direct_initial_pose is None
-            or self._direct_initial_pose_success
-            or self._direct_initial_pose_running
-        ):
-            return
-        self.get_logger().info(
-            f"call direct initial_pose time: {self._current_time.sec}.{self._current_time.nanosec}",
-        )
-        self._direct_initial_pose_running = True
-        self._direct_initial_pose.header.stamp = self._current_time
-        future_direct_init_pose = self._direct_initial_pose_client.call_async(
-            T4InitializeLocalization.Request(
-                method=T4InitializeLocalization.Request.DIRECT,
-                pose_with_covariance=[self._direct_initial_pose],
-            ),
-        )
-        future_direct_init_pose.add_done_callback(self.direct_initial_pose_cb)
 
     def initial_pose_cb(self, future: Future) -> None:
         result = future.result()
@@ -272,19 +245,6 @@ class DLREvaluator(Node):
             self.get_logger().error(f"Exception for service: {future.exception()}")
         # free self._initial_pose_running
         self._initial_pose_running = False
-
-    def direct_initial_pose_cb(self, future: Future) -> None:
-        result = future.result()
-        if result is not None:
-            res_status: CommonResponseStatus = result.status
-            self._direct_initial_pose_success = res_status.success
-            self.get_logger().info(
-                f"direct_initial_pose_success: {self._initial_pose_success}",
-            )  # debug msg
-        else:
-            self.get_logger().error(f"Exception for service: {future.exception()}")
-        # free self._initial_pose_running
-        self._direct_initial_pose_running = False
 
     def lookup_transform(
         self,
@@ -324,12 +284,17 @@ class DLREvaluator(Node):
         }
         return tf_euler
 
-    def set_initial_pose(self) -> PoseWithCovarianceStamped | None:
-        if not hasattr(self._scenario.Evaluation, "InitialPose"):
-            return None
-        if self._scenario.Evaluation.InitialPose is None:
-            return None
-        initial_pose: InitialPose = self._scenario.Evaluation.InitialPose
+    def set_initial_pose(self) -> tuple[PoseWithCovarianceStamped | None, int | None]:
+        auto_pose = getattr(self._scenario.Evaluation, "InitialPose", None)
+        direct_pose = getattr(self._scenario.Evaluation, "DirectInitialPose", None)
+        if auto_pose is None and direct_pose is None:
+            return None, None
+        if auto_pose is not None:
+            initial_pose: InitialPose = auto_pose
+            pose_method: int = InitializeLocalization.Request.AUTO
+        if direct_pose is not None:
+            initial_pose: InitialPose = auto_pose
+            pose_method: int = InitializeLocalization.Request.DIRECT
         covariance = np.array(
             [
                 0.25,
@@ -377,62 +342,7 @@ class DLREvaluator(Node):
             ),
             covariance=covariance,
         )
-        return PoseWithCovarianceStamped(header=Header(frame_id="map"), pose=pose)
-
-    def set_direct_initial_pose(self) -> PoseWithCovarianceStamped | None:
-        if not hasattr(self._scenario.Evaluation, "DirectInitialPose"):
-            return None
-        if self._scenario.Evaluation.DirectInitialPose is None:
-            return None
-        initial_pose: InitialPose = self._scenario.Evaluation.DirectInitialPose
-        covariance = np.array(
-            [
-                0.25,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.25,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.06853892326654787,
-            ],
-        )
-        pose = PoseWithCovariance(
-            pose=Pose(
-                position=Point(**initial_pose.position.model_dump()),
-                orientation=Quaternion(**initial_pose.orientation.model_dump()),
-            ),
-            covariance=covariance,
-        )
-        return PoseWithCovarianceStamped(header=Header(frame_id="map"), pose=pose)
+        return PoseWithCovarianceStamped(header=Header(frame_id="map"), pose=pose), pose_method
 
     @classmethod
     def get_perception_label_str(cls, classification: ObjectClassification) -> str:
