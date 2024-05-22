@@ -68,8 +68,8 @@ class Evaluation(BaseModel):
     UseCaseName: Literal["localization"]
     UseCaseFormatVersion: Literal["1.2.0", "1.3.0"]
     Conditions: Conditions
-    InitialPose: InitialPoseModel | None
-    DirectInitialPose: InitialPoseModel | None
+    InitialPose: InitialPoseModel | None = None
+    DirectInitialPose: InitialPoseModel | None = None
 
     @model_validator(mode="after")
     def mutually_exclusive(self) -> "Evaluation":
