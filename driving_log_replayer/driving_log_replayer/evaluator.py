@@ -293,7 +293,7 @@ class DLREvaluator(Node):
             initial_pose: InitialPose = auto_pose
             pose_method: int = InitializeLocalization.Request.AUTO
         if direct_pose is not None:
-            initial_pose: InitialPose = auto_pose
+            initial_pose: InitialPose = direct_pose
             pose_method: int = InitializeLocalization.Request.DIRECT
         covariance = np.array(
             [
