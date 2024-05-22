@@ -241,6 +241,7 @@ def cmd_use_bag_only(
     if launch_localization is not None:
         launch_arg_dict_scenario["localization"] = launch_localization
     launch_arg_dict_scenario.update(launch_args_dict)
+    launch_command += launch_dict_to_str(launch_arg_dict_scenario) + "\n"
     return launch_command + clean_up_cmd()
 
 
