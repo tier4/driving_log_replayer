@@ -31,14 +31,14 @@ class PlanningControlEvaluator(DLREvaluator):
 
         self.__sub_planning_diagnostics = self.create_subscription(
             DiagnosticArray,
-            "/diagnostic/planning/metrics",
+            "/planning/planning_evaluator/metrics",
             lambda msg, module_type="planning": self.diagnostics_cb(msg, module_type),
             1,
         )
 
         self.__sub_control_diagnostics = self.create_subscription(
             DiagnosticArray,
-            "/diagnostic/planning/metrics",
+            "/control/control_evaluator/metrics",
             lambda msg, module_type="control": self.diagnostics_cb(msg, module_type),
             1,
         )
