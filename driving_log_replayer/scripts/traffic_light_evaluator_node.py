@@ -21,8 +21,6 @@ from typing import TYPE_CHECKING
 
 from autoware_perception_msgs.msg import TrafficSignal
 from autoware_perception_msgs.msg import TrafficSignalArray
-from geometry_msgs.msg import Point
-from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import TransformStamped
 import lanelet2  # noqa
 from lanelet2.core import BasicPoint2d
@@ -30,6 +28,7 @@ from lanelet2.geometry import distance
 from lanelet2.geometry import to2D
 from perception_eval.common.object2d import DynamicObject2D
 from perception_eval.common.schema import FrameID
+from perception_eval.common.transform import TransformDict
 from perception_eval.config import PerceptionEvaluationConfig
 from perception_eval.evaluation.metrics import MetricsScore
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
@@ -38,15 +37,12 @@ from perception_eval.manager import PerceptionEvaluationManager
 from perception_eval.tool import PerceptionAnalyzer2D
 from perception_eval.util.logger_config import configure_logger
 import rclpy
-from std_msgs.msg import Header
-from tf2_geometry_msgs import do_transform_point
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.lanelet2_util import load_map
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer.traffic_light import FailResultHolder
-from driving_log_replayer.traffic_light import get_camera_frame_id_from_t4_dataset
 from driving_log_replayer.traffic_light import get_traffic_light_label_str
 from driving_log_replayer.traffic_light import TrafficLightResult
 from driving_log_replayer.traffic_light import TrafficLightScenario
@@ -87,11 +83,6 @@ class TrafficLightEvaluator(DLREvaluator):
             "count_label_number"
         ] = True  # Add a fixed value setting
         self.__camera_type: str = self.__p_cfg["camera_type"]
-        self.__camera_frame_id = get_camera_frame_id_from_t4_dataset(
-            self._t4_dataset_paths[0],  # use case only
-            self.__camera_type.upper(),
-        )
-        self.get_logger().error(f"{self.__camera_frame_id=}")
         if not self.check_evaluation_task():
             rclpy.shutdown()
 
@@ -166,7 +157,7 @@ class TrafficLightEvaluator(DLREvaluator):
         self,
         unix_time: int,
         signals: list[TrafficSignal],
-        camera_to_map: TransformStamped,
+        cam2map: TransformDict,
     ) -> list[DynamicObject2D]:
         estimated_objects: list[DynamicObject2D] = []
         for signal in signals:
@@ -174,7 +165,7 @@ class TrafficLightEvaluator(DLREvaluator):
                 get_traffic_light_label_str(signal.elements),
             )
             confidence: float = max(signal.elements, key=lambda x: x.confidence)
-            signal_pos = self.get_traffic_light_pos(signal.traffic_signal_id, camera_to_map)
+            signal_pos = self.get_traffic_light_pos(signal.traffic_signal_id, cam2map)
             self.get_logger().error(f"{signal_pos=}")
 
             estimated_object = DynamicObject2D(
@@ -192,16 +183,11 @@ class TrafficLightEvaluator(DLREvaluator):
     def get_traffic_light_pos(
         self,
         traffic_light_uuid: int,
-        camera_to_map: TransformStamped,
+        cam2map: TransformDict,
     ) -> tuple[float, float, float, float]:
         traffic_light_obj = self.__lanelet_map.regulatoryElementLayer.get(traffic_light_uuid)
         light_ls = traffic_light_obj.trafficLights[0]  # とりあえず1個目のline string
-        point_map = PointStamped(
-            header=Header(stamp=camera_to_map.header.stamp, frame_id="map"),
-            point=Point(x=light_ls[0].x, y=light_ls[0].y, z=light_ls[0].z),
-        )
-        point_in_camera = do_transform_point(point_map, camera_to_map)
-        return (point_in_camera.point.x, point_in_camera.point.y, point_in_camera.point.z)
+        return cam2map.inv().transform((light_ls[0].x, light_ls[0].y, light_ls[0].z))
 
     def get_traffic_light_pos_and_dist(
         self,
@@ -224,9 +210,9 @@ class TrafficLightEvaluator(DLREvaluator):
 
     def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
         map_to_baselink = self.lookup_transform(msg.stamp)
-        camera_to_map = self.lookup_transform(msg.stamp, from_=self.__camera_frame_id, to="map")
         unix_time: int = eval_conversions.unix_time_from_ros_timestamp(msg.stamp)
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
+        cam2map = ground_truth_now_frame.transforms[(FrameID.TRAFFIC_LIGHT, FrameID.MAP)]
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
             return
@@ -235,16 +221,13 @@ class TrafficLightEvaluator(DLREvaluator):
             x, y, z, dist = self.get_traffic_light_pos_and_dist(obj.uuid, map_to_baselink)
             self.get_logger().error(f"{dist=}")
             # カメラからの座標系に変換
-            position = ground_truth_now_frame.transforms.transform(
-                (FrameID.MAP, FrameID.TRAFFIC_LIGHT),
-                (x, y, z),
-            )
+            position = cam2map.inv().transform((x, y, z))
             obj.set_position(position)
 
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(
             unix_time,
             msg.signals,
-            camera_to_map,
+            cam2map,
         )
         ros_critical_ground_truth_objects = ground_truth_now_frame.objects
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(

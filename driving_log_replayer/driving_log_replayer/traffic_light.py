@@ -54,29 +54,6 @@ TRAFFIC_LIGHT_LABEL_MAPPINGS: list[tuple[set, str]] = [
 ]
 
 
-def get_camera_frame_id_from_t4_dataset(dataset_path: str, target_tlr_camera: str) -> str:
-    status_path = Path(dataset_path, "status.json")
-    with status_path.open() as status_file:
-        status_json = json.load(status_file)
-        camera_sensors: list[dict] = status_json.get(
-            "rosbag2_to_non_annotated_t4_converter",
-            {},
-        ).get(
-            "_camera_sensors",
-            {},
-        )
-        for camera in camera_sensors:
-            if camera["channel"] == target_tlr_camera:
-                # image_rawじゃない可能性も考慮したほうがいいか。
-                # /sensing/camera/camera7/image_raw/compressed -> camera7/camera_link
-                camera_name = (
-                    camera["topic"]
-                    .replace("/sensing/camera/", "")
-                    .replace("/image_raw/compressed", "")
-                )
-    return camera_name + "/camera_link"
-
-
 def get_traffic_light_label_str(elements: list[TrafficSignalElement]) -> str:  # noqa
     label_infos = []
     for element in elements:
