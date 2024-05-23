@@ -166,7 +166,7 @@ class TrafficLightEvaluator(DLREvaluator):
             )
             confidence: float = max(signal.elements, key=lambda x: x.confidence)
             signal_pos = self.get_traffic_light_pos(signal.traffic_signal_id, cam2map)
-            self.get_logger().error(f"{signal_pos=}")
+            # debug self.get_logger().error(f"{signal_pos=}")
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
@@ -220,9 +220,9 @@ class TrafficLightEvaluator(DLREvaluator):
         cam2map = ground_truth_now_frame.transforms[(FrameID.TRAFFIC_LIGHT, FrameID.MAP)]
 
         for obj in ground_truth_now_frame.objects:
-            x, y, z, dist = self.get_traffic_light_pos_and_dist(obj.uuid, map_to_baselink)
-            self.get_logger().error(f"{dist=}")
-            # カメラからの座標系に変換
+            x, y, z, _ = self.get_traffic_light_pos_and_dist(obj.uuid, map_to_baselink)
+            # _ replace with dist and then self.get_logger().error(f"{dist=}")
+            # transform to camera coordinate system
             position = cam2map.inv().transform((x, y, z))
             obj.set_position(position)
 
