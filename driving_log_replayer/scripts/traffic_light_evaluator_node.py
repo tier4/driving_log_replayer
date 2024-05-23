@@ -52,8 +52,6 @@ if TYPE_CHECKING:
 
 
 class TrafficLightEvaluator(DLREvaluator):
-    MAX_DISTANCE_THRESHOLD = 202.0
-
     def __init__(self, name: str) -> None:
         super().__init__(name, TrafficLightScenario, TrafficLightResult)
         self._scenario: TrafficLightScenario
@@ -194,7 +192,7 @@ class TrafficLightEvaluator(DLREvaluator):
         traffic_light_uuid: str,
         map_to_baselink: TransformStamped,
     ) -> tuple[float, float, float, float]:
-        rtn_distance = TrafficLightEvaluator.MAX_DISTANCE_THRESHOLD + 1.0
+        rtn_distance = self.__p_cfg["evaluation_config_dict"]["max_distance"] + 1.0
         try:
             int_uuid = int(traffic_light_uuid)
         except ValueError:
