@@ -212,10 +212,12 @@ class TrafficLightEvaluator(DLREvaluator):
         map_to_baselink = self.lookup_transform(msg.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_timestamp(msg.stamp)
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
-        cam2map = ground_truth_now_frame.transforms[(FrameID.TRAFFIC_LIGHT, FrameID.MAP)]
+
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
             return
+
+        cam2map = ground_truth_now_frame.transforms[(FrameID.TRAFFIC_LIGHT, FrameID.MAP)]
 
         for obj in ground_truth_now_frame.objects:
             x, y, z, dist = self.get_traffic_light_pos_and_dist(obj.uuid, map_to_baselink)
