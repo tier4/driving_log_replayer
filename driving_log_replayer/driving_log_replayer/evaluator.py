@@ -20,7 +20,6 @@ from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from autoware_auto_perception_msgs.msg import ObjectClassification
-from autoware_auto_perception_msgs.msg import TrafficLight
 from builtin_interfaces.msg import Time as Stamp
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
@@ -342,36 +341,10 @@ class DLREvaluator(Node):
         cls,
         array_classification: list[ObjectClassification],
     ) -> ObjectClassification:
-        highest_probability = 0.0
-        highest_classification = None
-        for classification in array_classification:
-            if classification.probability >= highest_probability:
-                highest_probability = classification.probability
-                highest_classification = classification
-        return highest_classification
-
-    @classmethod
-    def get_traffic_light_label_str(cls, light: TrafficLight) -> str:
-        if light.color == TrafficLight.RED:
-            return "red"
-        if light.color == TrafficLight.AMBER:
-            return "yellow"
-        if light.color == TrafficLight.GREEN:
-            return "green"
-        return "unknown"
-
-    @classmethod
-    def get_most_probable_signal(
-        cls,
-        lights: list[TrafficLight],
-    ) -> TrafficLight:
-        highest_probability = 0.0
-        highest_light = None
-        for light in lights:
-            if light.confidence >= highest_probability:
-                highest_probability = light.confidence
-                highest_light = light
-        return highest_light
+        index: int = array_classification.index(
+            max(array_classification, key=lambda x: x.probability),
+        )
+        return array_classification[index]
 
 
 def evaluator_main(func: Callable) -> Callable:

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from builtin_interfaces.msg import Time
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
@@ -34,6 +35,10 @@ from visualization_msgs.msg import MarkerArray
 
 def unix_time_from_ros_msg(ros_header: Header) -> int:
     return ros_header.stamp.sec * pow(10, 6) + ros_header.stamp.nanosec // 1000
+
+
+def unix_time_from_ros_timestamp(ros_timestamp: Time) -> int:
+    return ros_timestamp.sec * pow(10, 6) + ros_timestamp.nanosec // 1000
 
 
 def position_from_ros_msg(ros_position: Point) -> tuple[int, int, int]:

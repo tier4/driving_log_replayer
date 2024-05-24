@@ -5,21 +5,31 @@ SensorModel: aip_xx1
 VehicleModel: jpntaxi
 Evaluation:
   UseCaseName: traffic_light
-  UseCaseFormatVersion: 0.3.0
+  UseCaseFormatVersion: 1.0.0
   Datasets:
     - sample:
         VehicleId: "7" # データセット毎にVehicleIdを指定する
         LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
         LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
   Conditions:
-    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score)
-    CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値[0.0, 100.0])
+    Criterion:
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+        CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+        CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   PerceptionEvaluationConfig:
     camera_type: cam_traffic_light_near # 信号認識のカメラタイプを指定する
     evaluation_config_dict:
       evaluation_task: classification2d # 現状はclassification2d固定、今後detection2dに対応させる予定。
       target_labels: [green, red, yellow, unknown] # 評価ラベル 指定可能なラベルは以下を参照。https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#trafficlightlabel
+      max_distance: 202.0 # 評価対象の信号機の最大距離
+      min_distance: 0.0 # 評価対象の信号機の最小距離
       allow_matching_unknown: true # ラベルがunknownのオブジェクトとマッチングさせるか
       merge_similar_labels: false # 類似のラベルをマージするか https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#%E9%A1%9E%E4%BC%BC%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8
   CriticalObjectFilterConfig:
