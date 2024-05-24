@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 1.16.0
+
+Major Changes
+
+| Module                  | Feature             | Brief summary                                | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ------------------- | -------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | function            | move function from evaluator.py              | [#451](https://github.com/tier4/driving_log_replayer/pull/451) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                   | cli                 | delete json conversion                       | [#457](https://github.com/tier4/driving_log_replayer/pull/457) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | criteria, interface | support multi criterion and update interface | [#291](https://github.com/tier4/driving_log_replayer/pull/291) | RT4-8944 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | topic               | restore topic name                           | [#458](https://github.com/tier4/driving_log_replayer/pull/458) | RT4-8944 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.15.5
 
 Minor Tweak
