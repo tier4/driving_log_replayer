@@ -7,7 +7,6 @@ from pydantic import ValidationError
 import termcolor
 
 from driving_log_replayer_cli.core.config import Config
-from driving_log_replayer_cli.core.result import convert_all
 from driving_log_replayer_cli.core.result import display_all
 from driving_log_replayer_cli.core.scenario import Datasets
 from driving_log_replayer_cli.core.scenario import get_dry_run_scenario_path
@@ -93,8 +92,7 @@ def run(
                 update_method,
             )
 
-    # convert result file and display result
-    convert_all(output_dir_by_time)
+    # display result
     display_all(output_dir_by_time)
 
 
@@ -141,8 +139,7 @@ def dry_run(
         run_with_log(cmd, output_case.joinpath("console.log"))
     except KeyboardInterrupt:
         termcolor.cprint("Simulation execution canceled by Ctrl+C", "red")
-    # convert result file and display result
-    convert_all(output_dir_by_time)
+    # display result
     display_all(output_dir_by_time)
 
 
