@@ -40,14 +40,11 @@ dlr configure register -d ${data_directory} -o ${output_directory} -a ${autoware
 Available commands to run the Autoware evaluation:
 
 ```shell
-# simulation run, both jsonl and json result files are output
+# simulation run
 dlr simulation run -p ${profile}
 
 # Check results and display summary of result files under output_directory
 dlr simulation show-result ${output_directory}
-
-# Convert result files to json
-dlr simulation convert-result ${output_directory}
 ```
 
 #### dlr simulation run launch argument option
@@ -113,7 +110,6 @@ output_direcotry
 └── YYYY-mmDD-HHMMSS               // Execution time
     └── TC01                       // Name of test case
     │   ├── console.log           // Log output to the terminal
-    │   ├── result.json　         // Converted result file
     │   ├── result.jsonl          // Original result file
     │   ├── result_bag            // recorded bag
     │   │   ├── metadata.yaml
@@ -132,7 +128,6 @@ output_direcotry
 │       ├── DATASET01
 │       │   ├── perception_eval_log        // Log files of percepiton_eval
 │       │   │   ...
-│       │   ├── result.json                // Converted result file
 │       │   ├── result.jsonl               // Original result file
 │       │   ├── result_archive             // Directory to output evaluation results other than json
 │       │   │   └── scene_result.pkl      // Object file of frame_results evaluated by perception_eval
