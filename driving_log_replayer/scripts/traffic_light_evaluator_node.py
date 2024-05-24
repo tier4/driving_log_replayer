@@ -117,7 +117,7 @@ class TrafficLightEvaluator(DLREvaluator):
         )
         self.__sub_traffic_signals = self.create_subscription(
             TrafficSignalArray,
-            "/perception/traffic_light_recognition/internal/traffic_signals",  # あとで戻す
+            "/perception/traffic_light_recognition/traffic_signals",
             self.traffic_signals_cb,
             1,
         )
