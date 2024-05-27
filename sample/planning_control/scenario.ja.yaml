@@ -19,28 +19,17 @@ Evaluation:
     #   pos_x: map frameでの速度指示のターゲット位置x
     #   pos_y: map frameでの速度指示のターゲット位置y
     #   vel: 減速のターゲット速度 (SlowDownの時のみ)
-    TimeRages:
-      0.0-1.0:
-        crosswalk: # crosswalk_1, crosswalk_2...の前方一致で判定する crosswalk_1, crosswalk_2のような_付きの場合、1や2が常に同じ横断歩道を表しているか？ある時点では crosswalk_1がx=10.0, y=10.0の位置の横断歩道で別の時点ではx=100.0 y=100.0みたいなことがあるか
-          decision: # values[0]のkey
-            slow_down: # values[0]のvalue
-              pos_x: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
-              pos_y: {lower: 3.0, upper: 4.0} # values[1]以降で追加で判定したい条件
-              vel: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
-            stop:
-              pos_x: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
-              pos_y: {lower: 3.0, upper: 4.0} # values[1]以降で追加で判定したい条件
-        autonomous_emergency_braking:
-          decision:
-            stop: null # values[1]以降の条件は使用しない。単にvalues[0].value==stopなら良い
-      3.0-4.0:
-        crosswalk:
-          decision:
-            none: null
-            slow_down:
-              pos_x: {lower: 1.0, upper: 2.0}
-              pos_y: {lower: 3.0, upper: 4.0}
-              vel: {lower: 1.0, upper: 2.0}
-        autonomous_emergency_braking:
-          decision:
-            stop: null
+    ControlConditions:
+      # - TimeRange: 0.0-1.0
+      #   Module: crosswalk
+      #   Value0Key: decision # 現状 decision固定 今後の拡張用
+      #   Value0Value: slow_down # Literal["slow_down", "none", "stop"]
+      #   DetailedConditions:
+      #     pos_x: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
+      #     pos_y: {lower: 3.0, upper: 4.0} # values[1]以降で追加で判定したい条件
+      #     vel: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
+      - TimeRange: 1709009638-1709009639
+        Module: autonomous_emergency_braking
+        Value0Key: decision
+        Value0value: stop
+        DetailedConditions: null
