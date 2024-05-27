@@ -4,7 +4,6 @@ import click
 
 from driving_log_replayer_cli.core.config import Config
 from driving_log_replayer_cli.core.config import load_config
-from driving_log_replayer_cli.core.result import convert_all
 from driving_log_replayer_cli.core.result import display_all
 from driving_log_replayer_cli.simulation.run import dry_run as sim_dry_run
 from driving_log_replayer_cli.simulation.run import run as sim_run
@@ -71,16 +70,6 @@ def dry_run(
 def show_result(output_directory: Path) -> None:
     """Show summary of simulation results in output_directory."""
     display_all(output_directory)
-
-
-@simulation.command(context_settings=CONTEXT_SETTINGS)
-@click.argument(
-    "output_directory",
-    type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path),
-)
-def convert_result(output_directory: Path) -> None:
-    """Convert result.jsonl to result.json in output_directory."""
-    convert_all(output_directory)
 
 
 @simulation.command(context_settings=CONTEXT_SETTINGS)

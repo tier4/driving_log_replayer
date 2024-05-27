@@ -34,5 +34,10 @@
    Passed:
    CAR (Success)
    BUS (Success)
+   PEDESTRIAN (Success)
+   BICYCLE (Success)
+   MOTORCYCLE (Success)
+   TRAILER (Success)
+   UNKNOWN (Success)
    TRUCK (Success)
    ```

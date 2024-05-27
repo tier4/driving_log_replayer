@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from abc import ABC
 from abc import abstractmethod
-from copy import deepcopy
 from enum import Enum
 from numbers import Number
 from typing import TYPE_CHECKING
@@ -25,8 +24,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
-from perception_eval.evaluation.matching.objects_filter import filter_object_results
-from perception_eval.evaluation.matching.objects_filter import filter_objects
+from perception_eval.tool.utils import filter_frame_by_distance
 
 if TYPE_CHECKING:
     from perception_eval.evaluation import PerceptionFrameResult
@@ -162,7 +160,9 @@ class CriteriaMethod(Enum):
 
         """
         name: str = value.upper()
-        assert name in cls.__members__, "value must be NUM_TP, METRICS_SCORE, or METRICS_SCORE_MAPH"
+        assert (
+            name in cls.__members__
+        ), "value must be NUM_TP, LABEL, METRICS_SCORE, or METRICS_SCORE_MAPH"
         return cls.__members__[name]
 
 
@@ -308,7 +308,7 @@ class MetricsScoreMAPH(CriteriaMethodImpl):
 
 
 class CriteriaFilter:
-    def __init__(self, distance_range: tuple(Number, Number) = None) -> None:
+    def __init__(self, distance_range: tuple[Number, Number] | None = None) -> None:
         self.distance_range = distance_range
 
     def is_all_none(self) -> bool:
@@ -337,41 +337,10 @@ class CriteriaFilter:
             PerceptionFrameResult: Filtered result.
 
         """
-        if self.is_all_none():
+        if self.is_all_none() or self.distance_range is None:
             return frame
-
-        filtered_frame = deepcopy(frame)
-
-        if self.distance_range is not None:
-            min_distance_list = [self.distance_range[0]] * len(filtered_frame.target_labels)
-            max_distance_list = [self.distance_range[1]] * len(filtered_frame.target_labels)
-        else:
-            min_distance_list = None
-            max_distance_list = None
-
-        object_results = filter_object_results(
-            filtered_frame.object_results,
-            filtered_frame.target_labels,
-            max_distance_list=max_distance_list,
-            min_distance_list=min_distance_list,
-            ego2map=filtered_frame.frame_ground_truth.ego2map,
-        )
-        frame_ground_truth = filtered_frame.frame_ground_truth
-
-        frame_ground_truth.objects = filter_objects(
-            frame_ground_truth.objects,
-            is_gt=True,
-            target_labels=frame.target_labels,
-            max_distance_list=max_distance_list,
-            min_distance_list=min_distance_list,
-            ego2map=frame_ground_truth.ego2map,
-        )
-
-        filtered_frame.object_results = object_results
-        filtered_frame.frame_ground_truth = frame_ground_truth
-        filtered_frame.evaluate_frame(frame_ground_truth.objects)
-
-        return filtered_frame
+        min_distance, max_distance = self.distance_range
+        return filter_frame_by_distance(frame, min_distance, max_distance)
 
 
 class PerceptionCriteria:

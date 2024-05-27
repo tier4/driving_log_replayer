@@ -1,5 +1,25 @@
 # Release Notes
 
+## Version 1.15.5
+
+Minor Tweak
+
+| Module                      | Feature | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ------- | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `annotationless_perception` | launch  | set use_perception_online_evaluator=true | [#449](https://github.com/tier4/driving_log_replayer/pull/449) | RT1-6339 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.15.4
+
+Bug Fix
+
+| Module             | Feature       | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------ | ------------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`              | cli           | fix suppress error msg       | [#441](https://github.com/tier4/driving_log_replayer/pull/441) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`              | documentation | update sample result.json    | [#443](https://github.com/tier4/driving_log_replayer/pull/443) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`       | criteria      | use perception_eval function | [#436](https://github.com/tier4/driving_log_replayer/pull/436) | -        | [ktro2828](https://github.com/ktro2828)       |
+| `performance_diag` | launch        | disable perception module    | [#444](https://github.com/tier4/driving_log_replayer/pull/444) | RT1-6321 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`       | visualization | show full bounding box uuid  | [#445](https://github.com/tier4/driving_log_replayer/pull/445) | -        | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.15.3
 
 Bug Fix

@@ -20,11 +20,9 @@ from typing import TYPE_CHECKING
 
 from autoware_adapi_v1_msgs.srv import InitializeLocalization
 from autoware_auto_perception_msgs.msg import ObjectClassification
-from autoware_auto_perception_msgs.msg import TrafficLight
 from builtin_interfaces.msg import Time as Stamp
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
-from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovariance
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from geometry_msgs.msg import Quaternion
@@ -41,7 +39,6 @@ from rclpy.task import Future
 from rclpy.time import Duration
 from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
-import simplejson as json
 from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformException
@@ -253,27 +250,6 @@ class DLREvaluator(Node):
         PickleWriter(self._pkl_path, save_object)
 
     @classmethod
-    def get_goal_pose_from_t4_dataset(cls, dataset_path: str) -> PoseStamped:
-        ego_pose_json_path = Path(dataset_path, "annotation", "ego_pose.json")
-        with ego_pose_json_path.open() as ego_pose_file:
-            ego_pose_json = json.load(ego_pose_file)
-            last_ego_pose = ego_pose_json[-1]
-            pose = Pose(
-                position=Point(
-                    x=last_ego_pose["translation"][0],
-                    y=last_ego_pose["translation"][1],
-                    z=last_ego_pose["translation"][2],
-                ),
-                orientation=Quaternion(
-                    x=last_ego_pose["rotation"][1],
-                    y=last_ego_pose["rotation"][2],
-                    z=last_ego_pose["rotation"][3],
-                    w=last_ego_pose["rotation"][0],
-                ),
-            )
-            return PoseStamped(header=Header(frame_id="map"), pose=pose)
-
-    @classmethod
     def transform_stamped_with_euler_angle(cls, transform_stamped: TransformStamped) -> dict:
         tf_euler = message_to_ordereddict(transform_stamped)
         euler_angle = euler_from_quaternion(
@@ -365,36 +341,10 @@ class DLREvaluator(Node):
         cls,
         array_classification: list[ObjectClassification],
     ) -> ObjectClassification:
-        highest_probability = 0.0
-        highest_classification = None
-        for classification in array_classification:
-            if classification.probability >= highest_probability:
-                highest_probability = classification.probability
-                highest_classification = classification
-        return highest_classification
-
-    @classmethod
-    def get_traffic_light_label_str(cls, light: TrafficLight) -> str:
-        if light.color == TrafficLight.RED:
-            return "red"
-        if light.color == TrafficLight.AMBER:
-            return "yellow"
-        if light.color == TrafficLight.GREEN:
-            return "green"
-        return "unknown"
-
-    @classmethod
-    def get_most_probable_signal(
-        cls,
-        lights: list[TrafficLight],
-    ) -> TrafficLight:
-        highest_probability = 0.0
-        highest_light = None
-        for light in lights:
-            if light.confidence >= highest_probability:
-                highest_probability = light.confidence
-                highest_light = light
-        return highest_light
+        index: int = array_classification.index(
+            max(array_classification, key=lambda x: x.probability),
+        )
+        return array_classification[index]
 
 
 def evaluator_main(func: Callable) -> Callable:

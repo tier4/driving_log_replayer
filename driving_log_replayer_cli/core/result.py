@@ -45,18 +45,3 @@ def display_all(output_directory: Path) -> None:
     for result_path in result_paths:
         print(f"scenario: {result_path.parent.name}")  # noqa
         display(result_path)
-
-
-def convert_to_json(result_path: Path) -> None:
-    output_file_path = result_path.parent.joinpath("result.json")
-    if output_file_path.exists():
-        return
-    result_list = load_result(result_path)
-    with output_file_path.open("w") as out_file:
-        json.dump(result_list, out_file)
-
-
-def convert_all(output_directory: Path) -> None:
-    result_paths = output_directory.glob("**/result.jsonl")
-    for result_path in result_paths:
-        convert_to_json(result_path)
