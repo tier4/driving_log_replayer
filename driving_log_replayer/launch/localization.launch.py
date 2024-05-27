@@ -22,6 +22,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/localization/pose_estimator/transform_probability$\
 |^/localization/pose_estimator/nearest_voxel_transformation_likelihood$\
 |^/localization/pose_estimator/pose$\
+|^/localization/pose_estimator/initial_to_result_relative_pose$\
 |^/localization/kinematic_state$\
 |^/localization/util/downsample/pointcloud$\
 |^/localization/pose_estimator/points_aligned$\
