@@ -19,8 +19,8 @@ repositories:
   # universe
   universe/external/tier4_autoware_msgs:
     type: git
-    url: https://github.com/YamatoAndo/tier4_autoware_msgs.git # Undo after PRs are merged.
-    version: feat/tier4_localization_msgs/add_initilizelocalization_srv # Undo after PRs are merged.
+    url: https://github.com/tier4/tier4_autoware_msgs.git
+    version: tier4/universe
   # simulator
   simulator/perception_eval:
     type: git
