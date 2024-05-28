@@ -35,18 +35,7 @@ from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
 
-def calc_pose_lateral_distance(relative_pose: PoseStamped) -> float:
-    return relative_pose.pose.position.y
-
-
-def calc_pose_horizontal_distance(relative_pose: PoseStamped) -> float:
-    x = relative_pose.pose.position.x
-    y = relative_pose.pose.position.y
-    return np.sqrt(np.power(x, 2) + np.power(y, 2))
-
-
 class ConvergenceCondition(BaseModel):
-    AllowableDistance: number
     AllowableExeTimeMs: number
     AllowableIterationNum: int
     PassRate: number
@@ -80,8 +69,6 @@ class Convergence(EvaluationItem):
 
     def set_frame(
         self,
-        lateral_dist: float,
-        horizontal_dist: float,
         map_to_baselink: dict,
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,
@@ -90,15 +77,11 @@ class Convergence(EvaluationItem):
         self.total += 1
         frame_success = "Fail"
 
-        msg_lateral_dist = Float64()
-        msg_lateral_dist.data = lateral_dist
-
         exe_time_ms = exe_time.data
         iteration = iteration_num.data
 
         if (
-            abs(lateral_dist) <= self.condition.AllowableDistance
-            and exe_time_ms <= self.condition.AllowableExeTimeMs
+            exe_time_ms <= self.condition.AllowableExeTimeMs
             and iteration <= self.condition.AllowableIterationNum
         ):
             self.passed += 1
@@ -113,13 +96,11 @@ class Convergence(EvaluationItem):
             "Convergence": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {
-                    "LateralDistance": lateral_dist,
-                    "HorizontalDistance": horizontal_dist,
                     "ExeTimeMs": exe_time_ms,
                     "IterationNum": iteration,
                 },
             },
-        }, msg_lateral_dist
+        }
 
 
 @dataclass
@@ -233,15 +214,11 @@ class LocalizationResult(ResultBase):
     @set_frame.register
     def set_convergence_frame(
         self,
-        lateral_dist: float,
-        horizontal_dist: float,
         map_to_baselink: dict,
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,
     ) -> Float64:
         self._frame, msg_lateral_dist = self.__convergence.set_frame(
-            lateral_dist,
-            horizontal_dist,
             map_to_baselink,
             exe_time,
             iteration_num,

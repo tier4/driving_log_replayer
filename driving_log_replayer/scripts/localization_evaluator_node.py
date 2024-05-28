@@ -23,8 +23,6 @@ from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
-from driving_log_replayer.localization import calc_pose_horizontal_distance
-from driving_log_replayer.localization import calc_pose_lateral_distance
 from driving_log_replayer.localization import LocalizationResult
 from driving_log_replayer.localization import LocalizationScenario
 
@@ -44,11 +42,6 @@ class LocalizationEvaluator(DLREvaluator):
         self.__latest_tp: Float32Stamped = Float32Stamped()
         self.__latest_nvtl: Float32Stamped = Float32Stamped()
 
-        self.__pub_lateral_distance = self.create_publisher(
-            Float64,
-            "localization/lateral_distance",
-            1,
-        )
         self.__sub_tp = self.create_subscription(
             Float32Stamped,
             "/localization/pose_estimator/transform_probability",
@@ -120,14 +113,11 @@ class LocalizationEvaluator(DLREvaluator):
 
     def relative_pose_cb(self, msg: PoseStamped) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
-        msg_lateral_distance = self._result.set_frame(
-            calc_pose_lateral_distance(msg),
-            calc_pose_horizontal_distance(msg),
+        self._result.set_frame(
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_exe_time,
             self.__latest_iteration_num,
         )
-        self.__pub_lateral_distance.publish(msg_lateral_distance)  # TODO: add integration test
         self._result_writer.write_result(self._result)
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
