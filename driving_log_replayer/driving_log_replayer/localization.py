@@ -216,13 +216,12 @@ class LocalizationResult(ResultBase):
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,
     ) -> Float64:
-        self._frame, msg_lateral_dist = self.__convergence.set_frame(
+        self._frame = self.__convergence.set_frame(
             map_to_baselink,
             exe_time,
             iteration_num,
         )
         self.update()
-        return msg_lateral_dist
 
     @set_frame.register
     def set_ndt_availability_frame(self, diag_status: DiagnosticStatus) -> None:
