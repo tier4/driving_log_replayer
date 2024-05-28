@@ -1,5 +1,12 @@
 # Release Notes
 
+## Version 1.17.0
+
+Major Changes
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/7048).
+
+| `localization` | initial pose | set initial pose directory | [#460](https://github.com/tier4/driving_log_replayer/pull/460) | RT4-8507 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.16.0
 
 Major Changes
