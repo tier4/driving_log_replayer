@@ -25,7 +25,8 @@ Of the following two topics, the one specified in the scenario will be used for 
 
 Convergence evaluation is based on the following topics:
 
-- `/localization/pose_estimator/initial_to_result_relative_pose`
+- /localization/pose_estimator/exe_time_ms
+- /localization/pose_estimator/iteration_num
 
 ### Availability of NDT
 
@@ -61,11 +62,8 @@ If the data in `/localization/pose_estimator/transform_probability` or `/localiz
 
 If all of the following conditions are met, the convergence is reported as Normal:
 
-1. The lateral distance of `/localization/pose_estimator/initial_to_result_relative_pose` is less than or equal to `AllowableDistance` described in the scenario
-2. Execution time published to `/localization/pose_estimator/exe_time_ms` is less than or equal to `AllowableExeTimeMs` described in the scenario
-3. Number of iterations published to `/localization/pose_estimator/iteration_num` is less than or equal to `AllowableIterationNum` described in the scenario
-
-The lateral distance obtained in the step 1 is published as `/driving_log_replayer/localization/lateral_distance`.
+1. Execution time published to `/localization/pose_estimator/exe_time_ms` is less than or equal to `AllowableExeTimeMs` described in the scenario
+2. Number of iterations published to `/localization/pose_estimator/iteration_num` is less than or equal to `AllowableIterationNum` described in the scenario
 
 ### Convergence Error
 
@@ -94,12 +92,6 @@ Subscribed topics:
 | /tf                                                                  | tf2_msgs/msg/TFMessage                |
 | /localization/util/downsample/pointcloud                             | sensor_msgs::msg::PointCloud2         |
 | /localization/pose_estimator/points_aligned                          | sensor_msgs::msg::PointCloud2         |
-
-Published topics:
-
-| Topic name                                          | Data type                        |
-| --------------------------------------------------- | -------------------------------- |
-| /driving_log_replayer/localization/lateral_distance | example_interfaces::msg::Float64 |
 
 ## Service name and data type used by the evaluation node
 
@@ -182,8 +174,6 @@ Convergence Result example:
   "Convergence": {
     "Result": "Success or Fail",
     "Info": {
-      "LateralDistance": "initial_to_result_relative_pose.pose.position.y",
-      "HorizontalDistance": "Horizontal distance of initial_to_result_relative_pose.pose.position",
       "ExeTimeMs": "Time taken to calculate ndt",
       "IterationNum": "Number of recalculations of ndt"
     }
