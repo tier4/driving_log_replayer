@@ -10,6 +10,7 @@ Major Changes
 | `all`                   | cli                 | delete json conversion                       | [#457](https://github.com/tier4/driving_log_replayer/pull/457) | -        | [hayato-m126](https://github.com/hayato-m126) |
 | `traffic_light`         | criteria, interface | support multi criterion and update interface | [#291](https://github.com/tier4/driving_log_replayer/pull/291) | RT4-8944 | [hayato-m126](https://github.com/hayato-m126) |
 | `traffic_light`         | topic               | restore topic name                           | [#458](https://github.com/tier4/driving_log_replayer/pull/458) | RT4-8944 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | frame_id            | rename FrameID.TRAFFIC_LIGHT to FrameID.CAM_TRAFFIC_LIGHT     | [#460](https://github.com/tier4/driving_log_replayer/pull/460) | RT4-5928 | [ktro2828](https://github.com/ktro2828) |
 
 ## Version 1.15.5
 
