@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.23">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -1306,15 +1306,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#output-json-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      Output JSON file
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#analyze-the-result-files" class="md-nav__link">
     <span class="md-ellipsis">
       Analyze the result files
@@ -1368,18 +1359,9 @@ The actual output is a single line of text, but it is formatted for ease of read
 <li>Frame: Evaluation results for one received frame (topic) and attached information such as values used for judgment.</li>
 </ul>
 <p>For more information on Frame, see the evaluation results file format for each use case.</p>
-<h2 id="output-json-file">Output JSON file<a class="headerlink" href="#output-json-file" title="Permanent link">#</a></h2>
-<p>JSONL is used because it can be appended, and one result will be added per topic subscription.
-However, it is easier to read a JSON file format when investigating the files manually.
-Therefore, when simulations are run using driving_log_replayer_cli, the JSON file is also output by default.</p>
-<p>On the other hand, if the simulation is run locally with <a href="https://docs.web.auto/en/developers-guides/wasim/use-cases/run-simulations-locally/">wasim</a> or in <a href="https://docs.web.auto/en/user-manuals/evaluator/introduction">the cloud</a>, only a JSONL file is created.
-If you want to convert a JSONL file to JSON, you can do so with the following command.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Conversion of result files, converting result.jsonl under output_directory to result.json</span>
-dlr<span class="w"> </span>simulation<span class="w"> </span>convert-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
-</code></pre></div>
 <h2 id="analyze-the-result-files">Analyze the result files<a class="headerlink" href="#analyze-the-result-files" title="Permanent link">#</a></h2>
-<p>As mentioned in the json output section, json files are output only when driving_log_replayer_cli is used locally.
-Therefore, when analyzing the result files, such as graphing, jsonl should be used as the analysis target.</p>
+<p>With vscode's JSONL Converter, you can easily convert jsonl &lt;-&gt; json with the push of a button</p>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=F-loat.jsonl-converter">https://marketplace.visualstudio.com/items?itemName=F-loat.jsonl-converter</a></p>
 <p>If you use python, you can read jsonl <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_json.html">by setting lines=True in pandas.read_json</a>.</p>
 
 
@@ -1480,7 +1462,7 @@ Therefore, when analyzing the result files, such as graphing, jsonl should be us
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.ebd0bdb7.min.js"></script>
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

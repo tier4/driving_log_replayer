@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.23">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -1468,14 +1468,11 @@ dlr<span class="w"> </span>configure<span class="w"> </span>register<span class=
 </code></pre></div>
 <h3 id="dlr-simulation">dlr simulation<a class="headerlink" href="#dlr-simulation" title="Permanent link">#</a></h3>
 <p>Available commands to run the Autoware evaluation:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># simulation run, both jsonl and json result files are output</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># simulation run</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">profile</span><span class="si">}</span>
 
 <span class="c1"># Check results and display summary of result files under output_directory</span>
 dlr<span class="w"> </span>simulation<span class="w"> </span>show-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
-
-<span class="c1"># Convert result files to json</span>
-dlr<span class="w"> </span>simulation<span class="w"> </span>convert-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
 </code></pre></div>
 <h4 id="dlr-simulation-run-launch-argument-option">dlr simulation run launch argument option<a class="headerlink" href="#dlr-simulation-run-launch-argument-option" title="Permanent link">#</a></h4>
 <p>The driving_log_replayer cli reads the necessary launch arguments such as sensor_model from the scenario file and generates the launch command.
@@ -1526,7 +1523,6 @@ output_direcotry
 └──<span class="w"> </span>YYYY-mmDD-HHMMSS<span class="w">               </span>//<span class="w"> </span>Execution<span class="w"> </span><span class="nb">time</span>
 <span class="w">    </span>└──<span class="w"> </span>TC01<span class="w">                       </span>//<span class="w"> </span>Name<span class="w"> </span>of<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="k">case</span>
 <span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>console.log<span class="w">           </span>//<span class="w"> </span>Log<span class="w"> </span>output<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>terminal
-<span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result.json<span class="w">　         </span>//<span class="w"> </span>Converted<span class="w"> </span>result<span class="w"> </span>file
 <span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result.jsonl<span class="w">          </span>//<span class="w"> </span>Original<span class="w"> </span>result<span class="w"> </span>file
 <span class="w">    </span>│<span class="w">   </span>├──<span class="w"> </span>result_bag<span class="w">            </span>//<span class="w"> </span>recorded<span class="w"> </span>bag
 <span class="w">    </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>metadata.yaml
@@ -1543,7 +1539,6 @@ output_direcotry
 │<span class="w">       </span>├──<span class="w"> </span>DATASET01
 │<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>perception_eval_log<span class="w">        </span>//<span class="w"> </span>Log<span class="w"> </span>files<span class="w"> </span>of<span class="w"> </span>percepiton_eval
 │<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>...
-│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result.json<span class="w">                </span>//<span class="w"> </span>Converted<span class="w"> </span>result<span class="w"> </span>file
 │<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result.jsonl<span class="w">               </span>//<span class="w"> </span>Original<span class="w"> </span>result<span class="w"> </span>file
 │<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>result_archive<span class="w">             </span>//<span class="w"> </span>Directory<span class="w"> </span>to<span class="w"> </span>output<span class="w"> </span>evaluation<span class="w"> </span>results<span class="w"> </span>other<span class="w"> </span>than<span class="w"> </span>json
 │<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>scene_result.pkl<span class="w">      </span>//<span class="w"> </span>Object<span class="w"> </span>file<span class="w"> </span>of<span class="w"> </span>frame_results<span class="w"> </span>evaluated<span class="w"> </span>by<span class="w"> </span>perception_eval
@@ -1658,7 +1653,7 @@ For scenarios not registered in the cloud, use <code>driving_log_replayer_cli</c
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.ebd0bdb7.min.js"></script>
+      <script src="../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.23">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -1306,15 +1306,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#json" class="md-nav__link">
-    <span class="md-ellipsis">
-      json ファイルの出力
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       結果ファイルの分析
@@ -1368,18 +1359,9 @@
 <li>Frame: 受け取った frame(topic) 1 回分の評価結果と、判定に使用した値などの付属情報</li>
 </ul>
 <p>Frame の詳細については、各ユースケースの評価結果ファイルフォーマットを参照。</p>
-<h2 id="json">json ファイルの出力<a class="headerlink" href="#json" title="Permanent link">#</a></h2>
-<p>jsonl は追記可能で、1 回の topic 受信に対して 1 回分の結果を追記することができるため採用している。
-しかし、人が目で見て結果を確認する場合は、json 形式でインデントされているほうが理解しやすい。
-そのため、driving_log_replayer_cli を用いてシミュレーション実行した場合はデフォルトで json ファイルも出力される。</p>
-<p>一方、ローカルで wasim で実行した場合や、クラウドで実行した場合は jsonl ファイルしか作られない。
-jsonl ファイルを json に変換したい場合は、以下のコマンドで変換することができる。</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># 結果ファイルの変換、output_directory以下のresult.jsonlをresult.jsonに変換する</span>
-dlr<span class="w"> </span>simulation<span class="w"> </span>convert-result<span class="w"> </span><span class="si">${</span><span class="nv">output_directory</span><span class="si">}</span>
-</code></pre></div>
 <h2 id="_2">結果ファイルの分析<a class="headerlink" href="#_2" title="Permanent link">#</a></h2>
-<p>json 出力の項目でも述べた通り、json ファイルの出力はローカルで driving_log_replayer_cli を用いた場合のみ出力される。
-なので、結果ファイルをグラフ化するなどの解析作業を行う場合は、jsonl を解析対象とすること。</p>
+<p>vscodeのJSONL Converterを用いるとボタンを押すだけで容易にjsonl &lt;-&gt; jsonの変換ができる</p>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=F-loat.jsonl-converter">https://marketplace.visualstudio.com/items?itemName=F-loat.jsonl-converter</a></p>
 <p>python を用いる場合は、<a href="https://pandas.pydata.org/docs/reference/api/pandas.read_json.html">pandas.read_json で lines=True とすると jsonl を読み込むことができる</a></p>
 
 
@@ -1480,7 +1462,7 @@ dlr<span class="w"> </span>simulation<span class="w"> </span>convert-result<span
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.ebd0bdb7.min.js"></script>
+      <script src="../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>
