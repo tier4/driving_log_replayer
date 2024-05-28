@@ -52,7 +52,7 @@ class Conditions(BaseModel):
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["localization"]
-    UseCaseFormatVersion: Literal["1.2.0"]
+    UseCaseFormatVersion: Literal["1.2.0", "1.3.0"]
     Conditions: Conditions
     InitialPose: InitialPose | None
 

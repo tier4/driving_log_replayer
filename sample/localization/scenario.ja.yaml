@@ -7,10 +7,9 @@ VehicleId: default
 LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
+  UseCaseFormatVersion: 1.3.0
   Conditions:
     Convergence: # 収束性評価
-      AllowableDistance: 0.2 # 直線距離でこの距離以内だったら収束とみなす
       AllowableExeTimeMs: 100.0 # NDTの計算時間がこの値以下なら成功とみなす
       AllowableIterationNum: 30 # NDTの計算回数がこの値以下なら成功とみなす
       PassRate: 95.0 # 収束性の評価試行回数の内、どの程度(%)評価成功だったら成功とするか
