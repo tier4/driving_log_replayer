@@ -21,8 +21,6 @@ from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticStatus
 from example_interfaces.msg import Float64
-from geometry_msgs.msg import PoseStamped
-import numpy as np
 from pydantic import BaseModel
 from rosidl_runtime_py import message_to_ordereddict
 from tier4_debug_msgs.msg import Float32Stamped

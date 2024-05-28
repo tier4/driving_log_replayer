@@ -16,7 +16,6 @@
 
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
-from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
