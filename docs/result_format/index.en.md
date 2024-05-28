@@ -32,23 +32,10 @@ Each evaluation output consists of the following attributes:
 
 For more information on Frame, see the evaluation results file format for each use case.
 
-## Output JSON file
-
-JSONL is used because it can be appended, and one result will be added per topic subscription.
-However, it is easier to read a JSON file format when investigating the files manually.
-Therefore, when simulations are run using driving_log_replayer_cli, the JSON file is also output by default.
-
-On the other hand, if the simulation is run locally with [wasim](https://docs.web.auto/en/developers-guides/wasim/use-cases/run-simulations-locally/) or in [the cloud](https://docs.web.auto/en/user-manuals/evaluator/introduction), only a JSONL file is created.
-If you want to convert a JSONL file to JSON, you can do so with the following command.
-
-```shell
-# Conversion of result files, converting result.jsonl under output_directory to result.json
-dlr simulation convert-result ${output_directory}
-```
-
 ## Analyze the result files
 
-As mentioned in the json output section, json files are output only when driving_log_replayer_cli is used locally.
-Therefore, when analyzing the result files, such as graphing, jsonl should be used as the analysis target.
+With vscode's JSONL Converter, you can easily convert jsonl <-> json with the push of a button
+
+<https://marketplace.visualstudio.com/items?itemName=F-loat.jsonl-converter>
 
 If you use python, you can read jsonl [by setting lines=True in pandas.read_json](https://pandas.pydata.org/docs/reference/api/pandas.read_json.html).
