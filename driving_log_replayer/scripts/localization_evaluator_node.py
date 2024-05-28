@@ -90,7 +90,7 @@ class LocalizationEvaluator(DLREvaluator):
             # evaluates when reliability_method is TP
             return
         map_to_baselink = self.lookup_transform(msg.stamp)
-        self._result.set_frame(
+        self._result.set_reliability_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_nvtl,
@@ -103,7 +103,7 @@ class LocalizationEvaluator(DLREvaluator):
             # evaluates when reliability_method is NVTL
             return
         map_to_baselink = self.lookup_transform(msg.stamp)
-        self._result.set_frame(
+        self._result.set_reliability_frame(
             msg,
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_tp,
@@ -112,7 +112,7 @@ class LocalizationEvaluator(DLREvaluator):
 
     def relative_pose_cb(self, msg: PoseStamped) -> None:
         map_to_baselink = self.lookup_transform(msg.header.stamp)
-        self._result.set_frame(
+        self._result.set_convergence_frame(
             DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_exe_time,
             self.__latest_iteration_num,
@@ -123,7 +123,7 @@ class LocalizationEvaluator(DLREvaluator):
         diag_status: DiagnosticStatus = msg.status[0]
         if diag_status.name != TARGET_DIAG_NAME:
             return
-        self._result.set_frame(diag_status)
+        self._result.set_ndt_availability_frame(diag_status)
         self._result_writer.write_result(self._result)
 
 
