@@ -36,7 +36,6 @@ TARGET_DIAG_NAME = "topic_state_monitor_ndt_scan_matcher_exe_time: localization_
 def test_scenario() -> None:
     scenario: LocalizationScenario = load_sample_scenario("localization", LocalizationScenario)
     assert scenario.VehicleId == "default"
-    assert scenario.Evaluation.Conditions.Convergence.AllowableDistance == 0.2  # noqa
 
 
 def test_availability_success() -> None:
@@ -98,7 +97,6 @@ def test_availability_fail_key_not_found() -> None:
 @pytest.fixture()
 def create_convergence() -> Convergence:
     condition = ConvergenceCondition(
-        AllowableDistance=0.2,
         AllowableExeTimeMs=100.0,
         AllowableIterationNum=30,
         PassRate=95.0,
@@ -112,9 +110,7 @@ def create_convergence() -> Convergence:
 
 def test_convergence_success(create_convergence: Callable) -> None:
     evaluation_item: Convergence = create_convergence
-    frame_dict, pub_msg = evaluation_item.set_frame(
-        0.1,
-        0.2,
+    frame_dict = evaluation_item.set_frame(
         {},
         Float32Stamped(data=50.0),
         Int32Stamped(data=10),
@@ -126,24 +122,19 @@ def test_convergence_success(create_convergence: Callable) -> None:
         "Convergence": {
             "Result": {"Total": "Success", "Frame": "Success"},
             "Info": {
-                "LateralDistance": 0.1,
-                "HorizontalDistance": 0.2,
                 "ExeTimeMs": 50.0,
                 "IterationNum": 10,
             },
         },
     }
-    assert pub_msg == Float64(data=0.1)
 
 
 def test_convergence_fail(create_convergence: Callable) -> None:
     evaluation_item: Convergence = create_convergence
-    frame_dict, pub_msg = evaluation_item.set_frame(
-        0.3,
-        0.2,
+    frame_dict = evaluation_item.set_frame(
         {},
         Float32Stamped(data=50.0),
-        Int32Stamped(data=10),
+        Int32Stamped(data=31),
     )
     assert evaluation_item.success is False
     assert evaluation_item.summary == "Convergence (Fail): 94 / 100 -> 94.00%"
@@ -152,14 +143,11 @@ def test_convergence_fail(create_convergence: Callable) -> None:
         "Convergence": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {
-                "LateralDistance": 0.3,
-                "HorizontalDistance": 0.2,
                 "ExeTimeMs": 50.0,
-                "IterationNum": 10,
+                "IterationNum": 31,
             },
         },
     }
-    assert pub_msg == Float64(data=0.3)
 
 
 @pytest.fixture()
