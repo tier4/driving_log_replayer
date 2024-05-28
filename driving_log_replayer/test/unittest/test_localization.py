@@ -35,7 +35,7 @@ TARGET_DIAG_NAME = "topic_state_monitor_ndt_scan_matcher_exe_time: localization_
 def test_scenario() -> None:
     scenario: LocalizationScenario = load_sample_scenario("localization", LocalizationScenario)
     assert scenario.VehicleId == "default"
-    assert scenario.Evaluation.Conditions.Convergence.AllowableExeTime == 100.0  # noqa
+    assert scenario.Evaluation.Conditions.Convergence.AllowableExeTimeMs == 100.0  # noqa
 
 
 def test_availability_success() -> None:
