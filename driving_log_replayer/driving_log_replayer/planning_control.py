@@ -14,7 +14,6 @@
 
 from dataclasses import dataclass
 from sys import float_info
-from typing import Any
 from typing import Literal
 
 from builtin_interfaces.msg import Time
@@ -22,7 +21,7 @@ from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import KeyValue
 from pydantic import BaseModel
 from pydantic import Field
-from pydantic import field_validator
+from pydantic import model_validator
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
@@ -33,14 +32,13 @@ class StartEnd(BaseModel):
     start: float | int = Field(gt=0.0)
     end: float | int | None = Field(float_info.max, gt=0.0)
 
-    @field_validator("end")
-    @classmethod
-    def validate_distance_range(cls, v: float | int, values: Any) -> float:  # noqa
-        err_msg = f"{v} is not valid distance range, expected ordering start end with start < end."
+    @model_validator(mode="after")
+    def validate_start_end(self) -> "StartEnd":
+        err_msg = "start must be a time before end"
 
-        if v >= values["start"]:
+        if self.end < self.start:
             raise ValueError(err_msg)
-        return float(v)
+        return self
 
 
 class LowerUpper(BaseModel):

@@ -28,7 +28,7 @@ Evaluation:
       #     pos_x: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
       #     pos_y: {lower: 3.0, upper: 4.0} # values[1]以降で追加で判定したい条件
       #     vel: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
-      - TimeRange: 1709009638-1709009639
+      - TimeRange: {start: 1709009638, end: 1709009639}
         Module: autonomous_emergency_braking
         Value0Key: decision
         Value0value: stop
