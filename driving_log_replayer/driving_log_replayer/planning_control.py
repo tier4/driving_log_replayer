@@ -169,7 +169,7 @@ class PlanningControlResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
         self.__control_container = ControlClassContainer(
-            condition=condition.ControlConditions,
+            control_conditions=condition.ControlConditions,
             hz=condition.Hertz,
         )
         # self.__planing_container = PlanningCOntainer(condition=condition.PlanningConditions)
