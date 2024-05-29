@@ -83,7 +83,7 @@ def float_stamp(stamp: Time) -> float:
 
 @dataclass
 class Control(EvaluationItem):
-    hz: float
+    hz: float = 10.0
     rate: float = 0.9
 
     def set_frame(self, msg: DiagnosticArray) -> dict | None:
