@@ -23,7 +23,7 @@ import driving_log_replayer.launch_common as cmn
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
-|^/control/control_evaluator/metrics$
+|^/control/control_evaluator/metrics$\
 """
 
 
