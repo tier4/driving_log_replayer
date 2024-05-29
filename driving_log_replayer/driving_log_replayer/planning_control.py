@@ -161,7 +161,7 @@ class ControlClassContainer:
             else:
                 rtn_summary.append(f"{i} (Success)")
         prefix_str = "Passed" if rtn_success else "Failed"
-        rtn_summary_str = prefix_str + ":".join(rtn_summary)
+        rtn_summary_str = prefix_str + ":" + ", ".join(rtn_summary)
         return (rtn_success, rtn_summary_str)
 
 
@@ -182,4 +182,5 @@ class PlanningControlResult(ResultBase):
             self._frame = self.__control_container.set_frame(msg)
         # if module == "planning":
         #     self._frame = self.__planning_container.set_frame(msg)
-        self.update()
+        if self._frame != {}:
+            self.update()
