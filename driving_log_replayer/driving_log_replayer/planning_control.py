@@ -13,19 +13,16 @@
 # limitations under the License.
 
 from dataclasses import dataclass
-from dataclasses import field
-from pathlib import Path
 from sys import float_info
 from typing import Any
 from typing import Literal
 
 from builtin_interfaces.msg import Time
 from diagnostic_msgs.msg import DiagnosticArray
-from diagnostic_msgs.msg import DiagnosticStatus
+from diagnostic_msgs.msg import KeyValue
 from pydantic import BaseModel
 from pydantic import Field
 from pydantic import field_validator
-import simplejson as json
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
@@ -81,20 +78,21 @@ class PlanningControlScenario(Scenario):
 
 
 def float_stamp(stamp: Time) -> float:
-    return stamp.sec + stamp.nanosecd / pow(10, 9)
+    return stamp.sec + stamp.nanosec / pow(10, 9)
 
 
 @dataclass
 class Control(EvaluationItem):
     hz: float
+    rate: float = 0.9
 
-    def set_frame(self, msg: DiagnosticArray, hz: float) -> dict | None:
+    def set_frame(self, msg: DiagnosticArray) -> dict | None:
         self.condition: TimeRangeCondition
-        if not (
-            self.condition.TimeRange.start
-            <= float_stamp(msg.header.stamp)
-            <= self.condition.TimeRange.end
-        ):
+        now = float_stamp(msg.header.stamp)
+        eval_start = self.condition.TimeRange.start
+        eval_duration = now - eval_start
+        eval_count = eval_duration / self.hz * self.rate
+        if not (eval_start <= now <= self.condition.TimeRange.end):
             return None
         for status in msg.status:
             if status.name != self.condition.Module:
@@ -102,35 +100,80 @@ class Control(EvaluationItem):
             if status.values[0].key != self.condition.Value0Key:
                 continue
             self.total += 1
-            frame_success = True
-            info_dict = {}
-            if self.condition.Value0Value != status.values[0].value:
-                frame_success = False
-                info_dict[status_name] = values
-                self.metrics_dict[status_name], diag_success = self.calc_average_and_success(
-                    status_name,
-                    values,
-                )
-                if diag_success is False:
-                    frame_fail_items += f", {status_name}"
-                frame_success = frame_success and diag_success
-            self.success = frame_success
-            if self.condition.Threshold == {}:
-                self.summary = f"{self.name} (NotTested)"
-            else:
-                self.summary = f"{self.name} ({self.success_str()}{frame_fail_items})"
+
+            frame_success = False
+            if self.condition.Value0Value == status.values[0].value:
+                if self.condition.DetailedConditions is None:
+                    frame_success = True
+                    self.passed += 1
+                else:
+                    frame_success = True
+                    for key_value in status.values[1:]:
+                        key_value: KeyValue
+                        # ここ変数でうまくやりたい
+                        if key_value.key == "pos_x" and not (
+                            self.condition.DetailedConditions.pos_x.lower
+                            <= key_value.value
+                            <= self.condition.DetailedConditions.pos_x.upper
+                        ):
+                            frame_success = False
+                        if key_value.key == "pos_y" and not (
+                            self.condition.DetailedConditions.pos_y.lower
+                            <= key_value.value
+                            <= self.condition.DetailedConditions.pos_y.upper
+                        ):
+                            frame_success = False
+                        if key_value.key == "val" and not (
+                            self.condition.DetailedConditions.vel.lower
+                            <= key_value.value
+                            <= self.condition.DetailedConditions.vel.upper
+                        ):
+                            frame_success = False
+                    if frame_success:
+                        self.passed += 1
+            self.success = self.passed >= eval_count
             return {
-                "Result": {"Total": self.success_str(), "Frame": self.success_str()},
-                "Info": info_dict,
-                "Metrics": self.metrics_dict,
+                "Result": {"Total": self.success_str(), "Frame": frame_success},
+                "Info": self.name,
             }
         return None
+
+
+class ControlClassContainer:
+    def __init__(self, control_conditions: list[TimeRangeCondition], hz: float) -> None:
+        self.__container: list[Control] = []
+        for i, time_cond in enumerate(control_conditions):
+            self.__container.append(Control(f"condition{i}", time_cond, hz=hz))
+
+    def set_frame(self, msg: DiagnosticArray) -> dict:
+        frame_result: dict[int, dict] = {}
+        for i, evaluation_item in enumerate(self.__container):
+            result_i = evaluation_item.set_frame(msg)
+            if result_i is not None:
+                frame_result[i] = result_i
+        return frame_result
+
+    def update(self) -> tuple[bool, str]:
+        rtn_success = True
+        rtn_summary = []
+        for i, evaluation_item in enumerate(self.__container):
+            if not evaluation_item.success:
+                rtn_success = False
+                rtn_summary.append(f"{i} (Fail)")
+            else:
+                rtn_summary.append(f"{i} (Success)")
+        prefix_str = "Passed" if rtn_success else "Failed"
+        rtn_summary_str = prefix_str + ":".join(rtn_summary)
+        return (rtn_success, rtn_summary_str)
 
 
 class PlanningControlResult(ResultBase):
     def __init__(self, condition: Conditions, hz: float) -> None:
         super().__init__()
-        self.__control_container = ControlContainer(condition=condition.ControlConditions, hz=hz)
+        self.__control_container = ControlClassContainer(
+            condition=condition.ControlConditions,
+            hz=hz,
+        )
         # self.__planing_container = PlanningCOntainer(condition=condition.PlanningConditions)
 
     def update(self) -> None:
