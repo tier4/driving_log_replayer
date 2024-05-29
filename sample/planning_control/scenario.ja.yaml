@@ -31,5 +31,5 @@ Evaluation:
       - TimeRange: {start: 1709009638, end: 1709009639}
         Module: autonomous_emergency_braking
         Value0Key: decision
-        Value0value: stop
+        Value0Value: stop
         DetailedConditions: null
