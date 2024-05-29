@@ -182,5 +182,4 @@ class PlanningControlResult(ResultBase):
             self._frame = self.__control_container.set_frame(msg)
         # if module == "planning":
         #     self._frame = self.__planning_container.set_frame(msg)
-        if self._frame != {}:
-            self.update()
+        self.update()
