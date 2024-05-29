@@ -8,8 +8,8 @@ LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: planning_control
   UseCaseFormatVersion: 0.1.0
-  Hertz: 10.0 # TimeRange start-end なら (end - start) * Hertz * AllowableRate(=0.9) 以上の topicを受信しないと成功にならない。低レートを弾く。AllowableRateは一旦固定
   Conditions:
+    Hertz: 10.0 # TimeRange start-end なら (end - start) * Hertz * AllowableRate(=0.9) 以上の topicを受信しないと成功にならない。低レートを弾く。AllowableRateは一旦固定
     # 以下の3種類のDecisionに応じて評価を行う。今後の拡張でdecision以外のキー対象とする可能性を考慮してモジュールの下にdecisionのキーを置く
     #   decision.stop: 停止指示が出ていること評価
     #   decision.slow_down: 減速指示が出ていることの評価
