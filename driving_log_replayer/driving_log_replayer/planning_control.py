@@ -61,13 +61,13 @@ class TimeRangeCondition(BaseModel):
 
 
 class Conditions(BaseModel):
+    Hertz: float = Field(gt=0.0)
     ControlConditions: list[TimeRangeCondition]
 
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["planning_control"]
     UseCaseFormatVersion: Literal["0.1.0"]
-    Hertz: float = Field(gt=0.0)
     Conditions: Conditions
 
 
@@ -166,11 +166,11 @@ class ControlClassContainer:
 
 
 class PlanningControlResult(ResultBase):
-    def __init__(self, condition: Conditions, hz: float) -> None:
+    def __init__(self, condition: Conditions) -> None:
         super().__init__()
         self.__control_container = ControlClassContainer(
             condition=condition.ControlConditions,
-            hz=hz,
+            hz=condition.Hertz,
         )
         # self.__planing_container = PlanningCOntainer(condition=condition.PlanningConditions)
 
