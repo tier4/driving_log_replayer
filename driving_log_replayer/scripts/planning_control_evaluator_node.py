@@ -45,7 +45,8 @@ class PlanningControlEvaluator(DLREvaluator):
 
     def diagnostics_cb(self, msg: DiagnosticArray, module: str) -> None:
         self._result.set_frame(msg, module)
-        self._result_writer.write_result(self._result)
+        if self._result.frame != {}:
+            self._result_writer.write_result(self._result)
 
 
 @evaluator_main
