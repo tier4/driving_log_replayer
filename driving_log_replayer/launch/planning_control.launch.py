@@ -59,7 +59,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         [
             *launch_arguments,
             rviz_node,
-            autoware_launch,
+            # autoware_launch,
             evaluator_node,
             player_normal,
             player_remap,
