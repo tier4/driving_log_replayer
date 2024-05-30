@@ -66,7 +66,7 @@ def get_launch_arguments() -> list:
         description="result json save path",
     )
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
-    add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
+    add_launch_arg("play_delay", default_value="2.0", description="ros2 bag play delay")
     add_launch_arg("input_bag", description="full path to the input bag")
     add_launch_arg(
         "result_bag_path",
