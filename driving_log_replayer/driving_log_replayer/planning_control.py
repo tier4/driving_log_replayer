@@ -22,6 +22,7 @@ from diagnostic_msgs.msg import KeyValue
 from pydantic import BaseModel
 from pydantic import Field
 from pydantic import model_validator
+from rosidl_runtime_py import message_to_ordereddict
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
@@ -132,7 +133,7 @@ class Control(EvaluationItem):
             self.success = self.passed >= eval_count
             return {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
-                "Info": self.name,
+                "Info": {"condition": self.name, "topic": message_to_ordereddict(msg)},
             }
         return None
 
