@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+from math import floor
 from sys import float_info
 from typing import Literal
 
@@ -91,7 +92,7 @@ class Metrics(EvaluationItem):
         now = float_stamp(msg.header.stamp)
         eval_start = self.condition.TimeRange.start
         eval_duration = now - eval_start
-        eval_count = eval_duration / self.hz * self.rate
+        required_min_successes = floor(eval_duration * self.hz * self.rate)
         if not (eval_start <= now <= self.condition.TimeRange.end):
             return None
         for status in msg.status:
@@ -102,16 +103,16 @@ class Metrics(EvaluationItem):
             self.total += 1
 
             frame_success = "Fail"
-            if self.condition.Value0Value == status.values[0].value:
-                if self.condition.DetailedConditions is None:
-                    frame_success = "Success"
-                    self.passed += 1
-                elif self.check_detailed_condition(status.values[1:]):
-                    self.passed += 1
-            self.success = self.passed >= eval_count
+            if (self.condition.Value0Value == status.values[0].value) and (
+                self.condition.DetailedConditions is None
+                or self.check_detailed_condition(status.values[1:])
+            ):
+                frame_success = "Success"
+                self.passed += 1
+            self.success = self.passed >= required_min_successes
             return {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
-                "Info": {"condition": self.name, "topic": message_to_ordereddict(msg)},
+                "Info": {"TotalPassed": self.passed, "RequiredSuccess": required_min_successes},
             }
         return None
 
@@ -126,17 +127,17 @@ class Metrics(EvaluationItem):
 
 
 class MetricsClassContainer:
-    def __init__(self, conditions: list[TimeRangeCondition], hz: float) -> None:
+    def __init__(self, conditions: list[TimeRangeCondition], hz: float, module: str) -> None:
         self.__container: list[Metrics] = []
         for i, time_cond in enumerate(conditions):
-            self.__container.append(Metrics(f"condition{i}", time_cond, hz=hz))
+            self.__container.append(Metrics(f"{module}_{i}", time_cond, hz=hz))
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
         frame_result: dict[int, dict] = {}
-        for i, evaluation_item in enumerate(self.__container):
+        for evaluation_item in self.__container:
             result_i = evaluation_item.set_frame(msg)
             if result_i is not None:
-                frame_result[i] = result_i
+                frame_result[f"{evaluation_item.name}"] = result_i
         return frame_result
 
     def update(self) -> tuple[bool, str]:
@@ -159,10 +160,12 @@ class PlanningControlResult(ResultBase):
         self.__control_container = MetricsClassContainer(
             condition.ControlConditions,
             condition.Hertz,
+            "control",
         )
         self.__planning_container = MetricsClassContainer(
             condition.PlanningConditions,
             condition.Hertz,
+            "planning",
         )
 
     def update(self) -> None:
