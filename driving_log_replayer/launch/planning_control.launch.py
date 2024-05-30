@@ -17,7 +17,6 @@ from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
-from launch_ros.descriptions import ParameterValue
 
 import driving_log_replayer.launch_common as cmn
 
