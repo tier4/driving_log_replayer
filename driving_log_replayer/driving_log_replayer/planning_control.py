@@ -63,7 +63,8 @@ class TimeRangeCondition(BaseModel):
 
 class Conditions(BaseModel):
     Hertz: float = Field(gt=0.0)
-    ControlConditions: list[TimeRangeCondition]
+    ControlConditions: list[TimeRangeCondition] = []
+    PlanningConditions: list[TimeRangeCondition] = []
 
 
 class Evaluation(BaseModel):
@@ -81,7 +82,7 @@ def float_stamp(stamp: Time) -> float:
 
 
 @dataclass
-class Control(EvaluationItem):
+class Metrics(EvaluationItem):
     hz: float = 10.0
     rate: float = 0.9
 
@@ -100,34 +101,19 @@ class Control(EvaluationItem):
                 continue
             self.total += 1
 
-            frame_success = False
+            frame_success = "Fail"
             if self.condition.Value0Value == status.values[0].value:
                 if self.condition.DetailedConditions is None:
-                    frame_success = True
+                    frame_success = "Success"
                     self.passed += 1
                 else:
-                    frame_success = True
+                    frame_success = "Success"
                     for key_value in status.values[1:]:
                         key_value: KeyValue
-                        # ここ変数でうまくやりたい
-                        if key_value.key == "pos_x" and not (
-                            self.condition.DetailedConditions.pos_x.lower
-                            <= key_value.value
-                            <= self.condition.DetailedConditions.pos_x.upper
-                        ):
-                            frame_success = False
-                        if key_value.key == "pos_y" and not (
-                            self.condition.DetailedConditions.pos_y.lower
-                            <= key_value.value
-                            <= self.condition.DetailedConditions.pos_y.upper
-                        ):
-                            frame_success = False
-                        if key_value.key == "val" and not (
-                            self.condition.DetailedConditions.vel.lower
-                            <= key_value.value
-                            <= self.condition.DetailedConditions.vel.upper
-                        ):
-                            frame_success = False
+                        dc = self.condition.DetailedConditions
+                        detail_field: LowerUpper = getattr(dc, key_value.key)
+                        if detail_field.lower <= key_value.value <= detail_field.upper:
+                            frame_success = "Fail"
                     if frame_success:
                         self.passed += 1
             self.success = self.passed >= eval_count
@@ -138,11 +124,11 @@ class Control(EvaluationItem):
         return None
 
 
-class ControlClassContainer:
-    def __init__(self, control_conditions: list[TimeRangeCondition], hz: float) -> None:
-        self.__container: list[Control] = []
-        for i, time_cond in enumerate(control_conditions):
-            self.__container.append(Control(f"condition{i}", time_cond, hz=hz))
+class MetricsClassContainer:
+    def __init__(self, conditions: list[TimeRangeCondition], hz: float) -> None:
+        self.__container: list[Metrics] = []
+        for i, time_cond in enumerate(conditions):
+            self.__container.append(Metrics(f"condition{i}", time_cond, hz=hz))
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
         frame_result: dict[int, dict] = {}
@@ -154,13 +140,13 @@ class ControlClassContainer:
 
     def update(self) -> tuple[bool, str]:
         rtn_success = True
-        rtn_summary = []
+        rtn_summary = [] if len(self.__container) != 0 else ["NotTested"]
         for i, evaluation_item in enumerate(self.__container):
             if not evaluation_item.success:
                 rtn_success = False
-                rtn_summary.append(f"{i} (Fail)")
+                rtn_summary.append(f"condition{i} (Fail)")
             else:
-                rtn_summary.append(f"{i} (Success)")
+                rtn_summary.append(f"condition{i} (Success)")
         prefix_str = "Passed" if rtn_success else "Failed"
         rtn_summary_str = prefix_str + ":" + ", ".join(rtn_summary)
         return (rtn_success, rtn_summary_str)
@@ -169,18 +155,24 @@ class ControlClassContainer:
 class PlanningControlResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__control_container = ControlClassContainer(
-            control_conditions=condition.ControlConditions,
-            hz=condition.Hertz,
+        self.__control_container = MetricsClassContainer(
+            condition.ControlConditions,
+            condition.Hertz,
         )
-        # self.__planing_container = PlanningCOntainer(condition=condition.PlanningConditions)
+        self.__planning_container = MetricsClassContainer(
+            condition.PlanningConditions,
+            condition.Hertz,
+        )
 
     def update(self) -> None:
-        self._success, self._summary = self.__control_container.update()
+        control_success, control_summary = self.__control_container.update()
+        planning_success, planning_summary = self.__planning_container.update()
+        self._success = control_success and planning_success
+        self._summary = "Control: " + control_summary + " Planning: " + planning_summary
 
     def set_frame(self, msg: DiagnosticArray, module: str) -> None:
         if module == "control":
             self._frame = self.__control_container.set_frame(msg)
-        # if module == "planning":
-        #     self._frame = self.__planning_container.set_frame(msg)
+        if module == "planning":
+            self._frame = self.__planning_container.set_frame(msg)
         self.update()
