@@ -33,3 +33,11 @@ Evaluation:
         Value0Key: decision
         Value0Value: stop
         DetailedConditions: null
+      TimeRangeConditions:
+        - start: 1
+          end: 10
+          ModuleConditions:
+            - Module: autonomous_emergency_braking
+              Value0Key: decision
+              Value0Value: stop
+              DetailedConditions: null
