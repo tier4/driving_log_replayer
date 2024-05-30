@@ -106,22 +106,23 @@ class Metrics(EvaluationItem):
                 if self.condition.DetailedConditions is None:
                     frame_success = "Success"
                     self.passed += 1
-                else:
-                    frame_success = "Success"
-                    for key_value in status.values[1:]:
-                        key_value: KeyValue
-                        dc = self.condition.DetailedConditions
-                        detail_field: LowerUpper = getattr(dc, key_value.key)
-                        if detail_field.lower <= key_value.value <= detail_field.upper:
-                            frame_success = "Fail"
-                    if frame_success:
-                        self.passed += 1
+                elif self.check_detailed_condition(status.values[1:]):
+                    self.passed += 1
             self.success = self.passed >= eval_count
             return {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {"condition": self.name, "topic": message_to_ordereddict(msg)},
             }
         return None
+
+    def check_detailed_condition(self, diag_after_0: list[KeyValue]) -> bool:
+        dict_dc = vars(self.condition.DetailedConditions)
+        for key_value in diag_after_0:
+            key_value: KeyValue
+            dc_value: LowerUpper | None = dict_dc.get(key_value.key)
+            if dc_value is not None and not (dc_value.lower <= key_value.value <= dc_value.upper):
+                return False
+        return True
 
 
 class MetricsClassContainer:
