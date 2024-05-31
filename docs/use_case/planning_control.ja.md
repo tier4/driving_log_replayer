@@ -23,6 +23,23 @@ topic の subscribe 1 回につき、headerの時刻で評価する条件があ�
 
 ### 正常
 
+評価条件を満たすtopic が (現在時刻-評価開始時刻)\*Hertz\*AllowableRate(=0.95)個以上取得できた場合。
+
+以下の例の場合、現在時刻が2だとすると、1秒からスタートして2秒の時点で (2-1)*10.0=10 topic程度metricsが出てくるはず。
+実際にはちょっとぶれるのでAllowableRateをかけて floor(10*0.95)=9個以上 autonomous_emergency_brakingのdecisionの値stopが出ていたら成功
+3秒時点では、floor(20\*0.95)=19以上で成功となる。
+
+```yaml
+Conditions:
+  Hertz: 10.0 # metricsが何Hzで来るか。 (現在時刻-評価開始時刻)* Hertz * AllowableRate(=0.95)以上条件に合致するtopicが出力される必要がある。低レートは弾かれる。AllowableRateは一旦固定
+  ControlConditions:
+    - TimeRange: { start: 1, end: 3 } # 評価開始時間と終了時刻、endは省略可能で省略した場合はsys.float_info.max
+      Module: autonomous_emergency_braking # 評価対象のモジュール
+      Value0Key: decision # 評価対象のキー
+      Value0Value: stop # 評価対象の値
+      DetailedConditions: null # 位置、速度など、追加で判定したい条件。nullの場合はValue0Valueが一致した時点で成功。記載がある場合はDetailedConditionsも条件を満たす必要がある
+```
+
 ### 異常
 
 正常の条件を満たさないとき
@@ -31,9 +48,9 @@ topic の subscribe 1 回につき、headerの時刻で評価する条件があ�
 
 Subscribed topics:
 
-| Topic name                                      | Data type                             |
-| ----------------------------------------------- | ------------------------------------- |
-| /control/control_evaluator/metrics | diagnostic_msgs::msg::DiagnosticArray |
+| Topic name                                | Data type                             |
+| ----------------------------------------- | ------------------------------------- |
+| /control/control_evaluator/metrics        | diagnostic_msgs::msg::DiagnosticArray |
 | /planning/planning_evaluator/metrics (仮) | diagnostic_msgs::msg::DiagnosticArray |
 
 Published topics:
@@ -46,19 +63,11 @@ Published topics:
 
 autoware の処理を軽くするため、評価に関係のないモジュールは launch の引数に false を渡すことで無効化する。以下を設定している。
 
-- sensing: false / true (デフォルト false、launch引数で与える)
+- sensing: false
 - localization: false
 - perception: true
 - planning: true
 - control: true
-
-### sensingの引数指定方法
-
-#### driving-log-replayer-cli
-
-```shell
-dlr simulation run -p annotationless_perception -l sensing:=true
-```
 
 ## simulation
 
@@ -70,27 +79,20 @@ dlr simulation run -p annotationless_perception -l sensing:=true
 | -------------------------------------- | -------------------------------------------- |
 | /gsm8/from_can_bus                     | can_msgs/msg/Frame                           |
 | /localization/kinematic_state          | nav_msgs/msg/Odometry                        |
-| /localization/kinematic_state          | nav_msgs/msg/Odometry                        |
-| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped |
-| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                    |
-| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                        |
-| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                          |
+| /localization/acceleration             | geometry_msgs/msg/AccelWithCovarianceStamped |
 | /sensing/lidar/concatenated/pointcloud | sensor_msgs/msg/PointCloud2                  |
-| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                   |
 | /tf                                    | tf2_msgs/msg/TFMessage                       |
+| /planning/mission_planning/route       | autoware_planning_msgs/msg/LaneletRoute      |
 
 CAN の代わりに vehicle の topic を含めても良い。
 
 | topic 名                               | データ型                                            |
 | -------------------------------------- | --------------------------------------------------- |
 | /localization/kinematic_state          | nav_msgs/msg/Odometry                               |
-| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
+| /localization/acceleration             | geometry_msgs/msg/AccelWithCovarianceStamped        |
 | /sensing/lidar/concatenated/pointcloud | sensor_msgs/msg/PointCloud2                         |
-| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
 | /tf                                    | tf2_msgs/msg/TFMessage                              |
+| /planning/mission_planning/route       | autoware_planning_msgs/msg/LaneletRoute             |
 | /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
 | /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
 | /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
@@ -111,85 +113,28 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.ja.yaml)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/planning_control/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/result.json)参照
+[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/planning_control/result.json)参照
 
 以下に、それぞれの評価の例を記述する。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**
 
+planning と controlで設定した全ての評価条件で成功している場合にシナリオ全体で成功となる。
+
 ```json
 {
   "Frame": {
-    "Ego": {},
-    "OBJECT_CLASSIFICATION": {
-      // 認識したクラス
-      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // TotalとFrameの結果は同じ。他の評価とデータ構造を同じにするために同じ値を出力している
+    "CONDITION_INDEX": {
+      // 評価条件毎に結果が出力される
+      "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
       "Info": {
-        "lateral_deviation": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-        "yaw_deviation": { "min": "最小角度差", "max": "最大角度差", "mean": "平均角度差" },
-        "predicted_path_deviation_5.00": {
-          "min": "最小距離",
-          "max": "最大距離",
-          "mean": "平均距離"
-        },
-        "predicted_path_deviation_3.00": {
-          "min": "最小距離",
-          "max": "最大距離",
-          "mean": "平均距離"
-        },
-        "predicted_path_deviation_2.00": {
-          "min": "最小距離",
-          "max": "最大距離",
-          "mean": "平均距離"
-        },
-        "predicted_path_deviation_1.00": {
-          "min": "最小距離",
-          "max": "最大距離",
-          "mean": "平均距離"
-        }
-      },
-      "Metrics": {
-        "lateral_deviation": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        },
-        "yaw_deviation": {
-          "min": "最小角度差の最大値",
-          "max": "最大角度差の最大値",
-          "mean": "平均角度差の平均値"
-        },
-        "predicted_path_deviation_5.00": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        },
-        "predicted_path_deviation_3.00": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        },
-        "predicted_path_deviation_2.00": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        },
-        "predicted_path_deviation_1.00": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        }
+        "TotalPassed": "評価条件をパスしたtopicの総数",
+        "RequiredSuccess": "現在時刻で必要な成功数(TotalPassed >= RequiredSuccessでTotalが成功になる)"
       }
     }
   }
 }
 ```
-
-項目の意味は以下の図を参照
-
-![lateral_deviation](./images/lateral_deviation.png)
-
-![predicted_path_deviation](./images/predicted_path_deviation.png)

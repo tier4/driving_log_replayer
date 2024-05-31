@@ -29,12 +29,14 @@ RECORD_TOPIC_REGEX = """^/clock$\
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
     launch_arguments.append(DeclareLaunchArgument("sensing", default_value="true"))
+    """
     autoware_launch = cmn.get_autoware_launch(
         sensing=LaunchConfiguration("sensing"),
         localization="false",
         planning="true",
         control="true",
     )
+    """
     rviz_node = cmn.get_rviz("autoware.rviz")
     evaluator_node = cmn.get_evaluator_node("planning_control")
 

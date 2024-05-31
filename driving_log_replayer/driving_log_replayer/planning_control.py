@@ -84,14 +84,14 @@ def float_stamp(stamp: Time) -> float:
 @dataclass
 class Metrics(EvaluationItem):
     hz: float = 10.0
-    rate: float = 0.9
+    rate: float = 0.95
 
     def set_frame(self, msg: DiagnosticArray) -> dict | None:
         self.condition: TimeRangeCondition
         now = float_stamp(msg.header.stamp)
         eval_start = self.condition.TimeRange.start
         eval_duration = now - eval_start
-        required_min_successes = floor(eval_duration * self.hz * self.rate)
+        required_successes = floor(eval_duration * self.hz * self.rate)
         if not (eval_start <= now <= self.condition.TimeRange.end):
             return None
         for status in msg.status:
@@ -108,10 +108,10 @@ class Metrics(EvaluationItem):
             ):
                 frame_success = "Success"
                 self.passed += 1
-            self.success = self.passed >= required_min_successes
+            self.success = self.passed >= required_successes
             return {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
-                "Info": {"TotalPassed": self.passed, "RequiredSuccess": required_min_successes},
+                "Info": {"TotalPassed": self.passed, "RequiredSuccess": required_successes},
             }
         return None
 

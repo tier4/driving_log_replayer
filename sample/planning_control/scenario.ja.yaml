@@ -9,23 +9,23 @@ Evaluation:
   UseCaseName: planning_control
   UseCaseFormatVersion: 0.1.0
   Conditions:
-    Hertz: 10.0 # metricsが何Hzで来るか。 (現在時刻-評価開始時刻)* Hertz * AllowableRate(=0.9)以上条件に合致するtopicが出力される必要がある。低レートは弾かれる。AllowableRateは一旦固定
+    Hertz: 10.0 # metricsが何Hzで来るか。 (現在時刻-評価開始時刻)* Hertz * AllowableRate(=0.95)以上条件に合致するtopicが出力される必要がある。低レートは弾かれる。AllowableRateは一旦固定
     ControlConditions:
-      - TimeRange: {start: 1709009638.3, end: 1709009639.3} # 評価開始時間と終了時刻、endは省略可能で省略した場合はsys.float_info.max
+      - TimeRange: { start: 1709009638.3, end: 1709009639.3 } # 評価開始時間と終了時刻、endは省略可能で省略した場合はsys.float_info.max
         Module: autonomous_emergency_braking # 評価対象のモジュール
         Value0Key: decision # 評価対象のキー
         Value0Value: stop # 評価対象の値
         DetailedConditions: null # 位置、速度など、追加で判定したい条件。nullの場合はValue0Valueが一致した時点で成功。記載がある場合はDetailedConditionsも条件を満たす必要がある
-      - TimeRange: {start: 1709009640, end: 1709009641}
+      - TimeRange: { start: 1709009640, end: 1709009641 }
         Module: autonomous_emergency_braking
         Value0Key: decision
         Value0Value: none
         DetailedConditions: null
-      - TimeRange: {start: 1709009640, end: 1709009641}
+      - TimeRange: { start: 1709009640, end: 1709009641 }
         Module: crosswalk
         Value0Key: decision
         Value0Value: slow_down
         DetailedConditions:
-          pos_x: {lower: 1.0, upper: 2.0}
-          pos_y: {lower: 3.0, upper: 4.0}
-          vel: {lower: 3.0, upper: 4.0}
+          pos_x: { lower: 1.0, upper: 2.0 }
+          pos_y: { lower: 3.0, upper: 4.0 }
+          vel: { lower: 3.0, upper: 4.0 }
