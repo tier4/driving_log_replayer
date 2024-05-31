@@ -9,35 +9,23 @@ Evaluation:
   UseCaseName: planning_control
   UseCaseFormatVersion: 0.1.0
   Conditions:
-    Hertz: 10.0 # TimeRange start-end なら (end - start) * Hertz * AllowableRate(=0.9) 以上の topicを受信しないと成功にならない。低レートを弾く。AllowableRateは一旦固定
-    # 以下の3種類のDecisionに応じて評価を行う。今後の拡張でdecision以外のキー対象とする可能性を考慮してモジュールの下にdecisionのキーを置く
-    #   decision.stop: 停止指示が出ていること評価
-    #   decision.slow_down: 減速指示が出ていることの評価
-    #   decision.none: 停止・減速指示が出ていないことの評価
-    # 各モジュールは、評価のための以下の要素を持ちうる
-    #   time_range: 評価対象となる時刻のレンジ (複数もちうる)
-    #   pos_x: map frameでの速度指示のターゲット位置x
-    #   pos_y: map frameでの速度指示のターゲット位置y
-    #   vel: 減速のターゲット速度 (SlowDownの時のみ)
+    Hertz: 10.0 # metricsが何Hzで来るか。 (現在時刻-評価開始時刻)* Hertz * AllowableRate(=0.9)以上条件に合致するtopicが出力される必要がある。低レートは弾かれる。AllowableRateは一旦固定
     ControlConditions:
-      # - TimeRange: 0.0-1.0
-      #   Module: crosswalk
-      #   Value0Key: decision # 現状 decision固定 今後の拡張用
-      #   Value0Value: slow_down # Literal["slow_down", "none", "stop"]
-      #   DetailedConditions:
-      #     pos_x: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
-      #     pos_y: {lower: 3.0, upper: 4.0} # values[1]以降で追加で判定したい条件
-      #     vel: {lower: 1.0, upper: 2.0} # values[1]以降で追加で判定したい条件
-      - TimeRange: {start: 1709009638, end: 1709009639}
+      - TimeRange: {start: 1709009638.3, end: 1709009639.3} # 評価開始時間と終了時刻、endは省略可能で省略した場合はsys.float_info.max
+        Module: autonomous_emergency_braking # 評価対象のモジュール
+        Value0Key: decision # 評価対象のキー
+        Value0Value: stop # 評価対象の値
+        DetailedConditions: null # 位置、速度など、追加で判定したい条件。nullの場合はValue0Valueが一致した時点で成功。記載がある場合はDetailedConditionsも条件を満たす必要がある
+      - TimeRange: {start: 1709009640, end: 1709009641}
         Module: autonomous_emergency_braking
         Value0Key: decision
-        Value0Value: stop
+        Value0Value: none
         DetailedConditions: null
-      TimeRangeConditions:
-        - start: 1
-          end: 10
-          ModuleConditions:
-            - Module: autonomous_emergency_braking
-              Value0Key: decision
-              Value0Value: stop
-              DetailedConditions: null
+      - TimeRange: {start: 1709009640, end: 1709009641}
+        Module: crosswalk
+        Value0Key: decision
+        Value0Value: slow_down
+        DetailedConditions:
+          pos_x: {lower: 1.0, upper: 2.0}
+          pos_y: {lower: 3.0, upper: 4.0}
+          vel: {lower: 3.0, upper: 4.0}
