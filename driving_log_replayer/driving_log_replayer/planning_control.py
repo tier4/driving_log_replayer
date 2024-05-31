@@ -23,7 +23,6 @@ from diagnostic_msgs.msg import KeyValue
 from pydantic import BaseModel
 from pydantic import Field
 from pydantic import model_validator
-from rosidl_runtime_py import message_to_ordereddict
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
@@ -96,7 +95,7 @@ class Metrics(EvaluationItem):
         if not (eval_start <= now <= self.condition.TimeRange.end):
             return None
         for status in msg.status:
-            if status.name != self.condition.Module:
+            if status.name != self.condition.Module:  # TODO: crosswalk_1などどうするか
                 continue
             if status.values[0].key != self.condition.Value0Key:
                 continue
@@ -142,7 +141,7 @@ class MetricsClassContainer:
 
     def update(self) -> tuple[bool, str]:
         rtn_success = True
-        rtn_summary = [] if len(self.__container) != 0 else ["NotTested"]
+        rtn_summary = [] if len(self.__container) != 0 else ["NotTestTarget"]
         for i, evaluation_item in enumerate(self.__container):
             if not evaluation_item.success:
                 rtn_success = False

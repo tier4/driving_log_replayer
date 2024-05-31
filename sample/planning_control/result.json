@@ -1,0 +1,481 @@
+[
+  {
+    "Condition": {
+      "Hertz": 10,
+      "ControlConditions": [
+        {
+          "TimeRange": {
+            "start": 1709009638.3,
+            "end": 1709009639.3
+          },
+          "Module": "autonomous_emergency_braking",
+          "Value0Key": "decision",
+          "Value0Value": "stop",
+          "DetailedConditions": null
+        },
+        {
+          "TimeRange": {
+            "start": 1709009640,
+            "end": 1709009641
+          },
+          "Module": "autonomous_emergency_braking",
+          "Value0Key": "decision",
+          "Value0Value": "none",
+          "DetailedConditions": null
+        },
+        {
+          "TimeRange": {
+            "start": 1709009640,
+            "end": 1709009641
+          },
+          "Module": "crosswalk",
+          "Value0Key": "decision",
+          "Value0Value": "slow_down",
+          "DetailedConditions": {
+            "pos_x": {
+              "lower": 1,
+              "upper": 2
+            },
+            "pos_y": {
+              "lower": 3,
+              "upper": 4
+            },
+            "vel": {
+              "lower": 3,
+              "upper": 4
+            }
+          }
+        }
+      ],
+      "PlanningConditions": []
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "NoData"
+    },
+    "Stamp": {
+      "System": 1717122177.6615398
+    },
+    "Frame": {}
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122206.1682308,
+      "ROS": 1717033424.612271
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 1,
+          "RequiredSuccess": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122206.2692165,
+      "ROS": 1717033424.7122746
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 2,
+          "RequiredSuccess": 1
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122206.3680265,
+      "ROS": 1717033424.81225
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 3,
+          "RequiredSuccess": 2
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122206.4701612,
+      "ROS": 1717033424.912282
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 4,
+          "RequiredSuccess": 2
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122206.5757322,
+      "ROS": 1717033425.017296
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 5,
+          "RequiredSuccess": 3
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122206.6726487,
+      "ROS": 1717033425.107275
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 6,
+          "RequiredSuccess": 4
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122206.8685193,
+      "ROS": 1717033425.3122783
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 7,
+          "RequiredSuccess": 6
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122206.9683797,
+      "ROS": 1717033425.4123263
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 8,
+          "RequiredSuccess": 7
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Fail), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122207.0700681,
+      "ROS": 1717033425.512249
+    },
+    "Frame": {
+      "control_0": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 9,
+          "RequiredSuccess": 8
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122207.868164,
+      "ROS": 1717033426.312265
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 1,
+          "RequiredSuccess": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122207.9685762,
+      "ROS": 1717033426.4122493
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 2,
+          "RequiredSuccess": 1
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122208.0686288,
+      "ROS": 1717033426.5122614
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 3,
+          "RequiredSuccess": 1
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122208.1686108,
+      "ROS": 1717033426.6122468
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 4,
+          "RequiredSuccess": 2
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122208.2720394,
+      "ROS": 1717033426.7122464
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 5,
+          "RequiredSuccess": 3
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122208.3684468,
+      "ROS": 1717033426.8123136
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 6,
+          "RequiredSuccess": 4
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122208.4684315,
+      "ROS": 1717033426.9122937
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 7,
+          "RequiredSuccess": 5
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122208.5685694,
+      "ROS": 1717033427.0122683
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 8,
+          "RequiredSuccess": 6
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122208.668613,
+      "ROS": 1717033427.1122494
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 9,
+          "RequiredSuccess": 7
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Control: Failed:condition0 (Success), condition1 (Success), condition2 (Fail) Planning: Passed:NotTestTarget"
+    },
+    "Stamp": {
+      "System": 1717122208.768232,
+      "ROS": 1717033427.2122433
+    },
+    "Frame": {
+      "control_1": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TotalPassed": 10,
+          "RequiredSuccess": 8
+        }
+      }
+    }
+  }
+]
