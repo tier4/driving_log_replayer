@@ -142,12 +142,12 @@ class MetricsClassContainer:
     def update(self) -> tuple[bool, str]:
         rtn_success = True
         rtn_summary = [] if len(self.__container) != 0 else ["NotTestTarget"]
-        for i, evaluation_item in enumerate(self.__container):
+        for evaluation_item in self.__container:
             if not evaluation_item.success:
                 rtn_success = False
-                rtn_summary.append(f"condition{i} (Fail)")
+                rtn_summary.append(f"{evaluation_item.name} (Fail)")
             else:
-                rtn_summary.append(f"condition{i} (Success)")
+                rtn_summary.append(f"{evaluation_item.name} (Success)")
         prefix_str = "Passed" if rtn_success else "Failed"
         rtn_summary_str = prefix_str + ":" + ", ".join(rtn_summary)
         return (rtn_success, rtn_summary_str)
