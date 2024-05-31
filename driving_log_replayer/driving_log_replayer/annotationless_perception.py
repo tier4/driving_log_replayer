@@ -44,10 +44,14 @@ METRICS_KEY_TUPLE = ("min", "max", "mean")
 METRICS_KEY = Literal[METRICS_KEY_TUPLE]
 
 
-class DiagValue(BaseModel):
+class Metrics(BaseModel):
     min: float | None = None
     max: float | None = None
     mean: float | None = None
+
+
+class MetricValue(BaseModel):
+    metrics_value: float | None = None
 
 
 class ClassConditionValue(BaseModel):
