@@ -5,21 +5,31 @@ SensorModel: aip_xx1
 VehicleModel: jpntaxi
 Evaluation:
   UseCaseName: traffic_light
-  UseCaseFormatVersion: 0.3.0
+  UseCaseFormatVersion: 1.0.0
   Datasets:
     - sample:
         VehicleId: "7" # Specify VehicleId for each data set.
         LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
         LocalMapPath: $HOME/map/traffic_light_xx1 # Specify LocalMapPath for each data set.
   Conditions:
-    PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
-    CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value [0.0, 100.0])
+    Criterion:
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+        CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+        CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   PerceptionEvaluationConfig:
     camera_type: cam_traffic_light_near # Specifies the type of camera for traffic_light.
     evaluation_config_dict:
       evaluation_task: classification2d # Currently only classification2 is supported. Future extensions will support detection2d.
       target_labels: [green, red, yellow, unknown] # evaluation target. refer https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#trafficlightlabel
+      max_distance: 202.0 # Minimum distance of traffic lights to be evaluated
+      min_distance: 0.0 # Maximum distance of traffic lights to be evaluated
       allow_matching_unknown: true # Whether or not to match objects whose labels are unknown
       merge_similar_labels: false # Whether or not to merge similar labels https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/label.md#merge-similar-labels-option
   CriticalObjectFilterConfig:

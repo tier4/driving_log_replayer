@@ -28,6 +28,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/obstacle_segmentation/pointcloud$\
 |^/diagnostics$\
 |^/sensing/lidar/.*/blockage_diag/debug/blockage_mask_image$\
+|^/sensing/lidar/.*/pointcloud_raw_ex$\
 |^/driving_log_replayer/.*\
 """
 
@@ -40,6 +41,7 @@ def generate_launch_description() -> launch.LaunchDescription:
     )
     autoware_launch = cmn.get_autoware_launch(
         localization=LaunchConfiguration("localization"),
+        perception="false",
     )
     rviz_node = cmn.get_rviz("autoware.rviz")
     evaluator_node = cmn.get_evaluator_node(

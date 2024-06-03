@@ -2,6 +2,33 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.17.0 (2024-05-28)
+-------------------
+* feat: `#389 <https://github.com/tier4/driving_log_replayer/issues/389>`_ set initial pose directly (`#399 <https://github.com/tier4/driving_log_replayer/issues/399>`_)
+* Contributors: Hayato Mizushima
+
+1.16.0 (2024-05-28)
+-------------------
+* chore: rename `FrameID.TRAFFIC_LIGHT` to `FrameID.CAM_TRAFFIC_LIGHT` (`#460 <https://github.com/tier4/driving_log_replayer/issues/460>`_)
+* chore: restore topic name (`#458 <https://github.com/tier4/driving_log_replayer/issues/458>`_)
+* feat: update tlr new interface (`#291 <https://github.com/tier4/driving_log_replayer/issues/291>`_)
+* chore: cli delete json conversion (`#457 <https://github.com/tier4/driving_log_replayer/issues/457>`_)
+* refactor: move function (`#451 <https://github.com/tier4/driving_log_replayer/issues/451>`_)
+* Contributors: Hayato Mizushima, ktro2828
+
+1.15.5 (2024-05-16)
+-------------------
+* feat: set use_perception_online_evaluator=true by default (`#449 <https://github.com/tier4/driving_log_replayer/issues/449>`_)
+* Contributors: Hayato Mizushima
+
+1.15.4 (2024-05-15)
+-------------------
+* chore: show full uuid (`#445 <https://github.com/tier4/driving_log_replayer/issues/445>`_)
+* fix(performance_diag): disable perception (`#444 <https://github.com/tier4/driving_log_replayer/issues/444>`_)
+* refactor: use a function in perception_eval (`#436 <https://github.com/tier4/driving_log_replayer/issues/436>`_)
+* feat: cli show exit status (`#441 <https://github.com/tier4/driving_log_replayer/issues/441>`_)
+* Contributors: Hayato Mizushima, Kotaro Uetake
+
 1.15.3 (2024-05-09)
 -------------------
 * feat(annotationless_perception): record pointcloud and objects (`#440 <https://github.com/tier4/driving_log_replayer/issues/440>`_)

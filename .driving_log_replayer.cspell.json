@@ -24,6 +24,8 @@
     "Minoda",
     "pyproject",
     "CENTERDISTANCE",
+    "rightdiagonal",
+    "leftdiagonal",
     "nums",
     "pydantic",
     "Kotaro",

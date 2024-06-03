@@ -1,5 +1,45 @@
 # Release Notes
 
+## Version 1.17.0
+
+Major Changes
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/7048).
+
+| `localization` | initial pose | set initial pose directory | [#460](https://github.com/tier4/driving_log_replayer/pull/460) | RT4-8507 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.16.0
+
+Major Changes
+Use perception_eval v1.2.0 or later
+
+| Module                  | Feature             | Brief summary                                             | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ------------------- | --------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | function            | move function from evaluator.py                           | [#451](https://github.com/tier4/driving_log_replayer/pull/451) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                   | cli                 | delete json conversion                                    | [#457](https://github.com/tier4/driving_log_replayer/pull/457) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | criteria, interface | support multi criterion and update interface              | [#291](https://github.com/tier4/driving_log_replayer/pull/291) | RT4-8944 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | topic               | restore topic name                                        | [#458](https://github.com/tier4/driving_log_replayer/pull/458) | RT4-8944 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | frame_id            | rename FrameID.TRAFFIC_LIGHT to FrameID.CAM_TRAFFIC_LIGHT | [#460](https://github.com/tier4/driving_log_replayer/pull/460) | RT4-5928 | [ktro2828](https://github.com/ktro2828)       |
+
+## Version 1.15.5
+
+Minor Tweak
+
+| Module                      | Feature | Brief summary                            | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ------- | ---------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `annotationless_perception` | launch  | set use_perception_online_evaluator=true | [#449](https://github.com/tier4/driving_log_replayer/pull/449) | RT1-6339 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.15.4
+
+Bug Fix
+
+| Module             | Feature       | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------ | ------------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`              | cli           | fix suppress error msg       | [#441](https://github.com/tier4/driving_log_replayer/pull/441) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`              | documentation | update sample result.json    | [#443](https://github.com/tier4/driving_log_replayer/pull/443) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`       | criteria      | use perception_eval function | [#436](https://github.com/tier4/driving_log_replayer/pull/436) | -        | [ktro2828](https://github.com/ktro2828)       |
+| `performance_diag` | launch        | disable perception module    | [#444](https://github.com/tier4/driving_log_replayer/pull/444) | RT1-6321 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception`       | visualization | show full bounding box uuid  | [#445](https://github.com/tier4/driving_log_replayer/pull/445) | -        | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.15.3
 
 Bug Fix

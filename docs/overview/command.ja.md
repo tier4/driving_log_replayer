@@ -40,14 +40,11 @@ dlr configure register -d ${data_directory} -o ${output_directory} -a ${autoware
 simulation を実行するコマンド
 
 ```shell
-# simulation 実行、jsonlとjsonの両方の結果ファイルが出力される
+# simulation 実行
 dlr simulation run -p ${profile}
 
 # 結果の確認、output_directory以下の結果ファイルのサマリーを表示する
 dlr simulation show-result ${output_directory}
-
-# 結果ファイルをjsonに変換する
-dlr simulation convert-result ${output_directory}
 
 # シナリオファイルを作成せずに、メトリクスを得るために実行する予行演習モード
 # bag, map, sensor_model, vehicle_model [, vehicle_id] を引数で指定する
@@ -113,7 +110,6 @@ output_direcotry
 └── YYYY-mmDD-HHMMSS               // 実行時刻
     └── TC01                       // テストケース名
     │   ├── console.log           // ターミナルに出力されているログ
-    │   ├── result.json　         // 変換済み結果ファイル
     │   ├── result.jsonl          // 変換元結果ファイル
     │   ├── result_bag            // recordしたbag
     │   │   ├── metadata.yaml
@@ -132,7 +128,6 @@ output_direcotry
 │       ├── DATASET01
 │       │   ├── perception_eval_log        // percepiton_evalのログ
 │       │   │   ...
-│       │   ├── result.json                // 変換済み結果ファイル
 │       │   ├── result.jsonl               // 変換元結果ファイル
 │       │   ├── result_archive             // json以外の評価結果を出力するディレクトリ
 │       │   │   └── scene_result.pkl      // perception_evalで評価したframe_resultsのオブジェクトファイル
