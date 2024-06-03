@@ -197,7 +197,7 @@ class ObjectMetrics(EvaluationItem):
             "Metrics": self.metrics_dict,
         }
 
-    def calc_metrics_and_success(
+    def calc_metrics_and_success(  # noqa
         self,
         key: str,
         values: dict,
