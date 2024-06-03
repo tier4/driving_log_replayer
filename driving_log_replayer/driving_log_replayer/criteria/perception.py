@@ -15,9 +15,10 @@
 
 from __future__ import annotations
 
-import logging
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 from enum import Enum
+import logging
 from numbers import Number
 from typing import TYPE_CHECKING
 
@@ -385,7 +386,7 @@ class YawError(CriteriaMethodImpl):
             err = result.heading_error
             if err is not None:
                 _, _, yaw_err = err
-                errors.append(yaw_err)
+                errors.append(abs(yaw_err))
 
         return 0.0 if len(errors) == 0 else np.mean(errors)
 
