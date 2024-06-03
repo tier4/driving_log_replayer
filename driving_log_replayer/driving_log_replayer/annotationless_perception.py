@@ -203,6 +203,19 @@ class ObjectMetrics(EvaluationItem):
         values: dict,
     ) -> tuple[dict, bool]:
         threshold_key: DiagValue | None = self.condition.Threshold.get(key)
+        pass_range = self.condition.PassRange
+        # metric_value type
+        if "metric_value" in values:
+            if threshold_key is None or threshold_key.metric_value is None:
+                return {}, True
+            metric_value_success = (
+                threshold_key.metric_value * pass_range["metric_value"][0]
+                <= values["metric_value"]
+                <= threshold_key.metric_value * pass_range["metric_value"][1]
+            )
+            return values["metric_value"], metric_value_success
+
+        # min, max, mean type
         # initialize
         if self.received_data.get(key) is None:
             self.received_data[key] = {
@@ -212,14 +225,13 @@ class ObjectMetrics(EvaluationItem):
                 "total_sum": 0,
             }
         rdk = self.received_data[key]
-        # add
         rdk["total_sum"] += 1
         rdk["min"] = min(rdk["min"], values["min"])
         rdk["max"] = max(rdk["max"], values["max"])
         rdk["mean"] += values["mean"]
         # calc metrics
         a_mean = rdk["mean"] / rdk["total_sum"]
-        pass_range = self.condition.PassRange
+
         # evaluate
         if threshold_key is None:
             is_success = True  # Calculate metrics only, return always True
@@ -227,7 +239,6 @@ class ObjectMetrics(EvaluationItem):
             is_success_min = True
             is_success_max = True
             is_success_mean = True  # if threshold mean is not set
-            is_success_metric_value = True
             if threshold_key.min is not None:
                 # Once min_success is false, it is not calculated thereafter.
                 is_success_min = (
@@ -248,15 +259,7 @@ class ObjectMetrics(EvaluationItem):
                     <= a_mean
                     <= threshold_key.mean * pass_range["mean"][1]
                 )
-            if threshold_key.metric_value is not None:
-                is_success_metric_value = (
-                    threshold_key.metric_value * pass_range["metric_value"][0]
-                    <= values["metric_value"]
-                    <= threshold_key.metric_value * pass_range["metric_value"][1]
-                )
-            is_success = (
-                is_success_min and is_success_max and is_success_mean and is_success_metric_value
-            )
+            is_success = is_success_min and is_success_max and is_success_mean
 
             # Store the measured value and threshold value for
             if not is_success_min:
