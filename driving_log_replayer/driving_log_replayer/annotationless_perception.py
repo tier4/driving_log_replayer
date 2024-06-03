@@ -15,6 +15,7 @@
 from dataclasses import dataclass
 from dataclasses import field
 from pathlib import Path
+import sys
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -40,18 +41,15 @@ OBJECT_CLASSIFICATION_TUPLE = (
 
 OBJECT_CLASSIFICATION = Literal[OBJECT_CLASSIFICATION_TUPLE]
 
-METRICS_KEY_TUPLE = ("min", "max", "mean")
+METRICS_KEY_TUPLE = ("min", "max", "mean", "metric_value")
 METRICS_KEY = Literal[METRICS_KEY_TUPLE]
 
 
-class Metrics(BaseModel):
+class DiagValue(BaseModel):
     min: float | None = None
     max: float | None = None
     mean: float | None = None
-
-
-class MetricValue(BaseModel):
-    metrics_value: float | None = None
+    metric_value: float | None = None
 
 
 class ClassConditionValue(BaseModel):
@@ -64,7 +62,7 @@ class ClassConditionValue(BaseModel):
         rtn_dict = {}
         for k, v in range_dict.items():
             if k not in METRICS_KEY_TUPLE:
-                key_error = "pass_range key must be 'min', 'max', and 'mean'"
+                key_error = "pass_range key must be 'min', 'max', 'mean', and 'metric_value'"
                 raise ValueError(key_error)
             boundary = 1.0
             s_lower, s_upper = v.split("-")
@@ -84,7 +82,12 @@ class ClassConditionValue(BaseModel):
     def get_default_condition(cls) -> "ClassConditionValue":
         return ClassConditionValue(
             Threshold={},
-            PassRange={"min": "0.0-1.0", "max": "0.0-1.0", "mean": "0.5-1.0"},
+            PassRange={
+                "min": "0.0-1.0",
+                "max": "0.0-1.0",
+                "mean": "0.5-1.0",
+                "metric_value": "0.9-1.1",
+            },
         )
 
     def set_threshold(self, threshold_dict: dict[str, dict]) -> None:
@@ -104,6 +107,8 @@ class ClassConditionValue(BaseModel):
                 diag_value.max = None
             if v.mean is None:
                 diag_value.mean = None
+            if v.metric_value is None:
+                diag_value.metric_value = None
             self.Threshold[k] = diag_value
 
     def set_pass_range(self, v: dict) -> None:
@@ -151,7 +156,7 @@ class Conditions(BaseModel):
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["annotationless_perception"]
-    UseCaseFormatVersion: Literal["0.2.0"]
+    UseCaseFormatVersion: Literal["0.3.0"]
     Conditions: Conditions
 
 
@@ -160,24 +165,21 @@ class AnnotationlessPerceptionScenario(Scenario):
 
 
 @dataclass
-class Deviation(EvaluationItem):
+class ObjectMetrics(EvaluationItem):
     received_data: dict = field(default_factory=dict)
-    # received_data = {lateral_deviation: {min: minimum_min, max: maximum_max, mean: sum_mean} ... }
+    # received_data = {lateral_deviation: {min: minimum_min, max: maximum_max, mean: sum_mean, total_sum: count_sum} ... }
     metrics_dict: dict = field(default_factory=dict)
-    min_success: dict = field(default_factory=dict)
-    max_success: dict = field(default_factory=dict)
     fail_details: dict = field(default_factory=dict)
 
     def set_frame(self, msg: dict[str, dict]) -> dict:
         self.condition: ClassConditionValue
-        self.total += 1
         frame_success = True
         info_dict = {}
         self.metrics_dict = {}
         frame_fail_items = ""
         for status_name, values in msg.items():
             info_dict[status_name] = values
-            self.metrics_dict[status_name], diag_success = self.calc_average_and_success(
+            self.metrics_dict[status_name], diag_success = self.calc_metrics_and_success(
                 status_name,
                 values,
             )
@@ -185,7 +187,7 @@ class Deviation(EvaluationItem):
                 frame_fail_items += f", {status_name}"
             frame_success = frame_success and diag_success
         self.success = frame_success
-        if self.condition.Threshold == {}:
+        if self.condition.Threshold == {}:  # not evaluation target
             self.summary = f"{self.name} (NotTested)"
         else:
             self.summary = f"{self.name} ({self.success_str()}{frame_fail_items})"
@@ -195,7 +197,7 @@ class Deviation(EvaluationItem):
             "Metrics": self.metrics_dict,
         }
 
-    def calc_average_and_success(
+    def calc_metrics_and_success(
         self,
         key: str,
         values: dict,
@@ -203,32 +205,39 @@ class Deviation(EvaluationItem):
         threshold_key: DiagValue | None = self.condition.Threshold.get(key)
         # initialize
         if self.received_data.get(key) is None:
-            self.received_data[key] = {"min": 0.0, "max": 0.0, "mean": 0.0}
-            self.min_success[key] = True
-            self.max_success[key] = True
+            self.received_data[key] = {
+                "min": sys.float_info.max,
+                "max": 0.0,
+                "mean": 0.0,
+                "total_sum": 0,
+            }
         rdk = self.received_data[key]
         # add
+        rdk["total_sum"] += 1
         rdk["min"] = min(rdk["min"], values["min"])
         rdk["max"] = max(rdk["max"], values["max"])
         rdk["mean"] += values["mean"]
         # calc metrics
-        a_mean = rdk["mean"] / self.total
+        a_mean = rdk["mean"] / rdk["total_sum"]
         pass_range = self.condition.PassRange
         # evaluate
         if threshold_key is None:
             is_success = True  # Calculate metrics only, return always True
         else:
+            is_success_min = True
+            is_success_max = True
             is_success_mean = True  # if threshold mean is not set
-            if self.min_success[key] and threshold_key.min is not None:
+            is_success_metric_value = True
+            if threshold_key.min is not None:
                 # Once min_success is false, it is not calculated thereafter.
-                self.min_success[key] = (
+                is_success_min = (
                     threshold_key.min * pass_range["min"][0]
                     <= rdk["min"]
                     <= threshold_key.min * pass_range["min"][1]
                 )
-            if self.max_success[key] and threshold_key.max is not None:
+            if threshold_key.max is not None:
                 # Once max_success is false, it is not calculated thereafter.
-                self.max_success[key] = (
+                is_success_max = (
                     threshold_key.max * pass_range["max"][0]
                     <= rdk["max"]
                     <= threshold_key.max * pass_range["max"][1]
@@ -239,16 +248,24 @@ class Deviation(EvaluationItem):
                     <= a_mean
                     <= threshold_key.mean * pass_range["mean"][1]
                 )
-            is_success = self.min_success[key] and self.max_success[key] and is_success_mean
+            if threshold_key.metric_value is not None:
+                is_success_metric_value = (
+                    threshold_key.metric_value * pass_range["metric_value"][0]
+                    <= values["metric_value"]
+                    <= threshold_key.metric_value * pass_range["metric_value"][1]
+                )
+            is_success = (
+                is_success_min and is_success_max and is_success_mean and is_success_metric_value
+            )
 
             # Store the measured value and threshold value for
-            if not self.min_success[key]:
+            if not is_success_min:
                 self.fail_details[key + "_min"] = (
                     rdk["min"],
                     threshold_key.min * pass_range["min"][0],
                     threshold_key.min * pass_range["min"][1],
                 )
-            if not self.max_success[key]:
+            if not is_success_max:
                 self.fail_details[key + "_max"] = (
                     rdk["max"],
                     threshold_key.max * pass_range["max"][0],
@@ -260,35 +277,36 @@ class Deviation(EvaluationItem):
             else:
                 self.fail_details[key + "_mean"] = (
                     a_mean,
-                    threshold_key.mean * pass_range["mean"][0],
+                    threshold_key.mean * pass_range["mean"][0],  # ないとコケる
                     threshold_key.mean * pass_range["mean"][1],
                 )
         return {"min": rdk["min"], "max": rdk["max"], "mean": a_mean}, is_success
 
 
-class DeviationClassContainer:
+class ObjectMetricsClassContainer:
     def __init__(self, condition: Conditions) -> None:
-        self.__container: dict[OBJECT_CLASSIFICATION, Deviation] = {}
+        self.__container: dict[OBJECT_CLASSIFICATION, ObjectMetrics] = {}
         for k, v in condition.ClassConditions.items():
-            self.__container[k] = Deviation(
+            self.__container[k] = ObjectMetrics(
                 name=k,
                 condition=v,
             )
 
     def set_frame(self, msg: DiagnosticArray) -> dict:
         diag_array_class: dict[OBJECT_CLASSIFICATION, dict[str, dict]] = {}
-        frame_result: dict[OBJECT_CLASSIFICATION, dict] = {"Ego": {}}
+        frame_result: dict[OBJECT_CLASSIFICATION, dict] = {}
         # Add diag data separately for each class.
         for diag_status in msg.status:
             diag_status: DiagnosticStatus
-            class_name, diag_dict = DeviationClassContainer.get_classname_and_value(diag_status)
+            class_name, diag_dict = ObjectMetricsClassContainer.get_classname_and_value(diag_status)
             if diag_array_class.get(class_name) is None:
                 diag_array_class[class_name] = {}
             diag_array_class[class_name].update(diag_dict)
         # evaluate for each class
         for class_name in diag_array_class:
             if self.__container.get(class_name) is None:
-                self.__container[class_name] = Deviation(
+                # Add default ObjectMetricsClass for metrics aggregation
+                self.__container[class_name] = ObjectMetrics(
                     name=class_name,
                     condition=ClassConditionValue.get_default_condition(),
                 )
@@ -305,7 +323,9 @@ class DeviationClassContainer:
                 rtn_class_name = class_name
                 break
         status_name_removed_class = diag.name.replace(f"_{rtn_class_name}", "")
-        values = {value.key: float(value.value) for value in diag.values}  # min, max, mean
+        values = {
+            value.key: float(value.value) for value in diag.values
+        }  # min, max, mean, metric_value
         return rtn_class_name, {status_name_removed_class: values}
 
     def update(self) -> tuple[bool, str]:
@@ -338,14 +358,14 @@ class DeviationClassContainer:
 class AnnotationlessPerceptionResult(ResultBase):
     def __init__(self, condition: Conditions) -> None:
         super().__init__()
-        self.__deviation = DeviationClassContainer(condition=condition)
+        self.__obj_container = ObjectMetricsClassContainer(condition=condition)
 
     def update(self) -> None:
-        self._success, self._summary = self.__deviation.update()
+        self._success, self._summary = self.__obj_container.update()
 
     def set_frame(self, msg: DiagnosticArray) -> None:
-        self._frame = self.__deviation.set_frame(msg)
+        self._frame = self.__obj_container.set_frame(msg)
         self.update()
 
     def set_final_metrics(self) -> None:
-        self._frame = {"FinalMetrics": self.__deviation.final_metrics()}
+        self._frame = {"FinalMetrics": self.__obj_container.final_metrics()}
