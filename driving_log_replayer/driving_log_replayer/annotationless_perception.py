@@ -175,14 +175,15 @@ class ObjectMetrics(EvaluationItem):
         self.condition: ClassConditionValue
         frame_success = True
         info_dict = {}
-        self.metrics_dict = {}
         frame_fail_items = ""
         for status_name, values in msg.items():
             info_dict[status_name] = values
-            self.metrics_dict[status_name], diag_success = self.calc_metrics_and_success(
+            metrics_dict, diag_success = self.calc_metrics_and_success(
                 status_name,
                 values,
             )
+            if metrics_dict != {}:
+                self.metrics_dict[status_name] = metrics_dict
             if diag_success is False:
                 frame_fail_items += f", {status_name}"
             frame_success = frame_success and diag_success
@@ -213,7 +214,7 @@ class ObjectMetrics(EvaluationItem):
                 <= values["metric_value"]
                 <= threshold_key.metric_value * pass_range["metric_value"][1]
             )
-            return values["metric_value"], metric_value_success
+            return {}, metric_value_success
 
         # min, max, mean type
         # initialize
@@ -280,7 +281,7 @@ class ObjectMetrics(EvaluationItem):
             else:
                 self.fail_details[key + "_mean"] = (
                     a_mean,
-                    threshold_key.mean * pass_range["mean"][0],  # ないとコケる
+                    threshold_key.mean * pass_range["mean"][0],
                     threshold_key.mean * pass_range["mean"][1],
                 )
         return {"min": rdk["min"], "max": rdk["max"], "mean": a_mean}, is_success
