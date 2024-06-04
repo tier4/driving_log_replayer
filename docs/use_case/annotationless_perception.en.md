@@ -49,8 +49,6 @@ Lower limit recommended to be 0.0
 
 If `threshold * lower_limit` <= `average value of mean` <= `threshold * upper_limit`, it is assumed to be normal.
 
-An illustration is shown below.
-
 #### metric_value
 
 If `threshold * lower_limit` <= `value of metric_value` <= `threshold * upper_limit`, it is assumed to be normal.
