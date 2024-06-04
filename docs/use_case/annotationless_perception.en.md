@@ -100,10 +100,7 @@ Evaluation:
           lateral_deviation: { max: 0.1912, mean: 0.0077 }
           yaw_deviation: { max: 3.1411, mean: 0.9474 }
           predicted_path_deviation_5.00: { max: 16.464, mean: 0.9062 }
-          predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
-          predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
-          predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
-          total_objects_count_r60.00_h10.00: { metric_value: 4 }
+          total_objects_count_r60.00_h10.00: { metric_value: 10 }
         PassRange:
           min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
