@@ -17,7 +17,7 @@ Evaluation:
       CAR: # classification key
         Threshold:
           # 記述のないキーについては評価されない（必ず成功になる）
-          lateral_deviation: { max: 0.1912, mean: 0.019 }
+          lateral_deviation: { max: 0.4, mean: 0.019 }
           yaw_deviation: { max: 3.1411, mean: 0.05 }
           predicted_path_deviation_5.00: { max: 16.464, mean: 1.8 }
           total_objects_count_r60.00_h10.00: { metric_value: 10 }
@@ -29,7 +29,7 @@ Evaluation:
       BUS: # classification key
         Threshold:
           # Only lateral_deviation is evaluated.
-          total_objects_count_r50.00_h10.00: { max: 0.9 } # Only max is evaluated.
+          yaw_rate: { max: 0.05 } # Only max is evaluated.
         PassRange:
           min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]

@@ -34,12 +34,13 @@ def test_scenario() -> None:
     )
     assert scenario.ScenarioName == "sample_annotationless_perception"
     assert scenario.Evaluation.Conditions.ClassConditions["BUS"].Threshold == {
-        "total_objects_count_r50.00_h10.00": DiagValue(max=0.9),
+        "yaw_rate": DiagValue(max=0.05),
     }
     assert scenario.Evaluation.Conditions.ClassConditions["BUS"].PassRange == {
         "min": (0.0, 2.0),
         "max": (0.0, 2.0),
         "mean": (0.5, 2.0),
+        "metric_value": (0.9, 1.1),
     }
 
 
@@ -103,7 +104,7 @@ def test_update_threshold_from_file() -> None:
     # update_threshold_from_file update only keys written in scenario.yaml
     bus_threshold = scenario.Evaluation.Conditions.ClassConditions["BUS"].Threshold
     assert bus_threshold == {
-        "total_objects_count_r50.00_h10.00": DiagValue(max=1.0),
+        "yaw_rate": DiagValue(max=0.077258),
     }
 
 
