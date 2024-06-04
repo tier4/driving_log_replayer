@@ -25,7 +25,7 @@ For each subscription, the following judgment results are output for each recogn
 
 If all classes are normal, the test is successful.
 
-### Deviation Normal
+### Normal
 
 The following two values specified in the scenario or launch argument are used to judge
 
@@ -51,11 +51,18 @@ If `threshold * lower_limit` <= `average value of mean` <= `threshold * upper_li
 
 An illustration is shown below.
 
+#### metric_value
+
+If `threshold * lower_limit` <= `value of metric_value` <= `threshold * upper_limit`, it is assumed to be normal.
+metric_value is determined by the current topic value only and does not update the values of min, max, and mean metrics.
+
+An illustration is shown below.
+
 ![metrics](./images/annotationless_metrics.drawio.svg)
 
-### Deviation Error
+### Error
 
-When the deviation normal condition is not met
+When the normal condition is not met
 
 ## Topic name and data type used by evaluation node
 
@@ -80,7 +87,7 @@ The conditions can be given in two ways
 ```yaml
 Evaluation:
   UseCaseName: annotationless_perception
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Conditions:
     ClassConditions:
       # Describe the conditions for each class. If a class with no conditions is output, only the metrics are calculated. It does not affect the evaluation.
@@ -96,18 +103,21 @@ Evaluation:
           predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
           predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
           predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
+          total_objects_count_r60.00_h10.00: { metric_value: 4 }
         PassRange:
           min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
+          metric_value: 0.9-1.1
       BUS: # classification key
         Threshold:
           # Only lateral_deviation is evaluated.
-          lateral_deviation: { max: 0.050 } # Only max is evaluated.
+          total_objects_count_r50.00_h10.00: { max: 0.9 } # Only max is evaluated.
         PassRange:
           min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
+          metric_value: 0.9-1.1
 ```
 
 #### Specify by launch argument
@@ -291,68 +301,17 @@ The format of each frame and the metrics format are shown below.
       // Recognized class
       "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // The results for Total and Frame are the same. The same values are output to make the data structure the same as other evaluations.
       "Info": {
-        "lateral_deviation": {
-          "min": "Minimum distance",
-          "max": "Maximum distance",
-          "mean": "Mean distance"
-        },
-        "yaw_deviation": {
-          "min": "Minimum Angle Difference",
-          "max": "Maximum Angle Difference",
-          "mean": "Mean Angle Difference"
-        },
-        "predicted_path_deviation_5.00": {
-          "min": "Minimum distance",
-          "max": "Maximum distance",
-          "mean": "Mean distance"
-        },
-        "predicted_path_deviation_3.00": {
-          "min": "Minimum distance",
-          "max": "Maximum distance",
-          "mean": "Mean distance"
-        },
-        "predicted_path_deviation_2.00": {
-          "min": "Minimum distance",
-          "max": "Maximum distance",
-          "mean": "Mean distance"
-        },
-        "predicted_path_deviation_1.00": {
-          "min": "Minimum distance",
-          "max": "Maximum distance",
-          "mean": "Mean distance"
-        }
+        "name_min_max_mean": { "min": "min value", "max": "max value", "mean": "average value" },
+        "name_metric_value": { "metric_value": "value"},
+        ...
       },
       "Metrics": {
-        "lateral_deviation": {
-          "min": "Maximum value of Minimum distance",
-          "max": "Maximum value of Maximum distance",
-          "mean": "Average value of Mean distance"
+        "name_min_max_mean": {
+          "min": "Minimum value of min",
+          "max": "Maximum value of max",
+          "mean": "Average value of mean"
         },
-        "yaw_deviation": {
-          "min": "Maximum value of Minimum Angle Difference",
-          "max": "Maximum value of Maximum Angle Difference",
-          "mean": "Average value of Mean Angle Difference"
-        },
-        "predicted_path_deviation_5.00": {
-          "min": "Maximum value of Minimum distance",
-          "max": "Maximum value of Maximum distance",
-          "mean": "Average value of Mean distance"
-        },
-        "predicted_path_deviation_3.00": {
-          "min": "Maximum value of Minimum distance",
-          "max": "Maximum value of Maximum distance",
-          "mean": "Average value of Mean distance"
-        },
-        "predicted_path_deviation_2.00": {
-          "min": "Maximum value of Minimum distance",
-          "max": "Maximum value of Maximum distance",
-          "mean": "Average value of Mean distance"
-        },
-        "predicted_path_deviation_1.00": {
-          "min": "Maximum value of Minimum distance",
-          "max": "Maximum value of Maximum distance",
-          "mean": "Average value of Mean distance"
-        }
+        ...
       }
     }
   }
