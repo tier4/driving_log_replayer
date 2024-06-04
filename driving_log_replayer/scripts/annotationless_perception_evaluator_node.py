@@ -54,8 +54,6 @@ class AnnotationlessPerceptionEvaluator(DLREvaluator):
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
         self._result.set_frame(msg)
-        # output number of metrics in topic
-        self.get_logger().error(f"{len(msg.status)=}")
         self._result_writer.write_result(self._result)
 
     def timer_cb(self) -> None:
