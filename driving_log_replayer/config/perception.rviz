@@ -4252,6 +4252,35 @@ Visualization Manager:
           Name: Control
       Enabled: false
       Name: Debug
+    - Class: rviz_common/Group
+      Displays:
+        - Class: rviz_default_plugins/MarkerArray
+          Enabled: true
+          Name: MarkerArray
+          Namespaces:
+            ground_truth: true
+            ground_truth_uuid: true
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /driving_log_replayer/marker/ground_truth
+          Value: true
+        - Class: rviz_default_plugins/MarkerArray
+          Enabled: true
+          Name: MarkerArray
+          Namespaces:
+            {}
+          Topic:
+            Depth: 5
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /driving_log_replayer/marker/results
+          Value: true
+      Enabled: true
+      Name: driving_log_replayer
   Enabled: true
   Global Options:
     Background Color: 42; 42; 42
