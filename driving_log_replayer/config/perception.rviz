@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /Sensing1/LiDAR1/ConcatenatePointCloud1/Autocompute Value Bounds1
       Splitter Ratio: 0.557669460773468
-    Tree Height: 205
+    Tree Height: 242
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -236,18 +236,18 @@ Visualization Manager:
               Enabled: true
               Gear Topic Test: /vehicle/status/gear_status
               Hazard Lights Topic: /vehicle/status/hazard_lights_status
-              Height: 175
-              Left: 10
+              Height: 100
+              Left: 0
               Name: SignalDisplay
               Signal Color: 0; 230; 120
               Speed Limit Topic: /planning/scenario_planning/current_max_velocity
               Speed Topic: /vehicle/status/velocity_status
               Steering Topic: /vehicle/status/steering_status
               Top: 10
-              Traffic Topic: /perception/traffic_light_recognition/traffic_signals
+              Traffic Topic: /planning/scenario_planning/lane_driving/behavior_planning/debug/traffic_signal
               Turn Signals Topic: /vehicle/status/turn_indicators_status
               Value: true
-              Width: 517
+              Width: 550
           Enabled: true
           Name: Vehicle
         - Class: rviz_plugins/MrmSummaryOverlayDisplay
@@ -684,6 +684,7 @@ Visualization Manager:
                   Name: DetectedObjects
                   Namespaces:
                     {}
+                  Object Fill Type: skeleton
                   PEDESTRIAN:
                     Alpha: 0.9990000128746033
                     Color: 255; 192; 203
@@ -742,6 +743,7 @@ Visualization Manager:
                   Name: TrackedObjects
                   Namespaces:
                     {}
+                  Object Fill Type: skeleton
                   PEDESTRIAN:
                     Alpha: 0.9990000128746033
                     Color: 255; 192; 203
@@ -807,6 +809,7 @@ Visualization Manager:
                     twist: true
                     uuid: true
                     velocity: true
+                  Object Fill Type: skeleton
                   PEDESTRIAN:
                     Alpha: 0.9990000128746033
                     Color: 255; 192; 203
@@ -847,7 +850,7 @@ Visualization Manager:
         - Class: rviz_common/Group
           Displays:
             - Class: rviz_default_plugins/Image
-              Enabled: true
+              Enabled: false
               Max Value: 1
               Median window: 5
               Min Value: 0
@@ -859,7 +862,7 @@ Visualization Manager:
                 History Policy: Keep Last
                 Reliability Policy: Best Effort
                 Value: /perception/traffic_light_recognition/traffic_light/debug/rois
-              Value: true
+              Value: false
             - Class: rviz_default_plugins/MarkerArray
               Enabled: true
               Name: MapBasedDetectionResult
@@ -937,6 +940,15 @@ Visualization Manager:
                 Reliability Policy: Reliable
                 Value: /planning/mission_planning/echo_back_goal_pose
               Value: true
+            - Class: autoware_mission_details_overlay_rviz_plugin/MissionDetailsDisplay
+              Enabled: true
+              Height: 100
+              Name: MissionDetailsDisplay
+              Remaining Distance and Time Topic: /planning/mission_remaining_distance_time
+              Right: 10
+              Top: 10
+              Value: true
+              Width: 170
           Enabled: true
           Name: MissionPlanning
         - Class: rviz_common/Group
@@ -1100,7 +1112,7 @@ Visualization Manager:
                         Filter size: 10
                         History Policy: Keep Last
                         Reliability Policy: Reliable
-                        Value: /planning/path_reference/avoidance
+                        Value: /planning/path_reference/static_obstacle_avoidance
                       Value: false
                       View Drivable Area:
                         Alpha: 0.9990000128746033
@@ -1650,7 +1662,7 @@ Visualization Manager:
                         Filter size: 10
                         History Policy: Keep Last
                         Reliability Policy: Reliable
-                        Value: /planning/path_candidate/avoidance
+                        Value: /planning/path_candidate/static_obstacle_avoidance
                       Value: true
                       View Drivable Area:
                         Alpha: 0.9990000128746033
@@ -1806,7 +1818,7 @@ Visualization Manager:
                       Displays:
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: true
-                          Name: VirtualWall (Avoidance)
+                          Name: VirtualWall (StaticObstacleAvoidance)
                           Namespaces:
                             {}
                           Topic:
@@ -1814,7 +1826,7 @@ Visualization Manager:
                             Durability Policy: Volatile
                             History Policy: Keep Last
                             Reliability Policy: Reliable
-                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/virtual_wall/avoidance
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/virtual_wall/static_obstacle_avoidance
                           Value: true
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: true
@@ -2230,7 +2242,7 @@ Visualization Manager:
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
-                          Name: Avoidance
+                          Name: StaticObstacleAvoidance
                           Namespaces:
                             {}
                           Topic:
@@ -2238,7 +2250,7 @@ Visualization Manager:
                             Durability Policy: Volatile
                             History Policy: Keep Last
                             Reliability Policy: Reliable
-                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/debug/avoidance
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/debug/static_obstacle_avoidance
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
@@ -2338,7 +2350,7 @@ Visualization Manager:
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
-                          Name: DynamicAvoidance
+                          Name: DynamicObstacleAvoidance
                           Namespaces:
                             {}
                           Topic:
@@ -2346,7 +2358,7 @@ Visualization Manager:
                             Durability Policy: Volatile
                             History Policy: Keep Last
                             Reliability Policy: Reliable
-                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/debug/dynamic_avoidance
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/debug/dynamic_obstacle_avoidance
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
@@ -2378,7 +2390,7 @@ Visualization Manager:
                       Displays:
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
-                          Name: Info (Avoidance)
+                          Name: Info (StaticObstacleAvoidance)
                           Namespaces:
                             {}
                           Topic:
@@ -2386,7 +2398,7 @@ Visualization Manager:
                             Durability Policy: Volatile
                             History Policy: Keep Last
                             Reliability Policy: Reliable
-                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/info/avoidance
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/info/static_obstacle_avoidance
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
@@ -2474,7 +2486,7 @@ Visualization Manager:
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
-                          Name: Info (DynamicAvoidance)
+                          Name: Info (DynamicObstacleAvoidance)
                           Namespaces:
                             {}
                           Topic:
@@ -2482,7 +2494,7 @@ Visualization Manager:
                             Durability Policy: Volatile
                             History Policy: Keep Last
                             Reliability Policy: Reliable
-                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/info/dynamic_avoidance
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/info/dynamic_obstacle_avoidance
                           Value: false
                       Enabled: false
                       Name: InfoMarker
@@ -2595,7 +2607,19 @@ Visualization Manager:
                             Durability Policy: Volatile
                             History Policy: Keep Last
                             Reliability Policy: Reliable
-                            Value: /planning/scenario_planning/motion_velocity_smoother/virtual_wall
+                            Value: /planning/scenario_planning/velocity_smoother/virtual_wall
+                          Value: true
+                        - Class: rviz_default_plugins/MarkerArray
+                          Enabled: true
+                          Name: VirtualWall (OutOfLane)
+                          Namespaces:
+                            {}
+                          Topic:
+                            Depth: 5
+                            Durability Policy: Volatile
+                            History Policy: Keep Last
+                            Reliability Policy: Reliable
+                            Value: /planning/scenario_planning/lane_driving/motion_planning/motion_velocity_planner/out_of_lane/virtual_walls
                           Value: true
                       Enabled: true
                       Name: VirtualWall
@@ -2720,6 +2744,22 @@ Visualization Manager:
                             Reliability Policy: Reliable
                             Value: /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner/debug/marker
                           Value: false
+                        - Class: rviz_common/Group
+                          Displays:
+                            - Class: rviz_default_plugins/MarkerArray
+                              Enabled: true
+                              Name: OutOfLane
+                              Namespaces:
+                                {}
+                              Topic:
+                                Depth: 5
+                                Durability Policy: Volatile
+                                History Policy: Keep Last
+                                Reliability Policy: Reliable
+                                Value: /planning/scenario_planning/lane_driving/motion_planning/motion_velocity_planner/out_of_lane/debug_markers
+                              Value: true
+                          Enabled: false
+                          Name: MotionVelocityPlanner
                       Enabled: false
                       Name: DebugMarker
                   Enabled: true
@@ -2959,25 +2999,11 @@ Visualization Manager:
                 Debug:
                   Control: true
                   Localization:
-                    EKFPoseHistory: true
-                    NDT pointclouds: true
-                    NDTLoadedPCDMap: true
-                    NDTPoseHistory: true
+                    "": true
                     Value: true
                   Map: true
                   Perception:
-                    CameraLidarFusion(purple): true
-                    Centerpoint(red1): true
-                    CenterpointROIFusion(red2): true
-                    CenterpointValidator(red3): true
-                    Detection(yellow): true
-                    DetectionByTracker(orange): true
-                    PointPainting(light_green1): true
-                    PointPaintingROIFusion(light_green2): true
-                    PointPaintingValidator(light_green3): true
-                    Prediction(light_blue): true
-                    RadarFarObjects(white): true
-                    Tracking(green): true
+                    "": true
                     Value: true
                   Planning:
                     Objects Of Interest:
@@ -2996,7 +3022,6 @@ Visualization Manager:
                       StartPlanner: true
                       TrafficLight: true
                       Value: true
-                    StringStampedOverlayDisplay: true
                     Value: true
                   Sensing:
                     ConcatenatePointCloud: true
@@ -3050,6 +3075,7 @@ Visualization Manager:
                     Value: true
                   MissionPlanning:
                     GoalPose: true
+                    MissionDetailsDisplay: true
                     RouteArea: true
                     Value: true
                   ScenarioPlanning:
@@ -3059,11 +3085,10 @@ Visualization Manager:
                         Bound: true
                         DebugMarker:
                           Arrow: true
-                          Avoidance: true
                           Blind Spot: true
                           Crosswalk: true
                           DetectionArea: true
-                          DynamicAvoidance: true
+                          DynamicObstacleAvoidance: true
                           DynamicObstacleStop: true
                           GoalPlanner: true
                           Intersection: true
@@ -3078,20 +3103,21 @@ Visualization Manager:
                           SideShift: true
                           SpeedBump: true
                           StartPlanner: true
+                          StaticObstacleAvoidance: true
                           StopLine: true
                           TrafficLight: true
                           Value: true
                           VirtualTrafficLight: true
                         InfoMarker:
-                          Info (Avoidance): true
                           Info (AvoidanceByLC): true
-                          Info (DynamicAvoidance): true
+                          Info (DynamicObstacleAvoidance): true
                           Info (ExtLaneChangeLeft): true
                           Info (ExtLaneChangeRight): true
                           Info (GoalPlanner): true
                           Info (LaneChangeLeft): true
                           Info (LaneChangeRight): true
                           Info (StartPlanner): true
+                          Info (StaticObstacleAvoidance): true
                           Value: true
                         Path: true
                         PathChangeCandidate_Avoidance: true
@@ -3111,7 +3137,6 @@ Visualization Manager:
                         Value: true
                         VirtualWall:
                           Value: true
-                          VirtualWall (Avoidance): true
                           VirtualWall (AvoidanceByLC): true
                           VirtualWall (BlindSpot): true
                           VirtualWall (Crosswalk): true
@@ -3131,12 +3156,16 @@ Visualization Manager:
                           VirtualWall (RunOut): true
                           VirtualWall (SpeedBump): true
                           VirtualWall (StartPlanner): true
+                          VirtualWall (StaticObstacleAvoidance): true
                           VirtualWall (StopLine): true
                           VirtualWall (TrafficLight): true
                           VirtualWall (VirtualTrafficLight): true
                           VirtualWall (Walkway): true
                       MotionPlanning:
                         DebugMarker:
+                          MotionVelocityPlanner:
+                            OutOfLane: true
+                            Value: true
                           ObstacleAvoidance: true
                           ObstacleCruise:
                             CruiseVirtualWall: true
@@ -3159,6 +3188,7 @@ Visualization Manager:
                           VirtualWall (ObstacleAvoidance): true
                           VirtualWall (ObstacleCruise): true
                           VirtualWall (ObstacleStop): true
+                          VirtualWall (OutOfLane): true
                           VirtualWall (SurroundObstacle): true
                       Value: true
                     ModifiedGoal: true
@@ -3190,9 +3220,6 @@ Visualization Manager:
                     Value: true
                     VehicleModel: true
                 Value: true
-                driving_log_replayer:
-                  MarkerArray: true
-                  Value: true
               Zoom Factor: 1
             - Alpha: 1
               Autocompute Intensity Bounds: true
@@ -3260,6 +3287,7 @@ Visualization Manager:
               Name: RadarRawObjects(white)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.5
                 Color: 255; 255; 255
@@ -3423,6 +3451,7 @@ Visualization Manager:
               Name: Centerpoint(red1)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 255; 138; 128
@@ -3476,6 +3505,7 @@ Visualization Manager:
               Name: CenterpointROIFusion(red2)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 255; 82; 82
@@ -3529,6 +3559,7 @@ Visualization Manager:
               Name: CenterpointValidator(red3)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 213; 0; 0
@@ -3582,6 +3613,7 @@ Visualization Manager:
               Name: PointPainting(light_green1)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 178; 255; 89
@@ -3635,6 +3667,7 @@ Visualization Manager:
               Name: PointPaintingROIFusion(light_green2)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 118; 255; 3
@@ -3688,6 +3721,7 @@ Visualization Manager:
               Name: PointPaintingValidator(light_green3)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 100; 221; 23
@@ -3741,6 +3775,7 @@ Visualization Manager:
               Name: DetectionByTracker(orange)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 255; 145; 0
@@ -3794,6 +3829,7 @@ Visualization Manager:
               Name: CameraLidarFusion(purple)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 213; 0; 249
@@ -3847,6 +3883,7 @@ Visualization Manager:
               Name: RadarFarObjects(white)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 255; 255; 255
@@ -3900,6 +3937,7 @@ Visualization Manager:
               Name: Detection(yellow)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 255; 234; 0
@@ -3954,6 +3992,7 @@ Visualization Manager:
               Name: Tracking(green)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 0; 230; 118
@@ -4007,6 +4046,7 @@ Visualization Manager:
               Name: Prediction(light_blue)
               Namespaces:
                 {}
+              Object Fill Type: skeleton
               PEDESTRIAN:
                 Alpha: 0.9990000128746033
                 Color: 0; 176; 255
@@ -4068,7 +4108,7 @@ Visualization Manager:
                     Durability Policy: Volatile
                     History Policy: Keep Last
                     Reliability Policy: Reliable
-                    Value: /planning/debug/objects_of_interest/avoidance_left
+                    Value: /planning/debug/objects_of_interest/static_obstacle_avoidance_left
                   Value: true
                 - Class: rviz_default_plugins/MarkerArray
                   Enabled: true
@@ -4080,7 +4120,7 @@ Visualization Manager:
                     Durability Policy: Volatile
                     History Policy: Keep Last
                     Reliability Policy: Reliable
-                    Value: /planning/debug/objects_of_interest/avoidance_right
+                    Value: /planning/debug/objects_of_interest/static_obstacle_avoidance_right
                   Value: true
                 - Class: rviz_default_plugins/MarkerArray
                   Enabled: true
@@ -4204,22 +4244,6 @@ Visualization Manager:
                   Value: true
               Enabled: true
               Name: Objects Of Interest
-            - Class: rviz_plugins/StringStampedOverlayDisplay
-              Enabled: true
-              Font Size: 15
-              Left: 1024
-              Max Letter Num: 100
-              Name: StringStampedOverlayDisplay
-              Text Color: 25; 255; 240
-              Top: 128
-              Topic:
-                Depth: 5
-                Durability Policy: Volatile
-                History Policy: Keep Last
-                Reliability Policy: Reliable
-                Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/debug/internal_state
-              Value: true
-              Value height offset: 0
           Enabled: true
           Name: Planning
         - Class: rviz_common/Group
@@ -4228,37 +4252,9 @@ Visualization Manager:
           Name: Control
       Enabled: false
       Name: Debug
-    - Class: rviz_common/Group
-      Displays:
-        - Class: rviz_default_plugins/MarkerArray
-          Enabled: true
-          Name: MarkerArray
-          Namespaces:
-            {}
-          Topic:
-            Depth: 5
-            Durability Policy: Volatile
-            History Policy: Keep Last
-            Reliability Policy: Reliable
-            Value: /driving_log_replayer/marker/ground_truth
-          Value: true
-        - Class: rviz_default_plugins/MarkerArray
-          Enabled: true
-          Name: MarkerArray
-          Namespaces:
-            {}
-          Topic:
-            Depth: 5
-            Durability Policy: Volatile
-            History Policy: Keep Last
-            Reliability Policy: Reliable
-            Value: /driving_log_replayer/marker/results
-          Value: true
-      Enabled: true
-      Name: driving_log_replayer
   Enabled: true
   Global Options:
-    Background Color: 10; 10; 10
+    Background Color: 42; 42; 42
     Fixed Frame: map
     Frame Rate: 30
   Name: root
@@ -4408,23 +4404,23 @@ Window Geometry:
   AutowareDateTimePanel:
     collapsed: false
   AutowareStatePanel:
-    collapsed: false
+    collapsed: true
   Displays:
     collapsed: false
-  Height: 982
-  Hide Left Dock: false
+  Height: 973
+  Hide Left Dock: true
   Hide Right Dock: false
   PointcloudOnCamera:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000002d50000037afc0200000010fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003e000000d7000000ca00fffffffc0000011b000000c4000000c40100001dfa000000000100000002fb0000000a0056006900650077007301000000000000033c0000010000fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000000ffffffff0000008a00fffffffb00000024004100750074006f00770061007200650053007400610074006500500061006e0065006c00000002380000017c0000017c00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000682000000eb0000000000000000fb0000000a0049006d0061006700650100000505000002680000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb00000030005200650063006f0067006e006900740069006f006e0052006500730075006c0074004f006e0049006d00610067006501000001e5000000df0000002800fffffffb0000002a004100750074006f0077006100720065004400610074006500540069006d006500500061006e0065006c01000002ca000000420000004200fffffffb000000240050006f0069006e00740063006c006f00750064004f006e00430061006d0065007200610100000312000000a60000002800ffffff000000010000015f000006fffc0200000002fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000e7a0000005afc0100000001fb0000000a00560069006500770073030000004e00000080000002e1000001970000000300000e7a0000005afc0100000002fb0000000800540069006d0065010000000000000e7a0000000000000000fb0000000800540069006d00650100000000000004500000000000000000000004a50000037a00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001ee00000371fc020000000efb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb00000024004100750074006f00770061007200650053007400610074006500500061006e0065006c000000003e000002790000006e00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000c00430061006d0065007200610100000682000000eb0000000000000000fb0000000a0049006d0061006700650100000505000002680000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb0000002c0049006e0069007400690061006c0050006f007300650042007500740074006f006e00500061006e0065006c000000068f000000de0000000000000000fb00000030005200650063006f0067006e006900740069006f006e0052006500730075006c0074004f006e0049006d00610067006500000002bd000000f20000002800fffffffb0000002a004100750074006f0077006100720065004400610074006500540069006d006500500061006e0065006c0000000332000000720000004200fffffffb000000240050006f0069006e00740063006c006f00750064004f006e00430061006d006500720061000000039d000000560000002800ffffff00000001000001ab00000371fc0200000004fb000000100044006900730070006c006100790073010000003e00000130000000ca00fffffffc000001740000023b000000c40100001dfa000000000100000002fb0000000a0056006900650077007301000005d5000001ab0000010000fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000000ffffffff0000008a00fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000e7a0000005afc0100000001fb0000000a00560069006500770073030000004e00000080000002e1000001970000000300000e7a0000005afc0100000002fb0000000800540069006d0065010000000000000e7a0000000000000000fb0000000800540069006d00650100000000000004500000000000000000000005cd0000037100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RecognitionResultOnImage:
-    collapsed: false
+    collapsed: true
   Selection:
     collapsed: false
   Tool Properties:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1920
+  Width: 1918
   X: 0
   Y: 0
