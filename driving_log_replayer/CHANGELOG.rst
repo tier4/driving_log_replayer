@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.18.0 (2024-06-05)
+-------------------
 * feat: use sim time (`#468 <https://github.com/tier4/driving_log_replayer/issues/468>`_)
 * Contributors: Hayato Mizushima
 
