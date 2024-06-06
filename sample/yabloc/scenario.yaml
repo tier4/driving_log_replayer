@@ -4,7 +4,7 @@ ScenarioDescription: sample_yabloc
 SensorModel: awsim_sensor_kit
 VehicleModel: sample_vehicle
 VehicleId: default
-LocalMapPath: $HOME/autoware_map/awsim-shinjuku
+LocalMapPath: $HOME/autoware_map/nishishinjuku_autoware_map
 Evaluation:
   UseCaseName: yabloc
   UseCaseFormatVersion: 0.1.0

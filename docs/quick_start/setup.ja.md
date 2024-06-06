@@ -13,22 +13,36 @@
 1. 地図のダウンロードと解凍
 
    ```shell
+   # annotationless_perception, localization, obstacle_segmentation, perception
    mkdir -p ~/autoware_map
    gdown -O ~/autoware_map/sample-map-planning.zip 'https://docs.google.com/uc?export=download&id=1499_nsbUbIeturZaDj7jhUownh5fvXHd'
    unzip -d ~/autoware_map ~/autoware_map/sample-map-planning.zip
+
+   # yabloc, eagleye
+   wget -O ~/autoware_map/nishishinjuku_autoware_map.zip https://github.com/tier4/AWSIM/releases/download/v1.1.0/nishishinjuku_autoware_map.zip
+   unzip -d ~/autoware_map ~/autoware_map/nishishinjuku_autoware_map.zip
    ```
 
-   ブラウザから手動で[地図](https://drive.google.com/file/d/1499_nsbUbIeturZaDj7jhUownh5fvXHd/view)をダウンロードすることも可能です。
+   ブラウザから手動でダウンロードすることも可能です。
+   [sample-map-planning](https://drive.google.com/file/d/1499_nsbUbIeturZaDj7jhUownh5fvXHd/view)
+   [nishishinjuku_autoware_map](https://github.com/tier4/AWSIM/releases/tag/v1.1.0)
 
 2. データセットのダウロードと解凍
 
    ```shell
+   # annotationless_perception, localization, obstacle_segmentation, perception
    mkdir -p ~/driving_log_replayer_data
    gdown -O ~/driving_log_replayer_data/sample_dataset_v2.tar.zst 'https://docs.google.com/uc?export=download&id=1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC'
    tar -I zstd -xvf ~/driving_log_replayer_data/sample_dataset_v2.tar.zst -C ~/driving_log_replayer_data/
+
+   # yabloc, eagleye, artag
+   gdown -O ~/driving_log_replayer_data/sample_bag.tar.zst 'https://docs.google.com/uc?export=download&id=ここあとでアップデート'
+   tar -I zstd -xvf ~/driving_log_replayer_data/sample_bag.tar.zst -C ~/driving_log_replayer_data/
    ```
 
-   ブラウザから手動で[データセット](https://drive.google.com/file/d/1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC/view)をダウンロードすることも可能です。
+   ブラウザから手動でダウンロードすることも可能です。
+   [データセット](https://drive.google.com/file/d/1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC/view)
+   [bag](https://drive.google.com/file/d/ここあとでアップデート/view)
 
 3. サンプル設定をコピーする
 
