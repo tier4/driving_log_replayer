@@ -6,12 +6,20 @@ from typing_extensions import Literal
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import Scenario
+from driving_log_replayer.scenario import number
 from driving_log_replayer_msgs.msg import GroundSegmentationEvalResult
+
+
+class Condition(BaseModel):
+    accuracy_min: number
+    accuracy_max: number
+    PassRate: number
 
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["ground_segmentation"]
     UseCaseFormatVersion: Literal["0.3.0"]
+    Conditions: Condition
 
 
 class GroundSegmentationScenario(Scenario):
@@ -19,24 +27,35 @@ class GroundSegmentationScenario(Scenario):
 
 
 @dataclass
-class Detection(EvaluationItem):
+class GroundSegmentation(EvaluationItem):
     name: str = "Ground Segmentation"
 
     def set_frame(self, msg: GroundSegmentationEvalResult) -> dict:
-        self.success = (msg.fp == 0) and (msg.fn == 0)
-        self.summary = f"{self.name} ({self.success_str()})"
+        self.condition : Condition
+        self.total += 1
+
+        frame_success = self.condition.accuracy_min <= msg.accuracy <= self.condition.accuracy_max
+
+        if frame_success:
+            self.passed += 1
+
+        current_rate = self.rate()
+        self.success = current_rate >= self.condition.PassRate
+        self.summary = f"{self.name} ({self.success_str()}): {self.passed} / {self.total} -> {current_rate:.2f}"
 
         return {
-            "Detection": {
+            "GroundSegmentation": {
                 "Result": {
                     "Total": self.success_str(),
-                    "Frame": self.success_str(),
+                    "Frame": "Success" if frame_success else "Fail",
                 },
                 "Info": {
                     "TP": msg.tp,
                     "FP": msg.fp,
                     "TN": msg.tn,
                     "FN": msg.fn,
+                    "Accuracy": msg.accuracy,
+                    "Precision": msg.precision,
                     "Recall": msg.recall,
                     "Specificity": msg.specificity,
                     "F1-score": msg.f1_score,
@@ -46,13 +65,13 @@ class Detection(EvaluationItem):
 
 
 class GroundSegmentationResult(ResultBase):
-    def __init__(self, condition) -> None:
+    def __init__(self, condition: Condition) -> None:
         super().__init__()
-        self.__detection = Detection()
+        self.__ground_segmentation = GroundSegmentation(condition=condition)
 
     def update(self) -> None:
-        summary_str = f"{self.__detection.summary}"
-        if self.__detection.success:
+        summary_str = f"{self.__ground_segmentation.summary}"
+        if self.__ground_segmentation.success:
             self._success = True
             self._summary = f"Passed: {summary_str}"
         else:
@@ -60,5 +79,5 @@ class GroundSegmentationResult(ResultBase):
             self._summary = f"Failed: {summary_str}"
 
     def set_frame(self, msg: GroundSegmentationEvalResult) -> None:
-        self._frame = self.__detection.set_frame(msg)
+        self._frame = self.__ground_segmentation.set_frame(msg)
         self.update()
