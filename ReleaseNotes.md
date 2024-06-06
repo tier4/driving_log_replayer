@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 1.18.1
+
+Document update
+
+| Module | Feature  | Brief summary   | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | -------- | --------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | document | update document | [#470](https://github.com/tier4/driving_log_replayer/pull/470) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.18.0
 
 Major Changes
