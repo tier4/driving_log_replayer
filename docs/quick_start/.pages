@@ -15,7 +15,5 @@ nav:
   - obstacle_segmentation.ja.md
   - perception.en.md
   - perception.ja.md
-  - performance_diag.en.md
-  - performance_diag.ja.md
   - annotationless_perception.en.md
   - annotationless_perception.ja.md

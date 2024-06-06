@@ -2,6 +2,21 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.0 (2024-06-06)
+------------------
+* feat!: autoware msg (`#472 <https://github.com/tier4/driving_log_replayer/issues/472>`_)
+* Contributors: Hayato Mizushima
+
+1.18.1 (2024-06-06)
+-------------------
+* docs: update document
+* Contributors: Hayato Mizushima
+
+1.18.0 (2024-06-05)
+-------------------
+* feat: use sim time (`#468 <https://github.com/tier4/driving_log_replayer/issues/468>`_)
+* Contributors: Hayato Mizushima
+
 1.17.0 (2024-05-28)
 -------------------
 * feat: `#389 <https://github.com/tier4/driving_log_replayer/issues/389>`_ set initial pose directly (`#399 <https://github.com/tier4/driving_log_replayer/issues/399>`_)
