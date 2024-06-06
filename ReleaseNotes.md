@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 2.0.0
+
+Breaking Change
+Requires Autoware to support autoware_msg
+
+| Module | Feature      | Brief summary        | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------ | -------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | autoware_msg | support autoware_msg | [#472](https://github.com/tier4/driving_log_replayer/pull/472) | RT1-6661 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.18.1
 
 Document update
