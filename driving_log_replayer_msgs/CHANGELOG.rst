@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.0 (2024-06-06)
+------------------
 * feat!: autoware msg (`#472 <https://github.com/tier4/driving_log_replayer/issues/472>`_)
 * Contributors: Hayato Mizushima
 
