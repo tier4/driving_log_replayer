@@ -18,11 +18,11 @@ from __future__ import annotations
 from abc import ABC
 from abc import abstractmethod
 from enum import Enum
-import math
 from numbers import Number
 from typing import TYPE_CHECKING
 
 import numpy as np
+
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
 from perception_eval.tool.utils import filter_frame_by_distance
