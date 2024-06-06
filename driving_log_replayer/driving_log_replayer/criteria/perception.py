@@ -138,6 +138,9 @@ class CriteriaMethod(Enum):
 
     - NUM_TP: Number of TP (or TN).
     - LABEL: Whether label is correct or not.
+    - VELOCITY_X_ERROR: Error of x direction velocity [m/s].
+    - VELOCITY_Y_ERROR: Error of y direction velocity [m/s].
+    - SPEED_ERROR: Error of speed [m/s].
     - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
     - METRICS_SCORE_MAPH: mAPH score.
     """
