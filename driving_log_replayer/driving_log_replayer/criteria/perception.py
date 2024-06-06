@@ -349,8 +349,8 @@ class SpeedError(CriteriaMethodImpl):
         errors = []
         for result in frame.object_results:
             if result.ground_truth_object is not None:
-                est_norm = math.hypot(result.estimated_object.state.velocity[:2])
-                gt_norm = math.hypot(result.ground_truth_object.state.velocity[:2])
+                est_norm = np.linalg.norm(result.estimated_object.state.velocity[:2])
+                gt_norm = np.linalg.norm(result.ground_truth_object.state.velocity[:2])
                 err = abs(gt_norm - est_norm)
                 errors.append(err)
         return 0.0 if len(errors) == 0 else np.mean(errors)
