@@ -8,7 +8,7 @@ import driving_log_replayer.perception_eval_conversions as eval_conversions
 
 from driving_log_replayer_msgs.msg import GroundSegmentationEvalResult
 from sensor_msgs.msg import PointCloud2
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy, qos_profile_sensor_data
+from rclpy.qos import qos_profile_sensor_data
 
 from typing import List, Dict
 import ros2_numpy
@@ -22,9 +22,8 @@ from scipy.spatial import cKDTree
 
 class GroundSegmentationEvaluator(DLREvaluator):
     CLOUD_DIM = 6
-
-    ## label
-    ## 6 : ground , 7 : obstacle
+    GROUND_LABEL = 6
+    OBSTACLE_LABEL = 7
 
     def __init__(self, name: str) -> None:
         super().__init__(name, GroundSegmentationScenario, GroundSegmentationResult)
@@ -58,8 +57,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
 
         if gt_frame_ts < 0:
             return
-        
-        self._logger.info(f"gt frame ts : {gt_frame_ts}")
+
         # get ground truth pointcloud in this frame
         # construct kd-tree from gt cloud
         gt_frame_cloud: np.ndarray = self.ground_truth[gt_frame_ts]
@@ -73,15 +71,15 @@ class GroundSegmentationEvaluator(DLREvaluator):
         pointcloud[:, 2] = numpy_pcd["z"]
 
         # count TP+FN, TN+FP
-        tp_fn = np.count_nonzero(gt_frame_cloud[:, 5] == 6)
-        fp_tn = np.count_nonzero(gt_frame_cloud[:, 5] == 7)
+        tp_fn = np.count_nonzero(gt_frame_cloud[:, 5] == self.GROUND_LABEL)
+        fp_tn = np.count_nonzero(gt_frame_cloud[:, 5] == self.OBSTACLE_LABEL)
         TN: int = 0
         FN: int = 0
         for p in pointcloud:
             _, idx = kdtree.query(p, k=1)
-            if gt_frame_cloud[idx][5] == 6:
+            if gt_frame_cloud[idx][5] == self.GROUND_LABEL:
                 FN += 1
-            elif gt_frame_cloud[idx][5] == 7:
+            elif gt_frame_cloud[idx][5] == self.OBSTACLE_LABEL:
                 TN += 1
         TP = tp_fn - FN
         FP = fp_tn - TN
@@ -95,10 +93,11 @@ class GroundSegmentationEvaluator(DLREvaluator):
         frame_result.fp = FP
         frame_result.tn = TN
         frame_result.fn = FN
-        frame_result.precision = metrics_list[0]
-        frame_result.recall = metrics_list[1]
-        frame_result.specificity = metrics_list[2]
-        frame_result.f1_score = metrics_list[3]
+        frame_result.accuracy = metrics_list[0]
+        frame_result.precision = metrics_list[1]
+        frame_result.recall = metrics_list[2]
+        frame_result.specificity = metrics_list[3]
+        frame_result.f1_score = metrics_list[4]
 
         self._result.set_frame(frame_result)
         self._result_writer.write_result(self._result)
@@ -121,11 +120,13 @@ class GroundSegmentationEvaluator(DLREvaluator):
         return ret_ts
 
     def __compute_metrics(self, tp: int, fp: int, tn: int, fn: int) -> List[float]:
-        precision = float(tp) / float(tp + fp + 1e-5)
-        recall = float(tp) / float(tp + fn + 1e-5)
-        specificity = float(tn) / float(tn + fp + 1e-5)
-        f1_score = 2 * (precision * recall) / (precision + recall + 1e-5)
-        return [precision, recall, specificity, f1_score]
+        eps = 1e-10
+        accuracy = float(tp + tn) / float(tp + fp + tn + fn + eps)
+        precision = float(tp) / float(tp + fp + eps)
+        recall = float(tp) / float(tp + fn + eps)
+        specificity = float(tn) / float(tn + fp + eps)
+        f1_score = 2 * (precision * recall) / (precision + recall + eps)
+        return [accuracy, precision, recall, specificity, f1_score]
 
 
 @evaluator_main
