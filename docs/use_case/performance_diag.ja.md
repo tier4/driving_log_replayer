@@ -116,14 +116,14 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 
 CAN の代わりに vehicle の topic を含めても良い。
 
-| topic 名                               | データ型                                            |
-| -------------------------------------- | --------------------------------------------------- |
-| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
-| /tf                                    | tf2_msgs/msg/TFMessage                              |
+| topic 名                               | データ型                                       |
+| -------------------------------------- | ---------------------------------------------- |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped   |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                      |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                          |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                            |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                     |
+| /tf                                    | tf2_msgs/msg/TFMessage                         |
 | /vehicle/status/control_mode           | autoware_vehicle_msgs/msg/ControlModeReport    |
 | /vehicle/status/gear_status            | autoware_vehicle_msgs/msg/GearReport           |
 | /vehicle/status/steering_status        | autoware_vehicle_msgs/SteeringReport           |

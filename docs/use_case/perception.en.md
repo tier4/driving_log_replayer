@@ -121,8 +121,8 @@ FrameSkip is a counter for the number of times evaluation is skipped.
 
 Subscribed topics:
 
-| Topic name                                       | Data type                                         |
-| ------------------------------------------------ | ------------------------------------------------- |
+| Topic name                                       | Data type                                    |
+| ------------------------------------------------ | -------------------------------------------- |
 | /perception/object_recognition/detection/objects | autoware_perception_msgs/msg/DetectedObjects |
 | /perception/object_recognition/tracking/objects  | autoware_perception_msgs/msg/TrackedObjects  |
 
@@ -188,18 +188,18 @@ The following example shows the topic list available in evaluation input rosbag 
 
 The vehicle topics can be included instead of CAN.
 
-| Topic name                                           | Data type                                           |
-| ---------------------------------------------------- | --------------------------------------------------- |
-| /localization/kinematic_state                        | nav_msgs/msg/Odometry                               |
-| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
-| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                         |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
-| /tf                                                  | tf2_msgs/msg/TFMessage                              |
+| Topic name                                           | Data type                                      |
+| ---------------------------------------------------- | ---------------------------------------------- |
+| /localization/kinematic_state                        | nav_msgs/msg/Odometry                          |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                     |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped   |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                      |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                          |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                            |
+| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                    |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                     |
+| /tf                                                  | tf2_msgs/msg/TFMessage                         |
 | /vehicle/status/control_mode                         | autoware_vehicle_msgs/msg/ControlModeReport    |
 | /vehicle/status/gear_status                          | autoware_vehicle_msgs/msg/GearReport           |
 | /vehicle/status/steering_status                      | autoware_vehicle_msgs/SteeringReport           |

@@ -176,19 +176,19 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 
 CAN の代わりに vehicle の topic を含めても良い。
 
-| topic 名                                             | データ型                                            |
-| ---------------------------------------------------- | --------------------------------------------------- |
-| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                          |
-| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                     |
-| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                          |
-| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage                     |
-| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                         |
-| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                          |
-| /tf                                                  | tf2_msgs/msg/TFMessage                              |
+| topic 名                                             | データ型                                       |
+| ---------------------------------------------------- | ---------------------------------------------- |
+| /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                     |
+| /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage                |
+| /sensing/camera/traffic_light/camera_info            | sensor_msgs/msg/CameraInfo                     |
+| /sensing/camera/traffic_light/image_raw/compressed   | sensor_msgs/msg/CompressedImage                |
+| /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped   |
+| /sensing/gnss/ublox/nav_sat_fix                      | sensor_msgs/msg/NavSatFix                      |
+| /sensing/gnss/ublox/navpvt                           | ublox_msgs/msg/NavPVT                          |
+| /sensing/imu/tamagawa/imu_raw                        | sensor_msgs/msg/Imu                            |
+| /sensing/lidar/concatenated/pointcloud               | sensor_msgs/msg/PointCloud2                    |
+| /sensing/lidar/\*/velodyne_packets                   | velodyne_msgs/VelodyneScan                     |
+| /tf                                                  | tf2_msgs/msg/TFMessage                         |
 | /vehicle/status/control_mode                         | autoware_vehicle_msgs/msg/ControlModeReport    |
 | /vehicle/status/gear_status                          | autoware_vehicle_msgs/msg/GearReport           |
 | /vehicle/status/steering_status                      | autoware_vehicle_msgs/SteeringReport           |
