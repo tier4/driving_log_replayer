@@ -24,11 +24,11 @@
 
    ```shell
    mkdir -p ~/driving_log_replayer_data
-   gdown -O ~/driving_log_replayer_data/sample_dataset.tar.zst 'https://docs.google.com/uc?export=download&id=1UjMWZj5Yc55O7BZiGHa0ikZGhwmcfPiS'
-   tar -I zstd -xvf ~/driving_log_replayer_data/sample_dataset.tar.zst -C ~/driving_log_replayer_data/
+   gdown -O ~/driving_log_replayer_data/sample_dataset_v2.tar.zst 'https://docs.google.com/uc?export=download&id=1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC'
+   tar -I zstd -xvf ~/driving_log_replayer_data/sample_dataset_v2.tar.zst -C ~/driving_log_replayer_data/
    ```
 
-   ブラウザから手動で[データセット](https://drive.google.com/file/d/1UjMWZj5Yc55O7BZiGHa0ikZGhwmcfPiS/view)をダウンロードすることも可能です。
+   ブラウザから手動で[データセット](https://drive.google.com/file/d/1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC/view)をダウンロードすることも可能です。
 
 3. サンプル設定をコピーする
 
