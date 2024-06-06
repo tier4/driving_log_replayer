@@ -168,7 +168,7 @@ class TrafficLightEvaluator(DLREvaluator):
 
             estimated_object = DynamicObject2D(
                 unix_time=unix_time,
-                frame_id=FrameID.TRAFFIC_LIGHT,
+                frame_id=FrameID.CAM_TRAFFIC_LIGHT,
                 semantic_score=confidence,
                 semantic_label=label,
                 roi=None,
@@ -215,7 +215,7 @@ class TrafficLightEvaluator(DLREvaluator):
             self.__skip_counter += 1
             return
 
-        cam2map = ground_truth_now_frame.transforms[(FrameID.TRAFFIC_LIGHT, FrameID.MAP)]
+        cam2map = ground_truth_now_frame.transforms[(FrameID.CAM_TRAFFIC_LIGHT, FrameID.MAP)]
 
         for obj in ground_truth_now_frame.objects:
             x, y, z, _ = self.get_traffic_light_pos_and_dist(obj.uuid, map_to_baselink)

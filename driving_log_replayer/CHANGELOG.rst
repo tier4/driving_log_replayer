@@ -2,6 +2,25 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.18.0 (2024-06-05)
+-------------------
+* feat: use sim time (`#468 <https://github.com/tier4/driving_log_replayer/issues/468>`_)
+* Contributors: Hayato Mizushima
+
+1.17.0 (2024-05-28)
+-------------------
+* feat: `#389 <https://github.com/tier4/driving_log_replayer/issues/389>`_ set initial pose directly (`#399 <https://github.com/tier4/driving_log_replayer/issues/399>`_)
+* Contributors: Hayato Mizushima
+
+1.16.0 (2024-05-28)
+-------------------
+* chore: rename `FrameID.TRAFFIC_LIGHT` to `FrameID.CAM_TRAFFIC_LIGHT` (`#460 <https://github.com/tier4/driving_log_replayer/issues/460>`_)
+* chore: restore topic name (`#458 <https://github.com/tier4/driving_log_replayer/issues/458>`_)
+* feat: update tlr new interface (`#291 <https://github.com/tier4/driving_log_replayer/issues/291>`_)
+* chore: cli delete json conversion (`#457 <https://github.com/tier4/driving_log_replayer/issues/457>`_)
+* refactor: move function (`#451 <https://github.com/tier4/driving_log_replayer/issues/451>`_)
+* Contributors: Hayato Mizushima, ktro2828
+
 1.15.5 (2024-05-16)
 -------------------
 * feat: set use_perception_online_evaluator=true by default (`#449 <https://github.com/tier4/driving_log_replayer/issues/449>`_)

@@ -1,5 +1,36 @@
 # Release Notes
 
+## Version 1.18.0
+
+Major Changes
+The time in result_bag is now the same as the start end of input_bag.
+
+| Module | Feature | Brief summary           | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------- | ----------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | rosbag  | add use-sim-time option | [#468](https://github.com/tier4/driving_log_replayer/pull/468) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.17.0
+
+Major Changes
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/7048).
+
+| Module         | Feature      | Brief summary              | Pull request                                                   | Jira     | Contributor                                   |
+| -------------- | ------------ | -------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `localization` | initial pose | set initial pose directory | [#460](https://github.com/tier4/driving_log_replayer/pull/460) | RT4-8507 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.16.0
+
+Major Changes
+Use perception_eval v1.2.0 or later
+
+| Module                  | Feature             | Brief summary                                             | Pull request                                                   | Jira     | Contributor                                   |
+| ----------------------- | ------------------- | --------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `obstacle_segmentation` | function            | move function from evaluator.py                           | [#451](https://github.com/tier4/driving_log_replayer/pull/451) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `all`                   | cli                 | delete json conversion                                    | [#457](https://github.com/tier4/driving_log_replayer/pull/457) | -        | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | criteria, interface | support multi criterion and update interface              | [#291](https://github.com/tier4/driving_log_replayer/pull/291) | RT4-8944 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | topic               | restore topic name                                        | [#458](https://github.com/tier4/driving_log_replayer/pull/458) | RT4-8944 | [hayato-m126](https://github.com/hayato-m126) |
+| `traffic_light`         | frame_id            | rename FrameID.TRAFFIC_LIGHT to FrameID.CAM_TRAFFIC_LIGHT | [#460](https://github.com/tier4/driving_log_replayer/pull/460) | RT4-5928 | [ktro2828](https://github.com/ktro2828)       |
+
 ## Version 1.15.5
 
 Minor Tweak
