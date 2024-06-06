@@ -5,7 +5,7 @@
 ## Requirements
 
 - CPU amd64
-- Ubuntu 20.04 / 22.04
+- Ubuntu 22.04
 - ROS humble
 - Python 3.10
 - NVIDIA GPU (required if running perception)
