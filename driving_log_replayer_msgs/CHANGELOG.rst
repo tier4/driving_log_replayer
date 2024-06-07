@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: `#465 <https://github.com/tier4/driving_log_replayer/issues/465>`_ annotaionless metric value (`#467 <https://github.com/tier4/driving_log_replayer/issues/467>`_)
+* Contributors: Hayato Mizushima
+
 2.0.1 (2024-06-07)
 ------------------
 * docs: update quick start (`#473 <https://github.com/tier4/driving_log_replayer/issues/473>`_)
