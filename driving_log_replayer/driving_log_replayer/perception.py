@@ -59,7 +59,17 @@ class Filter(BaseModel):
 class Criteria(BaseModel):
     PassRate: number
     CriteriaMethod: (
-        Literal["num_tp", "label", "metrics_score", "metrics_score_maph", "velocity_x_error", "velocity_y_error", "speed_error"] | list[str] | None
+        Literal[
+            "num_tp",
+            "label",
+            "metrics_score",
+            "metrics_score_maph",
+            "velocity_x_error",
+            "velocity_y_error",
+            "speed_error",
+        ]
+        | list[str]
+        | None
     ) = None
     CriteriaLevel: (
         Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[number] | None

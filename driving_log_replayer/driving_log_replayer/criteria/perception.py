@@ -22,7 +22,6 @@ from numbers import Number
 from typing import TYPE_CHECKING
 
 import numpy as np
-
 from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.evaluation.matching import MatchingMode
 from perception_eval.tool.utils import filter_frame_by_distance
@@ -74,21 +73,22 @@ class CriteriaLevel(Enum):
 
     CUSTOM = None
 
-    def is_valid(self, score: Number, is_greater: bool) -> bool:
+    def is_valid(self, score: Number, is_error: bool) -> bool:
         """
         Return whether the score satisfied the level.
 
         Args:
         ----
             score (Number): Calculated score.
-            is_greater (bool, optional): Whether the score is valid when it is greater than `self.value`. Defaults to True.
+            is_error (bool): Indicates whether input score is error or not.
+                if True, higher score is better. Otherwise lower error is better.
 
         Returns:
         -------
             bool: Whether the score satisfied the level.
 
         """
-        return score >= self.value if is_greater else score <= self.value
+        return score <= self.value if is_error else score >= self.value
 
     @classmethod
     def from_str(cls, value: str) -> CriteriaLevel:
@@ -206,7 +206,7 @@ class CriteriaMethodImpl(ABC):
             return None
         score: float = self.calculate_score(frame)
         return (
-            SuccessFail.SUCCESS if self.level.is_valid(score, self.is_greater) else SuccessFail.FAIL
+            SuccessFail.SUCCESS if self.level.is_valid(score, self.is_error) else SuccessFail.FAIL
         )
 
     @staticmethod
@@ -245,13 +245,13 @@ class CriteriaMethodImpl(ABC):
 
     @property
     @abstractmethod
-    def is_greater(self) -> bool:
+    def is_error(self) -> bool:
         """
-        Whether the score is valid when it is greater than a threshold.
+        Indicates whether this criteria calculates error or not.
 
         Returns
         -------
-            bool: True means it is valid if score >= threshold .
+            bool: True means it is valid if score <= threshold .
 
         """
 
@@ -269,8 +269,8 @@ class NumTP(CriteriaMethodImpl):
         return 100.0 * num_success / num_objects if num_objects != 0 else 0.0
 
     @property
-    def is_greater(self) -> bool:
-        return True
+    def is_error(self) -> bool:
+        return False
 
 
 class Label(CriteriaMethodImpl):
@@ -290,8 +290,8 @@ class Label(CriteriaMethodImpl):
         return 100.0 if len(is_label_corrects) == 0 else 100.0 * np.mean(is_label_corrects)
 
     @property
-    def is_greater(self) -> bool:
-        return True
+    def is_error(self) -> bool:
+        return False
 
 
 class VelocityXError(CriteriaMethodImpl):
@@ -312,8 +312,8 @@ class VelocityXError(CriteriaMethodImpl):
         return 0.0 if len(errors) == 0 else np.mean(errors)
 
     @property
-    def is_greater(self) -> bool:
-        return False
+    def is_error(self) -> bool:
+        return True
 
 
 class VelocityYError(CriteriaMethodImpl):
@@ -334,8 +334,8 @@ class VelocityYError(CriteriaMethodImpl):
         return 0.0 if len(errors) == 0 else np.mean(errors)
 
     @property
-    def is_greater(self) -> bool:
-        return False
+    def is_error(self) -> bool:
+        return True
 
 
 class SpeedError(CriteriaMethodImpl):
@@ -356,8 +356,8 @@ class SpeedError(CriteriaMethodImpl):
         return 0.0 if len(errors) == 0 else np.mean(errors)
 
     @property
-    def is_greater(self) -> bool:
-        return False
+    def is_error(self) -> bool:
+        return True
 
 
 class MetricsScore(CriteriaMethodImpl):
@@ -385,8 +385,8 @@ class MetricsScore(CriteriaMethodImpl):
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
 
     @property
-    def is_greater(self) -> bool:
-        return True
+    def is_error(self) -> bool:
+        return False
 
 
 class MetricsScoreMAPH(CriteriaMethodImpl):
@@ -407,8 +407,8 @@ class MetricsScoreMAPH(CriteriaMethodImpl):
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
 
     @property
-    def is_greater(self) -> bool:
-        return True
+    def is_error(self) -> bool:
+        return False
 
 
 class CriteriaFilter:
