@@ -18,6 +18,7 @@ from __future__ import annotations
 from abc import ABC
 from abc import abstractmethod
 from enum import Enum
+import logging
 from numbers import Number
 from typing import TYPE_CHECKING
 
@@ -305,10 +306,11 @@ class VelocityXError(CriteriaMethodImpl):
         errors = []
         for result in frame.object_results:
             if result.ground_truth_object is not None:
-                est_vx = result.estimated_object.state.velocity[0]
-                gt_vx = result.ground_truth_object.state.velocity[0]
-                err = abs(gt_vx - est_vx)
-                errors.append(err)
+                err = result.estimated_object.get_velocity_error(result.ground_truth_object)
+                if err is None:
+                    logging.warning("Velocity is None")
+                    continue
+                errors.append(err[0])
         return 0.0 if len(errors) == 0 else np.mean(errors)
 
     @property
@@ -327,10 +329,11 @@ class VelocityYError(CriteriaMethodImpl):
         errors = []
         for result in frame.object_results:
             if result.ground_truth_object is not None:
-                est_vy = result.estimated_object.state.velocity[1]
-                gt_vy = result.ground_truth_object.state.velocity[1]
-                err = abs(gt_vy - est_vy)
-                errors.append(err)
+                err = result.estimated_object.get_velocity_error(result.ground_truth_object)
+                if err is None:
+                    logging.warning("Velocity is None")
+                    continue
+                errors.append(err[1])
         return 0.0 if len(errors) == 0 else np.mean(errors)
 
     @property
@@ -349,6 +352,12 @@ class SpeedError(CriteriaMethodImpl):
         errors = []
         for result in frame.object_results:
             if result.ground_truth_object is not None:
+                if (
+                    result.estimated_object.state.velocity is None
+                    or result.ground_truth_object.state.velocity is None
+                ):
+                    logging.warning("Velocity is None")
+                    continue
                 est_norm = np.linalg.norm(result.estimated_object.state.velocity[:2])
                 gt_norm = np.linalg.norm(result.ground_truth_object.state.velocity[:2])
                 err = abs(gt_norm - est_norm)
