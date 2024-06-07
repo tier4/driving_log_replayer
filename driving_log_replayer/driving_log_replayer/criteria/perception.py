@@ -74,7 +74,7 @@ class CriteriaLevel(Enum):
 
     CUSTOM = None
 
-    def is_valid(self, score: Number, is_error: bool) -> bool:
+    def is_valid(self, score: Number, *, is_error: bool) -> bool:
         """
         Return whether the score satisfied the level.
 
@@ -207,7 +207,9 @@ class CriteriaMethodImpl(ABC):
             return None
         score: float = self.calculate_score(frame)
         return (
-            SuccessFail.SUCCESS if self.level.is_valid(score, self.is_error) else SuccessFail.FAIL
+            SuccessFail.SUCCESS
+            if self.level.is_valid(score, is_error=self.is_error)
+            else SuccessFail.FAIL
         )
 
     @staticmethod
