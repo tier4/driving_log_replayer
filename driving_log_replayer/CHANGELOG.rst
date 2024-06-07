@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add rosbag2_storage_mcap (`#475 <https://github.com/tier4/driving_log_replayer/issues/475>`_) (`#477 <https://github.com/tier4/driving_log_replayer/issues/477>`_)
+* Contributors: Hayato Mizushima
+
 1.18.1 (2024-06-06)
 -------------------
 * docs: update document
