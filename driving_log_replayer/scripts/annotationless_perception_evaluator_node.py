@@ -29,6 +29,7 @@ class AnnotationlessPerceptionEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, AnnotationlessPerceptionScenario, AnnotationlessPerceptionResult)
         self._scenario: AnnotationlessPerceptionScenario
+        self._result: AnnotationlessPerceptionResult
         # update condition using launch argument
         self.declare_parameter("annotationless_threshold_file", "")
         self._scenario.Evaluation.Conditions.update_threshold_from_file(
