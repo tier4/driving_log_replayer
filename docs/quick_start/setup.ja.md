@@ -36,13 +36,13 @@
    tar -I zstd -xvf ~/driving_log_replayer_data/sample_dataset_v2.tar.zst -C ~/driving_log_replayer_data/
 
    # yabloc, eagleye, artag
-   gdown -O ~/driving_log_replayer_data/sample_bag.tar.zst 'https://docs.google.com/uc?export=download&id=ここあとでアップデート'
+   gdown -O ~/driving_log_replayer_data/sample_bag.tar.zst 'https://docs.google.com/uc?export=download&id=17ppdMKi4IC8J_2-_9nyYv-LAfW0M1re5'
    tar -I zstd -xvf ~/driving_log_replayer_data/sample_bag.tar.zst -C ~/driving_log_replayer_data/
    ```
 
    ブラウザから手動でダウンロードすることも可能です。
    [データセット](https://drive.google.com/file/d/1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC/view)
-   [bag](https://drive.google.com/file/d/ここあとでアップデート/view)
+   [bag](https://drive.google.com/file/d/17ppdMKi4IC8J_2-_9nyYv-LAfW0M1re5/view)
 
 3. サンプル設定をコピーする
 
