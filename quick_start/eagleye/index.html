@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.26">
     
     
       
@@ -203,7 +203,7 @@
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
@@ -1377,15 +1377,8 @@ cp<span class="w"> </span>-r<span class="w"> </span>~/autoware/src/simulator/dri
 </code></pre></div>
 </li>
 <li>
-<p>Download map files</p>
-<p>Access <a href="https://tier4.github.io/AWSIM/GettingStarted/QuickStartDemo/">AWSIM Quick Start Demo page</a> and download map files (.pcd and .osm) in "Launching Autoware" section.
- Store it in <code>$HOME/autoware_map/awsim-shinjuku</code> as defined in the sample scenario.yaml.</p>
-</li>
-<li>
-<p>Download bag file
-   Download a rosbag from <a href="https://drive.google.com/file/d/1Zgv9eP0j2hAgTj7pW8n-YaECPQGGQjO2/view">Google Drive Link</a>.
-   After that, execute following commands:</p>
-<div class="highlight"><pre><span></span><code>unzip<span class="w"> </span>eagleye_awsim_test_bag.zip
+<p>Copy sample bag</p>
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/sample_bag/eagleye/input_bag<span class="w"> </span>~/driving_log_replayer_data/eagleye/sample
 </code></pre></div>
 </li>
 </ol>
@@ -1505,7 +1498,7 @@ Passed:<span class="w"> </span>Eagleye<span class="w"> </span>Availability<span 
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.081f42fc.min.js"></script>
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
       
     
   </body>

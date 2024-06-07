@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.26">
     
     
       
@@ -203,7 +203,7 @@
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
@@ -1377,25 +1377,8 @@ cp<span class="w"> </span>-r<span class="w"> </span>~/autoware/src/simulator/dri
 </code></pre></div>
 </li>
 <li>
-<p>Download bag file
-   Download a rosbag from <a href="https://drive.google.com/file/d/1zKTGRH4lD-wptpOdNCgpiPfGRDP0XrUm/view">Google Drive Link</a>.
-   After that, execute following commands:</p>
-<div class="highlight"><pre><span></span><code>unzstd<span class="w"> </span>yabloc_autoware_test_made_in_awsim_0.db3.zst
-mkdir<span class="w"> </span>input_bag
-mv<span class="w"> </span>yabloc_autoware_test_made_in_awsim_0.db3<span class="w"> </span>input_bag
-ros2<span class="w"> </span>bag<span class="w"> </span>reindex<span class="w"> </span>input_bag<span class="w"> </span>-s<span class="w"> </span>sqlite3
-mv<span class="w"> </span>input_bag<span class="w"> </span>~/driving_log_replayer_data/yabloc/sample
-</code></pre></div>
-</li>
-<li>
-<p>Filter and slice bag</p>
-<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
-<span class="nb">cd</span><span class="w"> </span>~/driving_log_replayer_data/yabloc/sample
-ros2<span class="w"> </span>bag<span class="w"> </span>filter<span class="w"> </span>input_bag<span class="w"> </span>-o<span class="w"> </span>filtered_bag<span class="w"> </span>-x<span class="w"> </span><span class="s2">&quot;/clock&quot;</span>
-ros2<span class="w"> </span>bag<span class="w"> </span>slice<span class="w"> </span>filtered_bag<span class="w"> </span>-o<span class="w"> </span>sliced_bag<span class="w"> </span>-e<span class="w"> </span><span class="m">580</span>
-rm<span class="w"> </span>-rf<span class="w"> </span>input_bag
-rm<span class="w"> </span>-rf<span class="w"> </span>filtered_bag
-mv<span class="w"> </span>sliced_bag<span class="w"> </span>input_bag
+<p>Download bag file</p>
+<div class="highlight"><pre><span></span><code>cp<span class="w"> </span>-r<span class="w"> </span>~/driving_log_replayer_data/sample_bag/yabloc/input_bag<span class="w"> </span>~/driving_log_replayer_data/yabloc/sample
 </code></pre></div>
 </li>
 </ol>
@@ -1403,7 +1386,7 @@ mv<span class="w"> </span>sliced_bag<span class="w"> </span>input_bag
 <ol>
 <li>
 <p>Run the simulation</p>
-<div class="highlight"><pre><span></span><code>dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>yabloc<span class="w">  </span>-l<span class="w"> </span>play_rate:<span class="o">=</span><span class="m">0</span>.5
+<div class="highlight"><pre><span></span><code>dlr<span class="w"> </span>simulation<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span>yabloc<span class="w"> </span>-l<span class="w"> </span>play_rate:<span class="o">=</span><span class="m">0</span>.5
 </code></pre></div>
 </li>
 <li>
@@ -1515,7 +1498,7 @@ Passed:<span class="w"> </span>YabLoc<span class="w"> </span>Availability<span c
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.081f42fc.min.js"></script>
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
       
     
   </body>
