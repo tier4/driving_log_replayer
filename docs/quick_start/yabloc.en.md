@@ -10,27 +10,9 @@
    ```
 
 2. Download bag file
-   Download a rosbag from [Google Drive Link](https://drive.google.com/file/d/1zKTGRH4lD-wptpOdNCgpiPfGRDP0XrUm/view).
-   After that, execute following commands:
 
    ```shell
-   unzstd yabloc_autoware_test_made_in_awsim_0.db3.zst
-   mkdir input_bag
-   mv yabloc_autoware_test_made_in_awsim_0.db3 input_bag
-   ros2 bag reindex input_bag -s sqlite3
-   mv input_bag ~/driving_log_replayer_data/yabloc/sample
-   ```
-
-3. Filter and slice bag
-
-   ```shell
-   source ~/autoware/install/setup.bash
-   cd ~/driving_log_replayer_data/yabloc/sample
-   ros2 bag filter input_bag -o filtered_bag -x "/clock"
-   ros2 bag slice filtered_bag -o sliced_bag -e 580
-   rm -rf input_bag
-   rm -rf filtered_bag
-   mv sliced_bag input_bag
+   cp -r ~/driving_log_replayer_data/sample_bag/yabloc/input_bag ~/driving_log_replayer_data/yabloc/sample
    ```
 
 ## How to run
@@ -38,7 +20,7 @@
 1. Run the simulation
 
    ```shell
-   dlr simulation run -p yabloc  -l play_rate:=0.5
+   dlr simulation run -p yabloc -l play_rate:=0.5
    ```
 
 2. Check the results
