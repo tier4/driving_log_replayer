@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.0.2
+
+Minor Tweak
+
+| Module                      | Feature      | Brief summary        | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ------------ | -------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `annotationless_perception` | metric_value | support metric_value | [#465](https://github.com/tier4/driving_log_replayer/pull/465) | RT1-6482 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.0.1
 
 Minor Tweak
