@@ -14,13 +14,13 @@ Evaluation:
   Conditions:
     Criterion:
       - PassRate: 95.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-        CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score/metrics_score_maph)
-        CriteriaLevel: hard # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
+        CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score/metrics_score_maph/label/velocity_x_error/velocity_y_error/speed_error)
+        CriteriaLevel: hard # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値でエラーの場合は許容誤差を指定。)
         Filter:
           Distance: 0.0-50.0 # [m] null [距離でフィルタしない] or 下限-(上限) [上限は省略可。省略した場合1.7976931348623157e+308]
       - PassRate: 95.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-        CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score/metrics_score_maph)
-        CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
+        CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score/metrics_score_maph/label/velocity_x_error/velocity_y_error/speed_error)
+        CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値でエラーの場合は許容誤差を指定。)
         Filter:
           Distance: 50.0- # [m] null [距離でフィルタしない] or 下限-(上限) [上限は省略可。省略した場合1.7976931348623157e+308]
   PerceptionEvaluationConfig:
