@@ -390,6 +390,10 @@ class YawError(CriteriaMethodImpl):
 
         return 0.0 if len(errors) == 0 else np.mean(errors)
 
+    @property
+    def is_error(self) -> bool:
+        return True
+
 
 class MetricsScore(CriteriaMethodImpl):
     name = CriteriaMethod.METRICS_SCORE
