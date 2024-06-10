@@ -91,27 +91,85 @@ Autowareから評価対象のtopicが出力されていない
 
 ### 例1-1
 
-評価対象のtopicを出力するノードがlaunchから起動されていない(launchファイルのtrue/falseの値)
+評価対象のtopicを出力するノードがlaunchから起動されていない
+launchファイルのtrue/falseの値の設定間違い
+
+### 修正方法、確認箇所1-1
+
+評価対象のtopicをドキュメントから探して、topic infoしてpublisherが存在するか確認する
+Publisher count: 0の場合は、そもそも起動できてない可能性が高い。
+
+```shell
+❯ ros2 topic info /perception/traffic_light_recognition/traffic_signals -v
+Type: autoware_auto_perception_msgs/msg/TrafficSignalArray
+
+Publisher count: 1 <- 0じゃないことを確認する
+
+Node name: crosswalk_traffic_light_estimator
+Node namespace: /perception/traffic_light_recognition
+Topic type: autoware_auto_perception_msgs/msg/TrafficSignalArray
+Endpoint type: PUBLISHER
+GID: 01.10.d8.43.57.21.7c.2d.98.25.db.df.00.00.46.03.00.00.00.00.00.00.00.00
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (1)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+```
 
 ### 例1-2
 
 起動してから死んでいる
 
-### 例1-3
-
-cuda, cuDNN, TensorRTの不整合が発生していて、perceptionの認識結果が出てこない
-
-### 修正方法、確認箇所1-1
-
-aaa
-
 ### 修正方法、確認箇所1-2
 
-aaa
+起動したターミナル、もしくは、出力先ディレクトリにあるconsole.logをERRORで検索する。
+
+以下は、点群が一切出なかったケースのログの一部であるが、ERRORで検索するとpointcloud_preprocessorが死んでいる。
+topicを出力するcomponent_containerがエラーを吐いてないか確認する。
+
+```shell
+[ERROR] [component_container_mt-18]: process has died [pid 95, exit code -6, cmd '/opt/ros/galactic/lib/rclcpp_components/component_container_mt --ros-args -r __node:=pointcloud_preprocessor_container -r __ns:=/sensing/lidar/pointcloud_preprocessor --params-file /tmp/launch_params_rh_9gxcs'].
+```
+
+### 例1-3
+
+cuda, cuDNN, TensorRTの不整合が発生していて、perceptionの認識結果が出てこない。
+apt upgradeでnvidia driverが更新されたときに発生することがある。
+
+```shell
+hyt@dpc1909014-2204:~/ros_ws/awf$ ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml model_name:=centerpoint_tiny model_path:=/home/hyt/autoware_data/lidar_centerpoint model_param_path:=$(ros2 pkg prefix lidar_centerpoint --share)/config/centerpoint_tiny.param.yaml build_only:=true
+[INFO] [launch]: All log files can be found below /home/hyt/.ros/log/2024-01-22-14-36-04-069409-dpc1909014-2204-3835027
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [lidar_centerpoint_node-1]: process started with pid [3835028]
+[lidar_centerpoint_node-1] 1705901764.307868 [77] lidar_cent: determined enp4s0 (udp/10.0.53.59) as highest quality interface, selected for automatic interface.
+[lidar_centerpoint_node-1] terminate called after throwing an instance of 'thrust::system::system_error'
+[lidar_centerpoint_node-1]   what():  This program was not compiled for SM 75  
+[lidar_centerpoint_node-1] : cudaErrorInvalidDevice: invalid device ordinal
+[ERROR] [lidar_centerpoint_node-1]: process has died [pid 3835028, exit code -6, cmd '/home/hyt/ros_ws/awf/install/lidar_centerpoint/lib/lidar_centerpoint/lidar_centerpoint_node --ros-args -r __node:=lidar_centerpoint --params-file /tmp/launch_params_60_o26mq --params-file /tmp/launch_params_79jodq9o --params-file /tmp/launch_params_spwl7uq2 --params-file /tmp/launch_params_ur_yt_y2 --params-file /tmp/launch_params_iqs0hf9o --params-file /tmp/launch_params_t6bo4aow --params-file /tmp/launch_params_ufdn98_7 --params-file /tmp/launch_params_7m7aj130 --params-file /tmp/launch_params_yr4emr64 --params-file /tmp/launch_params_u4_e0ngh --params-file /home/hyt/ros_ws/awf/install/lidar_centerpoint/share/lidar_centerpoint/config/centerpoint_tiny.param.yaml --params-file /home/hyt/ros_ws/awf/install/lidar_centerpoint/share/lidar_centerpoint/config/detection_class_remapper.param.yaml -r ~/input/pointcloud:=/sensing/lidar/pointcloud -r ~/output/objects:=objects'].
+```
 
 ### 修正方法、確認箇所1-3
 
-aaa
+cudaErrorInvalidDevice: invalid device ordinalが出てないか確認する。
+出ていたら、nvidia-driver, cuda, cuDNN, TensorRTを再インストールする。
+
+```shell
+sudo apt-mark unhold cuda-*
+sudo apt-mark unhold nvidia-*
+sudo apt-mark unhold libcudnn*
+sudo apt-mark unhold libnv*
+
+sudo apt purge cuda-*
+sudo apt purge nvidia-*
+sudo apt purge libcudnn*
+sudo apt purge libnv*
+
+# install nvidia driver and run Autoware's setup-dev-env.sh
+```
 
 ### 原因2
 
@@ -126,6 +184,14 @@ QoSの不一致で取得できていない
 [component_container_mt-19] [WARN 1633081042.593132498] [sensing.lidar.occupancy_grid_map_outlier_filter]: New subscription discovered on topic '/sensing/lidar/no_ground/pointcloud', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
 [component_container_mt-19] [WARN 1633081042.597116410] [sensing.lidar.concatenate_data]: New subscription discovered on topic '/sensing/lidar/concatenated/pointcloud', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
 ```
+
+### 修正方法、確認箇所2-1
+
+起動したターミナルもしくは、console.logをQoSで検索する。
+厄介なことにこれはシステム的にはERRORではなくWARNINGであるため、ERRORで検索しても引っかからないので見逃しがちである。
+
+Autowareのバージョンとdriving_log_replayerのバージョンが対応しているか確認してください。
+Autoware Foundationのmainとdriving_log_replayerのmainを使用して、この問題が発生している場合、Autowareの更新にdriving_log_replayerが追従できていないので、issueで報告してください。
 
 ### 例2-2
 
@@ -143,14 +209,12 @@ Autowareが出力する型がdriving_log_replayerが期待している型と異�
 [ros2-67] [ERROR] [1717610262.442275790] [ROSBAG2_TRANSPORT]: Topic '/perception/object_recognition/tracking/objects' has more than one type associated. Only topics with one type are supported
 ```
 
-### 修正方法、確認箇所2-1
-
-aaa
-
 ### 修正方法、確認箇所2-2
 
-Autowareとdriving_log_replayerno
+大きな機能変更がある場合、ReleaseNotes.mdにAutoware側に必要な機能(PR番号等)が記載してある。
+利用するAutowareに必要な機能が入っているか確認する。
 
+Autoware Foundationのmainとdriving_log_replayerのmainを使用して、この問題が発生している場合、Autowareの更新にdriving_log_replayerが追従できていないので、issueで報告してください。
 
 ## 評価数が異常に少ない
 
@@ -167,12 +231,6 @@ input_bagのパスの指定ミスでbag playが実行できずにずっと止ま
 ## 途中で終了する
 
 終了しない場合と同様で途中で実行時エラーでノードが死んでいる。
-
-## 原因解析
-
-driving_log_replayerのcliを使った
-
-### run.bash
 
 
 ### console.log
@@ -205,38 +263,4 @@ link:./sample/debug/logsim_runtime_error.log[実行時エラーになる例]
 
 よって、parse errorになった原因であるdetections.jsonを直す必要があるということがわかる。
 
-===== ERRORで検索する
-logsimのモジュールはautowareから評価対象のtopicをsubscribeして動いている。
-なので、autowareが必要なtopicを出していない場合はlogsimのERRORとしては出てこないケースがある。
-
-link:./sample/debug/process_died.log[autoware側のプロセスが死んでtopicが出ない例]
-は点群が一切出なかったケースのログの一部であるが、ERRORで検索するとpointcloud_preprocessorが死んでいる。
-autoware側に問題があることがわかり、後のデバッグでスレッドプールを使い切って死んでいることがわかった。
-
-```shell
-[ERROR] [component_container_mt-18]: process has died [pid 95, exit code -6, cmd '/opt/ros/galactic/lib/rclcpp_components/component_container_mt --ros-args -r __node:=pointcloud_preprocessor_container -r __ns:=/sensing/lidar/pointcloud_preprocessor --params-file /tmp/launch_params_rh_9gxcs'].
-```
-
-===== QoSで検索する
-ROS2ではリンクにある通り、publisherとsubscriber間でQoS設定に互換性がないとtopicが出ていても受信されずに捨てられる。
-link:https://docs.ros.org/en/rolling/Concepts/About-Quality-of-Service-Settings.html[QoS設定]
-厄介なことにこれはシステム的にはERRORではなくWARNINGであるため、ERRORで検索しても引っかからないので見逃しがちである。
-
-AutowareEvaluationDashboard上でbagを再生したが何も表示されず、bagをDLしてきてros2 bag infoしたが、bagに必要なtopicが入っていない場合などは、QoSで調べてみると良い。
-
-link:./sample/debug/incompatible_qos.log[QoS非互換でtopicをレコード出来ない例]
-をQoSで検索すると、/localization/util/downsample/pointcloudをレコードしようとしたが、QoS非互換で受信出来てないということがわかる。
-
-```shell
-[ros2-41] [WARN 1633081042.154102891] [rosbag2_recorder]: New publisher discovered on topic '/localization/util/downsample/pointcloud', offering incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
-```
-
-なので、この場合は、ros2 bag info /localization/util/downsample/pointcloud -vして、送信側のQoS設定を調べて受信側で互換性が保てる設定を追加することが必要だとわかった。
-
-
-### result.jsonl
-
-### resutl_bag
-
-ros2 bag info resutl_bagを実行して、評価対象のtopicが記録されているか調べる。
 ここでtopicが記録されていなかったら、Autowareが出力していないか、QoSの不一致で捨てられている
