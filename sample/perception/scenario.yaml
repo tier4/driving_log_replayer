@@ -14,13 +14,13 @@ Evaluation:
   Conditions:
     Criterion:
       - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
-        CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score/metrics_score_mph/label/velocity_x_error/velocity_y_error/speed_error)
+        CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0. For error criteria, set custom value.)
         Filter:
           Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
       - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
-        CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score/metrics_score_mph/label/velocity_x_error/velocity_y_error/speed_error)
+        CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0. For error criteria, set custom value.)
         Filter:
           Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   PerceptionEvaluationConfig:
