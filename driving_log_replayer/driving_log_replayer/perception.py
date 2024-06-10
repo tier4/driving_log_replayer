@@ -67,6 +67,7 @@ class Criteria(BaseModel):
             "velocity_x_error",
             "velocity_y_error",
             "speed_error",
+            "yaw_error",
         ]
         | list[str]
         | None
