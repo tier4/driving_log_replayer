@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: `#465 <https://github.com/tier4/driving_log_replayer/issues/465>`_ annotaionless metric value (`#467 <https://github.com/tier4/driving_log_replayer/issues/467>`_)
+* feat(perception): add support of velocity criteria (`#425 <https://github.com/tier4/driving_log_replayer/issues/425>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Hayato Mizushima, Kotaro Uetake
+
 1.18.2 (2024-06-07)
 -------------------
 * feat: add rosbag2_storage_mcap (`#475 <https://github.com/tier4/driving_log_replayer/issues/475>`_) (`#477 <https://github.com/tier4/driving_log_replayer/issues/477>`_)
