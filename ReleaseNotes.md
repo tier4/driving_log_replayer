@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.0.4
+
+Minor Tweak
+
+| Module       | Feature  | Brief summary               | Pull request                                                   | Jira | Contributor                             |
+| ------------ | -------- | --------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `perception` | criteria | add a criteria of yaw error | [#450](https://github.com/tier4/driving_log_replayer/pull/450) | -    | [ktro2828](https://github.com/ktro2828) |
+
 ## Version 2.0.3
 
 Minor Tweak
