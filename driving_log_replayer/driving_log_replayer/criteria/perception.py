@@ -299,6 +299,10 @@ class NumGtTP(CriteriaMethodImpl):
     def is_error(self) -> bool:
         return False
 
+    @property
+    def is_error(self) -> bool:
+        return False
+
 
 class Label(CriteriaMethodImpl):
     name = CriteriaMethod.LABEL
