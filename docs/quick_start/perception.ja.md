@@ -45,6 +45,6 @@
    ```shell
    scenario: sample_dataset
    --------------------------------------------------
-   TestResult: Failed
-   Passed: criteria0 (Success): 215 / 215 -> 100.00%, Failed: criteria1 (Fail): 0 / 8 -> 0.00%
+   TestResult: Passed
+   Passed: criteria0 (Success): 215 / 215 -> 100.00%, Passed: NotTested
    ```

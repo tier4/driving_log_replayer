@@ -25,7 +25,7 @@ topic の subscribe 1 回につき、認識クラス毎に以下に記述する�
 
 全てのクラスで正常となった場合、テストは正常となる。
 
-### 偏差正常
+### 正常
 
 判定には、シナリオまたはlaunchの引数で指定された以下の2つの値を利用する。
 
@@ -49,13 +49,18 @@ topic の subscribe 1 回につき、認識クラス毎に以下に記述する�
 
 閾値×下限値　＜＝　meanの平均値　＜＝　閾値×上限値であれば正常とする。
 
-イメージ図を以下に示す
+#### metric_value
 
+閾値×下限値　＜＝　metric_valueの値　＜＝　閾値×上限値であれば正常とする。
+
+metric_valueは現在の値だけで判定され、min, max, meanのmetricsの値を更新しない。
+
+イメージ図を以下に示す
 ![metrics](./images/annotationless_metrics.drawio.svg)
 
-### 偏差異常
+### 異常
 
-偏差正常の条件を満たさないとき
+正常の条件を満たさないとき
 
 ## 評価ノードが使用する Topic 名とデータ型
 
@@ -80,7 +85,7 @@ Published topics:
 ```yaml
 Evaluation:
   UseCaseName: annotationless_perception
-  UseCaseFormatVersion: 0.2.0
+  UseCaseFormatVersion: 0.3.0
   Conditions:
     ClassConditions:
       # クラス毎の条件を記述する。条件を設定がないクラスが出力された場合はメトリクスだけ計算される。評価には影響しない
@@ -90,24 +95,24 @@ Evaluation:
       CAR: # classification key
         Threshold:
           # 記述のないキーについては評価されない（必ず成功になる）
-          lateral_deviation: { max: 0.1912, mean: 0.0077 }
-          yaw_deviation: { max: 3.1411, mean: 0.9474 }
-          predicted_path_deviation_5.00: { max: 16.464, mean: 0.9062 }
-          predicted_path_deviation_3.00: { max: 8.3292, mean: 0.4893 }
-          predicted_path_deviation_2.00: { max: 5.3205, mean: 0.3109 }
-          predicted_path_deviation_1.00: { max: 2.5231, mean: 0.1544 }
+          lateral_deviation: { max: 0.4, mean: 0.019 }
+          yaw_deviation: { max: 3.1411, mean: 0.05 }
+          predicted_path_deviation_5.00: { max: 16.464, mean: 1.8 }
+          total_objects_count_r60.00_h10.00: { metric_value: 10 }
         PassRange:
           min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
+          metric_value: 0.9-1.1
       BUS: # classification key
         Threshold:
           # Only lateral_deviation is evaluated.
-          lateral_deviation: { max: 0.050 } # Only max is evaluated.
+          yaw_rate: { max: 0.05 } # Only max is evaluated.
         PassRange:
           min: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
+          metric_value: 0.9-1.1
 ```
 
 #### launch引数で指定する
@@ -290,60 +295,17 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
       // 認識したクラス
       "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" }, // TotalとFrameの結果は同じ。他の評価とデータ構造を同じにするために同じ値を出力している
       "Info": {
-        "lateral_deviation": { "min": "最小距離", "max": "最大距離", "mean": "平均距離" },
-        "yaw_deviation": { "min": "最小角度差", "max": "最大角度差", "mean": "平均角度差" },
-        "predicted_path_deviation_5.00": {
-          "min": "最小距離",
-          "max": "最大距離",
-          "mean": "平均距離"
-        },
-        "predicted_path_deviation_3.00": {
-          "min": "最小距離",
-          "max": "最大距離",
-          "mean": "平均距離"
-        },
-        "predicted_path_deviation_2.00": {
-          "min": "最小距離",
-          "max": "最大距離",
-          "mean": "平均距離"
-        },
-        "predicted_path_deviation_1.00": {
-          "min": "最小距離",
-          "max": "最大距離",
-          "mean": "平均距離"
-        }
+        "name_min_max_mean": { "min": "最小値", "max": "最大値", "mean": "平均値" },
+        "name_metric_value": { "metric_value": "値"},
+        ...
       },
       "Metrics": {
-        "lateral_deviation": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
+        "name_min_max_mean": {
+          "min": "minの最小値",
+          "max": "maxの最大値",
+          "mean": "meanの平均値"
         },
-        "yaw_deviation": {
-          "min": "最小角度差の最大値",
-          "max": "最大角度差の最大値",
-          "mean": "平均角度差の平均値"
-        },
-        "predicted_path_deviation_5.00": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        },
-        "predicted_path_deviation_3.00": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        },
-        "predicted_path_deviation_2.00": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        },
-        "predicted_path_deviation_1.00": {
-          "min": "最小距離の最大値",
-          "max": "最大距離の最大値",
-          "mean": "平均距離の平均値"
-        }
+        ...
       }
     }
   }

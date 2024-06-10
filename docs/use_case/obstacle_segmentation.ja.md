@@ -75,13 +75,13 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 Subscribed topics:
 
-| topic 名                                        | データ型                                     |
-| ----------------------------------------------- | -------------------------------------------- |
-| /perception/obstacle_segmentation/pointcloud    | sensor_msgs::msg::PointCloud2                |
-| /diagnostics                                    | diagnostic_msgs::msg::DiagnosticArray        |
-| /tf                                             | tf2_msgs/msg/TFMessage                       |
-| /planning/scenario_planning/status/stop_reasons | tier4_planning_msgs::msg::StopReasonArray    |
-| /planning/scenario_planning/trajectory          | autoware_auto_planning_msgs::msg::Trajectory |
+| topic 名                                        | データ型                                  |
+| ----------------------------------------------- | ----------------------------------------- |
+| /perception/obstacle_segmentation/pointcloud    | sensor_msgs::msg::PointCloud2             |
+| /diagnostics                                    | diagnostic_msgs::msg::DiagnosticArray     |
+| /tf                                             | tf2_msgs/msg/TFMessage                    |
+| /planning/scenario_planning/status/stop_reasons | tier4_planning_msgs::msg::StopReasonArray |
+| /planning/scenario_planning/trajectory          | autoware_planning_msgs::msg::Trajectory   |
 
 Published topics:
 
@@ -126,20 +126,20 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 
 CAN の代わりに vehicle の topic を含めても良い。
 
-| topic 名                               | データ型                                            |
-| -------------------------------------- | --------------------------------------------------- |
-| /localization/kinematic_state          | Type: nav_msgs/msg/Odometry                         |
-| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped        |
-| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                           |
-| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                               |
-| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                                 |
-| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                          |
-| /tf                                    | tf2_msgs/msg/TFMessage                              |
-| /vehicle/status/control_mode           | autoware_auto_vehicle_msgs/msg/ControlModeReport    |
-| /vehicle/status/gear_status            | autoware_auto_vehicle_msgs/msg/GearReport           |
-| /vehicle/status/steering_status        | autoware_auto_vehicle_msgs/SteeringReport           |
-| /vehicle/status/turn_indicators_status | autoware_auto_vehicle_msgs/msg/TurnIndicatorsReport |
-| /vehicle/status/velocity_status        | autoware_auto_vehicle_msgs/msg/VelocityReport       |
+| topic 名                               | データ型                                       |
+| -------------------------------------- | ---------------------------------------------- |
+| /localization/kinematic_state          | Type: nav_msgs/msg/Odometry                    |
+| /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped   |
+| /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                      |
+| /sensing/gnss/ublox/navpvt             | ublox_msgs/msg/NavPVT                          |
+| /sensing/imu/tamagawa/imu_raw          | sensor_msgs/msg/Imu                            |
+| /sensing/lidar/\*/velodyne_packets     | velodyne_msgs/VelodyneScan                     |
+| /tf                                    | tf2_msgs/msg/TFMessage                         |
+| /vehicle/status/control_mode           | autoware_vehicle_msgs/msg/ControlModeReport    |
+| /vehicle/status/gear_status            | autoware_vehicle_msgs/msg/GearReport           |
+| /vehicle/status/steering_status        | autoware_vehicle_msgs/SteeringReport           |
+| /vehicle/status/turn_indicators_status | autoware_vehicle_msgs/msg/TurnIndicatorsReport |
+| /vehicle/status/velocity_status        | autoware_vehicle_msgs/msg/VelocityReport       |
 
 ### 入力 rosbag に含まれてはいけない topic
 

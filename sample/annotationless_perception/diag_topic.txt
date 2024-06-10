@@ -1,590 +1,849 @@
----
 header:
   stamp:
-    sec: 1649138857
-    nanosec: 545212404
-  frame_id: ""
+    sec: 1649138868
+    nanosec: 586859393
+  frame_id: ''
 status:
-  - level: "\0"
-    name: lateral_deviation_CAR
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.029001"
-      - key: max
-        value: "0.049248"
-      - key: mean
-        value: "0.039124"
-  - level: "\0"
-    name: yaw_deviation_CAR
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.031680"
-      - key: max
-        value: "0.597509"
-      - key: mean
-        value: "0.314595"
-  - level: "\0"
-    name: predicted_path_deviation_variance_CAR_5.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.460829"
-      - key: max
-        value: "2.739512"
-      - key: mean
-        value: "1.600170"
-  - level: "\0"
-    name: predicted_path_deviation_variance_CAR_3.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.504644"
-      - key: max
-        value: "0.814377"
-      - key: mean
-        value: "0.659511"
-  - level: "\0"
-    name: predicted_path_deviation_CAR_3.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.108960"
-      - key: max
-        value: "1.283824"
-      - key: mean
-        value: "1.196392"
-  - level: "\0"
-    name: predicted_path_deviation_CAR_5.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.206746"
-      - key: max
-        value: "2.199121"
-      - key: mean
-        value: "1.702933"
-  - level: "\0"
-    name: predicted_path_deviation_CAR_2.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.605851"
-      - key: max
-        value: "0.992677"
-      - key: mean
-        value: "0.799264"
-  - level: "\0"
-    name: predicted_path_deviation_variance_CAR_2.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.215159"
-      - key: max
-        value: "0.409789"
-      - key: mean
-        value: "0.312474"
-  - level: "\0"
-    name: predicted_path_deviation_variance_CAR_1.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.043813"
-      - key: max
-        value: "0.171254"
-      - key: mean
-        value: "0.107534"
-  - level: "\0"
-    name: predicted_path_deviation_CAR_1.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.276898"
-      - key: max
-        value: "0.549395"
-      - key: mean
-        value: "0.413146"
-  - level: "\0"
-    name: yaw_rate_UNKNOWN
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.005680"
-      - key: max
-        value: "0.005680"
-      - key: mean
-        value: "0.005680"
-  - level: "\0"
-    name: yaw_rate_CAR
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.249264"
-      - key: max
-        value: "0.249264"
-      - key: mean
-        value: "0.249264"
-  - level: "\0"
-    name: yaw_rate_BUS
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.197476"
-      - key: max
-        value: "0.197476"
-      - key: mean
-        value: "0.197476"
-  - level: "\0"
-    name: total_objects_count_PEDESTRIAN_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_PEDESTRIAN_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_PEDESTRIAN_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_BICYCLE_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_BICYCLE_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_MOTORCYCLE_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_MOTORCYCLE_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_PEDESTRIAN_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_TRAILER_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_UNKNOWN_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_UNKNOWN_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_BUS_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_TRAILER_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_UNKNOWN_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: average_objects_count_UNKNOWN_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.864407"
-      - key: max
-        value: "0.864407"
-      - key: mean
-        value: "0.864407"
-  - level: "\0"
-    name: total_objects_count_CAR_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "4.000000"
-      - key: max
-        value: "4.000000"
-      - key: mean
-        value: "4.000000"
-  - level: "\0"
-    name: total_objects_count_MOTORCYCLE_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: interval_average_objects_count_UNKNOWN_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: interval_average_objects_count_UNKNOWN_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_UNKNOWN_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_BICYCLE_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: average_objects_count_UNKNOWN_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.864407"
-      - key: max
-        value: "0.864407"
-      - key: mean
-        value: "0.864407"
-  - level: "\0"
-    name: average_objects_count_UNKNOWN_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.864407"
-      - key: max
-        value: "0.864407"
-      - key: mean
-        value: "0.864407"
-  - level: "\0"
-    name: total_objects_count_CAR_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "4.000000"
-      - key: max
-        value: "4.000000"
-      - key: mean
-        value: "4.000000"
-  - level: "\0"
-    name: total_objects_count_BUS_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_CAR_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "4.000000"
-      - key: max
-        value: "4.000000"
-      - key: mean
-        value: "4.000000"
-  - level: "\0"
-    name: total_objects_count_TRUCK_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_BUS_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_BICYCLE_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_CAR_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "3.000000"
-      - key: max
-        value: "3.000000"
-      - key: mean
-        value: "3.000000"
-  - level: "\0"
-    name: total_objects_count_TRAILER_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: average_objects_count_UNKNOWN_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.864407"
-      - key: max
-        value: "0.864407"
-      - key: mean
-        value: "0.864407"
-  - level: "\0"
-    name: total_objects_count_TRUCK_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_TRUCK_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_TRUCK_r150.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: total_objects_count_BUS_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_TRAILER_r200.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
-  - level: "\0"
-    name: interval_average_objects_count_UNKNOWN_r100.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: interval_average_objects_count_UNKNOWN_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "1.000000"
-      - key: max
-        value: "1.000000"
-      - key: mean
-        value: "1.000000"
-  - level: "\0"
-    name: total_objects_count_MOTORCYCLE_r50.00_h10.00
-    message: ""
-    hardware_id: ""
-    values:
-      - key: min
-        value: "0.000000"
-      - key: max
-        value: "0.000000"
-      - key: mean
-        value: "0.000000"
+- level: "\0"
+  name: lateral_deviation_CAR
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.014933'
+  - key: max
+    value: '0.019388'
+  - key: mean
+    value: '0.016769'
+- level: "\0"
+  name: yaw_deviation_CAR
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.003103'
+  - key: max
+    value: '0.099769'
+  - key: mean
+    value: '0.039551'
+- level: "\0"
+  name: predicted_path_deviation_variance_CAR_5.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.196322'
+  - key: max
+    value: '4.919948'
+  - key: mean
+    value: '2.003654'
+- level: "\0"
+  name: predicted_path_deviation_variance_CAR_3.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.010692'
+  - key: max
+    value: '1.340692'
+  - key: mean
+    value: '0.483927'
+- level: "\0"
+  name: predicted_path_deviation_CAR_3.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.176119'
+  - key: max
+    value: '1.649681'
+  - key: mean
+    value: '0.705490'
+- level: "\0"
+  name: predicted_path_deviation_CAR_5.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.425973'
+  - key: max
+    value: '3.066482'
+  - key: mean
+    value: '1.477132'
+- level: "\0"
+  name: predicted_path_deviation_CAR_2.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.119283'
+  - key: max
+    value: '1.079504'
+  - key: mean
+    value: '0.442899'
+- level: "\0"
+  name: predicted_path_deviation_variance_CAR_2.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.007234'
+  - key: max
+    value: '0.726307'
+  - key: mean
+    value: '0.247540'
+- level: "\0"
+  name: predicted_path_deviation_variance_CAR_1.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.003648'
+  - key: max
+    value: '0.180854'
+  - key: mean
+    value: '0.065334'
+- level: "\0"
+  name: predicted_path_deviation_CAR_1.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.055939'
+  - key: max
+    value: '0.458090'
+  - key: mean
+    value: '0.215106'
+- level: "\0"
+  name: yaw_rate_BUS
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.000148'
+  - key: max
+    value: '0.000148'
+  - key: mean
+    value: '0.000148'
+- level: "\0"
+  name: yaw_rate_CAR
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.000067'
+  - key: max
+    value: '0.000067'
+  - key: mean
+    value: '0.000067'
+- level: "\0"
+  name: yaw_rate_UNKNOWN
+  message: ''
+  hardware_id: ''
+  values:
+  - key: min
+    value: '0.000187'
+  - key: max
+    value: '0.000187'
+  - key: mean
+    value: '0.000187'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '4.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: total_objects_count_TRUCK_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRUCK_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_TRUCK_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '2.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '4.000000'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_MOTORCYCLE_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_TRAILER_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: total_objects_count_BICYCLE_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: total_objects_count_TRUCK_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_PEDESTRIAN_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRUCK_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: total_objects_count_BUS_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '4.000000'
+- level: "\0"
+  name: average_objects_count_UNKNOWN_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.952381'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '4.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '4.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '4.000000'
+- level: "\0"
+  name: total_objects_count_TRUCK_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRUCK_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r160.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '4.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_CAR_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '4.000000'
+- level: "\0"
+  name: total_objects_count_TRUCK_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRUCK_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_TRUCK_r200.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r20.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '0.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r60.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r40.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r80.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: interval_average_objects_count_UNKNOWN_r180.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_UNKNOWN_r100.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r120.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'
+- level: "\0"
+  name: total_objects_count_BUS_r140.00_h10.00
+  message: ''
+  hardware_id: ''
+  values:
+  - key: metric_value
+    value: '1.000000'

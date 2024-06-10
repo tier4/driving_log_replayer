@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 from typing import TYPE_CHECKING
 
-from autoware_auto_perception_msgs.msg import ObjectClassification
+from autoware_perception_msgs.msg import ObjectClassification
 from builtin_interfaces.msg import Time as Stamp
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose

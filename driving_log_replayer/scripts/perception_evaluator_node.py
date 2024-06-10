@@ -17,11 +17,11 @@
 import logging
 from pathlib import Path
 
-from autoware_auto_perception_msgs.msg import DetectedObject
-from autoware_auto_perception_msgs.msg import DetectedObjects
-from autoware_auto_perception_msgs.msg import Shape as MsgShape
-from autoware_auto_perception_msgs.msg import TrackedObject
-from autoware_auto_perception_msgs.msg import TrackedObjects
+from autoware_perception_msgs.msg import DetectedObject
+from autoware_perception_msgs.msg import DetectedObjects
+from autoware_perception_msgs.msg import Shape as MsgShape
+from autoware_perception_msgs.msg import TrackedObject
+from autoware_perception_msgs.msg import TrackedObjects
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.schema import FrameID
 from perception_eval.common.shape import Shape

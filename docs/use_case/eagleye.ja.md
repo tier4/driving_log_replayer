@@ -74,12 +74,12 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 ### 入力 rosbag に含まれるべき topic
 
-| topic 名                        | データ型                                      |
-| ------------------------------- | --------------------------------------------- |
-| /sensing/gnss/ublox/nav_sat_fix | sensor_msgs/msg/NavSatFix                     |
-| /sensing/gnss/ublox/navpvt      | ublox_msgs/msg/NavPVT                         |
-| /sensing/imu/tamagawa/imu_raw   | sensor_msgs/msg/Imu                           |
-| /vehicle/status/velocity_status | autoware_auto_vehicle_msgs/msg/VelocityReport |
+| topic 名                        | データ型                                 |
+| ------------------------------- | ---------------------------------------- |
+| /sensing/gnss/ublox/nav_sat_fix | sensor_msgs/msg/NavSatFix                |
+| /sensing/gnss/ublox/navpvt      | ublox_msgs/msg/NavPVT                    |
+| /sensing/imu/tamagawa/imu_raw   | sensor_msgs/msg/Imu                      |
+| /vehicle/status/velocity_status | autoware_vehicle_msgs/msg/VelocityReport |
 
 ### 入力 rosbag に含まれてはいけない topic
 

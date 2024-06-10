@@ -1,5 +1,39 @@
 # Release Notes
 
+## Version 2.0.2
+
+Minor Tweak
+
+| Module                      | Feature      | Brief summary        | Pull request                                                   | Jira     | Contributor                                   |
+| --------------------------- | ------------ | -------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `annotationless_perception` | metric_value | support metric_value | [#465](https://github.com/tier4/driving_log_replayer/pull/465) | RT1-6482 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.0.1
+
+Minor Tweak
+
+| Module | Feature       | Brief summary                       | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------- | ----------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | documentation | update quick start                  | [#473](https://github.com/tier4/driving_log_replayer/pull/473) | RT1-6661 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | rosbag2       | add dependency rosbag2_storage_mcap | [#475](https://github.com/tier4/driving_log_replayer/pull/475) | -        | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.0.0
+
+Breaking Change
+Requires Autoware to support autoware_msg
+
+| Module | Feature      | Brief summary        | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------ | -------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | autoware_msg | support autoware_msg | [#472](https://github.com/tier4/driving_log_replayer/pull/472) | RT1-6661 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 1.18.1
+
+Document update
+
+| Module | Feature  | Brief summary   | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | -------- | --------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | document | update document | [#470](https://github.com/tier4/driving_log_replayer/pull/470) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.18.0
 
 Major Changes

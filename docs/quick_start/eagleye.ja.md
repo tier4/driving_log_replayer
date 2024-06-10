@@ -9,18 +9,10 @@
    cp -r ~/autoware/src/simulator/driving_log_replayer/sample/eagleye/scenario.yaml ~/driving_log_replayer_data/eagleye/sample
    ```
 
-2. mapデータをdownloadする
-
-   [AWSIM Quick Start Demo page](https://tier4.github.io/AWSIM/GettingStarted/QuickStartDemo/) のページから地図ファイル (.pcd and .osm) をダウンロードし `$HOME/autoware_map/awsim-shinjuku` に設置してください。
-
-3. bagデータをdownloadする
-
-   ROSBAGをダウンロードしてください： [Google Drive Link](https://drive.google.com/file/d/1Zgv9eP0j2hAgTj7pW8n-YaECPQGGQjO2/view)。
-   その後、下記のコマンドで解答してください。
+2. サンプルのbagをコピー
 
    ```shell
-   unzip awsim_eagleye_rosbag.zip
-   mv input_bag ~/driving_log_replayer/eagleye/sample
+   cp -r ~/driving_log_replayer_data/sample_bag/eagleye/input_bag ~/driving_log_replayer_data/eagleye/sample
    ```
 
 ## 実行方法
