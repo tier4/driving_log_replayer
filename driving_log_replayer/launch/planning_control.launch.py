@@ -29,14 +29,12 @@ RECORD_TOPIC_REGEX = """^/clock$\
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
     launch_arguments.append(DeclareLaunchArgument("sensing", default_value="true"))
-    """
     autoware_launch = cmn.get_autoware_launch(
-        sensing=LaunchConfiguration("sensing"),
+        perception="false",
         localization="false",
         planning="true",
         control="true",
     )
-    """
     rviz_node = cmn.get_rviz("autoware.rviz")
     evaluator_node = cmn.get_evaluator_node("planning_control")
 
@@ -60,7 +58,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         [
             *launch_arguments,
             rviz_node,
-            # autoware_launch,
+            autoware_launch,
             evaluator_node,
             player_normal,
             player_remap,
