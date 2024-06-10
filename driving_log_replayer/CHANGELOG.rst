@@ -4,6 +4,7 @@ Changelog for package driving_log_replayer
 
 Forthcoming
 -----------
+* feat: add a criteria of yaw error (`#450 <https://github.com/tier4/driving_log_replayer/issues/450>`_)
 * feat: `#465 <https://github.com/tier4/driving_log_replayer/issues/465>`_ annotaionless metric value (`#467 <https://github.com/tier4/driving_log_replayer/issues/467>`_)
 * feat(perception): add support of velocity criteria (`#425 <https://github.com/tier4/driving_log_replayer/issues/425>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>

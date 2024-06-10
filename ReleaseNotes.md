@@ -7,6 +7,7 @@ Minor Tweak
 | Module                      | Feature      | Brief summary                    | Pull request                                                   | Jira     | Contributor                                   |
 | --------------------------- | ------------ | -------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
 | `perception`                | criteria     | add support of velocity criteria | [#465](https://github.com/tier4/driving_log_replayer/pull/465) | -        | [ktro2828](https://github.com/ktro2828)       |
+| `perception`                | criteria     | add a criteria of yaw error      | [#450](https://github.com/tier4/driving_log_replayer/pull/450) | -        | [ktro2828](https://github.com/ktro2828)       |
 | `annotationless_perception` | metric_value | support metric_value             | [#465](https://github.com/tier4/driving_log_replayer/pull/465) | RT1-6482 | [hayato-m126](https://github.com/hayato-m126) |
 
 ## Version 1.18.2
