@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.0.5
+
+Documentation
+
+| Module | Feature       | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | documentation | add trouble shooting page | [#484](https://github.com/tier4/driving_log_replayer/pull/484) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.0.4
 
 Minor Tweak
