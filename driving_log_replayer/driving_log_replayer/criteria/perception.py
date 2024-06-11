@@ -18,6 +18,7 @@ from __future__ import annotations
 from abc import ABC
 from abc import abstractmethod
 from enum import Enum
+import logging
 from numbers import Number
 from typing import TYPE_CHECKING
 
@@ -73,20 +74,22 @@ class CriteriaLevel(Enum):
 
     CUSTOM = None
 
-    def is_valid(self, score: Number) -> bool:
+    def is_valid(self, score: Number, *, is_error: bool) -> bool:
         """
         Return whether the score satisfied the level.
 
         Args:
         ----
             score (Number): Calculated score.
+            is_error (bool): Indicates whether input score is error or not.
+                if True, higher score is better. Otherwise lower error is better.
 
         Returns:
         -------
             bool: Whether the score satisfied the level.
 
         """
-        return score >= self.value
+        return score <= self.value if is_error else score >= self.value
 
     @classmethod
     def from_str(cls, value: str) -> CriteriaLevel:
@@ -136,12 +139,20 @@ class CriteriaMethod(Enum):
 
     - NUM_TP: Number of TP (or TN).
     - LABEL: Whether label is correct or not.
+    - VELOCITY_X_ERROR: Error of x direction velocity [m/s].
+    - VELOCITY_Y_ERROR: Error of y direction velocity [m/s].
+    - SPEED_ERROR: Error of speed [m/s].
+    - YAW_ERROR: Error of yaw [rad].
     - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
     - METRICS_SCORE_MAPH: mAPH score.
     """
 
     NUM_TP = "num_tp"
     LABEL = "label"
+    VELOCITY_X_ERROR = "velocity_x_error"
+    VELOCITY_Y_ERROR = "velocity_y_error"
+    SPEED_ERROR = "speed_error"
+    YAW_ERROR = "yaw_error"
     METRICS_SCORE = "metrics_score"
     METRICS_SCORE_MAPH = "metrics_score_maph"
 
@@ -197,7 +208,11 @@ class CriteriaMethodImpl(ABC):
         if self.has_objects(frame) is False:
             return None
         score: float = self.calculate_score(frame)
-        return SuccessFail.SUCCESS if self.level.is_valid(score) else SuccessFail.FAIL
+        return (
+            SuccessFail.SUCCESS
+            if self.level.is_valid(score, is_error=self.is_error)
+            else SuccessFail.FAIL
+        )
 
     @staticmethod
     def has_objects(frame: PerceptionFrameResult) -> bool:
@@ -233,6 +248,18 @@ class CriteriaMethodImpl(ABC):
 
         """
 
+    @property
+    @abstractmethod
+    def is_error(self) -> bool:
+        """
+        Indicates whether this criteria calculates error or not.
+
+        Returns
+        -------
+            bool: True means it is valid if score <= threshold .
+
+        """
+
 
 class NumTP(CriteriaMethodImpl):
     name = CriteriaMethod.NUM_TP
@@ -245,6 +272,10 @@ class NumTP(CriteriaMethodImpl):
         num_success: int = frame.pass_fail_result.get_num_success()
         num_objects: int = num_success + frame.pass_fail_result.get_num_fail()
         return 100.0 * num_success / num_objects if num_objects != 0 else 0.0
+
+    @property
+    def is_error(self) -> bool:
+        return False
 
 
 class Label(CriteriaMethodImpl):
@@ -262,6 +293,106 @@ class Label(CriteriaMethodImpl):
         ]
 
         return 100.0 if len(is_label_corrects) == 0 else 100.0 * np.mean(is_label_corrects)
+
+    @property
+    def is_error(self) -> bool:
+        return False
+
+
+class VelocityXError(CriteriaMethodImpl):
+    name = CriteriaMethod.VELOCITY_X_ERROR
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        errors = []
+        for result in frame.object_results:
+            if result.ground_truth_object is not None:
+                err = result.estimated_object.get_velocity_error(result.ground_truth_object)
+                if err is None:
+                    logging.warning("Velocity is None")
+                    continue
+                errors.append(err[0])
+        return 0.0 if len(errors) == 0 else np.mean(errors)
+
+    @property
+    def is_error(self) -> bool:
+        return True
+
+
+class VelocityYError(CriteriaMethodImpl):
+    name = CriteriaMethod.VELOCITY_Y_ERROR
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        errors = []
+        for result in frame.object_results:
+            if result.ground_truth_object is not None:
+                err = result.estimated_object.get_velocity_error(result.ground_truth_object)
+                if err is None:
+                    logging.warning("Velocity is None")
+                    continue
+                errors.append(err[1])
+        return 0.0 if len(errors) == 0 else np.mean(errors)
+
+    @property
+    def is_error(self) -> bool:
+        return True
+
+
+class SpeedError(CriteriaMethodImpl):
+    name = CriteriaMethod.SPEED_ERROR
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        errors = []
+        for result in frame.object_results:
+            if result.ground_truth_object is not None:
+                if (
+                    result.estimated_object.state.velocity is None
+                    or result.ground_truth_object.state.velocity is None
+                ):
+                    logging.warning("Velocity is None")
+                    continue
+                est_norm = np.linalg.norm(result.estimated_object.state.velocity[:2])
+                gt_norm = np.linalg.norm(result.ground_truth_object.state.velocity[:2])
+                err = abs(gt_norm - est_norm)
+                errors.append(err)
+        return 0.0 if len(errors) == 0 else np.mean(errors)
+
+    @property
+    def is_error(self) -> bool:
+        return True
+
+
+class YawError(CriteriaMethodImpl):
+    name = CriteriaMethod.YAW_ERROR
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        errors = []
+        for result in frame.object_results:
+            err = result.heading_error
+            if err is not None:
+                _, _, yaw_err = err
+                errors.append(abs(yaw_err))
+
+        return 0.0 if len(errors) == 0 else np.mean(errors)
+
+    @property
+    def is_error(self) -> bool:
+        return True
 
 
 class MetricsScore(CriteriaMethodImpl):
@@ -288,6 +419,10 @@ class MetricsScore(CriteriaMethodImpl):
 
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
 
+    @property
+    def is_error(self) -> bool:
+        return False
+
 
 class MetricsScoreMAPH(CriteriaMethodImpl):
     name = CriteriaMethod.METRICS_SCORE_MAPH
@@ -305,6 +440,10 @@ class MetricsScoreMAPH(CriteriaMethodImpl):
         ]
 
         return 100.0 * sum(scores) / len(scores) if len(scores) != 0 else 0.0
+
+    @property
+    def is_error(self) -> bool:
+        return False
 
 
 class CriteriaFilter:
@@ -378,6 +517,14 @@ class PerceptionCriteria:
                 self.methods.append(NumTP(level))
             elif method == CriteriaMethod.LABEL:
                 self.methods.append(Label(level))
+            elif method == CriteriaMethod.VELOCITY_X_ERROR:
+                self.methods.append(VelocityXError(level))
+            elif method == CriteriaMethod.VELOCITY_Y_ERROR:
+                self.methods.append(VelocityYError(level))
+            elif method == CriteriaMethod.SPEED_ERROR:
+                self.methods.append(SpeedError(level))
+            elif method == CriteriaMethod.YAW_ERROR:
+                self.methods.append(YawError(level))
             elif method == CriteriaMethod.METRICS_SCORE:
                 self.methods.append(MetricsScore(level))
             elif method == CriteriaMethod.METRICS_SCORE_MAPH:
