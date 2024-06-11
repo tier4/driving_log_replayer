@@ -15,7 +15,7 @@
 from dataclasses import dataclass
 
 from pydantic import BaseModel
-from typing_extensions import Literal
+from typing import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase

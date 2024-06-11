@@ -24,12 +24,11 @@ from driving_log_replayer_msgs.msg import GroundSegmentationEvalResult
 from sensor_msgs.msg import PointCloud2
 from rclpy.qos import qos_profile_sensor_data
 
-from typing import List, Dict
 import ros2_numpy
 import numpy as np
 
 import json
-import os
+from pathlib import Path
 
 from scipy.spatial import cKDTree
 
@@ -38,6 +37,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
     CLOUD_DIM = 6
     GROUND_LABEL = 6
     OBSTACLE_LABEL = 7
+    TS_DIFF_THRESH = 75000
 
     def __init__(self, name: str) -> None:
         super().__init__(name, GroundSegmentationScenario, GroundSegmentationResult)
@@ -46,14 +46,13 @@ class GroundSegmentationEvaluator(DLREvaluator):
         for path in self._t4_dataset_paths:
             self.get_logger().info(path)
 
-        sample_data = json.load(
-            open(os.path.join(self._t4_dataset_paths[0], "annotation", "sample_data.json"), "r")
-        )
+        sample_data_path = Path(self._t4_dataset_paths[0], "annotation", "sample_data.json")
+        sample_data = json.load(sample_data_path.open())
         sample_data = list(filter(lambda d: d["filename"].split(".")[-2] == "pcd", sample_data))
 
-        self.ground_truth: Dict[int, np.ndarray] = {}
+        self.ground_truth: dict[int, np.ndarray] = {}
         for i in range(len(sample_data)):
-            pcd_file_path = os.path.join(self._t4_dataset_paths[0], sample_data[i]["filename"])
+            pcd_file_path = Path(self._t4_dataset_paths[0], sample_data[i]["filename"]).as_posix()
             raw_points = np.fromfile(pcd_file_path, dtype=np.float32)
             points: np.ndarray = raw_points.reshape((-1, self.CLOUD_DIM))
             self.ground_truth[int(sample_data[i]["timestamp"])] = points
@@ -65,7 +64,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
             qos_profile_sensor_data,
         )
 
-    def pointcloud_cb(self, msg: PointCloud2):
+    def pointcloud_cb(self, msg: PointCloud2) -> None:
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         gt_frame_ts = self.__get_gt_frame_ts(unix_time=unix_time)
 
@@ -87,26 +86,26 @@ class GroundSegmentationEvaluator(DLREvaluator):
         # count TP+FN, TN+FP
         tp_fn = np.count_nonzero(gt_frame_cloud[:, 5] == self.GROUND_LABEL)
         fp_tn = np.count_nonzero(gt_frame_cloud[:, 5] == self.OBSTACLE_LABEL)
-        TN: int = 0
-        FN: int = 0
+        tn: int = 0
+        fn: int = 0
         for p in pointcloud:
             _, idx = kdtree.query(p, k=1)
             if gt_frame_cloud[idx][5] == self.GROUND_LABEL:
-                FN += 1
+                fn += 1
             elif gt_frame_cloud[idx][5] == self.OBSTACLE_LABEL:
-                TN += 1
-        TP = tp_fn - FN
-        FP = fp_tn - TN
+                tn += 1
+        tp = tp_fn - fn
+        fp = fp_tn - tn
 
-        self._logger.info(f"TP {TP}, FP {FP}, TN {TN}, FN {FN}")
+        self._logger.info(f"TP {tp}, FP {fp}, TN {tn}, FN {fn}")
 
-        metrics_list = self.__compute_metrics(TP, FP, TN, FN)
+        metrics_list = self.__compute_metrics(tp, fp, tn, fn)
 
         frame_result = GroundSegmentationEvalResult()
-        frame_result.tp = TP
-        frame_result.fp = FP
-        frame_result.tn = TN
-        frame_result.fn = FN
+        frame_result.tp = tp
+        frame_result.fp = fp
+        frame_result.tn = tn
+        frame_result.fn = fn
         frame_result.accuracy = metrics_list[0]
         frame_result.precision = metrics_list[1]
         frame_result.recall = metrics_list[2]
@@ -117,23 +116,24 @@ class GroundSegmentationEvaluator(DLREvaluator):
         self._result_writer.write_result(self._result)
 
     def __get_gt_frame_ts(self, unix_time: int) -> int:
-        min_diff: int = abs(unix_time - int(list(self.ground_truth.keys())[0]))
-        ret_ts: int = int(list(self.ground_truth.keys())[0])
-        for i in range(1, len(self.ground_truth)):
-            sample_ts = int(list(self.ground_truth.keys())[i])
+        ts_itr = iter(self.ground_truth.keys())
+        ret_ts: int = int(next(ts_itr))
+        min_diff: int = abs(unix_time - ret_ts)
+
+        for _ in range(1, len(self.ground_truth)):
+            sample_ts = next(ts_itr)
             diff_time = abs(unix_time - sample_ts)
-            # self._logger.warn(f'keys : {sample_ts}')
             if diff_time < min_diff:
                 min_diff = diff_time
                 ret_ts = sample_ts
 
-        if min_diff > 75000:
-            self._logger.warn(f"time diff {min_diff} is too big")
+        if min_diff > self.TS_DIFF_THRESH:
+            self.get_logger().warn("time diff is too big")
             return -1
 
         return ret_ts
 
-    def __compute_metrics(self, tp: int, fp: int, tn: int, fn: int) -> List[float]:
+    def __compute_metrics(self, tp: int, fp: int, tn: int, fn: int) -> list[float]:
         eps = 1e-10
         accuracy = float(tp + tn) / float(tp + fp + tn + fn + eps)
         precision = float(tp) / float(tp + fp + eps)
