@@ -1,14 +1,14 @@
-# トラブルシューティング
+# Troubleshooting
 
-期待通りに動かない場合に確認する
+Check if simulation does not work as expected
 
-## Autowareが起動しない
+## Autoware does not start
 
-### 原因1
+### Cause 1
 
-シナリオで指定したsensor_model、vehicle_model、vehicle_idが利用するAutowareのワークスペースに含まれていない。
+The sensor_model, vehicle_model, and vehicle_id specified in the scenario are not included in the Autoware workspace used.
 
-### 例1
+### Example 1
 
 ```shell
 ❯ dlr simulation run -p localization
@@ -20,15 +20,15 @@ Captured stderr output: error: package not found: "package 'sample_sensor_kit_de
 ...
 ```
 
-### 修正方法、確認箇所1
+### Correction method, Check area 1
 
-プロファイルで指定しているautoware_pathにシナリオで指定した、sensor_model、vehicle_model、vehicle_idが存在するか確認する。
+Check whether sensor_model, vehicle_model, and vehicle_id specified in the scenario exist in the autoware_path specified in the profile.
 
-### 原因2
+### Cause 2
 
-cliのバージョンがdriving_log_replayerのバージョンと一致していない。
+The version of cli does not match the version of driving_log_replayer.
 
-### 例2
+### Example 2
 
 ```shell
 ❯ dlr simulation run -p yabloc -l play_rate:=0.5
@@ -38,25 +38,22 @@ Try 'dlr simulation run -h' for help.
 Error: No such option: -l
 ```
 
-### 修正方法、確認箇所2
+### Correction method, Check area 2
 
-installされているdriving_log_replayerのpackage.xmlのversionタグの値と、cliが出力するversionが一致しているか確認する。
+Check that the value of the version tag in the package.xml of the installed driving_log_replayer matches the version output by the CLI.
 
 ```shell
 ❯ dlr --version
 1.18.0
 ```
 
-## Autoware起動後すぐに終了してしまう
+## Autoware exits immediately after startup
 
-### 原因
+### Cause
 
-シナリオフォーマットが不正
+Incorrect scenario format
 
-### 例
-
-コンソールに以下のようなメッセージが出力される。
-また、同様の内容がresult.jsonlに出力される
+### Example
 
 ```shell
 [localization_evaluator_node.py-55] [ERROR] [1717734608.157798307] [driving_log_replayer.localization_evaluator]: An error occurred while loading the scenario. 1 validation error for LocalizationScenario
@@ -77,33 +74,33 @@ ScenarioFormatError
 {"Result":{"Success":false,"Summary":"ScenarioFormatError"},"Stamp":{"System":0},"Frame":{"ErrorMsg":"1 validation error for LocalizationScenario\nEvaluation.UseCaseFormatVersion\n  Input should be '1.2.0' or '1.3.0' [type=literal_error, input_value='1.0.0', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.7/v/literal_error"}}
 ```
 
-### 修正方法、確認箇所
+### Correction method, Check area
 
-result.jsonlに何が問題か出力されているので指示通り治す。
-例だと、UseCaseFormatVersionは1.2.0か1.3.0である必要があるのに、1.0.0なので利用できない。
-古いフォーマットを利用しているので、リポジトリのsampleディレクトリにあるシナリオを参考に修正する。
+The result.jsonl file shows what the problem is, so fix it as instructed.
+In the example, UseCaseFormatVersion should be 1.2.0 or 1.3.0, but it is 1.0.0, so it cannot be used.
+Since the old format is used, you should fix it by referring to the scenario in the sample directory of the repository.
 
-## 評価結果がNoDataとなる
+## The evaluation result is NoData
 
-### 原因1
+### Cause 1
 
-Autowareから評価対象のtopicが出力されていない
+Autoware is not outputting the topic to be evaluated.
 
-### 例1-1
+### Example 1-1
 
-評価対象のtopicを出力するノードがlaunchから起動されていない
-launchファイルのtrue/falseの値の設定間違い
+The node that outputs the topic to be evaluated is not invoked from launch.
+The true/false value in the launch file is incorrectly set.
 
-### 修正方法、確認箇所1-1
+### Correction method, Check area 1-1
 
-評価対象のtopicをドキュメントから探して、topic infoしてpublisherが存在するか確認する
-Publisher count: 0の場合は、そもそも起動できてない可能性が高い。
+Find the topic to be evaluated in the document and check if the publisher exists by doing topic info.
+If the Publisher count: 0, it is highly likely that the system has not been started in the first place.
 
 ```shell
 ❯ ros2 topic info /perception/traffic_light_recognition/traffic_signals -v
 Type: autoware_auto_perception_msgs/msg/TrafficSignalArray
 
-Publisher count: 1 <- 0じゃないことを確認する
+Publisher count: 1 <- Make sure it's not 0.
 
 Node name: crosswalk_traffic_light_estimator
 Node namespace: /perception/traffic_light_recognition
@@ -120,26 +117,26 @@ QoS profile:
   Liveliness lease duration: Infinite
 ```
 
-### 例1-2
+### Example 1-2
 
-ノードがlaunchで起動はしているが、起動後すぐに死んでいる
+The node is running at launch, but dies immediately after startup.
 
-### 修正方法、確認箇所1-2
+### Correction method, Check area 1-2
 
-起動したターミナル、または、console.logをERRORで検索する。
+Search the terminal you started or console.log with ERROR.
 
-以下は、点群が一切出なかったケースのログである。
-ERRORで検索するとpointcloud_preprocessorが死んでいることがわかる。
-topicを出力するcomponent_containerがエラーを吐いてないか確認する。
+The following is a log of a case in which no point cloud was produced at all.
+Searching by ERROR shows that pointcloud_preprocessor is dead.
+Check if component_container, which outputs topics, is not throwing an error.
 
 ```shell
 [ERROR] [component_container_mt-18]: process has died [pid 95, exit code -6, cmd '/opt/ros/galactic/lib/rclcpp_components/component_container_mt --ros-args -r __node:=pointcloud_preprocessor_container -r __ns:=/sensing/lidar/pointcloud_preprocessor --params-file /tmp/launch_params_rh_9gxcs'].
 ```
 
-### 例1-3
+### Example 1-3
 
-cuda, cuDNN, TensorRTの不整合が発生して結果として、perceptionの認識結果が出てこない。
-apt upgradeでnvidia driverが更新されたときに発生することがある。
+Inconsistency between cuda, cuDNN, and TensorRT resulting in no perception recognition results.
+This may occur when nvidia driver is updated by apt upgrade.
 
 ```shell
 hyt@dpc1909014-2204:~/ros_ws/awf$ ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml model_name:=centerpoint_tiny model_path:=/home/hyt/autoware_data/lidar_centerpoint model_param_path:=$(ros2 pkg prefix lidar_centerpoint --share)/config/centerpoint_tiny.param.yaml build_only:=true
@@ -153,10 +150,10 @@ hyt@dpc1909014-2204:~/ros_ws/awf$ ros2 launch lidar_centerpoint lidar_centerpoin
 [ERROR] [lidar_centerpoint_node-1]: process has died [pid 3835028, exit code -6, cmd '/home/hyt/ros_ws/awf/install/lidar_centerpoint/lib/lidar_centerpoint/lidar_centerpoint_node --ros-args -r __node:=lidar_centerpoint --params-file /tmp/launch_params_60_o26mq --params-file /tmp/launch_params_79jodq9o --params-file /tmp/launch_params_spwl7uq2 --params-file /tmp/launch_params_ur_yt_y2 --params-file /tmp/launch_params_iqs0hf9o --params-file /tmp/launch_params_t6bo4aow --params-file /tmp/launch_params_ufdn98_7 --params-file /tmp/launch_params_7m7aj130 --params-file /tmp/launch_params_yr4emr64 --params-file /tmp/launch_params_u4_e0ngh --params-file /home/hyt/ros_ws/awf/install/lidar_centerpoint/share/lidar_centerpoint/config/centerpoint_tiny.param.yaml --params-file /home/hyt/ros_ws/awf/install/lidar_centerpoint/share/lidar_centerpoint/config/detection_class_remapper.param.yaml -r ~/input/pointcloud:=/sensing/lidar/pointcloud -r ~/output/objects:=objects'].
 ```
 
-### 修正方法、確認箇所1-3
+### Correction method, Check area 1-3
 
-cudaErrorInvalidDevice: invalid device ordinalが出てないか確認する。
-出ていたら、nvidia-driver, cuda, cuDNN, TensorRTを再インストールする。
+Check to see if `cudaErrorInvalidDevice: invalid device ordinal` is not showing.
+If so, reinstall nvidia-driver, cuda, cuDNN, and TensorRT.
 
 ```shell
 sudo apt-mark unhold cuda-*
@@ -172,13 +169,13 @@ sudo apt purge libnv*
 # install nvidia driver and run Autoware's setup-dev-env.sh
 ```
 
-### 原因2
+### Cause 2
 
-Autowareから評価対象のtopicが出力されているがノードがsubscribeできない。
+Autoware is outputting the topic to be evaluated, but the node cannot subscribe.
 
-### 例2-1
+### Example 2-1
 
-QoSの不一致で取得できていない
+Not obtained due to QoS mismatch
 
 ```shell
 [component_container_mt-13] [WARN 1633081042.510824100] [localization.util.random_downsample_filter]: New subscription discovered on topic '/localization/util/downsample/pointcloud', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
@@ -186,19 +183,19 @@ QoSの不一致で取得できていない
 [component_container_mt-19] [WARN 1633081042.597116410] [sensing.lidar.concatenate_data]: New subscription discovered on topic '/sensing/lidar/concatenated/pointcloud', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY_QOS_POLICY
 ```
 
-### 修正方法、確認箇所2-1
+### Correction method, Check area 2-1
 
-起動したターミナルもしくは、console.logをQoSで検索する。
+Search for QoS in the terminal or console.log.
 
-Autowareのバージョンとdriving_log_replayerのバージョンが対応しているか確認する。
-Autoware Foundationのmainとdriving_log_replayerのmainを使用して、この問題が発生している場合、githubのissueで報告してください。
+Check that the version of Autoware and the version of driving_log_replayer are compatible.
+If you are experiencing this problem using Autoware Foundation main and driving_log_replayer main, please report it in a github issue.
 
-### 例2-2
+### Example 2-2
 
-メッセージ型の不一致で取得できていない。
-Autowareが出力する型がdriving_log_replayerが期待している型と異なっているために発生する。
+Not retrieved due to message type mismatch.
+This occurs because the type output by Autoware is different from the type expected by driving_log_replayer.
 
-2024年6月にautoware_auto_msgからautoware_msgに変更された。これによって、autowareのバージョンとdriving_log_replayerのバージョンが対応していないとこのメッセージがでる。
+In June 2024, autoware_auto_msg was changed to autoware_msg. As a result, if the version of autoware and the version of driving_log_replayer do not correspond, this message will appear.
 
 ```shell
 [ros2-67] [ERROR] [1717610261.542314281] [ROSBAG2_TRANSPORT]: Topic '/perception/object_recognition/tracking/objects' has more than one type associated. Only topics with one type are supported
@@ -209,20 +206,20 @@ Autowareが出力する型がdriving_log_replayerが期待している型と異�
 [ros2-67] [ERROR] [1717610262.442275790] [ROSBAG2_TRANSPORT]: Topic '/perception/object_recognition/tracking/objects' has more than one type associated. Only topics with one type are supported
 ```
 
-### 修正方法、確認箇所2-2
+### Correction method, Check area 2-2
 
-大きな機能変更がある場合、driving_log_replayerのReleaseNotes.mdにAutowareの必要な機能(PR番号等)が記載してある。
-利用するAutowareに必要な機能が入っているか確認する。
+If there are major functionality changes, the required Autoware features (PR numbers, etc.) are listed in driving_log_replayer's ReleaseNotes.md.
+Check if the required functions are included in the Autoware you are using.
 
-Autoware Foundationのmainとdriving_log_replayerのmainを使用して、この問題が発生している場合、githubのissueで報告してください。
+If you are using Autoware Foundation's main and driving_log_replayer's main and are experiencing this issue, please report it in an issue on github.
 
-## 評価数が異常に少ない
+## Unusually low number of evalautions
 
-### 原因1
+### Cause 1
 
-PCの性能不足でAutowareが所定の周期(点群なら10Hz)でtopicをpublish出来ていない。
+Due to insufficient PC performance, Autoware is not able to publish the topic at the required period (10 Hz for point clouds).
 
-### 例1
+### Example 1
 
 ```shell
 ❯ ros2 topic hz /perception/obstacle_segmentation/pointcloud
@@ -233,23 +230,23 @@ average rate: 5.333
  min: 0.109s max: 0.214s std dev: 0.02783s window: 12
 ```
 
-### 修正方法、確認箇所1
+### Correction method, Check area1
 
-対象のtopicが期待通りの周期で出力されているかros2 topic hzで確認する。
-play_rateが0.5であれば10*0.5=5で正常であることに注意。
+Check with ros2 topic hz to see if the target topic is being output at the expected period.
+Note that if play_rate is 0.5, 10*0.5=5, which is normal.
 
-出ていない場合は、dlr simulaiton run のplay_rate引数を低くする
+If not, lower the play_rate argument in dlr simulaiton run
 
 ```shell
 dlr simulation run -p perception -l play_rate:=0.2
 ```
 
-### 原因2
+### Cause 2
 
-topicがsimulation開始時点では出てこずに、simulationの終わり頃にようやく出てくる。
-事前にml modelをengineに変換していない場合、simulation実行時にengine変換が始まり、engine変換が終わったあとにtopicが出てくる。
+The topic does not appear at the beginning of the simulation, but appears at the end of the simulation.
+If the ml model has not been converted to an engine in advance, the engine conversion starts when the simulation is executed, and the topic appears after the engine conversion is finished.
 
-### 例2
+### Example2
 
 ```shell
 [component_container_mt-52] [I] [TRT] [MemUsageChange] Init builder kernel library: CPU +894, GPU +174, now: CPU 1009, GPU 852 (MiB)
@@ -268,31 +265,31 @@ topicがsimulation開始時点では出てこずに、simulationの終わり頃�
 [component_container_mt-52] [I] [TRT] Applying optimizations and building TRT CUDA engine. Please wait for a few minutes...
 ```
 
-### 修正方法、確認箇所2
+### Correction method, Check area 2
 
-実行したターミナルまたはconsole.logに例に示したようなログが出力されているか確認する。
-出ている場合は、driving_Log_replayerで評価を行う前に事前にonnxからengineの変換を行う。
+Check if the terminal or console.log outputs a log like the one shown in the example.
+If so, convert the engine file from onnx in advance before evaluation by driving_Log_replayer.
 
-logging_simulator.launch.xmlをpercepiton:=trueで起動してしばらく放置する。
-または、モデルだけビルドするlaunchを起動する。
+Start logging_simulator.launch.xml with “permission:=true” and leave it for a while.
+Or, launch a launch that builds only models.
 
 ```shell
-# 起動してしばらく放置する
+# Start logging_simulator.launch.xml and leave it for a while.
 ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
 
-# lidar_centerpoint を build_onlyでlaunchを起動
+# launch lidar_centerpoint with build_only option
 ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml model_name:=centerpoint_tiny model_path:=$HOME/autoware_data/lidar_centerpoint model_param_path:=$(ros2 pkg prefix lidar_centerpoint --share)/config/centerpoint_tiny.param.yaml build_only:=true
 ```
 
-## 終了しない、途中で終了する
+## Not terminating or terminating in the middle of the process
 
-### 原因
+### Cause
 
-意図しない入力データなどにより例外が発生して、ノードが止まる。または終了する。
+An exception occurs due to unintended input data, etc., and the node stops. or terminate.
 
-### 例
+### Example
 
-perceptionのobjectの中身が想定した通りになっておらずに例外が出力された。
+The contents of the object in PERCEPTION were not as expected and an exception was output.
 
 ```shell
 [perception_evaluator_node.py-115] [ERROR] [1711460672.978143229] [driving_log_replayer.perception_evaluator]: Unexpected footprint length: len(perception_object.shape.footprint.points)=2
@@ -333,6 +330,6 @@ perceptionのobjectの中身が想定した通りになっておらずに例外�
 [perception_evaluator_node.py-115] The following exception was never retrieved: Expected BOUNDING_BOX, but got polygon, which should have footprint.
 ```
 
-### 修正方法、確認箇所
+### Correction method, Check area
 
-起動したターミナルか、console.logをevalutorの文字列で検索して、例のように例外が出力されていないか確認する。
+Search the terminal you started or console.log for the string of `evalutor` to see if an exception is output as shown in the example.
