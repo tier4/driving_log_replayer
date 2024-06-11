@@ -147,7 +147,7 @@ hyt@dpc1909014-2204:~/ros_ws/awf$ ros2 launch lidar_centerpoint lidar_centerpoin
 [INFO] [lidar_centerpoint_node-1]: process started with pid [3835028]
 [lidar_centerpoint_node-1] 1705901764.307868 [77] lidar_cent: determined enp4s0 (udp/10.0.53.59) as highest quality interface, selected for automatic interface.
 [lidar_centerpoint_node-1] terminate called after throwing an instance of 'thrust::system::system_error'
-[lidar_centerpoint_node-1]   what():  This program was not compiled for SM 75  
+[lidar_centerpoint_node-1]   what():  This program was not compiled for SM 75
 [lidar_centerpoint_node-1] : cudaErrorInvalidDevice: invalid device ordinal
 [ERROR] [lidar_centerpoint_node-1]: process has died [pid 3835028, exit code -6, cmd '/home/hyt/ros_ws/awf/install/lidar_centerpoint/lib/lidar_centerpoint/lidar_centerpoint_node --ros-args -r __node:=lidar_centerpoint --params-file /tmp/launch_params_60_o26mq --params-file /tmp/launch_params_79jodq9o --params-file /tmp/launch_params_spwl7uq2 --params-file /tmp/launch_params_ur_yt_y2 --params-file /tmp/launch_params_iqs0hf9o --params-file /tmp/launch_params_t6bo4aow --params-file /tmp/launch_params_ufdn98_7 --params-file /tmp/launch_params_7m7aj130 --params-file /tmp/launch_params_yr4emr64 --params-file /tmp/launch_params_u4_e0ngh --params-file /home/hyt/ros_ws/awf/install/lidar_centerpoint/share/lidar_centerpoint/config/centerpoint_tiny.param.yaml --params-file /home/hyt/ros_ws/awf/install/lidar_centerpoint/share/lidar_centerpoint/config/detection_class_remapper.param.yaml -r ~/input/pointcloud:=/sensing/lidar/pointcloud -r ~/output/objects:=objects'].
 ```
@@ -190,7 +190,7 @@ QoSの不一致で取得できていない
 起動したターミナルもしくは、console.logをQoSで検索する。
 厄介なことにこれはシステム的にはERRORではなくWARNINGであるため、ERRORで検索しても引っかからないので見逃しがちである。
 
-Autowareのバージョンとdriving_log_replayerのバージョンが対応しているか確認してください。
+Autowareのバージョンとdriving_log_replayerのバージョンが対応しているか確認する。
 Autoware Foundationのmainとdriving_log_replayerのmainを使用して、この問題が発生している場合、Autowareの更新にdriving_log_replayerが追従できていないので、issueで報告してください。
 
 ### 例2-2
@@ -218,49 +218,123 @@ Autoware Foundationのmainとdriving_log_replayerのmainを使用して、この
 
 ## 評価数が異常に少ない
 
-PCの性能不足でAutowareが出力するtopic数が少ない
-PCの性能不足でsubscriberがcallbackを処理仕切る前に次のtopicが来て、topicが捨てられる
-事前にml modelをengineに変換していない場合
+### 原因1
 
-## 終了しない
+PCの性能不足でAutowareが所定の周期(点群なら10Hz)でtopicをpublish出来ていない。
 
-rosbag playは終了しているのに、ずっとrvizはでっぱなし。コンソールのログからも動いてるように見えない。
-途中で実行時エラーでノードが死んでいる可能性がある。ノードが正常に動作していないと
-input_bagのパスの指定ミスでbag playが実行できずにずっと止まる
-
-## 途中で終了する
-
-終了しない場合と同様で途中で実行時エラーでノードが死んでいる。
-
-
-### console.log
-
-コンソールに表示されているログを保存したもの
-エラーが発生していないかを確認する
-
-
-rosのlogging機能を使って出力されているので、以下のような形式で出力されている。
+### 例1
 
 ```shell
-[重大度] [時刻] [ロガー名]: メッセージ
+❯ ros2 topic hz /perception/obstacle_segmentation/pointcloud
+1718083964.779455 [77]       ros2: determined eno1 (udp/10.0.55.137) as highest quality interface, selected for automatic interface.
+average rate: 5.619
+ min: 0.109s max: 0.207s std dev: 0.03246s window: 7
+average rate: 5.333
+ min: 0.109s max: 0.214s std dev: 0.02783s window: 12
 ```
 
-ローカル環境で.bashrcにRCUTILS_CONSOLE_OUTPUT_FORMATを設定している場合は、設定したformatになる。
+### 修正方法、確認箇所1
 
-===== evaluatorで検索する
-logsimの評価ノードは、「ユースケース名_evaluator_node」という名前になっている。
-なので、logsimの評価ノードが出しているメッセージを抽出するにはevaluatorという文字を検索すると該当のメッセージを見つけることが出来る。
+対象のtopicが期待通りの周期で出力されているかros2 topic hzで確認する。
+例では5Hz程度になっているが、play_rateが0.5であれば10\*0.5=5で正常であることに注意。
 
-link:./sample/debug/logsim_runtime_error.log[実行時エラーになる例]
-をevaluatorで検索すると、obstacle_detection_evaluator_nodeがjsonのparseに失敗しており、obstacle_detection_evaluator_nodeが死んでlaunchが終了していることがわかる。
+rate 1.0時の想定レート \* play_rateが期待通りかどうかを調べる。
+
+出ていない場合は、実行時のplay_rate引数でbag playのrateを変更できるので、rateを低くしてみる。
 
 ```shell
-[obstacle_detection_evaluator_node-38] [ERROR] [1640228106.306940806] [logsim.obstacle_detection_evaluator]: detection parse error
-・・・
-[ERROR] [obstacle_detection_evaluator_node-38]: process has died [pid 486, exit code 1, cmd '/home/autoware/autoware.proj/install/logsim/lib/logsim/obstacle_detection_evaluator_node --ros-args -r __node:=obstacle_detection_evaluator -r __ns:=/logsim --params-file /tmp/launch_params_i_9h9mk1 --params-file /tmp/launch_params_mq4cddau'].
-[INFO] [launch.user]: shutdown launch
+dlr simulation run -p perception -l play_rate:=0.2
 ```
 
-よって、parse errorになった原因であるdetections.jsonを直す必要があるということがわかる。
+### 原因2
 
-ここでtopicが記録されていなかったら、Autowareが出力していないか、QoSの不一致で捨てられている
+topicがsimulation開始時点では出てこずに、simulationの終わり頃にようやく出てくる。
+事前にml modelをengineに変換していない場合、simulation実行時にengine変換が始まり、engine変換が終わったあとにtopicが出てくる。
+
+### 例2
+
+```shell
+[component_container_mt-52] [I] [TRT] [MemUsageChange] Init builder kernel library: CPU +894, GPU +174, now: CPU 1009, GPU 852 (MiB)
+[component_container_mt-52] [I] [TRT] ----------------------------------------------------------------
+[component_container_mt-52] [I] [TRT] Input filename:   /home/autoware/autoware_data/traffic_light_classifier/traffic_light_classifier_mobilenetv2_batch_6.onnx
+[component_container_mt-52] [I] [TRT] ONNX IR version:  0.0.8
+[component_container_mt-52] [I] [TRT] Opset version:    11
+[component_container_mt-52] [I] [TRT] Producer name:    pytorch
+[component_container_mt-52] [I] [TRT] Producer version: 1.13.1
+[component_container_mt-52] [I] [TRT] Domain:
+[component_container_mt-52] [I] [TRT] Model version:    0
+[component_container_mt-52] [I] [TRT] Doc string:
+[component_container_mt-52] [I] [TRT] ----------------------------------------------------------------
+[component_container_mt-52] [I] [TRT] [MemUsageChange] Init CUDA: CPU +0, GPU +0, now: CPU 116, GPU 678 (MiB)
+
+[component_container_mt-52] [I] [TRT] Applying optimizations and building TRT CUDA engine. Please wait for a few minutes...
+```
+
+### 修正方法、確認箇所2
+
+実行したターミナルまたはconsole.logに例に示したようなログが出力されていて、simulation実行時にonnxからengineファイルの生成が行わているか確認する。
+出ている場合は、driving_Log_replayerで評価を行う前に事前にonnxからengineの変換を行う。
+
+logging_simulator.launch.xmlをpercepiton:=trueで起動してしばらく放置する。
+または、モデルだけビルドするlaunchを起動する。
+
+```shell
+# 起動してしばらく放置する
+ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
+
+# lidar_centerpoint を build_onlyでlaunchを起動
+ros2 launch lidar_centerpoint lidar_centerpoint.launch.xml model_name:=centerpoint_tiny model_path:=$HOME/autoware_data/lidar_centerpoint model_param_path:=$(ros2 pkg prefix lidar_centerpoint --share)/config/centerpoint_tiny.param.yaml build_only:=true
+```
+
+## 終了しない、途中で終了する
+
+### 原因
+
+意図しない入力データなどにより例外が発生して、ノードが止まる。または終了する。
+
+### 例
+
+perceptionのobjectの中身が想定した通りになっておらずに例外が出力された。
+
+```shell
+[perception_evaluator_node.py-115] [ERROR] [1711460672.978143229] [driving_log_replayer.perception_evaluator]: Unexpected footprint length: len(perception_object.shape.footprint.points)=2
+[perception_evaluator_node.py-115] Exception in thread Thread-2 (run_func):
+[perception_evaluator_node.py-115] Traceback (most recent call last):
+[perception_evaluator_node.py-115]   File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+[perception_evaluator_node.py-115]     self.run()
+[perception_evaluator_node.py-115]   File "/usr/lib/python3.10/threading.py", line 953, in run
+[perception_evaluator_node.py-115]     self._target(*self._args, **self._kwargs)
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/lib/python3.10/site-packages/tf2_ros/transform_listener.py", line 95, in run_func
+[perception_evaluator_node.py-115]     self.executor.spin()
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 294, in spin
+[perception_evaluator_node.py-115]     self.spin_once()
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 739, in spin_once
+[perception_evaluator_node.py-115]     self._spin_once_impl(timeout_sec)
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 728, in _spin_once_impl
+[perception_evaluator_node.py-115]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 711, in wait_for_ready_callbacks
+[perception_evaluator_node.py-115]     return next(self._cb_iter)
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 612, in _wait_for_ready_callbacks
+[perception_evaluator_node.py-115]     raise ExternalShutdownException()
+[perception_evaluator_node.py-115] rclpy.executors.ExternalShutdownException
+[ros2-117] [INFO] [1711460673.168213400] [rosbag2_recorder]: Subscribed to topic '/driving_log_replayer/marker/results'
+[ros2-117] [INFO] [1711460673.174638594] [rosbag2_recorder]: Subscribed to topic '/driving_log_replayer/marker/ground_truth'
+[simple_object_merger_node-69] [INFO] [1711460673.191825620] [sensing.radar.simple_object_merger]: waiting for object msg...
+[perception_evaluator_node.py-115] Traceback (most recent call last):
+[perception_evaluator_node.py-115]   File "/home/autoware/autoware.proj/install/driving_log_replayer/lib/driving_log_replayer/perception_evaluator_node.py", line 336, in <module>
+[perception_evaluator_node.py-115]     main()
+[perception_evaluator_node.py-115]   File "/home/autoware/autoware.proj/install/driving_log_replayer/local/lib/python3.10/dist-packages/driving_log_replayer/evaluator.py", line 448, in wrapper
+[perception_evaluator_node.py-115]     rclpy.shutdown()
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 126, in shutdown
+[perception_evaluator_node.py-115]     _shutdown(context=context)
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[perception_evaluator_node.py-115]     return context.shutdown()
+[perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 100, in shutdown
+[perception_evaluator_node.py-115]     raise RuntimeError('Context must be initialized before it can be shutdown')
+[perception_evaluator_node.py-115] RuntimeError: Context must be initialized before it can be shutdown
+[perception_evaluator_node.py-115] The following exception was never retrieved: Expected BOUNDING_BOX, but got polygon, which should have footprint.
+```
+
+### 修正方法、確認箇所
+
+起動したターミナルか、console.logをevalutorの文字列で検索して、例のように例外が出力されていないか確認する。
