@@ -13,14 +13,14 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+from typing import Literal
 
 from pydantic import BaseModel
-from typing import Literal
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import Scenario
 from driving_log_replayer.scenario import number
+from driving_log_replayer.scenario import Scenario
 from driving_log_replayer_msgs.msg import GroundSegmentationEvalResult
 
 
@@ -45,7 +45,7 @@ class GroundSegmentation(EvaluationItem):
     name: str = "Ground Segmentation"
 
     def set_frame(self, msg: GroundSegmentationEvalResult) -> dict:
-        self.condition : Condition
+        self.condition: Condition
         self.total += 1
 
         frame_success = self.condition.accuracy_min <= msg.accuracy <= self.condition.accuracy_max
@@ -74,7 +74,7 @@ class GroundSegmentation(EvaluationItem):
                     "Specificity": msg.specificity,
                     "F1-score": msg.f1_score,
                 },
-            }
+            },
         }
 
 

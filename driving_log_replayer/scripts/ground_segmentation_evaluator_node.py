@@ -14,23 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+from pathlib import Path
+
+import numpy as np
+from rclpy.qos import qos_profile_sensor_data
+import ros2_numpy
+from scipy.spatial import cKDTree
+from sensor_msgs.msg import PointCloud2
+
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.ground_segmentation import GroundSegmentationResult
 from driving_log_replayer.ground_segmentation import GroundSegmentationScenario
 import driving_log_replayer.perception_eval_conversions as eval_conversions
-
 from driving_log_replayer_msgs.msg import GroundSegmentationEvalResult
-from sensor_msgs.msg import PointCloud2
-from rclpy.qos import qos_profile_sensor_data
-
-import ros2_numpy
-import numpy as np
-
-import json
-from pathlib import Path
-
-from scipy.spatial import cKDTree
 
 
 class GroundSegmentationEvaluator(DLREvaluator):

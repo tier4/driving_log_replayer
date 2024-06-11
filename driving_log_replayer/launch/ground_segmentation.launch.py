@@ -14,6 +14,7 @@
 
 import launch
 from launch.substitutions import LaunchConfiguration
+
 import driving_log_replayer.launch_common as cmn
 
 RECORD_TOPIC_REGEX = """^/clock$\
@@ -52,5 +53,5 @@ def generate_launch_description() -> launch.LaunchDescription:
             player,
             recorder,
             recorder_override,
-        ]
+        ],
     )
