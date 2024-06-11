@@ -97,7 +97,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
         tp = tp_fn - fn
         fp = fp_tn - tn
 
-        self._logger.info(f"TP {tp}, FP {fp}, TN {tn}, FN {fn}")
+        self.get_logger().info(f"TP {tp}, FP {fp}, TN {tn}, FN {fn}")
 
         metrics_list = self.__compute_metrics(tp, fp, tn, fn)
 
