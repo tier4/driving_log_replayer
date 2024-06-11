@@ -213,7 +213,7 @@ Check if the required functions are included in the Autoware you are using.
 
 If you are using Autoware Foundation's main and driving_log_replayer's main and are experiencing this issue, please report it in an issue on github.
 
-## Unusually low number of evalautions
+## Unusually low number of evaluations
 
 ### Cause 1
 
@@ -233,9 +233,9 @@ average rate: 5.333
 ### Correction method, Check area1
 
 Check with ros2 topic hz to see if the target topic is being output at the expected period.
-Note that if play_rate is 0.5, 10*0.5=5, which is normal.
+Note that if play_rate is 0.5, 10\*0.5=5, which is normal.
 
-If not, lower the play_rate argument in dlr simulaiton run
+If not, lower the play_rate argument in dlr simulation run
 
 ```shell
 dlr simulation run -p perception -l play_rate:=0.2
@@ -332,4 +332,4 @@ The contents of the object in PERCEPTION were not as expected and an exception w
 
 ### Correction method, Check area
 
-Search the terminal you started or console.log for the string of `evalutor` to see if an exception is output as shown in the example.
+Search the terminal you started or console.log for the string of `evaluator` to see if an exception is output as shown in the example.

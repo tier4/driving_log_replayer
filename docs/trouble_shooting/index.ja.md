@@ -236,9 +236,9 @@ average rate: 5.333
 ### 修正方法、確認箇所1
 
 対象のtopicが期待通りの周期で出力されているかros2 topic hzで確認する。
-play_rateが0.5であれば10*0.5=5で正常であることに注意。
+play_rateが0.5であれば10\*0.5=5で正常であることに注意。
 
-出ていない場合は、dlr simulaiton run のplay_rate引数を低くする
+出ていない場合は、dlr simulation run のplay_rate引数を低くする
 
 ```shell
 dlr simulation run -p perception -l play_rate:=0.2
@@ -273,7 +273,7 @@ topicがsimulation開始時点では出てこずに、simulationの終わり頃�
 実行したターミナルまたはconsole.logに例に示したようなログが出力されているか確認する。
 出ている場合は、driving_Log_replayerで評価を行う前に事前にonnxからengineの変換を行う。
 
-logging_simulator.launch.xmlをpercepiton:=trueで起動してしばらく放置する。
+logging_simulator.launch.xmlをperception:=trueで起動してしばらく放置する。
 または、モデルだけビルドするlaunchを起動する。
 
 ```shell
@@ -335,4 +335,4 @@ perceptionのobjectの中身が想定した通りになっておらずに例外�
 
 ### 修正方法、確認箇所
 
-起動したターミナルか、console.logをevalutorの文字列で検索して、例のように例外が出力されていないか確認する。
+起動したターミナルか、console.logをevaluatorの文字列で検索して、例のように例外が出力されていないか確認する。

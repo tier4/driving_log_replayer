@@ -126,7 +126,7 @@ output_direcotry
 │       ├── console.log                     // ターミナルに出力されているログ
 │       ├── run.bash                        // シミュレーション実行コマンド
 │       ├── DATASET01
-│       │   ├── perception_eval_log        // percepiton_evalのログ
+│       │   ├── perception_eval_log        // perception_evalのログ
 │       │   │   ...
 │       │   ├── result.jsonl               // 変換元結果ファイル
 │       │   ├── result_archive             // json以外の評価結果を出力するディレクトリ
