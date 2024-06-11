@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* docs: add trouble shooting
+* Contributors: Hayato Mizushima
+
 2.0.4 (2024-06-10)
 ------------------
 * feat: add a criteria of yaw error (`#450 <https://github.com/tier4/driving_log_replayer/issues/450>`_)
