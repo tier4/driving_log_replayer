@@ -12,11 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from builtin_interfaces.msg import Time
+import json
+from pathlib import Path
+
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
+import jsonschema
 import numpy as np
 from perception_eval.common import ObjectType
 from perception_eval.common.object import DynamicObject
@@ -232,121 +237,6 @@ def summarize_pass_fail_result(pass_fail: PassFailResult) -> dict:
     }
 
 
-def object_to_description(obj: ObjectType | None) -> dict:
-    if obj is None:
-        return {}
-    return {
-        "label": obj.semantic_label.name,
-        "uuid": obj.uuid,
-        "position": obj.state.position,
-        "velocity": obj.state.velocity,
-        "orientation": obj.state.orientation.q.tolist(),  # quaternion to list
-    }
-
-
-def dynamic_object_result_to_error_description(obj: DynamicObjectWithPerceptionResult) -> dict:
-    pose_error = obj.distance_error_bev
-    heading_error = obj.heading_error
-    velocity_error = obj.velocity_error
-    return {
-        "pose_error": pose_error,
-        "heading_error": heading_error,
-        "velocity_error": velocity_error,
-    }
-
-
-def extract_pass_fail_objects_description(pass_fail: PassFailResult) -> list[dict]:
-    """
-    Extract detailed objects results from PassFailResult.
-
-    Args:
-    ----
-        pass_fail (PassFailResult): PassFailResult object
-
-    Returns:
-    -------
-        list[dict]: List of objects descriptions.
-        Each element is a dictionary with the following keys:
-            - "Objects"
-                - "status": "TP" | "FP" | "FN"
-                - "object_type": "GT" | "EST"
-                - "label": str
-                - "uuid": str
-                - "position": tuple[float, float, float]
-                - "velocity": tuple[float, float, float]
-                - "pose_error": optional[float]
-                - "heading_error": optional[float]
-                - "velocity_error": optional[float]
-                - "distance": float # distance between object center and ego vehicle
-                - "orientation": tuple[float, float, float, float]
-
-    """
-    ego2map_matrix = pass_fail.ego2map
-    has_map_to_base_link = ego2map_matrix is not None and len(ego2map_matrix) > 0
-
-    gt_descriptions = []
-    est_descriptions = []
-
-    # for TP objects
-    for tp_object in pass_fail.tp_object_results:
-        tp_gt = tp_object.ground_truth_object
-        tp_est = tp_object.estimated_object
-        gt_distance_bev = tp_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
-        est_distance_bev = tp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
-        error_description = dynamic_object_result_to_error_description(tp_object)
-        tp_description = object_to_description(tp_gt)
-        # GT object dict
-        gt_tp_description = {
-            "status": "TP",
-            "object_type": "GT",
-            "distance": gt_distance_bev,
-            **tp_description,
-            **error_description,
-        }
-        # Estimated object dict
-        est_tp_description = {
-            "status": "TP",
-            "object_type": "EST",
-            "distance": est_distance_bev,
-            **object_to_description(tp_est),
-            **error_description,
-        }
-        gt_descriptions.append(gt_tp_description)
-        est_descriptions.append(est_tp_description)
-
-    # for FP objects
-    for fp_object in pass_fail.fp_object_results:
-        fp_est = fp_object.estimated_object
-        est_distance_bev = fp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
-        error_description = dynamic_object_result_to_error_description(fp_object)
-        fp_description = object_to_description(fp_est)
-        # Estimated object dict
-        est_fp_description = {
-            "status": "FP",
-            "object_type": "EST",
-            "distance": est_distance_bev,
-            **fp_description,
-            **error_description,
-        }
-        est_descriptions.append(est_fp_description)
-
-    # for FN objects
-    for fn_object in pass_fail.fn_objects:
-        fn_gt = fn_object
-        gt_distance_bev = fn_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
-        fn_description = object_to_description(fn_gt)
-        # GT object dict
-        gt_fn_description = {
-            "status": "FN",
-            "object_type": "GT",
-            "distance": gt_distance_bev,
-            **fn_description,
-        }
-        gt_descriptions.append(gt_fn_description)
-
-    return gt_descriptions + est_descriptions
-
-
 def result_label_list(results: list[DynamicObjectWithPerceptionResult]) -> str:
     rtn_str = "["
     for i, result in enumerate(results):
@@ -366,3 +256,178 @@ def object_label_list(objects: list[ObjectType]) -> str:
         rtn_str += obj.semantic_label.name
     rtn_str += "]"
     return rtn_str
+
+
+# utils for writing each perception frame result to a file
+class FrameDescriptionWriter:
+    schema: dict = None
+
+    @classmethod
+    def load_schema(cls) -> None:
+        if cls.schema is None:
+            schema_file_path = Path(__file__).parent.parent / "config" / "object_output_schema.json"
+            with schema_file_path.open() as file:
+                cls.schema = json.load(file)
+
+    @classmethod
+    def is_object_structure_valid(cls, objdata: dict | None) -> bool:
+        cls.load_schema()
+        try:
+            jsonschema.validate(objdata, cls.schema)
+        except jsonschema.exceptions.ValidationError:
+            return False
+        return True
+
+    @staticmethod
+    def object_to_description(obj: ObjectType | None) -> dict:
+        if obj is None:
+            return {}
+        return {
+            "label": obj.semantic_label.name,
+            "uuid": obj.uuid,
+            "position": obj.state.position,
+            "velocity": obj.state.velocity,
+            "orientation": obj.state.orientation.q.tolist(),  # quaternion to list
+        }
+
+    @staticmethod
+    def dynamic_object_result_to_error_description(obj: DynamicObjectWithPerceptionResult) -> dict:
+        pose_error = obj.distance_error_bev
+        heading_error = obj.heading_error
+        velocity_error = obj.velocity_error
+        return {
+            "pose_error": pose_error,
+            "heading_error": heading_error,
+            "velocity_error": velocity_error,
+        }
+
+    @staticmethod
+    def object_to_covariance_description(obj: ObjectType | None) -> dict:
+        if obj is None:
+            return {
+                "pose_covariance": [],
+                "twist_covariance": [],
+            }
+        # TODO
+        # wait for covariance calculation implementation
+        pose_covariance = []
+        twist_covariance = []
+        return {
+            "pose_covariance": pose_covariance,
+            "twist_covariance": twist_covariance,
+        }
+
+    @staticmethod
+    def extract_pass_fail_objects_description(pass_fail: PassFailResult) -> list[dict]:
+        """
+        Extract detailed objects results from PassFailResult.
+
+        Args:
+        ----
+            pass_fail (PassFailResult): PassFailResult object
+
+        Returns: see json schema in config/object_output_schema.json
+        -------
+            list[dict]: List of objects descriptions.
+            Each element is a dictionary with the following keys:
+                - "Objects"
+                    - "status": "TP" | "FP" | "FN"
+                    - "object_type": "GT" | "EST"
+                    - "label": str
+                    - "uuid": str
+                    - "position": tuple[float, float, float]
+                    - "velocity": tuple[float, float, float]
+                    - "pose_error": optional[float]
+                    - "heading_error": optional[float]
+                    - "velocity_error": optional[float]
+                    - "distance": float # distance between object center and ego vehicle
+                    - "orientation": tuple[float, float, float, float]
+                    - "pose_covariance": optional[list[float]]
+                    - "twist_covariance": optional[list[float]]
+
+        """
+        ego2map_matrix = pass_fail.ego2map
+        has_map_to_base_link = ego2map_matrix is not None and len(ego2map_matrix) > 0
+
+        gt_descriptions = []
+        est_descriptions = []
+
+        # for TP objects
+        for tp_object in pass_fail.tp_object_results:
+            tp_gt = tp_object.ground_truth_object
+            tp_est = tp_object.estimated_object
+            gt_distance_bev = (
+                tp_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
+            est_distance_bev = (
+                tp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
+            error_description = FrameDescriptionWriter.dynamic_object_result_to_error_description(
+                tp_object,
+            )
+            tp_description = FrameDescriptionWriter.object_to_description(tp_gt)
+            cov_description = FrameDescriptionWriter.object_to_covariance_description(tp_est)
+            # GT object dict
+            gt_tp_description = {
+                "status": "TP",
+                "object_type": "GT",
+                "distance": gt_distance_bev,
+                **tp_description,
+                **error_description,
+                **FrameDescriptionWriter.object_to_covariance_description(
+                    tp_gt,
+                ),  # Assume gt has no covariance
+            }
+            # Estimated object dict
+            est_tp_description = {
+                "status": "TP",
+                "object_type": "EST",
+                "distance": est_distance_bev,
+                **FrameDescriptionWriter.object_to_description(tp_est),
+                **cov_description,
+            }
+            gt_descriptions.append(gt_tp_description)
+            est_descriptions.append(est_tp_description)
+
+        # for FP objects
+        for fp_object in pass_fail.fp_object_results:
+            fp_est = fp_object.estimated_object
+            est_distance_bev = (
+                fp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
+            error_description = FrameDescriptionWriter.dynamic_object_result_to_error_description(
+                fp_object,
+            )
+            fp_description = FrameDescriptionWriter.object_to_description(fp_est)
+            cov_description = FrameDescriptionWriter.object_to_covariance_description(fp_est)
+            # Estimated object dict
+            est_fp_description = {
+                "status": "FP",
+                "object_type": "EST",
+                "distance": est_distance_bev,
+                **fp_description,
+                **error_description,
+                **cov_description,
+            }
+            est_descriptions.append(est_fp_description)
+
+        # for FN objects
+        for fn_object in pass_fail.fn_objects:
+            fn_gt = fn_object
+            gt_distance_bev = (
+                fn_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
+            fn_description = FrameDescriptionWriter.object_to_description(fn_gt)
+            # GT object dict
+            gt_fn_description = {
+                "status": "FN",
+                "object_type": "GT",
+                "distance": gt_distance_bev,
+                **fn_description,
+                **FrameDescriptionWriter.object_to_covariance_description(
+                    fn_gt,
+                ),  # Assume gt has no covariance
+            }
+            gt_descriptions.append(gt_fn_description)
+
+        return gt_descriptions + est_descriptions

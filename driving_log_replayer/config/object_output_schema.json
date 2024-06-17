@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "Objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["TP", "FP", "FN"]
+          },
+          "object_type": {
+            "type": "string",
+            "enum": ["GT", "EST"]
+          },
+          "label": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "position": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "velocity": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "pose_error": {
+            "type": ["number", "null"]
+          },
+          "heading_error": {
+            "type": ["number", "null"]
+          },
+          "velocity_error": {
+            "type": ["number", "null"]
+          },
+          "distance": {
+            "type": "number"
+          },
+          "orientation": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 4,
+            "maxItems": 4
+          },
+          "pose_covariance": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "number"
+            }
+          },
+          "twist_covariance": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "object_type",
+          "label",
+          "uuid",
+          "position",
+          "velocity",
+          "distance",
+          "orientation"
+        ]
+      }
+    }
+  },
+  "required": ["Objects"]
+}
