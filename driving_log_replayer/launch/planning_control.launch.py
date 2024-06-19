@@ -22,7 +22,8 @@ import driving_log_replayer.launch_common as cmn
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
-|^/control/control_evaluator/metrics$\
+|^/diagnostic/control_evaluator/metrics$\
+|^/diagnostic/planning_evaluator/metrics$\
 """
 
 
@@ -30,7 +31,7 @@ def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
     launch_arguments.append(DeclareLaunchArgument("sensing", default_value="true"))
     autoware_launch = cmn.get_autoware_launch(
-        perception="false",
+        sensing=LaunchConfiguration("sensing"),
         localization="false",
         planning="true",
         control="true",
