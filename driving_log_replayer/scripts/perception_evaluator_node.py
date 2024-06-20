@@ -145,14 +145,22 @@ class PerceptionEvaluator(DLREvaluator):
             error_dict = {}
             analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
             analyzer.add(self.__evaluator.frame_results)
-            score_df, error_df = analyzer.analyze()
-            if score_df is not None:
-                score_dict = score_df.to_dict()
-            if error_df is not None:
+            result = analyzer.analyze()
+            if result.score is not None:
+                score_dict = result.score.to_dict()
+            if result.error is not None:
                 error_dict = (
-                    error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
+                    result.error.groupby(level=0)
+                    .apply(lambda df: df.xs(df.name).to_dict())
+                    .to_dict()
                 )
-            final_metrics = {"Score": score_dict, "Error": error_dict}
+            if result.confusion_matrix is not None:
+                conf_mat_dict = result.confusion_matrix.to_dict()
+            final_metrics = {
+                "Score": score_dict,
+                "Error": error_dict,
+                "ConfusionMatrix": conf_mat_dict,
+            }
             self._result.set_final_metrics(final_metrics)
             self._result_writer.write_result(self._result)
 
