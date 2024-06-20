@@ -271,7 +271,7 @@ class NumTP(CriteriaMethodImpl):
     def calculate_score(frame: PerceptionFrameResult) -> float:
         num_success: int = frame.pass_fail_result.get_num_success()
         num_objects: int = num_success + frame.pass_fail_result.get_num_fail()
-        return 100.0 * num_success / num_objects if num_objects != 0 else 0.0
+        return 100.0 * num_success / num_objects if num_objects != 0 else 100.0
 
     @property
     def is_error(self) -> bool:
