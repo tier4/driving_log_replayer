@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: apply `PerceptionAnalysisResult` (`#483 <https://github.com/tier4/driving_log_replayer/issues/483>`_)
+* fix: if there is no objects returns 100.0 (`#486 <https://github.com/tier4/driving_log_replayer/issues/486>`_)
+* Contributors: Kotaro Uetake
+
 2.0.5 (2024-06-11)
 ------------------
 * docs: add trouble shooting

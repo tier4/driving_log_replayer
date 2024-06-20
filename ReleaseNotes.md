@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 2.0.6
+
+Minor Tweak
+
+| Module       | Feature  | Brief summary                        | Pull request                                                   | Jira     | Contributor                             |
+| ------------ | -------- | ------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------- |
+| `perception` | analyzer | apply PerceptionAnalysisResult       | [#483](https://github.com/tier4/driving_log_replayer/pull/483) | RT1-6191 | [ktro2828](https://github.com/ktro2828) |
+| `perception` | criteria | if there is no objects returns 100.0 | [#486](https://github.com/tier4/driving_log_replayer/pull/486) | RT1-6191 | [ktro2828](https://github.com/ktro2828) |
+
 ## Version 2.0.5
 
 Documentation
