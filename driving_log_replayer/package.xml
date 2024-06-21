@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>driving_log_replayer</name>
-  <version>1.18.4</version>
+  <version>1.18.5</version>
   <description>The driving_log_replayer package</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
   <maintainer email="kotaro.uetake@tier4.jp">Kotaro Uetake</maintainer>
