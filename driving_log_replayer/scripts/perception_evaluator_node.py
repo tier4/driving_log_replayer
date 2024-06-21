@@ -143,6 +143,7 @@ class PerceptionEvaluator(DLREvaluator):
             self.get_final_result()
             score_dict = {}
             error_dict = {}
+            conf_mat_dict = {}
             analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
             analyzer.add(self.__evaluator.frame_results)
             result = analyzer.analyze()
