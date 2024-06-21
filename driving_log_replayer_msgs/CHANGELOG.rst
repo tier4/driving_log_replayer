@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.7 (2024-06-21)
+------------------
 * fix: avoid error that `conf_mat_dict` is referenced before assignment (`#490 <https://github.com/tier4/driving_log_replayer/issues/490>`_)
 * Contributors: Kotaro Uetake
 
