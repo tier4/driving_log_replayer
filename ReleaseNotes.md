@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 1.18.6
+
+Bug Fix
+
+| Module         | Feature        | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| -------------- | -------------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception`   | unit test      | update unit test             | [#494](https://github.com/tier4/driving_log_replayer/pull/494) | RT1-6191 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization` | error handling | check DiagnosticArray length | [#493](https://github.com/tier4/driving_log_replayer/pull/493) | RT1-6903 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 1.18.5
 
 Bug Fix
