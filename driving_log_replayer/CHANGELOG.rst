@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: check DiagnosticArray length (`#493 <https://github.com/tier4/driving_log_replayer/issues/493>`_)
+* fix: unit test (`#494 <https://github.com/tier4/driving_log_replayer/issues/494>`_)
+* Contributors: Hayato Mizushima
+
 1.18.5 (2024-06-21)
 -------------------
 * fix: avoid error that `conf_mat_dict` is referenced before assignment (`#490 <https://github.com/tier4/driving_log_replayer/issues/490>`_)
