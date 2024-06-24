@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.18.6 (2024-06-24)
+-------------------
 * fix: check DiagnosticArray length (`#493 <https://github.com/tier4/driving_log_replayer/issues/493>`_)
 * fix: unit test (`#494 <https://github.com/tier4/driving_log_replayer/issues/494>`_)
 * Contributors: Hayato Mizushima
