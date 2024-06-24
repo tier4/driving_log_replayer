@@ -126,7 +126,7 @@ def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
         0.5,
         Label(TrafficLightLabel.GREEN, "green"),
     )
-    return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None)
+    return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None, True)  # noqa
 
 
 def test_perception_fail_has_no_object(
