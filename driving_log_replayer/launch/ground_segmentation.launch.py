@@ -26,8 +26,9 @@ RECORD_TOPIC_REGEX = """^/clock$\
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
     autoware_launch = cmn.get_autoware_launch(
-        planning="false",
+        sensing="false",
         localization="false",
+        planning="false",
         control="false",
         scenario_simulation="true",
         perception_mode="lidar",
