@@ -126,7 +126,7 @@ output_direcotry
 │       ├── console.log                     // Log output to the terminal
 │       ├── run.bash                        // Simulation execution command
 │       ├── DATASET01
-│       │   ├── perception_eval_log        // Log files of percepiton_eval
+│       │   ├── perception_eval_log        // Log files of perception_eval
 │       │   │   ...
 │       │   ├── result.jsonl               // Original result file
 │       │   ├── result_archive             // Directory to output evaluation results other than json

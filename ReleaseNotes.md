@@ -1,5 +1,39 @@
 # Release Notes
 
+## Version 2.0.8
+
+Bug Fix
+
+| Module         | Feature        | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| -------------- | -------------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `perception`   | unit test      | update unit test             | [#494](https://github.com/tier4/driving_log_replayer/pull/494) | RT1-6191 | [hayato-m126](https://github.com/hayato-m126) |
+| `localization` | error handling | check DiagnosticArray length | [#493](https://github.com/tier4/driving_log_replayer/pull/493) | RT1-6903 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.0.7
+
+Bug Fix
+
+| Module       | Feature  | Brief summary                                                  | Pull request                                                   | Jira     | Contributor                             |
+| ------------ | -------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------- |
+| `perception` | analyzer | avoid error that conf_mat_dict is referenced before assignment | [#490](https://github.com/tier4/driving_log_replayer/pull/490) | RT1-6191 | [ktro2828](https://github.com/ktro2828) |
+
+## Version 2.0.6
+
+Minor Tweak
+
+| Module       | Feature  | Brief summary                        | Pull request                                                   | Jira     | Contributor                             |
+| ------------ | -------- | ------------------------------------ | -------------------------------------------------------------- | -------- | --------------------------------------- |
+| `perception` | analyzer | apply PerceptionAnalysisResult       | [#483](https://github.com/tier4/driving_log_replayer/pull/483) | RT1-6191 | [ktro2828](https://github.com/ktro2828) |
+| `perception` | criteria | if there is no objects returns 100.0 | [#486](https://github.com/tier4/driving_log_replayer/pull/486) | RT1-6191 | [ktro2828](https://github.com/ktro2828) |
+
+## Version 2.0.5
+
+Documentation
+
+| Module | Feature       | Brief summary             | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------- | ------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | documentation | add trouble shooting page | [#484](https://github.com/tier4/driving_log_replayer/pull/484) | RT4-9983 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.0.4
 
 Minor Tweak
