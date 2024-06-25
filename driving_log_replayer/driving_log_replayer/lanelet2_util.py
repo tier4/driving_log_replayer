@@ -16,8 +16,8 @@ from typing import Any
 
 import lanelet2
 from lanelet2.core import Lanelet
-from lanelet2_extension_python.projection import MGRSProjector
-from lanelet2_extension_python.utility import query
+from autoware_lanelet2_extension_python.projection import MGRSProjector
+from autoware_lanelet2_extension_python.utility import query
 from shapely.geometry import Polygon
 
 
@@ -32,7 +32,7 @@ def load_all_lanelets(map_path: str) -> Any:
 
 
 def road_lanelets_from_file(map_path: str) -> Any:
-    # return type lanelet2_extension_python._lanelet2_extension_python_boost_python_utility.lanelet::ConstLanelets
+    # return type autoware_lanelet2_extension_python._autoware_lanelet2_extension_python_boost_python_utility.lanelet::ConstLanelets
     return query.roadLanelets(load_all_lanelets(map_path))
 
 

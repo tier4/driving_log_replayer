@@ -35,7 +35,7 @@
   <depend>visualization_msgs</depend>
 
   <exec_depend>driving_log_replayer_analyzer</exec_depend>
-  <exec_depend>lanelet2_extension_python</exec_depend>
+  <exec_depend>autoware_lanelet2_extension_python</exec_depend>
   <exec_depend>perception_eval</exec_depend>
   <exec_depend>python-transforms3d-pip</exec_depend>
   <exec_depend>python3-pandas</exec_depend>
