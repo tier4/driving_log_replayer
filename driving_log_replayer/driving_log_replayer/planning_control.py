@@ -43,29 +43,44 @@ class StartEnd(BaseModel):
         return self
 
 
-class LowerUpper(BaseModel):
-    lower: float
-    upper: float
+class MinMax(BaseModel):
+    min: float | None = float_info.min
+    max: float | None = float_info.max
+
+    @model_validator(mode="after")
+    def validate_min_max(self) -> "MinMax":
+        err_msg = "max must be a greater number than min"
+
+        if self.max < self.min:
+            raise ValueError(err_msg)
+        return self
 
 
-class ValuesAfter0(BaseModel):
-    pos_x: LowerUpper
-    pos_y: LowerUpper
-    vel: LowerUpper | None = None
+class LaneInfo(BaseModel):
+    id: int
+    s: float
+    t: float
 
 
-class TimeRangeCondition(BaseModel):
-    TimeRange: StartEnd
-    Module: str
-    Value0Key: Literal["decision"]
-    Value0Value: Literal["none", "slow_down", "stop"]
-    DetailedConditions: ValuesAfter0 | None = None
+class KinematicCondition(BaseModel):
+    vel: MinMax
+    acc: MinMax
+    jerk: MinMax
+
+
+class PlanningControlCondition(BaseModel):
+    module: str
+    decision: str
+    start_lane_info: LaneInfo
+    end_lane_info: LaneInfo
+    condition_type: Literal["any_of", "all_of"]
+    DetailedConditions: KinematicCondition | None = None
 
 
 class Conditions(BaseModel):
     Hertz: float = Field(gt=0.0)
-    ControlConditions: list[TimeRangeCondition] = []
-    PlanningConditions: list[TimeRangeCondition] = []
+    ControlConditions: list[PlanningControlCondition] = []
+    PlanningConditions: list[PlanningControlCondition] = []
 
 
 class Evaluation(BaseModel):
