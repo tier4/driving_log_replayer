@@ -1,53 +1,34 @@
-# DLRに関係しないdiagnostic statusも存在しえる
-#   その中で、`decision` のkeyを持つ場合のみ今回DLRで検知したい
-#     `decision` keyのvalueとしてはnone/stop/slow_downのいずれか (選択肢は増える可能性あり)
-# その他に使用しうるkeyとしてはpos_x, pos_y, velがある
-# 同じモジュール (例えばcrosswalk) から2つ情報を出したいときはどうすればよい？
-# planningとcontrolをローカルで動かす
-#   シナリオファイル + Autowareで評価が決まる
-#   ルートはrosbagに入れる
+# pos_x, pos_yでなくてstart_s, start_t, end_s, end_tとするのは区間指定・重複対応のため。
+# s,tは求めづらいのでrvizで可視化できると良い。
 
-header:
-  stamp:
-    sec: 1649138857
-    nanosec: 813021790
-  frame_id: ''
-status:
-- level: "\0"
-  name: crosswalk_1
-  message: ''
-  hardware_id: ''
-  values:
+#----------
+# planning/control evaluator側
+# Decision
+name: aeb  # crosswalk, obstacle_cruise_planner....
   - key: decision
-    value: 'stop'
-  - key: pos_x
-    value: '123.456'
-  - key: pos_y
-    value: '456.789'
-- level: "\0"
-  name: crosswalk_2
-  message: ''
-  hardware_id: ''
-  values:
+    value: 'deceleration' #  'deceleration', 'none'
+
+name: crosswalk
   - key: decision
-    value: 'none'
-- level: "\0"
-  name: obstacle_cruise
-  message: ''
-  hardware_id: ''
-  values:
-  - key: decision
-    value: 'slow_down'
-  - key: pos_x
-    value: '123.456'
-  - key: pos_y
-    value: '456.789'
+    value: 'none' # 複数ある場合は一番近いの計算して送る
+
+name: ... # その他色んなモジュールがdecisionを出す。
+
+# 現在のvel, acc, jerkもだす
+# planning/control evaluatorどちらから出すべき
+name: kinematic_state # こっちは詳細条件で指定された場合に使うやつ
   - key: vel
-    value: '3.0'
-- level: "\0"
-  name: autonomous_emergency_braking
-  message: ''
-  hardware_id: ''
-  values:
-  - key: decision
-    value: 'stop'
+    value:
+  - key: acc
+    value:
+  - key: jerk
+    value:
+#----------
+
+name: lane_info # kinematicでないので分離するほうがいいかも？これがモジュールの条件判定に使われる。lanelet2_extension_pythonで計算できるならdriving_log_replayerで計算も可。sとtの計算はよくわからない。
+  - key: lane_id
+    value:
+  - key: s
+    value:
+  - key: t
+    value:

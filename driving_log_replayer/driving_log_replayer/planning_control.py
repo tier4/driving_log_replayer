@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from dataclasses import dataclass
+from dataclasses import field
 from math import floor
 from sys import float_info
 from typing import Literal
@@ -85,6 +86,8 @@ def float_stamp(stamp: Time) -> float:
 class Metrics(EvaluationItem):
     hz: float = 10.0
     rate: float = 0.95
+    lane_info_list: list = field(default_factory=list)
+    kinematic_state_list: list = field(default_factory=list)
 
     def set_frame(self, msg: DiagnosticArray) -> dict | None:
         self.condition: TimeRangeCondition

@@ -11,21 +11,68 @@ Evaluation:
   Conditions:
     Hertz: 10.0 # metricsが何Hzで来るか。 (現在時刻-評価開始時刻)* Hertz * AllowableRate(=0.95)以上条件に合致するtopicが出力される必要がある。低レートは弾かれる。AllowableRateは一旦固定
     ControlConditions:
-      - TimeRange: { start: 1709009638.6, end: 1709009639.3 } # 評価開始時間と終了時刻、endは省略可能で省略した場合はsys.float_info.max
-        Module: "autonomous_emergency_braking: aeb_emergency_stop" # 評価対象のモジュール
-        Value0Key: decision # 評価対象のキー
-        Value0Value: stop # 評価対象の値
-        DetailedConditions: null # 位置、速度など、追加で判定したい条件。nullの場合はValue0Valueが一致した時点で成功。記載がある場合はDetailedConditionsも条件を満たす必要がある
-      - TimeRange: { start: 1709009640, end: 1709009641 }
-        Module: "autonomous_emergency_braking: aeb_emergency_stop"
-        Value0Key: decision
-        Value0Value: none
-        DetailedConditions: null
-      - TimeRange: { start: 1709009640, end: 1709009641 }
-        Module: crosswalk
-        Value0Key: decision
-        Value0Value: slow_down
+      - module: aeb
+        decision: deceleration # module の KeyValueのkeyをkeyにvalueをvalueに指定。今後追加でdecision以外が評価したいとなったらkey-valueが追加して対応する
+        start_lane_id: 100
+        start_s: 1.0
+        start_t: 0.0
+        end_lane_id: 101
+        end_s: 3.0
+        end_t: 3.0
+        condition_type: any_of # start-endのいずれかの区間で満たせばよい。
+        DetailedConditions: null # optional. 何も指定しないと減速しているかをdriving log replayer側で判定。指定する場合はそれの制約内かを判定。
+      # 一定速度まで減速する必要がある場合。一つのモジュールで複数の範囲で指定可能
+      - module: aeb
+        decision: deceleration
+        start_lane_id: 200
+        start_s: 5.0
+        start_t: 0.0
+        end_lane_id: 201
+        end_s: 10.0
+        end_d: 0.0
+        condition_type: any_of
         DetailedConditions:
-          pos_x: { lower: 1.0, upper: 2.0 }
-          pos_y: { lower: 3.0, upper: 4.0 }
-          vel: { lower: 3.0, upper: 4.0 }
+          vel_min: 0.0
+          vel_max: 1.0
+      # planningもcontrolとまとめる?
+      # crosswalkの場合は停止計画なので速度を指定する
+      - module: crosswalk
+        decision: deceleration
+        start_lane_id: 100
+        start_s: 1.0
+        start_t: 0.0
+        end_lane_id: 101
+        end_s: 3.0
+        end_t: 3.0
+        condition_type: any_of
+        DetailedConditions:
+          vel_min: 0.0
+          vel_max: 0.1
+      - module: crosswalk
+        decision: deceleration
+        start_lane_id: 200
+        start_s: 5.0
+        start_t: 0.0
+        end_lane_id: 201
+        end_s: 10.0
+        end_t: 0.0
+        condition_type: any_of
+        DetailedConditions:
+          vel_min: 0.0
+          vel_max: 0.1
+      # slowdownの例 指定区間全てで減速している必要がある
+      - module: obstacle_cruise_planner
+        decision: deceleration
+        start_lane_id: 100
+        start_s: 1.0
+        start_t: 0.0
+        end_lane_id: 101
+        end_s: 3.0
+        end_t: 3.0
+        condition_type: all_of # start-endの全ての区間で満たす
+        DetailedConditions:
+          vel_min: 1.0
+          vel_max: 5.0
+          acc_min: -1.0
+          acc_max: 0
+          jerk_min: -0.5
