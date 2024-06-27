@@ -2,6 +2,23 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.8 (2024-06-24)
+------------------
+* fix: check DiagnosticArray length (`#493 <https://github.com/tier4/driving_log_replayer/issues/493>`_)
+* fix: unit test (`#494 <https://github.com/tier4/driving_log_replayer/issues/494>`_)
+* Contributors: Hayato Mizushima
+
+2.0.7 (2024-06-21)
+------------------
+* fix: avoid error that `conf_mat_dict` is referenced before assignment (`#490 <https://github.com/tier4/driving_log_replayer/issues/490>`_)
+* Contributors: Kotaro Uetake
+
+2.0.6 (2024-06-20)
+------------------
+* feat: apply `PerceptionAnalysisResult` (`#483 <https://github.com/tier4/driving_log_replayer/issues/483>`_)
+* fix: if there is no objects returns 100.0 (`#486 <https://github.com/tier4/driving_log_replayer/issues/486>`_)
+* Contributors: Kotaro Uetake
+
 2.0.5 (2024-06-11)
 ------------------
 * docs: add trouble shooting

@@ -122,11 +122,11 @@ class Perception2DEvaluator(DLREvaluator):
         conf_mat_dict = {}
         analyzer = PerceptionAnalyzer2D(self.__evaluator.evaluator_config)
         analyzer.add(self.__evaluator.frame_results)
-        score_df, conf_mat_df = analyzer.analyze()
-        if score_df is not None:
-            score_dict = score_df.to_dict()
-        if conf_mat_df is not None:
-            conf_mat_dict = conf_mat_df.to_dict()
+        result = analyzer.analyze()
+        if result.score is not None:
+            score_dict = result.score.to_dict()
+        if result.confusion_matrix is not None:
+            conf_mat_dict = result.confusion_matrix.to_dict()
         final_metrics = {"Score": score_dict, "ConfusionMatrix": conf_mat_dict}
         self._result.set_final_metrics(final_metrics)
         self._result_writer.write_result(self._result)
