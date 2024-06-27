@@ -16,6 +16,7 @@ from builtin_interfaces.msg import Time
 import json
 from pathlib import Path
 
+from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
@@ -258,6 +259,30 @@ def object_label_list(objects: list[ObjectType]) -> str:
     return rtn_str
 
 
+def calc_position_error(
+    tuple1: tuple[float, float, float],
+    tuple2: tuple[float, float, float],
+) -> tuple[float, float, float]:
+    return tuple(map(lambda x, y: x - y, tuple1, tuple2))
+
+
+def fill_xyz(tuple_: tuple[float, float, float]) -> dict:
+    return {
+        "x": tuple_[0],
+        "y": tuple_[1],
+        "z": tuple_[2],
+    }
+
+
+def fill_xyzw(tuple_: tuple[float, float, float, float]) -> dict:
+    return {
+        "x": tuple_[0],
+        "y": tuple_[1],
+        "z": tuple_[2],
+        "w": tuple_[3],
+    }
+
+
 # utils for writing each perception frame result to a file
 class FrameDescriptionWriter:
     schema: dict = None
@@ -265,7 +290,10 @@ class FrameDescriptionWriter:
     @classmethod
     def load_schema(cls) -> None:
         if cls.schema is None:
-            schema_file_path = Path(__file__).parent.parent / "config" / "object_output_schema.json"
+            package_share_directory = get_package_share_directory("driving_log_replayer")
+            schema_file_path = (
+                Path(package_share_directory) / "config" / "object_output_schema.json"
+            )
             with schema_file_path.open() as file:
                 cls.schema = json.load(file)
 
@@ -282,23 +310,36 @@ class FrameDescriptionWriter:
     def object_to_description(obj: ObjectType | None) -> dict:
         if obj is None:
             return {}
+        quat = obj.state.orientation.q.tolist()
         return {
             "label": obj.semantic_label.name,
             "uuid": obj.uuid,
-            "position": obj.state.position,
-            "velocity": obj.state.velocity,
-            "orientation": obj.state.orientation.q.tolist(),  # quaternion to list
+            "position": fill_xyz(obj.state.position),
+            "velocity": fill_xyz(obj.state.velocity),
+            "orientation": fill_xyzw(tuple(quat)),  # quaternion to list
+            "shape": fill_xyz(obj.state.size),
         }
 
     @staticmethod
-    def dynamic_object_result_to_error_description(obj: DynamicObjectWithPerceptionResult) -> dict:
-        pose_error = obj.distance_error_bev
+    def dynamic_object_result_to_error_description(
+        obj: DynamicObjectWithPerceptionResult | None,
+    ) -> dict:
+        if obj is None:
+            keys = ["pose_error", "heading_error", "velocity_error", "center_distance"]
+            return {key: None for key in keys}
+
+        pose_error = calc_position_error(
+            obj.ground_truth_object.state.position,
+            obj.estimated_object.state.position,
+        )
+        center_distance = obj.distance_error_bev
         heading_error = obj.heading_error
         velocity_error = obj.velocity_error
         return {
-            "pose_error": pose_error,
-            "heading_error": heading_error,
-            "velocity_error": velocity_error,
+            "pose_error": fill_xyz(pose_error),
+            "heading_error": fill_xyz(heading_error),
+            "velocity_error": fill_xyz(velocity_error),
+            "center_distance": center_distance,
         }
 
     @staticmethod
@@ -329,23 +370,32 @@ class FrameDescriptionWriter:
         Returns: see json schema in config/object_output_schema.json
         -------
             list[dict]: List of objects descriptions.
-            Each element is a dictionary with the following keys:
-                - "Objects"
-                    - "status": "TP" | "FP" | "FN"
-                    - "object_type": "GT" | "EST"
-                    - "label": str
-                    - "uuid": str
-                    - "position": tuple[float, float, float]
-                    - "velocity": tuple[float, float, float]
-                    - "pose_error": optional[float]
-                    - "heading_error": optional[float]
-                    - "velocity_error": optional[float]
-                    - "distance": float # distance between object center and ego vehicle
-                    - "orientation": tuple[float, float, float, float]
-                    - "pose_covariance": optional[list[float]]
-                    - "twist_covariance": optional[list[float]]
+                Each element is a dictionary with the following keys:
+                - "status": "TP" | "FP" | "FN"
+                - "object_type": "GT" | "EST"
+                - "label": str
+                - "uuid": str
+                - "position": { "x": float, "y": float, "z": float }
+                - "velocity": { "x": float, "y": float, "z": float }
+                - "orientation": { "x": float, "y": float, "z": float, "w": float }
+                - "shape": optional[{ "x": float, "y": float, "z": float }]
+                - "pose_error": optional[{ "x": float, "y": float, "z": float }]
+                - "heading_error": optional[{ "x": float, "y": float, "z": float }]
+                - "velocity_error": optional[{ "x": float, "y": float, "z": float }]
+                - "center_distance": optional[float] # distance between object center and ego vehicle
+                - "pose_covariance": optional[list[float]]
+                - "twist_covariance": optional[list[float]]
+
+                These description can separated to following categories and each category are generated by corresponding functions:
+                - Test status and object type
+                - Object information
+                - Error information
+                - Covariance information
 
         """
+        # get this filename for assertion error message
+        filename: str = __file__
+
         # TODO: remove try-except block after perception eval is properly updated
         try:
             ego2map_matrix = pass_fail.ego2map
@@ -366,20 +416,15 @@ class FrameDescriptionWriter:
             gt_distance_bev = (
                 tp_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
             )
-            est_distance_bev = (
-                tp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
-            )
             error_description = FrameDescriptionWriter.dynamic_object_result_to_error_description(
                 tp_object,
             )
-            tp_description = FrameDescriptionWriter.object_to_description(tp_gt)
             cov_description = FrameDescriptionWriter.object_to_covariance_description(tp_est)
             # GT object dict
             gt_tp_description = {
                 "status": "TP",
                 "object_type": "GT",
-                "distance": gt_distance_bev,
-                **tp_description,
+                **FrameDescriptionWriter.object_to_description(tp_gt),
                 **error_description,
                 **FrameDescriptionWriter.object_to_covariance_description(
                     tp_gt,
@@ -389,33 +434,38 @@ class FrameDescriptionWriter:
             est_tp_description = {
                 "status": "TP",
                 "object_type": "EST",
-                "distance": est_distance_bev,
                 **FrameDescriptionWriter.object_to_description(tp_est),
+                **error_description,
                 **cov_description,
             }
+            assert FrameDescriptionWriter.is_object_structure_valid(gt_tp_description), (
+                "GT TP object description is invalid in file: " + filename
+            )
+            assert FrameDescriptionWriter.is_object_structure_valid(est_tp_description), (
+                "EST TP object description is invalid in file: " + filename
+            )
             gt_descriptions.append(gt_tp_description)
             est_descriptions.append(est_tp_description)
 
         # for FP objects
         for fp_object in pass_fail.fp_object_results:
             fp_est = fp_object.estimated_object
-            est_distance_bev = (
-                fp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
-            )
             error_description = FrameDescriptionWriter.dynamic_object_result_to_error_description(
                 fp_object,
             )
-            fp_description = FrameDescriptionWriter.object_to_description(fp_est)
+            fp_object_description = FrameDescriptionWriter.object_to_description(fp_est)
             cov_description = FrameDescriptionWriter.object_to_covariance_description(fp_est)
             # Estimated object dict
             est_fp_description = {
                 "status": "FP",
                 "object_type": "EST",
-                "distance": est_distance_bev,
-                **fp_description,
+                **fp_object_description,
                 **error_description,
                 **cov_description,
             }
+            assert FrameDescriptionWriter.is_object_structure_valid(est_fp_description), (
+                "EST FP object description is invalid in file: " + filename
+            )
             est_descriptions.append(est_fp_description)
 
         # for FN objects
@@ -424,17 +474,23 @@ class FrameDescriptionWriter:
             gt_distance_bev = (
                 fn_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
             )
-            fn_description = FrameDescriptionWriter.object_to_description(fn_gt)
+            fn_obj_description = FrameDescriptionWriter.object_to_description(fn_gt)
             # GT object dict
             gt_fn_description = {
                 "status": "FN",
                 "object_type": "GT",
                 "distance": gt_distance_bev,
-                **fn_description,
+                **fn_obj_description,
                 **FrameDescriptionWriter.object_to_covariance_description(
                     fn_gt,
                 ),  # Assume gt has no covariance
+                **FrameDescriptionWriter.dynamic_object_result_to_error_description(
+                    None,
+                ),  # Assume gt has no error
             }
+            assert FrameDescriptionWriter.is_object_structure_valid(gt_fn_description), (
+                "GT FN object description is invalid in file: " + filename
+            )
             gt_descriptions.append(gt_fn_description)
 
         return gt_descriptions + est_descriptions

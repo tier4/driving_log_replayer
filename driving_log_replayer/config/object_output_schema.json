@@ -2,86 +2,106 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "Objects": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": ["TP", "FP", "FN"]
-          },
-          "object_type": {
-            "type": "string",
-            "enum": ["GT", "EST"]
-          },
-          "label": {
-            "type": "string"
-          },
-          "uuid": {
-            "type": "string"
-          },
-          "position": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            },
-            "minItems": 3,
-            "maxItems": 3
-          },
-          "velocity": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            },
-            "minItems": 3,
-            "maxItems": 3
-          },
-          "pose_error": {
-            "type": ["number", "null"]
-          },
-          "heading_error": {
-            "type": ["number", "null"]
-          },
-          "velocity_error": {
-            "type": ["number", "null"]
-          },
-          "distance": {
-            "type": "number"
-          },
-          "orientation": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            },
-            "minItems": 4,
-            "maxItems": 4
-          },
-          "pose_covariance": {
-            "type": ["array", "null"],
-            "items": {
-              "type": "number"
-            }
-          },
-          "twist_covariance": {
-            "type": ["array", "null"],
-            "items": {
-              "type": "number"
-            }
-          }
-        },
-        "required": [
-          "status",
-          "object_type",
-          "label",
-          "uuid",
-          "position",
-          "velocity",
-          "distance",
-          "orientation"
-        ]
-      }
+    "status": {
+      "type": "string",
+      "enum": ["TP", "FP", "FN"],
+      "default": "TP"
+    },
+    "object_type": {
+      "type": "string",
+      "enum": ["GT", "EST"],
+      "default": "GT"
+    },
+    "label": {
+      "type": "string",
+      "default": ""
+    },
+    "uuid": {
+      "type": "string",
+      "default": ""
+    },
+    "position": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"]
+    },
+    "velocity": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"]
+    },
+    "orientation": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" },
+        "w": { "type": "number" }
+      },
+      "required": ["x", "y", "z", "w"]
+    },
+    "shape": {
+      "type": ["object", "null"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"],
+      "default": null
+    },
+    "pose_error": {
+      "type": ["object", "null"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"],
+      "default": null
+    },
+    "heading_error": {
+      "type": ["object", "null"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"],
+      "default": null
+    },
+    "velocity_error": {
+      "type": ["object", "null"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"],
+      "default": null
+    },
+    "center_distance": {
+      "type": ["number", "null"],
+      "default": null
+    },
+    "pose_covariance": {
+      "type": ["array", "null"],
+      "items": { "type": "number" },
+      "default": []
+    },
+    "twist_covariance": {
+      "type": ["array", "null"],
+      "items": { "type": "number" },
+      "default": []
     }
   },
-  "required": ["Objects"]
+  "required": ["status", "object_type", "label", "uuid", "position", "velocity", "orientation"]
 }
