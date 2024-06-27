@@ -14,11 +14,9 @@
 
 from dataclasses import dataclass
 from dataclasses import field
-from math import floor
 from sys import float_info
 from typing import Literal
 
-from builtin_interfaces.msg import Time
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import KeyValue
 from pydantic import BaseModel
@@ -28,19 +26,6 @@ from pydantic import model_validator
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
 from driving_log_replayer.scenario import Scenario
-
-
-class StartEnd(BaseModel):
-    start: float | int = Field(gt=0.0)
-    end: float | int | None = Field(float_info.max, gt=0.0)
-
-    @model_validator(mode="after")
-    def validate_start_end(self) -> "StartEnd":
-        err_msg = "start must be a time before end"
-
-        if self.end < self.start:
-            raise ValueError(err_msg)
-        return self
 
 
 class MinMax(BaseModel):
@@ -62,7 +47,7 @@ class LaneInfo(BaseModel):
     t: float
 
 
-class KinematicCondition(BaseModel):
+class KinematicState(BaseModel):
     vel: MinMax
     acc: MinMax
     jerk: MinMax
@@ -74,7 +59,7 @@ class PlanningControlCondition(BaseModel):
     start_lane_info: LaneInfo
     end_lane_info: LaneInfo
     condition_type: Literal["any_of", "all_of"]
-    DetailedConditions: KinematicCondition | None = None
+    kinematic_state: KinematicState | None = None
 
 
 class Conditions(BaseModel):
@@ -93,10 +78,6 @@ class PlanningControlScenario(Scenario):
     Evaluation: Evaluation
 
 
-def float_stamp(stamp: Time) -> float:
-    return stamp.sec + stamp.nanosec / pow(10, 9)
-
-
 @dataclass
 class Metrics(EvaluationItem):
     hz: float = 10.0
@@ -105,15 +86,10 @@ class Metrics(EvaluationItem):
     kinematic_state_list: list = field(default_factory=list)
 
     def set_frame(self, msg: DiagnosticArray) -> dict | None:
-        self.condition: TimeRangeCondition
-        now = float_stamp(msg.header.stamp)
-        eval_start = self.condition.TimeRange.start
-        eval_duration = now - eval_start
-        required_successes = floor(eval_duration * self.hz * self.rate)
-        if not (eval_start <= now <= self.condition.TimeRange.end):
-            return None
+        self.condition: PlanningControlCondition
+
         for status in msg.status:
-            if status.name != self.condition.Module:  # TODO: crosswalk_1などどうするか
+            if status.name != self.condition.module:
                 continue
             if status.values[0].key != self.condition.Value0Key:
                 continue

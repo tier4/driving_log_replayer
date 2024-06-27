@@ -22,7 +22,7 @@ Evaluation:
           s: 3.0
           t: 3.0
         condition_type: any_of # start-endのいずれかの区間で満たせばよい。
-        DetailedConditions: null # optional. 何も指定しないと減速しているかをdriving log replayer側で判定。指定する場合はそれの制約内かを判定。
+        kinematic_state: null # optional. 何も指定しないと減速しているかをdriving log replayer側で判定。指定する場合はそれの制約内かを判定。
       # 一定速度まで減速する必要がある場合。一つのモジュールで複数の範囲で指定可能
       - module: aeb
         decision: deceleration
@@ -35,7 +35,7 @@ Evaluation:
           s: 10.0
           t: 0.0
         condition_type: any_of
-        DetailedConditions:
+        kinematic_state:
           vel: {min: 0.0, max: 1.0}
       # planningもcontrolとまとめる?
       # crosswalkの場合は停止計画なので速度を指定する
@@ -50,7 +50,7 @@ Evaluation:
           s: 3.0
           t: 3.0
         condition_type: any_of
-        DetailedConditions:
+        kinematic_state:
           vel: {min: 0.0, max: 0.1}
       - module: crosswalk
         decision: deceleration
@@ -63,7 +63,7 @@ Evaluation:
           s: 10.0
           t: 0.0
         condition_type: any_of
-        DetailedConditions:
+        kinematic_state:
           vel: {min: 0.0, vel: 0.1}
       # slowdownの例 指定区間全てで減速している必要がある
       - module: obstacle_cruise_planner
@@ -77,7 +77,7 @@ Evaluation:
           s: 3.0
           t: 3.0
         condition_type: all_of # start-endの全ての区間で満たす
-        DetailedConditions:
+        kinematic_state:
           vel: {min: 1.0, max: 5.0}
           acc: {min: -1.0, max: 0.0}
           jerk: {min: -0.5}
