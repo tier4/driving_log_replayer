@@ -5,78 +5,83 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 VehicleId: default
 LocalMapPath: $HOME/autoware_map/sample-map-planning
+DataSetPath: /home/hyt/dlr_data/auto/t4_pc/xx1
 Evaluation:
   UseCaseName: planning_control
   UseCaseFormatVersion: 0.1.0
   Conditions:
-    Hertz: 10.0 # metricsが何Hzで来るか。 (現在時刻-評価開始時刻)* Hertz * AllowableRate(=0.95)以上条件に合致するtopicが出力される必要がある。低レートは弾かれる。AllowableRateは一旦固定
     ControlConditions:
       - module: aeb
         decision: deceleration # module の KeyValueのkeyをkeyにvalueをvalueに指定。今後追加でdecision以外が評価したいとなったらkey-valueが追加して対応する
-        start_lane_info:
-          id: 100
-          s: 1.0
-          t: 0.0
-        end_lane_info:
-          id: 101
-          s: 3.0
-          t: 3.0
         condition_type: any_of # start-endのいずれかの区間で満たせばよい。
+        lane_info:
+          start:
+            id: 100
+            s: 1.0
+            t: {left: 0.0, right: 0.0}
+          end:
+            id: 101
+            s: 3.0
+            t: {left: 3.0, right: 3.0}
         kinematic_state: null # optional. 何も指定しないと減速しているかをdriving log replayer側で判定。指定する場合はそれの制約内かを判定。
       # 一定速度まで減速する必要がある場合。一つのモジュールで複数の範囲で指定可能
       - module: aeb
         decision: deceleration
-        start_lane_info:
-          id: 200
-          s: 5.0
-          t: 0.0
-        end_lane_info:
-          id: 201
-          s: 10.0
-          t: 0.0
         condition_type: any_of
+        lane_info:
+          start:
+            id: 200
+            s: 5.0
+            t: {left: 0.0, right: 0.0}
+          end:
+            id: 201
+            s: 10.0
+            t: {left: 0.0, right: 0.0}
         kinematic_state:
           vel: {min: 0.0, max: 1.0}
       # planningもcontrolとまとめる?
       # crosswalkの場合は停止計画なので速度を指定する
       - module: crosswalk
         decision: deceleration
-        start_lane_info:
-          id: 100
-          s: 1.0
-          t: 0.0
-        end_lane_info:
-          id: 101
-          s: 3.0
-          t: 3.0
         condition_type: any_of
+        lane_info:
+          start:
+            id: 100
+            s: 1.0
+            t: {left: 0.0, right: 0.0}
+          end:
+            id: 101
+            s: 3.0
+            t: {left: 3.0, right: 3.0}
         kinematic_state:
           vel: {min: 0.0, max: 0.1}
       - module: crosswalk
         decision: deceleration
-        start_lane_info:
-          id: 200
-          s: 5.0
-          t: 0.0
-        end_lane_info:
-          id: 201
-          s: 10.0
-          t: 0.0
         condition_type: any_of
+        lane_info:
+          start:
+            id: 200
+            s: 5.0
+            t: {left: 0.0, right: 0.0}
+          end:
+            id: 201
+            s: 10.0
+            t: {left: 0.0, right: 0.0}
         kinematic_state:
           vel: {min: 0.0, vel: 0.1}
       # slowdownの例 指定区間全てで減速している必要がある
       - module: obstacle_cruise_planner
         decision: deceleration
-        start_lane_info:
-          id: 100
-          s: 1.0
-          t: 0.0
-        end_lane_info:
-          id: 101
-          s: 3.0
-          t: 3.0
         condition_type: all_of # start-endの全ての区間で満たす
+        lane_info:
+          start:
+            id: 100
+            s: 1.0
+            t: {left: 0.0, right: 0.0}
+          end:
+            id: 101
+            s: 3.0
+            t: {left: 3.0, right: 3.0}
         kinematic_state:
           vel: {min: 1.0, max: 5.0}
           acc: {min: -1.0, max: 0.0}

@@ -18,6 +18,7 @@ from sys import float_info
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 from pydantic import BaseModel
 from pydantic import Field
@@ -41,13 +42,68 @@ class MinMax(BaseModel):
         return self
 
 
+class LeftRight(BaseModel):
+    left: float = Field(float_info.max, gt=0.0)
+    right: float = Field(float_info.max, gt=0.0)
+
+
 class LaneInfo(BaseModel):
     id: int
-    s: float
-    t: float
+    s: float | None = None
+    t: LeftRight | None = None
+
+    @classmethod
+    def diag_lane_info(cls, lane_info: DiagnosticStatus) -> tuple[float, float, float]:
+        for kv in lane_info.values:
+            kv: KeyValue
+            if kv.key == "lane_id":
+                lane_id = kv.value
+            if kv.key == "s":
+                s = kv.value
+            if kv.key == "t":
+                t = kv.value
+        return (lane_id, s, t)
+
+    def is_started(self, lane_info: DiagnosticStatus) -> bool:
+        lane_id, s, t = LaneInfo.diag_lane_info(lane_info)
+        if self.id != lane_id:
+            return False
+        if self.s is not None and self.s > s:
+            return False
+        if self.t is not None and not ((-1.0) * self.t.right <= t <= self.left):
+            return False
+        return True
+
+    def match_condition(self, lane_info: DiagnosticStatus) -> bool:
+        _, _, t = LaneInfo.diag_lane_info(lane_info)
+        if self.t is not None and not ((-1.0) * self.t.right <= t <= self.left):
+            return False
+        return True
+
+    def is_finished(self, lane_info: DiagnosticStatus) -> bool:
+        lane_id, s, _ = LaneInfo.diag_lane_info(lane_info)
+        if self.id != lane_id:
+            return False
+        # sを指定しない場合は、lane_idが切り替わる前までとかやりたいに違いない。
+        if self.s is not None and self.s < s:
+            return False
+        return True
 
 
-class KinematicState(BaseModel):
+class LaneCondition(BaseModel):
+    start: LaneInfo
+    end: LaneInfo | None = None
+
+    def is_started(self, lane_info: DiagnosticStatus) -> bool:
+        self.start.is_started(lane_info)
+
+    def is_finished(self, lane_info: DiagnosticStatus) -> bool:
+        if self.end is None:
+            return False
+        return self.end.is_finished(lane_info)
+
+
+class KinematicCondition(BaseModel):
     vel: MinMax
     acc: MinMax
     jerk: MinMax
@@ -56,14 +112,12 @@ class KinematicState(BaseModel):
 class PlanningControlCondition(BaseModel):
     module: str
     decision: str
-    start_lane_info: LaneInfo
-    end_lane_info: LaneInfo
-    condition_type: Literal["any_of", "all_of"]
-    kinematic_state: KinematicState | None = None
+    condition_type: Literal["any_of", "all_of"] | None = "any_of"
+    lane_condition: LaneCondition | None = None
+    kinematic_condition: KinematicCondition | None = None
 
 
 class Conditions(BaseModel):
-    Hertz: float = Field(gt=0.0)
     ControlConditions: list[PlanningControlCondition] = []
     PlanningConditions: list[PlanningControlCondition] = []
 
@@ -80,19 +134,23 @@ class PlanningControlScenario(Scenario):
 
 @dataclass
 class Metrics(EvaluationItem):
-    hz: float = 10.0
-    rate: float = 0.95
     lane_info_list: list = field(default_factory=list)
     kinematic_state_list: list = field(default_factory=list)
+    started: bool = False
 
     def set_frame(self, msg: DiagnosticArray) -> dict | None:
         self.condition: PlanningControlCondition
 
+        LaneInfo
+
         for status in msg.status:
             if status.name != self.condition.module:
                 continue
-            if status.values[0].key != self.condition.Value0Key:
+            if status.values[0].key != "decision":
                 continue
+            if status.values[0].value != self.condition.decision:
+                continue
+
             self.total += 1
 
             frame_success = "Fail"
@@ -120,7 +178,7 @@ class Metrics(EvaluationItem):
 
 
 class MetricsClassContainer:
-    def __init__(self, conditions: list[TimeRangeCondition], hz: float, module: str) -> None:
+    def __init__(self, conditions: list[PlanningControlCondition], hz: float, module: str) -> None:
         self.__container: list[Metrics] = []
         for i, time_cond in enumerate(conditions):
             self.__container.append(Metrics(f"{module}_{i}", time_cond, hz=hz))
