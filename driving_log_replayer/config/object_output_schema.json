@@ -12,6 +12,10 @@
       "enum": ["GT", "EST"],
       "default": "GT"
     },
+    "distance_from_ego": {
+      "type": ["number", "null"],
+      "default": null
+    },
     "label": {
       "type": "string",
       "default": ""
@@ -88,7 +92,7 @@
       "required": ["x", "y", "z"],
       "default": null
     },
-    "center_distance": {
+    "bev_error": {
       "type": ["number", "null"],
       "default": null
     },

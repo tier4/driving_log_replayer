@@ -325,21 +325,21 @@ class FrameDescriptionWriter:
         obj: DynamicObjectWithPerceptionResult | None,
     ) -> dict:
         if obj is None:
-            keys = ["pose_error", "heading_error", "velocity_error", "center_distance"]
+            keys = ["pose_error", "heading_error", "velocity_error", "bev_error"]
             return {key: None for key in keys}
 
         pose_error = calc_position_error(
             obj.ground_truth_object.state.position,
             obj.estimated_object.state.position,
         )
-        center_distance = obj.distance_error_bev
+        bev_error = obj.distance_error_bev
         heading_error = obj.heading_error
         velocity_error = obj.velocity_error
         return {
             "pose_error": fill_xyz(pose_error),
             "heading_error": fill_xyz(heading_error),
             "velocity_error": fill_xyz(velocity_error),
-            "center_distance": center_distance,
+            "bev_error": bev_error,
         }
 
     @staticmethod
@@ -373,6 +373,7 @@ class FrameDescriptionWriter:
                 Each element is a dictionary with the following keys:
                 - "status": "TP" | "FP" | "FN"
                 - "object_type": "GT" | "EST"
+                - "distance_from_ego": float|None # distance from ego vehicle
                 - "label": str
                 - "uuid": str
                 - "position": { "x": float, "y": float, "z": float }
@@ -382,7 +383,7 @@ class FrameDescriptionWriter:
                 - "pose_error": optional[{ "x": float, "y": float, "z": float }]
                 - "heading_error": optional[{ "x": float, "y": float, "z": float }]
                 - "velocity_error": optional[{ "x": float, "y": float, "z": float }]
-                - "center_distance": optional[float] # distance between object center and ego vehicle
+                - "bev_error": optional[float] # distance between GT and EST
                 - "pose_covariance": optional[list[float]]
                 - "twist_covariance": optional[list[float]]
 
@@ -416,6 +417,9 @@ class FrameDescriptionWriter:
             gt_distance_bev = (
                 tp_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
             )
+            est_distance_bev = (
+                tp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
             error_description = FrameDescriptionWriter.dynamic_object_result_to_error_description(
                 tp_object,
             )
@@ -424,6 +428,7 @@ class FrameDescriptionWriter:
             gt_tp_description = {
                 "status": "TP",
                 "object_type": "GT",
+                "distance_from_ego": gt_distance_bev,
                 **FrameDescriptionWriter.object_to_description(tp_gt),
                 **error_description,
                 **FrameDescriptionWriter.object_to_covariance_description(
@@ -434,6 +439,7 @@ class FrameDescriptionWriter:
             est_tp_description = {
                 "status": "TP",
                 "object_type": "EST",
+                "distance_from_ego": est_distance_bev,
                 **FrameDescriptionWriter.object_to_description(tp_est),
                 **error_description,
                 **cov_description,
@@ -453,12 +459,16 @@ class FrameDescriptionWriter:
             error_description = FrameDescriptionWriter.dynamic_object_result_to_error_description(
                 fp_object,
             )
+            est_distance_bev = (
+                fp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
             fp_object_description = FrameDescriptionWriter.object_to_description(fp_est)
             cov_description = FrameDescriptionWriter.object_to_covariance_description(fp_est)
             # Estimated object dict
             est_fp_description = {
                 "status": "FP",
                 "object_type": "EST",
+                "distance_from_ego": est_distance_bev,
                 **fp_object_description,
                 **error_description,
                 **cov_description,
@@ -479,13 +489,13 @@ class FrameDescriptionWriter:
             gt_fn_description = {
                 "status": "FN",
                 "object_type": "GT",
-                "distance": gt_distance_bev,
+                "distance_from_ego": gt_distance_bev,
                 **fn_obj_description,
                 **FrameDescriptionWriter.object_to_covariance_description(
                     fn_gt,
                 ),  # Assume gt has no covariance
                 **FrameDescriptionWriter.dynamic_object_result_to_error_description(
-                    None,
+                    fn_gt,
                 ),  # Assume gt has no error
             }
             assert FrameDescriptionWriter.is_object_structure_valid(gt_fn_description), (
