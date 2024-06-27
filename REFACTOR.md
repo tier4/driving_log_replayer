@@ -1,6 +1,6 @@
 # refactor
 
-- [] frameをsetしてからwriteするまで更新される可能性がある。コピーを渡すほうがいいかも
-- [] frameを渡したら、set_frameを自動でやって書き込みまで自動にしたい。resultにwriterをもたせる。
-- [] gtestでobstacle_segmentationのcppノードもテストする
-- [] result.jsonlもpydantic.BaseModelでフォーマットガチガチにしてmodel_dump()->dict->json_dump->strの流れのほうがいいかも
+- t4_datasetを前提とした作りに直す
+- perceptionのDatabaseDatasetをなんとかしない限り、共通フォーマットに出来ない
+- 少なくとものこの段階でcliは消す
+- ros2 launchの引数をこの段階で減らす。UseCaseのlaunchで同じでなければならない
