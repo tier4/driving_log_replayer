@@ -1,13 +1,15 @@
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 3.0.0
 ScenarioName: sample_localization
 ScenarioDescription: sample_localization
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
-VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
+  UseCaseFormatVersion: 2.0.0
+  Datasets:
+    - sample_dataset:  # must be 1 dataset
+        VehicleId: default # Specify VehicleId for each data set.
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
     Convergence:
       AllowableDistance: 0.2 # Lateral distance to be considered convergence
