@@ -12,18 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from os.path import expandvars
 from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
 import launch
+from launch import LaunchContext
 from launch.actions import DeclareLaunchArgument
+from launch.actions import EmitEvent
 from launch.actions import ExecuteProcess
+from launch.actions import GroupAction
+from launch.actions import IncludeLaunchDescription
+from launch.actions import LogInfo
+from launch.actions import OpaqueFunction
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
+from launch.event_handlers import OnProcessExit
+from launch.launch_description_sources import AnyLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+import yaml
 
 from driving_log_replayer.shutdown_once import ShutdownOnce
+
+"""
+ros2 launch driving_log_replayer localization.launch.py
+map_path:=/home/hyt/map/oss シナリオに書いてある、webautoだと、パスを変えるので、map_path指定されたら強制上書き
+vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit　シナリオに書いてある
+vehicle_id:=default scenario_path:=/home/hyt/dlr_data/aw/localization/sample/scenario.yaml
+result_json_path:=/home/hyt/out/aw/localization/2024-0605-181534/sample/result.json outputを指定すれば自動で作れる
+input_bag:=/home/hyt/dlr_data/aw/localization/sample/input_bag datasetを書いてあれば自動で
+result_bag_path:=/home/hyt/out/aw/localization/2024-0605-181534/sample/result_bag
+"""
 
 
 def get_launch_arguments() -> list:
@@ -32,13 +52,9 @@ def get_launch_arguments() -> list:
 
     with_autoware
     scenario_path
-    result_json_path
+    output_dir
     play_rate
     play_delay
-    input_bag
-    result_bag_path
-    t4_dataset_path
-    result_archive_path
     override_record_topics
     override_topics_regex
 
@@ -60,29 +76,9 @@ def get_launch_arguments() -> list:
         description="Whether to launch autoware or not",
     )
     add_launch_arg("scenario_path", description="scenario path")
-    add_launch_arg(
-        "result_json_path",
-        description="result json save path",
-    )
+    add_launch_arg("output_dir", description="output directory")
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
     add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
-    add_launch_arg("input_bag", description="full path to the input bag")
-    add_launch_arg(
-        "result_bag_path",
-        description="result bag save path",
-    )
-    # for use case that uses t4_dataset
-    add_launch_arg(
-        "t4_dataset_path",
-        default_value="/opt/autoware/t4_dataset",
-        description="full path of t4_dataset",
-    )
-    add_launch_arg(
-        "result_archive_path",
-        default_value="/opt/autoware/result_archive",
-        description="additional result file",
-    )
-    # bag record override option
     add_launch_arg(
         "override_record_topics",
         default_value="false",
@@ -97,119 +93,151 @@ def get_launch_arguments() -> list:
     return launch_arguments
 
 
-def get_autoware_launch(
-    sensing: str = "true",
-    localization: str = "true",
-    perception: str = "true",
-    planning: str = "false",
-    control: str = "false",
-    scenario_simulation: str = "false",
-    pose_source: str | None = None,
-    twist_source: str | None = None,
-    perception_mode: str | None = None,
-    use_perception_online_evaluator: str | None = None,
-) -> launch.actions.IncludeLaunchDescription:
-    # autoware launch
+def ensure_arg_compatibility(context: LaunchContext) -> list:
+    conf = context.launch_configurations
+    scenario_path = Path(conf["scenario_path"])
+    with scenario_path.open() as scenario_file:
+        yaml_obj = yaml.safe_load(scenario_file)
+    for k, v in yaml_obj["Evaluation"]["Datasets"][0].items():
+        dataset_path_str = expandvars(k)
+        map_path_str = expandvars(v["LocalMapPath"])
+    map_path = Path(map_path_str)
+    if not map_path.is_absolute():
+        map_path = scenario_path.parent.joinpath(map_path)
+    dataset_path = Path(dataset_path_str)
+    if not dataset_path.is_absolute():
+        dataset_path = scenario_path.parent.joinpath(dataset_path)
+    conf["map_path"] = map_path.as_posix()
+    conf["dataset_path"] = dataset_path.as_posix()
+    # add configurations
+    conf["input_bag"] = dataset_path.joinpath("input_bag").as_posix()
+    conf["use_case"] = yaml_obj["Evaluation"]["UseCaseName"]
+    return [
+        LogInfo(msg=f"{map_path=}, {dataset_path=}"),
+    ]
+
+
+def launch_autoware(context: LaunchContext) -> list:
     autoware_launch_file = Path(
         get_package_share_directory("autoware_launch"),
         "launch",
         "logging_simulator.launch.xml",
     )
     launch_args = {
-        "map_path": LaunchConfiguration("map_path"),
-        "vehicle_model": LaunchConfiguration("vehicle_model"),
-        "sensor_model": LaunchConfiguration("sensor_model"),
-        "vehicle_id": LaunchConfiguration("vehicle_id"),
-        "launch_vehicle_interface": "true",
-        "sensing": sensing,
-        "localization": localization,
-        "perception": perception,
-        "planning": planning,
-        "control": control,
-        "rviz": "false",
-        "scenario_simulation": scenario_simulation,
-    }
-    if isinstance(pose_source, str):
-        launch_args["pose_source"] = pose_source
-    if isinstance(twist_source, str):
-        launch_args["twist_source"] = twist_source
-    if isinstance(perception_mode, str):
-        launch_args["perception_mode"] = perception_mode
-    if isinstance(use_perception_online_evaluator, str):
-        launch_args["use_perception_online_evaluator"] = use_perception_online_evaluator
-    return launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(
-            autoware_launch_file.as_posix(),
+        "map_path": conf.get(
+            "map_path",
+            yaml_obj["Evaluation"]["Datasets"][0]["sample_dataset"]["LocalMapPath"],
         ),
-        launch_arguments=launch_args.items(),
-        condition=IfCondition(LaunchConfiguration("with_autoware")),
-    )
+        "vehicle_model": conf.get("vehicle_model", yaml_obj["VehicleModel"]),
+        "sensor_model": conf.get("sensor_model", yaml_obj["SensorModel"]),
+        "vehicle_id": conf.get("vehicle_id", yaml_obj["VehicleId"]),
+        "launch_vehicle_interface": "true",
+        # "rviz": "false",
+    }
+    return [
+        GroupAction(
+            [
+                IncludeLaunchDescription(
+                    AnyLaunchDescriptionSource(
+                        autoware_launch_file.as_posix(),
+                    ),
+                    launch_arguments=launch_args.items(),
+                    condition=IfCondition(conf["with_autoware"]),
+                ),
+            ],
+            scoped=False,
+            forwarding=True,
+        ),
+    ]
 
 
-def get_map_height_fitter(launch_service: str = "true") -> launch.actions.IncludeLaunchDescription:
-    # map_height_fitter launch
+def launch_map_height_fitter(context: LaunchContext) -> list:
     fitter_launch_file = Path(
         get_package_share_directory("map_height_fitter"),
         "launch",
         "map_height_fitter.launch.xml",
     )
-    return launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(fitter_launch_file.as_posix()),
-        condition=IfCondition(launch_service),
-    )
+    return [
+        IncludeLaunchDescription(
+            AnyLaunchDescriptionSource(
+                fitter_launch_file.as_posix(),
+            ),
+            condition=IfCondition(context.launch_configurations["localization"]),
+        ),
+    ]
 
 
-def get_rviz() -> Node:
-    rviz_config_dir = Path(
-        get_package_share_directory("driving_log_replayer"),
-        "config",
-        "dlr.rviz",
-    )
-    return Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        arguments=["-d", rviz_config_dir.as_posix()],
-        parameters=[{"use_sim_time": True}],
-        output="screen",
-        condition=IfCondition(LaunchConfiguration("rviz", default="true")),
-    )
+def launch_evaluator_node(context: LaunchContext, addition_parameter: dict | None) -> list:
+    conf = context.launch_configurations
+    scenario_path = Path(conf["scenario_path"])
+    with scenario_path.open() as scenario_file:
+        yaml_obj: dict = yaml.safe_load(scenario_file)
 
-
-def get_evaluator_node(
-    usecase_name: str,
-    addition_parameter: dict | None = None,
-) -> Node:
     params = {
         "use_sim_time": True,
-        "scenario_path": LaunchConfiguration("scenario_path"),
-        "result_json_path": LaunchConfiguration("result_json_path"),
-        "t4_dataset_path": LaunchConfiguration("t4_dataset_path"),
-        "result_archive_path": LaunchConfiguration("result_archive_path"),
+        "scenario_path": conf["scenario_path"],
+        "result_json_path": conf.get("result_json_path", Path(conf["output_dir"], "result.jsonl")),
+        "t4_dataset_path": conf.get(
+            "t4_dataset_path",
+            yaml_obj["Evaluation"]["Datasets"]["0"]["sample_dataset"],
+        ),
+        "result_archive_path": conf.get(
+            "result_archive_path",
+            Path(conf["output_dir"], "result_archive"),
+        ),
     }
     if addition_parameter is not None and isinstance(addition_parameter, dict):
         params.update(addition_parameter)
 
-    node_name = usecase_name + "_evaluator_node.py"
+    node_name = conf["dlr_use_case"] + "_evaluator_node.py"
 
-    return Node(
-        package="driving_log_replayer",
-        namespace="/driving_log_replayer",
-        executable=node_name,
-        output="screen",
-        name=usecase_name + "_evaluator",
-        parameters=[params],
-        on_exit=ShutdownOnce(),
-    )
-
-
-def get_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
     return [
+        Node(
+            package="driving_log_replayer",
+            namespace="/driving_log_replayer",
+            executable=node_name,
+            output="screen",
+            name=conf["dlr_use_case"] + "_evaluator",
+            parameters=[params],
+            on_exit=ShutdownOnce(),
+        ),
+    ]
+
+
+def launch_bag_player(
+    context: LaunchContext,
+    additional_argument: list | None = None,
+) -> IncludeLaunchDescription:
+    conf = context.launch_configurations
+    input_bag = conf.get("input_bag", Path(conf["dataset_path"], "input_bag").as_posix())
+    play_cmd = (
+        [
+            "ros2",
+            "bag",
+            "play",
+            input_bag,
+            "--delay",
+            conf["play_delay"],
+            "--rate",
+            conf["play_rate"],
+            "--clock",
+            "200",
+        ],
+    )
+    if additional_argument is not None and isinstance(additional_argument, list):
+        play_cmd.extend(additional_argument)
+    bag_player = ExecuteProcess(play_cmd, output="screen")
+    return [bag_player]
+
+
+def launch_recorder(context: LaunchContext) -> list:
+    conf = context.launch_configurations
+    record_cmd = [
         "ros2",
         "bag",
         "record",
         "-o",
-        LaunchConfiguration("result_bag_path"),
+        conf("result_bag_path"),
         "--qos-profile-overrides-path",
         Path(
             get_package_share_directory("driving_log_replayer"),
@@ -220,6 +248,7 @@ def get_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
         allowlist,
         "--use-sim-time",
     ]
+    return [ExecuteProcess(cmd=record_cmd)]
 
 
 def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
@@ -245,41 +274,6 @@ def get_regex_recorders(
         condition=IfCondition(LaunchConfiguration("override_record_topics")),
     )
     return record_proc, record_override_proc
-
-
-def get_player_cmd(additional_argument: list | None = None) -> list:
-    play_cmd = [
-        "ros2",
-        "bag",
-        "play",
-        LaunchConfiguration("input_bag"),
-        "--rate",
-        LaunchConfiguration("play_rate"),
-        "--clock",
-        "200",
-    ]
-    if additional_argument is not None and isinstance(additional_argument, list):
-        play_cmd.extend(additional_argument)
-    return play_cmd
-
-
-def get_player(
-    additional_argument: list | None = None,
-    condition: IfCondition | None = None,
-) -> ExecuteProcess:
-    play_cmd = get_player_cmd(additional_argument)
-    if condition is not None:
-        return ExecuteProcess(
-            cmd=["sleep", LaunchConfiguration("play_delay")],
-            on_exit=[ExecuteProcess(cmd=play_cmd)],
-            output="screen",
-            condition=condition,
-        )
-    return ExecuteProcess(
-        cmd=["sleep", LaunchConfiguration("play_delay")],
-        on_exit=[ExecuteProcess(cmd=play_cmd)],
-        output="screen",
-    )
 
 
 def get_topic_state_monitor_launch(
