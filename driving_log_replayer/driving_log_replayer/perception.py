@@ -61,6 +61,7 @@ class Criteria(BaseModel):
     CriteriaMethod: (
         Literal[
             "num_tp",
+            "num_gt_tp",
             "label",
             "metrics_score",
             "metrics_score_maph",
