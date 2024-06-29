@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from builtin_interfaces.msg import Time
 import json
 from pathlib import Path
 
@@ -495,7 +494,7 @@ class FrameDescriptionWriter:
                     fn_gt,
                 ),  # Assume gt has no covariance
                 **FrameDescriptionWriter.dynamic_object_result_to_error_description(
-                    fn_gt,
+                    None,
                 ),  # Assume gt has no error
             }
             assert FrameDescriptionWriter.is_object_structure_valid(gt_fn_description), (
