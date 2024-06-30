@@ -282,6 +282,15 @@ def fill_xyzw(tuple_: tuple[float, float, float, float]) -> dict:
     }
 
 
+def fill_xyzw_quat(q: Quaternion) -> dict:
+    return {
+        "x": q.x,
+        "y": q.y,
+        "z": q.z,
+        "w": q.w,
+    }
+
+
 # utils for writing each perception frame result to a file
 class FrameDescriptionWriter:
     schema: dict = None
@@ -309,13 +318,12 @@ class FrameDescriptionWriter:
     def object_to_description(obj: ObjectType | None) -> dict:
         if obj is None:
             return {}
-        quat = obj.state.orientation.q.tolist()
         return {
             "label": obj.semantic_label.name,
             "uuid": obj.uuid,
             "position": fill_xyz(obj.state.position),
             "velocity": fill_xyz(obj.state.velocity),
-            "orientation": fill_xyzw(tuple(quat)),  # quaternion to list
+            "orientation": fill_xyzw_quat(obj.state.orientation.q),  # pyQuaternion to dict
             "shape": fill_xyz(obj.state.size),
         }
 
