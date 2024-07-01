@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import launch
+from launch import LaunchDescription
+from launch.actions import OpaqueFunction
 
 import driving_log_replayer.launch_common as cmn
 
-RECORD_TOPIC_REGEX = """^/clock$\
-|^/tf$\
+RECORD_TOPIC_REGEX = """^/tf$\
 |^/diagnostics$\
 |^/localization/pose_estimator/transform_probability$\
 |^/localization/pose_estimator/nearest_voxel_transformation_likelihood$\
@@ -29,35 +29,31 @@ RECORD_TOPIC_REGEX = """^/clock$\
 """
 
 
-def generate_launch_description() -> launch.LaunchDescription:
+def generate_launch_description() -> LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
-    fitter_launch = cmn.get_map_height_fitter(launch_service="true")
-    autoware_launch = cmn.get_autoware_launch(
-        perception="false",
-        pose_source="ndt",
-        twist_source="gyro_odom",
-    )
-    rviz_node = cmn.get_rviz("localization.rviz")
-    evaluator_node = cmn.get_evaluator_node("localization")
-    player = cmn.get_player()
-    recorder, recorder_override = cmn.get_regex_recorders(
-        "localization.qos.yaml",
-        RECORD_TOPIC_REGEX,
-    )
-    topic_monitor = cmn.get_topic_state_monitor_launch(
-        "localization_topics.yaml",
-    )
-
-    return launch.LaunchDescription(
+    autoware_additional_args = {
+        "perception": "false",
+        "planning": "false",
+        "control": "false",
+        "pose_source": "ndt",
+        "twist_source": "gyro_odom",
+    }
+    return LaunchDescription(
         [
             *launch_arguments,
-            rviz_node,
-            autoware_launch,
-            fitter_launch,
-            evaluator_node,
-            player,
-            recorder,
-            recorder_override,
-            topic_monitor,
+            OpaqueFunction(function=cmn.ensure_arg_compatibility),
+            OpaqueFunction(function=cmn.launch_rviz, args=["localization.rviz"]),
+            OpaqueFunction(function=cmn.launch_autoware, args=[autoware_additional_args]),
+            OpaqueFunction(function=cmn.launch_map_height_fitter),
+            OpaqueFunction(function=cmn.launch_evaluator_node),
+            OpaqueFunction(function=cmn.launch_bag_player),
+            OpaqueFunction(
+                function=cmn.launch_bag_recorder,
+                args=["localization.qos.yaml", RECORD_TOPIC_REGEX],
+            ),
+            OpaqueFunction(
+                function=cmn.launch_topic_state_monitor,
+                args=["localization_topics.yaml"],
+            ),
         ],
     )
