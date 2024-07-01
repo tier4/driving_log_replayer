@@ -95,7 +95,7 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     scenario_path = Path(conf["scenario_path"])
     with scenario_path.open() as scenario_file:
         yaml_obj = yaml.safe_load(scenario_file)
-    for k, v in yaml_obj["Evaluation"]["Datasets"][conf["dataset_index"]].items():
+    for k, v in yaml_obj["Evaluation"]["Datasets"][int(conf["dataset_index"])].items():
         dataset_path_str = expandvars(k)
         map_path_str = expandvars(v["LocalMapPath"])
         conf["vehicle_id"] = v["VehicleId"]
@@ -200,23 +200,21 @@ def launch_bag_player(
     additional_argument: list | None = None,
 ) -> IncludeLaunchDescription:
     conf = context.launch_configurations
-    play_cmd = (
-        [
-            "ros2",
-            "bag",
-            "play",
-            conf["input_bag"],
-            "--delay",
-            conf["play_delay"],
-            "--rate",
-            conf["play_rate"],
-            "--clock",
-            "200",
-        ],
-    )
+    play_cmd = [
+        "ros2",
+        "bag",
+        "play",
+        conf["input_bag"],
+        "--delay",
+        conf["play_delay"],
+        "--rate",
+        conf["play_rate"],
+        "--clock",
+        "200",
+    ]
     if additional_argument is not None and isinstance(additional_argument, list):
         play_cmd.extend(additional_argument)
-    bag_player = ExecuteProcess(play_cmd, output="screen")
+    bag_player = ExecuteProcess(cmd=play_cmd, output="screen")
     return [bag_player]
 
 
