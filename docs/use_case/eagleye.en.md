@@ -67,12 +67,12 @@ State the information required to run the simulation.
 
 The following example shows the topic list available in evaluation input rosbag.
 
-| Topic name                      | Data type                                     |
-| ------------------------------- | --------------------------------------------- |
-| /sensing/gnss/ublox/nav_sat_fix | sensor_msgs/msg/NavSatFix                     |
-| /sensing/gnss/ublox/navpvt      | ublox_msgs/msg/NavPVT                         |
-| /sensing/imu/tamagawa/imu_raw   | sensor_msgs/msg/Imu                           |
-| /vehicle/status/velocity_status | autoware_auto_vehicle_msgs/msg/VelocityReport |
+| Topic name                      | Data type                                |
+| ------------------------------- | ---------------------------------------- |
+| /sensing/gnss/ublox/nav_sat_fix | sensor_msgs/msg/NavSatFix                |
+| /sensing/gnss/ublox/navpvt      | ublox_msgs/msg/NavPVT                    |
+| /sensing/imu/tamagawa/imu_raw   | sensor_msgs/msg/Imu                      |
+| /vehicle/status/velocity_status | autoware_vehicle_msgs/msg/VelocityReport |
 
 ### Topics that must NOT be included in the input rosbag
 

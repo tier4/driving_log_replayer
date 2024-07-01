@@ -18,13 +18,10 @@ from pathlib import Path
 from typing import Any
 from typing import TYPE_CHECKING
 
-from autoware_adapi_v1_msgs.srv import InitializeLocalization
-from autoware_auto_perception_msgs.msg import ObjectClassification
-from autoware_auto_perception_msgs.msg import TrafficLight
+from autoware_perception_msgs.msg import ObjectClassification
 from builtin_interfaces.msg import Time as Stamp
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Pose
-from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovariance
 from geometry_msgs.msg import PoseWithCovarianceStamped
 from geometry_msgs.msg import Quaternion
@@ -41,12 +38,12 @@ from rclpy.task import Future
 from rclpy.time import Duration
 from rclpy.time import Time
 from rosidl_runtime_py import message_to_ordereddict
-import simplejson as json
 from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformException
 from tf2_ros import TransformListener
 from tf_transformations import euler_from_quaternion
+from tier4_localization_msgs.srv import InitializeLocalization
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 import yaml
 
@@ -56,7 +53,7 @@ from driving_log_replayer.scenario import InitialPose
 from driving_log_replayer.scenario import load_scenario
 
 if TYPE_CHECKING:
-    from autoware_adapi_v1_msgs.msg import ResponseStatus
+    from autoware_common_msgs.msg import ResponseStatus
 
 
 class DLREvaluator(Node):
@@ -110,9 +107,10 @@ class DLREvaluator(Node):
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
+        # initial pose estimation
         self._initial_pose_running: bool = False
         self._initial_pose_success: bool = False
-        self._initial_pose = self.set_initial_pose()
+        self._initial_pose, self._initial_pose_method = self.set_initial_pose()
         self.start_initialpose_service()
 
         self._current_time = Time().to_msg()
@@ -177,17 +175,20 @@ class DLREvaluator(Node):
             return
         self._initial_pose_client = self.create_client(
             InitializeLocalization,
-            "/api/localization/initialize",
+            "/localization/initialize",
         )
-        self._map_fit_client = self.create_client(
-            PoseWithCovarianceStampedSrv,
-            "/map/map_height_fitter/service",
-        )
-
         while not self._initial_pose_client.wait_for_service(timeout_sec=1.0):
             self.get_logger().warning("initial pose service not available, waiting again...")
-        while not self._map_fit_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().warning("map height fitter service not available, waiting again...")
+
+        if self._initial_pose_method == InitializeLocalization.Request.AUTO:
+            self._map_fit_client = self.create_client(
+                PoseWithCovarianceStampedSrv,
+                "/map/map_height_fitter/service",
+            )
+            while not self._map_fit_client.wait_for_service(timeout_sec=1.0):
+                self.get_logger().warning(
+                    "map height fitter service not available, waiting again...",
+                )
 
     def call_initialpose_service(self) -> None:
         if self._initial_pose is None or self._initial_pose_success or self._initial_pose_running:
@@ -197,17 +198,29 @@ class DLREvaluator(Node):
         )
         self._initial_pose_running = True
         self._initial_pose.header.stamp = self._current_time
-        future_map_fit = self._map_fit_client.call_async(
-            PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose),
-        )
-        future_map_fit.add_done_callback(self.map_fit_cb)
+        if self._initial_pose_method == InitializeLocalization.Request.AUTO:
+            future_map_fit = self._map_fit_client.call_async(
+                PoseWithCovarianceStampedSrv.Request(pose_with_covariance=self._initial_pose),
+            )
+            future_map_fit.add_done_callback(self.map_fit_cb)
+        else:
+            future_direct_init_pose = self._initial_pose_client.call_async(
+                InitializeLocalization.Request(
+                    method=self._initial_pose_method,
+                    pose_with_covariance=[self._initial_pose],
+                ),
+            )
+            future_direct_init_pose.add_done_callback(self.initial_pose_cb)
 
     def map_fit_cb(self, future: Future) -> None:
         result = future.result()
         if result is not None:
             if result.success:
                 future_init_pose = self._initial_pose_client.call_async(
-                    InitializeLocalization.Request(pose=[result.pose_with_covariance]),
+                    InitializeLocalization.Request(
+                        method=self._initial_pose_method,
+                        pose_with_covariance=[result.pose_with_covariance],
+                    ),
                 )
                 future_init_pose.add_done_callback(self.initial_pose_cb)
             else:
@@ -253,27 +266,6 @@ class DLREvaluator(Node):
         PickleWriter(self._pkl_path, save_object)
 
     @classmethod
-    def get_goal_pose_from_t4_dataset(cls, dataset_path: str) -> PoseStamped:
-        ego_pose_json_path = Path(dataset_path, "annotation", "ego_pose.json")
-        with ego_pose_json_path.open() as ego_pose_file:
-            ego_pose_json = json.load(ego_pose_file)
-            last_ego_pose = ego_pose_json[-1]
-            pose = Pose(
-                position=Point(
-                    x=last_ego_pose["translation"][0],
-                    y=last_ego_pose["translation"][1],
-                    z=last_ego_pose["translation"][2],
-                ),
-                orientation=Quaternion(
-                    x=last_ego_pose["rotation"][1],
-                    y=last_ego_pose["rotation"][2],
-                    z=last_ego_pose["rotation"][3],
-                    w=last_ego_pose["rotation"][0],
-                ),
-            )
-            return PoseStamped(header=Header(frame_id="map"), pose=pose)
-
-    @classmethod
     def transform_stamped_with_euler_angle(cls, transform_stamped: TransformStamped) -> dict:
         tf_euler = message_to_ordereddict(transform_stamped)
         euler_angle = euler_from_quaternion(
@@ -291,12 +283,17 @@ class DLREvaluator(Node):
         }
         return tf_euler
 
-    def set_initial_pose(self) -> PoseWithCovarianceStamped | None:
-        if not hasattr(self._scenario.Evaluation, "InitialPose"):
-            return None
-        if self._scenario.Evaluation.InitialPose is None:
-            return None
-        initial_pose: InitialPose = self._scenario.Evaluation.InitialPose
+    def set_initial_pose(self) -> tuple[PoseWithCovarianceStamped | None, int | None]:
+        auto_pose = getattr(self._scenario.Evaluation, "InitialPose", None)
+        direct_pose = getattr(self._scenario.Evaluation, "DirectInitialPose", None)
+        if auto_pose is None and direct_pose is None:
+            return None, None
+        if auto_pose is not None:
+            initial_pose: InitialPose = auto_pose
+            pose_method: int = InitializeLocalization.Request.AUTO
+        if direct_pose is not None:
+            initial_pose: InitialPose = direct_pose
+            pose_method: int = InitializeLocalization.Request.DIRECT
         covariance = np.array(
             [
                 0.25,
@@ -344,7 +341,7 @@ class DLREvaluator(Node):
             ),
             covariance=covariance,
         )
-        return PoseWithCovarianceStamped(header=Header(frame_id="map"), pose=pose)
+        return PoseWithCovarianceStamped(header=Header(frame_id="map"), pose=pose), pose_method
 
     @classmethod
     def get_perception_label_str(cls, classification: ObjectClassification) -> str:
@@ -365,36 +362,10 @@ class DLREvaluator(Node):
         cls,
         array_classification: list[ObjectClassification],
     ) -> ObjectClassification:
-        highest_probability = 0.0
-        highest_classification = None
-        for classification in array_classification:
-            if classification.probability >= highest_probability:
-                highest_probability = classification.probability
-                highest_classification = classification
-        return highest_classification
-
-    @classmethod
-    def get_traffic_light_label_str(cls, light: TrafficLight) -> str:
-        if light.color == TrafficLight.RED:
-            return "red"
-        if light.color == TrafficLight.AMBER:
-            return "yellow"
-        if light.color == TrafficLight.GREEN:
-            return "green"
-        return "unknown"
-
-    @classmethod
-    def get_most_probable_signal(
-        cls,
-        lights: list[TrafficLight],
-    ) -> TrafficLight:
-        highest_probability = 0.0
-        highest_light = None
-        for light in lights:
-            if light.confidence >= highest_probability:
-                highest_probability = light.confidence
-                highest_light = light
-        return highest_light
+        index: int = array_classification.index(
+            max(array_classification, key=lambda x: x.probability),
+        )
+        return array_classification[index]
 
 
 def evaluator_main(func: Callable) -> Callable:

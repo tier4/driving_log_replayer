@@ -29,7 +29,8 @@ from perception_eval.evaluation.result.perception_frame_config import Perception
 import pytest
 
 from driving_log_replayer.scenario import load_sample_scenario
-from driving_log_replayer.traffic_light import Conditions
+from driving_log_replayer.traffic_light import Criteria
+from driving_log_replayer.traffic_light import Filter
 from driving_log_replayer.traffic_light import Perception
 from driving_log_replayer.traffic_light import TrafficLightScenario
 
@@ -39,7 +40,8 @@ def test_scenario() -> None:
         "traffic_light",
         scenario_class=TrafficLightScenario,
     )
-    assert scenario.Evaluation.Conditions.CriteriaMethod == "num_tp"
+    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaMethod == "num_tp"
+    assert scenario.Evaluation.Conditions.Criterion[1].CriteriaLevel == "easy"
 
 
 @pytest.fixture()
@@ -50,6 +52,8 @@ def create_frame_result() -> PerceptionFrameResult:
         "target_labels": target_labels,
         "allow_matching_unknown": True,
         "merge_similar_labels": False,
+        "min_distance": 0.0,
+        "max_distance": 202.0,
         "label_prefix": "traffic_light",
     }
     m_params: dict = {
@@ -87,7 +91,13 @@ def create_frame_result() -> PerceptionFrameResult:
 @pytest.fixture()
 def create_tp_normal() -> Perception:
     return Perception(
-        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="normal"),
+        name="criteria0",
+        condition=Criteria(
+            PassRate=95.0,
+            CriteriaMethod="num_tp",
+            CriteriaLevel="normal",
+            Filter=Filter(Distance=None),
+        ),
         total=99,
         passed=94,
     )
@@ -96,7 +106,13 @@ def create_tp_normal() -> Perception:
 @pytest.fixture()
 def create_tp_hard() -> Perception:
     return Perception(
-        condition=Conditions(PassRate=95.0, CriteriaMethod="num_tp", CriteriaLevel="hard"),
+        name="criteria0",
+        condition=Criteria(
+            PassRate=95.0,
+            CriteriaMethod="num_tp",
+            CriteriaLevel="hard",
+            Filter=Filter(Distance=None),
+        ),
         total=99,
         passed=94,
     )
@@ -108,9 +124,9 @@ def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
         123,
         FrameID.CAM_TRAFFIC_LIGHT_NEAR,
         0.5,
-        Label(TrafficLightLabel.GREEN, "12"),
+        Label(TrafficLightLabel.GREEN, "green"),
     )
-    return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None)
+    return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None, True)  # noqa
 
 
 def test_perception_fail_has_no_object(
@@ -145,14 +161,14 @@ def test_perception_success_tp_normal(
     # score 50.0 >= NORMAL(50.0)
     frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "Traffic Light Perception (Success): 95 / 100 -> 95.00%"
+    assert evaluation_item.summary == "criteria0 (Success): 95 / 100 -> 95.00%"
     assert frame_dict == {
         "PassFail": {
             "Result": {"Total": "Success", "Frame": "Success"},
             "Info": {
-                "TP": 5,
-                "FP": 5,
-                "FN": 0,
+                "TP": "5 [green, green, green, green, green]",
+                "FP": "5 [green, green, green, green, green]",
+                "FN": "0 []",
             },
         },
     }
@@ -176,14 +192,14 @@ def test_perception_fail_tp_normal(
     # score 33.3 < NORMAL(50.0)
     frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Traffic Light Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.summary == "criteria0 (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
         "PassFail": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {
-                "TP": 5,
-                "FP": 10,
-                "FN": 0,
+                "TP": "5 [green, green, green, green, green]",
+                "FP": "10 [green, green, green, green, green, green, green, green, green, green]",
+                "FN": "0 []",
             },
         },
     }
@@ -207,14 +223,14 @@ def test_perception_fail_tp_hard(
     # score 50.0 < HARD(75.0)
     frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Traffic Light Perception (Fail): 94 / 100 -> 94.00%"
+    assert evaluation_item.summary == "criteria0 (Fail): 94 / 100 -> 94.00%"
     assert frame_dict == {
         "PassFail": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
             "Info": {
-                "TP": 5,
-                "FP": 5,
-                "FN": 0,
+                "TP": "5 [green, green, green, green, green]",
+                "FP": "5 [green, green, green, green, green]",
+                "FN": "0 []",
             },
         },
     }

@@ -4,17 +4,8 @@ ScenarioDescription: sample_yabloc
 SensorModel: awsim_sensor_kit
 VehicleModel: sample_vehicle
 VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
+LocalMapPath: $HOME/autoware_map/nishishinjuku_autoware_map
 Evaluation:
   UseCaseName: yabloc
   UseCaseFormatVersion: 0.1.0
-  InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
-    position:
-      x: 81377.53125
-      y: 49916.7734375
-      z: 41.213619232177734
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: 0.30236092596718706
-      w: 0.9531935115433094
+  InitialPose: null

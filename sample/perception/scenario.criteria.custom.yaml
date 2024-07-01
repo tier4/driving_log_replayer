@@ -14,7 +14,7 @@ Evaluation:
   Conditions:
     Criterion:
       - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-        CriteriaMethod: [metrics_score, metrics_score_maph] # Method name of criteria (num_tp/metrics_score/metrics_score_maph)
+        CriteriaMethod: [metrics_score, metrics_score_maph] # Method name of criteria (num_tp/metrics_score/metrics_score_maph/label/velocity_x_error/velocity_y_error/speed_error/yaw_error)
         CriteriaLevel: [10.0, 10.0] # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
         Filter:
           Distance: null # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]

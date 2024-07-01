@@ -2,6 +2,79 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.8 (2024-06-24)
+------------------
+* fix: check DiagnosticArray length (`#493 <https://github.com/tier4/driving_log_replayer/issues/493>`_)
+* fix: unit test (`#494 <https://github.com/tier4/driving_log_replayer/issues/494>`_)
+* Contributors: Hayato Mizushima
+
+2.0.7 (2024-06-21)
+------------------
+* fix: avoid error that `conf_mat_dict` is referenced before assignment (`#490 <https://github.com/tier4/driving_log_replayer/issues/490>`_)
+* Contributors: Kotaro Uetake
+
+2.0.6 (2024-06-20)
+------------------
+* feat: apply `PerceptionAnalysisResult` (`#483 <https://github.com/tier4/driving_log_replayer/issues/483>`_)
+* fix: if there is no objects returns 100.0 (`#486 <https://github.com/tier4/driving_log_replayer/issues/486>`_)
+* Contributors: Kotaro Uetake
+
+2.0.5 (2024-06-11)
+------------------
+* docs: add trouble shooting
+* Contributors: Hayato Mizushima
+
+2.0.4 (2024-06-10)
+------------------
+* feat: add a criteria of yaw error (`#450 <https://github.com/tier4/driving_log_replayer/issues/450>`_)
+* Contributors: Kotaro Uetake
+
+2.0.3 (2024-06-10)
+------------------
+* feat(perception): add support of velocity criteria (`#425 <https://github.com/tier4/driving_log_replayer/issues/425>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Kotaro Uetake
+
+2.0.2 (2024-06-07)
+------------------
+* feat: `#465 <https://github.com/tier4/driving_log_replayer/issues/465>`_ annotaionless metric value (`#467 <https://github.com/tier4/driving_log_replayer/issues/467>`_)
+* Contributors: Hayato Mizushima
+
+2.0.1 (2024-06-07)
+------------------
+* docs: update quick start (`#473 <https://github.com/tier4/driving_log_replayer/issues/473>`_)
+* feat: add rosbag2_storage_mcap (`#475 <https://github.com/tier4/driving_log_replayer/issues/475>`_)
+* Contributors: Hayato Mizushima
+
+2.0.0 (2024-06-06)
+------------------
+* feat!: autoware msg (`#472 <https://github.com/tier4/driving_log_replayer/issues/472>`_)
+* Contributors: Hayato Mizushima
+
+1.18.1 (2024-06-06)
+-------------------
+* docs: update document
+* Contributors: Hayato Mizushima
+
+1.18.0 (2024-06-05)
+-------------------
+* feat: use sim time (`#468 <https://github.com/tier4/driving_log_replayer/issues/468>`_)
+* Contributors: Hayato Mizushima
+
+1.17.0 (2024-05-28)
+-------------------
+* feat: `#389 <https://github.com/tier4/driving_log_replayer/issues/389>`_ set initial pose directly (`#399 <https://github.com/tier4/driving_log_replayer/issues/399>`_)
+* Contributors: Hayato Mizushima
+
+1.16.0 (2024-05-28)
+-------------------
+* chore: rename `FrameID.TRAFFIC_LIGHT` to `FrameID.CAM_TRAFFIC_LIGHT` (`#460 <https://github.com/tier4/driving_log_replayer/issues/460>`_)
+* chore: restore topic name (`#458 <https://github.com/tier4/driving_log_replayer/issues/458>`_)
+* feat: update tlr new interface (`#291 <https://github.com/tier4/driving_log_replayer/issues/291>`_)
+* chore: cli delete json conversion (`#457 <https://github.com/tier4/driving_log_replayer/issues/457>`_)
+* refactor: move function (`#451 <https://github.com/tier4/driving_log_replayer/issues/451>`_)
+* Contributors: Hayato Mizushima, ktro2828
+
 1.15.5 (2024-05-16)
 -------------------
 * feat: set use_perception_online_evaluator=true by default (`#449 <https://github.com/tier4/driving_log_replayer/issues/449>`_)

@@ -24,13 +24,14 @@ from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from pydantic import BaseModel
+from pydantic import model_validator
 from rosidl_runtime_py import message_to_ordereddict
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import InitialPose
+from driving_log_replayer.scenario import InitialPose as InitialPoseModel
 from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
@@ -65,9 +66,17 @@ class Conditions(BaseModel):
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["localization"]
-    UseCaseFormatVersion: Literal["1.2.0"]
+    UseCaseFormatVersion: Literal["1.2.0", "1.3.0"]
     Conditions: Conditions
-    InitialPose: InitialPose | None
+    InitialPose: InitialPoseModel | None = None
+    DirectInitialPose: InitialPoseModel | None = None
+
+    @model_validator(mode="after")
+    def mutually_exclusive(self) -> "Evaluation":
+        if self.InitialPose is not None and self.DirectInitialPose is not None:
+            err_msg = "Expected only one, either `InitialPose` or `DirectInitialPose`, not together"
+            raise ValueError(err_msg)
+        return self
 
 
 class LocalizationScenario(Scenario):

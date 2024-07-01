@@ -17,11 +17,11 @@
 import logging
 from pathlib import Path
 
-from autoware_auto_perception_msgs.msg import DetectedObject
-from autoware_auto_perception_msgs.msg import DetectedObjects
-from autoware_auto_perception_msgs.msg import Shape as MsgShape
-from autoware_auto_perception_msgs.msg import TrackedObject
-from autoware_auto_perception_msgs.msg import TrackedObjects
+from autoware_perception_msgs.msg import DetectedObject
+from autoware_perception_msgs.msg import DetectedObjects
+from autoware_perception_msgs.msg import Shape as MsgShape
+from autoware_perception_msgs.msg import TrackedObject
+from autoware_perception_msgs.msg import TrackedObjects
 from perception_eval.common.object import DynamicObject
 from perception_eval.common.schema import FrameID
 from perception_eval.common.shape import Shape
@@ -143,16 +143,25 @@ class PerceptionEvaluator(DLREvaluator):
             self.get_final_result()
             score_dict = {}
             error_dict = {}
+            conf_mat_dict = {}
             analyzer = PerceptionAnalyzer3D(self.__evaluator.evaluator_config)
             analyzer.add(self.__evaluator.frame_results)
-            score_df, error_df = analyzer.analyze()
-            if score_df is not None:
-                score_dict = score_df.to_dict()
-            if error_df is not None:
+            result = analyzer.analyze()
+            if result.score is not None:
+                score_dict = result.score.to_dict()
+            if result.error is not None:
                 error_dict = (
-                    error_df.groupby(level=0).apply(lambda df: df.xs(df.name).to_dict()).to_dict()
+                    result.error.groupby(level=0)
+                    .apply(lambda df: df.xs(df.name).to_dict())
+                    .to_dict()
                 )
-            final_metrics = {"Score": score_dict, "Error": error_dict}
+            if result.confusion_matrix is not None:
+                conf_mat_dict = result.confusion_matrix.to_dict()
+            final_metrics = {
+                "Score": score_dict,
+                "Error": error_dict,
+                "ConfusionMatrix": conf_mat_dict,
+            }
             self._result.set_final_metrics(final_metrics)
             self._result_writer.write_result(self._result)
 

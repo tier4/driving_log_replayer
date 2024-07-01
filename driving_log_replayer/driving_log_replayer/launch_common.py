@@ -219,6 +219,7 @@ def get_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
         ).as_posix(),
         "-e",
         allowlist,
+        "--use-sim-time",
     ]
 
 

@@ -122,7 +122,7 @@ def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
         0.5,
         Label(AutowareLabel.CAR, "12"),
     )
-    return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None)
+    return DynamicObjectWithPerceptionResult(dynamic_obj_2d, None, True)  # noqa
 
 
 def test_perception_fail_has_no_object(

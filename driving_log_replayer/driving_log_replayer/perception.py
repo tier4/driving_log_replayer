@@ -60,7 +60,18 @@ class Filter(BaseModel):
 class Criteria(BaseModel):
     PassRate: number
     CriteriaMethod: (
-        Literal["num_tp", "label", "metrics_score", "metrics_score_maph"] | list[str] | None
+        Literal[
+            "num_tp",
+            "label",
+            "metrics_score",
+            "metrics_score_maph",
+            "velocity_x_error",
+            "velocity_y_error",
+            "speed_error",
+            "yaw_error",
+        ]
+        | list[str]
+        | None
     ) = None
     CriteriaLevel: (
         Literal["perfect", "hard", "normal", "easy"] | list[str] | number | list[number] | None
@@ -97,10 +108,7 @@ class Perception(EvaluationItem):
             distance_range=self.condition.Filter.Distance,
         )
 
-    def set_frame(
-        self,
-        frame: PerceptionFrameResult,
-    ) -> dict:
+    def set_frame(self, frame: PerceptionFrameResult) -> dict:
         frame_success = "Fail"
         # ret_frame might be filtered frame result or original frame result.
         result, ret_frame = self.criteria.get_result(frame)
