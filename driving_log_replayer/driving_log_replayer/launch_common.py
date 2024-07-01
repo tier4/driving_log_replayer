@@ -111,9 +111,9 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     conf["t4_dataset_path"] = dataset_path.as_posix()
     conf["input_bag"] = dataset_path.joinpath("input_bag").as_posix()
     output_dir = Path(conf["output_dir"])
-    conf["result_json_path"] = output_dir.joinpath("result.json")
-    conf["result_bag_path"] = output_dir.joinpath("result_bag")
-    conf["result_archive_path"] = output_dir.joinpath("result_archive_path")
+    conf["result_json_path"] = output_dir.joinpath("result.json").as_posix()
+    conf["result_bag_path"] = output_dir.joinpath("result_bag").as_posix()
+    conf["result_archive_path"] = output_dir.joinpath("result_archive_path").as_posix()
     conf["use_case"] = yaml_obj["Evaluation"]["UseCaseName"]
     return [
         LogInfo(msg=f"{map_path=}, {dataset_path=}"),
@@ -218,7 +218,7 @@ def launch_bag_player(
     return [bag_player]
 
 
-def launch_bag_recorder(context: LaunchContext, args: list) -> list:
+def launch_bag_recorder(context: LaunchContext) -> list:
     conf = context.launch_configurations
     record_cmd = [
         "ros2",
@@ -226,14 +226,7 @@ def launch_bag_recorder(context: LaunchContext, args: list) -> list:
         "record",
         "-o",
         conf["result_bag_path"],
-        "--qos-profile-overrides-path",
-        Path(
-            get_package_share_directory("driving_log_replayer"),
-            "config",
-            args[0],
-        ).as_posix(),
-        "-e",
-        args[1],
+        "-a",
         "--use-sim-time",
     ]
     return [ExecuteProcess(cmd=record_cmd)]
