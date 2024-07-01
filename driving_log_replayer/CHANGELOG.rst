@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.9 (2024-07-01)
+------------------
 * feat: add support of GT TP criteria (`#500 <https://github.com/tier4/driving_log_replayer/issues/500>`_)
 * Contributors: Kotaro Uetake
 
