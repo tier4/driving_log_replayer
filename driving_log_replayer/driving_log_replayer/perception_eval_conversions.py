@@ -389,7 +389,7 @@ class FrameDescriptionWriter:
                 - "object_type": "GT" | "EST"
                 - "distance_from_ego": float|None # distance from ego vehicle
                 - "label": str
-                - "uuid": str
+                - "uuid": optional[str]
                 - "position": { "x": float, "y": float, "z": float }
                 - "velocity": { "x": float, "y": float, "z": float }
                 - "orientation": { "x": float, "y": float, "z": float, "w": float }
@@ -429,7 +429,7 @@ class FrameDescriptionWriter:
             tp_gt = tp_object.ground_truth_object
             tp_est = tp_object.estimated_object
             gt_distance_bev = (
-                tp_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+                tp_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link and tp_gt else None
             )
             est_distance_bev = (
                 tp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
@@ -458,13 +458,15 @@ class FrameDescriptionWriter:
                 **error_description,
                 **cov_description,
             }
-            assert FrameDescriptionWriter.is_object_structure_valid(gt_tp_description), (
-                "GT TP object description is invalid in file: " + filename
-            )
+            # tp_gt is optional (in the test)
+            if tp_gt:
+                assert FrameDescriptionWriter.is_object_structure_valid(gt_tp_description), (
+                    "GT TP object description is invalid in file: " + filename
+                )
+                gt_descriptions.append(gt_tp_description)
             assert FrameDescriptionWriter.is_object_structure_valid(est_tp_description), (
                 "EST TP object description is invalid in file: " + filename
             )
-            gt_descriptions.append(gt_tp_description)
             est_descriptions.append(est_tp_description)
 
         # for FP objects

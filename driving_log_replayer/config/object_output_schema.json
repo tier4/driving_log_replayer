@@ -21,8 +21,8 @@
       "default": ""
     },
     "uuid": {
-      "type": "string",
-      "default": ""
+      "type": ["string", "null"],
+      "default": null
     },
     "position": {
       "type": "object",
