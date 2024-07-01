@@ -25,7 +25,8 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 以下を用いて評価する
 
-- /localization/pose_estimator/initial_to_result_relative_pose
+- /localization/pose_estimator/exe_time_ms
+- /localization/pose_estimator/iteration_num
 
 ### NDT の可用性
 
@@ -60,11 +61,8 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 
 以下の 3 つの条件を全て満たす場合
 
-1. /localization/pose_estimator/initial_to_result_relative_poseの横方向距離が、シナリオに記述した AllowableDistance 以下
-2. /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
-3. /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
-
-ステップ 1 で取得した横方向距離が/driving_log_replayer/localization/lateral_distance として publish される。
+1. /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
+2. /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
 
 ### 収束異常
 
@@ -94,12 +92,6 @@ Subscribed topics:
 | /tf                                                                  | tf2_msgs/msg/TFMessage                |
 | /localization/util/downsample/pointcloud                             | sensor_msgs::msg::PointCloud2         |
 | /localization/pose_estimator/points_aligned                          | sensor_msgs::msg::PointCloud2         |
-
-Published topics:
-
-| topic 名                                            | データ型                         |
-| --------------------------------------------------- | -------------------------------- |
-| /driving_log_replayer/localization/lateral_distance | example_interfaces::msg::Float64 |
 
 ## 評価ノードが使用する Service 名とデータ型
 
@@ -183,8 +175,6 @@ Result は収束性、信頼度、可用性のすべてをパスしていれば 
   "Convergence": {
     "Result": { "Total": "Success or Fail", "Frame": "Success or Fail" },
     "Info": {
-      "LateralDistance": "initial_to_result_relative_pose.pose.position.y",
-      "HorizontalDistance": "initial_to_result_relative_pose.pose.positionの水平距離。参考値",
       "ExeTimeMs": "ndtの計算にかかった時間",
       "IterationNum": "ndtの再計算回数"
     }

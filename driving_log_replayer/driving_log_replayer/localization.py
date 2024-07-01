@@ -14,15 +14,11 @@
 
 from dataclasses import dataclass
 from dataclasses import field
-from functools import singledispatchmethod
 import statistics
 from typing import ClassVar
 from typing import Literal
 
 from diagnostic_msgs.msg import DiagnosticStatus
-from example_interfaces.msg import Float64
-from geometry_msgs.msg import PoseStamped
-import numpy as np
 from pydantic import BaseModel
 from pydantic import model_validator
 from rosidl_runtime_py import message_to_ordereddict
@@ -36,18 +32,7 @@ from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 
 
-def calc_pose_lateral_distance(relative_pose: PoseStamped) -> float:
-    return relative_pose.pose.position.y
-
-
-def calc_pose_horizontal_distance(relative_pose: PoseStamped) -> float:
-    x = relative_pose.pose.position.x
-    y = relative_pose.pose.position.y
-    return np.sqrt(np.power(x, 2) + np.power(y, 2))
-
-
 class ConvergenceCondition(BaseModel):
-    AllowableDistance: number
     AllowableExeTimeMs: number
     AllowableIterationNum: int
     PassRate: number
@@ -89,25 +74,19 @@ class Convergence(EvaluationItem):
 
     def set_frame(
         self,
-        lateral_dist: float,
-        horizontal_dist: float,
         map_to_baselink: dict,
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,
-    ) -> tuple[dict, Float64]:
+    ) -> dict:
         self.condition: ConvergenceCondition
         self.total += 1
         frame_success = "Fail"
-
-        msg_lateral_dist = Float64()
-        msg_lateral_dist.data = lateral_dist
 
         exe_time_ms = exe_time.data
         iteration = iteration_num.data
 
         if (
-            abs(lateral_dist) <= self.condition.AllowableDistance
-            and exe_time_ms <= self.condition.AllowableExeTimeMs
+            exe_time_ms <= self.condition.AllowableExeTimeMs
             and iteration <= self.condition.AllowableIterationNum
         ):
             self.passed += 1
@@ -122,13 +101,11 @@ class Convergence(EvaluationItem):
             "Convergence": {
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": {
-                    "LateralDistance": lateral_dist,
-                    "HorizontalDistance": horizontal_dist,
                     "ExeTimeMs": exe_time_ms,
                     "IterationNum": iteration,
                 },
             },
-        }, msg_lateral_dist
+        }
 
 
 @dataclass
@@ -225,11 +202,9 @@ class LocalizationResult(ResultBase):
             self._success = False
             self._summary = f"Failed: {summary_str}"
 
-    @singledispatchmethod
     def set_frame(self) -> None:
-        raise NotImplementedError
+        pass
 
-    @set_frame.register
     def set_reliability_frame(
         self,
         msg: Float32Stamped,
@@ -239,26 +214,19 @@ class LocalizationResult(ResultBase):
         self._frame = self.__reliability.set_frame(msg, map_to_baselink, reference)
         self.update()
 
-    @set_frame.register
     def set_convergence_frame(
         self,
-        lateral_dist: float,
-        horizontal_dist: float,
         map_to_baselink: dict,
         exe_time: Float32Stamped,
         iteration_num: Int32Stamped,
-    ) -> Float64:
-        self._frame, msg_lateral_dist = self.__convergence.set_frame(
-            lateral_dist,
-            horizontal_dist,
+    ) -> None:
+        self._frame = self.__convergence.set_frame(
             map_to_baselink,
             exe_time,
             iteration_num,
         )
         self.update()
-        return msg_lateral_dist
 
-    @set_frame.register
     def set_ndt_availability_frame(self, diag_status: DiagnosticStatus) -> None:
         self._frame = self.__availability.set_frame(diag_status)
         self.update()
