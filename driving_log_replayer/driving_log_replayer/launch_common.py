@@ -36,13 +36,19 @@ import yaml
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
 """
-ros2 launch driving_log_replayer localization.launch.py
-map_path:=/home/hyt/map/oss シナリオに書いてある、webautoだと、パスを変えるので、map_path指定されたら強制上書き
-vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit　シナリオに書いてある
-vehicle_id:=default scenario_path:=/home/hyt/dlr_data/aw/localization/sample/scenario.yaml
-result_json_path:=/home/hyt/out/aw/localization/2024-0605-181534/sample/result.json outputを指定すれば自動で作れる
-input_bag:=/home/hyt/dlr_data/aw/localization/sample/input_bag datasetを書いてあれば自動で
-result_bag_path:=/home/hyt/out/aw/localization/2024-0605-181534/sample/result_bag
+ros2 launch driving_log_replayer perception.launch.py
+[x]map_path:=/home/hyt/map/oss
+[x]vehicle_model:=sample_vehicle
+[x]sensor_model:=sample_sensor_kit
+[x]vehicle_id:=default
+[x]scenario_path:=/home/hyt/dlr_data/auto/perception/sample/scenario.yaml
+[x]input_bag:=/home/hyt/dlr_data/auto/perception/sample/t4_dataset/sample_dataset/input_bag
+[x]t4_dataset_path:=/home/hyt/dlr_data/auto/perception/sample/t4_dataset/sample_dataset
+[x]result_json_path:=/home/hyt/out/auto/perception/2024-0628-161428/sample/sample_dataset/result.json
+[x]result_bag_path:=/home/hyt/out/auto/perception/2024-0628-161428/sample/sample_dataset/result_bag
+[x]result_archive_path:=/home/hyt/out/auto/perception/2024-0628-161428/sample/sample_dataset/result_archive
+
+sensing:=False
 """
 
 
@@ -77,18 +83,9 @@ def get_launch_arguments() -> list:
     )
     add_launch_arg("scenario_path", description="scenario path")
     add_launch_arg("output_dir", description="output directory")
+    add_launch_arg("dataset_index", default_value="0", description="index number of dataset")
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
     add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
-    add_launch_arg(
-        "override_record_topics",
-        default_value="false",
-        description="flag of override record topics",
-    )
-    add_launch_arg(
-        "override_topics_regex",
-        default_value="",
-        description="use allowlist. Ex: override_topics_regex:=\^/clock\$\|\^/tf\$\|/sensing/lidar/concatenated/pointcloud",  # noqa
-    )
 
     return launch_arguments
 
@@ -98,9 +95,10 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     scenario_path = Path(conf["scenario_path"])
     with scenario_path.open() as scenario_file:
         yaml_obj = yaml.safe_load(scenario_file)
-    for k, v in yaml_obj["Evaluation"]["Datasets"][0].items():
+    for k, v in yaml_obj["Evaluation"]["Datasets"][conf["dataset_index"]].items():
         dataset_path_str = expandvars(k)
         map_path_str = expandvars(v["LocalMapPath"])
+        conf["vehicle_id"] = v["VehicleId"]
     map_path = Path(map_path_str)
     if not map_path.is_absolute():
         map_path = scenario_path.parent.joinpath(map_path)
@@ -108,9 +106,14 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     if not dataset_path.is_absolute():
         dataset_path = scenario_path.parent.joinpath(dataset_path)
     conf["map_path"] = map_path.as_posix()
-    conf["dataset_path"] = dataset_path.as_posix()
-    # add configurations
+    conf["vehicle_model"] = yaml_obj["VehicleModel"]
+    conf["sensor_model"] = yaml_obj["SensorModel"]
+    conf["t4_dataset_path"] = dataset_path.as_posix()
     conf["input_bag"] = dataset_path.joinpath("input_bag").as_posix()
+    output_dir = Path(conf["output_dir"])
+    conf["result_json_path"] = output_dir.joinpath("result.json")
+    conf["result_bag_path"] = output_dir.joinpath("result_bag")
+    conf["result_archive_path"] = output_dir.joinpath("result_archive_path")
     conf["use_case"] = yaml_obj["Evaluation"]["UseCaseName"]
     return [
         LogInfo(msg=f"{map_path=}, {dataset_path=}"),
@@ -118,19 +121,17 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
 
 
 def launch_autoware(context: LaunchContext) -> list:
+    conf = context.launch_configurations
     autoware_launch_file = Path(
         get_package_share_directory("autoware_launch"),
         "launch",
         "logging_simulator.launch.xml",
     )
     launch_args = {
-        "map_path": conf.get(
-            "map_path",
-            yaml_obj["Evaluation"]["Datasets"][0]["sample_dataset"]["LocalMapPath"],
-        ),
-        "vehicle_model": conf.get("vehicle_model", yaml_obj["VehicleModel"]),
-        "sensor_model": conf.get("sensor_model", yaml_obj["SensorModel"]),
-        "vehicle_id": conf.get("vehicle_id", yaml_obj["VehicleId"]),
+        "map_path": conf["map_path"],
+        "vehicle_model": conf["vehicle_model"],
+        "sensor_model": conf["sensor_model"],
+        "vehicle_id": conf["vehicle_id"],
         "launch_vehicle_interface": "true",
         # "rviz": "false",
     }
@@ -169,35 +170,25 @@ def launch_map_height_fitter(context: LaunchContext) -> list:
 
 def launch_evaluator_node(context: LaunchContext, addition_parameter: dict | None) -> list:
     conf = context.launch_configurations
-    scenario_path = Path(conf["scenario_path"])
-    with scenario_path.open() as scenario_file:
-        yaml_obj: dict = yaml.safe_load(scenario_file)
-
     params = {
         "use_sim_time": True,
         "scenario_path": conf["scenario_path"],
-        "result_json_path": conf.get("result_json_path", Path(conf["output_dir"], "result.jsonl")),
-        "t4_dataset_path": conf.get(
-            "t4_dataset_path",
-            yaml_obj["Evaluation"]["Datasets"]["0"]["sample_dataset"],
-        ),
-        "result_archive_path": conf.get(
-            "result_archive_path",
-            Path(conf["output_dir"], "result_archive"),
-        ),
+        "t4_dataset_path": conf["t4_dataset_path"],
+        "result_json_path": conf["result_json_path"],
+        "result_archive_path": conf["result_archive_path"],
     }
     if addition_parameter is not None and isinstance(addition_parameter, dict):
         params.update(addition_parameter)
 
-    node_name = conf["dlr_use_case"] + "_evaluator_node.py"
+    evaluator_name = conf["use_case"] + "_evaluator"
 
     return [
         Node(
             package="driving_log_replayer",
             namespace="/driving_log_replayer",
-            executable=node_name,
+            executable=evaluator_name + "_node.py",
             output="screen",
-            name=conf["dlr_use_case"] + "_evaluator",
+            name=evaluator_name,
             parameters=[params],
             on_exit=ShutdownOnce(),
         ),
@@ -209,13 +200,12 @@ def launch_bag_player(
     additional_argument: list | None = None,
 ) -> IncludeLaunchDescription:
     conf = context.launch_configurations
-    input_bag = conf.get("input_bag", Path(conf["dataset_path"], "input_bag").as_posix())
     play_cmd = (
         [
             "ros2",
             "bag",
             "play",
-            input_bag,
+            conf["input_bag"],
             "--delay",
             conf["play_delay"],
             "--rate",
@@ -230,55 +220,31 @@ def launch_bag_player(
     return [bag_player]
 
 
-def launch_recorder(context: LaunchContext) -> list:
+def launch_bag_recorder(context: LaunchContext, args: list) -> list:
     conf = context.launch_configurations
     record_cmd = [
         "ros2",
         "bag",
         "record",
         "-o",
-        conf("result_bag_path"),
+        conf["result_bag_path"],
         "--qos-profile-overrides-path",
         Path(
             get_package_share_directory("driving_log_replayer"),
             "config",
-            record_config_name,
+            args[0],
         ).as_posix(),
         "-e",
-        allowlist,
+        args[1],
         "--use-sim-time",
     ]
     return [ExecuteProcess(cmd=record_cmd)]
 
 
-def get_regex_recorder(record_config_name: str, allowlist: str) -> ExecuteProcess:
-    record_cmd = get_regex_record_cmd(record_config_name, allowlist)
-    return ExecuteProcess(cmd=record_cmd)
-
-
-def get_regex_recorders(
-    record_config_name: str,
-    allowlist: str,
-) -> tuple[ExecuteProcess, ExecuteProcess]:
-    record_cmd = get_regex_record_cmd(record_config_name, allowlist)
-    record_proc = ExecuteProcess(
-        cmd=record_cmd,
-        condition=UnlessCondition(LaunchConfiguration("override_record_topics")),
-    )
-    record_override_cmd = get_regex_record_cmd(
-        record_config_name,
-        LaunchConfiguration("override_topics_regex"),
-    )
-    record_override_proc = ExecuteProcess(
-        cmd=record_override_cmd,
-        condition=IfCondition(LaunchConfiguration("override_record_topics")),
-    )
-    return record_proc, record_override_proc
-
-
 def get_topic_state_monitor_launch(
+    context: LaunchContext,  # noqa
     topic_monitor_config: str,
-) -> launch.actions.IncludeLaunchDescription:
+) -> list:
     # component_state_monitor launch
     component_state_monitor_launch_file = Path(
         get_package_share_directory("component_state_monitor"),
@@ -290,12 +256,14 @@ def get_topic_state_monitor_launch(
         "config",
         topic_monitor_config,
     )
-    return launch.actions.IncludeLaunchDescription(
-        launch.launch_description_sources.AnyLaunchDescriptionSource(
-            component_state_monitor_launch_file.as_posix(),
+    return [
+        IncludeLaunchDescription(
+            AnyLaunchDescriptionSource(
+                component_state_monitor_launch_file.as_posix(),
+            ),
+            launch_arguments={
+                "file": topic_monitor_config_path.as_posix(),
+                "mode": "logging_simulation",
+            }.items(),
         ),
-        launch_arguments={
-            "file": topic_monitor_config_path.as_posix(),
-            "mode": "logging_simulation",
-        }.items(),
-    )
+    ]
