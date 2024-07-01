@@ -16,20 +16,14 @@ from os.path import expandvars
 from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
-import launch
 from launch import LaunchContext
 from launch.actions import DeclareLaunchArgument
-from launch.actions import EmitEvent
 from launch.actions import ExecuteProcess
 from launch.actions import GroupAction
 from launch.actions import IncludeLaunchDescription
 from launch.actions import LogInfo
-from launch.actions import OpaqueFunction
 from launch.conditions import IfCondition
-from launch.conditions import UnlessCondition
-from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import AnyLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 import yaml
 
