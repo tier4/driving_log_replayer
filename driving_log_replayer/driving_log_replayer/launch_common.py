@@ -76,16 +76,16 @@ def get_launch_arguments() -> list:
             DeclareLaunchArgument(name, default_value=default_value, description=description),
         )
 
-    add_launch_arg(
-        "with_autoware",
-        default_value="true",
-        description="Whether to launch autoware or not",
-    )
     add_launch_arg("scenario_path", description="scenario path")
     add_launch_arg("output_dir", description="output directory")
     add_launch_arg("dataset_index", default_value="0", description="index number of dataset")
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
     add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
+    add_launch_arg(
+        "with_autoware",
+        default_value="true",
+        description="Whether to launch autoware or not",
+    )
 
     return launch_arguments
 
@@ -120,7 +120,7 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     ]
 
 
-def launch_autoware(context: LaunchContext) -> list:
+def launch_autoware(context: LaunchContext, additional_args: dict | None = None) -> list:
     conf = context.launch_configurations
     autoware_launch_file = Path(
         get_package_share_directory("autoware_launch"),
@@ -133,8 +133,10 @@ def launch_autoware(context: LaunchContext) -> list:
         "sensor_model": conf["sensor_model"],
         "vehicle_id": conf["vehicle_id"],
         "launch_vehicle_interface": "true",
-        # "rviz": "false",
+        "rviz": "false",
     }
+    if isinstance(additional_args, dict):
+        launch_args |= additional_args
     return [
         GroupAction(
             [
@@ -168,7 +170,7 @@ def launch_map_height_fitter(context: LaunchContext) -> list:
     ]
 
 
-def launch_evaluator_node(context: LaunchContext, addition_parameter: dict | None) -> list:
+def launch_evaluator_node(context: LaunchContext, addition_parameter: dict | None = None) -> list:
     conf = context.launch_configurations
     params = {
         "use_sim_time": True,
@@ -177,8 +179,8 @@ def launch_evaluator_node(context: LaunchContext, addition_parameter: dict | Non
         "result_json_path": conf["result_json_path"],
         "result_archive_path": conf["result_archive_path"],
     }
-    if addition_parameter is not None and isinstance(addition_parameter, dict):
-        params.update(addition_parameter)
+    if isinstance(addition_parameter, dict):
+        params |= addition_parameter
 
     evaluator_name = conf["use_case"] + "_evaluator"
 
@@ -197,7 +199,6 @@ def launch_evaluator_node(context: LaunchContext, addition_parameter: dict | Non
 
 def launch_bag_player(
     context: LaunchContext,
-    additional_argument: list | None = None,
 ) -> IncludeLaunchDescription:
     conf = context.launch_configurations
     play_cmd = [
@@ -212,13 +213,22 @@ def launch_bag_player(
         "--clock",
         "200",
     ]
-    if additional_argument is not None and isinstance(additional_argument, list):
-        play_cmd.extend(additional_argument)
+    remap_list = ["--remap"]
+    if conf.get("sensing", "true") == "true":
+        remap_list.append(
+            "/sensing/lidar/concatenated/pointcloud:=/dlr/unused/concatenated/pointcloud",
+        )
+    if conf.get("localization", "true") == "true":
+        remap_list.append(
+            "/tf:=/dlr/unused/tf",
+        )
+    if len(remap_list) != 1:
+        play_cmd.extend(remap_list)
     bag_player = ExecuteProcess(cmd=play_cmd, output="screen")
     return [bag_player]
 
 
-def launch_bag_recorder(context: LaunchContext) -> list:
+def launch_bag_recorder(context: LaunchContext, qos_file_name: str, allow_list: str) -> list:
     conf = context.launch_configurations
     record_cmd = [
         "ros2",
@@ -226,15 +236,42 @@ def launch_bag_recorder(context: LaunchContext) -> list:
         "record",
         "-o",
         conf["result_bag_path"],
-        "-a",
+        "--qos-profile-overrides-path",
+        Path(
+            get_package_share_directory("driving_log_replayer"),
+            "config",
+            qos_file_name,
+        ).as_posix(),
+        "-e",
+        allow_list,
         "--use-sim-time",
     ]
     return [ExecuteProcess(cmd=record_cmd)]
 
 
-def get_topic_state_monitor_launch(
+def launch_rviz(context: LaunchContext, config_name: str) -> list:
+    conf = context.launch_configurations
+    rviz_config_dir = Path(
+        get_package_share_directory("driving_log_replayer"),
+        "config",
+        config_name,
+    )
+    return [
+        Node(
+            package="rviz2",
+            executable="rviz2",
+            name="rviz2",
+            arguments=["-d", rviz_config_dir.as_posix()],
+            parameters=[{"use_sim_time": True}],
+            output="screen",
+            condition=IfCondition(conf.get("rviz", "true")),
+        ),
+    ]
+
+
+def launch_topic_state_monitor(
     context: LaunchContext,  # noqa
-    topic_monitor_config: str,
+    config_name: str,
 ) -> list:
     # component_state_monitor launch
     component_state_monitor_launch_file = Path(
@@ -245,7 +282,7 @@ def get_topic_state_monitor_launch(
     topic_monitor_config_path = Path(
         get_package_share_directory("driving_log_replayer"),
         "config",
-        topic_monitor_config,
+        config_name,
     )
     return [
         IncludeLaunchDescription(
