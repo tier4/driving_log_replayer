@@ -1,4 +1,4 @@
-# Copyright (c) 2023 TIER IV.inc
+# Copyright (c) 2024 TIER IV.inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,61 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import launch
-from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
-from launch.conditions import UnlessCondition
+
+from launch import LaunchDescription
+from launch.actions import OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 
 import driving_log_replayer.launch_common as cmn
 
-RECORD_TOPIC_REGEX = """^/clock$\
-|^/tf$\
+RECORD_TOPIC_REGEX = """^/tf$\
 |^/sensing/camera/camera[67]/image_raw/compressed$\
 |^/perception/.*/traffic_signals$\
 |^/driving_log_replayer/.*\
 """
 
 
-def generate_launch_description() -> launch.LaunchDescription:
+def generate_launch_description() -> LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
-    launch_arguments.append(DeclareLaunchArgument("sensing", default_value="false"))
-    autoware_launch = cmn.get_autoware_launch(
-        sensing=LaunchConfiguration("sensing"),
-        localization="false",
-    )
-    rviz_node = cmn.get_rviz("perception.rviz")
-    evaluator_node = cmn.get_evaluator_node(
-        "traffic_light",
-        addition_parameter={"map_path": LaunchConfiguration("map_path")},
-    )
-
-    player_normal = cmn.get_player(
-        condition=UnlessCondition(LaunchConfiguration("sensing")),
-    )
-
-    player_remap = cmn.get_player(
-        additional_argument=[
-            "--remap",
-            "/sensing/lidar/concatenated/pointcloud:=/driving_log_replayer/concatenated/pointcloud",
-        ],
-        condition=IfCondition(LaunchConfiguration("sensing")),
-    )
-
-    recorder, recorder_override = cmn.get_regex_recorders(
-        "perception.qos.yaml",
-        RECORD_TOPIC_REGEX,
-    )
-
-    return launch.LaunchDescription(
+    # launchSensingの扱いをどうするか。
+    node_additional_params = {
+        "map_path": LaunchConfiguration("map_path"),
+    }
+    autoware_additional_args = {
+        "localization": "false",
+        "planning": "false",
+        "control": "false",
+    }
+    return LaunchDescription(
         [
             *launch_arguments,
-            rviz_node,
-            autoware_launch,
-            evaluator_node,
-            player_normal,
-            player_remap,
-            recorder,
-            recorder_override,
+            OpaqueFunction(function=cmn.ensure_arg_compatibility),
+            OpaqueFunction(function=cmn.launch_rviz, args=["perception.rviz"]),
+            OpaqueFunction(function=cmn.launch_autoware, args=[autoware_additional_args]),
+            OpaqueFunction(function=cmn.launch_evaluator_node, args=[node_additional_params]),
+            OpaqueFunction(function=cmn.launch_bag_player),
+            OpaqueFunction(
+                function=cmn.launch_bag_recorder,
+                args=["perception.qos.yaml", RECORD_TOPIC_REGEX],
+            ),
         ],
     )
