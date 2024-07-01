@@ -35,22 +35,6 @@ import yaml
 
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
-"""
-ros2 launch driving_log_replayer perception.launch.py
-[x]map_path:=/home/hyt/map/oss
-[x]vehicle_model:=sample_vehicle
-[x]sensor_model:=sample_sensor_kit
-[x]vehicle_id:=default
-[x]scenario_path:=/home/hyt/dlr_data/auto/perception/sample/scenario.yaml
-[x]input_bag:=/home/hyt/dlr_data/auto/perception/sample/t4_dataset/sample_dataset/input_bag
-[x]t4_dataset_path:=/home/hyt/dlr_data/auto/perception/sample/t4_dataset/sample_dataset
-[x]result_json_path:=/home/hyt/out/auto/perception/2024-0628-161428/sample/sample_dataset/result.json
-[x]result_bag_path:=/home/hyt/out/auto/perception/2024-0628-161428/sample/sample_dataset/result_bag
-[x]result_archive_path:=/home/hyt/out/auto/perception/2024-0628-161428/sample/sample_dataset/result_archive
-
-sensing:=False
-"""
-
 
 def get_launch_arguments() -> list:
     """
@@ -61,9 +45,6 @@ def get_launch_arguments() -> list:
     output_dir
     play_rate
     play_delay
-    override_record_topics
-    override_topics_regex
-
     """
     launch_arguments = []
 
