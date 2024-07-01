@@ -328,7 +328,7 @@ class FrameDescriptionWriter:
             "uuid": obj.uuid,
             "position": fill_xyz(obj.state.position),
             "velocity": fill_xyz(obj.state.velocity),
-            "orientation": fill_xyzw_quat(obj.state.orientation.q),  # pyQuaternion to dict
+            "orientation": fill_xyzw_quat(obj.state.orientation),  # pyQuaternion to dict
             "shape": fill_xyz(obj.state.size),
         }
 
@@ -336,9 +336,11 @@ class FrameDescriptionWriter:
     def dynamic_object_result_to_error_description(
         obj: DynamicObjectWithPerceptionResult | None,
     ) -> dict:
-        if obj is None:
-            keys = ["pose_error", "heading_error", "velocity_error", "bev_error"]
-            return {key: None for key in keys}
+        null_return = {
+            key: None for key in ["pose_error", "heading_error", "velocity_error", "bev_error"]
+        }
+        if obj is None or obj.ground_truth_object is None:
+            return null_return
 
         pose_error = calc_position_error(
             obj.ground_truth_object.state.position,
