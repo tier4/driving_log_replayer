@@ -44,7 +44,6 @@ def generate_launch_description() -> LaunchDescription:
             OpaqueFunction(function=cmn.ensure_arg_compatibility),
             OpaqueFunction(function=cmn.launch_rviz, args=["perception.rviz"]),
             OpaqueFunction(function=cmn.launch_autoware, args=[autoware_additional_args]),
-            OpaqueFunction(function=cmn.launch_map_height_fitter),
             OpaqueFunction(function=cmn.launch_evaluator_node),
             OpaqueFunction(function=cmn.launch_bag_player),
             OpaqueFunction(
