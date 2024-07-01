@@ -27,7 +27,7 @@ from driving_log_replayer.scenario import Scenario
 
 class Conditions(BaseModel):
     PassRate: number
-    CriteriaMethod: Literal["num_tp", "metrics_score"] | None = None
+    CriteriaMethod: Literal["num_tp", "num_gt_tp", "label", "metrics_score"] | None = None
     CriteriaLevel: Literal["perfect", "hard", "normal", "easy"] | number | None = None
     TargetCameras: dict[str, int]
 
