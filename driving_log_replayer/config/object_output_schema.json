@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["TP", "FP", "FN"],
+      "default": "TP"
+    },
+    "object_type": {
+      "type": "string",
+      "enum": ["GT", "EST"],
+      "default": "GT"
+    },
+    "distance_from_ego": {
+      "type": ["number", "null"],
+      "default": null
+    },
+    "label": {
+      "type": "string",
+      "default": ""
+    },
+    "uuid": {
+      "type": ["string", "null"],
+      "default": null
+    },
+    "position": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"]
+    },
+    "velocity": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"]
+    },
+    "orientation": {
+      "type": "object",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" },
+        "w": { "type": "number" }
+      },
+      "required": ["x", "y", "z", "w"]
+    },
+    "shape": {
+      "type": ["object", "null"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"],
+      "default": null
+    },
+    "pose_error": {
+      "type": ["object", "null"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"],
+      "default": null
+    },
+    "heading_error": {
+      "type": ["object", "null"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"],
+      "default": null
+    },
+    "velocity_error": {
+      "type": ["object", "null"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "z": { "type": "number" }
+      },
+      "required": ["x", "y", "z"],
+      "default": null
+    },
+    "bev_error": {
+      "type": ["number", "null"],
+      "default": null
+    },
+    "pose_covariance": {
+      "type": ["array", "null"],
+      "items": { "type": "number" },
+      "default": []
+    },
+    "twist_covariance": {
+      "type": ["array", "null"],
+      "items": { "type": "number" },
+      "default": []
+    }
+  },
+  "required": ["status", "object_type", "label", "uuid", "position", "velocity", "orientation"]
+}
