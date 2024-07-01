@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add support of GT TP criteria (`#500 <https://github.com/tier4/driving_log_replayer/issues/500>`_)
+* Contributors: Kotaro Uetake
+
 2.0.8 (2024-06-24)
 ------------------
 * fix: check DiagnosticArray length (`#493 <https://github.com/tier4/driving_log_replayer/issues/493>`_)
