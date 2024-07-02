@@ -6,10 +6,6 @@ VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: localization
   UseCaseFormatVersion: 2.0.0
-  Datasets:
-    - sample_dataset: # must be 1 dataset
-        VehicleId: default # Specify VehicleId for each data set.
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
     Convergence:
       AllowableDistance: 0.2 # Lateral distance to be considered convergence
@@ -30,3 +26,7 @@ Evaluation:
       y: 0.0
       z: -0.9689404241590215
       w: 0.2472942668776119
+  Datasets:
+    - t4_dataset: # must be 1 dataset
+        VehicleId: default # Specify VehicleId for each data set.
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.

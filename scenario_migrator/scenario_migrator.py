@@ -19,8 +19,8 @@ def convert(scenario_path: Path) -> None:
     yaml_obj.pop("VehicleId")
     yaml_obj.pop("LocalMapPath")
 
-    yaml_obj["Evaluation"]["DataSets"] = []
-    yaml_obj["Evaluation"]["DataSets"].append(
+    yaml_obj["Evaluation"]["Datasets"] = []
+    yaml_obj["Evaluation"]["Datasets"].append(
         {"t4_dataset": {"LocalMapPath": map_path, "VehicleId": vehicle_id}},
     )
     use_case_version: str = yaml_obj["Evaluation"]["UseCaseFormatVersion"]
