@@ -247,4 +247,9 @@ dlr_config = {
         "autoware": PERCEPTION_AUTOWARE_ARGS,
         "node": PERCEPTION_2D_NODE_PARAMS,
     },
+    "annotationless_perception": {
+        "record": ANNOTATIONLESS_PERCEPTION_RECORD_TOPIC,
+        "autoware": ANNOTATIONLESS_PERCEPTION_AUTOWARE_ARGS,
+        "node": ANNOTATIONLESS_PERCEPTION_NODE_PARAMS,
+    },
 }
