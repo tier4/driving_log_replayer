@@ -70,6 +70,7 @@ class Evaluation(BaseModel):
     Conditions: Conditions
     InitialPose: InitialPoseModel | None = None
     DirectInitialPose: InitialPoseModel | None = None
+    Datasets: list[dict]
 
     @model_validator(mode="after")
     def mutually_exclusive(self) -> "Evaluation":

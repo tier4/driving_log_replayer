@@ -46,7 +46,7 @@ Evaluation:
           ScenarioType: FP
           BlockageType: ground
           PassFrameCount: 80
-  DataSets:
-    - dataset:
+  Datasets:
+    - t4_dataset:
         LocalMapPath: $HOME/map/diag
         VehicleId: ps1/20210520/CAL_000012

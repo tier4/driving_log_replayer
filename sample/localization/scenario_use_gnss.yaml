@@ -3,8 +3,6 @@ ScenarioName: sample_localization
 ScenarioDescription: sample_localization
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
-VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: localization
   UseCaseFormatVersion: 1.2.0
@@ -19,3 +17,7 @@ Evaluation:
       AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
       NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
   InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
+  Datasets:
+    - t4_dataset: # must be 1 dataset
+        VehicleId: default # Specify VehicleId for each data set.
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.

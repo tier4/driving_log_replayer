@@ -3,8 +3,6 @@ ScenarioName: sample_annotationless_perception
 ScenarioDescription: sample_annotationless_perception
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
-VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: annotationless_perception
   UseCaseFormatVersion: 0.3.0
@@ -35,3 +33,7 @@ Evaluation:
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
           metric_value: 0.9-1.1
+  Datasets:
+    - t4_dataset: # must be 1 dataset
+        VehicleId: default # Specify VehicleId for each data set.
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.

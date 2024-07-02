@@ -3,8 +3,6 @@ ScenarioName: sample_localization
 ScenarioDescription: sample_localization
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
-VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: localization
   UseCaseFormatVersion: 1.3.0
@@ -28,3 +26,7 @@ Evaluation:
       y: 0.005891999600528019
       z: -0.9709848597542231
       w: 0.237863568369043
+  Datasets:
+    - t4_dataset: # must be 1 dataset
+        VehicleId: default # Specify VehicleId for each data set.
+        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
