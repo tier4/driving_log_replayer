@@ -9,7 +9,7 @@ def convert(scenario_path: Path) -> None:
     yaml_obj = yaml.safe_load(scenario_file)
 
     if yaml_obj["ScenarioFormatVersion"] != "2.2.0":
-        print(f"{scenario_path} does not require conversion")
+        print(f"{scenario_path} does not require conversion")  # noqa
         scenario_file.close()
         return
 
@@ -57,7 +57,7 @@ def main() -> None:
     args = parser.parse_args()
     scenario_paths = Path(args.scenario_root_dir).resolve().glob("**/scenario.y*ml")  # yaml or yml
     for scenario_path in sorted(scenario_paths):
-        # print(scenario_path)
+        # debug print(scenario_path)
         convert(scenario_path)
         move_dataset(scenario_path)
 
