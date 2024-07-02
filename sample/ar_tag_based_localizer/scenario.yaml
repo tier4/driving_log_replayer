@@ -17,6 +17,6 @@ Evaluation:
       z: 0.30236092596718706
       w: 0.9531935115433094
   DataSets:
-  - dataset:
-      LocalMapPath: $HOME/driving_log_replayer_data/ar_tag_based_localizer/sample/map
-      VehicleId: default
+    - dataset:
+        LocalMapPath: $HOME/driving_log_replayer_data/ar_tag_based_localizer/sample/map
+        VehicleId: default

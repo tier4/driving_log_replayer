@@ -7,7 +7,7 @@ Evaluation:
   UseCaseName: localization
   UseCaseFormatVersion: 2.0.0
   Datasets:
-    - sample_dataset:  # must be 1 dataset
+    - sample_dataset: # must be 1 dataset
         VehicleId: default # Specify VehicleId for each data set.
         LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
