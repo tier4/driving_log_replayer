@@ -172,15 +172,11 @@ class Perception2DEvaluator(DLREvaluator):
                 msg.feature_objects,
                 camera_type,
             )
-            ros_critical_ground_truth_objects = ground_truth_now_frame.objects
-            # critical_object_filter_configと、frame_pass_fail_configこの中で動的に変えても良い。
-            # 動的に変える条件をかけるようになるまでは、初期化時に一括設定
 
             frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
                 unix_time=unix_time,
                 ground_truth_now_frame=ground_truth_now_frame,
                 estimated_objects=estimated_objects,
-                ros_critical_ground_truth_objects=ros_critical_ground_truth_objects,
                 critical_object_filter_config=self.__critical_object_filter_config,
                 frame_pass_fail_config=self.__frame_pass_fail_config,
             )
