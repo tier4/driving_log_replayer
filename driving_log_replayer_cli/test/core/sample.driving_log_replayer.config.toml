@@ -1,4 +1,0 @@
-[default]
-data_directory = "."
-output_directory = "."
-autoware_path = "."
