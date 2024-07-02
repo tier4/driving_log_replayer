@@ -36,9 +36,9 @@ Evaluation:
   UseCaseFormatVersion: String
   Conditions: Dictionary # refer use case
   Datasets:
-  - DatasetNameOrPath:
-      VehicleId: String
-      LocalMapPath: String
+    - DatasetNameOrPath:
+        VehicleId: String
+        LocalMapPath: String
 ```
 
 ### ScenarioFormatVersion
@@ -102,7 +102,7 @@ driving_log_replayer/launch に指定した名称と同じ名称の launch.py �
 #### Datasets
 
 複数個のDatasetを記述することが可能であるが、複数個利用するのはperceptionのdatabase datasetでのみ。
-database datasetの場合は、利用したdatasetのindexをlauncの起動引数に渡す必要がある。渡さない場合は0番目になる。
+database datasetの場合は、利用したdatasetのindexをlaunchの起動引数に渡す必要がある。渡さない場合は0番目になる。
 
 ```shell
 # シナリオ記述した2番目のdatasetを使用して評価したい場合。
@@ -111,4 +111,4 @@ ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${perception_datab
 
 #### DatasetNameOrPath
 
-t4_datatsetのデータセット名のみ(シナリオからの相対パス)、または、絶対パスを指定する。
+t4_datasetのデータセット名のみ(シナリオからの相対パス)、または、絶対パスを指定する。
