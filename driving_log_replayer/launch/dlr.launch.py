@@ -17,16 +17,19 @@ from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchContext
+from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
 from launch.actions import GroupAction
 from launch.actions import IncludeLaunchDescription
 from launch.actions import LogInfo
+from launch.actions import OpaqueFunction
 from launch.conditions import IfCondition
 from launch.launch_description_sources import AnyLaunchDescriptionSource
 from launch_ros.actions import Node
 import yaml
 
+from driving_log_replayer.launch_config import dlr_config
 from driving_log_replayer.shutdown_once import ShutdownOnce
 
 
@@ -91,11 +94,11 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     conf["result_archive_path"] = output_dir.joinpath("result_archive_path").as_posix()
     conf["use_case"] = yaml_obj["Evaluation"]["UseCaseName"]
     return [
-        LogInfo(msg=f"{map_path=}, {dataset_path=}"),
+        LogInfo(msg=f"{map_path=}, {dataset_path=}, use_case={conf["use_case"]}"),
     ]
 
 
-def launch_autoware(context: LaunchContext, additional_args: dict | None = None) -> list:
+def launch_autoware(context: LaunchContext) -> list:
     conf = context.launch_configurations
     autoware_launch_file = Path(
         get_package_share_directory("autoware_launch"),
@@ -110,8 +113,7 @@ def launch_autoware(context: LaunchContext, additional_args: dict | None = None)
         "launch_vehicle_interface": "true",
         "rviz": "false",
     }
-    if isinstance(additional_args, dict):
-        launch_args |= additional_args
+    launch_args |= dlr_config[conf["use_case"]]["autoware"]
     return [
         GroupAction(
             [
@@ -145,7 +147,7 @@ def launch_map_height_fitter(context: LaunchContext) -> list:
     ]
 
 
-def launch_evaluator_node(context: LaunchContext, addition_parameter: dict | None = None) -> list:
+def launch_evaluator_node(context: LaunchContext) -> list:
     conf = context.launch_configurations
     params = {
         "use_sim_time": True,
@@ -154,8 +156,7 @@ def launch_evaluator_node(context: LaunchContext, addition_parameter: dict | Non
         "result_json_path": conf["result_json_path"],
         "result_archive_path": conf["result_archive_path"],
     }
-    if isinstance(addition_parameter, dict):
-        params |= addition_parameter
+    params |= dlr_config[conf["use_case"]]["node"]
 
     evaluator_name = conf["use_case"] + "_evaluator"
 
@@ -203,7 +204,7 @@ def launch_bag_player(
     return [bag_player]
 
 
-def launch_bag_recorder(context: LaunchContext, qos_file_name: str, allow_list: str) -> list:
+def launch_bag_recorder(context: LaunchContext,allow_list: str) -> list:
     conf = context.launch_configurations
     record_cmd = [
         "ros2",
@@ -215,21 +216,22 @@ def launch_bag_recorder(context: LaunchContext, qos_file_name: str, allow_list: 
         Path(
             get_package_share_directory("driving_log_replayer"),
             "config",
-            qos_file_name,
+            conf["use_case"],
+            "qos.yaml",
         ).as_posix(),
         "-e",
-        allow_list,
+        dlr_config[conf["use_case"]]["record"],
         "--use-sim-time",
     ]
     return [ExecuteProcess(cmd=record_cmd)]
 
 
-def launch_rviz(context: LaunchContext, config_name: str) -> list:
+def launch_rviz(context: LaunchContext) -> list:
     conf = context.launch_configurations
     rviz_config_dir = Path(
         get_package_share_directory("driving_log_replayer"),
         "config",
-        config_name,
+        conf["use_case"],
     )
     return [
         Node(
@@ -244,10 +246,8 @@ def launch_rviz(context: LaunchContext, config_name: str) -> list:
     ]
 
 
-def launch_topic_state_monitor(
-    context: LaunchContext,  # noqa
-    config_name: str,
-) -> list:
+def launch_topic_state_monitor(context: LaunchContext) -> list:
+    conf = context.launch_configurations
     # component_state_monitor launch
     component_state_monitor_launch_file = Path(
         get_package_share_directory("component_state_monitor"),
@@ -257,7 +257,8 @@ def launch_topic_state_monitor(
     topic_monitor_config_path = Path(
         get_package_share_directory("driving_log_replayer"),
         "config",
-        config_name,
+        conf["use_case"],
+        "topic_state_monitor.yaml",
     )
     return [
         IncludeLaunchDescription(
@@ -268,5 +269,23 @@ def launch_topic_state_monitor(
                 "file": topic_monitor_config_path.as_posix(),
                 "mode": "logging_simulation",
             }.items(),
+            condition=IfCondition(conf["use_case"]=="localization"),
         ),
     ]
+
+
+def generate_launch_description() -> LaunchDescription:
+    launch_arguments = get_launch_arguments()
+    return LaunchDescription(
+        [
+            *launch_arguments,
+            OpaqueFunction(function=ensure_arg_compatibility),
+            OpaqueFunction(function=launch_rviz),
+            OpaqueFunction(function=launch_autoware),
+            OpaqueFunction(function=launch_map_height_fitter),
+            OpaqueFunction(function=launch_evaluator_node),
+            OpaqueFunction(function=launch_bag_player),
+            OpaqueFunction(function=launch_bag_recorder),
+            OpaqueFunction(function=launch_topic_state_monitor),
+        ],
+    )
