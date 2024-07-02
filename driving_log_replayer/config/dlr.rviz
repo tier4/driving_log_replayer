@@ -3248,7 +3248,7 @@ Visualization Manager:
                   localization:
                     PointCloud2: true
                     Value: true
-                  obstalce_segmentation:
+                  obstacle_segmentation:
                     Value: true
                     detection: true
                     non_detection: true
@@ -4487,7 +4487,7 @@ Visualization Manager:
               Use rainbow: true
               Value: true
           Enabled: true
-          Name: obstalce_segmentation
+          Name: obstacle_segmentation
       Enabled: true
       Name: driving_log_replayer
   Enabled: true
