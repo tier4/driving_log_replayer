@@ -93,6 +93,9 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     conf["result_bag_path"] = output_dir.joinpath("result_bag").as_posix()
     conf["result_archive_path"] = output_dir.joinpath("result_archive_path").as_posix()
     conf["use_case"] = yaml_obj["Evaluation"]["UseCaseName"]
+    # annotationless
+    conf["annotationless_threshold_file"] = ""
+    conf["annotationless_pass_range"] = ""
     return [
         LogInfo(msg=f"{map_path=}, {dataset_path=}, use_case={conf['use_case']}"),
     ]
