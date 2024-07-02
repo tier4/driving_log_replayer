@@ -94,7 +94,7 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     conf["result_archive_path"] = output_dir.joinpath("result_archive_path").as_posix()
     conf["use_case"] = yaml_obj["Evaluation"]["UseCaseName"]
     return [
-        LogInfo(msg=f"{map_path=}, {dataset_path=}, use_case={conf["use_case"]}"),
+        LogInfo(msg=f"{map_path=}, {dataset_path=}, use_case={conf['use_case']}"),
     ]
 
 
@@ -204,7 +204,7 @@ def launch_bag_player(
     return [bag_player]
 
 
-def launch_bag_recorder(context: LaunchContext,allow_list: str) -> list:
+def launch_bag_recorder(context: LaunchContext) -> list:
     conf = context.launch_configurations
     record_cmd = [
         "ros2",
@@ -231,7 +231,7 @@ def launch_rviz(context: LaunchContext) -> list:
     rviz_config_dir = Path(
         get_package_share_directory("driving_log_replayer"),
         "config",
-        conf["use_case"],
+        "dlr.rviz",
     )
     return [
         Node(
@@ -269,7 +269,7 @@ def launch_topic_state_monitor(context: LaunchContext) -> list:
                 "file": topic_monitor_config_path.as_posix(),
                 "mode": "logging_simulation",
             }.items(),
-            condition=IfCondition(conf["use_case"]=="localization"),
+            condition=IfCondition(conf["use_case"] == "localization"),
         ),
     ]
 
