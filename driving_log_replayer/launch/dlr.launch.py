@@ -269,7 +269,7 @@ def launch_topic_state_monitor(context: LaunchContext) -> list:
                 "file": topic_monitor_config_path.as_posix(),
                 "mode": "logging_simulation",
             }.items(),
-            condition=IfCondition(conf["use_case"] == "localization"),
+            condition=IfCondition(str(conf["use_case"] == "localization")),
         ),
     ]
 
