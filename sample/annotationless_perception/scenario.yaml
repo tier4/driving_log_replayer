@@ -36,6 +36,6 @@ Evaluation:
           mean: 0.5-2.0
           metric_value: 0.9-1.1
   DataSets:
-  - dataset:
-      LocalMapPath: $HOME/autoware_map/sample-map-planning
-      VehicleId: default
+    - dataset:
+        LocalMapPath: $HOME/autoware_map/sample-map-planning
+        VehicleId: default
