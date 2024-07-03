@@ -292,7 +292,9 @@ class NumGtTP(CriteriaMethodImpl):
     @staticmethod
     def calculate_score(frame: PerceptionFrameResult) -> float:
         num_success: int = frame.pass_fail_result.get_num_success()
-        num_gt: int = len(frame.pass_fail_result.critical_ground_truth_objects)
+        num_gt: int = len(frame.pass_fail_result.tp_object_results) + len(
+            frame.pass_fail_result.fn_objects,
+        )
         return 100.0 * num_success / num_gt if num_gt != 0 else 100.0
 
     @property
