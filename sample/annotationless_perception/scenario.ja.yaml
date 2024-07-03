@@ -36,4 +36,3 @@ Evaluation:
   Datasets:
     - t4_dataset: # must be 1 dataset
         VehicleId: default # Specify VehicleId for each data set.
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.

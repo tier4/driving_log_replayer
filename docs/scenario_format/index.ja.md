@@ -36,9 +36,9 @@ Evaluation:
   UseCaseFormatVersion: String
   Conditions: Dictionary # refer use case
   Datasets:
-    - DatasetNameOrPath:
+    - DatasetName:
         VehicleId: String
-        LocalMapPath: String
+        LocalMapPath: String # Optional
 ```
 
 ### ScenarioFormatVersion
@@ -65,18 +65,6 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の sensor_model �
 
 autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_model を指定する
 
-### VehicleId
-
-autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。
-
-車両 ID が不明な場合は、`default` を設定する。
-
-### LocalMapPath
-
-ローカル環境で使用する地図のフォルダのパスを記述する。
-
-`$HOME`のような環境変数を使用することが出来る。
-
 ### Evaluation
 
 シミュレーションの評価条件を定義する。
@@ -101,14 +89,29 @@ driving_log_replayer/launch に指定した名称と同じ名称の launch.py �
 
 #### Datasets
 
-複数個のDatasetを記述することが可能であるが、複数個利用するのはperceptionのdatabase datasetでのみ。
-database datasetの場合は、利用したdatasetのindexをlaunchの起動引数に渡す必要がある。渡さない場合は0番目になる。
+複数個のDatasetを記述することが可能であるが、複数個のDatasetに対して、同じ評価条件で使用する場合のみ利用できる。
+複数個のDatasetを記述した場合は、利用したいdatasetのindexをlaunchの起動引数に渡す必要がある。渡さない場合は0番が暗黙で使われる。
 
 ```shell
 # シナリオ記述した2番目のdatasetを使用して評価したい場合。
 ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir} database_index:=1
+
+# 未指定は0
+ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir}
 ```
 
-#### DatasetNameOrPath
+#### DatasetName
 
 t4_datasetのデータセット名のみ(シナリオからの相対パス)、または、絶対パスを指定する。
+
+#### VehicleId
+
+autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。
+
+車両 ID が不明な場合は、`default` を設定する。
+
+#### LocalMapPath
+
+ローカル環境で使用する地図のフォルダのパスを記述する。
+driving_log_replayerの過去のデータセットと互換性をもたせるために存在する項目
+LocalMapPathがない場合は、Dataset配下の`map`ディレクトリが自動で使われる。

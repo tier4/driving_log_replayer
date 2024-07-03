@@ -8,6 +8,5 @@ Evaluation:
   UseCaseFormatVersion: 1.0.0
   InitialPose: null
   Datasets:
-    - dataset:
-        LocalMapPath: $HOME/autoware_map/nishishinjuku_autoware_map
+    - eagleye:
         VehicleId: default

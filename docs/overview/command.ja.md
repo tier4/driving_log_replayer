@@ -3,7 +3,7 @@
 driving_log_replayerはシナリオのパスと、評価結果の出力ディレクトリを指定することで起動できる。
 
 ```shell
-ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${scenario_path} output_dir:=${output_dir}
+ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${scenario_path} output_dir:=${output_dir} [resource_dir:=${resource_dir}]
 ```
 
 ## CLI

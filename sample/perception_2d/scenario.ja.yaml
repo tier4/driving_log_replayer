@@ -10,7 +10,6 @@ Evaluation:
     - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
         VehicleId: ps1/20210620/CAL_000015 # データセット毎にVehicleIdを指定する
         LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
     CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152

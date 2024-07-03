@@ -5,7 +5,7 @@ SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
 Evaluation:
   UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
+  UseCaseFormatVersion: 2.0.0
   Conditions:
     Convergence:
       AllowableDistance: 0.2 # Lateral distance to be considered convergence
@@ -20,4 +20,3 @@ Evaluation:
   Datasets:
     - t4_dataset: # must be 1 dataset
         VehicleId: default # Specify VehicleId for each data set.
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.

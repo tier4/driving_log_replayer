@@ -9,8 +9,6 @@ Evaluation:
   Datasets:
     - sample_dataset:
         VehicleId: default # Specify VehicleId for each data set.
-        LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each data set.
   Conditions:
     Criterion:
       - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
