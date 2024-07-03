@@ -40,6 +40,7 @@ def get_launch_arguments() -> list:
     with_autoware
     scenario_path
     output_dir
+    resource_dir
     play_rate
     play_delay
     """
@@ -54,8 +55,16 @@ def get_launch_arguments() -> list:
             DeclareLaunchArgument(name, default_value=default_value, description=description),
         )
 
-    add_launch_arg("scenario_path", description="scenario path")
-    add_launch_arg("output_dir", description="output directory")
+    add_launch_arg("scenario_path", description="scenario file path")
+    add_launch_arg(
+        "output_dir",
+        description="Directory to output evaluation results. Mount in read-write mode when using docker",
+    )
+    add_launch_arg(
+        "resource_dir",
+        default_value="",
+        description="Directory where the data set is located. If not specified, the directory where the scenario is located.",
+    )
     add_launch_arg("dataset_index", default_value="0", description="index number of dataset")
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
     add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
@@ -71,18 +80,24 @@ def get_launch_arguments() -> list:
 def ensure_arg_compatibility(context: LaunchContext) -> list:
     conf = context.launch_configurations
     scenario_path = Path(conf["scenario_path"])
+    resource_dir = (
+        scenario_path.parent if conf["resource_dir"] == "" else Path(conf["resource_dir"])
+    )
     with scenario_path.open() as scenario_file:
         yaml_obj = yaml.safe_load(scenario_file)
     for k, v in yaml_obj["Evaluation"]["Datasets"][int(conf["dataset_index"])].items():
-        dataset_path_str = expandvars(k)
-        map_path_str = expandvars(v["LocalMapPath"])
+        dataset_path = resource_dir.joinpath(k)
+        map_path_str: str | None = v.get("LocalMapPath")
         conf["vehicle_id"] = v["VehicleId"]
-    map_path = Path(map_path_str)
-    if not map_path.is_absolute():
-        map_path = scenario_path.parent.joinpath(map_path)
-    dataset_path = Path(dataset_path_str)
-    if not dataset_path.is_absolute():
-        dataset_path = scenario_path.parent.joinpath(dataset_path)
+        launch_sensing = yaml_obj["Evaluation"].get("LaunchSensing")
+        launch_localization = yaml_obj["Evaluation"].get("LaunchLocalization")
+        if launch_sensing is not None:
+            conf["sensing"] = str(launch_sensing)
+        if launch_localization is not None:
+            conf["localization"] = str(launch_localization)
+    map_path = (
+        dataset_path.joinpath("map") if map_path_str is None else Path(expandvars(map_path_str))
+    )
     conf["map_path"] = map_path.as_posix()
     conf["vehicle_model"] = yaml_obj["VehicleModel"]
     conf["sensor_model"] = yaml_obj["SensorModel"]
@@ -200,6 +215,9 @@ def launch_bag_player(
     if conf.get("localization", "true") == "true":
         remap_list.append(
             "/tf:=/dlr/unused/tf",
+        )
+        remap_list.append(
+            "/localization/kinematic_state:=/dlr/unused/localization/kinematic_state",
         )
     if len(remap_list) != 1:
         play_cmd.extend(remap_list)

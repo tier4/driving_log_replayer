@@ -15,13 +15,22 @@ def convert(scenario_path: Path) -> None:
 
     yaml_obj["ScenarioFormatVersion"] = "3.0.0"
     vehicle_id = yaml_obj["VehicleId"]
-    map_path = yaml_obj["LocalMapPath"]
-    yaml_obj.pop("VehicleId")
+    local_map_path = yaml_obj.get("LocalMapPath")
+    launch_localization = yaml_obj.get("LaunchLocalization")
     yaml_obj.pop("LocalMapPath")
+    if local_map_path is not None:
+        yaml_obj.pop("VehicleId")
+    if launch_localization is not None:
+        yaml_obj.pop("LaunchLocalization")
 
     yaml_obj["Evaluation"]["Datasets"] = []
+    migration_dict = {"VehicleId": vehicle_id}
+    if local_map_path is not None:
+        migration_dict |= {"LocalMapPath": local_map_path}
+    if launch_localization is not None:
+        migration_dict |= {"LaunchLocalization": launch_localization}
     yaml_obj["Evaluation"]["Datasets"].append(
-        {"t4_dataset": {"LocalMapPath": map_path, "VehicleId": vehicle_id}},
+        {"t4_dataset": migration_dict},
     )
     use_case_version: str = yaml_obj["Evaluation"]["UseCaseFormatVersion"]
     major, minor, patch = use_case_version.split(".")
