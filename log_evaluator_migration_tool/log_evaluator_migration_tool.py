@@ -86,7 +86,7 @@ def main() -> None:
         help="root directory where the scenario files to be converted are located",
     )
     args = parser.parse_args()
-    scenario_paths = Path(args.scenario_root_dir).resolve().glob("**/scenario.y*ml")  # yaml or yml
+    scenario_paths = Path(args.scenario_root_dir).resolve().glob("**/scenario*.y*ml")  # yaml or yml
     for scenario_path in sorted(scenario_paths):
         # debug print(scenario_path)
         convert(scenario_path)
