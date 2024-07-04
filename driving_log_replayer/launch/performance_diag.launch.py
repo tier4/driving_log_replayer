@@ -43,7 +43,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         localization=LaunchConfiguration("localization"),
         perception="false",
     )
-    rviz_node = cmn.get_rviz("autoware.rviz")
+    rviz_node = cmn.get_rviz()
     evaluator_node = cmn.get_evaluator_node(
         "performance_diag",
         addition_parameter={"localization": LaunchConfiguration("localization")},
