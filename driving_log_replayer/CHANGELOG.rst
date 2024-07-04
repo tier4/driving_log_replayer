@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: delete unused (`#509 <https://github.com/tier4/driving_log_replayer/issues/509>`_)
+* fix: pre-commit
+* chore: delete unused
+* Contributors: Hayato Mizushima
+
 2.0.10 (2024-07-04)
 -------------------
 * chore: merge rviz (`#507 <https://github.com/tier4/driving_log_replayer/issues/507>`_)
