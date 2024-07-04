@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.11 (2024-07-04)
+-------------------
 * chore: delete unused (`#509 <https://github.com/tier4/driving_log_replayer/issues/509>`_)
 * fix: pre-commit
 * chore: delete unused
