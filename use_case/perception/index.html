@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.28">
     
     
       
@@ -1903,12 +1903,12 @@ Launching the file executes the following steps:</p>
 <p>The scenario.yaml of the sample is as follows,</p>
 <div class="highlight"><pre><span></span><code><span class="nt">Criterion</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">95.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span>
-<span class="w">    </span><span class="nt">CriteriaMethod</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">num_tp</span><span class="w"> </span><span class="c1"># Method name of criteria (num_tp/metrics_score)</span>
+<span class="w">    </span><span class="nt">CriteriaMethod</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">num_gt_tp</span><span class="w"> </span><span class="c1"># refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152</span>
 <span class="w">    </span><span class="nt">CriteriaLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hard</span><span class="w"> </span><span class="c1"># Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)</span>
 <span class="w">    </span><span class="nt">Filter</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">Distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0-50.0</span><span class="w"> </span><span class="c1"># [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">PassRate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">95.0</span><span class="w"> </span><span class="c1"># How much (%) of the evaluation attempts are considered successful.</span>
-<span class="w">    </span><span class="nt">CriteriaMethod</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">num_tp</span><span class="w"> </span><span class="c1"># Method name of criteria (num_tp/metrics_score)</span>
+<span class="w">    </span><span class="nt">CriteriaMethod</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">num_gt_tp</span><span class="w"> </span><span class="c1"># refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152</span>
 <span class="w">    </span><span class="nt">CriteriaLevel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">easy</span><span class="w"> </span><span class="c1"># Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)</span>
 <span class="w">    </span><span class="nt">Filter</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">Distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50.0-</span><span class="w"> </span><span class="c1"># [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]</span>
@@ -2449,7 +2449,7 @@ The dataset evaluation can be performed by reading all the objects recorded in t
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.footer"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
     
   </body>
