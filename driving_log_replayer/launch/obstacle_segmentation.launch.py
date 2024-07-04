@@ -34,7 +34,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         control="true",
         scenario_simulation="true",
     )
-    rviz_node = cmn.get_rviz("obstacle_segmentation.rviz")
+    rviz_node = cmn.get_rviz()
     evaluator_node = cmn.get_evaluator_node(
         "obstacle_segmentation",
         addition_parameter={

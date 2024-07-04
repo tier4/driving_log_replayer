@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from pathlib import Path
-from string import capwords
 
 from ament_index_python.packages import get_package_share_directory
 import launch
@@ -160,11 +159,11 @@ def get_map_height_fitter(launch_service: str = "true") -> launch.actions.Includ
     )
 
 
-def get_rviz(rviz_config_name: str) -> Node:
+def get_rviz() -> Node:
     rviz_config_dir = Path(
         get_package_share_directory("driving_log_replayer"),
         "config",
-        rviz_config_name,
+        "dlr.rviz",
     )
     return Node(
         package="rviz2",
@@ -306,8 +305,3 @@ def get_topic_state_monitor_launch(
             "mode": "logging_simulation",
         }.items(),
     )
-
-
-def snake_to_pascal(snake_str: str) -> str:
-    pascal = capwords(snake_str.replace("_", " "))
-    return pascal.replace(" ", "")

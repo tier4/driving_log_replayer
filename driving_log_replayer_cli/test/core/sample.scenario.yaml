@@ -13,5 +13,5 @@ Evaluation:
         LocalMapPath: . # Specify LocalMapPath for each data set.
   Conditions:
     PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
     CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)

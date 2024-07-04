@@ -2,6 +2,18 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.10 (2024-07-04)
+-------------------
+* chore: merge rviz (`#507 <https://github.com/tier4/driving_log_replayer/issues/507>`_)
+* fix: resolve invalid access to `critical_ground_truth_objects` (`#503 <https://github.com/tier4/driving_log_replayer/issues/503>`_)
+* feat: interface in add_frame_result (`#499 <https://github.com/tier4/driving_log_replayer/issues/499>`_)
+* Contributors: Hayato Mizushima, Kotaro Uetake, Masato Saeki
+
+2.0.9 (2024-07-01)
+------------------
+* feat: add support of GT TP criteria (`#500 <https://github.com/tier4/driving_log_replayer/issues/500>`_)
+* Contributors: Kotaro Uetake
+
 2.0.8 (2024-06-24)
 ------------------
 * fix: check DiagnosticArray length (`#493 <https://github.com/tier4/driving_log_replayer/issues/493>`_)

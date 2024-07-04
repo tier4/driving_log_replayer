@@ -34,7 +34,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         pose_source="eagleye",
         twist_source="eagleye",
     )
-    rviz_node = cmn.get_rviz("localization.rviz")
+    rviz_node = cmn.get_rviz()
     evaluator_node = cmn.get_evaluator_node("eagleye")
     player = cmn.get_player()
     recorder, recorder_override = cmn.get_regex_recorders(

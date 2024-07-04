@@ -231,12 +231,10 @@ class TrafficLightEvaluator(DLREvaluator):
             msg.traffic_light_groups,
             cam2map,
         )
-        ros_critical_ground_truth_objects = ground_truth_now_frame.objects
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
             unix_time=unix_time,
             ground_truth_now_frame=ground_truth_now_frame,
             estimated_objects=estimated_objects,
-            ros_critical_ground_truth_objects=ros_critical_ground_truth_objects,
             critical_object_filter_config=self.__critical_object_filter_config,
             frame_pass_fail_config=self.__frame_pass_fail_config,
         )

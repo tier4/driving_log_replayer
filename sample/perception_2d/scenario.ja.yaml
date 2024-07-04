@@ -13,7 +13,7 @@ Evaluation:
         LocalMapPath: $HOME/map/perception # データセット毎にLocalMapPathを指定する
   Conditions:
     PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
-    CriteriaMethod: num_tp # クライテリアメソッド名(num_tp/metrics_score)
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
     CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値[0.0, 100.0])
     TargetCameras: # 評価対象のカメラの種類をキーに、カメラの番号を値として記述する
       cam_front: 0

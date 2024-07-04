@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 2.0.10
+
+Minor Tweak
+
+| Module                                     | Feature       | Brief summary                                           | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | ------------- | ------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`                                      | visualization | merge rviz                                              | [#507](https://github.com/tier4/driving_log_replayer/pull/507) | RT1-6800 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | interface     | interface in add_frame_result                           | [#499](https://github.com/tier4/driving_log_replayer/pull/499) | -        | [MasatoSaeki](https://github.com/MasatoSaeki) |
+| `perception, perception_2d, traffic_light` | criteria      | resolve invalid access to critical_ground_truth_objects | [#503](https://github.com/tier4/driving_log_replayer/pull/503) | -        | [ktro2828](https://github.com/ktro2828)       |
+
+## Version 2.0.9
+
+Minor Tweak
+
+| Module       | Feature  | Brief summary                 | Pull request                                                   | Jira     | Contributor                             |
+| ------------ | -------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------- |
+| `perception` | criteria | add support of GT TP criteria | [#500](https://github.com/tier4/driving_log_replayer/pull/500) | RT1-6191 | [ktro2828](https://github.com/ktro2828) |
+
 ## Version 2.0.8
 
 Bug Fix
