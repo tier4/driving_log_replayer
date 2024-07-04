@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from pathlib import Path
-from string import capwords
 
 from ament_index_python.packages import get_package_share_directory
 import launch
@@ -306,8 +305,3 @@ def get_topic_state_monitor_launch(
             "mode": "logging_simulation",
         }.items(),
     )
-
-
-def snake_to_pascal(snake_str: str) -> str:
-    pascal = capwords(snake_str.replace("_", " "))
-    return pascal.replace(" ", "")
