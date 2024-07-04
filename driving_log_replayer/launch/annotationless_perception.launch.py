@@ -47,7 +47,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         localization="false",
         use_perception_online_evaluator="true",
     )
-    rviz_node = cmn.get_rviz("autoware.rviz")
+    rviz_node = cmn.get_rviz()
     evaluator_node = cmn.get_evaluator_node(
         "annotationless_perception",
         addition_parameter={

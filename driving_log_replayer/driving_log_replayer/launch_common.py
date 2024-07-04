@@ -160,11 +160,11 @@ def get_map_height_fitter(launch_service: str = "true") -> launch.actions.Includ
     )
 
 
-def get_rviz(rviz_config_name: str) -> Node:
+def get_rviz() -> Node:
     rviz_config_dir = Path(
         get_package_share_directory("driving_log_replayer"),
         "config",
-        rviz_config_name,
+        "dlr.rviz",
     )
     return Node(
         package="rviz2",

@@ -39,7 +39,7 @@ def generate_launch_description() -> launch.LaunchDescription:
         localization="false",
         perception_mode="camera_lidar_fusion",
     )
-    rviz_node = cmn.get_rviz("perception.rviz")
+    rviz_node = cmn.get_rviz()
     evaluator_node = cmn.get_evaluator_node("perception_2d")
 
     player_normal = cmn.get_player(
