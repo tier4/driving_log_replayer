@@ -4,9 +4,10 @@ Changelog for package driving_log_replayer
 
 Forthcoming
 -----------
+* chore: merge rviz (`#507 <https://github.com/tier4/driving_log_replayer/issues/507>`_)
 * fix: resolve invalid access to `critical_ground_truth_objects` (`#503 <https://github.com/tier4/driving_log_replayer/issues/503>`_)
 * feat: interface in add_frame_result (`#499 <https://github.com/tier4/driving_log_replayer/issues/499>`_)
-* Contributors: Kotaro Uetake, Masato Saeki
+* Contributors: Hayato Mizushima, Kotaro Uetake, Masato Saeki
 
 2.0.9 (2024-07-01)
 ------------------
