@@ -306,8 +306,3 @@ def get_topic_state_monitor_launch(
             "mode": "logging_simulation",
         }.items(),
     )
-
-
-def snake_to_pascal(snake_str: str) -> str:
-    pascal = capwords(snake_str.replace("_", " "))
-    return pascal.replace(" ", "")
