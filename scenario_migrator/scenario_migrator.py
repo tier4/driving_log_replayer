@@ -17,11 +17,17 @@ def convert(scenario_path: Path) -> None:
     vehicle_id = yaml_obj["VehicleId"]
     local_map_path = yaml_obj.get("LocalMapPath")
     launch_localization = yaml_obj.get("LaunchLocalization")
+    initial_pose = yaml_obj.get("InitialPose")
+    direct_initial_pose = yaml_obj.get("DirectInitialPose")
     yaml_obj.pop("LocalMapPath")
     if local_map_path is not None:
         yaml_obj.pop("VehicleId")
     if launch_localization is not None:
         yaml_obj.pop("LaunchLocalization")
+    if initial_pose is not None:
+        yaml_obj.pop("InitialPose")
+    if direct_initial_pose is not None:
+        yaml_obj.pop("DirectInitialPose")
 
     yaml_obj["Evaluation"]["Datasets"] = []
     migration_dict = {"VehicleId": vehicle_id}
@@ -29,6 +35,10 @@ def convert(scenario_path: Path) -> None:
         migration_dict |= {"LocalMapPath": local_map_path}
     if launch_localization is not None:
         migration_dict |= {"LaunchLocalization": launch_localization}
+    if initial_pose is not None:
+        migration_dict |= {"InitialPose": initial_pose}
+    if direct_initial_pose is not None:
+        migration_dict |= {"DirectInitialPose": direct_initial_pose}
     yaml_obj["Evaluation"]["Datasets"].append(
         {"t4_dataset": migration_dict},
     )
@@ -39,7 +49,7 @@ def convert(scenario_path: Path) -> None:
 
     # 既存の内容を消す
     scenario_file.seek(0)
-    scenario_file.truncate()  # ファイルの内容を空にする
+    scenario_file.truncate()
 
     # 更新済みの内容を書き込む
     yaml.safe_dump(yaml_obj, scenario_file, sort_keys=False)
