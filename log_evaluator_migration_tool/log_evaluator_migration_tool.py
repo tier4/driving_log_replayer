@@ -1,10 +1,11 @@
 import argparse
 from pathlib import Path
+from shutil import copytree
 
 import yaml
 
 
-def convert(scenario_path: Path) -> None:
+def convert_scenario(scenario_path: Path) -> None:
     scenario_file = scenario_path.open("r+")
     yaml_obj = yaml.safe_load(scenario_file)
 
@@ -56,41 +57,60 @@ def convert(scenario_path: Path) -> None:
     scenario_file.close()
 
 
-def move_dataset(scenario_path: Path) -> None:
-    # ファイル移動
+def move_dataset_and_map(scenario_path: Path) -> None:
+    scenario_file = scenario_path.open("r+")
+    yaml_obj = yaml.safe_load(scenario_file)  # scenario file is 3.0.0 format
+
     scenario_root = scenario_path.parent
     bag_path = scenario_root.joinpath("input_bag")
     t4_dataset_path = scenario_root.joinpath("t4_dataset")
+
     # bag 移動
     if bag_path.exists():
         t4_dataset_path.mkdir()
-        bag_path.rename(Path(t4_dataset_path, "input_bag"))
+        bag_path.rename(t4_dataset_path.joinpath("input_bag"))
     # t4_datasetの移動
     elif t4_dataset_path.exists():
-        scenario_file = scenario_path.open()
-        yaml_obj = yaml.safe_load(scenario_file)
         for t4_dataset_dict in yaml_obj["Evaluation"]["Datasets"]:
             t4_dataset_dict: dict
-            for dataset_name in t4_dataset_dict:
+            for dataset_name, v in t4_dataset_dict:
                 new_dataset_dir = scenario_root.joinpath(dataset_name)
                 new_dataset_dir.mkdir()
                 t4_dataset_path.joinpath(dataset_name).rename(new_dataset_dir)
+                # copy map
+                local_map_path_str: str | None = v.get("LocalMapPath")
+                if local_map_path_str is not None:
+                    v["LocalMapPath"].pop()
+                    local_map_path = Path(local_map_path_str)
+                    if local_map_path.exists():
+                        copytree(
+                            local_map_path.as_posix(),
+                            new_dataset_dir.joinpath("map").as_posix(),
+                        )
         # remove base dir
         t4_dataset_path.rmdir()
+
+    # 既存の内容を消す
+    scenario_file.seek(0)
+    scenario_file.truncate()
+
+    # 更新済みの内容を書き込む
+    yaml.safe_dump(yaml_obj, scenario_file, sort_keys=False)
+    scenario_file.close()
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "scenario_root_dir",
-        help="root directory where the scenario files to be converted are located",
+        "data_directory",
+        help="data_directory of driving_log_replayer",
     )
     args = parser.parse_args()
     scenario_paths = Path(args.scenario_root_dir).resolve().glob("**/scenario*.y*ml")  # yaml or yml
     for scenario_path in sorted(scenario_paths):
         # debug print(scenario_path)
-        convert(scenario_path)
-        move_dataset(scenario_path)
+        convert_scenario(scenario_path)
+        move_dataset_and_map(scenario_path)
 
 
 if __name__ == "__main__":
