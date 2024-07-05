@@ -1,4 +1,5 @@
 import argparse
+from os.path import expandvars
 from pathlib import Path
 from shutil import copytree
 
@@ -73,20 +74,22 @@ def move_dataset_and_map(scenario_path: Path) -> None:
     elif t4_dataset_path.exists():
         for t4_dataset_dict in yaml_obj["Evaluation"]["Datasets"]:
             t4_dataset_dict: dict
-            for dataset_name, v in t4_dataset_dict:
+            for dataset_name, v in t4_dataset_dict.items():
                 new_dataset_dir = scenario_root.joinpath(dataset_name)
                 new_dataset_dir.mkdir()
                 t4_dataset_path.joinpath(dataset_name).rename(new_dataset_dir)
                 # copy map
                 local_map_path_str: str | None = v.get("LocalMapPath")
                 if local_map_path_str is not None:
-                    v["LocalMapPath"].pop()
-                    local_map_path = Path(local_map_path_str)
+                    v.pop("LocalMapPath")
+                    local_map_path = Path(expandvars(local_map_path_str))
                     if local_map_path.exists():
                         copytree(
                             local_map_path.as_posix(),
                             new_dataset_dir.joinpath("map").as_posix(),
                         )
+                    else:
+                        print(f"cannot copy {local_map_path}")
         # remove base dir
         t4_dataset_path.rmdir()
 
@@ -106,7 +109,7 @@ def main() -> None:
         help="data_directory of driving_log_replayer",
     )
     args = parser.parse_args()
-    scenario_paths = Path(args.scenario_root_dir).resolve().glob("**/scenario*.y*ml")  # yaml or yml
+    scenario_paths = Path(args.data_directory).resolve().glob("**/scenario*.y*ml")  # yaml or yml
     for scenario_path in sorted(scenario_paths):
         # debug print(scenario_path)
         convert_scenario(scenario_path)
