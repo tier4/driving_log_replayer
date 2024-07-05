@@ -66,10 +66,11 @@ class Conditions(BaseModel):
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["localization"]
-    UseCaseFormatVersion: Literal["1.2.0", "1.3.0"]
+    UseCaseFormatVersion: Literal["2.0.0"]
     Conditions: Conditions
     InitialPose: InitialPoseModel | None = None
     DirectInitialPose: InitialPoseModel | None = None
+    Datasets: list[dict]
 
     @model_validator(mode="after")
     def mutually_exclusive(self) -> "Evaluation":
