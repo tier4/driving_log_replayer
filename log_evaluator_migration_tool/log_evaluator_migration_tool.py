@@ -93,7 +93,7 @@ def move_dataset_and_map(scenario_path: Path) -> None:
                             new_dataset_dir.joinpath("map").as_posix(),
                         )
                     else:
-                        print(f"cannot copy {local_map_path}")
+                        print(f"cannot copy {local_map_path}")  # noqa
         # remove base dir
         t4_dataset_path.rmdir()
 

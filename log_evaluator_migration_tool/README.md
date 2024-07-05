@@ -14,8 +14,3 @@ Tool to migrate data_directory of driving_log_replayer
 ```shell
 python3 log_evaluator_migration_tool ${driving_log_replayer_data_directory_root}
 ```
-
-## example
-
-```shell
-```
