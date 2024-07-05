@@ -42,13 +42,12 @@ class InitialPose(BaseModel):
 
 
 class Scenario(BaseModel):
-    ScenarioFormatVersion: Literal["2.2.0", "3.0.0"]
+    ScenarioFormatVersion: Literal["3.0.0"]
     ScenarioName: str
     ScenarioDescription: str
     SensorModel: str
     VehicleModel: str
     VehicleId: str | None = None
-    LocalMapPath: str = ""
     Evaluation: dict
 
 
