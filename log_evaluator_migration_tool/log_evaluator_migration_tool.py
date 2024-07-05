@@ -111,7 +111,7 @@ def main() -> None:
     args = parser.parse_args()
     scenario_paths = Path(args.data_directory).resolve().glob("**/scenario*.y*ml")  # yaml or yml
     for scenario_path in sorted(scenario_paths):
-        # debug print(scenario_path)
+        print(f"convert {scenario_path}")  # noqa
         convert_scenario(scenario_path)
         move_dataset_and_map(scenario_path)
 
