@@ -23,28 +23,23 @@ def convert_scenario(scenario_path: Path) -> None:
     # keyが存在しないのか、keyが存在した上でnull(None)なのか区別するためにgetのデフォルト値を固定値にする
 
     local_map_path = yaml_obj.get("LocalMapPath", KEY_NOT_EXIT)
-    launch_localization = yaml_obj.get("LaunchLocalization", KEY_NOT_EXIT)
+    launch_localization = yaml_obj["Evaluation"].get("LaunchLocalization", KEY_NOT_EXIT)
     initial_pose = yaml_obj["Evaluation"].get("InitialPose", KEY_NOT_EXIT)
     direct_initial_pose = yaml_obj["Evaluation"].get("DirectInitialPose", KEY_NOT_EXIT)
-    yaml_obj.pop("LocalMapPath")
-    if local_map_path != KEY_NOT_EXIT:
-        yaml_obj.pop("VehicleId")
-    if launch_localization != KEY_NOT_EXIT:
-        yaml_obj.pop("LaunchLocalization")
-    if initial_pose != KEY_NOT_EXIT:
-        yaml_obj["Evaluation"].pop("InitialPose")
-    if direct_initial_pose != KEY_NOT_EXIT:
-        yaml_obj["Evaluation"].pop("DirectInitialPose")
-
+    yaml_obj.pop("VehicleId")
     yaml_obj["Evaluation"]["Datasets"] = []
     migration_dict = {"VehicleId": vehicle_id}
     if local_map_path != KEY_NOT_EXIT:
+        yaml_obj.pop("LocalMapPath")
         migration_dict |= {"LocalMapPath": local_map_path}
     if launch_localization != KEY_NOT_EXIT:
+        yaml_obj["Evaluation"].pop("LaunchLocalization")
         migration_dict |= {"LaunchLocalization": launch_localization}
     if initial_pose != KEY_NOT_EXIT:
+        yaml_obj["Evaluation"].pop("InitialPose")
         migration_dict |= {"InitialPose": initial_pose}
     if direct_initial_pose != KEY_NOT_EXIT:
+        yaml_obj["Evaluation"].pop("DirectInitialPose")
         migration_dict |= {"DirectInitialPose": direct_initial_pose}
     yaml_obj["Evaluation"]["Datasets"].append(
         {"bag_only_dataset": migration_dict},
