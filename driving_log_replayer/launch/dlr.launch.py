@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 from os.path import expandvars
 from pathlib import Path
 
@@ -37,12 +38,12 @@ def get_launch_arguments() -> list:
     """
     Set and return launch argument.
 
-    with_autoware
     scenario_path
     output_dir
-    resource_dir
+    dataset_dir
     play_rate
     play_delay
+    with_autoware
     """
     launch_arguments = []
 
@@ -58,12 +59,13 @@ def get_launch_arguments() -> list:
     add_launch_arg("scenario_path", description="scenario file path")
     add_launch_arg(
         "output_dir",
-        description="Directory to output evaluation results. Mount in read-write mode when using docker",
+        default_value="",
+        description="Directory to output evaluation results. If omitted, the out/${datetime} directory is created in the same directory as scenario. Mount in read-write mode when using docker",
     )
     add_launch_arg(
-        "resource_dir",
+        "dataset_dir",
         default_value="",
-        description="Directory where the data set is located. If not specified, the directory where the scenario is located.",
+        description="Directory where the dataset is located. If not specified, the directory where the scenario is located.",
     )
     add_launch_arg("dataset_index", default_value="0", description="index number of dataset")
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
@@ -71,7 +73,7 @@ def get_launch_arguments() -> list:
     add_launch_arg(
         "with_autoware",
         default_value="true",
-        description="Whether to launch autoware or not",
+        description="Whether to launch Autoware or not. set false if Autoware is started on a different PC.",
     )
 
     return launch_arguments
@@ -80,13 +82,18 @@ def get_launch_arguments() -> list:
 def ensure_arg_compatibility(context: LaunchContext) -> list:
     conf = context.launch_configurations
     scenario_path = Path(conf["scenario_path"])
-    resource_dir = (
-        scenario_path.parent if conf["resource_dir"] == "" else Path(conf["resource_dir"])
+    dataset_dir = scenario_path.parent if conf["dataset_dir"] == "" else Path(conf["dataset_dir"])
+    time_now = datetime.datetime.now().strftime("%Y-%m%d-%H%M%S")  # noqa
+    output_dir = (
+        scenario_path.parent.joinpath("out", time_now)
+        if conf["output_dir"] == ""
+        else Path(conf["output_dir"])
     )
+    conf["output_dir"] = output_dir.as_posix()
     with scenario_path.open() as scenario_file:
         yaml_obj = yaml.safe_load(scenario_file)
     for k, v in yaml_obj["Evaluation"]["Datasets"][int(conf["dataset_index"])].items():
-        dataset_path = resource_dir.joinpath(k)
+        dataset_path = dataset_dir.joinpath(k)
         map_path_str: str | None = v.get("LocalMapPath")
         conf["vehicle_id"] = v["VehicleId"]
         launch_sensing = yaml_obj["Evaluation"].get("LaunchSensing")
@@ -112,7 +119,7 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     conf["annotationless_threshold_file"] = ""
     conf["annotationless_pass_range"] = ""
     return [
-        LogInfo(msg=f"{map_path=}, {dataset_path=}, use_case={conf['use_case']}"),
+        LogInfo(msg=f"{dataset_path=}, {output_dir=}, use_case={conf['use_case']}"),
     ]
 
 
