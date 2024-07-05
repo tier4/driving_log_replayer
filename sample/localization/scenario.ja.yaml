@@ -1,13 +1,11 @@
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 3.0.0
 ScenarioName: sample_localization
 ScenarioDescription: sample_localization
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
-VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
+  UseCaseFormatVersion: 2.0.0
   Conditions:
     Convergence: # 収束性評価
       AllowableDistance: 0.2 # 直線距離でこの距離以内だったら収束とみなす
@@ -18,13 +16,16 @@ Evaluation:
       Method: NVTL # NVTL or TPのどちらで評価を行うか
       AllowableLikelihood: 2.3 # この値以上なら信頼度は正常とみなす
       NGCount: 10 # 信頼度異常が連続でこの回数続いたら信頼度評価失敗とみなす
-  InitialPose: # 初期位置を指定する。nullと記述するとGNSSによる初期位置推定を行う
-    position:
-      x: 3836.5478515625
-      y: 73729.96875
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: -0.9689404241590215
-      w: 0.2472942668776119
+  Datasets:
+    - bag_only_dataset:
+        VehicleId: default
+        InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
+          position:
+            x: 3836.5478515625
+            y: 73729.96875
+            z: 0.0
+          orientation:
+            x: 0.0
+            y: 0.0
+            z: -0.9689404241590215
+            w: 0.2472942668776119

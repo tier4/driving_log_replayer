@@ -1,15 +1,11 @@
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 3.0.0
 ScenarioName: diag_blockage_glp
 ScenarioDescription: diag_blockage_glp
 SensorModel: aip_x2
 VehicleModel: gsm8
-VehicleId: ps1/20210520/CAL_000012
-LocalMapPath: $HOME/map/diag
 Evaluation:
   UseCaseName: performance_diag
-  UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # falseのときはbagの中に入っている/tfを出力する。trueのときはbagの中のtfはリマップされ無効化される。
-  InitialPose: null # 初期位置を指定する。nullと記述するとGNSSによる初期位置推定を行う。LaunchLocalizationが有効のときだけ機能する
+  UseCaseFormatVersion: 2.0.0
   Conditions:
     LiDAR:
       Visibility:
@@ -48,3 +44,8 @@ Evaluation:
           ScenarioType: FP
           BlockageType: ground
           PassFrameCount: 80
+  Datasets:
+    - bag_only_dataset:
+        VehicleId: ps1/20210520/CAL_000012
+        LaunchLocalization: false # falseのときはbagの中に入っている/tfを出力する。trueのときはbagの中のtfはリマップされ無効化される。
+        InitialPose: null # 初期位置を指定する。nullと記述するとGNSSによる初期位置推定を行う。LaunchLocalizationが有効のときだけ機能する
