@@ -1,25 +1,11 @@
 # Annotationless認識機能の評価
 
-## 準備
-
-1. サンプルのシナリオのコピー
-
-   ```shell
-   mkdir -p ~/driving_log_replayer_data/annotationless_perception/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/annotationless_perception/scenario.yaml ~/driving_log_replayer_data/annotationless_perception/sample
-   ```
-
-2. サンプルのデータセットをコピー
-
-   ```shell
-   cp -r ~/driving_log_replayer_data/sample_dataset/input_bag ~/driving_log_replayer_data/annotationless_perception/sample
-   ```
-
 ## 実行方法
 
 1. シミュレーションの実行
 
    ```shell
+   ros2 launch driving_log_replayer dlr.launch.py scenario_path:=$HOME/ros_ws/awf/src/simulator/driving_log_replayer/sample/annotationless_perception/scenario.yaml output_dir $HOME/dlr_data/out resource_dir:=$HOME/dlr_data/sample_dataset
    dlr simulation run -p annotationless_perception -l play_rate:=0.5
    ```
 

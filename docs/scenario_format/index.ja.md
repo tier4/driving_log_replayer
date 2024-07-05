@@ -23,29 +23,7 @@ driving_log_replayer で用いるシナリオのフォーマットについて�
 
 基本構造は以下の通り。各キーの詳細は以下で記述する。
 
-### 2.x.x フォーマット
-
-`localization`、 `performance_diag`、 `yabloc`、 `eagleye`、 `ar_tag_based_localizer`で使用する。
-
-```yaml
-ScenarioFormatVersion: 2.x.x
-ScenarioName: String
-ScenarioDescription: String
-SensorModel: String
-VehicleModel: String
-VehicleId: String
-LocalMapPath: String
-Evaluation:
-  UseCaseName: String
-  UseCaseFormatVersion: String
-  Conditions: Dictionary # refer use case
-```
-
 ### 3.x.x フォーマット
-
-`perception` と `obstacle_segmentation` で使用する。
-
-**注意: VehicleId と LocalMapPath が t4_dataset の id 毎に設定するように変更されている。**
 
 ```yaml
 ScenarioFormatVersion: 3.x.x
@@ -56,19 +34,18 @@ VehicleModel: String
 Evaluation:
   UseCaseName: String
   UseCaseFormatVersion: String
+  Conditions: Dictionary # refer use case
   Datasets:
     - DatasetName:
         VehicleId: String
-        LocalMapPath: String
-  Conditions: Dictionary # refer use case
+        LocalMapPath: String # Optional
 ```
 
 ### ScenarioFormatVersion
 
 シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
 
-`localization` と `performance_diag` と `yabloc` と `eagleye` と `ar_tag_based_localizer` は 2.x.x 系を使用する。2.x.x の最新バージョンは 2.2.0
-`perception` と `obstacle_segmentation` は 3.x.x 系を使用する。3.x.x の最新バージョンは 3.0.0
+現在は、3.0.0固定
 
 フォーマットの更新の度にマイナーバージョンを更新する。
 
@@ -87,18 +64,6 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の sensor_model �
 ### VehicleModel
 
 autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_model を指定する
-
-### VehicleId
-
-autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。
-
-車両 ID が不明な場合は、`default` を設定する。
-
-### LocalMapPath
-
-ローカル環境で使用する地図のフォルダのパスを記述する。
-
-`$HOME`のような環境変数を使用することが出来る。
 
 ### Evaluation
 
@@ -121,3 +86,32 @@ driving_log_replayer/launch に指定した名称と同じ名称の launch.py �
 ユースケース毎に設定できる条件を指定する。
 
 指定可能な条件は各ユースケースを参照。
+
+#### Datasets
+
+複数個のDatasetを記述することが可能であるが、複数個のDatasetに対して、同じ評価条件で使用する場合のみ利用できる。
+複数個のDatasetを記述した場合は、利用したいdatasetのindexをlaunchの起動引数に渡す必要がある。渡さない場合は0番が暗黙で使われる。
+
+```shell
+# シナリオ記述した2番目のdatasetを使用して評価したい場合。
+ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir} database_index:=1
+
+# 未指定は0
+ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir}
+```
+
+#### DatasetName
+
+t4_datasetのデータセット名のみ(シナリオからの相対パス)、または、絶対パスを指定する。
+
+#### VehicleId
+
+autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。
+
+車両 ID が不明な場合は、`default` を設定する。
+
+#### LocalMapPath
+
+ローカル環境で使用する地図のフォルダのパスを記述する。
+driving_log_replayerの過去のデータセットと互換性をもたせるために存在する項目
+LocalMapPathがない場合は、Dataset配下の`map`ディレクトリが自動で使われる。

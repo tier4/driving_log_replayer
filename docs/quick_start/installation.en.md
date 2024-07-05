@@ -9,7 +9,6 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
 - ROS humble
 - Python 3.10
 - NVIDIA GPU (required if running perception)
-- [pipx](https://pypa.github.io/pipx/)
 - [zstd](https://github.com/facebook/zstd)
   - sudo apt install zstd
 
@@ -69,27 +68,4 @@ This document contains step-by-step instruction on how to build [AWF Autoware Co
 
    ```shell
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
-   ```
-
-7. Install cli to run driving_log_replayer:
-
-   ```shell
-   pipx install git+https://github.com/tier4/driving_log_replayer.git
-   ```
-
-8. Install shell completion scripts
-
-   ```shell
-   # bash
-   _DLR_COMPLETE=bash_source dlr > $HOME/.dlr-complete.bash
-   _DLR_COMPLETE=bash_source dlr > $HOME/.dlr-analyzer-complete.bash
-
-   echo "source $HOME/.dlr-complete.bash" >> ~/.bashrc
-   echo "source $HOME/.dlr-analyzer-complete.bash" >> ~/.bashrc
-   ```
-
-   ```shell
-   # fish
-   _DLR_COMPLETE=fish_source dlr > $HOME/.config/fish/completions/dlr.fish
-   _DLR_ANALYZER_COMPLETE=fish_source dlr-analyzer > $HOME/.config/fish/completions/dlr-analyzer.fish
    ```
