@@ -42,7 +42,7 @@ def convert_scenario(scenario_path: Path) -> None:
     if direct_initial_pose is not None:
         migration_dict |= {"DirectInitialPose": direct_initial_pose}
     yaml_obj["Evaluation"]["Datasets"].append(
-        {"t4_dataset": migration_dict},
+        {"bag_only_dataset": migration_dict},
     )
     use_case_version: str = yaml_obj["Evaluation"]["UseCaseFormatVersion"]
     major, minor, patch = use_case_version.split(".")
@@ -65,13 +65,17 @@ def move_dataset_and_map(scenario_path: Path) -> None:
     scenario_root = scenario_path.parent
     bag_path = scenario_root.joinpath("input_bag")
     t4_dataset_path = scenario_root.joinpath("t4_dataset")
+    bag_only_dataset_path = t4_dataset_path.joinpath("bag_only_dataset")
 
     # bag 移動
     if bag_path.exists():
         t4_dataset_path.mkdir()
-        bag_path.rename(t4_dataset_path.joinpath("input_bag"))
+        bag_only_dataset_path.mkdir()
+        bag_path.rename(
+            bag_only_dataset_path.joinpath("input_bag"),
+        )  # 一旦t4_dataset配下に移動させて、3.0.0系統と同じフォルダ構成に変更しておく
     # t4_datasetの移動
-    elif t4_dataset_path.exists():
+    if t4_dataset_path.exists():
         for t4_dataset_dict in yaml_obj["Evaluation"]["Datasets"]:
             t4_dataset_dict: dict
             for dataset_name, v in t4_dataset_dict.items():
