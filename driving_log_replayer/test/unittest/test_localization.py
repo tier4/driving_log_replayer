@@ -35,7 +35,10 @@ TARGET_DIAG_NAME = "topic_state_monitor_ndt_scan_matcher_exe_time: localization_
 
 def test_scenario() -> None:
     scenario: LocalizationScenario = load_sample_scenario("localization", LocalizationScenario)
-    assert scenario.VehicleId == "default"
+    dataset0 = scenario.Evaluation.Datasets[0]
+    for k, v in dataset0.items():
+        assert k == "t4_dataset"
+        assert v["VehicleId"] == "default"
     assert scenario.Evaluation.Conditions.Convergence.AllowableDistance == 0.2  # noqa
 
 
