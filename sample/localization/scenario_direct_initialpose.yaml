@@ -17,7 +17,7 @@ Evaluation:
       AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
       NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
   Datasets:
-    - bag_only_dataset:
+    - sample_dataset:
         VehicleId: default
         DirectInitialPose:
           position:

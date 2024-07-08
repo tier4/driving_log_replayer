@@ -7,7 +7,7 @@ Evaluation:
   UseCaseName: ar_tag_based_localizer
   UseCaseFormatVersion: 1.0.0
   Datasets:
-    - bag_only_dataset:
+    - ar_tag_based_localizer:
         VehicleId: default
         InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
           position:

@@ -7,6 +7,6 @@ Evaluation:
   UseCaseName: eagleye
   UseCaseFormatVersion: 1.0.0
   Datasets:
-    - bag_only_dataset:
+    - eagleye:
         VehicleId: default
         InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.

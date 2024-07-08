@@ -45,7 +45,7 @@ Evaluation:
           BlockageType: ground
           PassFrameCount: 80
   Datasets:
-    - bag_only_dataset:
+    - sample_dataset:
         VehicleId: ps1/20210520/CAL_000012
         LaunchLocalization: false # If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.
         InitialPose: null

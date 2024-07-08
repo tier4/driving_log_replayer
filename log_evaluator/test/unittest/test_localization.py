@@ -37,7 +37,7 @@ def test_scenario() -> None:
     scenario: LocalizationScenario = load_sample_scenario("localization", LocalizationScenario)
     dataset0 = scenario.Evaluation.Datasets[0]
     for k, v in dataset0.items():
-        assert k == "bag_only_dataset"
+        assert k == "sample_dataset"
         assert v["VehicleId"] == "default"
     assert scenario.Evaluation.Conditions.Convergence.AllowableDistance == 0.2  # noqa
 

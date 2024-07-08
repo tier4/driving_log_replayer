@@ -7,6 +7,6 @@ Evaluation:
   UseCaseName: yabloc
   UseCaseFormatVersion: 1.0.0
   Datasets:
-    - bag_only_dataset:
+    - yabloc:
         VehicleId: default
         InitialPose: null

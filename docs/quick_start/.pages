@@ -3,17 +3,5 @@ nav:
   - installation.ja.md
   - setup.en.md
   - setup.ja.md
-  - localization.en.md
-  - localization.ja.md
-  - yabloc.en.md
-  - yabloc.ja.md
-  - eagleye.en.md
-  - eagleye.ja.md
-  - ar_tag_based_localizer.en.md
-  - ar_tag_based_localizer.ja.md
-  - obstacle_segmentation.en.md
-  - obstacle_segmentation.ja.md
-  - perception.en.md
-  - perception.ja.md
-  - annotationless_perception.en.md
-  - annotationless_perception.ja.md
+  - run.en.md
+  - run.ja.md
