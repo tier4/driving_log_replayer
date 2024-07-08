@@ -41,6 +41,7 @@ def get_launch_arguments() -> list:
     scenario_path
     output_dir
     dataset_dir
+    dataset_index
     play_rate
     play_delay
     with_autoware
@@ -180,6 +181,7 @@ def launch_evaluator_node(context: LaunchContext) -> list:
         "t4_dataset_path": conf["t4_dataset_path"],
         "result_json_path": conf["result_json_path"],
         "result_archive_path": conf["result_archive_path"],
+        "dataset_index": conf["dataset_index"],
     }
     params |= dlr_config[conf["use_case"]]["node"]
 

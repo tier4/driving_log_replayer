@@ -24,14 +24,12 @@ from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 from pydantic import BaseModel
-from pydantic import model_validator
 from rosidl_runtime_py import message_to_ordereddict
 from tier4_debug_msgs.msg import Float32Stamped
 from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import InitialPose as InitialPoseModel
 from driving_log_replayer.scenario import number
 from driving_log_replayer.scenario import Scenario
 

@@ -20,7 +20,6 @@ from pydantic import BaseModel
 
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
-from driving_log_replayer.scenario import InitialPose
 from driving_log_replayer.scenario import Scenario
 
 

@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from collections.abc import Callable
-from os.path import expandvars
 from pathlib import Path
 from typing import Any
 from typing import TYPE_CHECKING
@@ -62,14 +61,28 @@ class DLREvaluator(Node):
     def __init__(self, name: str, scenario_class: Callable, result_class: Callable) -> None:
         super().__init__(name)
         self.declare_parameter("scenario_path", "")
+        self.declare_parameter("t4_dataset_path", "")
         self.declare_parameter("result_json_path", "")
+        self.declare_parameter("result_archive_path", "")
+        self.declare_parameter("dataset_index", "")
 
-        self._scenario_path = expandvars(
-            self.get_parameter("scenario_path").get_parameter_value().string_value,
+        self._scenario_path = self.get_parameter("scenario_path").get_parameter_value().string_value
+        self._t4_dataset_paths = [
+            self.get_parameter("t4_dataset_path").get_parameter_value().string_value,
+        ]
+        self._result_json_path = (
+            self.get_parameter("result_json_path").get_parameter_value().string_value
         )
-        self._result_json_path = expandvars(
-            self.get_parameter("result_json_path").get_parameter_value().string_value,
+        self._result_archive_path = Path(
+            self.get_parameter("result_archive_path").get_parameter_value().string_value,
         )
+        self._dataset_index = (
+            self.get_parameter("dataset_index").get_parameter_value().integer_value
+        )
+        self._result_archive_path.mkdir(exist_ok=True)
+        self._perception_eval_log_path = self._result_archive_path.parent.joinpath(
+            "perception_eval_log",
+        ).as_posix()
 
         self._scenario = None
         try:
@@ -102,8 +115,6 @@ class DLREvaluator(Node):
             self._result_writer.close()
             rclpy.shutdown()
 
-        self.set_t4_dataset()
-
         self._tf_buffer = Buffer()
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
@@ -124,27 +135,6 @@ class DLREvaluator(Node):
             callback_group=self._timer_group,
             clock=Clock(clock_type=ClockType.SYSTEM_TIME),
         )  # wall timer
-
-    def set_t4_dataset(self) -> None:
-        if self._scenario.ScenarioFormatVersion != "3.0.0":
-            return
-        self.declare_parameter("t4_dataset_path", "")
-        self.declare_parameter("result_archive_path", "")
-
-        result_archive_path = Path(
-            expandvars(
-                self.get_parameter("result_archive_path").get_parameter_value().string_value,
-            ),
-        )
-        result_archive_path.mkdir(exist_ok=True)
-
-        self._pkl_path = result_archive_path.joinpath("scene_result.pkl").as_posix()
-        self._t4_dataset_paths = [
-            expandvars(self.get_parameter("t4_dataset_path").get_parameter_value().string_value),
-        ]
-        self._perception_eval_log_path = result_archive_path.parent.joinpath(
-            "perception_eval_log",
-        ).as_posix()
 
     def timer_cb(
         self,
@@ -263,7 +253,7 @@ class DLREvaluator(Node):
             return TransformStamped()
 
     def save_pkl(self, save_object: Any) -> None:
-        PickleWriter(self._pkl_path, save_object)
+        PickleWriter(self._result_archive_path.joinpath("scene_result.pkl").as_posix(), save_object)
 
     @classmethod
     def transform_stamped_with_euler_angle(cls, transform_stamped: TransformStamped) -> dict:
@@ -284,15 +274,17 @@ class DLREvaluator(Node):
         return tf_euler
 
     def set_initial_pose(self) -> tuple[PoseWithCovarianceStamped | None, int | None]:
-        auto_pose = getattr(self._scenario.Evaluation, "InitialPose", None)
-        direct_pose = getattr(self._scenario.Evaluation, "DirectInitialPose", None)
+        # debug print(self._scenario.__dict__)
+        dataset = self._scenario.Evaluation.Datasets[self._dataset_index]
+        auto_pose = dataset.get("InitialPose")
+        direct_pose = dataset.get("DirectInitialPose")
         if auto_pose is None and direct_pose is None:
             return None, None
         if auto_pose is not None:
-            initial_pose: InitialPose = auto_pose
+            initial_pose: InitialPose = InitialPose(**auto_pose)
             pose_method: int = InitializeLocalization.Request.AUTO
         if direct_pose is not None:
-            initial_pose: InitialPose = direct_pose
+            initial_pose: InitialPose = InitialPose(**direct_pose)
             pose_method: int = InitializeLocalization.Request.DIRECT
         covariance = np.array(
             [
