@@ -38,14 +38,13 @@ Evaluation:
   Datasets:
     - DatasetName:
         VehicleId: String
-        LocalMapPath: String # Optional
 ```
 
 ### ScenarioFormatVersion
 
 シナリオフォーマットのバージョン情報を記述する。セマンティックバージョンを用いる。
 
-現在は、3.0.0固定
+現在は、3.0.0
 
 フォーマットの更新の度にマイナーバージョンを更新する。
 
@@ -73,8 +72,7 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_model �
 
 評価プログラムを指定する。
 
-ここで指定された名前と同じ名前の launch ファイルを呼び出すことで評価が実行される。
-log_evaluator/launch に指定した名称と同じ名称の launch.py ファイルが存在している必要がある。
+ここで指定された名前と同じ名前の評価ノードを呼び出すことで評価が実行される。
 
 #### UseCaseFormatVersion
 
@@ -94,24 +92,15 @@ log_evaluator/launch に指定した名称と同じ名称の launch.py ファイ
 
 ```shell
 # シナリオ記述した2番目のdatasetを使用して評価したい場合。
-ros2 launch log_evaluator dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir} database_index:=1
-
-# 未指定は0
-ros2 launch log_evaluator dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir}
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${perception_database_dataset_scenario} database_index:=1
 ```
 
 #### DatasetName
 
-t4_datasetのデータセット名のみ(シナリオからの相対パス)、または、絶対パスを指定する。
+t4_datasetのデータセット名
 
 #### VehicleId
 
 autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を指定する。
 
 車両 ID が不明な場合は、`default` を設定する。
-
-#### LocalMapPath
-
-ローカル環境で使用する地図のフォルダのパスを記述する。
-log_evaluatorの過去のデータセットと互換性をもたせるために存在する項目
-LocalMapPathがない場合は、Dataset配下の`map`ディレクトリが自動で使われる。

@@ -11,7 +11,7 @@
 ### 例1
 
 ```shell
-❯ dlr simulation run -p localization
+❯ ros2 launch log_evaluator log_evaluator.launch.py scenrio_path:=$HOME/log_evaluator/sample.yaml
 [INFO] [launch]: All log files can be found below /home/hyt/.ros/log/2024-06-07-12-37-19-365597-dpc2405001-1360746
 [INFO] [launch]: Default logging verbosity is set to INFO
 1717731451.040883 [77]       ros2: determined eno1 (udp/10.0.55.137) as highest quality interface, selected for automatic interface.
@@ -23,29 +23,6 @@ Captured stderr output: error: package not found: "package 'sample_sensor_kit_de
 ### 修正方法、確認箇所1
 
 プロファイルで指定しているautoware_pathにシナリオで指定した、sensor_model、vehicle_model、vehicle_idが存在するか確認する。
-
-### 原因2
-
-cliのバージョンがlog_evaluatorのバージョンと一致していない。
-
-### 例2
-
-```shell
-❯ dlr simulation run -p yabloc -l play_rate:=0.5
-Usage: dlr simulation run [OPTIONS]
-Try 'dlr simulation run -h' for help.
-
-Error: No such option: -l
-```
-
-### 修正方法、確認箇所2
-
-installされているlog_evaluatorのpackage.xmlのversionタグの値と、cliが出力するversionが一致しているか確認する。
-
-```shell
-❯ dlr --version
-1.18.0
-```
 
 ## Autoware起動後すぐに終了してしまう
 
@@ -238,10 +215,10 @@ average rate: 5.333
 対象のtopicが期待通りの周期で出力されているかros2 topic hzで確認する。
 play_rateが0.5であれば10\*0.5=5で正常であることに注意。
 
-出ていない場合は、dlr simulation run のplay_rate引数を低くする
+出ていない場合は、play_rate引数を低くする
 
 ```shell
-dlr simulation run -p perception -l play_rate:=0.2
+ros2 launch log_evaluator log_evaluator scenario_path:=$HOME/log_evaluator/sample.yaml play_rate:=0.2
 ```
 
 ### 原因2
