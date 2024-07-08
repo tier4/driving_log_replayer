@@ -27,7 +27,6 @@ from driving_log_replayer.scenario import Scenario
 class Evaluation(BaseModel):
     UseCaseName: Literal["ar_tag_based_localizer"]
     UseCaseFormatVersion: Literal["1.0.0"]
-    InitialPose: InitialPose | None
     Datasets: list[dict]
 
 

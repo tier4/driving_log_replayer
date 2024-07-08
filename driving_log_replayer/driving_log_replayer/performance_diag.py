@@ -77,7 +77,6 @@ class Evaluation(BaseModel):
     UseCaseName: Literal["performance_diag"]
     UseCaseFormatVersion: Literal["2.0.0"]
     Conditions: Conditions
-    InitialPose: InitialPose | None
     Datasets: list[dict]
 
 
