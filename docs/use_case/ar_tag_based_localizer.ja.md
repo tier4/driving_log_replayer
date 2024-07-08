@@ -4,7 +4,6 @@ Autoware のArTagBasedLocalizer自己位置推定が安定して動作してい�
 
 ## 評価方法
 
-`ar_tag_based_localizer.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`ar_tag_based_localizer_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる

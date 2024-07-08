@@ -3,7 +3,7 @@
 The log_evaluator can be started by specifying the scenario path.
 
 ```shell
-ros2 launch log_evaluator log_evaluator.launch.py scenario_path:=${scenario_path} [output_dir:=${output_dir} resource_dir:=${resource_dir}]
+ros2 launch log_evaluator log_evaluator.launch.py scenario_path:=${scenario_path} [output_dir:=${output_dir} dataset_dir:=${dataset_dir}]
 ```
 
 ## Run log_evaluator with wasim

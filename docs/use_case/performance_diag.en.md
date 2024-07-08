@@ -9,7 +9,6 @@ The following subjects of evaluation are currently supported:
 
 ## Evaluation Method
 
-The diagnostics evaluation is executed by launching the `performance_diag.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`performance_diag_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command.

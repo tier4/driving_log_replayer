@@ -72,7 +72,6 @@ Autoware Foundationのmainでは、`false`になっているが、実車両で�
 
 ## 評価方法
 
-`traffic_light.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`traffic_light_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる

@@ -4,7 +4,6 @@ Evaluate whether Autoware's YabLoc, a camera based pcd-less localization, is wor
 
 ## Evaluation method
 
-The localization's evaluation is executed by launching the `yabloc.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`yabloc_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command

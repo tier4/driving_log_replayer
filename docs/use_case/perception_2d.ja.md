@@ -118,7 +118,6 @@ index b697b1f50..b9cb53102 100644
 
 ## 評価方法
 
-`perception.launch_2d.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_2d_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる

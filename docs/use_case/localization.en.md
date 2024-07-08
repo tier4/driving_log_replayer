@@ -6,7 +6,6 @@ In the evaluation of NDT, the reliability, convergence, and availability of NDT 
 
 ## Evaluation method
 
-The localization's evaluation is executed by launching the `localization.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`localization_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command

@@ -18,7 +18,6 @@ Autoware の点群処理のプロセス(sensing→perception)が動作して、/
 
 ## 評価方法
 
-`obstacle_segmentation.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`obstacle_segmentation_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる

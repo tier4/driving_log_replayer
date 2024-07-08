@@ -7,7 +7,6 @@ perception_online_evaluatorを利用して、Autowareの認識機能(perception)
 
 ## 評価方法
 
-`annotationless_perception.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`annotationless_perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる

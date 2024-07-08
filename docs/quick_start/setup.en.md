@@ -22,7 +22,9 @@
    ```
 
    You can also download manually.
-   [データセット](https://drive.google.com/file/d/1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC/view)
+
+   [dataset](https://drive.google.com/file/d/1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC/view)
+
    [sample-map-planning](https://drive.google.com/file/d/1499_nsbUbIeturZaDj7jhUownh5fvXHd/view)
 
 2. Dataset and Map Setup(yabloc, eagleye, ar_tag_based_localizer)
@@ -37,6 +39,7 @@
    ```
 
    You can also download manually.
+
    [bag](https://drive.google.com/file/d/17ppdMKi4IC8J_2-_9nyYv-LAfW0M1re5/view)
 
 3. Copy the sample scenario to the dataset directory

@@ -65,7 +65,6 @@ $HOME/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data/pts_voxel_
 
 ## Evaluation method
 
-The perception evaluation is executed by launching the `perception.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`perception_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command

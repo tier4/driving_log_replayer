@@ -7,7 +7,6 @@ Requires Autoware with the following PR features.
 
 ## Evaluation method
 
-The annotationless_perception evaluation is executed by launching the `annotationless_perception.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`annotationless_perception_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command

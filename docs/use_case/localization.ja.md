@@ -6,7 +6,6 @@ NDT自己位置推定の評価では NDT の信頼度、収束性、可用性を
 
 ## 評価方法
 
-`localization.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`localization_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる

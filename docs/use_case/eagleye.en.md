@@ -4,7 +4,6 @@ Evaluate whether Eagleye, a GNSS-IMU based map-less localization, is working sta
 
 ## Evaluation method
 
-The localization's evaluation is executed by launching the `eagleye.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`eagleye_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command

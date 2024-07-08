@@ -61,7 +61,6 @@ $HOME/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data/pts_voxel_
 
 ## 評価方法
 
-`perception.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる

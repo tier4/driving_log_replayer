@@ -123,7 +123,6 @@ index b697b1f50..b9cb53102 100644
 
 ## Evaluation method
 
-The perception_2d evaluation is executed by launching the `perception_2d.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`perception_2d_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command

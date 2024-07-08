@@ -19,7 +19,6 @@ Multiple annotation tools can be used as long as a conversion tool can be create
 
 ## Evaluation method
 
-The obstacle segmentation evaluation is executed by launching the `obstacle_segmentation.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`obstacle_segmentation_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command

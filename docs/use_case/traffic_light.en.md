@@ -72,7 +72,6 @@ Because `true` is a setting that recognition results are sent from another compu
 
 ## Evaluation method
 
-The traffic_light evaluation is executed by launching the `traffic_light.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`traffic_light_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command

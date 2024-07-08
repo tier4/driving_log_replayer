@@ -9,7 +9,6 @@ Autoware の診断機能(diagnostics)が意図通りに機能しているかを�
 
 ## 評価方法
 
-`performance_diag.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`performance_diag_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
