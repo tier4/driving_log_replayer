@@ -1,8 +1,3 @@
-/clock:
-  depth: 10
-  durability: volatile
-  history: keep_last
-  reliability: best_effort
 /perception/obstacle_segmentation/pointcloud:
   depth: 10
   durability: volatile

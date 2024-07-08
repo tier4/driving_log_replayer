@@ -3243,7 +3243,7 @@ Visualization Manager:
                     Value: true
                     VehicleModel: true
                 Value: true
-                log_evaluator:
+                driving_log_replayer:
                   Value: true
                   localization:
                     PointCloud2: true
@@ -4302,7 +4302,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /log_evaluator/marker/ground_truth
+                Value: /driving_log_replayer/marker/ground_truth
               Value: true
             - Class: rviz_default_plugins/MarkerArray
               Enabled: true
@@ -4316,7 +4316,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /log_evaluator/marker/results
+                Value: /driving_log_replayer/marker/results
               Value: true
           Enabled: true
           Name: perception
@@ -4404,7 +4404,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /log_evaluator/marker/detection
+                Value: /driving_log_replayer/marker/detection
               Value: true
             - Class: rviz_default_plugins/MarkerArray
               Enabled: true
@@ -4416,7 +4416,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /log_evaluator/marker/non_detection
+                Value: /driving_log_replayer/marker/non_detection
               Value: true
             - Alpha: 1
               Autocompute Intensity Bounds: true
@@ -4448,7 +4448,7 @@ Visualization Manager:
                 Filter size: 10
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /log_evaluator/pcd/detection
+                Value: /driving_log_replayer/pcd/detection
               Use Fixed Frame: true
               Use rainbow: true
               Value: true
@@ -4482,14 +4482,14 @@ Visualization Manager:
                 Filter size: 10
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /log_evaluator/pcd/non_detection
+                Value: /driving_log_replayer/pcd/non_detection
               Use Fixed Frame: true
               Use rainbow: true
               Value: true
           Enabled: true
           Name: obstacle_segmentation
       Enabled: true
-      Name: log_evaluator
+      Name: driving_log_replayer
   Enabled: true
   Global Options:
     Background Color: 42; 42; 42
