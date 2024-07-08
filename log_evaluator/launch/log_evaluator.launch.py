@@ -90,6 +90,7 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
         if conf["output_dir"] == ""
         else Path(conf["output_dir"])
     )
+    output_dir.mkdir(exist_ok=True, parents=True)
     conf["output_dir"] = output_dir.as_posix()
     with scenario_path.open() as scenario_file:
         yaml_obj = yaml.safe_load(scenario_file)
