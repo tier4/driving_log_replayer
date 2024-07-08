@@ -1,6 +1,6 @@
 # 概要
 
-Driving Log Replayer は、log(rosbag2)を用いて Autoware の open loop simulation を実行し、Autoware が出力するトピックを評価するパッケージです。
+log_evaluator は、log(rosbag2)を用いて Autoware の open loop simulation を実行し、Autoware が出力するトピックを評価するパッケージです。
 Sensing, Localization, Perception の性能確認と、ソフトウェアのリグレッションテストに使用します。
 
 ## 関連ドキュメント
@@ -16,14 +16,14 @@ Sensing, Localization, Perception の性能確認と、ソフトウェアのリ�
 
 ## アーキテクチャ
 
-Driving Log Replayer は、Autoware の評価ノードを Autoware の標準機能に付加した構成となっている。
+log_evaluator は、Autoware の評価ノードを Autoware の標準機能に付加した構成となっている。
 アーキテクチャ図を以下に示す。
 
 ![architecture](images/architecture.png)
 
 ## パッケージ構成
 
-Driving Log Replayer の評価ノードは、以下のように動作します。
+log_evaluator の評価ノードは、以下のように動作します。
 
 - 評価の条件が記載されたシナリオをパッケージが読み取る
 - autoware を起動する

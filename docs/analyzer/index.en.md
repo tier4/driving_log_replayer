@@ -1,6 +1,6 @@
-# Driving Log Replayer Analyzer
+# log_evaluator_analyzer
 
-Package to analyze the result files of tests performed by Driving Log Replayer.
+Package to analyze the result files of tests performed by log_evaluator.
 
 ## Directory Structure
 

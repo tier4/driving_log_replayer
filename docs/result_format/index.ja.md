@@ -1,4 +1,4 @@
-# Driving Log Replayer 結果ファイルフォーマット
+# log_evaluator 結果ファイルフォーマット
 
 1 行毎に json 形式の文字列が入っている jsonl 形式となっている。
 

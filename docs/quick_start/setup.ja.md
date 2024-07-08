@@ -2,7 +2,7 @@
 
 !!! note
 
-    Driving Log Replayerを実行するには、Autowareのビルドとインストールに加えて、[Driving Log Replayerのインストール](installation.md) が完了している必要があります。
+    log_evaluatorを実行するには、Autowareのビルドとインストールに加えて、[log_evaluatorのインストール](installation.md) が完了している必要があります。
 
     Sample map: Copyright 2020 TIER IV, Inc.
 

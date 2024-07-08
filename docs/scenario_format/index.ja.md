@@ -1,4 +1,4 @@
-# Driving Log Replayer シナリオフォーマット定義
+# log_evaluator シナリオフォーマット定義
 
 log_evaluator で用いるシナリオのフォーマットについて述べる。
 

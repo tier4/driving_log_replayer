@@ -1,4 +1,4 @@
-# Driving Log Replayer Scenario Format Definition
+# log_evaluator Scenario Format Definition
 
 This section describes the scenario format used in log_evaluator.
 

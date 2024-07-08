@@ -1,14 +1,10 @@
 # Command
 
-The log_evaluator can be started by specifying the scenario path and the output directory of the evaluation results.
+The log_evaluator can be started by specifying the scenario path.
 
 ```shell
-ros2 launch log_evaluator dlr.launch.py scenario_path:=${scenario_path} output_dir:=${output_dir}
+ros2 launch log_evaluator log_evaluator.launch.py scenario_path:=${scenario_path} [output_dir:=${output_dir} resource_dir:=${resource_dir}]
 ```
-
-## CLI
-
-The log_evaluator_cli used up to version 2 is discontinued.
 
 ## Run log_evaluator with wasim
 
@@ -18,4 +14,3 @@ you can also use [wasim](https://docs.web.auto/developers-guides/wasim/introduct
 Please see the [wasim documentation site](https://docs.web.auto/developers-guides/wasim/use-cases/run-simulations-locally/) for an example of tool usage.
 
 Since wasim downloads and executes scenarios from Autoware Evaluator, it can only execute scenarios that are already registered in the cloud environment.
-For scenarios not registered in the cloud, use `log_evaluator_cli`.

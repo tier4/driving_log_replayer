@@ -1,6 +1,6 @@
-# Driving Log Replayer Analyzer
+# log_evaluator Analyzer
 
-Driving Log Replayer Analyzer is a package that analyses result files.
+log_evaluator Analyzer is a package that analyses result files.
 
 ## Notice
 

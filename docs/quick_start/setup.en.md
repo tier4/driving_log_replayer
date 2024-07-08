@@ -2,7 +2,7 @@
 
 !!! note
 
-    Running the Driving Log Replayer requires some additional steps on top of building and installing Autoware, so make sure that [Driving Log Replayer installation](installation.md) has been completed first before proceeding.
+    Running the log_evaluator requires some additional steps on top of building and installing Autoware, so make sure that [log_evaluator installation](installation.md) has been completed first before proceeding.
 
     Sample map: Copyright 2020 TIER IV, Inc.
 
