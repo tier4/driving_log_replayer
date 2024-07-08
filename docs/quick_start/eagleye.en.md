@@ -5,14 +5,14 @@
 1. Copy sample scenario
 
    ```bash
-   mkdir -p ~/driving_log_replayer_data/eagleye/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/eagleye/scenario.yaml ~/driving_log_replayer_data/eagleye/sample
+   mkdir -p ~/log_evaluator_data/eagleye/sample
+   cp -r ~/autoware/src/simulator/log_evaluator/sample/eagleye/scenario.yaml ~/log_evaluator_data/eagleye/sample
    ```
 
 2. Copy sample bag
 
    ```shell
-   cp -r ~/driving_log_replayer_data/sample_bag/eagleye/input_bag ~/driving_log_replayer_data/eagleye/sample
+   cp -r ~/log_evaluator_data/sample_bag/eagleye/input_bag ~/log_evaluator_data/eagleye/sample
    ```
 
 ## How to run

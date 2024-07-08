@@ -5,15 +5,15 @@
 1. サンプルのシナリオのコピー
 
    ```shell
-   mkdir -p ~/driving_log_replayer_data/perception/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/perception/scenario.yaml ~/driving_log_replayer_data/perception/sample
+   mkdir -p ~/log_evaluator_data/perception/sample
+   cp -r ~/autoware/src/simulator/log_evaluator/sample/perception/scenario.yaml ~/log_evaluator_data/perception/sample
    ```
 
 2. サンプルのデータセットをコピー
 
    ```shell
-   mkdir -p ~/driving_log_replayer_data/perception/sample/t4_dataset
-   cp -r ~/driving_log_replayer_data/sample_dataset ~/driving_log_replayer_data/perception/sample/t4_dataset
+   mkdir -p ~/log_evaluator_data/perception/sample/t4_dataset
+   cp -r ~/log_evaluator_data/sample_dataset ~/log_evaluator_data/perception/sample/t4_dataset
    ```
 
 3. 機械学習の学習済みモデルの変換を行う

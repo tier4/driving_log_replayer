@@ -5,15 +5,15 @@
 1. Copy sample scenario
 
    ```shell
-   mkdir -p ~/driving_log_replayer_data/ar_tag_based_localizer/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/ar_tag_based_localizer/scenario.yaml ~/driving_log_replayer_data/ar_tag_based_localizer/sample
+   mkdir -p ~/log_evaluator_data/ar_tag_based_localizer/sample
+   cp -r ~/autoware/src/simulator/log_evaluator/sample/ar_tag_based_localizer/scenario.yaml ~/log_evaluator_data/ar_tag_based_localizer/sample
    ```
 
 2. Copy sample bag and map
 
    ```shell
-   cp -r ~/driving_log_replayer_data/sample_bag/ar_tag_based_localizer/input_bag ~/driving_log_replayer_data/ar_tag_based_localizer/sample
-   cp -r ~/driving_log_replayer_data/sample_bag/ar_tag_based_localizer/map ~/driving_log_replayer_data/ar_tag_based_localizer/sample
+   cp -r ~/log_evaluator_data/sample_bag/ar_tag_based_localizer/input_bag ~/log_evaluator_data/ar_tag_based_localizer/sample
+   cp -r ~/log_evaluator_data/sample_bag/ar_tag_based_localizer/map ~/log_evaluator_data/ar_tag_based_localizer/sample
    ```
 
 ## How to run

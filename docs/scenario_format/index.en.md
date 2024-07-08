@@ -1,6 +1,6 @@
 # Driving Log Replayer Scenario Format Definition
 
-This section describes the scenario format used in driving_log_replayer.
+This section describes the scenario format used in log_evaluator.
 
 ## Notes on the format
 
@@ -17,7 +17,7 @@ Time: s
 
 ## Samples
 
-Sample scenarios are stored in the [sample](https://github.com/tier4/driving_log_replayer/tree/develop/sample) folder.
+Sample scenarios are stored in the [sample](https://github.com/tier4/log_evaluator/tree/develop/sample) folder.
 
 ## Format
 
@@ -109,7 +109,7 @@ Define the evaluation conditions for the simulation.
 Specify an evaluation program.
 
 The evaluation is executed by calling the launch file with the name specified here.
-The `launch.py` file with the same name as specified must exist in the `driving_log_replayer/launch` folder.
+The `launch.py` file with the same name as specified must exist in the `log_evaluator/launch` folder.
 
 #### UseCaseFormatVersion
 

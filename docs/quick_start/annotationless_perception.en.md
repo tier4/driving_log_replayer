@@ -5,14 +5,14 @@
 1. Copy sample scenario
 
    ```shell
-   mkdir -p ~/driving_log_replayer_data/annotationless_perception/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/annotationless_perception/scenario.yaml ~/driving_log_replayer_data/annotationless_perception/sample
+   mkdir -p ~/log_evaluator_data/annotationless_perception/sample
+   cp -r ~/autoware/src/simulator/log_evaluator/sample/annotationless_perception/scenario.yaml ~/log_evaluator_data/annotationless_perception/sample
    ```
 
 2. Copy bag file from dataset
 
    ```shell
-   cp -r ~/driving_log_replayer_data/sample_dataset/input_bag ~/driving_log_replayer_data/annotationless_perception/sample
+   cp -r ~/log_evaluator_data/sample_dataset/input_bag ~/log_evaluator_data/annotationless_perception/sample
    ```
 
 ## How to run

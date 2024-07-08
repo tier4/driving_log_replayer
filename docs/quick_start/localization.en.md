@@ -5,21 +5,21 @@
 1. Copy sample scenario
 
    ```shell
-   mkdir -p ~/driving_log_replayer_data/localization/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/localization/scenario.yaml ~/driving_log_replayer_data/localization/sample
+   mkdir -p ~/log_evaluator_data/localization/sample
+   cp -r ~/autoware/src/simulator/log_evaluator/sample/localization/scenario.yaml ~/log_evaluator_data/localization/sample
    ```
 
 2. Copy bag file from dataset
 
    ```shell
-   cp -r ~/driving_log_replayer_data/sample_dataset/input_bag ~/driving_log_replayer_data/localization/sample
+   cp -r ~/log_evaluator_data/sample_dataset/input_bag ~/log_evaluator_data/localization/sample
    ```
 
 3. Filter and slice bag
 
    ```shell
    source ~/autoware/install/setup.bash
-   cd ~/driving_log_replayer_data/localization/sample
+   cd ~/log_evaluator_data/localization/sample
    ros2 bag filter input_bag -o filtered_bag -x "/localization/.*" "/sensing/lidar/concatenated/pointcloud" "/tf"
    ros2 bag slice filtered_bag -o sliced_bag -s 1649138880 -e 1649138910
    rm -rf input_bag

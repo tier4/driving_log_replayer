@@ -7,7 +7,7 @@ Package to analyze the result files of tests performed by Driving Log Replayer.
 The directory structure is as follows.
 
 ```shell
-driving_log_replayer_analyzer
+log_evaluator_analyzer
 ├── __init__.py
 ├── __main__.py    # Entry point for CLI
 ├── analysis       # CLI analysis command
@@ -30,8 +30,8 @@ Add use_case_name.py files to analysis, config, and data.
 
 ## How to install
 
-- Installed with driving_log_replayer_cli
-- Installed with driving_log_replayer as a ros package
+- Installed with log_evaluator_cli
+- Installed with log_evaluator as a ros package
 
 ## Usage
 

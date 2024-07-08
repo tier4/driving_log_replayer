@@ -31,13 +31,13 @@
 
    ```shell
    # annotationless_perception, localization, obstacle_segmentation, perception
-   mkdir -p ~/driving_log_replayer_data
-   gdown -O ~/driving_log_replayer_data/sample_dataset_v2.tar.zst 'https://docs.google.com/uc?export=download&id=1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC'
-   tar -I zstd -xvf ~/driving_log_replayer_data/sample_dataset_v2.tar.zst -C ~/driving_log_replayer_data/
+   mkdir -p ~/log_evaluator_data
+   gdown -O ~/log_evaluator_data/sample_dataset_v2.tar.zst 'https://docs.google.com/uc?export=download&id=1iCoykBBETI_rGfKEFYYb7LFydF-RJVkC'
+   tar -I zstd -xvf ~/log_evaluator_data/sample_dataset_v2.tar.zst -C ~/log_evaluator_data/
 
    # yabloc, eagleye, artag
-   gdown -O ~/driving_log_replayer_data/sample_bag.tar.zst 'https://docs.google.com/uc?export=download&id=17ppdMKi4IC8J_2-_9nyYv-LAfW0M1re5'
-   tar -I zstd -xvf ~/driving_log_replayer_data/sample_bag.tar.zst -C ~/driving_log_replayer_data/
+   gdown -O ~/log_evaluator_data/sample_bag.tar.zst 'https://docs.google.com/uc?export=download&id=17ppdMKi4IC8J_2-_9nyYv-LAfW0M1re5'
+   tar -I zstd -xvf ~/log_evaluator_data/sample_bag.tar.zst -C ~/log_evaluator_data/
    ```
 
    You can also download manually.
@@ -48,5 +48,5 @@
 
    ```shell
    # assuming that autoware is placed under ~/autoware directory
-   cp ~/autoware/src/simulator/driving_log_replayer/sample/.driving_log_replayer.config.toml ~/
+   cp ~/autoware/src/simulator/log_evaluator/sample/.log_evaluator.config.toml ~/
    ```

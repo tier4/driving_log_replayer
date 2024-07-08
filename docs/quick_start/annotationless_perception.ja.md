@@ -5,7 +5,7 @@
 1. シミュレーションの実行
 
    ```shell
-   ros2 launch driving_log_replayer dlr.launch.py scenario_path:=$HOME/ros_ws/awf/src/simulator/driving_log_replayer/sample/annotationless_perception/scenario.yaml output_dir $HOME/dlr_data/out resource_dir:=$HOME/dlr_data/sample_dataset
+   ros2 launch log_evaluator dlr.launch.py scenario_path:=$HOME/ros_ws/awf/src/simulator/log_evaluator/sample/annotationless_perception/scenario.yaml output_dir $HOME/dlr_data/out resource_dir:=$HOME/dlr_data/sample_dataset
    dlr simulation run -p annotationless_perception -l play_rate:=0.5
    ```
 

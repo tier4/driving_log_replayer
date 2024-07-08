@@ -41,7 +41,7 @@ The details of the node's operation are shown in the figure below.
      - Autoware's output topics must be dropped except `/tf`. The sensor topics (input topics) should remain in the filtered rosbag.
      - Rosbag needs 10 seconds of parking before driving. The other messages should be dropped.
 3. Create an evaluation scenario
-   1. Example scenarios could be found in the repository's [sample folder](https://github.com/tier4/driving_log_replayer/tree/main/sample)
+   1. Example scenarios could be found in the repository's [sample folder](https://github.com/tier4/log_evaluator/tree/main/sample)
    2. Refer to the [format definition](../result_format/index.md) section of this document for description contents.
 4. If the node should test obstacle_segmentation or perception stacks, please annotate with an annotation tool that supports conversion to t4_dataset.
    1. [Deepen.AI](https://www.deepen.ai/) is available.

@@ -19,7 +19,7 @@ Launching the file executes the following steps:
 ## Evaluation results
 
 The output topic of perception_online_evaluator is in the form of the following sample.
-[topic sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/diag_topic.txt)
+[topic sample](https://github.com/tier4/log_evaluator/blob/main/sample/annotationless_perception/diag_topic.txt)
 
 For each subscription, the following judgment results are output for each recognition class.
 
@@ -279,11 +279,11 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.yaml)
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/annotationless_perception/scenario.yaml)
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/result.json)
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/annotationless_perception/result.json)
 
 The format of each frame and the metrics format are shown below.
 **NOTE: common part of the result file format, which has already been explained, is omitted.**

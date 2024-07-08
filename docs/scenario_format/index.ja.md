@@ -1,6 +1,6 @@
 # Driving Log Replayer シナリオフォーマット定義
 
-driving_log_replayer で用いるシナリオのフォーマットについて述べる。
+log_evaluator で用いるシナリオのフォーマットについて述べる。
 
 ## フォーマットに関する注意事項
 
@@ -17,7 +17,7 @@ driving_log_replayer で用いるシナリオのフォーマットについて�
 
 ## サンプル
 
-シナリオのサンプルを[sample](https://github.com/tier4/driving_log_replayer/tree/develop/sample) フォルダに置いている。
+シナリオのサンプルを[sample](https://github.com/tier4/log_evaluator/tree/develop/sample) フォルダに置いている。
 
 ## フォーマット
 
@@ -74,7 +74,7 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_model �
 評価プログラムを指定する。
 
 ここで指定された名前と同じ名前の launch ファイルを呼び出すことで評価が実行される。
-driving_log_replayer/launch に指定した名称と同じ名称の launch.py ファイルが存在している必要がある。
+log_evaluator/launch に指定した名称と同じ名称の launch.py ファイルが存在している必要がある。
 
 #### UseCaseFormatVersion
 
@@ -94,10 +94,10 @@ driving_log_replayer/launch に指定した名称と同じ名称の launch.py �
 
 ```shell
 # シナリオ記述した2番目のdatasetを使用して評価したい場合。
-ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir} database_index:=1
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir} database_index:=1
 
 # 未指定は0
-ros2 launch driving_log_replayer dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir}
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${perception_database_dataset_scenario} output_dir:=${output_dir}
 ```
 
 #### DatasetName
@@ -113,5 +113,5 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_id を�
 #### LocalMapPath
 
 ローカル環境で使用する地図のフォルダのパスを記述する。
-driving_log_replayerの過去のデータセットと互換性をもたせるために存在する項目
+log_evaluatorの過去のデータセットと互換性をもたせるために存在する項目
 LocalMapPathがない場合は、Dataset配下の`map`ディレクトリが自動で使われる。

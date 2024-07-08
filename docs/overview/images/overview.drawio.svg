@@ -454,7 +454,7 @@
                                     <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 118px; height: 1px; padding-top: 135px; margin-left: 541px;">
                                         <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
                                             <div style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">
-                                                driving_log_replayer
+                                                log_evaluator
                                                 <br/>
                                                 evaluator node
                                             </div>
@@ -462,7 +462,7 @@
                                     </div>
                                 </foreignObject>
                                 <text x="600" y="139" fill="rgb(0, 0, 0)" font-family="&quot;Helvetica&quot;" font-size="12px" text-anchor="middle">
-                                    driving_log_replayer...
+                                    log_evaluator...
                                 </text>
                             </switch>
                         </g>

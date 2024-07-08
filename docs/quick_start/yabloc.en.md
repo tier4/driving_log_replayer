@@ -5,14 +5,14 @@
 1. Copy sample scenario
 
    ```shell
-   mkdir -p ~/driving_log_replayer_data/yabloc/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/yabloc/scenario.yaml ~/driving_log_replayer_data/yabloc/sample
+   mkdir -p ~/log_evaluator_data/yabloc/sample
+   cp -r ~/autoware/src/simulator/log_evaluator/sample/yabloc/scenario.yaml ~/log_evaluator_data/yabloc/sample
    ```
 
 2. Download bag file
 
    ```shell
-   cp -r ~/driving_log_replayer_data/sample_bag/yabloc/input_bag ~/driving_log_replayer_data/yabloc/sample
+   cp -r ~/log_evaluator_data/sample_bag/yabloc/input_bag ~/log_evaluator_data/yabloc/sample
    ```
 
 ## How to run

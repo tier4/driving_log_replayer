@@ -7,7 +7,7 @@ Driving Log Replayer で行ったテストの結果ファイルを分析する�
 以下のようなディレクトリ構成を取る。
 
 ```shell
-driving_log_replayer_analyzer
+log_evaluator_analyzer
 ├── __init__.py
 ├── __main__.py      # CLIのエントリーポイント
 ├── analysis         # CLIの解析コマンド
@@ -30,8 +30,8 @@ analysis, config, data に use_case_name.py ファイルを追加する。
 
 ## インストール方法
 
-- driving_log_replayer_cli と一緒にインストールされる
-- driving_log_replayer と一緒に ros のパッケージとしてインストールされる
+- log_evaluator_cli と一緒にインストールされる
+- log_evaluator と一緒に ros のパッケージとしてインストールされる
 
 ## 使い方
 

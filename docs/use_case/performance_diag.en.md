@@ -71,11 +71,11 @@ Published topics:
 
 | Topic name                                               | Data type                        |
 | -------------------------------------------------------- | -------------------------------- |
-| /driving_log_replayer/visibility/value                   | example_interfaces::msg::Float64 |
-| /driving_log_replayer/visibility/level                   | example_interfaces::msg::Byte    |
-| /driving_log_replayer/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64 |
-| /driving_log_replayer/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64 |
-| /driving_log_replayer/blockage/{lidar_name}/level        | example_interfaces::msg::Byte    |
+| /log_evaluator/visibility/value                   | example_interfaces::msg::Float64 |
+| /log_evaluator/visibility/level                   | example_interfaces::msg::Byte    |
+| /log_evaluator/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64 |
+| /log_evaluator/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64 |
+| /log_evaluator/blockage/{lidar_name}/level        | example_interfaces::msg::Byte    |
 
 {lidar_name} contains the name of the mounted lidar.
 
@@ -145,11 +145,11 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.yaml).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/performance_diag/scenario.yaml).
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/result.json).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/performance_diag/result.json).
 
 In `performance_diag` evaluation scenario visibility and blockage are evaluated.
 The `Result` is `true` if both visibility and blockage evaluation steps have passed. Otherwise, the `Result` is `false`.

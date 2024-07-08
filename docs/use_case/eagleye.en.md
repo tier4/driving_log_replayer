@@ -88,11 +88,11 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/eagleye/scenario.yaml).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/eagleye/scenario.yaml).
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/eagleye/result.json).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/eagleye/result.json).
 
 Examples of each evaluation are described below.
 **NOTE: common part of the result file format, which has already been explained, is omitted.**

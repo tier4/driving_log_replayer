@@ -18,23 +18,23 @@ If you want to change the rosbag format from ros1 to ros2.
 
 ## Installation
 
-You need to install driving_log_replayer and driving_log_replayer_cli package.
+You need to install log_evaluator and log_evaluator_cli package.
 
-### How to install driving_log_replayer package
+### How to install log_evaluator package
 
 Use colcon build
 
 ```shell
-colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release --packages-up-to driving_log_replayer
+colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release --packages-up-to log_evaluator
 ```
 
-### How to install driving_log_replayer_cli package
+### How to install log_evaluator_cli package
 
 Use pipx **Do not use pip**
 
 ```shell
 # install
-pipx install git+https://github.com/tier4/driving_log_replayer.git
+pipx install git+https://github.com/tier4/log_evaluator.git
 
 # upgrade
 pipx upgrade driving-log-replayer
@@ -45,7 +45,7 @@ pipx uninstall driving-log-replayer
 
 ### Why pipx, not pip
 
-For ros, driving_log_replayer uses numpy 1.22.0
+For ros, log_evaluator uses numpy 1.22.0
 See requirements.txt
 
 On the other hand, cli uses pandas, and the version of numpy required by pandas is different from the version we want to use in ros.
@@ -75,7 +75,7 @@ _DLR_ANALYZER_COMPLETE=fish_source dlr-analyzer > $HOME/.config/fish/completions
 
 ## Usage
 
-refer [document](https://tier4.github.io/driving_log_replayer/)
+refer [document](https://tier4.github.io/log_evaluator/)
 
 ## (For Developer) Release Process
 

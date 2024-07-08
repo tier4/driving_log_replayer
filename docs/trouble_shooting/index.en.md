@@ -26,7 +26,7 @@ Check whether sensor_model, vehicle_model, and vehicle_id specified in the scena
 
 ### Cause 2
 
-The version of cli does not match the version of driving_log_replayer.
+The version of cli does not match the version of log_evaluator.
 
 ### Example 2
 
@@ -40,7 +40,7 @@ Error: No such option: -l
 
 ### Correction method, Check area 2
 
-Check that the value of the version tag in the package.xml of the installed driving_log_replayer matches the version output by the CLI.
+Check that the value of the version tag in the package.xml of the installed log_evaluator matches the version output by the CLI.
 
 ```shell
 ❯ dlr --version
@@ -56,7 +56,7 @@ Incorrect scenario format
 ### Example
 
 ```shell
-[localization_evaluator_node.py-55] [ERROR] [1717734608.157798307] [driving_log_replayer.localization_evaluator]: An error occurred while loading the scenario. 1 validation error for LocalizationScenario
+[localization_evaluator_node.py-55] [ERROR] [1717734608.157798307] [log_evaluator.localization_evaluator]: An error occurred while loading the scenario. 1 validation error for LocalizationScenario
 [localization_evaluator_node.py-55] Evaluation.UseCaseFormatVersion
 [localization_evaluator_node.py-55]   Input should be '1.2.0' or '1.3.0' [type=literal_error, input_value='1.0.0', input_type=str]
 [localization_evaluator_node.py-55]     For further information visit https://errors.pydantic.dev/2.7/v/literal_error
@@ -187,15 +187,15 @@ Not obtained due to QoS mismatch
 
 Search for QoS in the terminal or console.log.
 
-Check that the version of Autoware and the version of driving_log_replayer are compatible.
-If you are experiencing this problem using Autoware Foundation main and driving_log_replayer main, please report it in a github issue.
+Check that the version of Autoware and the version of log_evaluator are compatible.
+If you are experiencing this problem using Autoware Foundation main and log_evaluator main, please report it in a github issue.
 
 ### Example 2-2
 
 Not retrieved due to message type mismatch.
-This occurs because the type output by Autoware is different from the type expected by driving_log_replayer.
+This occurs because the type output by Autoware is different from the type expected by log_evaluator.
 
-In June 2024, autoware_auto_msg was changed to autoware_msg. As a result, if the version of autoware and the version of driving_log_replayer do not correspond, this message will appear.
+In June 2024, autoware_auto_msg was changed to autoware_msg. As a result, if the version of autoware and the version of log_evaluator do not correspond, this message will appear.
 
 ```shell
 [ros2-67] [ERROR] [1717610261.542314281] [ROSBAG2_TRANSPORT]: Topic '/perception/object_recognition/tracking/objects' has more than one type associated. Only topics with one type are supported
@@ -208,10 +208,10 @@ In June 2024, autoware_auto_msg was changed to autoware_msg. As a result, if the
 
 ### Correction method, Check area 2-2
 
-If there are major functionality changes, the required Autoware features (PR numbers, etc.) are listed in driving_log_replayer's ReleaseNotes.md.
+If there are major functionality changes, the required Autoware features (PR numbers, etc.) are listed in log_evaluator's ReleaseNotes.md.
 Check if the required functions are included in the Autoware you are using.
 
-If you are using Autoware Foundation's main and driving_log_replayer's main and are experiencing this issue, please report it in an issue on github.
+If you are using Autoware Foundation's main and log_evaluator's main and are experiencing this issue, please report it in an issue on github.
 
 ## Unusually low number of evaluations
 
@@ -268,7 +268,7 @@ If the ml model has not been converted to an engine in advance, the engine conve
 ### Correction method, Check area 2
 
 Check if the terminal or console.log outputs a log like the one shown in the example.
-If so, convert the engine file from onnx in advance before evaluation by driving_Log_replayer.
+If so, convert the engine file from onnx in advance before evaluation by log_evaluator.
 
 Start logging_simulator.launch.xml with “permission:=true” and leave it for a while.
 Or, launch a launch that builds only models.
@@ -292,7 +292,7 @@ An exception occurs due to unintended input data, etc., and the node stops. or t
 The contents of the object in PERCEPTION were not as expected and an exception was output.
 
 ```shell
-[perception_evaluator_node.py-115] [ERROR] [1711460672.978143229] [driving_log_replayer.perception_evaluator]: Unexpected footprint length: len(perception_object.shape.footprint.points)=2
+[perception_evaluator_node.py-115] [ERROR] [1711460672.978143229] [log_evaluator.perception_evaluator]: Unexpected footprint length: len(perception_object.shape.footprint.points)=2
 [perception_evaluator_node.py-115] Exception in thread Thread-2 (run_func):
 [perception_evaluator_node.py-115] Traceback (most recent call last):
 [perception_evaluator_node.py-115]   File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
@@ -312,13 +312,13 @@ The contents of the object in PERCEPTION were not as expected and an exception w
 [perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 612, in _wait_for_ready_callbacks
 [perception_evaluator_node.py-115]     raise ExternalShutdownException()
 [perception_evaluator_node.py-115] rclpy.executors.ExternalShutdownException
-[ros2-117] [INFO] [1711460673.168213400] [rosbag2_recorder]: Subscribed to topic '/driving_log_replayer/marker/results'
-[ros2-117] [INFO] [1711460673.174638594] [rosbag2_recorder]: Subscribed to topic '/driving_log_replayer/marker/ground_truth'
+[ros2-117] [INFO] [1711460673.168213400] [rosbag2_recorder]: Subscribed to topic '/log_evaluator/marker/results'
+[ros2-117] [INFO] [1711460673.174638594] [rosbag2_recorder]: Subscribed to topic '/log_evaluator/marker/ground_truth'
 [simple_object_merger_node-69] [INFO] [1711460673.191825620] [sensing.radar.simple_object_merger]: waiting for object msg...
 [perception_evaluator_node.py-115] Traceback (most recent call last):
-[perception_evaluator_node.py-115]   File "/home/autoware/autoware.proj/install/driving_log_replayer/lib/driving_log_replayer/perception_evaluator_node.py", line 336, in <module>
+[perception_evaluator_node.py-115]   File "/home/autoware/autoware.proj/install/log_evaluator/lib/log_evaluator/perception_evaluator_node.py", line 336, in <module>
 [perception_evaluator_node.py-115]     main()
-[perception_evaluator_node.py-115]   File "/home/autoware/autoware.proj/install/driving_log_replayer/local/lib/python3.10/dist-packages/driving_log_replayer/evaluator.py", line 448, in wrapper
+[perception_evaluator_node.py-115]   File "/home/autoware/autoware.proj/install/log_evaluator/local/lib/python3.10/dist-packages/log_evaluator/evaluator.py", line 448, in wrapper
 [perception_evaluator_node.py-115]     rclpy.shutdown()
 [perception_evaluator_node.py-115]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 126, in shutdown
 [perception_evaluator_node.py-115]     _shutdown(context=context)

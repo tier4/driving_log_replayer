@@ -88,11 +88,11 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/ar_tag_based_localizer/scenario.yaml)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/ar_tag_based_localizer/scenario.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/ar_tag_based_localizer/result.json)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/ar_tag_based_localizer/result.json)参照
 
 以下に、それぞれの評価の例を記述する。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**

@@ -5,15 +5,15 @@
 1. サンプルのシナリオのコピー
 
    ```shell
-   mkdir -p ~/driving_log_replayer_data/obstacle_segmentation/sample
-   cp -r ~/autoware/src/simulator/driving_log_replayer/sample/obstacle_segmentation/scenario.yaml ~/driving_log_replayer_data/obstacle_segmentation/sample
+   mkdir -p ~/log_evaluator_data/obstacle_segmentation/sample
+   cp -r ~/autoware/src/simulator/log_evaluator/sample/obstacle_segmentation/scenario.yaml ~/log_evaluator_data/obstacle_segmentation/sample
    ```
 
 2. サンプルのデータセットのコピー
 
    ```shell
-   mkdir -p ~/driving_log_replayer_data/obstacle_segmentation/sample/t4_dataset
-   cp -r ~/driving_log_replayer_data/sample_dataset ~/driving_log_replayer_data/obstacle_segmentation/sample/t4_dataset
+   mkdir -p ~/log_evaluator_data/obstacle_segmentation/sample/t4_dataset
+   cp -r ~/log_evaluator_data/sample_dataset ~/log_evaluator_data/obstacle_segmentation/sample/t4_dataset
    ```
 
 ## 実行方法

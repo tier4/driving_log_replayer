@@ -86,10 +86,10 @@ Published topics:
 
 | Topic name                                 | Data type                            |
 | ------------------------------------------ | ------------------------------------ |
-| /driving_log_replayer/marker/detection     | visualization_msgs::msg::MarkerArray |
-| /driving_log_replayer/marker/non_detection | visualization_msgs::msg::MarkerArray |
-| /driving_log_replayer/pcd/detection        | sensor_msgs::msg::PointCloud2        |
-| /driving_log_replayer/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
+| /log_evaluator/marker/detection     | visualization_msgs::msg::MarkerArray |
+| /log_evaluator/marker/non_detection | visualization_msgs::msg::MarkerArray |
+| /log_evaluator/pcd/detection        | sensor_msgs::msg::PointCloud2        |
+| /log_evaluator/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
 | /planning/mission_planning/goal            | geometry_msgs::msg::PoseStamped      |
 
 ## Arguments passed to logging_simulator.launch
@@ -153,11 +153,11 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/scenario.yaml).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/obstacle_segmentation/scenario.yaml).
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/result.json).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/obstacle_segmentation/result.json).
 
 In `obstacle_segmentation` evaluation scenario, two types of checks, detection (Detection) and non-detection (NonDetection), are evaluated.
 Although they are evaluated simultaneously, in one callback function, they are counted separately.
