@@ -14,9 +14,8 @@
 
 from pathlib import Path
 
-from driving_log_replayer_analyzer.data import DistType
-
 from log_evaluator_analyzer.config.obstacle_segmentation import load_config
+from log_evaluator_analyzer.data import DistType
 from log_evaluator_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
 from log_evaluator_analyzer.data.obstacle_segmentation import JsonlParser
 from log_evaluator_analyzer.plot.bird_view_plot import BirdViewPlot

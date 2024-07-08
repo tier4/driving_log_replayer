@@ -79,7 +79,7 @@ def test_calc_distance_point_to_lanelet() -> None:
 """
 from lanelet2.geometry import to2D
 
-from driving_log_replayer.lanelet2_util import load_map
+from log_evaluator.lanelet2_util import load_map
 
 map_file = "/home/hyt/map/678-20230824042714824504/lanelet2_map.osm"
 lanelet_map = load_map(map_file)

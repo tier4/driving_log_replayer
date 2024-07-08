@@ -33,7 +33,7 @@ def get_sample_result_path(
     from ament_index_python.packages import get_package_share_directory
 
     return Path(
-        get_package_share_directory("driving_log_replayer"),
+        get_package_share_directory("log_evaluator"),
         "sample",
         use_case_name,
         result_file_name,

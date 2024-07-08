@@ -20,14 +20,6 @@ from typing import Literal
 
 from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Duration
-from driving_log_replayer_analyzer.config.obstacle_segmentation import Config
-from driving_log_replayer_analyzer.config.obstacle_segmentation import load_config
-from driving_log_replayer_analyzer.data import DistType
-from driving_log_replayer_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
-from driving_log_replayer_analyzer.data.obstacle_segmentation import JsonlParser
-from driving_log_replayer_analyzer.plot import PlotBase
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarker
-from driving_log_replayer_msgs.msg import ObstacleSegmentationMarkerArray
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import Pose
@@ -60,6 +52,14 @@ from log_evaluator.result import EvaluationItem
 from log_evaluator.result import ResultBase
 from log_evaluator.scenario import number
 from log_evaluator.scenario import Scenario
+from log_evaluator_analyzer.config.obstacle_segmentation import Config
+from log_evaluator_analyzer.config.obstacle_segmentation import load_config
+from log_evaluator_analyzer.data import DistType
+from log_evaluator_analyzer.data.obstacle_segmentation import fail_3_times_in_a_row
+from log_evaluator_analyzer.data.obstacle_segmentation import JsonlParser
+from log_evaluator_analyzer.plot import PlotBase
+from log_evaluator_msgs.msg import ObstacleSegmentationMarker
+from log_evaluator_msgs.msg import ObstacleSegmentationMarkerArray
 
 
 def get_goal_pose_from_t4_dataset(dataset_path: str) -> PoseStamped:
@@ -158,7 +158,7 @@ class ObstacleSegmentationScenario(Scenario):
 
 def default_config_path() -> Path:
     return Path(
-        get_package_share_directory("driving_log_replayer_analyzer"),
+        get_package_share_directory("log_evaluator_analyzer"),
         "config",
         "obstacle_segmentation.yaml",
     )

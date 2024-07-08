@@ -67,7 +67,7 @@ def load_sample_scenario(
     from ament_index_python.packages import get_package_share_directory
 
     sample_scenario_path = Path(
-        get_package_share_directory("driving_log_replayer"),
+        get_package_share_directory("log_evaluator"),
         "sample",
         use_case_name,
         scenario_name,
