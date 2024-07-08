@@ -201,7 +201,7 @@ ANNOTATIONLESS_PERCEPTION_NODE_PARAMS = {
     ),
 }
 
-dlr_config = {
+log_evaluator_config = {
     "localization": {
         "record": LOCALIZATION_RECORD_TOPIC,
         "autoware": LOCALIZATION_AUTOWARE_ARGS,

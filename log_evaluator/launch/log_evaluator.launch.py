@@ -30,7 +30,7 @@ from launch.launch_description_sources import AnyLaunchDescriptionSource
 from launch_ros.actions import Node
 import yaml
 
-from log_evaluator.launch_config import dlr_config
+from log_evaluator.launch_config import log_evaluator_config
 from log_evaluator.shutdown_once import ShutdownOnce
 
 
@@ -140,7 +140,7 @@ def launch_autoware(context: LaunchContext) -> list:
         "launch_vehicle_interface": "true",
         "rviz": "false",
     }
-    launch_args |= dlr_config[conf["use_case"]]["autoware"]
+    launch_args |= log_evaluator_config[conf["use_case"]]["autoware"]
     return [
         GroupAction(
             [
@@ -184,7 +184,7 @@ def launch_evaluator_node(context: LaunchContext) -> list:
         "result_archive_path": conf["result_archive_path"],
         "dataset_index": conf["dataset_index"],
     }
-    params |= dlr_config[conf["use_case"]]["node"]
+    params |= log_evaluator_config[conf["use_case"]]["node"]
 
     evaluator_name = conf["use_case"] + "_evaluator"
 
@@ -251,7 +251,7 @@ def launch_bag_recorder(context: LaunchContext) -> list:
             "qos.yaml",
         ).as_posix(),
         "-e",
-        dlr_config[conf["use_case"]]["record"],
+        log_evaluator_config[conf["use_case"]]["record"],
         "--use-sim-time",
     ]
     return [ExecuteProcess(cmd=record_cmd)]
