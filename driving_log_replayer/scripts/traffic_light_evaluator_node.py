@@ -214,8 +214,6 @@ class TrafficLightEvaluator(DLREvaluator):
         if ground_truth_now_frame is None:
             self.__skip_counter += 1
             return
-        if len(ground_truth_now_frame.transforms) == 0:
-            return
 
         cam2map = ground_truth_now_frame.transforms[(FrameID.CAM_TRAFFIC_LIGHT, FrameID.MAP)]
 
