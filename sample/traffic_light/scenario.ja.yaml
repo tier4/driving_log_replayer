@@ -10,7 +10,6 @@ Evaluation:
     - sample:
         VehicleId: "7" # データセット毎にVehicleIdを指定する
         LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する
-        LocalMapPath: $HOME/map/traffic_light_xx1 # データセット毎にLocalMapPathを指定する
   Conditions:
     Criterion:
       - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.

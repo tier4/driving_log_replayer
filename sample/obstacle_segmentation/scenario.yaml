@@ -9,7 +9,6 @@ Evaluation:
   Datasets:
     - sample_dataset:
         VehicleId: default # Specify VehicleId for each data set
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # Specify LocalMapPath for each dataset
   Conditions:
     Detection: # set `null` if Detection is not evaluated.
       PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.

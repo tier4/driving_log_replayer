@@ -1,13 +1,11 @@
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 3.0.0
 ScenarioName: sample_annotationless_perception
 ScenarioDescription: sample_annotationless_perception
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
-VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: annotationless_perception
-  UseCaseFormatVersion: 0.3.0
+  UseCaseFormatVersion: 1.0.0
   Conditions:
     ClassConditions:
       # Describe the conditions for each class. If a class with no conditions is output, only the metrics are calculated. It does not affect the evaluation.
@@ -35,3 +33,6 @@ Evaluation:
           max: 0.0-2.0 # lower[<=1.0]-upper[>=1.0]
           mean: 0.5-2.0 # lower[<=1.0]-upper[>=1.0]
           metric_value: 0.9-1.1
+  Datasets:
+    - bag_only_dataset:
+        VehicleId: default

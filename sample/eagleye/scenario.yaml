@@ -1,11 +1,12 @@
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 3.0.0
 ScenarioName: sample_eagleye
 ScenarioDescription: sample_eagleye
 SensorModel: awsim_sensor_kit
 VehicleModel: sample_vehicle
-VehicleId: default
-LocalMapPath: $HOME/autoware_map/nishishinjuku_autoware_map
 Evaluation:
   UseCaseName: eagleye
-  UseCaseFormatVersion: 0.1.0
-  InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
+  UseCaseFormatVersion: 1.0.0
+  Datasets:
+    - bag_only_dataset:
+        VehicleId: default
+        InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
