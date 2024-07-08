@@ -14,7 +14,7 @@
 
 import click
 
-from driving_log_replayer_analyzer.analysis import analysis
+from log_evaluator_analyzer.analysis import analysis
 
 from . import __version__
 
@@ -39,9 +39,9 @@ def print_version(ctx, param, value):  # noqa
 )
 def cmd() -> None:
     """
-    Command line tool to use driving_log_replayer.
+    Command line tool to use log_evaluator.
 
-    https://github.com/tier4/driving_log_replayer
+    https://github.com/tier4/log_evaluator
     """
 
 

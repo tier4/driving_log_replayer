@@ -16,9 +16,9 @@ import os
 from pathlib import Path
 
 import click
-from driving_log_replayer_analyzer.data import convert_str_to_dist_type
 
 from log_evaluator_analyzer.analysis.obstacle_segmentation import visualize as os_vis
+from log_evaluator_analyzer.data import convert_str_to_dist_type
 
 CONTEXT_SETTINGS = {"help_option_names": ["-h", "--help"]}
 

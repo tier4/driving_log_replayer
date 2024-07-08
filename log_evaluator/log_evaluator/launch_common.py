@@ -161,7 +161,7 @@ def get_map_height_fitter(launch_service: str = "true") -> launch.actions.Includ
 
 def get_rviz() -> Node:
     rviz_config_dir = Path(
-        get_package_share_directory("driving_log_replayer"),
+        get_package_share_directory("log_evaluator"),
         "config",
         "dlr.rviz",
     )
@@ -193,8 +193,8 @@ def get_evaluator_node(
     node_name = usecase_name + "_evaluator_node.py"
 
     return Node(
-        package="driving_log_replayer",
-        namespace="/driving_log_replayer",
+        package="log_evaluator",
+        namespace="/log_evaluator",
         executable=node_name,
         output="screen",
         name=usecase_name + "_evaluator",
@@ -212,7 +212,7 @@ def get_regex_record_cmd(record_config_name: str, allowlist: str) -> list:
         LaunchConfiguration("result_bag_path"),
         "--qos-profile-overrides-path",
         Path(
-            get_package_share_directory("driving_log_replayer"),
+            get_package_share_directory("log_evaluator"),
             "config",
             record_config_name,
         ).as_posix(),
@@ -292,7 +292,7 @@ def get_topic_state_monitor_launch(
         "component_state_monitor.launch.py",
     )
     topic_monitor_config_path = Path(
-        get_package_share_directory("driving_log_replayer"),
+        get_package_share_directory("log_evaluator"),
         "config",
         topic_monitor_config,
     )

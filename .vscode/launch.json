@@ -16,7 +16,7 @@
       "name": "load_perception_scene_result",
       "type": "debugpy",
       "request": "launch",
-      "program": "driving_log_replayer/scripts/debug/perception_load_scene_result.py",
+      "program": "log_evaluator/scripts/debug/perception_load_scene_result.py",
       "console": "integratedTerminal",
       "args": [
         "-p",
@@ -33,7 +33,7 @@
       "name": "load_perception_database_result",
       "type": "debugpy",
       "request": "launch",
-      "program": "driving_log_replayer/scripts/perception_database_result.py",
+      "program": "log_evaluator/scripts/perception_database_result.py",
       "console": "integratedTerminal",
       "args": [
         "-r",
@@ -46,7 +46,7 @@
       "name": "load_obstacle_segmentation_scene_result",
       "type": "debugpy",
       "request": "launch",
-      "program": "driving_log_replayer/scripts/debug/obstacle_segmentation_load_scene_result.py",
+      "program": "log_evaluator/scripts/debug/obstacle_segmentation_load_scene_result.py",
       "console": "integratedTerminal",
       "args": [
         "-p",

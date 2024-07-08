@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(driving_log_replayer_msgs)
+project(log_evaluator_msgs)
 
 find_package(autoware_cmake REQUIRED)
 autoware_package()

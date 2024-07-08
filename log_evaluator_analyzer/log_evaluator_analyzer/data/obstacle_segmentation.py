@@ -20,14 +20,14 @@ from dataclasses import field
 from pathlib import Path
 import sys
 
-from driving_log_replayer_analyzer.data import DistType
-from driving_log_replayer_analyzer.data import Position
-from driving_log_replayer_analyzer.data import Stamp
 import pandas as pd
 import simplejson as json
 
 from log_evaluator_analyzer.config.obstacle_segmentation import Config
 from log_evaluator_analyzer.config.obstacle_segmentation import FpDistance
+from log_evaluator_analyzer.data import DistType
+from log_evaluator_analyzer.data import Position
+from log_evaluator_analyzer.data import Stamp
 
 
 def fail_3_times_in_a_row(data: list) -> list:

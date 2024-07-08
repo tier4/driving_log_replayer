@@ -7,7 +7,7 @@
       },
       "includePath": [
         "/opt/ros/humble/include/**",
-        "driving_log_replayer/include/**",
+        "log_evaluator/include/**",
         "${env:HOME}/ros_ws/awf/install/**",
         "/usr/include/**",
         "/usr/local/include/**"

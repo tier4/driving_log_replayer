@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(driving_log_replayer_analyzer)
+project(log_evaluator_analyzer)
 
 find_package(ament_cmake_python REQUIRED)
 find_package(autoware_cmake REQUIRED)
