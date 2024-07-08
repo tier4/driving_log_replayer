@@ -85,13 +85,13 @@ Subscribed topics:
 
 Published topics:
 
-| topic 名                                   | データ型                             |
-| ------------------------------------------ | ------------------------------------ |
+| topic 名                            | データ型                             |
+| ----------------------------------- | ------------------------------------ |
 | /log_evaluator/marker/detection     | visualization_msgs::msg::MarkerArray |
 | /log_evaluator/marker/non_detection | visualization_msgs::msg::MarkerArray |
 | /log_evaluator/pcd/detection        | sensor_msgs::msg::PointCloud2        |
 | /log_evaluator/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
-| /planning/mission_planning/goal            | geometry_msgs::msg::PoseStamped      |
+| /planning/mission_planning/goal     | geometry_msgs::msg::PoseStamped      |
 
 ## logging_simulator.launch に渡す引数
 

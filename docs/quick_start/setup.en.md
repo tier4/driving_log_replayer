@@ -65,4 +65,3 @@
    # - pts_voxel_encoder_centerpoint_tiny.engine
    # When the file is output, press Ctrl+C to stop launch.
    ```
-

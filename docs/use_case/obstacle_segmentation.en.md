@@ -84,13 +84,13 @@ Subscribed topics:
 
 Published topics:
 
-| Topic name                                 | Data type                            |
-| ------------------------------------------ | ------------------------------------ |
+| Topic name                          | Data type                            |
+| ----------------------------------- | ------------------------------------ |
 | /log_evaluator/marker/detection     | visualization_msgs::msg::MarkerArray |
 | /log_evaluator/marker/non_detection | visualization_msgs::msg::MarkerArray |
 | /log_evaluator/pcd/detection        | sensor_msgs::msg::PointCloud2        |
 | /log_evaluator/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
-| /planning/mission_planning/goal            | geometry_msgs::msg::PoseStamped      |
+| /planning/mission_planning/goal     | geometry_msgs::msg::PoseStamped      |
 
 ## Arguments passed to logging_simulator.launch
 

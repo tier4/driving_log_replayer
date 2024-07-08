@@ -69,8 +69,8 @@ Subscribed topics:
 
 Published topics:
 
-| Topic name                                               | Data type                        |
-| -------------------------------------------------------- | -------------------------------- |
+| Topic name                                        | Data type                        |
+| ------------------------------------------------- | -------------------------------- |
 | /log_evaluator/visibility/value                   | example_interfaces::msg::Float64 |
 | /log_evaluator/visibility/level                   | example_interfaces::msg::Byte    |
 | /log_evaluator/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64 |

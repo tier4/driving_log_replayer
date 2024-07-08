@@ -97,8 +97,8 @@ Subscribed topics:
 
 Published topics:
 
-| topic 名                                            | データ型                         |
-| --------------------------------------------------- | -------------------------------- |
+| topic 名                                     | データ型                         |
+| -------------------------------------------- | -------------------------------- |
 | /log_evaluator/localization/lateral_distance | example_interfaces::msg::Float64 |
 
 ## 評価ノードが使用する Service 名とデータ型

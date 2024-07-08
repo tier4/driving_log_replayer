@@ -128,8 +128,8 @@ Subscribed topics:
 
 Published topics:
 
-| Topic name                                | Data type                            |
-| ----------------------------------------- | ------------------------------------ |
+| Topic name                         | Data type                            |
+| ---------------------------------- | ------------------------------------ |
 | /log_evaluator/marker/ground_truth | visualization_msgs::msg::MarkerArray |
 | /log_evaluator/marker/results      | visualization_msgs::msg::MarkerArray |
 

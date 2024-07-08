@@ -124,8 +124,8 @@ Subscribed topics:
 
 Published topics:
 
-| topic 名                                  | データ型                             |
-| ----------------------------------------- | ------------------------------------ |
+| topic 名                           | データ型                             |
+| ---------------------------------- | ------------------------------------ |
 | /log_evaluator/marker/ground_truth | visualization_msgs::msg::MarkerArray |
 | /log_evaluator/marker/results      | visualization_msgs::msg::MarkerArray |
 
