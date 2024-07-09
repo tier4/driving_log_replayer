@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.0.12
+
+Bug fix
+
+| Module          | Feature  | Brief summary              | Pull request                                                   | Jira | Contributor                                   |
+| --------------- | -------- | -------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `traffic_light` | msg type | fix traffic light msg type | [#489](https://github.com/tier4/driving_log_replayer/pull/489) | -    | [MasatoSaeki](https://github.com/MasatoSaeki) |
+
 ## Version 2.0.11
 
 Minor Tweak
