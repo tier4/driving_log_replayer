@@ -19,8 +19,8 @@ from os.path import expandvars
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from autoware_perception_msgs.msg import TrafficSignal
-from autoware_perception_msgs.msg import TrafficSignalArray
+from autoware_perception_msgs.msg import TrafficLightGroup
+from autoware_perception_msgs.msg import TrafficLightGroupArray
 from geometry_msgs.msg import TransformStamped
 import lanelet2  # noqa
 from lanelet2.core import BasicPoint2d
@@ -116,7 +116,7 @@ class TrafficLightEvaluator(DLREvaluator):
             evaluation_config=evaluation_config,
         )
         self.__sub_traffic_signals = self.create_subscription(
-            TrafficSignalArray,
+            TrafficLightGroupArray,
             "/perception/traffic_light_recognition/traffic_signals",
             self.traffic_signals_cb,
             1,
@@ -154,16 +154,16 @@ class TrafficLightEvaluator(DLREvaluator):
     def list_dynamic_object_2d_from_ros_msg(
         self,
         unix_time: int,
-        signals: list[TrafficSignal],
+        traffic_light_groups: list[TrafficLightGroup],
         cam2map: TransformDict,
     ) -> list[DynamicObject2D]:
         estimated_objects: list[DynamicObject2D] = []
-        for signal in signals:
+        for signal in traffic_light_groups:
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
                 get_traffic_light_label_str(signal.elements),
             )
             confidence: float = max(signal.elements, key=lambda x: x.confidence)
-            signal_pos = self.get_traffic_light_pos(signal.traffic_signal_id, cam2map)
+            signal_pos = self.get_traffic_light_pos(signal.traffic_light_group_id, cam2map)
             # debug self.get_logger().error(f"{signal_pos=}")
 
             estimated_object = DynamicObject2D(
@@ -172,7 +172,7 @@ class TrafficLightEvaluator(DLREvaluator):
                 semantic_score=confidence,
                 semantic_label=label,
                 roi=None,
-                uuid=str(signal.traffic_signal_id),
+                uuid=str(signal.traffic_light_group_id),
                 position=signal_pos,
             )
             estimated_objects.append(estimated_object)
@@ -206,7 +206,7 @@ class TrafficLightEvaluator(DLREvaluator):
             p2d = BasicPoint2d(ego_position.x, ego_position.y)
             return (light_ls[0].x, light_ls[0].y, light_ls[0].z, distance(l2d, p2d))
 
-    def traffic_signals_cb(self, msg: TrafficSignalArray) -> None:
+    def traffic_signals_cb(self, msg: TrafficLightGroupArray) -> None:
         map_to_baselink = self.lookup_transform(msg.stamp)
         unix_time: int = eval_conversions.unix_time_from_ros_timestamp(msg.stamp)
         ground_truth_now_frame = self.__evaluator.get_ground_truth_now_frame(unix_time)
@@ -226,7 +226,7 @@ class TrafficLightEvaluator(DLREvaluator):
 
         estimated_objects = self.list_dynamic_object_2d_from_ros_msg(
             unix_time,
-            msg.signals,
+            msg.traffic_light_groups,
             cam2map,
         )
         frame_result: PerceptionFrameResult = self.__evaluator.add_frame_result(
