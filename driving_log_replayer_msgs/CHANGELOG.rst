@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix(traffic_light): different type (`#489 <https://github.com/tier4/driving_log_replayer/issues/489>`_)
+* Contributors: MasatoSaeki
+
 2.0.11 (2024-07-04)
 -------------------
 * chore: delete unused (`#509 <https://github.com/tier4/driving_log_replayer/issues/509>`_)
