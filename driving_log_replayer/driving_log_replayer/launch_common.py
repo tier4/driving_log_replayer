@@ -126,7 +126,6 @@ def get_autoware_launch(
         "perception": perception,
         "planning": planning,
         "control": control,
-        "rviz": "false",
         "scenario_simulation": scenario_simulation,
     }
     if isinstance(pose_source, str):
