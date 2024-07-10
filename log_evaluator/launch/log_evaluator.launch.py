@@ -216,6 +216,13 @@ def launch_bag_player(
         conf["play_rate"],
         "--clock",
         "200",
+        "--qos-profile-overrides-path",
+        Path(
+            get_package_share_directory("log_evaluator"),
+            "config",
+            conf["use_case"],
+            "qos.yaml",
+        ).as_posix(),
     ]
     remap_list = ["--remap"]
     if conf.get("sensing", "true") == "true":

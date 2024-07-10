@@ -1,10 +1,15 @@
+/tf_static:
+  reliability: reliable
+  history: keep_last
+  depth: 1
+  durability: transient_local
 /perception/obstacle_segmentation/pointcloud:
+  reliability: best_effort
+  history: keep_last
   depth: 10
   durability: volatile
-  history: keep_last
-  reliability: best_effort
 /sensing/lidar/concatenated/pointcloud:
+  reliability: best_effort
+  history: keep_last
   depth: 10
   durability: volatile
-  history: keep_last
-  reliability: best_effort
