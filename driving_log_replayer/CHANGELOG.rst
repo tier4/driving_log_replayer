@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.1.0 (2024-07-10)
+------------------
 * feat: use autoware project rviz (`#516 <https://github.com/tier4/driving_log_replayer/issues/516>`_)
 * Contributors: Hayato Mizushima
 
