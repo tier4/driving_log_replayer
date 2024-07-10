@@ -138,7 +138,6 @@ def launch_autoware(context: LaunchContext) -> list:
         "sensor_model": conf["sensor_model"],
         "vehicle_id": conf["vehicle_id"],
         "launch_vehicle_interface": "true",
-        "rviz": "false",
     }
     launch_args |= log_evaluator_config[conf["use_case"]]["autoware"]
     return [
@@ -264,26 +263,6 @@ def launch_bag_recorder(context: LaunchContext) -> list:
     return [ExecuteProcess(cmd=record_cmd)]
 
 
-def launch_rviz(context: LaunchContext) -> list:
-    conf = context.launch_configurations
-    rviz_config_dir = Path(
-        get_package_share_directory("log_evaluator"),
-        "config",
-        "log_evaluator.rviz",
-    )
-    return [
-        Node(
-            package="rviz2",
-            executable="rviz2",
-            name="rviz2",
-            arguments=["-d", rviz_config_dir.as_posix()],
-            parameters=[{"use_sim_time": True}],
-            output="screen",
-            condition=IfCondition(conf.get("rviz", "true")),
-        ),
-    ]
-
-
 def launch_topic_state_monitor(context: LaunchContext) -> list:
     conf = context.launch_configurations
     # component_state_monitor launch
@@ -318,7 +297,6 @@ def generate_launch_description() -> LaunchDescription:
         [
             *launch_arguments,
             OpaqueFunction(function=ensure_arg_compatibility),
-            OpaqueFunction(function=launch_rviz),
             OpaqueFunction(function=launch_autoware),
             OpaqueFunction(function=launch_map_height_fitter),
             OpaqueFunction(function=launch_evaluator_node),
