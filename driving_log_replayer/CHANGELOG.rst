@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: use autoware project rviz (`#516 <https://github.com/tier4/driving_log_replayer/issues/516>`_)
+* Contributors: Hayato Mizushima
+
 2.0.12 (2024-07-09)
 -------------------
 * fix(traffic_light): different type (`#489 <https://github.com/tier4/driving_log_replayer/issues/489>`_)
