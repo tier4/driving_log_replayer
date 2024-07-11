@@ -22,11 +22,13 @@ from rclpy.qos import qos_profile_sensor_data
 import ros2_numpy
 from scipy.spatial import cKDTree
 from sensor_msgs.msg import PointCloud2
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
 from driving_log_replayer.ground_segmentation import GroundSegmentationResult
 from driving_log_replayer.ground_segmentation import GroundSegmentationScenario
+from driving_log_replayer.ground_segmentation import Condition
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer_msgs.msg import GroundSegmentationEvalResult
 
@@ -40,27 +42,46 @@ class GroundSegmentationEvaluator(DLREvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, GroundSegmentationScenario, GroundSegmentationResult)
 
-        self.get_logger().info(f"{len(self._t4_dataset_paths)}")
-        for path in self._t4_dataset_paths:
-            self.get_logger().info(path)
+        eval_condition: Condition = self._scenario.Evaluation.Conditions
 
-        sample_data_path = Path(self._t4_dataset_paths[0], "annotation", "sample_data.json")
-        sample_data = json.load(sample_data_path.open())
-        sample_data = list(filter(lambda d: d["filename"].split(".")[-2] == "pcd", sample_data))
+        if eval_condition.Method == "annotated_pcd":
+            # pcd eval mode
+            sample_data_path = Path(self._t4_dataset_paths[0], "annotation", "sample_data.json")
+            sample_data = json.load(sample_data_path.open())
+            sample_data = list(filter(lambda d: d["filename"].split(".")[-2] == "pcd", sample_data))
 
-        self.ground_truth: dict[int, np.ndarray] = {}
-        for i in range(len(sample_data)):
-            pcd_file_path = Path(self._t4_dataset_paths[0], sample_data[i]["filename"]).as_posix()
-            raw_points = np.fromfile(pcd_file_path, dtype=np.float32)
-            points: np.ndarray = raw_points.reshape((-1, self.CLOUD_DIM))
-            self.ground_truth[int(sample_data[i]["timestamp"])] = points
+            self.ground_truth: dict[int, np.ndarray] = {}
+            for i in range(len(sample_data)):
+                pcd_file_path = Path(
+                    self._t4_dataset_paths[0], sample_data[i]["filename"]
+                ).as_posix()
+                raw_points = np.fromfile(pcd_file_path, dtype=np.float32)
+                points: np.ndarray = raw_points.reshape((-1, self.CLOUD_DIM))
+                self.ground_truth[int(sample_data[i]["timestamp"])] = points
 
-        self.__sub_pointcloud = self.create_subscription(
-            PointCloud2,
-            "/perception/obstacle_segmentation/single_frame/pointcloud",
-            self.pointcloud_cb,
-            qos_profile_sensor_data,
-        )
+            self.__sub_pointcloud = self.create_subscription(
+                PointCloud2,
+                "/perception/obstacle_segmentation/single_frame/pointcloud",
+                self.pointcloud_cb,
+                qos_profile_sensor_data,
+            )
+        elif eval_condition.Method == "annotated_rosbag":
+            # rosbag (AWSIM) eval mode
+            eval_result_qos_policy = QoSProfile(
+                reliability=QoSReliabilityPolicy.BEST_EFFORT,
+                history=QoSHistoryPolicy.KEEP_LAST,
+                depth=10,
+            )
+            self.__sub_ground_seg_eval_result = self.create_subscription(
+                GroundSegmentationEvalResult,
+                "ground_segmentation/evaluation/result",
+                self.eval_result_cb,
+                eval_result_qos_policy,
+            )
+        else:
+            raise ValueError(
+                'The "Method" field must be set to either "annotated_rosbag" or "annotated_pcd"'
+            )
 
     def pointcloud_cb(self, msg: PointCloud2) -> None:
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
@@ -111,6 +132,10 @@ class GroundSegmentationEvaluator(DLREvaluator):
         frame_result.f1_score = metrics_list[4]
 
         self._result.set_frame(frame_result)
+        self._result_writer.write_result(self._result)
+
+    def eval_result_cb(self, msg: GroundSegmentationEvalResult):
+        self._result.set_frame(msg)
         self._result_writer.write_result(self._result)
 
     def __get_gt_frame_ts(self, unix_time: int) -> int:
