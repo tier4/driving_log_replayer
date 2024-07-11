@@ -35,7 +35,6 @@ void GroundSegmentationEvaluatorComponent::evaluate(
       eval_target_cloud->fields.begin(), eval_target_cloud->fields.end(),
       [](sensor_msgs::msg::PointField f) { return f.name == "entity_id"; }) ==
     eval_target_cloud->fields.end()) {
-    RCLCPP_WARN(this->get_logger(), "input cloud doesn't have \"entity_id\" field !!");
     return;
   };
   sensor_msgs::PointCloud2ConstIterator<int32_t> gt_label_itr(*ground_truth_cloud, "entity_id");
