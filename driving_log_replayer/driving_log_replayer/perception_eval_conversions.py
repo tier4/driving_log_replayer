@@ -12,12 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
+from pathlib import Path
+
+from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Time
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
+import jsonschema
 import numpy as np
 from perception_eval.common import ObjectType
 from perception_eval.common.object import DynamicObject
@@ -256,3 +261,262 @@ def object_label_list(objects: list[ObjectType]) -> str:
         rtn_str += obj.semantic_label.name
     rtn_str += "]"
     return rtn_str
+
+
+def calc_position_error(
+    tuple1: tuple[float, float, float],
+    tuple2: tuple[float, float, float],
+) -> tuple[float, float, float]:
+    return tuple(map(lambda x, y: x - y, tuple1, tuple2))
+
+
+def fill_xyz(tuple_: tuple[float, float, float]) -> dict:
+    return {
+        "x": tuple_[0],
+        "y": tuple_[1],
+        "z": tuple_[2],
+    }
+
+
+def fill_xyzw(tuple_: tuple[float, float, float, float]) -> dict:
+    return {
+        "x": tuple_[0],
+        "y": tuple_[1],
+        "z": tuple_[2],
+        "w": tuple_[3],
+    }
+
+
+def fill_xyzw_quat(q: Quaternion) -> dict:
+    return {
+        "x": q.x,
+        "y": q.y,
+        "z": q.z,
+        "w": q.w,
+    }
+
+
+# utils for writing each perception frame result to a file
+class FrameDescriptionWriter:
+    schema: dict = None
+
+    @classmethod
+    def load_schema(cls) -> None:
+        if cls.schema is None:
+            package_share_directory = get_package_share_directory("driving_log_replayer")
+            schema_file_path = (
+                Path(package_share_directory) / "config" / "object_output_schema.json"
+            )
+            with schema_file_path.open() as file:
+                cls.schema = json.load(file)
+
+    @classmethod
+    def is_object_structure_valid(cls, objdata: dict | None) -> bool:
+        cls.load_schema()
+        try:
+            jsonschema.validate(objdata, cls.schema)
+        except jsonschema.exceptions.ValidationError:
+            return False
+        return True
+
+    @staticmethod
+    def object_to_description(obj: ObjectType | None) -> dict:
+        if obj is None:
+            return {}
+        return {
+            "label": obj.semantic_label.name,
+            "uuid": obj.uuid,
+            "position": fill_xyz(obj.state.position),
+            "velocity": fill_xyz(obj.state.velocity),
+            "orientation": fill_xyzw_quat(obj.state.orientation),  # pyQuaternion to dict
+            "shape": fill_xyz(obj.state.size),
+        }
+
+    @staticmethod
+    def dynamic_object_result_to_error_description(
+        obj: DynamicObjectWithPerceptionResult | None,
+    ) -> dict:
+        null_return = {
+            key: None for key in ["pose_error", "heading_error", "velocity_error", "bev_error"]
+        }
+        if obj is None or obj.ground_truth_object is None:
+            return null_return
+
+        pose_error = calc_position_error(
+            obj.ground_truth_object.state.position,
+            obj.estimated_object.state.position,
+        )
+        bev_error = obj.distance_error_bev
+        heading_error = obj.heading_error
+        velocity_error = obj.velocity_error
+        return {
+            "pose_error": fill_xyz(pose_error),
+            "heading_error": fill_xyz(heading_error),
+            "velocity_error": fill_xyz(velocity_error),
+            "bev_error": bev_error,
+        }
+
+    @staticmethod
+    def object_to_covariance_description(obj: ObjectType | None) -> dict:
+        if obj is None:
+            return {
+                "pose_covariance": [],
+                "twist_covariance": [],
+            }
+        # TODO
+        # wait for covariance calculation implementation
+        pose_covariance = []
+        twist_covariance = []
+        return {
+            "pose_covariance": pose_covariance,
+            "twist_covariance": twist_covariance,
+        }
+
+    @staticmethod
+    def extract_pass_fail_objects_description(pass_fail: PassFailResult) -> list[dict]:
+        """
+        Extract detailed objects results from PassFailResult.
+
+        Args:
+        ----
+            pass_fail (PassFailResult): PassFailResult object
+
+        Returns: see json schema in config/object_output_schema.json
+        -------
+            list[dict]: List of objects descriptions.
+                Each element is a dictionary with the following keys:
+                - "status": "TP" | "FP" | "FN"
+                - "object_type": "GT" | "EST"
+                - "distance_from_ego": float|None # distance from ego vehicle
+                - "label": str
+                - "uuid": optional[str]
+                - "position": { "x": float, "y": float, "z": float }
+                - "velocity": { "x": float, "y": float, "z": float }
+                - "orientation": { "x": float, "y": float, "z": float, "w": float }
+                - "shape": optional[{ "x": float, "y": float, "z": float }]
+                - "pose_error": optional[{ "x": float, "y": float, "z": float }]
+                - "heading_error": optional[{ "x": float, "y": float, "z": float }]
+                - "velocity_error": optional[{ "x": float, "y": float, "z": float }]
+                - "bev_error": optional[float] # distance between GT and EST
+                - "pose_covariance": optional[list[float]]
+                - "twist_covariance": optional[list[float]]
+
+                These description can separated to following categories and each category are generated by corresponding functions:
+                - Test status and object type
+                - Object information
+                - Error information
+                - Covariance information
+
+        """
+        # get this filename for assertion error message
+        filename: str = __file__
+
+        # TODO: remove try-except block after perception eval is properly updated
+        try:
+            ego2map_matrix = pass_fail.ego2map
+            has_map_to_base_link = ego2map_matrix is not None and len(ego2map_matrix) > 0
+        except AttributeError:
+            ego2map_matrix = pass_fail.transforms
+            from perception_eval.common.schema import FrameID
+
+            has_map_to_base_link = ego2map_matrix.get((FrameID.BASE_LINK, FrameID.MAP)) is not None
+
+        gt_descriptions = []
+        est_descriptions = []
+
+        # for TP objects
+        for tp_object in pass_fail.tp_object_results:
+            tp_gt = tp_object.ground_truth_object
+            tp_est = tp_object.estimated_object
+            gt_distance_bev = (
+                tp_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link and tp_gt else None
+            )
+            est_distance_bev = (
+                tp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
+            error_description = FrameDescriptionWriter.dynamic_object_result_to_error_description(
+                tp_object,
+            )
+            cov_description = FrameDescriptionWriter.object_to_covariance_description(tp_est)
+            # GT object dict
+            gt_tp_description = {
+                "status": "TP",
+                "object_type": "GT",
+                "distance_from_ego": gt_distance_bev,
+                **FrameDescriptionWriter.object_to_description(tp_gt),
+                **error_description,
+                **FrameDescriptionWriter.object_to_covariance_description(
+                    tp_gt,
+                ),  # Assume gt has no covariance
+            }
+            # Estimated object dict
+            est_tp_description = {
+                "status": "TP",
+                "object_type": "EST",
+                "distance_from_ego": est_distance_bev,
+                **FrameDescriptionWriter.object_to_description(tp_est),
+                **error_description,
+                **cov_description,
+            }
+            # tp_gt is optional (in the test)
+            if tp_gt:
+                assert FrameDescriptionWriter.is_object_structure_valid(gt_tp_description), (
+                    "GT TP object description is invalid in file: " + filename
+                )
+                gt_descriptions.append(gt_tp_description)
+            assert FrameDescriptionWriter.is_object_structure_valid(est_tp_description), (
+                "EST TP object description is invalid in file: " + filename
+            )
+            est_descriptions.append(est_tp_description)
+
+        # for FP objects
+        for fp_object in pass_fail.fp_object_results:
+            fp_est = fp_object.estimated_object
+            error_description = FrameDescriptionWriter.dynamic_object_result_to_error_description(
+                fp_object,
+            )
+            est_distance_bev = (
+                fp_est.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
+            fp_object_description = FrameDescriptionWriter.object_to_description(fp_est)
+            cov_description = FrameDescriptionWriter.object_to_covariance_description(fp_est)
+            # Estimated object dict
+            est_fp_description = {
+                "status": "FP",
+                "object_type": "EST",
+                "distance_from_ego": est_distance_bev,
+                **fp_object_description,
+                **error_description,
+                **cov_description,
+            }
+            assert FrameDescriptionWriter.is_object_structure_valid(est_fp_description), (
+                "EST FP object description is invalid in file: " + filename
+            )
+            est_descriptions.append(est_fp_description)
+
+        # for FN objects
+        for fn_object in pass_fail.fn_objects:
+            fn_gt = fn_object
+            gt_distance_bev = (
+                fn_gt.get_distance_bev(ego2map_matrix) if has_map_to_base_link else None
+            )
+            fn_obj_description = FrameDescriptionWriter.object_to_description(fn_gt)
+            # GT object dict
+            gt_fn_description = {
+                "status": "FN",
+                "object_type": "GT",
+                "distance_from_ego": gt_distance_bev,
+                **fn_obj_description,
+                **FrameDescriptionWriter.object_to_covariance_description(
+                    fn_gt,
+                ),  # Assume gt has no covariance
+                **FrameDescriptionWriter.dynamic_object_result_to_error_description(
+                    None,
+                ),  # Assume gt has no error
+            }
+            assert FrameDescriptionWriter.is_object_structure_valid(gt_fn_description), (
+                "GT FN object description is invalid in file: " + filename
+            )
+            gt_descriptions.append(gt_fn_description)
+
+        return gt_descriptions + est_descriptions
