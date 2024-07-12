@@ -19,13 +19,13 @@ from diagnostic_msgs.msg import DiagnosticStatus
 
 from log_evaluator.ar_tag_based_localizer import ArTagBasedLocalizerResult
 from log_evaluator.ar_tag_based_localizer import ArtagBasedLocalizerScenario
-from log_evaluator.evaluator import DLREvaluator
 from log_evaluator.evaluator import evaluator_main
+from log_evaluator.evaluator import LogEvaluator
 
 TARGET_DIAG_NAME = "localization: ar_tag_based_localizer"
 
 
-class ArTagBasedLocalizerEvaluator(DLREvaluator):
+class ArTagBasedLocalizerEvaluator(LogEvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, ArtagBasedLocalizerScenario, ArTagBasedLocalizerResult)
         self._result: ArTagBasedLocalizerResult
@@ -46,7 +46,7 @@ class ArTagBasedLocalizerEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main() -> DLREvaluator:
+def main() -> LogEvaluator:
     return ArTagBasedLocalizerEvaluator("ar_tag_based_localizer_evaluator")
 
 

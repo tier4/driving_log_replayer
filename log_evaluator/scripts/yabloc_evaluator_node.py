@@ -17,15 +17,15 @@
 
 from diagnostic_msgs.msg import DiagnosticArray
 
-from log_evaluator.evaluator import DLREvaluator
 from log_evaluator.evaluator import evaluator_main
+from log_evaluator.evaluator import LogEvaluator
 from log_evaluator.yabloc import YabLocResult
 from log_evaluator.yabloc import YablocScenario
 
 TARGET_DIAG_NAME = "yabloc_monitor: yabloc_status"
 
 
-class YabLocEvaluator(DLREvaluator):
+class YabLocEvaluator(LogEvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, YablocScenario, YabLocResult)
         self._result: YabLocResult
@@ -46,7 +46,7 @@ class YabLocEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main() -> DLREvaluator:
+def main() -> LogEvaluator:
     return YabLocEvaluator("yabloc_evaluator")
 
 

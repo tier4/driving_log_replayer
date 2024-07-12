@@ -22,8 +22,8 @@ from diagnostic_msgs.msg import DiagnosticStatus
 from example_interfaces.msg import Byte
 from example_interfaces.msg import Float64
 
-from log_evaluator.evaluator import DLREvaluator
 from log_evaluator.evaluator import evaluator_main
+from log_evaluator.evaluator import LogEvaluator
 from log_evaluator.performance_diag import PerformanceDiagResult
 from log_evaluator.performance_diag import PerformanceDiagScenario
 
@@ -36,7 +36,7 @@ def extract_lidar_name(diag_name: str) -> str:
     return remove_prefix.replace(": blockage_validation", "")
 
 
-class PerformanceDiagEvaluator(DLREvaluator):
+class PerformanceDiagEvaluator(LogEvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, PerformanceDiagScenario, PerformanceDiagResult)
         self._scenario: PerformanceDiagScenario
@@ -86,7 +86,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
         if is_visibility:
             msg_visibility_value, msg_visibility_level = self._result.set_visibility_frame(
                 diag_status,
-                DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+                LogEvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             )
             if msg_visibility_value is not None:
                 self.__pub_visibility_value.publish(msg_visibility_value)
@@ -97,7 +97,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
             msg_blockage_sky_ratio, msg_blockage_ground_ratio, msg_blockage_level = (
                 self._result.set_blockage_frame(
                     diag_status,
-                    DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+                    LogEvaluator.transform_stamped_with_euler_angle(map_to_baselink),
                     lidar_name,
                 )
             )
@@ -111,7 +111,7 @@ class PerformanceDiagEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main() -> DLREvaluator:
+def main() -> LogEvaluator:
     return PerformanceDiagEvaluator("performance_diag_evaluator")
 
 

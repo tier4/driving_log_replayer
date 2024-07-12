@@ -39,14 +39,14 @@ from perception_eval.util.logger_config import configure_logger
 import rclpy
 from visualization_msgs.msg import MarkerArray
 
-from log_evaluator.evaluator import DLREvaluator
 from log_evaluator.evaluator import evaluator_main
+from log_evaluator.evaluator import LogEvaluator
 from log_evaluator.perception import PerceptionResult
 from log_evaluator.perception import PerceptionScenario
 import log_evaluator.perception_eval_conversions as eval_conversions
 
 
-class PerceptionEvaluator(DLREvaluator):
+class PerceptionEvaluator(LogEvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, PerceptionScenario, PerceptionResult)
         self._scenario: PerceptionScenario
@@ -179,11 +179,11 @@ class PerceptionEvaluator(DLREvaluator):
                     f"Unexpected footprint length: {len(perception_object.shape.footprint.points)=}"
                 )
 
-            most_probable_classification = DLREvaluator.get_most_probable_classification(
+            most_probable_classification = LogEvaluator.get_most_probable_classification(
                 perception_object.classification,
             )
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
-                name=DLREvaluator.get_perception_label_str(most_probable_classification),
+                name=LogEvaluator.get_perception_label_str(most_probable_classification),
             )
 
             uuid = None
@@ -266,7 +266,7 @@ class PerceptionEvaluator(DLREvaluator):
             frame_result,
             self.__skip_counter,
             msg.header,
-            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+            LogEvaluator.transform_stamped_with_euler_angle(map_to_baselink),
         )
         self._result_writer.write_result(self._result)
         self.__pub_marker_ground_truth.publish(marker_ground_truth)
@@ -341,7 +341,7 @@ class PerceptionEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main() -> DLREvaluator:
+def main() -> LogEvaluator:
     return PerceptionEvaluator("perception_evaluator")
 
 

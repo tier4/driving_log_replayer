@@ -40,8 +40,8 @@ from std_msgs.msg import Header
 from tier4_api_msgs.msg import AwapiAutowareStatus
 from visualization_msgs.msg import MarkerArray
 
-from log_evaluator.evaluator import DLREvaluator
 from log_evaluator.evaluator import evaluator_main
+from log_evaluator.evaluator import LogEvaluator
 from log_evaluator.lanelet2_util import road_lanelets_from_file
 from log_evaluator.lanelet2_util import to_shapely_polygon
 from log_evaluator.obstacle_segmentation import default_config_path
@@ -65,7 +65,7 @@ if TYPE_CHECKING:
 TARGET_DIAG_NAME = "topic_state_monitor_obstacle_segmentation_pointcloud: perception_topic_status"
 
 
-class ObstacleSegmentationEvaluator(DLREvaluator):
+class ObstacleSegmentationEvaluator(LogEvaluator):
     COUNT_FINISH_PUB_GOAL_POSE = 5
 
     def __init__(self, name: str) -> None:
@@ -269,7 +269,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
         ) = self._result.set_frame(
             frame_result,
             self.__skip_counter,
-            DLREvaluator.transform_stamped_with_euler_angle(map_to_baselink),
+            LogEvaluator.transform_stamped_with_euler_angle(map_to_baselink),
             self.__latest_stop_reasons,
             pcd_header,
             topic_rate=self.__topic_rate,
@@ -358,7 +358,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main() -> DLREvaluator:
+def main() -> LogEvaluator:
     return ObstacleSegmentationEvaluator("obstacle_segmentation_evaluator")
 
 

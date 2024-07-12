@@ -21,11 +21,11 @@ from diagnostic_msgs.msg import DiagnosticArray
 
 from log_evaluator.annotationless_perception import AnnotationlessPerceptionResult
 from log_evaluator.annotationless_perception import AnnotationlessPerceptionScenario
-from log_evaluator.evaluator import DLREvaluator
 from log_evaluator.evaluator import evaluator_main
+from log_evaluator.evaluator import LogEvaluator
 
 
-class AnnotationlessPerceptionEvaluator(DLREvaluator):
+class AnnotationlessPerceptionEvaluator(LogEvaluator):
     def __init__(self, name: str) -> None:
         super().__init__(name, AnnotationlessPerceptionScenario, AnnotationlessPerceptionResult)
         self._scenario: AnnotationlessPerceptionScenario
@@ -65,7 +65,7 @@ class AnnotationlessPerceptionEvaluator(DLREvaluator):
 
 
 @evaluator_main
-def main() -> DLREvaluator:
+def main() -> LogEvaluator:
     return AnnotationlessPerceptionEvaluator("annotationless_evaluator")
 
 
