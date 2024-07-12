@@ -5,7 +5,7 @@ from shutil import copytree
 
 import yaml
 
-KEY_NOT_EXIT = "key_not_exist"
+KEY_NOT_EXIST = "key_not_exist"
 
 
 def convert_scenario(scenario_path: Path) -> None:
