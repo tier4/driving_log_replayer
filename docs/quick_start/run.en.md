@@ -3,7 +3,7 @@
 ```shell
 cd ${AUTOWARE_WORKSPACE}
 source install/setup.bash
-ros2 launch log_evaluator log_evaluator.launch.py ${scenario_file}
+ros2 launch log_evaluator log_evaluator.launch.py scenario_path:=${scenario_file}
 # example
-# ros2 launch log_evaluator log_evaluator.launch.py ~/log_evaluator/yabloc.yaml
+# ros2 launch log_evaluator log_evaluator.launch.py scenario_path:=$HOME/log_evaluator/yabloc.yaml
 ```
