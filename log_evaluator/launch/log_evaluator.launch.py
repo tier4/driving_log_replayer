@@ -245,14 +245,14 @@ def launch_bag_player(
     remap_list = ["--remap"]
     if conf.get("sensing", "true") == "true":
         remap_list.append(
-            "/sensing/lidar/concatenated/pointcloud:=/dlr/unused/concatenated/pointcloud",
+            "/sensing/lidar/concatenated/pointcloud:=/unused/concatenated/pointcloud",
         )
     if conf.get("localization", "true") == "true":
         remap_list.append(
-            "/tf:=/dlr/unused/tf",
+            "/tf:=/unused/tf",
         )
         remap_list.append(
-            "/localization/kinematic_state:=/dlr/unused/localization/kinematic_state",
+            "/localization/kinematic_state:=/unused/localization/kinematic_state",
         )
     if len(remap_list) != 1:
         play_cmd.extend(remap_list)
