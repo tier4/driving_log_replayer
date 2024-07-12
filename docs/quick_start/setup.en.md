@@ -61,7 +61,7 @@
 4. Transform machine learning trained models
 
    ```shell
-   source ~/autoware/install/setup
+   source ~/autoware/install/setup.bash
    ros2 launch autoware_launch logging_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=sample_vehicle sensor_model:=sample_sensor_kit
    # Wait until the following file is created in ~/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data
    # - pts_backbone_neck_head_centerpoint_tiny.engine
