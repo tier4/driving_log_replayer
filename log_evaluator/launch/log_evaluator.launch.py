@@ -68,7 +68,7 @@ def get_launch_arguments() -> list:
         default_value="",
         description="Directory where the dataset is located. If not specified, the directory where the scenario is located.",
     )
-    add_launch_arg("dataset_index", default_value="0", description="index number of dataset")
+    add_launch_arg("dataset_index", default_value="", description="index number of dataset")
     add_launch_arg("play_rate", default_value="1.0", description="ros2 bag play rate")
     add_launch_arg("play_delay", default_value="10.0", description="ros2 bag play delay")
     add_launch_arg(
@@ -84,17 +84,22 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     conf = context.launch_configurations
     scenario_path = Path(conf["scenario_path"])
     dataset_dir = scenario_path.parent if conf["dataset_dir"] == "" else Path(conf["dataset_dir"])
-    time_now = datetime.datetime.now().strftime("%Y-%m%d-%H%M%S")  # noqa
-    output_dir = (
-        scenario_path.parent.joinpath("out", time_now)
-        if conf["output_dir"] == ""
-        else Path(conf["output_dir"])
-    )
-    output_dir.mkdir(exist_ok=True, parents=True)
-    conf["output_dir"] = output_dir.as_posix()
+
     with scenario_path.open() as scenario_file:
         yaml_obj = yaml.safe_load(scenario_file)
-    for k, v in yaml_obj["Evaluation"]["Datasets"][int(conf["dataset_index"])].items():
+    # check datasets length and index
+    datasets = yaml_obj["Evaluation"]["Datasets"]
+    idx_str = conf["dataset_index"]
+    if idx_str == "":  # default value
+        if len(datasets) == 1:
+            dataset_index = 0
+        else:
+            return [
+                LogInfo(msg="launch argument 'dataset_index:=i' is required"),
+            ]
+    else:
+        dataset_index = int(idx_str)
+    for k, v in datasets[dataset_index].items():
         dataset_path = dataset_dir.joinpath(k)
         map_path_str: str | None = v.get("LocalMapPath")
         conf["vehicle_id"] = v["VehicleId"]
@@ -104,6 +109,7 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
             conf["sensing"] = str(launch_sensing)
         if launch_localization is not None:
             conf["localization"] = str(launch_localization)
+
     map_path = (
         dataset_path.joinpath("map") if map_path_str is None else Path(expandvars(map_path_str))
     )
@@ -120,8 +126,21 @@ def ensure_arg_compatibility(context: LaunchContext) -> list:
     # annotationless
     conf["annotationless_threshold_file"] = ""
     conf["annotationless_pass_range"] = ""
+
+    # create output directory
+    time_now = datetime.datetime.now().strftime("%Y-%m%d-%H%M%S")  # noqa
+    output_dir = (
+        scenario_path.parent.joinpath("out", time_now)
+        if conf["output_dir"] == ""
+        else Path(conf["output_dir"])
+    )
+    output_dir.mkdir(exist_ok=True, parents=True)
+    conf["output_dir"] = output_dir.as_posix()
+
     return [
-        LogInfo(msg=f"{dataset_path=}, {output_dir=}, use_case={conf['use_case']}"),
+        LogInfo(
+            msg=f"{dataset_path=}, {dataset_index=}, {output_dir=}, use_case={conf['use_case']}",
+        ),
     ]
 
 

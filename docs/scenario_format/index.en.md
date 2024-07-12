@@ -89,11 +89,16 @@ Refer to each [use case](../use_case/index.en.md) for the conditions that can be
 #### Datasets
 
 Multiple datasets can be described, but they can be used only when the same evaluation conditions are used for multiple datasets.
-If multiple datasets are described, the index of the dataset to be used must be passed as the launch argument. If not passed, the number 0 is implicitly used.
+If multiple datasets are described, the index of the dataset to be used must be passed as the launch argument.
+The index starts with the number 0.
+If there is only one dataset, dataset_index:=0 may be used.
 
 ```shell
-# You want to evaluate using the second dataset described in the scenario.
-ros2 launch log_evaluator dlr.launch.py scenario_path:=${perception_database_dataset_scenario} database_index:=1
+# If the number of datasets described in the scenario is 1. datsaet_index:=0 can be omitted.
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${scenario_path} [dataset_index:=0]
+
+# If the number of datasets described in the scenario is more than one
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${scenario_path} dataset_index:=${index_number}
 ```
 
 #### DatasetName

@@ -88,11 +88,16 @@ autoware_launch/launch/logging_simulator.launch.xml の引数の vehicle_model �
 #### Datasets
 
 複数個のDatasetを記述することが可能であるが、複数個のDatasetに対して、同じ評価条件で使用する場合のみ利用できる。
-複数個のDatasetを記述した場合は、利用したいdatasetのindexをlaunchの起動引数に渡す必要がある。渡さない場合は0番が暗黙で使われる。
+複数個のDatasetを記述した場合は、利用したいdatasetのindexをlaunchの起動引数に渡す必要がある。
+indexは0番から始まる。
+データセットが1個の場合はdataset_index:=0としてもよい。
 
 ```shell
-# シナリオ記述した2番目のdatasetを使用して評価したい場合。
-ros2 launch log_evaluator dlr.launch.py scenario_path:=${perception_database_dataset_scenario} database_index:=1
+# シナリオに記述したdataset数が1個の場合。dataset_index:=0は省略可能
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${scenario_path} [dataset_index:=0]
+
+# シナリオに記述したdataset数が複数の場合
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${scenario_path} dataset_index:=${index_number}
 ```
 
 #### DatasetName
