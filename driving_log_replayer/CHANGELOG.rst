@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.1.1 (2024-07-14)
+------------------
 * feat: add perception object info to jsonl (`#452 <https://github.com/tier4/driving_log_replayer/issues/452>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
 * Contributors: Yoshi Ri
