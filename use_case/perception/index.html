@@ -2163,6 +2163,9 @@ Only the final line has a different format from the other lines since the final 
 <span class="w">          </span><span class="nt">&quot;TP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of filtered objects determined to be TP&quot;</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">&quot;FP&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of filtered objects determined to be FP&quot;</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">&quot;FN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Number of filtered objects determined to be FN&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;Objects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="c1">// Evaluated objects information. See the [json schema](../../driving_log_replayer/config/object_output_schema.json) for details.</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">},</span>
@@ -2181,6 +2184,8 @@ Only the final line has a different format from the other lines since the final 
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
+<p>Objects Data Format:</p>
+<p>See <a href="../../driving_log_replayer/config/object_output_schema.json">json schema</a></p>
 <p>Metrics Data Format:</p>
 <p>When the <code>evaluation_task</code> is detection or tracking</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
