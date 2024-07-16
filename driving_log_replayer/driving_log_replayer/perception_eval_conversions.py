@@ -272,7 +272,7 @@ def calc_position_error(
 
 def fill_xyz(tuple_: tuple[float, float, float] | None) -> dict:
     if tuple_ is None:
-        return {"x": None, "y": None, "z": None}
+        return {"x": np.nan, "y": np.nan, "z": np.nan}
     return {
         "x": tuple_[0],
         "y": tuple_[1],
@@ -282,7 +282,7 @@ def fill_xyz(tuple_: tuple[float, float, float] | None) -> dict:
 
 def fill_xyzw(tuple_: tuple[float, float, float, float] | None) -> dict:
     if tuple_ is None:
-        return {"x": None, "y": None, "z": None, "w": None}
+        return {"x": np.nan, "y": np.nan, "z": np.nan, "w": np.nan}
     return {
         "x": tuple_[0],
         "y": tuple_[1],
@@ -293,7 +293,7 @@ def fill_xyzw(tuple_: tuple[float, float, float, float] | None) -> dict:
 
 def fill_xyzw_quat(q: Quaternion | None) -> dict:
     if q is None:
-        return {"x": None, "y": None, "z": None, "w": None}
+        return {"x": np.nan, "y": np.nan, "z": np.nan, "w": np.nan}
     return {
         "x": q.x,
         "y": q.y,
