@@ -1,0 +1,52 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: perception_use_bag_concat_data
+ScenarioDescription: sensing_module_off_and_use_pointcloud_in_the_rosbag
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: perception
+  UseCaseFormatVersion: 1.0.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default # Specify VehicleId for each data set.
+        LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
+  Conditions:
+    Criterion:
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: [metrics_score, metrics_score_maph] # Method name of criteria (num_tp/metrics_score/metrics_score_maph/label/velocity_x_error/velocity_y_error/speed_error/yaw_error)
+        CriteriaLevel: [10.0, 10.0] # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: null # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+  PerceptionEvaluationConfig:
+    evaluation_config_dict:
+      evaluation_task: detection # detection or tracking. Evaluate the objects specified here
+      target_labels: [car, bicycle, pedestrian, motorbike] # evaluation label
+      max_x_position: 102.4 # Maximum x position of object to be evaluated
+      max_y_position: 102.4 # Maximum y position of object to be evaluated
+      # max_distance: null # Maximum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.
+      # min_distance: null # Minimum distance from the base_link of the object to be evaluated. Exclusive use with max_x_potion, max_y_position.
+      # confidence_threshold: null # Threshold of confidence for the estimated object to be evaluated
+      # target_uuids: null # If you want to evaluate only specific ground truths, specify the UUIDs of the ground truths to be evaluated. If null, use all
+      max_matchable_radii: [5.0, 3.0, 3.0, 3.0]
+      merge_similar_labels: false # Whether or not to merge similar labels https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/label.md#merge-similar-labels-option
+      allow_matching_unknown: true # Whether or not to match objects whose labels are unknown
+      ignore_attributes: [cycle_state.without_rider] # ignore labels with the specified attribute, name in attribute.json of t4_dataset
+      center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # Threshold for center-to-center distance [m] matching
+      plane_distance_thresholds: [2.0, 30.0] # Threshold for planar distance matching
+      iou_2d_thresholds: [0.5] # Threshold for 2D IoU
+      iou_3d_thresholds: [0.5] # Threshold for 3D IoU
+      min_point_numbers: [0, 0, 0, 0] # Minimum number of point clouds in bounding box for ground truth object. If min_point_numbers=0, all ground truth objects are evaluated
+  CriticalObjectFilterConfig:
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    ignore_attributes: [cycle_state.without_rider]
+    max_x_position_list: [30.0, 30.0, 30.0, 30.0]
+    max_y_position_list: [30.0, 30.0, 30.0, 30.0]
+    # max_distance_list: null
+    # min_distance_list: null
+    # min_point_numbers: [0, 0, 0, 0]
+    # confidence_threshold_list: null
+    # target_uuids: null
+  PerceptionPassFailConfig:
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # Threshold for planar distance matching
+    # confidence_threshold_list: null

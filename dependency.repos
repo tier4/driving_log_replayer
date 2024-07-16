@@ -1,0 +1,28 @@
+repositories:
+  # core
+  core/autoware_msgs:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_msgs.git
+    version: main
+  core/autoware_adapi_msgs:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_adapi_msgs.git
+    version: main
+  core/autoware_common:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_common.git
+    version: main
+  # universe
+  universe/external/tier4_autoware_msgs:
+    type: git
+    url: https://github.com/tier4/tier4_autoware_msgs.git
+    version: tier4/universe
+  # simulator
+  simulator/perception_eval:
+    type: git
+    url: https://github.com/tier4/autoware_perception_evaluation.git
+    version: main
+  simulator/vendor/ros2_numpy:
+    type: git
+    url: https://github.com/Box-Robotics/ros2_numpy.git
+    version: humble

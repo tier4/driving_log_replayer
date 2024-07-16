@@ -1,0 +1,31 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: sample_localization
+ScenarioDescription: sample_localization
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: localization
+  UseCaseFormatVersion: 2.0.0
+  Conditions:
+    Convergence: # 収束性評価
+      AllowableDistance: 0.2 # 直線距離でこの距離以内だったら収束とみなす
+      AllowableExeTimeMs: 100.0 # NDTの計算時間がこの値以下なら成功とみなす
+      AllowableIterationNum: 30 # NDTの計算回数がこの値以下なら成功とみなす
+      PassRate: 95.0 # 収束性の評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+    Reliability: # 信頼度評価
+      Method: NVTL # NVTL or TPのどちらで評価を行うか
+      AllowableLikelihood: 2.3 # この値以上なら信頼度は正常とみなす
+      NGCount: 10 # 信頼度異常が連続でこの回数続いたら信頼度評価失敗とみなす
+  Datasets:
+    - sample_dataset:
+        VehicleId: default
+        InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
+          position:
+            x: 3836.5478515625
+            y: 73729.96875
+            z: 0.0
+          orientation:
+            x: 0.0
+            y: 0.0
+            z: -0.9689404241590215
+            w: 0.2472942668776119

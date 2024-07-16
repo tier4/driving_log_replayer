@@ -1,0 +1,57 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: perception_use_bag_concat_data
+ScenarioDescription: sensing_module_off_and_use_pointcloud_in_the_rosbag
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: perception
+  UseCaseFormatVersion: 1.0.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default # データセット毎にVehicleIdを指定する
+        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する。falseの場合はbag中にあるconcatenated/pointcloudを使用する
+  Conditions:
+    Criterion:
+      - PassRate: 95.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+        CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
+        CriteriaLevel: hard # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値でエラーの場合は許容誤差を指定。)
+        Filter:
+          Distance: 0.0-50.0 # [m] null [距離でフィルタしない] or 下限-(上限) [上限は省略可。省略した場合1.7976931348623157e+308]
+      - PassRate: 95.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+        CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
+        CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値でエラーの場合は許容誤差を指定。)
+        Filter:
+          Distance: 50.0- # [m] null [距離でフィルタしない] or 下限-(上限) [上限は省略可。省略した場合1.7976931348623157e+308]
+  PerceptionEvaluationConfig:
+    evaluation_config_dict:
+      evaluation_task: detection # detection/tracking ここで指定したobjectsを評価する
+      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
+      max_x_position: 102.4 # 評価対象 object の最大 x 位置
+      max_y_position: 102.4 # 評価対象 object の最大 y 位置
+      # max_distance: null # 評価対象 object の base_link からの最大距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
+      # min_distance: null # 評価対象 object の base_link からの最小距離、max_x_potion, max_y_positionと排他利用、この例ではこちらはnull
+      # confidence_threshold: null # 評価対象の estimated object の confidence の閾値
+      # target_uuids: null # 特定の ground truth のみに対して評価を行いたい場合，対象とする ground truth の UUID を指定する。nullなら全てが対象
+      max_matchable_radii: [5.0, 3.0, 3.0, 3.0]
+      merge_similar_labels: false # 類似のラベルをマージするか https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/ja/perception/label.md#%E9%A1%9E%E4%BC%BC%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%83%9E%E3%83%BC%E3%82%B8
+      allow_matching_unknown: true # ラベルがunknownのオブジェクトとマッチングさせるか
+      ignore_attributes: [cycle_state.without_rider] # 指定した属性を持つラベルを無視する。t4_datasetのattribute.jsonのnameを指定する
+      center_distance_thresholds: [[1.0, 1.0, 1.0, 1.0], [2.0, 2.0, 2.0, 2.0]] # 中心間距離マッチング時の閾値
+      plane_distance_thresholds: [2.0, 30.0] # 平面距離マッチング時の閾値
+      iou_2d_thresholds: [0.5] # 2D IoU マッチング時の閾値
+      iou_3d_thresholds: [0.5] # 3D IoU マッチング時の閾値
+      min_point_numbers: [0, 0, 0, 0] # ground truth object における，bbox 内の最小点群数．min_point_numbers=0 の場合は，全 ground truth object を評価
+  CriticalObjectFilterConfig: # 必ず検出できてほしいオブジェクトに対する config
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    ignore_attributes: [cycle_state.without_rider]
+    max_x_position_list: [30.0, 30.0, 30.0, 30.0]
+    max_y_position_list: [30.0, 30.0, 30.0, 30.0]
+    # max_distance_list: null
+    # min_distance_list: null
+    # min_point_numbers: [0, 0, 0, 0]
+    # confidence_threshold_list: null
+    # target_uuids: null
+  PerceptionPassFailConfig: # Pass fail を決める config
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値
+    # confidence_threshold_list: null

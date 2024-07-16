@@ -1,0 +1,68 @@
+site_name: log_evaluator Documentation
+site_url: https://tier4.github.io/driving_log_replayer
+edit_uri: edit/main/docs/
+repo_url: https://github.com/tier4/driving_log_replayer
+
+docs_dir: docs
+copyright: Copyright &copy; 2022 TIER IV Inc.
+
+theme:
+  name: material
+  features:
+    - navigation.expand
+    - navigation.indexes
+    - navigation.instant
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.footer
+  palette:
+    - scheme: default
+      primary: white
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: grey
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+
+extra:
+  font:
+    text: Roboto
+    code: Roboto Mono
+  version:
+    provider: mike
+
+plugins:
+  - awesome-pages:
+      strict: false
+  - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      languages:
+        - build: true
+          default: true
+          locale: en
+          name: English
+        - build: true
+          default: false
+          locale: ja
+          name: 日本語
+      reconfigure_material: true
+      reconfigure_search: true
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - mdx_truly_sane_lists:
+      nested_indent: 2
+  - pymdownx.superfences:
+  - toc:
+      permalink: "#"
+      toc_depth: 3

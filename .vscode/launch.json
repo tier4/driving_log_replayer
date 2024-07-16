@@ -1,0 +1,63 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "load_perception_scene_result",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "log_evaluator/scripts/debug/perception_load_scene_result.py",
+      "console": "integratedTerminal",
+      "args": [
+        "-p",
+        "$HOME/out/oss_perception/latest/sample/sample_dataset/result_archive/scene_result.pkl",
+        "-s",
+        "$HOME/data/oss_perception/sample/scenario.yaml",
+        "-d",
+        "$HOME/data/oss_perception/sample/t4_dataset/sample_dataset",
+        "-l",
+        "$HOME/out/oss_perception/latest/sample/sample_dataset/perception_eval_log"
+      ]
+    },
+    {
+      "name": "load_perception_database_result",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "log_evaluator/scripts/perception_database_result.py",
+      "console": "integratedTerminal",
+      "args": [
+        "-r",
+        "$HOME/out/oss_perception_database/latest/sample",
+        "-s",
+        "$HOME/data/oss_perception_database/sample/scenario.yaml"
+      ]
+    },
+    {
+      "name": "load_obstacle_segmentation_scene_result",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "log_evaluator/scripts/debug/obstacle_segmentation_load_scene_result.py",
+      "console": "integratedTerminal",
+      "args": [
+        "-p",
+        "$HOME/out/oss_obstacle_segmentation/latest/sample/sample_dataset/result_archive/scene_result.pkl",
+        "-s",
+        "$HOME/data/oss_obstacle_segmentation/sample/scenario.yaml",
+        "-d",
+        "$HOME/data/oss_obstacle_segmentation/sample/t4_dataset/sample_dataset",
+        "-l",
+        "$HOME/out/oss_obstacle_segmentation/latest/sample/sample_dataset/perception_eval_log"
+      ]
+    }
+  ]
+}

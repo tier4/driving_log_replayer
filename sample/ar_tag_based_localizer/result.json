@@ -1,0 +1,355 @@
+[
+  {
+    "Condition": {}
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "NoData"
+    },
+    "Stamp": {
+      "System": 1715311117.0108385
+    },
+    "Frame": {}
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311193.1725261,
+      "ROS": 102.089873305
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311193.671611,
+      "ROS": 102.339877055
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311193.9053118,
+      "ROS": 102.457386694
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311194.1390781,
+      "ROS": 102.572375192
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311194.3813486,
+      "ROS": 102.694893463
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311194.6483467,
+      "ROS": 102.827383662
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311194.879824,
+      "ROS": 102.942398129
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311216.6439788,
+      "ROS": 113.825202419
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311216.8766665,
+      "ROS": 113.942709152
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311217.1072345,
+      "ROS": 114.057700347
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311217.33809,
+      "ROS": 114.172703369
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311217.5728018,
+      "ROS": 114.290215204
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311217.8399916,
+      "ROS": 114.422713307
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311218.0733252,
+      "ROS": 114.540224041
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311218.3061583,
+      "ROS": 114.657729971
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311218.541171,
+      "ROS": 114.772717698
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: ArTagBasedLocalizer Availability (Success): Detected 1 AR tags"
+    },
+    "Stamp": {
+      "System": 1715311241.9038024,
+      "ROS": 126.455560256
+    },
+    "Frame": {
+      "Ego": {},
+      "Availability": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {}
+      }
+    }
+  }
+]

@@ -1,0 +1,21 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: sample_ar_tag_based_localizer
+ScenarioDescription: sample_ar_tag_based_localizer
+SensorModel: awsim_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: ar_tag_based_localizer
+  UseCaseFormatVersion: 1.0.0
+  Datasets:
+    - ar_tag_based_localizer:
+        VehicleId: default
+        InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
+          position:
+            x: 81377.53125
+            y: 49916.7734375
+            z: 41.213619232177734
+          orientation:
+            x: 0.0
+            y: 0.0
+            z: 0.30236092596718706
+            w: 0.9531935115433094

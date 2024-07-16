@@ -1,0 +1,40 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: fp_sample
+ScenarioDescription: fp_sample
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: perception
+  UseCaseFormatVersion: 1.0.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default # データセット毎にVehicleIdを指定する
+        LaunchSensing: false # データセット毎にsensing moduleを起動するかを指定する。falseの場合はbag中にあるconcatenated/pointcloudを使用する
+  Conditions:
+    Criterion:
+      - PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
+        CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
+        CriteriaLevel: hard # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
+        Filter:
+          Distance: 0.0-50.0 # 下限-上限 [m] 上限を記述しない場合は、floatの最大値が自動で適用される
+      - PassRate: 99.0 # [m] null [距離でフィルタしない] or 下限-(上限) [上限は省略可。省略した場合1.7976931348623157e+308]
+        CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
+        CriteriaLevel: easy # クライテリアレベル(perfect/hard/normal/easy、もしくはカスタム値0.0〜100.0の数値)
+        Filter: #
+          Distance: 50.0- # [m] null [距離でフィルタしない] or 下限-(上限) [上限は省略可。省略した場合1.7976931348623157e+308]
+  PerceptionEvaluationConfig:
+    evaluation_config_dict:
+      evaluation_task: fp_validation # detection/tracking/fp_validation ここで指定したobjectsを評価する
+      target_labels: [car, bicycle, pedestrian, motorbike] # 評価ラベル
+      max_x_position: 102.4 # 評価対象 object の最大 x 位置
+      max_y_position: 102.4 # 評価対象 object の最大 y 位置
+      max_matchable_radii: [5.0, 3.0, 3.0, 3.0]
+      merge_similar_labels: false # Whether or not to merge similar labels https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/label.md#merge-similar-labels-option
+      allow_matching_unknown: true # Whether or not to match objects whose labels are unknown
+  CriticalObjectFilterConfig: # 必ず検出できてほしいオブジェクトに対する config
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    max_x_position_list: [100.0, 100.0, 100.0, 100.0]
+    max_y_position_list: [100.0, 100.0, 100.0, 100.0]
+  PerceptionPassFailConfig: # Pass fail を決める config
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # 平面距離マッチング時の閾値

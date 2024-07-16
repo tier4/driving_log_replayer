@@ -1,0 +1,12 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: sample_yabloc
+ScenarioDescription: sample_yabloc
+SensorModel: awsim_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: yabloc
+  UseCaseFormatVersion: 1.0.0
+  Datasets:
+    - yabloc:
+        VehicleId: default
+        InitialPose: null

@@ -1,0 +1,12 @@
+- module: localization
+  mode: [logging_simulation]
+  type: autonomous
+  args:
+    node_name_suffix: ndt_scan_matcher_exe_time
+    topic: /localization/pose_estimator/exe_time_ms
+    topic_type: tier4_debug_msgs/msg/Float32Stamped
+    best_effort: false
+    transient_local: false
+    warn_rate: 5.0
+    error_rate: 1.0
+    timeout: 1.0

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>log_evaluator</name>
+  <version>2.0.12</version>
+  <description>The log_evaluator package</description>
+  <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
+  <maintainer email="kotaro.uetake@tier4.jp">Kotaro Uetake</maintainer>
+  <maintainer email="koji.minoda@tier4.jp">Koji Minoda</maintainer>
+  <maintainer email="shintaro.sakoda@tier4.jp">Shintaro Sakoda</maintainer>
+  <maintainer email="keisuke.shima@tier4.jp">Keisuke Shima</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+  <build_depend>autoware_cmake</build_depend>
+
+  <depend>autoware_auto_perception_msgs</depend>
+  <depend>autoware_common_msgs</depend>
+  <depend>autoware_map_msgs</depend>
+  <depend>autoware_perception_msgs</depend>
+  <depend>diagnostic_msgs</depend>
+  <depend>example_interfaces</depend>
+  <depend>geometry_msgs</depend>
+  <depend>log_evaluator_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>tf2_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tier4_debug_msgs</depend>
+  <depend>tier4_localization_msgs</depend>
+  <depend>visualization_msgs</depend>
+
+  <exec_depend>lanelet2_extension_python</exec_depend>
+  <exec_depend>log_evaluator_analyzer</exec_depend>
+  <exec_depend>perception_eval</exec_depend>
+  <exec_depend>python-transforms3d-pip</exec_depend>
+  <exec_depend>python3-jsonschema</exec_depend>
+  <exec_depend>python3-pandas</exec_depend>
+  <exec_depend>python3-simplejson</exec_depend>
+  <exec_depend>python3-termcolor</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>ros2_numpy</exec_depend>
+  <exec_depend>rosbag2_storage_mcap</exec_depend>
+  <exec_depend>rosidl_runtime_py</exec_depend>
+  <exec_depend>tf_transformations</exec_depend>
+
+  <!-- to avoid rosdep install error -->
+  <!-- <exec_depend>autoware_launch</exec_depend> -->
+  <!-- <exec_depend>perception_online_evaluator</exec_depend> -->
+  <!-- The version of python3-pydantic is old, so use pip to install it when building with CMake -->
+  <!-- <exec_depend>python3-pydantic</exec_depend> -->
+
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>autoware_lint_common</test_depend>
+  <test_depend>launch_pytest</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

@@ -1,0 +1,12 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: sample_eagleye
+ScenarioDescription: sample_eagleye
+SensorModel: awsim_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: eagleye
+  UseCaseFormatVersion: 1.0.0
+  Datasets:
+    - eagleye:
+        VehicleId: default
+        InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.

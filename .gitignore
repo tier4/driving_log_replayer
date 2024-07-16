@@ -1,0 +1,5 @@
+log/
+.cspell.json
+*.pyc
+# MkDocs's dir
+site/

@@ -1,0 +1,10 @@
+nav:
+  - index.en.md
+  - index.ja.md
+  - quick_start
+  - trouble_shooting
+  - overview
+  - scenario_format
+  - result_format
+  - use_case
+  - analyzer

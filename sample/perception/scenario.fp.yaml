@@ -1,0 +1,40 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: fp_sample
+ScenarioDescription: fp_sample
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+Evaluation:
+  UseCaseName: perception
+  UseCaseFormatVersion: 1.0.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default # Specify VehicleId for each data set.
+        LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
+  Conditions:
+    Criterion:
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
+        CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+      - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
+        CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
+        CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
+        Filter:
+          Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
+  PerceptionEvaluationConfig:
+    evaluation_config_dict:
+      evaluation_task: fp_validation # detection, tracking, or fp_validation. Evaluate the objects specified here
+      target_labels: [car, bicycle, pedestrian, motorbike] # evaluation label
+      max_x_position: 102.4 # Maximum x position of object to be evaluated
+      max_y_position: 102.4 # Maximum y position of object to be evaluated
+      max_matchable_radii: [5.0, 3.0, 3.0, 3.0]
+      merge_similar_labels: false # Whether or not to merge similar labels https://github.com/tier4/autoware_perception_evaluation/blob/develop/docs/en/perception/label.md#merge-similar-labels-option
+      allow_matching_unknown: true # Whether or not to match objects whose labels are unknown
+  CriticalObjectFilterConfig:
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    max_x_position_list: [100.0, 100.0, 100.0, 100.0]
+    max_y_position_list: [100.0, 100.0, 100.0, 100.0]
+  PerceptionPassFailConfig:
+    target_labels: [car, bicycle, pedestrian, motorbike]
+    matching_threshold_list: [2.0, 2.0, 2.0, 2.0] # Threshold for planar distance matching

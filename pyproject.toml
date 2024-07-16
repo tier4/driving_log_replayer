@@ -1,0 +1,80 @@
+[project]
+name = "driving-log-replayer"
+version = "2.1.1"
+description = "command line tool for driving_log_replayer"
+authors = [
+  { name = "Hayato Mizushima", email = "hayato.mizushima@tier4.jp" },
+  { name = "Kotaro Uetake", email = "kotaro.uetake@tier4.jp" },
+  { name = "Koji Minoda", email = "koji.minoda@tier4.jp" },
+  { name = "Kosuke Takeuchi", email = "kosuke.takeuchi@tier4.jp" },
+  { name = "Keisuke Shima", email = "keisuke.shima@tier4.jp" },
+]
+dependencies = [
+    "termcolor>=2.4.0",
+    "natsort>=8.4.0",
+    "pyyaml>=6.0.1",
+    "toml>=0.10.2",
+    "click>=8.1.7",
+    "pandas>=2.2.0",
+    "plotly>=5.19.0",
+    "kaleido>=0.2.1",
+    "simplejson>=3.19.2",
+    "pydantic>=2.6.1",
+]
+readme = "README.md"
+requires-python = ">= 3.10"
+license = "Apache-2.0"
+
+[project.scripts]
+dlr = "log_evaluator_cli:main"
+dlr-analyzer = "log_evaluator_analyzer:main"
+
+[project.optional-dependencies]
+docs = [
+    "mkdocs>=1.5.3",
+    "mkdocs-material>=9.5.9",
+    "mkdocs-awesome-pages-plugin>=2.9.2",
+    "mkdocs-static-i18n>=1.2.0",
+    "mdx-truly-sane-lists>=1.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+# https://rye-up.com/guide/pyproject
+managed = false
+dev-dependencies = [
+    "black>=24.2.0",
+    "ruff>=0.2.1",
+    "pytest>=8.1.1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["log_evaluator_cli", "log_evaluator_analyzer/log_evaluator_analyzer"]
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
+output-format = "full"
+
+[tool.ruff.lint]
+# https://beta.ruff.rs/docs/rules/
+select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+ignore = ["Q000", "ANN101", "ANN102", "ANN401", "PGH004", "E501", "PLR0913", "S101", "S301", "S603", "SIM115", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417", "PD011", "PD002", "PD901"]
+fixable = ["D", "I", "ANN", "COM", "EXE", "PIE"]
+
+[tool.ruff.lint.isort]
+# https://pycqa.github.io/isort/docs/configuration/options.html#default-section
+force-sort-within-sections = true
+known-third-party = ["launch", "yaml"]
+force-single-line = true
+# https://beta.ruff.rs/docs/settings/#isort-relative-imports-order
+relative-imports-order = "closest-to-furthest"
+order-by-type = false

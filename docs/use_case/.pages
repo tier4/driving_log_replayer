@@ -1,0 +1,19 @@
+nav:
+  - index.en.md
+  - index.ja.md
+  - localization.en.md
+  - localization.ja.md
+  - yabloc.en.md
+  - yabloc.ja.md
+  - eagleye.en.md
+  - eagleye.ja.md
+  - ar_tag_based_localizer.en.md
+  - ar_tag_based_localizer.ja.md
+  - obstacle_segmentation.en.md
+  - obstacle_segmentation.ja.md
+  - perception.en.md
+  - perception.ja.md
+  - performance_diag.en.md
+  - performance_diag.ja.md
+  - annotationless_perception.en.md
+  - annotationless_perception.ja.md
