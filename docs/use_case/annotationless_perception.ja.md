@@ -7,7 +7,6 @@ perception_online_evaluatorを利用して、Autowareの認識機能(perception)
 
 ## 評価方法
 
-`annotationless_perception.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`annotationless_perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
@@ -19,7 +18,7 @@ launch を立ち上げると以下のことが実行され、評価される。
 ## 評価結果
 
 perception_online_evaluatorが出力するtopicは以下のサンプルのような形式となっている。
-[topicサンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/diag_topic.txt)
+[topicサンプル](https://github.com/tier4/log_evaluator/blob/main/sample/annotationless_perception/diag_topic.txt)
 
 topic の subscribe 1 回につき、認識クラス毎に以下に記述する判定結果が出力される。
 
@@ -278,11 +277,11 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/scenario.ja.yaml)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/annotationless_perception/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/annotationless_perception/result.json)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/annotationless_perception/result.json)参照
 
 以下に、それぞれの評価の例を記述する。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**

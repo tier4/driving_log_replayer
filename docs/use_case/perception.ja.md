@@ -61,7 +61,6 @@ $HOME/autoware/install/lidar_centerpoint/share/lidar_centerpoint/data/pts_voxel_
 
 ## 評価方法
 
-`perception.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
@@ -82,12 +81,12 @@ sampleのscenario.yamlは以下のようなっており、
 ```yaml
 Criterion:
   - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
     CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
       Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
     CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
       Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
@@ -124,10 +123,10 @@ Subscribed topics:
 
 Published topics:
 
-| topic 名                                  | データ型                             |
-| ----------------------------------------- | ------------------------------------ |
-| /driving_log_replayer/marker/ground_truth | visualization_msgs::msg::MarkerArray |
-| /driving_log_replayer/marker/results      | visualization_msgs::msg::MarkerArray |
+| topic 名                           | データ型                             |
+| ---------------------------------- | ------------------------------------ |
+| /log_evaluator/marker/ground_truth | visualization_msgs::msg::MarkerArray |
+| /log_evaluator/marker/results      | visualization_msgs::msg::MarkerArray |
 
 ## logging_simulator.launch に渡す引数
 
@@ -144,17 +143,17 @@ autoware の処理を軽くするため、評価に関係のないモジュー�
 
 認識機能の評価は[perception_eval](https://github.com/tier4/autoware_perception_evaluation)に依存している。
 
-### 依存ライブラリとの driving_log_replayer の役割分担
+### 依存ライブラリとの log_evaluator の役割分担
 
-driving_log_replayer が ROS との接続部分を担当し、perception_eval がデータセットを使って実際に評価する部分を担当するという分担になっている。
+log_evaluator が ROS との接続部分を担当し、perception_eval がデータセットを使って実際に評価する部分を担当するという分担になっている。
 perception_eval は ROS 非依存のライブラリなので、ROS のオブジェクトを受け取ることができない。
 また、timestamp が ROS ではナノ秒、t4_dataset は `nuScenes` をベースしているためミリ秒が採用されている。
 このため、ライブラリ使用前に適切な変換が必要となる。
 
-driving_log_replayer は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval で定義されている class に合わせたデータ形式に変換して渡す。
+log_evaluator は、autoware の perception モジュールから出力された topic を subscribe し、perception_eval で定義されている class に合わせたデータ形式に変換して渡す。
 また、perception_eval から返ってくる評価結果の ROS の topic で publish し可視化する部分も担当する。
 
-perception_eval は、driving_log_replayer から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。
+perception_eval は、log_evaluator から渡された検知結果と GroundTruth を比較して指標を計算し、結果を出力する部分を担当する。
 
 ## simulation
 
@@ -226,11 +225,11 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 データベース評価では、キャリブレーション値の変更があり得るので vehicle_id をデータセット毎に設定出来るようにする。
 また、Sensing モジュールを起動するかどうかの設定も行う。
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/scenario.ja.yaml)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/perception/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/perception/result.json)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/perception/result.json)参照
 
 perception では、シナリオに指定した条件で perception_eval が評価した結果を各 frame 毎に出力する。
 全てのデータを流し終わったあとに、最終的なメトリクスを計算しているため、最終行だけ、他の行と形式が異なる。

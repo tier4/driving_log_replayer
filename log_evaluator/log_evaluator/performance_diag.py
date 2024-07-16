@@ -25,7 +25,6 @@ from pydantic import BaseModel
 
 from log_evaluator.result import EvaluationItem
 from log_evaluator.result import ResultBase
-from log_evaluator.scenario import InitialPose
 from log_evaluator.scenario import Scenario
 
 INVALID_FLOAT_VALUE = -99.9
@@ -75,9 +74,9 @@ class Conditions(BaseModel):
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["performance_diag"]
-    UseCaseFormatVersion: Literal["1.0.0"]
+    UseCaseFormatVersion: Literal["2.0.0"]
     Conditions: Conditions
-    InitialPose: InitialPose | None
+    Datasets: list[dict]
 
 
 class PerformanceDiagScenario(Scenario):

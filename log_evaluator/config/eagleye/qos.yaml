@@ -1,0 +1,10 @@
+/tf_static:
+  reliability: reliable
+  history: keep_last
+  depth: 1
+  durability: transient_local
+/localization/util/downsample/pointcloud:
+  reliability: best_effort
+  history: keep_last
+  depth: 10
+  durability: volatile

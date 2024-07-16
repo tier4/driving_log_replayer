@@ -1,15 +1,11 @@
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 3.0.0
 ScenarioName: diag_blockage_glp
 ScenarioDescription: diag_blockage_glp
 SensorModel: aip_x2
 VehicleModel: gsm8
-VehicleId: ps1/20210520/CAL_000012
-LocalMapPath: $HOME/map/diag
 Evaluation:
   UseCaseName: performance_diag
-  UseCaseFormatVersion: 1.0.0
-  LaunchLocalization: false # If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.
-  InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed. This key only works when LaunchLocalization is enabled.
+  UseCaseFormatVersion: 2.0.0
   Conditions:
     LiDAR:
       Visibility:
@@ -48,3 +44,8 @@ Evaluation:
           ScenarioType: FP
           BlockageType: ground
           PassFrameCount: 80
+  Datasets:
+    - sample_dataset:
+        VehicleId: ps1/20210520/CAL_000012
+        LaunchLocalization: false # If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.
+        InitialPose: null

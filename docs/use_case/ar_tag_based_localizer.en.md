@@ -4,7 +4,6 @@ Evaluate whether Autoware's ArTagBasedLocalizer, a camera based pcd-less localiz
 
 ## Evaluation method
 
-The localization's evaluation is executed by launching the `ar_tag_based_localizer.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`ar_tag_based_localizer_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
@@ -89,11 +88,11 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/ar_tag_based_localizer/scenario.yaml).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/ar_tag_based_localizer/scenario.yaml).
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/ar_tag_based_localizer/result.json).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/ar_tag_based_localizer/result.json).
 
 Examples of each evaluation are described below.
 **NOTE: common part of the result file format, which has already been explained, is omitted.**

@@ -1,8 +1,8 @@
 # Evaluation Use Cases
 
-This section describes how driving_log_replayer can be used for evaluation.
+This section describes how log_evaluator can be used for evaluation.
 
-## List of Driving Log Replayer use cases
+## List of log_evaluator use cases
 
 - [Localization](localization.md)
 - [YabLoc](yabloc.md)

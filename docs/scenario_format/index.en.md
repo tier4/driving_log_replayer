@@ -1,6 +1,6 @@
-# Driving Log Replayer Scenario Format Definition
+# log_evaluator Scenario Format Definition
 
-This section describes the scenario format used in driving_log_replayer.
+This section describes the scenario format used in log_evaluator.
 
 ## Notes on the format
 
@@ -17,35 +17,13 @@ Time: s
 
 ## Samples
 
-Sample scenarios are stored in the [sample](https://github.com/tier4/driving_log_replayer/tree/develop/sample) folder.
+Sample scenarios are stored in the [sample](https://github.com/tier4/log_evaluator/tree/develop/sample) folder.
 
 ## Format
 
 The basic structure is as follows. Details of each key are described below.
 
-### 2.x.x Format
-
-For `localization`, `performance_diag`, `yabloc`, `eagleye` and `ar_tag_based_localizer` evaluation scenarios
-
-```yaml
-ScenarioFormatVersion: 2.x.x
-ScenarioName: String
-ScenarioDescription: String
-SensorModel: String
-VehicleModel: String
-VehicleId: String
-LocalMapPath: String
-Evaluation:
-  UseCaseName: String
-  UseCaseFormatVersion: String
-  Conditions: Dictionary # refer use case
-```
-
 ### 3.x.x Format
-
-For `perception` and `obstacle_segmentation` evaluation scenarios.
-
-**NOTE: VehicleId and LocalMapPath have been changed to be set for each id of t4_dataset.**
 
 ```yaml
 ScenarioFormatVersion: 3.x.x
@@ -56,19 +34,17 @@ VehicleModel: String
 Evaluation:
   UseCaseName: String
   UseCaseFormatVersion: String
+  Conditions: Dictionary # refer use case
   Datasets:
     - DatasetName:
         VehicleId: String
-        LocalMapPath: String
-  Conditions: Dictionary # refer use case
 ```
 
 ### ScenarioFormatVersion
 
 Describe the version information of the scenario format. Use the semantic version.
 
-`localization`, `performance_diag`, `yabloc`, `eagleye` and `ar_tag_based_localizer` scenarios use the 2.x.x series. The latest version of 2.x.x is 2.2.0.
-`perception` and `obstacle_segmentation` scenarios use 3.x.x series. The latest version of 3.x.x is 3.0.0
+Current Version is 3.0.0
 
 Minor versions are updated each time the format is updated.
 
@@ -88,18 +64,6 @@ Specify `sensor_model` as argument in `autoware_launch/launch/logging_simulator.
 
 Specify `vehicle_model` as an argument in `autoware_launch/launch/logging_simulator.launch.xml`
 
-### VehicleId
-
-Specify `vehicle_id` as an argument in `autoware_launch/launch/logging_simulator.launch.xml`
-
-If you don't know `vehicle_id`, set `default`.
-
-### LocalMapPath
-
-Describes the path of the map folder to be used in the local environment.
-
-Environment variables such as `$HOME` can be used.
-
 ### Evaluation
 
 Define the evaluation conditions for the simulation.
@@ -108,8 +72,7 @@ Define the evaluation conditions for the simulation.
 
 Specify an evaluation program.
 
-The evaluation is executed by calling the launch file with the name specified here.
-The `launch.py` file with the same name as specified must exist in the `driving_log_replayer/launch` folder.
+The evaluation is executed by calling the evaluator node with the name specified here.
 
 #### UseCaseFormatVersion
 
@@ -122,3 +85,28 @@ The initial version is 0.1.0.
 Specify conditions that can be set for each use case.
 
 Refer to each [use case](../use_case/index.en.md) for the conditions that can be specified.
+
+#### Datasets
+
+Multiple datasets can be described, but they can be used only when the same evaluation conditions are used for multiple datasets.
+If multiple datasets are described, the index of the dataset to be used must be passed as the launch argument.
+The index starts with the number 0.
+If there is only one dataset, dataset_index:=0 may be used.
+
+```shell
+# If the number of datasets described in the scenario is 1. datsaet_index:=0 can be omitted.
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${scenario_path} [dataset_index:=0]
+
+# If the number of datasets described in the scenario is more than one
+ros2 launch log_evaluator dlr.launch.py scenario_path:=${scenario_path} dataset_index:=${index_number}
+```
+
+#### DatasetName
+
+dataset name of t4_dataset
+
+#### VehicleId
+
+Specify `vehicle_id` as an argument in `autoware_launch/launch/logging_simulator.launch.xml`
+
+If you don't know `vehicle_id`, set `default`.

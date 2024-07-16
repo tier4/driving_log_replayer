@@ -1,8 +1,8 @@
 # 評価ユースケース
 
-driving_log_replayer を用いてどのような評価を行えるか述べる。
+log_evaluator を用いてどのような評価を行えるか述べる。
 
-## Driving Log Replayer ユースケース一覧
+## log_evaluator ユースケース一覧
 
 - [Localization](localization.ja.md)
 - [YabLoc](yabloc.ja.md)

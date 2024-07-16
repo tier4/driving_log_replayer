@@ -156,8 +156,9 @@ class Conditions(BaseModel):
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["annotationless_perception"]
-    UseCaseFormatVersion: Literal["0.2.0", "0.3.0"]
+    UseCaseFormatVersion: Literal["1.0.0"]
     Conditions: Conditions
+    Datasets: list[dict]
 
 
 class AnnotationlessPerceptionScenario(Scenario):

@@ -72,7 +72,6 @@ Because `true` is a setting that recognition results are sent from another compu
 
 ## Evaluation method
 
-The traffic_light evaluation is executed by launching the `traffic_light.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`traffic_light_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
@@ -126,15 +125,15 @@ The following parameters are set to `false`:
 
 The perception evaluation step bases on the [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
 
-### Division of roles of driving_log_replayer with dependent libraries
+### Division of roles of log_evaluator with dependent libraries
 
-`driving_log_replayer` package is in charge of the connection with ROS. The actual perception evaluation is conducted in [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
+`log_evaluator` package is in charge of the connection with ROS. The actual perception evaluation is conducted in [perception_eval](https://github.com/tier4/autoware_perception_evaluation) library.
 The [perception_eval](https://github.com/tier4/autoware_perception_evaluation) is a ROS-independent library, it cannot receive ROS objects. Also, ROS timestamps use nanoseconds while the `t4_dataset` format is based on milliseconds (because it uses `nuScenes`), so the values must be properly converted before using the library's functions.
 
-`driving_log_replayer` subscribes the topic output from the perception module of Autoware, converts it to the data format defined in [perception_eval](https://github.com/tier4/autoware_perception_evaluation), and passes it on.
+`log_evaluator` subscribes the topic output from the perception module of Autoware, converts it to the data format defined in [perception_eval](https://github.com/tier4/autoware_perception_evaluation), and passes it on.
 It is also responsible for publishing and visualizing the evaluation results from [perception_eval](https://github.com/tier4/autoware_perception_evaluation) on proper ROS topic.
 
-[perception_eval](https://github.com/tier4/autoware_perception_evaluation) is in charge of the part that compares the detection results passed from `driving_log_replayer` with ground truth data, calculates the index, and outputs the results.
+[perception_eval](https://github.com/tier4/autoware_perception_evaluation) is in charge of the part that compares the detection results passed from `log_evaluator` with ground truth data, calculates the index, and outputs the results.
 
 ## About simulation
 
@@ -207,11 +206,11 @@ Use case evaluation is performed on a single dataset, while database evaluation 
 In the database evaluation, the `vehicle_id` should be able to be set for each data set, since the calibration values may change.
 Also, it is necessary to set whether or not to activate the sensing module.
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/scenario.yaml).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/traffic_light/scenario.yaml).
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/traffic_light/result.json).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/traffic_light/result.json).
 
 The evaluation results by [perception_eval](https://github.com/tier4/autoware_perception_evaluation) under the conditions specified in the scenario are output for each frame.
 Only the final line has a different format from the other lines since the final metrics are calculated after all data has been flushed.

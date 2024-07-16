@@ -9,7 +9,6 @@ Evaluation:
   Datasets:
     - sample_dataset:
         VehicleId: default # データセット毎にVehicleIdを指定する
-        LocalMapPath: $HOME/autoware_map/sample-map-planning # データセット毎にLocalMapPathを指定する
   Conditions:
     Detection: # Detectionの評価を行わない場合はnullをセットする
       PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか

@@ -1,13 +1,11 @@
-ScenarioFormatVersion: 2.2.0
+ScenarioFormatVersion: 3.0.0
 ScenarioName: sample_localization
 ScenarioDescription: sample_localization
 SensorModel: sample_sensor_kit
 VehicleModel: sample_vehicle
-VehicleId: default
-LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: localization
-  UseCaseFormatVersion: 1.2.0
+  UseCaseFormatVersion: 2.0.0
   Conditions:
     Convergence:
       AllowableDistance: 0.2 # Lateral distance to be considered convergence
@@ -18,13 +16,16 @@ Evaluation:
       Method: NVTL # NVTL or TP which method to use for evaluation
       AllowableLikelihood: 2.3 # If above this value, the localization reliability value is considered normal.
       NGCount: 10 # If the reliability value is lower than the threshold value for more than this number in the sequence. the evaluation is considered to have failed.
-  InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
-    position:
-      x: 3836.5478515625
-      y: 73729.96875
-      z: 0.0
-    orientation:
-      x: 0.0
-      y: 0.0
-      z: -0.9689404241590215
-      w: 0.2472942668776119
+  Datasets:
+    - sample_dataset:
+        VehicleId: default
+        InitialPose: # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed.
+          position:
+            x: 3836.5478515625
+            y: 73729.96875
+            z: 0.0
+          orientation:
+            x: 0.0
+            y: 0.0
+            z: -0.9689404241590215
+            w: 0.2472942668776119

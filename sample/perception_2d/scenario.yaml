@@ -10,10 +10,9 @@ Evaluation:
     - f72e1065-7c38-40fe-a4e2-c5bbe6ff6443:
         VehicleId: ps1/20210620/CAL_000015 # Specify VehicleId for each data set.
         LaunchSensing: false # Specifies whether the sensing module should be activated for each dataset. if false, use concatenated/pointcloud in bag
-        LocalMapPath: $HOME/map/perception # Specify LocalMapPath for each data set.
   Conditions:
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/log_evaluator/blob/develop/log_evaluator/log_evaluator/criteria/perception.py#L136-L152
     CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value [0.0, 100.0])
     TargetCameras: # Describes the type of camera to be evaluated as a key and the camera number as a value.
       cam_front: 0

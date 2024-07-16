@@ -6,7 +6,6 @@ NDT自己位置推定の評価では NDT の信頼度、収束性、可用性を
 
 ## 評価方法
 
-`localization.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`localization_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
@@ -64,7 +63,7 @@ topic の subscribe 1 回につき、以下に記述する判定結果が出力�
 2. /localization/pose_estimator/exe_time_ms が、シナリオに記述した AllowableExeTimeMs 以下
 3. /localization/pose_estimator/iteration_num が、シナリオに記述した AllowableIterationNum 以下
 
-ステップ 1 で取得した横方向距離が/driving_log_replayer/localization/lateral_distance として publish される。
+ステップ 1 で取得した横方向距離が/log_evaluator/localization/lateral_distance として publish される。
 
 ### 収束異常
 
@@ -97,9 +96,9 @@ Subscribed topics:
 
 Published topics:
 
-| topic 名                                            | データ型                         |
-| --------------------------------------------------- | -------------------------------- |
-| /driving_log_replayer/localization/lateral_distance | example_interfaces::msg::Float64 |
+| topic 名                                     | データ型                         |
+| -------------------------------------------- | -------------------------------- |
+| /log_evaluator/localization/lateral_distance | example_interfaces::msg::Float64 |
 
 ## 評価ノードが使用する Service 名とデータ型
 
@@ -164,11 +163,11 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.ja.yaml)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/localization/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/localization/result.json)参照
 
 localization では、収束性、信頼度、可用性の 3 つを評価しているので、行毎に収束性、信頼度、可用性のいずれかの結果が入っている。
 Result は収束性、信頼度、可用性のすべてをパスしていれば true でそれ以外は false 失敗となる。

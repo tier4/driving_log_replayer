@@ -9,7 +9,6 @@ Autoware の診断機能(diagnostics)が意図通りに機能しているかを�
 
 ## 評価方法
 
-`performance_diag.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`performance_diag_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
@@ -69,13 +68,13 @@ Subscribed topics:
 
 Published topics:
 
-| topic 名                                                 | データ型                         |
-| -------------------------------------------------------- | -------------------------------- |
-| /driving_log_replayer/visibility/value                   | example_interfaces::msg::Float64 |
-| /driving_log_replayer/visibility/level                   | example_interfaces::msg::Byte    |
-| /driving_log_replayer/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64 |
-| /driving_log_replayer/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64 |
-| /driving_log_replayer/blockage/{lidar_name}/level        | example_interfaces::msg::Byte    |
+| topic 名                                          | データ型                         |
+| ------------------------------------------------- | -------------------------------- |
+| /log_evaluator/visibility/value                   | example_interfaces::msg::Float64 |
+| /log_evaluator/visibility/level                   | example_interfaces::msg::Byte    |
+| /log_evaluator/blockage/{lidar_name}/ground/ratio | example_interfaces::msg::Float64 |
+| /log_evaluator/blockage/{lidar_name}/sky/ratio    | example_interfaces::msg::Float64 |
+| /log_evaluator/blockage/{lidar_name}/level        | example_interfaces::msg::Byte    |
 
 {lidar_name}には、搭載されている lidar の名前が入る。
 
@@ -146,11 +145,11 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/scenario.ja.yaml)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/performance_diag/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/performance_diag/result.json)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/performance_diag/result.json)参照
 
 performance_diag では、visibility と blockage の 2 つを評価している。
 Result は visibility と blockage の両方をパスしていれば true でそれ以外は false 失敗となる。

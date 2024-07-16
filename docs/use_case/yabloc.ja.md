@@ -4,7 +4,6 @@ Autoware のYabLoc自己位置推定が安定して動作しているかを評�
 
 ## 評価方法
 
-`yabloc.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`yabloc_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
@@ -95,11 +94,11 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/yabloc/scenario.yaml)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/yabloc/scenario.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/yabloc/result.json)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/yabloc/result.json)参照
 
 以下に、それぞれの評価の例を記述する。
 **注:結果ファイルフォーマットで解説済みの共通部分については省略する。**

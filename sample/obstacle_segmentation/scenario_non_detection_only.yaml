@@ -9,7 +9,6 @@ Evaluation:
   Datasets:
     - sample_dataset:
         VehicleId: default
-        LocalMapPath: $HOME/autoware_map/sample-map-planning
   Conditions:
     Detection: null
     NonDetection: # set `null` if NonDetection is not evaluated.

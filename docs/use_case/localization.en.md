@@ -6,7 +6,6 @@ In the evaluation of NDT, the reliability, convergence, and availability of NDT 
 
 ## Evaluation method
 
-The localization's evaluation is executed by launching the `localization.launch.py` file.
 Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`localization_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
@@ -65,7 +64,7 @@ If all of the following conditions are met, the convergence is reported as Norma
 2. Execution time published to `/localization/pose_estimator/exe_time_ms` is less than or equal to `AllowableExeTimeMs` described in the scenario
 3. Number of iterations published to `/localization/pose_estimator/iteration_num` is less than or equal to `AllowableIterationNum` described in the scenario
 
-The lateral distance obtained in the step 1 is published as `/driving_log_replayer/localization/lateral_distance`.
+The lateral distance obtained in the step 1 is published as `/log_evaluator/localization/lateral_distance`.
 
 ### Convergence Error
 
@@ -97,9 +96,9 @@ Subscribed topics:
 
 Published topics:
 
-| Topic name                                          | Data type                        |
-| --------------------------------------------------- | -------------------------------- |
-| /driving_log_replayer/localization/lateral_distance | example_interfaces::msg::Float64 |
+| Topic name                                   | Data type                        |
+| -------------------------------------------- | -------------------------------- |
+| /log_evaluator/localization/lateral_distance | example_interfaces::msg::Float64 |
 
 ## Service name and data type used by the evaluation node
 
@@ -163,11 +162,11 @@ State the information necessary for the evaluation.
 
 ### Scenario Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/scenario.yaml).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/localization/scenario.yaml).
 
 ### Evaluation Result Format
 
-See [sample](https://github.com/tier4/driving_log_replayer/blob/main/sample/localization/result.json).
+See [sample](https://github.com/tier4/log_evaluator/blob/main/sample/localization/result.json).
 
 Since localization evaluates convergence, reliability, and availability, each line contains the result of convergence, reliability, or availability.
 The Result is `true` if convergence, reliability, and availability all pass, and `false` otherwise.

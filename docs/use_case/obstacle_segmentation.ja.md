@@ -18,7 +18,6 @@ Autoware の点群処理のプロセス(sensing→perception)が動作して、/
 
 ## 評価方法
 
-`obstacle_segmentation.launch.py` を使用して評価する。
 launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`obstacle_segmentation_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
@@ -85,13 +84,13 @@ Subscribed topics:
 
 Published topics:
 
-| topic 名                                   | データ型                             |
-| ------------------------------------------ | ------------------------------------ |
-| /driving_log_replayer/marker/detection     | visualization_msgs::msg::MarkerArray |
-| /driving_log_replayer/marker/non_detection | visualization_msgs::msg::MarkerArray |
-| /driving_log_replayer/pcd/detection        | sensor_msgs::msg::PointCloud2        |
-| /driving_log_replayer/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
-| /planning/mission_planning/goal            | geometry_msgs::msg::PoseStamped      |
+| topic 名                            | データ型                             |
+| ----------------------------------- | ------------------------------------ |
+| /log_evaluator/marker/detection     | visualization_msgs::msg::MarkerArray |
+| /log_evaluator/marker/non_detection | visualization_msgs::msg::MarkerArray |
+| /log_evaluator/pcd/detection        | sensor_msgs::msg::PointCloud2        |
+| /log_evaluator/pcd/non_detection    | sensor_msgs::msg::PointCloud2        |
+| /planning/mission_planning/goal     | geometry_msgs::msg::PoseStamped      |
 
 ## logging_simulator.launch に渡す引数
 
@@ -155,11 +154,11 @@ clock は、ros2 bag play の--clock オプションによって出力してい�
 
 ### シナリオフォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstacle_segmentation/scenario.ja.yaml)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/obstacle_segmentation/scenario.ja.yaml)参照
 
 ### 評価結果フォーマット
 
-[サンプル](https://github.com/tier4/driving_log_replayer/blob/main/sample/obstalce_segmentation/result.json)参照
+[サンプル](https://github.com/tier4/log_evaluator/blob/main/sample/obstalce_segmentation/result.json)参照
 
 obstacle_segmentation では、検知(Detection)と非検知(NonDetection)の 2 つを評価している。
 1 回の点群の callback で同時に評価しているが、それぞれ別にカウントしている。

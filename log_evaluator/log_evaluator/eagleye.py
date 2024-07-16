@@ -20,14 +20,13 @@ from pydantic import BaseModel
 
 from log_evaluator.result import EvaluationItem
 from log_evaluator.result import ResultBase
-from log_evaluator.scenario import InitialPose
 from log_evaluator.scenario import Scenario
 
 
 class Evaluation(BaseModel):
     UseCaseName: Literal["eagleye"]
-    UseCaseFormatVersion: Literal["0.1.0"]
-    InitialPose: InitialPose | None
+    UseCaseFormatVersion: Literal["1.0.0"]
+    Datasets: list[dict]
 
 
 class EagleyeScenario(Scenario):
