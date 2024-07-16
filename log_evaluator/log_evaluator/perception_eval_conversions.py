@@ -303,7 +303,7 @@ class FrameDescriptionWriter:
     @classmethod
     def load_schema(cls) -> None:
         if cls.schema is None:
-            package_share_directory = get_package_share_directory("driving_log_replayer")
+            package_share_directory = get_package_share_directory("log_evaluator")
             schema_file_path = Path(
                 package_share_directory,
                 "config",

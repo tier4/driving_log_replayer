@@ -1,7 +1,6 @@
 [project]
-name = "driving-log-replayer"
-version = "2.1.1"
-description = "command line tool for driving_log_replayer"
+name = "log-evaluator"
+version = "0.1.0"
 authors = [
   { name = "Hayato Mizushima", email = "hayato.mizushima@tier4.jp" },
   { name = "Kotaro Uetake", email = "kotaro.uetake@tier4.jp" },
@@ -24,10 +23,6 @@ dependencies = [
 readme = "README.md"
 requires-python = ">= 3.10"
 license = "Apache-2.0"
-
-[project.scripts]
-dlr = "log_evaluator_cli:main"
-dlr-analyzer = "log_evaluator_analyzer:main"
 
 [project.optional-dependencies]
 docs = [
@@ -53,9 +48,6 @@ dev-dependencies = [
 
 [tool.hatch.metadata]
 allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["log_evaluator_cli", "log_evaluator_analyzer/log_evaluator_analyzer"]
 
 [tool.black]
 line-length = 100

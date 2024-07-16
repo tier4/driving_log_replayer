@@ -48,7 +48,7 @@
    # Specify the directory where autoware is installed. Change according to your environment.
    AUTOWARE_PATH=$HOME/ros_ws/awf
    # SAMPLE_ROOT=${AUTOWARE_PATH}/src/simulator/log_evaluator/sample
-   SAMPLE_ROOT=${AUTOWARE_PATH}/src/simulator/driving_log_replayer/sample # Temporary old name until repository split
+   SAMPLE_ROOT=${AUTOWARE_PATH}/src/simulator/log_evaluator/sample
    cp ${SAMPLE_ROOT}/annotationless_perception/scenario.yaml ~/log_evaluator/annotationless_perception.yaml
    cp ${SAMPLE_ROOT}/ar_tag_based_localizer/scenario.yaml ~/log_evaluator/ar_tag_based_localizer.yaml
    cp ${SAMPLE_ROOT}/eagleye/scenario.yaml ~/log_evaluator/eagleye.yaml
