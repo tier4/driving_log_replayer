@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.1.2 (2024-07-17)
+------------------
 * fix(perception): resolve invalid access to `None` (`#521 <https://github.com/tier4/driving_log_replayer/issues/521>`_)
 * Contributors: Hayato Mizushima, ktro2828
 
