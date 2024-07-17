@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix(perception): resolve invalid access to `None` (`#521 <https://github.com/tier4/driving_log_replayer/issues/521>`_)
+* Contributors: Hayato Mizushima, ktro2828
+
 2.1.1 (2024-07-14)
 ------------------
 * feat: add perception object info to jsonl (`#452 <https://github.com/tier4/driving_log_replayer/issues/452>`_)
