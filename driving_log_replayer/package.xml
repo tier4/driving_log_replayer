@@ -20,9 +20,6 @@
   <depend>autoware_common_msgs</depend>
   <depend>autoware_map_msgs</depend>
   <depend>autoware_perception_msgs</depend>
-  <depend>autoware_point_types</depend>
-  <depend>rclcpp</depend>
-  <depend>rclcpp_components</depend>
   <depend>diagnostic_msgs</depend>
   <depend>driving_log_replayer_msgs</depend>
   <depend>example_interfaces</depend>

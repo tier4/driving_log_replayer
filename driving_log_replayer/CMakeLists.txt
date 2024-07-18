@@ -8,14 +8,6 @@ autoware_package()
 set(ROS_REQUIREMENTS "${CMAKE_CURRENT_SOURCE_DIR}/../requirements.txt")
 execute_process(COMMAND bash -c "python3 -m pip install -r ${ROS_REQUIREMENTS}")
 
-ament_auto_add_library(ground_segmentation_evaluator_component SHARED
-  src/ground_segmentation_evaluator_component.cpp
-)
-rclcpp_components_register_node(ground_segmentation_evaluator_component
-  PLUGIN "driving_log_replayer::GroundSegmentationEvaluatorComponent"
-  EXECUTABLE ground_segmentation_evaluator_node
-)
-
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
