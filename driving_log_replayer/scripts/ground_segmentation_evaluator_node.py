@@ -23,7 +23,6 @@ from rclpy.qos import qos_profile_sensor_data
 import ros2_numpy
 from scipy.spatial import cKDTree
 from sensor_msgs.msg import PointCloud2
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
@@ -36,14 +35,14 @@ from driving_log_replayer_msgs.msg import GroundSegmentationEvalResult
 
 class GroundSegmentationEvaluator(DLREvaluator):
     CLOUD_DIM = 6
-    GROUND_LABEL = 6
-    OBSTACLE_LABEL = 7
     TS_DIFF_THRESH = 75000
 
     def __init__(self, name: str) -> None:
         super().__init__(name, GroundSegmentationScenario, GroundSegmentationResult)
 
         eval_condition: Condition = self._scenario.Evaluation.Conditions
+        self.ground_label = eval_condition.ground_label
+        self.obstacle_label = eval_condition.obstacle_label
 
         if eval_condition.Method == "annotated_pcd":
             # pcd eval mode
@@ -63,7 +62,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
             self.__sub_pointcloud = self.create_subscription(
                 PointCloud2,
                 "/perception/obstacle_segmentation/single_frame/pointcloud",
-                self.pointcloud_cb,
+                self.annotated_pcd_eval_cb,
                 qos_profile_sensor_data,
             )
         elif eval_condition.Method == "annotated_rosbag":
@@ -90,7 +89,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
                 'The "Method" field must be set to either "annotated_rosbag" or "annotated_pcd"'
             )
 
-    def pointcloud_cb(self, msg: PointCloud2) -> None:
+    def annotated_pcd_eval_cb(self, msg: PointCloud2) -> None:
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
         gt_frame_ts = self.__get_gt_frame_ts(unix_time=unix_time)
 
@@ -110,15 +109,15 @@ class GroundSegmentationEvaluator(DLREvaluator):
         pointcloud[:, 2] = numpy_pcd["z"]
 
         # count TP+FN, TN+FP
-        tp_fn = np.count_nonzero(gt_frame_cloud[:, 5] == self.GROUND_LABEL)
-        fp_tn = np.count_nonzero(gt_frame_cloud[:, 5] == self.OBSTACLE_LABEL)
+        tp_fn = np.count_nonzero(gt_frame_cloud[:, 5] == self.ground_label)
+        fp_tn = np.count_nonzero(gt_frame_cloud[:, 5] == self.obstacle_label)
         tn: int = 0
         fn: int = 0
         for p in pointcloud:
             _, idx = kdtree.query(p, k=1)
-            if gt_frame_cloud[idx][5] == self.GROUND_LABEL:
+            if gt_frame_cloud[idx][5] == self.ground_label:
                 fn += 1
-            elif gt_frame_cloud[idx][5] == self.OBSTACLE_LABEL:
+            elif gt_frame_cloud[idx][5] == self.obstacle_label:
                 tn += 1
         tp = tp_fn - fn
         fp = fp_tn - tn
@@ -154,9 +153,9 @@ class GroundSegmentationEvaluator(DLREvaluator):
         ):
             return
 
-        tp_fn = np.count_nonzero(np_gt_cloud["entity_id"] == 1)
+        tp_fn = np.count_nonzero(np_gt_cloud["entity_id"] == self.ground_label)
         tn_fp = np_gt_cloud.size - tp_fn
-        fn = np.count_nonzero(np_target_cloud["entity_id"] == 1)
+        fn = np.count_nonzero(np_target_cloud["entity_id"] == self.ground_label)
         tn = np_target_cloud.size - fn
 
         tp = tp_fn - fn
