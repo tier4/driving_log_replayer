@@ -1,0 +1,20 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: ground_segmentation-sample
+ScenarioDescription: ground_segmentation-sample
+SensorModel: aip_xx1
+VehicleModel: jpntaxi
+LocalMapPath: $HOME/autoware_map/sample-map-planning
+Evaluation:
+  UseCaseName: ground_segmentation
+  UseCaseFormatVersion: 0.3.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default
+        LocalMapPath: $HOME/autoware_map/sample-map-planning
+  Conditions:
+    Method: annotated_pcd # Data types used as GroundTruth data.(annotated_rosbag : input_bag contains annotated pointcloud data, annotated_pcd : annotated pcd.bin file located at t4_dataset/dataset/data/LIDAR_CONCAT/*.pcd.bin)
+    ground_label: 6 # Annotation label for ground pointcloud.
+    obstacle_label: 7 # Annotation label for obstacle pointcloud.
+    accuracy_min: 0.7 # If the accuracy is lower than the threshold value, the evaluation is considered to have failed.
+    accuracy_max: 1.0 
+    PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
