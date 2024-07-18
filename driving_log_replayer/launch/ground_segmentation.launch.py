@@ -13,11 +13,9 @@
 # limitations under the License.
 
 import launch
-from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
 
 import driving_log_replayer.launch_common as cmn
-from driving_log_replayer.shutdown_once import ShutdownOnce
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
