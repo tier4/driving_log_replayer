@@ -85,9 +85,8 @@ class GroundSegmentationEvaluator(DLREvaluator):
             )
             self.__sync_sub.registerCallback(self.annotated_rosbag_eval_cb)
         else:
-            raise ValueError(
-                'The "Method" field must be set to either "annotated_rosbag" or "annotated_pcd"'
-            )
+            err = 'The "Method" field must be set to either "annotated_rosbag" or "annotated_pcd"'
+            raise ValueError(err)
 
     def annotated_pcd_eval_cb(self, msg: PointCloud2) -> None:
         unix_time: int = eval_conversions.unix_time_from_ros_msg(msg.header)
@@ -142,7 +141,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
 
     def annotated_rosbag_eval_cb(
         self, gt_cloud_msg: PointCloud2, eval_target_cloud_msg: PointCloud2
-    ):
+    ) -> None:
         np_gt_cloud: np.array = ros2_numpy.numpify(gt_cloud_msg)
         np_target_cloud: np.array = ros2_numpy.numpify(eval_target_cloud_msg)
 
@@ -175,10 +174,6 @@ class GroundSegmentationEvaluator(DLREvaluator):
         frame_result.f1_score = metrics_list[4]
 
         self._result.set_frame(frame_result)
-        self._result_writer.write_result(self._result)
-
-    def eval_result_cb(self, msg: GroundSegmentationEvalResult):
-        self._result.set_frame(msg)
         self._result_writer.write_result(self._result)
 
     def __get_gt_frame_ts(self, unix_time: int) -> int:
