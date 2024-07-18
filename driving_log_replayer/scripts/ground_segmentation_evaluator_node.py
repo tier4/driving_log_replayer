@@ -18,6 +18,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+import message_filters
 from rclpy.qos import qos_profile_sensor_data
 import ros2_numpy
 from scipy.spatial import cKDTree
@@ -67,17 +68,23 @@ class GroundSegmentationEvaluator(DLREvaluator):
             )
         elif eval_condition.Method == "annotated_rosbag":
             # rosbag (AWSIM) eval mode
-            eval_result_qos_policy = QoSProfile(
-                reliability=QoSReliabilityPolicy.BEST_EFFORT,
-                history=QoSHistoryPolicy.KEEP_LAST,
-                depth=10,
+
+            self.__sub_gt_cloud = message_filters.Subscriber(
+                self,
+                PointCloud2,
+                "/sensing/lidar/concatenated/pointcloud",
+                qos_profile=qos_profile_sensor_data,
             )
-            self.__sub_ground_seg_eval_result = self.create_subscription(
-                GroundSegmentationEvalResult,
-                "ground_segmentation/evaluation/result",
-                self.eval_result_cb,
-                eval_result_qos_policy,
+            self.__sub_eval_target_cloud = message_filters.Subscriber(
+                self,
+                PointCloud2,
+                "/perception/obstacle_segmentation/single_frame/pointcloud",
+                qos_profile=qos_profile_sensor_data,
             )
+            self.__sync_sub = message_filters.TimeSynchronizer(
+                [self.__sub_gt_cloud, self.__sub_eval_target_cloud], 1000
+            )
+            self.__sync_sub.registerCallback(self.annotated_rosbag_eval_cb)
         else:
             raise ValueError(
                 'The "Method" field must be set to either "annotated_rosbag" or "annotated_pcd"'
@@ -120,6 +127,43 @@ class GroundSegmentationEvaluator(DLREvaluator):
 
         metrics_list = self.__compute_metrics(tp, fp, tn, fn)
 
+        frame_result = GroundSegmentationEvalResult()
+        frame_result.tp = tp
+        frame_result.fp = fp
+        frame_result.tn = tn
+        frame_result.fn = fn
+        frame_result.accuracy = metrics_list[0]
+        frame_result.precision = metrics_list[1]
+        frame_result.recall = metrics_list[2]
+        frame_result.specificity = metrics_list[3]
+        frame_result.f1_score = metrics_list[4]
+
+        self._result.set_frame(frame_result)
+        self._result_writer.write_result(self._result)
+
+    def annotated_rosbag_eval_cb(
+        self, gt_cloud_msg: PointCloud2, eval_target_cloud_msg: PointCloud2
+    ):
+        np_gt_cloud: np.array = ros2_numpy.numpify(gt_cloud_msg)
+        np_target_cloud: np.array = ros2_numpy.numpify(eval_target_cloud_msg)
+
+        # guard
+        if (
+            "entity_id" not in np_gt_cloud.dtype.fields
+            or "entity_id" not in np_target_cloud.dtype.fields
+        ):
+            return
+
+        tp_fn = np.count_nonzero(np_gt_cloud["entity_id"] == 1)
+        tn_fp = np_gt_cloud.size - tp_fn
+        fn = np.count_nonzero(np_target_cloud["entity_id"] == 1)
+        tn = np_target_cloud.size - fn
+
+        tp = tp_fn - fn
+        fp = tn_fp - tn
+        self.get_logger().info(f"TP+FN = {tp_fn}, TN+FP = {tn_fp}")
+        self.get_logger().info(f"TP {tp}, FP {fp}, TN {tn}, FN {fn}")
+        metrics_list = self.__compute_metrics(tp, fp, tn, fn)
         frame_result = GroundSegmentationEvalResult()
         frame_result.tp = tp
         frame_result.fp = fp
