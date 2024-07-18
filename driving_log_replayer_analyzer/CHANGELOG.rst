@@ -2,6 +2,17 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.2 (2024-07-17)
+------------------
+* fix(perception): resolve invalid access to `None` (`#521 <https://github.com/tier4/driving_log_replayer/issues/521>`_)
+* Contributors: Hayato Mizushima, ktro2828
+
+2.1.1 (2024-07-14)
+------------------
+* feat: add perception object info to jsonl (`#452 <https://github.com/tier4/driving_log_replayer/issues/452>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Yoshi Ri
+
 2.1.0 (2024-07-10)
 ------------------
 * feat: use autoware project rviz (`#516 <https://github.com/tier4/driving_log_replayer/issues/516>`_)

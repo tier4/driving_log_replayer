@@ -1,5 +1,21 @@
 # Release Notes
 
+## Version 2.1.2
+
+Bug fix
+
+| Module       | Feature | Brief summary                  | Pull request                                                   | Jira | Contributor                             |
+| ------------ | ------- | ------------------------------ | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `perception` | result  | resolve invalid access to None | [#521](https://github.com/tier4/driving_log_replayer/pull/521) | -    | [ktro2828](https://github.com/ktro2828) |
+
+## Version 2.1.1
+
+Minor Tweak
+
+| Module       | Feature | Brief summary                       | Pull request                                                   | Jira | Contributor                           |
+| ------------ | ------- | ----------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | result  | add perception object info to jsonl | [#452](https://github.com/tier4/driving_log_replayer/pull/452) | -    | [YoshiRi](https://github.com/YoshiRi) |
+
 ## Version 2.1.0
 
 Minor Tweak

@@ -253,6 +253,9 @@ perception では、シナリオに指定した条件で perception_eval が評�
           "TP": "フィルタ済みobjectの中でTPと判定された数",
           "FP": "フィルタ済みobjectの中でFPと判定された数",
           "FN": "フィルタ済みobjectの中でFNと判定された数"
+        },
+        "Objects": {
+          // 評価したobjectの情報 別途説明する
         }
       }
     },
@@ -274,6 +277,10 @@ perception では、シナリオに指定した条件で perception_eval が評�
   }
 }
 ```
+
+Objectsデータのフォーマット
+
+[json schema](../../driving_log_replayer/config/object_output_schema.json)を参照
 
 メトリクスデータのフォーマット
 
