@@ -16,5 +16,5 @@ Evaluation:
     ground_label: 6 # Annotation label for ground pointcloud.
     obstacle_label: 7 # Annotation label for obstacle pointcloud.
     accuracy_min: 0.7 # If the accuracy is lower than the threshold value, the evaluation is considered to have failed.
-    accuracy_max: 1.0 
+    accuracy_max: 1.0
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
