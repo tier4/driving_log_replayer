@@ -1,1414 +1,1414 @@
 [
-    {
-        "Condition": {
-            "Method": "annotated_pcd",
-            "ground_label": 6,
-            "obstacle_label": 7,
-            "accuracy_min": 0.7,
-            "accuracy_max": 1,
-            "PassRate": 99
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "NoData"
-        },
-        "Stamp": {
-            "System": 1721279626.5128443
-        },
-        "Frame": {}
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 1 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279635.62191,
-            "ROS": 1702607140.3340278
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 2 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279636.7386274,
-            "ROS": 1702607141.4639919
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 3 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279638.6270595,
-            "ROS": 1702607142.578998
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 4 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279640.200266,
-            "ROS": 1702607144.469044
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 5 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279641.7985127,
-            "ROS": 1702607146.0440106
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 6 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279643.244099,
-            "ROS": 1702607147.639131
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 7 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279644.7044797,
-            "ROS": 1702607149.0890372
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 8 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279646.079003,
-            "ROS": 1702607150.5490692
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 9 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279647.483366,
-            "ROS": 1702607151.919052
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 10 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279648.6291668,
-            "ROS": 1702607153.3240657
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 11 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279649.5694475,
-            "ROS": 1702607154.4690607
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 12 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279650.8749614,
-            "ROS": 1702607155.4140751
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 13 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279652.2533243,
-            "ROS": 1702607156.719172
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 14 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279653.3802006,
-            "ROS": 1702607158.0940726
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 15 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279654.618387,
-            "ROS": 1702607159.2240818
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 16 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279656.143748,
-            "ROS": 1702607160.4591057
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 17 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279657.3513913,
-            "ROS": 1702607161.9841063
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 18 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279658.7221088,
-            "ROS": 1702607163.194099
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 19 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279660.199145,
-            "ROS": 1702607164.5641513
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 20 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279661.5236936,
-            "ROS": 1702607166.0440817
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 21 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279662.6968033,
-            "ROS": 1702607167.3641543
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 22 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279663.927092,
-            "ROS": 1702607168.539131
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 23 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279665.1734776,
-            "ROS": 1702607169.7692375
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 24 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279666.2906094,
-            "ROS": 1702607171.0141678
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 25 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279667.4148674,
-            "ROS": 1702607172.1341505
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 26 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279668.6395493,
-            "ROS": 1702607173.2591634
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 27 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279669.653665,
-            "ROS": 1702607174.484156
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 28 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279670.7613964,
-            "ROS": 1702607175.4941673
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 29 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279671.7794483,
-            "ROS": 1702607176.60418
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 30 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279672.7480242,
-            "ROS": 1702607177.6241786
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 31 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279673.7901325,
-            "ROS": 1702607178.589182
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 32 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279674.754403,
-            "ROS": 1702607179.6342237
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 33 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279675.4492633,
-            "ROS": 1702607180.5992048
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 34 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279676.1499393,
-            "ROS": 1702607181.2941868
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 35 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279677.0209398,
-            "ROS": 1702607181.9942305
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 36 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279677.8281975,
-            "ROS": 1702607182.8642032
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 37 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279678.6678307,
-            "ROS": 1702607183.669241
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 38 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279679.5538988,
-            "ROS": 1702607184.5093958
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 39 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279680.2731884,
-            "ROS": 1702607185.3942456
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 40 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279681.2832851,
-            "ROS": 1702607186.1142282
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 41 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279682.2397656,
-            "ROS": 1702607187.1242192
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 42 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279683.284877,
-            "ROS": 1702607188.0842953
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 43 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279684.4030225,
-            "ROS": 1702607189.1292338
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 44 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279685.5995564,
-            "ROS": 1702607190.2442355
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 45 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279686.9833553,
-            "ROS": 1702607191.4442458
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 46 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279688.3448408,
-            "ROS": 1702607192.824295
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 47 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279689.6598797,
-            "ROS": 1702607194.189303
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
-    },
-    {
-        "Result": {
-            "Success": false,
-            "Summary": "Failed: Ground Segmentation (Fail): 0 / 48 -> 0.00"
-        },
-        "Stamp": {
-            "System": 1721279691.0285926,
-            "ROS": 1702607195.5042653
-        },
-        "Frame": {
-            "GroundSegmentation": {
-                "Result": {
-                    "Total": "Fail",
-                    "Frame": "Fail"
-                },
-                "Info": {
-                    "TP": 0,
-                    "FP": 0,
-                    "TN": 0,
-                    "FN": 0,
-                    "Accuracy": 0,
-                    "Precision": 0,
-                    "Recall": 0,
-                    "Specificity": 0,
-                    "F1-score": 0
-                }
-            }
-        }
+  {
+    "Condition": {
+      "Method": "annotated_pcd",
+      "ground_label": 6,
+      "obstacle_label": 7,
+      "accuracy_min": 0.7,
+      "accuracy_max": 1,
+      "PassRate": 99
     }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "NoData"
+    },
+    "Stamp": {
+      "System": 1721279626.5128443
+    },
+    "Frame": {}
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 1 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279635.62191,
+      "ROS": 1702607140.3340278
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 2 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279636.7386274,
+      "ROS": 1702607141.4639919
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 3 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279638.6270595,
+      "ROS": 1702607142.578998
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 4 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279640.200266,
+      "ROS": 1702607144.469044
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 5 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279641.7985127,
+      "ROS": 1702607146.0440106
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 6 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279643.244099,
+      "ROS": 1702607147.639131
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 7 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279644.7044797,
+      "ROS": 1702607149.0890372
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 8 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279646.079003,
+      "ROS": 1702607150.5490692
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 9 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279647.483366,
+      "ROS": 1702607151.919052
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 10 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279648.6291668,
+      "ROS": 1702607153.3240657
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 11 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279649.5694475,
+      "ROS": 1702607154.4690607
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 12 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279650.8749614,
+      "ROS": 1702607155.4140751
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 13 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279652.2533243,
+      "ROS": 1702607156.719172
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 14 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279653.3802006,
+      "ROS": 1702607158.0940726
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 15 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279654.618387,
+      "ROS": 1702607159.2240818
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 16 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279656.143748,
+      "ROS": 1702607160.4591057
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 17 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279657.3513913,
+      "ROS": 1702607161.9841063
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 18 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279658.7221088,
+      "ROS": 1702607163.194099
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 19 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279660.199145,
+      "ROS": 1702607164.5641513
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 20 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279661.5236936,
+      "ROS": 1702607166.0440817
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 21 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279662.6968033,
+      "ROS": 1702607167.3641543
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 22 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279663.927092,
+      "ROS": 1702607168.539131
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 23 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279665.1734776,
+      "ROS": 1702607169.7692375
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 24 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279666.2906094,
+      "ROS": 1702607171.0141678
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 25 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279667.4148674,
+      "ROS": 1702607172.1341505
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 26 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279668.6395493,
+      "ROS": 1702607173.2591634
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 27 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279669.653665,
+      "ROS": 1702607174.484156
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 28 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279670.7613964,
+      "ROS": 1702607175.4941673
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 29 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279671.7794483,
+      "ROS": 1702607176.60418
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 30 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279672.7480242,
+      "ROS": 1702607177.6241786
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 31 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279673.7901325,
+      "ROS": 1702607178.589182
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 32 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279674.754403,
+      "ROS": 1702607179.6342237
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 33 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279675.4492633,
+      "ROS": 1702607180.5992048
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 34 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279676.1499393,
+      "ROS": 1702607181.2941868
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 35 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279677.0209398,
+      "ROS": 1702607181.9942305
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 36 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279677.8281975,
+      "ROS": 1702607182.8642032
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 37 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279678.6678307,
+      "ROS": 1702607183.669241
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 38 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279679.5538988,
+      "ROS": 1702607184.5093958
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 39 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279680.2731884,
+      "ROS": 1702607185.3942456
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 40 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279681.2832851,
+      "ROS": 1702607186.1142282
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 41 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279682.2397656,
+      "ROS": 1702607187.1242192
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 42 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279683.284877,
+      "ROS": 1702607188.0842953
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 43 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279684.4030225,
+      "ROS": 1702607189.1292338
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 44 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279685.5995564,
+      "ROS": 1702607190.2442355
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 45 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279686.9833553,
+      "ROS": 1702607191.4442458
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 46 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279688.3448408,
+      "ROS": 1702607192.824295
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 47 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279689.6598797,
+      "ROS": 1702607194.189303
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 0 / 48 -> 0.00"
+    },
+    "Stamp": {
+      "System": 1721279691.0285926,
+      "ROS": 1702607195.5042653
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 0,
+          "FP": 0,
+          "TN": 0,
+          "FN": 0,
+          "Accuracy": 0,
+          "Precision": 0,
+          "Recall": 0,
+          "Specificity": 0,
+          "F1-score": 0
+        }
+      }
+    }
+  }
 ]
