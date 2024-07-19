@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* docs: update can topic name (`#524 <https://github.com/tier4/driving_log_replayer/issues/524>`_)
+* Contributors: Hayato Mizushima
+
 2.1.2 (2024-07-17)
 ------------------
 * fix(perception): resolve invalid access to `None` (`#521 <https://github.com/tier4/driving_log_replayer/issues/521>`_)
