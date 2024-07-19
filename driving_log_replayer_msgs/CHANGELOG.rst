@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.1.3 (2024-07-19)
+------------------
 * docs: update can topic name (`#524 <https://github.com/tier4/driving_log_replayer/issues/524>`_)
 * Contributors: Hayato Mizushima
 
