@@ -17,8 +17,8 @@
 import json
 from pathlib import Path
 
-import numpy as np
 import message_filters
+import numpy as np
 from rclpy.qos import qos_profile_sensor_data
 import ros2_numpy
 from scipy.spatial import cKDTree
@@ -26,9 +26,9 @@ from sensor_msgs.msg import PointCloud2
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
+from driving_log_replayer.ground_segmentation import Condition
 from driving_log_replayer.ground_segmentation import GroundSegmentationResult
 from driving_log_replayer.ground_segmentation import GroundSegmentationScenario
-from driving_log_replayer.ground_segmentation import Condition
 import driving_log_replayer.perception_eval_conversions as eval_conversions
 from driving_log_replayer_msgs.msg import GroundSegmentationEvalResult
 
@@ -53,7 +53,8 @@ class GroundSegmentationEvaluator(DLREvaluator):
             self.ground_truth: dict[int, np.ndarray] = {}
             for i in range(len(sample_data)):
                 pcd_file_path = Path(
-                    self._t4_dataset_paths[0], sample_data[i]["filename"]
+                    self._t4_dataset_paths[0],
+                    sample_data[i]["filename"],
                 ).as_posix()
                 raw_points = np.fromfile(pcd_file_path, dtype=np.float32)
                 points: np.ndarray = raw_points.reshape((-1, self.CLOUD_DIM))
@@ -81,7 +82,8 @@ class GroundSegmentationEvaluator(DLREvaluator):
                 qos_profile=qos_profile_sensor_data,
             )
             self.__sync_sub = message_filters.TimeSynchronizer(
-                [self.__sub_gt_cloud, self.__sub_eval_target_cloud], 1000
+                [self.__sub_gt_cloud, self.__sub_eval_target_cloud],
+                1000,
             )
             self.__sync_sub.registerCallback(self.annotated_rosbag_eval_cb)
         else:
@@ -140,7 +142,9 @@ class GroundSegmentationEvaluator(DLREvaluator):
         self._result_writer.write_result(self._result)
 
     def annotated_rosbag_eval_cb(
-        self, gt_cloud_msg: PointCloud2, eval_target_cloud_msg: PointCloud2
+        self,
+        gt_cloud_msg: PointCloud2,
+        eval_target_cloud_msg: PointCloud2,
     ) -> None:
         np_gt_cloud: np.array = ros2_numpy.numpify(gt_cloud_msg)
         np_target_cloud: np.array = ros2_numpy.numpify(eval_target_cloud_msg)
