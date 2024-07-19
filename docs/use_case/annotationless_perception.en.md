@@ -237,7 +237,7 @@ State the information required to run the simulation.
 
 | Topic name                             | Data type                                    |
 | -------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                     | can_msgs/msg/Frame                           |
+| /pacmod/from_can_bus                   | can_msgs/msg/Frame                           |
 | /localization/kinematic_state          | nav_msgs/msg/Odometry                        |
 | /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped |
 | /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                    |
