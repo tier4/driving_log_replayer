@@ -162,7 +162,7 @@ class TrafficLightEvaluator(DLREvaluator):
             label = self.__evaluator.evaluator_config.label_converter.convert_label(
                 get_traffic_light_label_str(signal.elements),
             )
-            confidence: float = max(signal.elements, key=lambda x: x.confidence)
+            confidence: float = max(signal.elements, key=lambda x: x.confidence).confidence
             signal_pos = self.get_traffic_light_pos(signal.traffic_light_group_id, cam2map)
             # debug self.get_logger().error(f"{signal_pos=}")
 
