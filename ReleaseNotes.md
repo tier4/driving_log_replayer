@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.1.4
+
+Bug fix
+
+| Module          | Feature | Brief summary                                    | Pull request                                                   | Jira | Contributor                                   |
+| --------------- | ------- | ------------------------------------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `traffic_light` | message | remove autoware_perception_msgs in traffic_light | [#526](https://github.com/tier4/driving_log_replayer/pull/526) | -    | [MasatoSaeki](https://github.com/MasatoSaeki) |
+
 ## Version 2.1.3
 
 Documentation
