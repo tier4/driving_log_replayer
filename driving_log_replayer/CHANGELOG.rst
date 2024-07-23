@@ -2,6 +2,16 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.4 (2024-07-22)
+------------------
+* fix(traffic_light): remove autoware_perception_msgs in traffic_light (`#526 <https://github.com/tier4/driving_log_replayer/issues/526>`_)
+* Contributors: Masato Saeki
+
+2.1.3 (2024-07-19)
+------------------
+* docs: update can topic name (`#524 <https://github.com/tier4/driving_log_replayer/issues/524>`_)
+* Contributors: Hayato Mizushima
+
 2.1.2 (2024-07-17)
 ------------------
 * fix(perception): resolve invalid access to `None` (`#521 <https://github.com/tier4/driving_log_replayer/issues/521>`_)
