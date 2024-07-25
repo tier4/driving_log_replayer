@@ -154,6 +154,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
             "entity_id" not in np_gt_cloud.dtype.fields
             or "entity_id" not in np_target_cloud.dtype.fields
         ):
+            self.get_logger().warn('The input PointCloud doesn\'t have a field named "entity_id"')
             return
 
         tp_fn = np.count_nonzero(np_gt_cloud["entity_id"] == self.ground_label)
