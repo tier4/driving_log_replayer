@@ -19,12 +19,12 @@ from os.path import expandvars
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import TransformStamped
 import lanelet2  # noqa
+from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 import numpy as np
 from perception_eval.config import SensingEvaluationConfig
 from perception_eval.manager import SensingEvaluationManager

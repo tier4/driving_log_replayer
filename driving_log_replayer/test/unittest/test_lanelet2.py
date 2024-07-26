@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from geometry_msgs.msg import Point
 import lanelet2  # noqa
 from lanelet2.core import BasicPoint2d
@@ -21,6 +20,7 @@ from lanelet2.core import Lanelet
 from lanelet2.core import LineString3d
 from lanelet2.core import Point3d
 from lanelet2.geometry import distance
+from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from shapely.geometry import Polygon
 
 from driving_log_replayer.lanelet2_util import to_shapely_polygon

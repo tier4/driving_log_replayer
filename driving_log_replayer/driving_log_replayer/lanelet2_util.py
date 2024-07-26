@@ -14,10 +14,10 @@
 
 from typing import Any
 
-from lanelet2_extension_python.projection import MGRSProjector
-from lanelet2_extension_python.utility import query
 import lanelet2
 from lanelet2.core import Lanelet
+from lanelet2_extension_python.projection import MGRSProjector
+from lanelet2_extension_python.utility import query
 from shapely.geometry import Polygon
 
 
