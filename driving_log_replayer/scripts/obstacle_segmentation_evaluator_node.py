@@ -19,7 +19,7 @@ from os.path import expandvars
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from autoware_lanelet2_extension_python.utility.query import getLaneletsWithinRange
+from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from geometry_msgs.msg import PoseStamped
