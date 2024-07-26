@@ -40,7 +40,7 @@ from driving_log_replayer.scenario import load_sample_scenario
 
 def test_scenario() -> None:
     scenario: PerceptionScenario = load_sample_scenario("perception", PerceptionScenario)
-    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaMethod == "num_tp"
+    assert scenario.Evaluation.Conditions.Criterion[0].CriteriaMethod == "num_gt_tp"
     assert scenario.Evaluation.Conditions.Criterion[1].CriteriaLevel == "easy"
 
 
@@ -201,14 +201,12 @@ def test_perception_success_tp_normal(
     frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is True
     assert evaluation_item.summary == "criteria0 (Success): 95 / 100 -> 95.00%"
-    assert frame_dict == {
-        "PassFail": {
-            "Result": {"Total": "Success", "Frame": "Success"},
-            "Info": {
-                "TP": "5 [car, car, car, car, car]",
-                "FP": "5 [car, car, car, car, car]",
-                "FN": "0 []",
-            },
+    assert frame_dict["PassFail"] == {
+        "Result": {"Total": "Success", "Frame": "Success"},
+        "Info": {
+            "TP": "5 [car, car, car, car, car]",
+            "FP": "5 [car, car, car, car, car]",
+            "FN": "0 []",
         },
     }
 
@@ -232,14 +230,12 @@ def test_perception_fail_tp_normal(
     frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is False
     assert evaluation_item.summary == "criteria0 (Fail): 94 / 100 -> 94.00%"
-    assert frame_dict == {
-        "PassFail": {
-            "Result": {"Total": "Fail", "Frame": "Fail"},
-            "Info": {
-                "TP": "5 [car, car, car, car, car]",
-                "FP": "10 [car, car, car, car, car, car, car, car, car, car]",
-                "FN": "0 []",
-            },
+    assert frame_dict["PassFail"] == {
+        "Result": {"Total": "Fail", "Frame": "Fail"},
+        "Info": {
+            "TP": "5 [car, car, car, car, car]",
+            "FP": "10 [car, car, car, car, car, car, car, car, car, car]",
+            "FN": "0 []",
         },
     }
 
@@ -263,13 +259,11 @@ def test_perception_fail_tp_hard(
     frame_dict = evaluation_item.set_frame(result)
     assert evaluation_item.success is False
     assert evaluation_item.summary == "criteria0 (Fail): 94 / 100 -> 94.00%"
-    assert frame_dict == {
-        "PassFail": {
-            "Result": {"Total": "Fail", "Frame": "Fail"},
-            "Info": {
-                "TP": "5 [car, car, car, car, car]",
-                "FP": "5 [car, car, car, car, car]",
-                "FN": "0 []",
-            },
+    assert frame_dict["PassFail"] == {
+        "Result": {"Total": "Fail", "Frame": "Fail"},
+        "Info": {
+            "TP": "5 [car, car, car, car, car]",
+            "FP": "5 [car, car, car, car, car]",
+            "FN": "0 []",
         },
     }

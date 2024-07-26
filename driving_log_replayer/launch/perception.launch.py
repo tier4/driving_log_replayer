@@ -40,7 +40,6 @@ def generate_launch_description() -> launch.LaunchDescription:
         sensing=LaunchConfiguration("sensing"),
         localization="false",
     )
-    rviz_node = cmn.get_rviz("perception.rviz")
     evaluator_node = cmn.get_evaluator_node("perception")
 
     player_normal = cmn.get_player(
@@ -62,7 +61,6 @@ def generate_launch_description() -> launch.LaunchDescription:
     return launch.LaunchDescription(
         [
             *launch_arguments,
-            rviz_node,
             autoware_launch,
             evaluator_node,
             player_normal,

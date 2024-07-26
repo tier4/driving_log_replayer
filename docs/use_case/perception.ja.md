@@ -82,12 +82,12 @@ sampleのscenario.yamlは以下のようなっており、
 ```yaml
 Criterion:
   - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
     CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
       Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
     CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
       Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
@@ -174,7 +174,7 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 
 | topic 名                                             | データ型                                     |
 | ---------------------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /pacmod/from_can_bus                                 | can_msgs/msg/Frame                           |
 | /localization/kinematic_state                        | nav_msgs/msg/Odometry                        |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
@@ -253,6 +253,9 @@ perception では、シナリオに指定した条件で perception_eval が評�
           "TP": "フィルタ済みobjectの中でTPと判定された数",
           "FP": "フィルタ済みobjectの中でFPと判定された数",
           "FN": "フィルタ済みobjectの中でFNと判定された数"
+        },
+        "Objects": {
+          // 評価したobjectの情報 別途説明する
         }
       }
     },
@@ -274,6 +277,10 @@ perception では、シナリオに指定した条件で perception_eval が評�
   }
 }
 ```
+
+Objectsデータのフォーマット
+
+[json schema](../../driving_log_replayer/config/object_output_schema.json)を参照
 
 メトリクスデータのフォーマット
 

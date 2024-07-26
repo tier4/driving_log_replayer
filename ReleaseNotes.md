@@ -1,5 +1,79 @@
 # Release Notes
 
+## Version 2.1.4
+
+Bug fix
+
+| Module          | Feature | Brief summary                                    | Pull request                                                   | Jira | Contributor                                   |
+| --------------- | ------- | ------------------------------------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `traffic_light` | message | remove autoware_perception_msgs in traffic_light | [#526](https://github.com/tier4/driving_log_replayer/pull/526) | -    | [MasatoSaeki](https://github.com/MasatoSaeki) |
+
+## Version 2.1.3
+
+Documentation
+
+| Module | Feature       | Brief summary             | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------------- | ------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | documentation | update can msg topic name | [#524](https://github.com/tier4/driving_log_replayer/pull/524) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.1.2
+
+Bug fix
+
+| Module       | Feature | Brief summary                  | Pull request                                                   | Jira | Contributor                             |
+| ------------ | ------- | ------------------------------ | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `perception` | result  | resolve invalid access to None | [#521](https://github.com/tier4/driving_log_replayer/pull/521) | -    | [ktro2828](https://github.com/ktro2828) |
+
+## Version 2.1.1
+
+Minor Tweak
+
+| Module       | Feature | Brief summary                       | Pull request                                                   | Jira | Contributor                           |
+| ------------ | ------- | ----------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | result  | add perception object info to jsonl | [#452](https://github.com/tier4/driving_log_replayer/pull/452) | -    | [YoshiRi](https://github.com/YoshiRi) |
+
+## Version 2.1.0
+
+Minor Tweak
+
+| Module | Feature       | Brief summary             | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------------- | ------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | visualization | use autoware project rviz | [#516](https://github.com/tier4/driving_log_replayer/pull/516) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.0.12
+
+Bug fix
+
+| Module          | Feature  | Brief summary              | Pull request                                                   | Jira | Contributor                                   |
+| --------------- | -------- | -------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `traffic_light` | msg type | fix traffic light msg type | [#489](https://github.com/tier4/driving_log_replayer/pull/489) | -    | [MasatoSaeki](https://github.com/MasatoSaeki) |
+
+## Version 2.0.11
+
+Minor Tweak
+
+| Module | Feature  | Brief summary                   | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | -------- | ------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | refactor | delete unused file and function | [#509](https://github.com/tier4/driving_log_replayer/pull/509) | RT1-6800 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.0.10
+
+Minor Tweak
+
+| Module                                     | Feature       | Brief summary                                           | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------------------------------ | ------------- | ------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`                                      | visualization | merge rviz                                              | [#507](https://github.com/tier4/driving_log_replayer/pull/507) | RT1-6800 | [hayato-m126](https://github.com/hayato-m126) |
+| `perception, perception_2d, traffic_light` | interface     | interface in add_frame_result                           | [#499](https://github.com/tier4/driving_log_replayer/pull/499) | -        | [MasatoSaeki](https://github.com/MasatoSaeki) |
+| `perception, perception_2d, traffic_light` | criteria      | resolve invalid access to critical_ground_truth_objects | [#503](https://github.com/tier4/driving_log_replayer/pull/503) | -        | [ktro2828](https://github.com/ktro2828)       |
+
+## Version 2.0.9
+
+Minor Tweak
+
+| Module       | Feature  | Brief summary                 | Pull request                                                   | Jira     | Contributor                             |
+| ------------ | -------- | ----------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------- |
+| `perception` | criteria | add support of GT TP criteria | [#500](https://github.com/tier4/driving_log_replayer/pull/500) | RT1-6191 | [ktro2828](https://github.com/ktro2828) |
+
 ## Version 2.0.8
 
 Bug Fix

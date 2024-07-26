@@ -208,7 +208,7 @@ CAMERA が複数ついている場合は、搭載されているすべての cam
 
 | topic 名                                             | データ型                                     |
 | ---------------------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /pacmod/from_can_bus                                 | can_msgs/msg/Frame                           |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
 | /sensing/gnss/ublox/fix_velocity                     | geometry_msgs/msg/TwistWithCovarianceStamped |

@@ -25,6 +25,7 @@ from visualization_msgs.msg import MarkerArray
 
 from driving_log_replayer.criteria import PerceptionCriteria
 import driving_log_replayer.perception_eval_conversions as eval_conversions
+from driving_log_replayer.perception_eval_conversions import FrameDescriptionWriter
 from driving_log_replayer.perception_eval_conversions import summarize_pass_fail_result
 from driving_log_replayer.result import EvaluationItem
 from driving_log_replayer.result import ResultBase
@@ -61,6 +62,7 @@ class Criteria(BaseModel):
     CriteriaMethod: (
         Literal[
             "num_tp",
+            "num_gt_tp",
             "label",
             "metrics_score",
             "metrics_score_maph",
@@ -128,6 +130,9 @@ class Perception(EvaluationItem):
                 "Result": {"Total": self.success_str(), "Frame": frame_success},
                 "Info": summarize_pass_fail_result(ret_frame.pass_fail_result),
             },
+            "Objects": FrameDescriptionWriter.extract_pass_fail_objects_description(
+                ret_frame.pass_fail_result,
+            ),
         }
 
 

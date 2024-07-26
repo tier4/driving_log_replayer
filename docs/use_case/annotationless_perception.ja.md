@@ -12,7 +12,7 @@ launch を立ち上げると以下のことが実行され、評価される。
 
 1. launch で評価ノード(`annotationless_perception_evaluator_node`)と `logging_simulator.launch`、`ros2 bag play`コマンドを立ち上げる
 2. bag から出力されたセンサーデータを autoware が受け取って、perception モジュールが認識を行う
-3. perception_online_evaluator が `/diagnostic/perception_online_evaluator/metrics`に診断結果を出力する
+3. perception_online_evaluator が `/perception/perception_online_evaluator/metrics`に診断結果を出力する
 4. 評価ノードが topic を subscribe して、各基準を満たしているかを判定して結果をファイルに記録する
 5. bag の再生が終了すると自動で launch が終了して評価が終了する
 
@@ -32,7 +32,7 @@ topic の subscribe 1 回につき、認識クラス毎に以下に記述する�
 - 閾値
 - 合格範囲(閾値を補正する係数)
 
-`/diagnostic/perception_online_evaluator/metrics` のstatus.name毎に以下のルールに従い成否の判定が行われる。
+`/perception/perception_online_evaluator/metrics` のstatus.name毎に以下のルールに従い成否の判定が行われる。
 閾値が設定されてない項目(min, max, mean)に関しては常に正常と判定される。指定があるもののみが評価対象になる。
 
 #### min
@@ -68,7 +68,7 @@ Subscribed topics:
 
 | Topic name                                      | Data type                             |
 | ----------------------------------------------- | ------------------------------------- |
-| /diagnostic/perception_online_evaluator/metrics | diagnostic_msgs::msg::DiagnosticArray |
+| /perception/perception_online_evaluator/metrics | diagnostic_msgs::msg::DiagnosticArray |
 
 Published topics:
 
@@ -236,7 +236,7 @@ simulations:
 
 | topic 名                               | データ型                                     |
 | -------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                     | can_msgs/msg/Frame                           |
+| /pacmod/from_can_bus                   | can_msgs/msg/Frame                           |
 | /localization/kinematic_state          | nav_msgs/msg/Odometry                        |
 | /sensing/gnss/ublox/fix_velocity       | geometry_msgs/msg/TwistWithCovarianceStamped |
 | /sensing/gnss/ublox/nav_sat_fix        | sensor_msgs/msg/NavSatFix                    |

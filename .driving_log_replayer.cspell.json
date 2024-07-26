@@ -33,6 +33,7 @@
     "conlist",
     "annotationless",
     "MOTP",
-    "MOTA"
+    "MOTA",
+    "objdata"
   ]
 }

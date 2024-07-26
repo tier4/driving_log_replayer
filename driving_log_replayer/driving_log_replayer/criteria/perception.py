@@ -137,17 +137,22 @@ class CriteriaMethod(Enum):
     """
     Enum object represents methods of criteria .
 
-    - NUM_TP: Number of TP (or TN).
-    - LABEL: Whether label is correct or not.
-    - VELOCITY_X_ERROR: Error of x direction velocity [m/s].
-    - VELOCITY_Y_ERROR: Error of y direction velocity [m/s].
-    - SPEED_ERROR: Error of speed [m/s].
-    - YAW_ERROR: Error of yaw [rad].
-    - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
-    - METRICS_SCORE_MAPH: mAPH score.
+    Attributes
+    ----------
+        - NUM_TP: TP (or TN) rate for all estimated and GT objects `NumTP / (NumTP + NumFP)`.
+        - NUM_GT_TP: TP (or TN) rate for all GT objects `NumTP / NumGT`.
+        - LABEL: Whether label is correct or not.
+        - VELOCITY_X_ERROR: Error of x direction velocity [m/s].
+        - VELOCITY_Y_ERROR: Error of y direction velocity [m/s].
+        - SPEED_ERROR: Error of speed [m/s].
+        - YAW_ERROR: Error of yaw [rad].
+        - METRICS_SCORE: Accuracy score for classification, otherwise mAP score is used.
+        - METRICS_SCORE_MAPH: mAPH score.
+
     """
 
     NUM_TP = "num_tp"
+    NUM_GT_TP = "num_gt_tp"
     LABEL = "label"
     VELOCITY_X_ERROR = "velocity_x_error"
     VELOCITY_Y_ERROR = "velocity_y_error"
@@ -272,6 +277,25 @@ class NumTP(CriteriaMethodImpl):
         num_success: int = frame.pass_fail_result.get_num_success()
         num_objects: int = num_success + frame.pass_fail_result.get_num_fail()
         return 100.0 * num_success / num_objects if num_objects != 0 else 100.0
+
+    @property
+    def is_error(self) -> bool:
+        return False
+
+
+class NumGtTP(CriteriaMethodImpl):
+    name = CriteriaMethod.NUM_GT_TP
+
+    def __init__(self, level: CriteriaLevel) -> None:
+        super().__init__(level)
+
+    @staticmethod
+    def calculate_score(frame: PerceptionFrameResult) -> float:
+        num_success: int = frame.pass_fail_result.get_num_success()
+        num_gt: int = len(frame.pass_fail_result.tp_object_results) + len(
+            frame.pass_fail_result.fn_objects,
+        )
+        return 100.0 * num_success / num_gt if num_gt != 0 else 100.0
 
     @property
     def is_error(self) -> bool:
@@ -496,7 +520,7 @@ class PerceptionCriteria:
 
     """
 
-    def __init__(
+    def __init__(  # noqa: C901
         self,
         methods: str | list[str] | CriteriaMethod | list[CriteriaMethod] | None = None,
         levels: (
@@ -515,6 +539,8 @@ class PerceptionCriteria:
         for method, level in zip(methods, levels, strict=True):
             if method == CriteriaMethod.NUM_TP:
                 self.methods.append(NumTP(level))
+            elif method == CriteriaMethod.NUM_GT_TP:
+                self.methods.append(NumGtTP(level))
             elif method == CriteriaMethod.LABEL:
                 self.methods.append(Label(level))
             elif method == CriteriaMethod.VELOCITY_X_ERROR:

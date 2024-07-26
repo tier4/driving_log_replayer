@@ -29,7 +29,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/object_recognition/objects$\
 |^/perception/object_recognition/tracking/multi_object_tracker/debug/.*\
 |^/perception/object_recognition/detection/.*/debug/pipeline_latency_ms$\
-|^/diagnostic/perception_online_evaluator/.*\
+|^/perception/perception_online_evaluator/.*\
 """
 
 
@@ -47,7 +47,6 @@ def generate_launch_description() -> launch.LaunchDescription:
         localization="false",
         use_perception_online_evaluator="true",
     )
-    rviz_node = cmn.get_rviz("autoware.rviz")
     evaluator_node = cmn.get_evaluator_node(
         "annotationless_perception",
         addition_parameter={
@@ -81,7 +80,6 @@ def generate_launch_description() -> launch.LaunchDescription:
     return launch.LaunchDescription(
         [
             *launch_arguments,
-            rviz_node,
             autoware_launch,
             evaluator_node,
             player_normal,

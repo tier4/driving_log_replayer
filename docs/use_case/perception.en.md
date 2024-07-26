@@ -86,12 +86,12 @@ The scenario.yaml of the sample is as follows,
 ```yaml
 Criterion:
   - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
     CriteriaLevel: hard # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
       Distance: 0.0-50.0 # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
   - PassRate: 95.0 # How much (%) of the evaluation attempts are considered successful.
-    CriteriaMethod: num_tp # Method name of criteria (num_tp/metrics_score)
+    CriteriaMethod: num_gt_tp # refer https://github.com/tier4/driving_log_replayer/blob/develop/driving_log_replayer/driving_log_replayer/criteria/perception.py#L136-L152
     CriteriaLevel: easy # Level of criteria (perfect/hard/normal/easy, or custom value 0.0-100.0)
     Filter:
       Distance: 50.0- # [m] null [Do not filter by distance] or lower_limit-(upper_limit) [Upper limit can be omitted. If omitted value is 1.7976931348623157e+308]
@@ -174,7 +174,7 @@ The following example shows the topic list available in evaluation input rosbag 
 
 | Topic name                                           | Data type                                    |
 | ---------------------------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                                   | can_msgs/msg/Frame                           |
+| /pacmod/from_can_bus                                 | can_msgs/msg/Frame                           |
 | /localization/kinematic_state                        | nav_msgs/msg/Odometry                        |
 | /sensing/camera/camera\*/camera_info                 | sensor_msgs/msg/CameraInfo                   |
 | /sensing/camera/camera\*/image_rect_color/compressed | sensor_msgs/msg/CompressedImage              |
@@ -253,6 +253,9 @@ Format of each frame:
           "TP": "Number of filtered objects determined to be TP",
           "FP": "Number of filtered objects determined to be FP",
           "FN": "Number of filtered objects determined to be FN"
+        },
+        "Objects": {
+          // Evaluated objects information. See the [json schema](../../driving_log_replayer/config/object_output_schema.json) for details.
         }
       }
     },
@@ -274,6 +277,10 @@ Warning Data Format:
   }
 }
 ```
+
+Objects Data Format:
+
+See [json schema](../../driving_log_replayer/config/object_output_schema.json)
 
 Metrics Data Format:
 

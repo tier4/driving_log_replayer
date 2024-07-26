@@ -2,6 +2,56 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.4 (2024-07-22)
+------------------
+* fix(traffic_light): remove autoware_perception_msgs in traffic_light (`#526 <https://github.com/tier4/driving_log_replayer/issues/526>`_)
+* Contributors: Masato Saeki
+
+2.1.3 (2024-07-19)
+------------------
+* docs: update can topic name (`#524 <https://github.com/tier4/driving_log_replayer/issues/524>`_)
+* Contributors: Hayato Mizushima
+
+2.1.2 (2024-07-17)
+------------------
+* fix(perception): resolve invalid access to `None` (`#521 <https://github.com/tier4/driving_log_replayer/issues/521>`_)
+* Contributors: Hayato Mizushima, ktro2828
+
+2.1.1 (2024-07-14)
+------------------
+* feat: add perception object info to jsonl (`#452 <https://github.com/tier4/driving_log_replayer/issues/452>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Yoshi Ri
+
+2.1.0 (2024-07-10)
+------------------
+* feat: use autoware project rviz (`#516 <https://github.com/tier4/driving_log_replayer/issues/516>`_)
+* Contributors: Hayato Mizushima
+
+2.0.12 (2024-07-09)
+-------------------
+* fix(traffic_light): different type (`#489 <https://github.com/tier4/driving_log_replayer/issues/489>`_)
+* Contributors: MasatoSaeki
+
+2.0.11 (2024-07-04)
+-------------------
+* chore: delete unused (`#509 <https://github.com/tier4/driving_log_replayer/issues/509>`_)
+* fix: pre-commit
+* chore: delete unused
+* Contributors: Hayato Mizushima
+
+2.0.10 (2024-07-04)
+-------------------
+* chore: merge rviz (`#507 <https://github.com/tier4/driving_log_replayer/issues/507>`_)
+* fix: resolve invalid access to `critical_ground_truth_objects` (`#503 <https://github.com/tier4/driving_log_replayer/issues/503>`_)
+* feat: interface in add_frame_result (`#499 <https://github.com/tier4/driving_log_replayer/issues/499>`_)
+* Contributors: Hayato Mizushima, Kotaro Uetake, Masato Saeki
+
+2.0.9 (2024-07-01)
+------------------
+* feat: add support of GT TP criteria (`#500 <https://github.com/tier4/driving_log_replayer/issues/500>`_)
+* Contributors: Kotaro Uetake
+
 2.0.8 (2024-06-24)
 ------------------
 * fix: check DiagnosticArray length (`#493 <https://github.com/tier4/driving_log_replayer/issues/493>`_)

@@ -106,7 +106,7 @@ LiDAR が複数ついている場合は、搭載されているすべての LiDA
 
 | topic 名                           | データ型                                     |
 | ---------------------------------- | -------------------------------------------- |
-| /gsm8/from_can_bus                 | can_msgs/msg/Frame                           |
+| /pacmod/from_can_bus               | can_msgs/msg/Frame                           |
 | /sensing/gnss/ublox/fix_velocity   | geometry_msgs/msg/TwistWithCovarianceStamped |
 | /sensing/gnss/ublox/nav_sat_fix    | sensor_msgs/msg/NavSatFix                    |
 | /sensing/gnss/ublox/navpvt         | ublox_msgs/msg/NavPVT                        |
