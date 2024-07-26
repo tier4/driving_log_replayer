@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import launch
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 
 import driving_log_replayer.launch_common as cmn
@@ -25,6 +26,12 @@ RECORD_TOPIC_REGEX = """^/clock$\
 
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
+    launch_arguments.append(
+        DeclareLaunchArgument(
+            "evaluation_target_topic",
+            default_value="/perception/obstacle_segmentation/pointcloud",
+        ),
+    )
     autoware_launch = cmn.get_autoware_launch(
         sensing="false",
         localization="false",
@@ -36,7 +43,10 @@ def generate_launch_description() -> launch.LaunchDescription:
 
     evaluator_node = cmn.get_evaluator_node(
         "ground_segmentation",
-        addition_parameter={"vehicle_model": LaunchConfiguration("vehicle_model")},
+        addition_parameter={
+            "vehicle_model": LaunchConfiguration("vehicle_model"),
+            "evaluation_target_topic": LaunchConfiguration("evaluation_target_topic"),
+        },
     )
     player = cmn.get_player()
 

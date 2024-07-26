@@ -43,6 +43,13 @@ class GroundSegmentationEvaluator(DLREvaluator):
         eval_condition: Condition = self._scenario.Evaluation.Conditions
         self.ground_label = eval_condition.ground_label
         self.obstacle_label = eval_condition.obstacle_label
+        self.declare_parameter(
+            "evaluation_target_topic",
+            "/perception/obstacle_segmentation/pointcloud",
+        )
+        self.eval_target_topic = (
+            self.get_parameter("evaluation_target_topic").get_parameter_value().string_value
+        )
 
         if eval_condition.Method == "annotated_pcd":
             # pcd eval mode
@@ -62,7 +69,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
 
             self.__sub_pointcloud = self.create_subscription(
                 PointCloud2,
-                "/perception/obstacle_segmentation/single_frame/pointcloud",
+                self.eval_target_topic,
                 self.annotated_pcd_eval_cb,
                 qos_profile_sensor_data,
             )
@@ -78,7 +85,7 @@ class GroundSegmentationEvaluator(DLREvaluator):
             self.__sub_eval_target_cloud = message_filters.Subscriber(
                 self,
                 PointCloud2,
-                "/perception/obstacle_segmentation/single_frame/pointcloud",
+                self.eval_target_topic,
                 qos_profile=qos_profile_sensor_data,
             )
             self.__sync_sub = message_filters.TimeSynchronizer(
