@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.1.5 (2024-07-27)
+------------------
 * fix: delete old msg (`#531 <https://github.com/tier4/driving_log_replayer/issues/531>`_)
 * feat: update dependency.repos to clone renewal core repositories  (`#497 <https://github.com/tier4/driving_log_replayer/issues/497>`_)
 * Contributors: Hayato Mizushima, Yutaka Kondo
