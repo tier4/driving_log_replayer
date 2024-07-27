@@ -47,7 +47,7 @@ class AnnotationlessPerceptionEvaluator(DLREvaluator):
 
         self.__sub_diagnostics = self.create_subscription(
             DiagnosticArray,
-            "/perception/perception_online_evaluator/metrics",
+            "/diagnostic/perception_online_evaluator/metrics",
             self.diagnostics_cb,
             1,
         )
