@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 2.1.5
+
+Bug fix, Minor Tweak
+
+| Module | Feature    | Brief summary                   | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ---------- | ------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | dependency | remove old msg from package.xml | [#531](https://github.com/tier4/driving_log_replayer/pull/531) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency | update dependency.repos         | [#497](https://github.com/tier4/driving_log_replayer/pull/497) | -    | [youtalk](https://github.com/youtalk)         |
+
 ## Version 2.1.4
 
 Bug fix
