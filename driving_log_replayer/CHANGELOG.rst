@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: delete old msg (`#531 <https://github.com/tier4/driving_log_replayer/issues/531>`_)
+* feat: update dependency.repos to clone renewal core repositories  (`#497 <https://github.com/tier4/driving_log_replayer/issues/497>`_)
+* Contributors: Hayato Mizushima, Yutaka Kondo
+
 2.1.4 (2024-07-22)
 ------------------
 * fix(traffic_light): remove autoware_perception_msgs in traffic_light (`#526 <https://github.com/tier4/driving_log_replayer/issues/526>`_)

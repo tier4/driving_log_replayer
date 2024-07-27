@@ -12,7 +12,7 @@ Launching the file executes the following steps:
 
 1. Execute launch of evaluation node (`annotationless_perception_evaluator_node`), `logging_simulator.launch` file and `ros2 bag play` command
 2. Autoware receives sensor data output from input rosbag and the perception module performs recognition.
-3. The perception_online_evaluator publishes diagnostic topic to `/perception/perception_online_evaluator/metrics`
+3. The perception_online_evaluator publishes diagnostic topic to `/diagnostic/perception_online_evaluator/metrics`
 4. The evaluation node subscribes to the topic and evaluates data. The result is dumped into a file.
 5. When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.
 
@@ -32,7 +32,7 @@ The following two values specified in the scenario or launch argument are used t
 - Threshold
 - PassRange(Coefficient to correct threshold)
 
-Success or failure is determined for each status.name in `/perception/perception_online_evaluator/metrics` according to the following rules.
+Success or failure is determined for each status.name in `/diagnostic/perception_online_evaluator/metrics` according to the following rules.
 Items for which no threshold is set (min, max, mean) are always judged as normal. Only those items for which a threshold is specified are subject to evaluation.
 
 #### min
@@ -68,7 +68,7 @@ Subscribed topics:
 
 | Topic name                                      | Data type                             |
 | ----------------------------------------------- | ------------------------------------- |
-| /perception/perception_online_evaluator/metrics | diagnostic_msgs::msg::DiagnosticArray |
+| /diagnostic/perception_online_evaluator/metrics | diagnostic_msgs::msg::DiagnosticArray |
 
 Published topics:
 
