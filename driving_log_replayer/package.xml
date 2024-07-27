@@ -16,7 +16,6 @@
 
   <build_depend>autoware_cmake</build_depend>
 
-  <depend>autoware_auto_perception_msgs</depend>
   <depend>autoware_common_msgs</depend>
   <depend>autoware_map_msgs</depend>
   <depend>autoware_perception_msgs</depend>
