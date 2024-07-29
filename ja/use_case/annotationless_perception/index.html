@@ -1733,7 +1733,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <ol>
 <li>launch で評価ノード(<code>annotationless_perception_evaluator_node</code>)と <code>logging_simulator.launch</code>、<code>ros2 bag play</code>コマンドを立ち上げる</li>
 <li>bag から出力されたセンサーデータを autoware が受け取って、perception モジュールが認識を行う</li>
-<li>perception_online_evaluator が <code>/diagnostic/perception_online_evaluator/metrics</code>に診断結果を出力する</li>
+<li>perception_online_evaluator が <code>/perception/perception_online_evaluator/metrics</code>に診断結果を出力する</li>
 <li>評価ノードが topic を subscribe して、各基準を満たしているかを判定して結果をファイルに記録する</li>
 <li>bag の再生が終了すると自動で launch が終了して評価が終了する</li>
 </ol>
@@ -1748,7 +1748,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 <li>閾値</li>
 <li>合格範囲(閾値を補正する係数)</li>
 </ul>
-<p><code>/diagnostic/perception_online_evaluator/metrics</code> のstatus.name毎に以下のルールに従い成否の判定が行われる。
+<p><code>/perception/perception_online_evaluator/metrics</code> のstatus.name毎に以下のルールに従い成否の判定が行われる。
 閾値が設定されてない項目(min, max, mean)に関しては常に正常と判定される。指定があるもののみが評価対象になる。</p>
 <h4 id="min">min<a class="headerlink" href="#min" title="Permanent link">#</a></h4>
 <p>閾値×下限値　＜＝　minの最小値　＜＝　閾値×上限値であれば正常とする。</p>
@@ -1775,7 +1775,7 @@ launch を立ち上げると以下のことが実行され、評価される。<
 </thead>
 <tbody>
 <tr>
-<td>/diagnostic/perception_online_evaluator/metrics</td>
+<td>/perception/perception_online_evaluator/metrics</td>
 <td>diagnostic_msgs::msg::DiagnosticArray</td>
 </tr>
 </tbody>

@@ -1733,7 +1733,7 @@ Launching the file executes the following steps:</p>
 <ol>
 <li>Execute launch of evaluation node (<code>annotationless_perception_evaluator_node</code>), <code>logging_simulator.launch</code> file and <code>ros2 bag play</code> command</li>
 <li>Autoware receives sensor data output from input rosbag and the perception module performs recognition.</li>
-<li>The perception_online_evaluator publishes diagnostic topic to <code>/diagnostic/perception_online_evaluator/metrics</code></li>
+<li>The perception_online_evaluator publishes diagnostic topic to <code>/perception/perception_online_evaluator/metrics</code></li>
 <li>The evaluation node subscribes to the topic and evaluates data. The result is dumped into a file.</li>
 <li>When the playback of the rosbag is finished, Autoware's launch is automatically terminated, and the evaluation is completed.</li>
 </ol>
@@ -1748,7 +1748,7 @@ Launching the file executes the following steps:</p>
 <li>Threshold</li>
 <li>PassRange(Coefficient to correct threshold)</li>
 </ul>
-<p>Success or failure is determined for each status.name in <code>/diagnostic/perception_online_evaluator/metrics</code> according to the following rules.
+<p>Success or failure is determined for each status.name in <code>/perception/perception_online_evaluator/metrics</code> according to the following rules.
 Items for which no threshold is set (min, max, mean) are always judged as normal. Only those items for which a threshold is specified are subject to evaluation.</p>
 <h4 id="min">min<a class="headerlink" href="#min" title="Permanent link">#</a></h4>
 <p>If <code>threshold * lower_limit</code> &lt;= <code>minimum value of min</code> &lt;= <code>threshold * upper_limit</code>, it is assumed to be normal.</p>
@@ -1775,7 +1775,7 @@ metric_value is determined by the current topic value only and does not update t
 </thead>
 <tbody>
 <tr>
-<td>/diagnostic/perception_online_evaluator/metrics</td>
+<td>/perception/perception_online_evaluator/metrics</td>
 <td>diagnostic_msgs::msg::DiagnosticArray</td>
 </tr>
 </tbody>
