@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: check length (`#535 <https://github.com/tier4/driving_log_replayer/issues/535>`_)
+* fix: fix diag index error (`#534 <https://github.com/tier4/driving_log_replayer/issues/534>`_)
+* Contributors: Hayato Mizushima, Takeshi Miura
+
 2.2.0 (2024-07-29)
 ------------------
 * Revert "Revert "feat(annotationless_perception): rename input diag topics (`#529 <https://github.com/tier4/driving_log_replayer/issues/529>`_)""

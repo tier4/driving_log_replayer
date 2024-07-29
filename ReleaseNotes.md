@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 2.2.1
+
+Bug fix
+
+| Module                                     | Feature        | Brief summary   | Pull request                                                   | Jira | Contributor                                     |
+| ------------------------------------------ | -------------- | --------------- | -------------------------------------------------------------- | ---- | ----------------------------------------------- |
+| `obstacle_segmentation`                    | error handling | fix index error | [#534](https://github.com/tier4/driving_log_replayer/pull/534) | -    | [1222-takeshi](https://github.com/1222-takeshi) |
+| `ar_tag_based_localizer, performance_diag` | error handling | fix index error | [#535](https://github.com/tier4/driving_log_replayer/pull/535) | -    | [hayato-m126](https://github.com/hayato-m126)   |
+
 ## Version 2.2.0
 
 Major changes
