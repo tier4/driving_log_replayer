@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 2.2.0
+
+Major changes
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/8152).
+
+| Module                      | Feature    | Brief summary            | Pull request                                                   | Jira | Contributor                             |
+| --------------------------- | ---------- | ------------------------ | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `annotationless_perception` | topic name | rename input diag topics | [#529](https://github.com/tier4/driving_log_replayer/pull/529) | -    | [kosuke55](https://github.com/kosuke55) |
+
 ## Version 2.1.5
 
 Bug fix, Minor Tweak

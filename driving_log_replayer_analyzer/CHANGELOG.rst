@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Revert "Revert "feat(annotationless_perception): rename input diag topics (`#529 <https://github.com/tier4/driving_log_replayer/issues/529>`_)""
+  This reverts commit 3215421ad780740575033f330fbf59d54b9b973b.
+* Contributors: Kosuke Takeuchi
+
 2.1.5 (2024-07-27)
 ------------------
 * fix: delete old msg (`#531 <https://github.com/tier4/driving_log_replayer/issues/531>`_)
