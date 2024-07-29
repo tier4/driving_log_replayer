@@ -303,7 +303,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
                     self.__latest_stop_reasons.append(message_to_ordereddict(msg_reason))
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
-        if not msg.status:
+        if len(msg.status) == 0:
             return
         diag_status: DiagnosticStatus = msg.status[0]
         if diag_status.name == TARGET_DIAG_NAME:
