@@ -39,7 +39,6 @@ from shapely.geometry import Polygon
 from shapely.geometry.polygon import orient
 from std_msgs.msg import ColorRGBA
 from std_msgs.msg import Header
-from tf_transformations import quaternion_from_euler
 from visualization_msgs.msg import Marker
 
 from driving_log_replayer.obstacle_segmentation import Detection
@@ -532,13 +531,13 @@ def test_non_detection_success(
 def test_transform_proposed_area() -> None:
     header_base_link = Header(frame_id="base_link")
     header_map = Header(frame_id="map")
-    q = quaternion_from_euler(0.0, 0.0, -pi / 2)
+    q = PyQuaternion(axis=[0, 0, 1], angle=-pi / 2)
     map_to_baselink = TransformStamped(
         header=header_map,
         child_frame_id="base_link",
         transform=Transform(
             translation=Vector3(x=10.0, y=10.0, z=0.0),
-            rotation=Quaternion(x=q[0], y=q[1], z=q[2], w=q[3]),
+            rotation=Quaternion(x=q.x, y=q.y, z=q.z, w=q.w),
         ),
     )
     proposed_area = ProposedAreaCondition(

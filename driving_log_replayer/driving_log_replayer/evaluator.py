@@ -28,6 +28,7 @@ from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import TransformStamped
 import numpy as np
 from pydantic import ValidationError
+from pyquaternion import Quaternion as PyQuaternion
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.clock import Clock
@@ -42,7 +43,6 @@ from std_msgs.msg import Header
 from tf2_ros import Buffer
 from tf2_ros import TransformException
 from tf2_ros import TransformListener
-from tf_transformations import euler_from_quaternion
 from tier4_localization_msgs.srv import InitializeLocalization
 from tier4_localization_msgs.srv import PoseWithCovarianceStamped as PoseWithCovarianceStampedSrv
 import yaml
@@ -268,19 +268,13 @@ class DLREvaluator(Node):
     @classmethod
     def transform_stamped_with_euler_angle(cls, transform_stamped: TransformStamped) -> dict:
         tf_euler = message_to_ordereddict(transform_stamped)
-        euler_angle = euler_from_quaternion(
-            [
-                transform_stamped.transform.rotation.x,
-                transform_stamped.transform.rotation.y,
-                transform_stamped.transform.rotation.z,
-                transform_stamped.transform.rotation.w,
-            ],
-        )
-        tf_euler["rotation_euler"] = {
-            "roll": euler_angle[0],
-            "pitch": euler_angle[1],
-            "yaw": euler_angle[2],
-        }
+        yaw, pitch, roll = PyQuaternion(
+            transform_stamped.transform.rotation.w,
+            transform_stamped.transform.rotation.x,
+            transform_stamped.transform.rotation.y,
+            transform_stamped.transform.rotation.z,
+        ).yaw_pitch_roll
+        tf_euler["rotation_euler"] = {"roll": roll, "pitch": pitch, "yaw": yaw}
         return tf_euler
 
     def set_initial_pose(self) -> tuple[PoseWithCovarianceStamped | None, int | None]:
