@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.2.2
+
+Bug fix
+
+| Module | Feature | Brief summary                                     | Pull request                                                   | Jira | Contributor                             |
+| ------ | ------- | ------------------------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `all`  | library | use `pyquaterion` instead of `tf_transformations` | [#537](https://github.com/tier4/driving_log_replayer/pull/537) | -    | [kosuke55](https://github.com/kosuke55) |
+
 ## Version 2.2.1
 
 Bug fix

@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: use `pyquaterion` instead of `tf_transformations` (`#537 <https://github.com/tier4/driving_log_replayer/issues/537>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Kotaro Uetake
+
 2.2.1 (2024-07-30)
 ------------------
 * fix: check length (`#535 <https://github.com/tier4/driving_log_replayer/issues/535>`_)
