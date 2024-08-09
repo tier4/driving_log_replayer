@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.2.3
+
+Documentation
+
+| Module | Feature       | Brief summary                      | Pull request                                                   | Jira | Contributor                       |
+| ------ | ------------- | ---------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------- |
+| `all`  | documentation | docs: fix bag slice command option | [#539](https://github.com/tier4/driving_log_replayer/pull/539) | -    | [UMiho](https://github.com/UMiho) |
+
 ## Version 2.2.2
 
 Bug fix
