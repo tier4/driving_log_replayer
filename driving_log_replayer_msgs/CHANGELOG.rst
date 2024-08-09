@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.2.3 (2024-08-09)
+------------------
 docs: fix command option (`#539 <https://github.com/tier4/driving_log_replayer/issues/539>`_)
 * Contributors: Miho Ueno
 
