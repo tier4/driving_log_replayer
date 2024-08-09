@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.30">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
     
     
       
@@ -1466,7 +1466,7 @@ cp<span class="w"> </span>-r<span class="w"> </span>~/autoware/src/simulator/dri
 <div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/autoware/install/setup.bash
 <span class="nb">cd</span><span class="w"> </span>~/driving_log_replayer_data/localization/sample
 ros2<span class="w"> </span>bag<span class="w"> </span>filter<span class="w"> </span>input_bag<span class="w"> </span>-o<span class="w"> </span>filtered_bag<span class="w"> </span>-x<span class="w"> </span><span class="s2">&quot;/localization/.*&quot;</span><span class="w"> </span><span class="s2">&quot;/sensing/lidar/concatenated/pointcloud&quot;</span><span class="w"> </span><span class="s2">&quot;/tf&quot;</span>
-ros2<span class="w"> </span>bag<span class="w"> </span>slice<span class="w"> </span>filtered_bag<span class="w"> </span>-o<span class="w"> </span>sliced_bag<span class="w"> </span>-s<span class="w"> </span><span class="m">1649138880</span><span class="w"> </span>-e<span class="w"> </span><span class="m">1649138910</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>slice<span class="w"> </span>filtered_bag<span class="w"> </span>-o<span class="w"> </span>sliced_bag<span class="w"> </span>-b<span class="w"> </span><span class="m">1649138880</span><span class="w"> </span>-e<span class="w"> </span><span class="m">1649138910</span>
 rm<span class="w"> </span>-rf<span class="w"> </span>input_bag
 rm<span class="w"> </span>-rf<span class="w"> </span>filtered_bag
 mv<span class="w"> </span>sliced_bag<span class="w"> </span>input_bag
