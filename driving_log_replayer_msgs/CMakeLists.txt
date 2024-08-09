@@ -7,6 +7,7 @@ autoware_package()
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ObstacleSegmentationMarker.msg"
   "msg/ObstacleSegmentationMarkerArray.msg"
+  "msg/GroundSegmentationEvalResult.msg"
   DEPENDENCIES
     std_msgs
 )

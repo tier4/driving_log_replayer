@@ -1,0 +1,20 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: ground_segmentation-sample
+ScenarioDescription: ground_segmentation-sample
+SensorModel: aip_xx1
+VehicleModel: jpntaxi
+LocalMapPath: $HOME/autoware_map/sample-map-planning
+Evaluation:
+  UseCaseName: ground_segmentation
+  UseCaseFormatVersion: 0.3.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default
+        LocalMapPath: $HOME/autoware_map/sample-map-planning
+  Conditions:
+    Method: annotated_pcd # ground truthデータとして使用するデータの種類(annotated_rosbag : アノテーション済み点群が入ったinput_bag，annotated_pcd : アノテーション済みpcd.binファイル(t4_dataset/dataset/data/LIDAR_CONCAT/*.pcd.bin))
+    ground_label: 6 # 地面点群のアノテーションラベル
+    obstacle_label: 7 # 障害物点群のアノテーションラベル
+    accuracy_min: 0.7 # 精度がこの値以上なら評価成功とみなす
+    accuracy_max: 1.0
+    PassRate: 99.0 # 評価試行回数の内、どの程度(%)評価成功だったら成功とするか
