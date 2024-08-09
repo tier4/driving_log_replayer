@@ -21,7 +21,7 @@
    source ~/autoware/install/setup.bash
    cd ~/driving_log_replayer_data/localization/sample
    ros2 bag filter input_bag -o filtered_bag -x "/localization/.*" "/sensing/lidar/concatenated/pointcloud" "/tf"
-   ros2 bag slice filtered_bag -o sliced_bag -s 1649138880 -e 1649138910
+   ros2 bag slice filtered_bag -o sliced_bag -b 1649138880 -e 1649138910
    rm -rf input_bag
    rm -rf filtered_bag
    mv sliced_bag input_bag
