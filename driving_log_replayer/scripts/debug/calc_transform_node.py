@@ -22,6 +22,7 @@ from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import Transform
 from geometry_msgs.msg import TransformStamped
 from geometry_msgs.msg import Vector3
+from pyquaternion import Quaternion as PyQuaternion
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.clock import Clock
@@ -36,7 +37,6 @@ from tf2_ros import Buffer
 from tf2_ros import TransformBroadcaster
 from tf2_ros import TransformException
 from tf2_ros import TransformListener
-from tf_transformations import quaternion_from_euler
 
 
 class CalcTransformNode(Node):
@@ -52,9 +52,9 @@ class CalcTransformNode(Node):
         self._tf_listener = TransformListener(self._tf_buffer, self, spin_thread=True)
 
         self._translation = Vector3(x=10.0, y=10.0, z=0.0)
-        q = quaternion_from_euler(0.0, 0.0, -pi / 2)
-        self.get_logger().error(f"{q[0]=}, {q[1]=}, {q[1]=}, {q[2]=}")
-        self._rotation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
+        q = PyQuaternion(axis=[0, 0, 1], angle=-pi / 2)
+        self.get_logger().error(f"{q.x=}, {q.y=}, {q.z=}, {q.z=}")
+        self._rotation = Quaternion(x=q.x, y=q.y, z=q.z, w=q.w)
 
         self._timer_group = MutuallyExclusiveCallbackGroup()
         self._timer = self.create_timer(

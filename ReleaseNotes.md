@@ -1,5 +1,48 @@
 # Release Notes
 
+## Version 2.2.3
+
+Documentation
+
+| Module | Feature       | Brief summary                      | Pull request                                                   | Jira | Contributor                       |
+| ------ | ------------- | ---------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------- |
+| `all`  | documentation | docs: fix bag slice command option | [#539](https://github.com/tier4/driving_log_replayer/pull/539) | -    | [UMiho](https://github.com/UMiho) |
+
+## Version 2.2.2
+
+Bug fix
+
+| Module | Feature | Brief summary                                      | Pull request                                                   | Jira | Contributor                             |
+| ------ | ------- | -------------------------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `all`  | library | use `pyquaternion` instead of `tf_transformations` | [#537](https://github.com/tier4/driving_log_replayer/pull/537) | -    | [kosuke55](https://github.com/kosuke55) |
+
+## Version 2.2.1
+
+Bug fix
+
+| Module                                     | Feature        | Brief summary   | Pull request                                                   | Jira | Contributor                                     |
+| ------------------------------------------ | -------------- | --------------- | -------------------------------------------------------------- | ---- | ----------------------------------------------- |
+| `obstacle_segmentation`                    | error handling | fix index error | [#534](https://github.com/tier4/driving_log_replayer/pull/534) | -    | [1222-takeshi](https://github.com/1222-takeshi) |
+| `ar_tag_based_localizer, performance_diag` | error handling | fix index error | [#535](https://github.com/tier4/driving_log_replayer/pull/535) | -    | [hayato-m126](https://github.com/hayato-m126)   |
+
+## Version 2.2.0
+
+Major changes
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/8152).
+
+| Module                      | Feature    | Brief summary            | Pull request                                                   | Jira | Contributor                             |
+| --------------------------- | ---------- | ------------------------ | -------------------------------------------------------------- | ---- | --------------------------------------- |
+| `annotationless_perception` | topic name | rename input diag topics | [#529](https://github.com/tier4/driving_log_replayer/pull/529) | -    | [kosuke55](https://github.com/kosuke55) |
+
+## Version 2.1.5
+
+Bug fix, Minor Tweak
+
+| Module | Feature    | Brief summary                   | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ---------- | ------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | dependency | remove old msg from package.xml | [#531](https://github.com/tier4/driving_log_replayer/pull/531) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency | update dependency.repos         | [#497](https://github.com/tier4/driving_log_replayer/pull/497) | -    | [youtalk](https://github.com/youtalk)         |
+
 ## Version 2.1.4
 
 Bug fix

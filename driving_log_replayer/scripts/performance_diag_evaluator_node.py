@@ -75,6 +75,8 @@ class PerformanceDiagEvaluator(DLREvaluator):
         )
 
     def diag_cb(self, msg: DiagnosticArray) -> None:
+        if len(msg.status) == 0:
+            return
         diag_status: DiagnosticStatus = msg.status[0]
         is_visibility = bool(fullmatch(REGEX_VISIBILITY_DIAG_NAME, diag_status.name))
         is_blockage = bool(fullmatch(BLOCKAGE_DIAG_NAME, diag_status.name))

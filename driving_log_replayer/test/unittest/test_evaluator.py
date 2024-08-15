@@ -74,9 +74,9 @@ def test_transform_stamped_with_euler_angle() -> None:
             },
         },
         "rotation_euler": {
-            "roll": -0.022698392435205317,
-            "pitch": -0.04389133881352741,
-            "yaw": -2.7016745033573883,
+            "roll": 0.0018567112468680289,
+            "pitch": 0.049375005486871286,
+            "yaw": -2.7022185830310637,
         },
     }
     assert DLREvaluator.transform_stamped_with_euler_angle(tf) == dict_tf_euler

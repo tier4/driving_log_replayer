@@ -2,6 +2,35 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.3 (2024-08-09)
+------------------
+docs: fix command option (`#539 <https://github.com/tier4/driving_log_replayer/issues/539>`_)
+* Contributors: Miho Ueno
+
+2.2.2 (2024-08-02)
+------------------
+* fix: use `pyquaternion` instead of `tf_transformations` (`#537 <https://github.com/tier4/driving_log_replayer/issues/537>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Kotaro Uetake
+
+2.2.1 (2024-07-30)
+------------------
+* fix: check length (`#535 <https://github.com/tier4/driving_log_replayer/issues/535>`_)
+* fix: fix diag index error (`#534 <https://github.com/tier4/driving_log_replayer/issues/534>`_)
+* Contributors: Hayato Mizushima, Takeshi Miura
+
+2.2.0 (2024-07-29)
+------------------
+* Revert "Revert "feat(annotationless_perception): rename input diag topics (`#529 <https://github.com/tier4/driving_log_replayer/issues/529>`_)""
+  This reverts commit 3215421ad780740575033f330fbf59d54b9b973b.
+* Contributors: Kosuke Takeuchi
+
+2.1.5 (2024-07-27)
+------------------
+* fix: delete old msg (`#531 <https://github.com/tier4/driving_log_replayer/issues/531>`_)
+* feat: update dependency.repos to clone renewal core repositories  (`#497 <https://github.com/tier4/driving_log_replayer/issues/497>`_)
+* Contributors: Hayato Mizushima, Yutaka Kondo
+
 2.1.4 (2024-07-22)
 ------------------
 * fix(traffic_light): remove autoware_perception_msgs in traffic_light (`#526 <https://github.com/tier4/driving_log_replayer/issues/526>`_)
