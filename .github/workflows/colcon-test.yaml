@@ -30,7 +30,7 @@ jobs:
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
@@ -40,12 +40,12 @@ jobs:
           echo package_list=$(colcon list --names-only | sed -e ':loop; N; $!b loop; s/\n/ /g') >> $GITHUB_OUTPUT
 
       - name: Setup ROS environment
-        uses: ros-tooling/setup-ros@0.7.1
+        uses: ros-tooling/setup-ros@0.7.8
         with:
           required-ros-distributions: ${{ matrix.ros_distribution }}
 
       - name: build and test
-        uses: ros-tooling/action-ros-ci@0.3.6
+        uses: ros-tooling/action-ros-ci@0.3.13
         with:
           package-name: ${{ steps.list_packages.outputs.package_list }}
           target-ros2-distro: ${{ matrix.ros_distribution }}
