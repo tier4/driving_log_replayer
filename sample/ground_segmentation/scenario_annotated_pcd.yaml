@@ -18,3 +18,19 @@ Evaluation:
     accuracy_min: 0.7 # If the accuracy is lower than the threshold value, the evaluation is considered to have failed.
     accuracy_max: 1.0
     PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
+
+# Note : When running ground_segmentation in 'annotated_rosbag' mode,
+# it is necessary to modify the sensing module of autoware.universe as follows:
+#
+# https://github.com/autowarefoundation/autoware.universe/blob/main/sensing/autoware_pointcloud_preprocessor/src/filter.cpp#L383-L390
+#  ...
+#     if (utils::is_data_layout_compatible_with_point_xyzi(*cloud)) {
+#      RCLCPP_ERROR(
+#        get_logger(),
+#        "The pointcloud layout is compatible with PointXYZI. You may be using legacy "
+#        "code/data");
+#    }
+#
+#    // return; <- comment out!
+#  }
+#  ...
