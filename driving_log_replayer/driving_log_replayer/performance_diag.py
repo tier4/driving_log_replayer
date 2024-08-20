@@ -111,7 +111,7 @@ class Visibility(EvaluationItem):
             if diag_level == DiagnosticStatus.ERROR:
                 frame_success = "Success"
                 self.passed += 1
-            self.success = self.rate >= self.condition.PassRate
+            self.success = self.rate() >= self.condition.PassRate
         elif self.scenario_type == "FP":
             if diag_level != DiagnosticStatus.ERROR:
                 frame_success = "Success"
@@ -170,7 +170,7 @@ class Blockage(EvaluationItem):
             if diag_level == DiagnosticStatus.ERROR and self.blockage_type in diag_status.message:
                 frame_success = "Success"
                 self.passed += 1
-            self.success = self.rate >= self.condition.PassRate
+            self.success = self.rate() >= self.condition.PassRate
         elif self.scenario_type == "FP":
             if not (
                 diag_level == DiagnosticStatus.ERROR and self.blockage_type in diag_status.message
