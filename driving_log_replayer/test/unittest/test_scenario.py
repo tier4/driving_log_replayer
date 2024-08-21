@@ -22,5 +22,5 @@ class SampleModel(BaseModel):
 
 def test_type_check_base_model() -> None:
     sample_model = SampleModel(version="1.0.0", name="s_model")
-    assert type(sample_model) != BaseModel
+    assert type(sample_model) is not BaseModel
     assert isinstance(sample_model, BaseModel)
