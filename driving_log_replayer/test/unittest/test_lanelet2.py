@@ -73,7 +73,7 @@ def test_calc_distance_point_to_lanelet() -> None:
     lanelet = get_a_lanelet()
     p2d = BasicPoint2d(0.0, 3.0)
     distance_to_lanelet = distance(lanelet, p2d)
-    assert distance_to_lanelet == 1.0  # noqa
+    assert distance_to_lanelet == 1.0
 
 
 """

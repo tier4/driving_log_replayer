@@ -47,7 +47,7 @@ class Stamp:
             pass
 
     def validate(self) -> bool:
-        return self.timestamp_system > 0.0 and self.timestamp_ros > 0.0  # noqa
+        return self.timestamp_system > 0.0 and self.timestamp_ros > 0.0
 
 
 @dataclass

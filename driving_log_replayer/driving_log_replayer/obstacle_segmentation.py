@@ -103,7 +103,7 @@ class ProposedAreaCondition(BaseModel):
             p1 = v_float[i]
             p2 = v_float[(i + 1) % len(v_float)]
             check_clock_wise += (p2[0] - p1[0]) * (p2[1] + p2[1])
-        if check_clock_wise <= 0.0:  # noqa
+        if check_clock_wise <= 0.0:
             err_msg = "polygon_2d is not clockwise"
             raise ValueError(err_msg)
         return v_float

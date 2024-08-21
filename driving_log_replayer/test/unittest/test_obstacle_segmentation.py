@@ -553,7 +553,7 @@ def test_transform_proposed_area() -> None:
     assert proposed_area_in_map == Polygon(
         ((12.0, 8.0), (10.0, 10.0), (12.0, 12.0)),
     )  # do not set z. Polygon and Polygon Z is different.
-    assert z == 0.0  # noqa
+    assert z == 0.0
 
 
 def test_get_non_detection_area_in_base_link() -> None:
