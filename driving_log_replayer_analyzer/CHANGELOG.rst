@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.2.4 (2024-08-21)
+------------------
 * feat: diag apply pass rate (`#545 <https://github.com/tier4/driving_log_replayer/issues/545>`_)
 * Contributors: Hayato Mizushima
 
