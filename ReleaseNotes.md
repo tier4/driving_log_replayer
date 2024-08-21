@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.2.4
+
+Documentation
+
+| Module             | Feature  | Brief summary   | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------ | -------- | --------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `performance_diag` | criteria | apply pass_rate | [#545](https://github.com/tier4/driving_log_replayer/pull/545) | RT1-7569 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.2.3
 
 Documentation
