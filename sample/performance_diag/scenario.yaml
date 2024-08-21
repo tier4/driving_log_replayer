@@ -7,7 +7,7 @@ VehicleId: ps1/20210520/CAL_000012
 LocalMapPath: $HOME/map/diag
 Evaluation:
   UseCaseName: performance_diag
-  UseCaseFormatVersion: 1.0.0
+  UseCaseFormatVersion: 2.0.0
   LaunchLocalization: false # If false, /tf in the bag is output; if true, /tf in the bag is remapped and disabled.
   InitialPose: null # Specifies the initial position. If null is specified, initial position estimation by GNSS is performed. This key only works when LaunchLocalization is enabled.
   Conditions:
@@ -15,6 +15,7 @@ Evaluation:
       Visibility:
         ScenarioType: TP # TP/FP/null
         PassRate: 90.0 # If ScenarioType is TP and (Number of ERRORs / Total number of evaluations) * 100.0 >= PassRate, then it is a success. The condition for FP is that ERROR is never raised, and PassRate is ignored
+      Blockage:
         front_lower: # Set for each on-board LiDAR
           ScenarioType: TP # TP/FP/null
           BlockageType: both # sky/ground/both Where is the blockage occurring?
