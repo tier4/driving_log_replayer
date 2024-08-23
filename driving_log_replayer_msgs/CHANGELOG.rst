@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.0 (2024-08-23)
+------------------
 * fix: add exec_depend (`#550 <https://github.com/tier4/driving_log_replayer/issues/550>`_)
 * fix(driving_log_replayer): add autoware prefix for map_height_fitter package (`#543 <https://github.com/tier4/driving_log_replayer/issues/543>`_)
 * feat: remove black use ruff format (`#548 <https://github.com/tier4/driving_log_replayer/issues/548>`_)
