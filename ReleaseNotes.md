@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.3.1
+
+Documentation
+
+| Module | Feature       | Brief summary      | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------------- | ------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | documentation | add use case pages | [#552](https://github.com/tier4/driving_log_replayer/pull/552) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.3.0
 
 Major changes

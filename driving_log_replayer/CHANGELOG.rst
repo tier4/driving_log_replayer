@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* docs: add use case pages (`#552 <https://github.com/tier4/driving_log_replayer/issues/552>`_)
+* Contributors: Hayato Mizushima
+
 2.3.0 (2024-08-23)
 ------------------
 * fix: add exec_depend (`#550 <https://github.com/tier4/driving_log_replayer/issues/550>`_)
