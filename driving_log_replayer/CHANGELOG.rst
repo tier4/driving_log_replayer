@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.1 (2024-08-26)
+------------------
 * docs: add use case pages (`#552 <https://github.com/tier4/driving_log_replayer/issues/552>`_)
 * Contributors: Hayato Mizushima
 
