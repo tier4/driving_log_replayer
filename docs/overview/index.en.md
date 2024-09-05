@@ -38,12 +38,11 @@ The details of the node's operation are shown in the figure below.
 1. Acquire rosbags for evaluation using a real-world vehicle.
 2. Filter the acquired rosbags to contain only sufficient input topics in required period of time
    - For this purpose please use [ros2bag_extensions](https://github.com/tier4/ros2bag_extensions) package (developed by TIER IV). To properly filter the input rosbag:
-     - Autoware's output topics must be dropped except `/tf`. The sensor topics (input topics) should remain in the filtered rosbag.
-     - Rosbag needs 10 seconds of parking before driving. The other messages should be dropped.
+     - See docs/use_case/ documentations for which topics to leave in the filter.
 3. Create an evaluation scenario
    1. Example scenarios could be found in the repository's [sample folder](https://github.com/tier4/driving_log_replayer/tree/main/sample)
    2. Refer to the [format definition](../result_format/index.md) section of this document for description contents.
-4. If the node should test obstacle_segmentation or perception stacks, please annotate with an annotation tool that supports conversion to t4_dataset.
+4. If the node should test obstacle_segmentation, perception, perception_2d, or traffic_light stacks, please annotate with an annotation tool that supports conversion to t4_dataset.
    1. [Deepen.AI](https://www.deepen.ai/) is available.
    2. By adding conversion functionality to [perception_dataset](https://github.com/tier4/tier4_perception_dataset), it becomes possible to use other annotation tools as well.
 5. Perform the evaluation.
