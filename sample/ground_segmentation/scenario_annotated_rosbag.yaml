@@ -1,8 +1,8 @@
 ScenarioFormatVersion: 3.0.0
 ScenarioName: ground_segmentation-sample
 ScenarioDescription: ground_segmentation-sample
-SensorModel: aip_xx1
-VehicleModel: jpntaxi
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
 LocalMapPath: $HOME/autoware_map/sample-map-planning
 Evaluation:
   UseCaseName: ground_segmentation
