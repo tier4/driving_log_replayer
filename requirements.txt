@@ -1,3 +1,4 @@
 # This file is for force overwriting the Python libraries to ensure ROS execution
 numpy==1.22.0
 pydantic>=2.5.1
+transforms3d==0.4.2 # python3-transforms3d is old (0.3.1)
