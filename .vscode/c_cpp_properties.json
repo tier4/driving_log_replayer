@@ -6,11 +6,11 @@
         "limitSymbolsToIncludedHeaders": true
       },
       "includePath": [
-        // "/opt/ros/humble/include/**",
-        "driving_log_replayer/include/**"
-        // "${env:HOME}/ros_ws/awf/install/**",
-        // "/usr/include/**",
-        // "/usr/local/include/**"
+        "/opt/ros/humble/include/**",
+        "driving_log_replayer/include/**",
+        "${env:HOME}/ros_ws/awf/install/**",
+        "/usr/include/**",
+        "/usr/local/include/**"
       ],
       "name": "ROS",
       "intelliSenseMode": "gcc-x64",
