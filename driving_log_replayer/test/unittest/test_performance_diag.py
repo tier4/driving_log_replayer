@@ -30,7 +30,7 @@ def test_scenario() -> None:
         "performance_diag",
         PerformanceDiagScenario,
     )
-    assert scenario.Evaluation.Conditions.LiDAR.Visibility.ScenarioType == "FP"
+    assert scenario.Evaluation.Conditions.LiDAR.Visibility.ScenarioType == "TP"
     assert scenario.Evaluation.Conditions.LiDAR.Blockage["front_lower"].BlockageType == "both"
 
 
@@ -40,7 +40,7 @@ def test_visibility_invalid() -> None:
         level=DiagnosticStatus.OK,
     )
     evaluation_item = Visibility(
-        condition=VisibilityCondition(ScenarioType=None, PassFrameCount=100),
+        condition=VisibilityCondition(ScenarioType=None, PassRate=99.0),
     )
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(status)
     assert evaluation_item.success is True
@@ -60,14 +60,14 @@ def test_visibility_tp_success() -> None:
         values=[KeyValue(key="value", value="-1.00")],
     )
     evaluation_item = Visibility(
-        condition=VisibilityCondition(ScenarioType="TP", PassFrameCount=100),
-        total=149,
-        passed=99,
+        condition=VisibilityCondition(ScenarioType="TP", PassRate=90.0),
+        total=99,
+        passed=89,
         success=False,
     )
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(status)
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "Visibility (Success): 100 / 150"
+    assert evaluation_item.summary == "Visibility (Success): 90 / 100"
     assert frame_dict == {
         "Result": {"Total": "Success", "Frame": "Success"},
         "Info": {
@@ -86,14 +86,14 @@ def test_visibility_tp_fail() -> None:
         values=[KeyValue(key="value", value="1.00")],
     )
     evaluation_item = Visibility(
-        condition=VisibilityCondition(ScenarioType="TP", PassFrameCount=100),
-        total=149,
-        passed=99,
+        condition=VisibilityCondition(ScenarioType="TP", PassRate=90.0),
+        total=99,
+        passed=89,
         success=False,
     )
     frame_dict, msg_visibility_value, msg_visibility_level = evaluation_item.set_frame(status)
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "Visibility (Fail): 99 / 150"
+    assert evaluation_item.summary == "Visibility (Fail): 89 / 100"
     assert frame_dict == {
         "Result": {"Total": "Fail", "Frame": "Fail"},
         "Info": {
@@ -112,7 +112,7 @@ def test_visibility_fp_success() -> None:
         values=[KeyValue(key="value", value="1.00")],
     )
     evaluation_item = Visibility(
-        condition=VisibilityCondition(ScenarioType="FP", PassFrameCount=100),
+        condition=VisibilityCondition(ScenarioType="FP", PassRate=90.0),
         total=49,
         passed=49,
         success=True,
@@ -138,7 +138,7 @@ def test_visibility_fp_fail() -> None:
         values=[KeyValue(key="value", value="-1.00")],
     )
     evaluation_item = Visibility(
-        condition=VisibilityCondition(ScenarioType="FP", PassFrameCount=100),
+        condition=VisibilityCondition(ScenarioType="FP", PassRate=90.0),
         total=49,
         passed=49,
         success=True,
@@ -164,7 +164,7 @@ def test_blockage_invalid() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition=BlockageCondition(ScenarioType=None, BlockageType="both", PassFrameCount=100),
+        condition=BlockageCondition(ScenarioType=None, BlockageType="both", PassRate=90.0),
     )
     (
         frame_dict,
@@ -199,10 +199,10 @@ def test_blockage_tp_success() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassFrameCount=100),
+        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassRate=90.0),
         success=False,
-        passed=99,
-        total=149,
+        passed=89,
+        total=99,
     )
     (
         frame_dict,
@@ -211,7 +211,7 @@ def test_blockage_tp_success() -> None:
         msg_blockage_level,
     ) = evaluation_item.set_frame(status)
     assert evaluation_item.success is True
-    assert evaluation_item.summary == "front_lower (Success): 100 / 150"
+    assert evaluation_item.summary == "front_lower (Success): 90 / 100"
     assert frame_dict == {
         "front_lower": {
             "Result": {"Total": "Success", "Frame": "Success"},
@@ -243,10 +243,10 @@ def test_blockage_tp_fail() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassFrameCount=100),
+        condition=BlockageCondition(ScenarioType="TP", BlockageType="both", PassRate=90.0),
         success=False,
-        passed=99,
-        total=149,
+        passed=89,
+        total=99,
     )
     (
         frame_dict,
@@ -255,7 +255,7 @@ def test_blockage_tp_fail() -> None:
         msg_blockage_level,
     ) = evaluation_item.set_frame(status)
     assert evaluation_item.success is False
-    assert evaluation_item.summary == "front_lower (Fail): 99 / 150"
+    assert evaluation_item.summary == "front_lower (Fail): 89 / 100"
     assert frame_dict == {
         "front_lower": {
             "Result": {"Total": "Fail", "Frame": "Fail"},
@@ -287,7 +287,7 @@ def test_blockage_fp_success() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition=BlockageCondition(ScenarioType="FP", BlockageType="both", PassFrameCount=100),
+        condition=BlockageCondition(ScenarioType="FP", BlockageType="both", PassRate=90.0),
         success=True,
         passed=49,
         total=49,
@@ -331,7 +331,7 @@ def test_blockage_fp_fail() -> None:
     )
     evaluation_item = Blockage(
         name="front_lower",
-        condition=BlockageCondition(ScenarioType="FP", BlockageType="both", PassFrameCount=100),
+        condition=BlockageCondition(ScenarioType="FP", BlockageType="both", PassRate=90.0),
         success=True,
         passed=49,
         total=49,

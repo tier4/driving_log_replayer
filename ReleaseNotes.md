@@ -1,5 +1,31 @@
 # Release Notes
 
+## Version 2.3.1
+
+Documentation
+
+| Module | Feature       | Brief summary      | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------------- | ------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | documentation | add use case pages | [#552](https://github.com/tier4/driving_log_replayer/pull/552) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.3.0
+
+Major changes
+Ensure that you are using Autoware.universe that incorporates [this PR](https://github.com/autowarefoundation/autoware.universe/pull/8421).
+
+| Module                                                                    | Feature    | Brief summary                         | Pull request                                                   | Jira | Contributor                                   |
+| ------------------------------------------------------------------------- | ---------- | ------------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `localization, performance_diag, yabloc, eagleye, ar_tag_based_localizer` | dependency | update map_height_fitter package name | [#543](https://github.com/tier4/driving_log_replayer/pull/543) | -    | [a-maumau](https://github.com/a-maumau)       |
+| `all`                                                                     | dependency | fix exec_depend                       | [#550](https://github.com/tier4/driving_log_replayer/pull/550) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.2.4
+
+Documentation
+
+| Module             | Feature  | Brief summary   | Pull request                                                   | Jira     | Contributor                                   |
+| ------------------ | -------- | --------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `performance_diag` | criteria | apply pass_rate | [#545](https://github.com/tier4/driving_log_replayer/pull/545) | RT1-7569 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.2.3
 
 Documentation

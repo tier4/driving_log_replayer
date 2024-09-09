@@ -74,9 +74,7 @@ class ObstacleSegmentationEvaluator(DLREvaluator):
 
         self._scenario: ObstacleSegmentationScenario
         self.__s_cfg = self._scenario.Evaluation.SensingEvaluationConfig
-        self.__s_cfg["evaluation_config_dict"][
-            "label_prefix"
-        ] = "autoware"  # Add a fixed value setting
+        self.__s_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"
 
         self.declare_parameter("map_path", "")
         map_path = Path(

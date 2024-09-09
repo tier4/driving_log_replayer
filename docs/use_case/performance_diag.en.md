@@ -19,14 +19,14 @@ Launching the file executes the following steps:
 
 ### visibility evaluation
 
-The evaluation process confirms that more than a specified number of ERRORs for limited visibility are generated for rosbag input data obtained under rainy conditions (naturally or artificially generated).
+The evaluation process confirms that more than a specified rate of ERRORs for limited visibility are generated for rosbag input data obtained under rainy conditions (naturally or artificially generated).
 Also, using data obtained during sunny weather, it is confirmed that ERRORs are never generated.
 
 The `status.name` in `/diagnostics` corresponding to `dual_return_filter: /sensing/lidar/.*: visibility_validation` is used for judgment.
 
 ### blockage evaluation
 
-For blockage evaluation, acquire data with LiDAR intentionally covered with a material that will not pass the laser beam (for example box). The evaluation confirms that ERROR for blockage is output more than a certain number of times for the considered situation.
+For blockage evaluation, acquire data with LiDAR intentionally covered with a material that will not pass the laser beam (for example box). The evaluation confirms that ERROR for blockage is output more than a certain rate for the considered situation.
 The node will also confirm that no ERROR is generated for not covered LiDAR.
 
 The `status.name` in `/diagnostics` corresponding to `blockage_return_diag: /sensing/lidar/.*: blockage_validation` is used for judgment.

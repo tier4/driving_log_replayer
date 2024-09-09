@@ -148,7 +148,7 @@ def get_autoware_launch(
 def get_map_height_fitter(launch_service: str = "true") -> launch.actions.IncludeLaunchDescription:
     # map_height_fitter launch
     fitter_launch_file = Path(
-        get_package_share_directory("map_height_fitter"),
+        get_package_share_directory("autoware_map_height_fitter"),
         "launch",
         "map_height_fitter.launch.xml",
     )

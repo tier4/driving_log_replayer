@@ -50,12 +50,8 @@ class Perception2DEvaluator(DLREvaluator):
         self.__c_cfg = self._scenario.Evaluation.CriticalObjectFilterConfig
         self.__f_cfg = self._scenario.Evaluation.PerceptionPassFailConfig
         self.__evaluation_task = self.__p_cfg["evaluation_config_dict"]["evaluation_task"]
-        self.__p_cfg["evaluation_config_dict"][
-            "label_prefix"
-        ] = "autoware"  # Add a fixed value setting
-        self.__p_cfg["evaluation_config_dict"][
-            "count_label_number"
-        ] = True  # Add a fixed value setting
+        self.__p_cfg["evaluation_config_dict"]["label_prefix"] = "autoware"
+        self.__p_cfg["evaluation_config_dict"]["count_label_number"] = True
         self.__camera_type_dict = self._scenario.Evaluation.Conditions.TargetCameras
         if not self.check_evaluation_task():
             rclpy.shutdown()

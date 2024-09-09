@@ -2,6 +2,23 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.1 (2024-08-26)
+------------------
+* docs: add use case pages (`#552 <https://github.com/tier4/driving_log_replayer/issues/552>`_)
+* Contributors: Hayato Mizushima
+
+2.3.0 (2024-08-23)
+------------------
+* fix: add exec_depend (`#550 <https://github.com/tier4/driving_log_replayer/issues/550>`_)
+* fix(driving_log_replayer): add autoware prefix for map_height_fitter package (`#543 <https://github.com/tier4/driving_log_replayer/issues/543>`_)
+* feat: remove black use ruff format (`#548 <https://github.com/tier4/driving_log_replayer/issues/548>`_)
+* chore: update formatter linter (`#547 <https://github.com/tier4/driving_log_replayer/issues/547>`_)
+* Contributors: Hayato Mizushima, Masaki Baba
+2.2.4 (2024-08-21)
+------------------
+* feat: diag apply pass rate (`#545 <https://github.com/tier4/driving_log_replayer/issues/545>`_)
+* Contributors: Hayato Mizushima
+
 2.2.3 (2024-08-09)
 ------------------
 docs: fix command option (`#539 <https://github.com/tier4/driving_log_replayer/issues/539>`_)

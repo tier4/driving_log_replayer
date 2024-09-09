@@ -17,3 +17,7 @@ nav:
   - performance_diag.ja.md
   - annotationless_perception.en.md
   - annotationless_perception.ja.md
+  - traffic_light.en.md
+  - traffic_light.ja.md
+  - perception_2d.ja.md
+  - perception_2d.en.md

@@ -14,7 +14,7 @@
   "editor.formatOnSave": false,
   "[python]": {
     "editor.tabSize": 4,
-    "editor.formatOnType": false,
+    "editor.formatOnType": true,
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -22,7 +22,7 @@
       "source.organizeImports": "explicit",
       "source.organizeImports.ruff": "explicit"
     },
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "python.autoComplete.extraPaths": [
     "/opt/ros/humble/lib/python3.10/site-packages",
