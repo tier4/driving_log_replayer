@@ -36,6 +36,8 @@
     "MOTA",
     "objdata",
     "youtalk",
-    "UMiho"
+    "UMiho",
+    "nuscenes",
+    "devkit"
   ]
 }
