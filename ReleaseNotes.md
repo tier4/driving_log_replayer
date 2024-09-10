@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 2.3.2
+
+Minor Tweak
+
+| Module | Feature       | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | documentation | update usage flow            | [#554](https://github.com/tier4/driving_log_replayer/pull/554) | RT1-7788 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency    | delete pytest version fix    | [#555](https://github.com/tier4/driving_log_replayer/pull/555) | RT1-7813 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency    | add transforms3d version fix | [#557](https://github.com/tier4/driving_log_replayer/pull/557) | RT1-7813 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency    | delete numpy version fix     | [#558](https://github.com/tier4/driving_log_replayer/pull/558) | RT1-7826 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.3.1
 
 Documentation
