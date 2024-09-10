@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.2 (2024-09-10)
+------------------
 * chore: update requirements.txt
 * Contributors: Hayato Mizushima
 
