@@ -1,0 +1,127 @@
+name: Test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths: [driving_log_replayer/**, .github/workflows/coverage-test.yaml]
+  push:
+    branches:
+      - main
+
+jobs:
+  django_test:
+    name: Application test
+    runs-on: ubuntu-22.04
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: vehicles
+        ports:
+          - 3306:3306
+        options: --health-cmd "mysqladmin ping" --health-interval 10s --health-timeout 5s --health-retries 10
+      dynamodb:
+        image: amazon/dynamodb-local:2.0.0
+        ports:
+          - 18800:8000
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.12]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup environment
+        run: |
+          cp conf/.env.sample conf/.env
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+      - name: Create DynamoDB Table
+        run: |
+          python manage.py create_table
+        env:
+          AWS_REGION: ap-northeast-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          ENV_NAME: fms
+          ENV_TYPE: dev
+      - name: Run Test for pytest
+        run: |
+          set -o pipefail
+          pytest -s --suppress-no-test-exit-code -v \
+            --junit-xml test-output/results/pytest.xml \
+            --cov-config=api/.coveragerc \
+            --cov=. --cov-report=term-missing:skip-covered --cov-report=xml:test-output/coverage-reports/coverage.xml api | tee pytest-coverage.txt
+        env:
+          MYSQL_USER: root
+          MYSQL_PASSWORD: password
+          MYSQL_DB_NAME: vehicles
+          MYSQL_HOST: 127.0.0.1
+          AWS_REGION: ap-northeast-1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          ENV_NAME: fms
+          ENV_TYPE: dev
+      - name: Upload Unit Test Output
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: UnitTest-django
+          path: test-output/**/*.xml
+      # NOTE: lambda_test の分は未対応なので必要なら追加する
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@v1.1.51
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./test-output/results/pytest.xml
+
+  lambda_test:
+    name: Lambda test
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.12]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Execute pytest
+        run: |
+          ./tests.sh
+      - name: Upload Unit Test Output
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: UnitTest-lambda
+          path: test-output/**/*.xml
+
+  # テスト結果の表示
+  unit_test_report_and_sonarcloud:
+    name: Report and SonarCloud Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: ${{ !cancelled() }}
+    needs:
+      - django_test
+      - lambda_test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
