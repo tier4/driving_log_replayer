@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.3 (2024-09-17)
+------------------
 * fix: ci
 * docs: add v2 link
 * Contributors: Hayato Mizushima
