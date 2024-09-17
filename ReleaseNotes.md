@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 2.3.3
+
+Minor Tweak
+
+| Module | Feature       | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | ci            | fix colcon test              | [#561](https://github.com/tier4/driving_log_replayer/pull/561) | RT1-7842 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | ci            | use shallow clone            | [#562](https://github.com/tier4/driving_log_replayer/pull/562) | RT1-7842 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | documentation | add transforms3d version fix | [#563](https://github.com/tier4/driving_log_replayer/pull/563) | RT1-7887 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.3.2
 
 Minor Tweak
