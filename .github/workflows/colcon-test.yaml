@@ -49,3 +49,9 @@ jobs:
           target-ros2-distro: ${{ matrix.ros_distribution }}
           vcs-repo-file-url: dependency.repos
           import-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: show dir for test coverage
+        run: |
+          echo "Current working directory:"
+          ls -la .
+          ls -la driving_log_replayer
