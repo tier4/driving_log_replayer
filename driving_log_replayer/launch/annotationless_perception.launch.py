@@ -30,6 +30,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/object_recognition/tracking/multi_object_tracker/debug/.*\
 |^/perception/object_recognition/detection/.*/debug/pipeline_latency_ms$\
 |^/diagnostics$\
+|^/localization/kinematic_state$\
 |^/diagnostic/perception_online_evaluator/.*\
 """
 
@@ -43,10 +44,12 @@ def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments.append(
         DeclareLaunchArgument("annotationless_pass_range", default_value=""),
     )
+    launch_arguments.append(DeclareLaunchArgument("launch_system_monitor", default_value="true"))
     autoware_launch = cmn.get_autoware_launch(
         sensing=LaunchConfiguration("sensing"),
         localization="false",
         use_perception_online_evaluator="true",
+        launch_system_monitor=LaunchConfiguration("launch_system_monitor"),
     )
     rviz_node = cmn.get_rviz("autoware.rviz")
     evaluator_node = cmn.get_evaluator_node(
