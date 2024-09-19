@@ -52,6 +52,40 @@ jobs:
 
       - name: show dir for test coverage
         run: |
+          pwd
           echo "Current working directory:"
-          ls -la .
-          ls -la driving_log_replayer
+          ls -la driving_log_repalyer/ros_ws
+
+      - name: Execute pytest
+        run: |
+          set -o pipefail
+          source driving_log_replayer/ros_ws/install/setup.bash
+          cd driving_log_replyaer
+          pytest -s --suppress-no-test-exit-code -v \
+            --junit-xml test-output/results/pytest.xml \
+            --cov=test --cov-report=term-missing:skip-covered --cov-report=xml:test-output/coverage-reports/coverage.xml test | tee pytest-coverage.txt
+      - name: Upload Unit Test Output
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: main_package
+          path: test-output/**/*.xml # to be updated
+
+  report-test-result:
+    name: Get and upload Test Result
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: ${{ !cancelled() }}
+    needs:
+      - build-and-test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
