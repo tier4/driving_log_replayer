@@ -109,6 +109,7 @@ def get_autoware_launch(
     twist_source: str | None = None,
     perception_mode: str | None = None,
     use_perception_online_evaluator: str | None = None,
+    launch_system_monitor: str | None = None,
 ) -> launch.actions.IncludeLaunchDescription:
     # autoware launch
     autoware_launch_file = Path(
@@ -138,6 +139,8 @@ def get_autoware_launch(
         launch_args["perception_mode"] = perception_mode
     if isinstance(use_perception_online_evaluator, str):
         launch_args["use_perception_online_evaluator"] = use_perception_online_evaluator
+    if isinstance(launch_system_monitor, str):
+        launch_args["launch_system_monitor"] = launch_system_monitor
     return launch.actions.IncludeLaunchDescription(
         launch.launch_description_sources.AnyLaunchDescriptionSource(
             autoware_launch_file.as_posix(),
