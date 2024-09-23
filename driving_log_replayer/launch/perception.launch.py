@@ -30,15 +30,19 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/object_recognition/detection/.*/debug/pipeline_latency_ms$\
 |^/driving_log_replayer/.*\
 |^/sensing/camera/.*\
+|^/diagnostics$\
+|^/localization/kinematic_state$\
 """
 
 
 def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments = cmn.get_launch_arguments()
     launch_arguments.append(DeclareLaunchArgument("sensing", default_value="false"))
+    launch_arguments.append(DeclareLaunchArgument("launch_system_monitor", default_value="true"))
     autoware_launch = cmn.get_autoware_launch(
         sensing=LaunchConfiguration("sensing"),
         localization="false",
+        launch_system_monitor=LaunchConfiguration("launch_system_monitor"),
     )
     rviz_node = cmn.get_rviz("perception.rviz")
     evaluator_node = cmn.get_evaluator_node("perception")
