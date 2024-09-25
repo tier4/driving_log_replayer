@@ -46,6 +46,7 @@ def run(
         output_case = output_dir_by_time.joinpath(dataset_path.name)
         scenario_file = get_scenario_file(dataset_path, base_scenario_path)
         if scenario_file is None:
+            termcolor.cprint("No scenario file found: {scenario_file}", "red")
             continue
         scenario = load_scenario(scenario_file)
         launch_cmd = None
@@ -254,7 +255,10 @@ def cmd_use_t4_dataset(
     t4_dataset_base_path = dataset_path.joinpath("t4_dataset")
     try:
         t4_datasets: Datasets = Datasets(Datasets=scenario.Evaluation["Datasets"])
-    except ValidationError:
+    except ValidationError as e:
+        termcolor.cprint(
+            f"Can't parse Datasets from {t4_dataset_base_path} due to an exception: {e}", "red"
+        )
         return None
     else:
         is_database_evaluation = bool(len(t4_datasets.Datasets) > 1)
@@ -269,7 +273,8 @@ def cmd_use_t4_dataset(
             t4_dataset_path = t4_dataset_base_path.joinpath(key)
             if not t4_dataset_path.exists():
                 termcolor.cprint(
-                    f"t4_dataset: {key} does not exist",
+                    f"t4_dataset: {key} does not exist in {t4_dataset_base_path}."
+                    f"Checked path {t4_dataset_path}",
                     "red",
                 )
                 continue
