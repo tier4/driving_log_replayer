@@ -46,7 +46,7 @@ def run(
         output_case = output_dir_by_time.joinpath(dataset_path.name)
         scenario_file = get_scenario_file(dataset_path, base_scenario_path)
         if scenario_file is None:
-            termcolor.cprint("No scenario file found: {scenario_file}", "red")
+            termcolor.cprint(f"No scenario file found: {scenario_file}", "red")
             continue
         scenario = load_scenario(scenario_file)
         launch_cmd = None
