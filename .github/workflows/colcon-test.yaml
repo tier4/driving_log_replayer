@@ -67,7 +67,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: colcon-logs
-          path: ${{ steps.action_ros_ci_step.outputs.driving_log_replayer }}/coveragepy
+          path: ${{ steps.action_ros_ci_step.outputs.ros-workspace-directory-name }}/coveragepy
 
   report-test-result:
     name: Get and upload Test Result
@@ -81,7 +81,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          path: coveragepy
+          path: colcon-logs
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v3
         env:
