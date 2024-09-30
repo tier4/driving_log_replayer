@@ -59,13 +59,15 @@ jobs:
                 "mixin": ["coverage-pytest"]
               }
             }
+          colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/b8436aa16c0bdbc01081b12caa253cbf16e0fb82/index.yaml
+
 
       - name: Upload Unit Test Output
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: colcon-logs
-          path: ${{ steps.action_ros_ci_step.outputs.ros-workspace-directory-name }}/log
+          path: ${{ steps.action_ros_ci_step.outputs.driving_log_replayer }}/coveragepy
 
   report-test-result:
     name: Get and upload Test Result
@@ -79,7 +81,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          path: colcon-logs
+          path: coveragepy
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v3
         env:
