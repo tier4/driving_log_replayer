@@ -67,7 +67,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: colcon-logs
-          path: ${{ steps.action_ros_ci_step.outputs.ros-workspace-directory-name }}/coveragepy
+          path: ${{ steps.action_ros_ci_step.outputs.ros-workspace-directory-name }}/logs
 
   report-test-result:
     name: Get and upload Test Result
