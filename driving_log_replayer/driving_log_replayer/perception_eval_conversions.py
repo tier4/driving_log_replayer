@@ -369,10 +369,9 @@ class FrameDescriptionWriter:
                 "pose_covariance": [],
                 "twist_covariance": [],
             }
-        # TODO
-        # wait for covariance calculation implementation
-        pose_covariance = []
-        twist_covariance = []
+
+        pose_covariance = obj.pose_covariance.tolist() if obj.has_pose_covariance else []
+        twist_covariance = obj.twist_covariance.tolist() if obj.has_twist_covariance else []
         return {
             "pose_covariance": pose_covariance,
             "twist_covariance": twist_covariance,
