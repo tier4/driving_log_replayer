@@ -215,6 +215,8 @@ class PerceptionEvaluator(DLREvaluator):
                 velocity=eval_conversions.velocity_from_ros_msg(
                     perception_object.kinematics.twist_with_covariance.twist.linear,
                 ),
+                pose_covariance=perception_object.kinematics.pose_with_covariance.covariance,
+                twist_covariance=perception_object.kinematics.twist_with_covariance.covariance,
                 semantic_score=most_probable_classification.probability,
                 semantic_label=label,
                 uuid=uuid,
