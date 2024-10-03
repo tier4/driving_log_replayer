@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add covariance information in jsonl (`#568 <https://github.com/tier4/driving_log_replayer/issues/568>`_)
+* Contributors: Yoshi Ri
+
 2.3.3 (2024-09-17)
 ------------------
 * fix: ci
