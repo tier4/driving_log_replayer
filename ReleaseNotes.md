@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.3.4
+
+Minor Tweak
+
+| Module       | Feature | Brief summary                       | Pull request                                                   | Jira | Contributor                           |
+| ------------ | ------- | ----------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | result  | add covariance information in jsonl | [#568](https://github.com/tier4/driving_log_replayer/pull/568) | -    | [YoshiRi](https://github.com/YoshiRi) |
+
 ## Version 2.3.3
 
 Minor Tweak
