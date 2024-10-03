@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 2.3.5
+
+Minor Tweak
+
+| Module       | Feature        | Brief summary                                     | Pull request                                                   | Jira | Contributor                           |
+| ------------ | -------------- | ------------------------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | refactor       | evaluator di                                      | [#566](https://github.com/tier4/driving_log_replayer/pull/566) | -    | [ralwing](https://github.com/ralwing) |
+| `cli`        | error handling | Handle missing scenario file and invalid Datasets | [#567](https://github.com/tier4/driving_log_replayer/pull/567) | -    | [ralwing](https://github.com/ralwing) |
+
 ## Version 2.3.4
 
 Minor Tweak

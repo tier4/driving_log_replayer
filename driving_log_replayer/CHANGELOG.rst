@@ -2,6 +2,13 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* refactor: evaluator di (`#566 <https://github.com/tier4/driving_log_replayer/issues/566>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* fix: Handle missing scenario file and invalid Datasets (`#567 <https://github.com/tier4/driving_log_replayer/issues/567>`_)
+* Contributors: ralwing
+
 2.3.4 (2024-10-03)
 ------------------
 * feat: add covariance information in jsonl (`#568 <https://github.com/tier4/driving_log_replayer/issues/568>`_)
