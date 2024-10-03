@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.5 (2024-10-03)
+------------------
 * refactor: evaluator di (`#566 <https://github.com/tier4/driving_log_replayer/issues/566>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
 * fix: Handle missing scenario file and invalid Datasets (`#567 <https://github.com/tier4/driving_log_replayer/issues/567>`_)
