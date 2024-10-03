@@ -86,7 +86,7 @@ def remove_config(profile: str, filepath: Path | None = None) -> Config:
 
 def _load_from_file(filepath: Path) -> dict[str, dict]:
     if not filepath.exists():
-        error_msg = "Configuration file is not found."
+        error_msg = f"Configuration file {filepath} was not found."
         raise UserError(error_msg)
     with filepath.open() as fp:
         return toml.load(fp)
