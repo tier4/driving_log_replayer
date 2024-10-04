@@ -22,7 +22,6 @@ import driving_log_replayer.launch_common as cmn
 
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
-|^/sensing/camera/camera[67]/image_raw/compressed$\
 |^/perception/.*/traffic_signals$\
 |^/driving_log_replayer/.*\
 """
