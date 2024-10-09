@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 2.3.6
+
+Minor Tweak, Bug fix
+
+| Module   | Feature         | Brief summary                       | Pull request                                                   | Jira | Contributor                                   |
+| -------- | --------------- | ----------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `cli`    | package manager | use uv                              | [#571](https://github.com/tier4/driving_log_replayer/pull/571) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `yabloc` | error handling  | check DiagnosticArray status length | [#572](https://github.com/tier4/driving_log_replayer/pull/572) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.3.5
 
 Minor Tweak
