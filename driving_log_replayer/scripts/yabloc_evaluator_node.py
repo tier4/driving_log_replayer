@@ -38,6 +38,8 @@ class YabLocEvaluator(DLREvaluator):
         )
 
     def diagnostics_cb(self, msg: DiagnosticArray) -> None:
+        if len(msg.status) == 0:
+            return
         diag_status = msg.status[0]
         if diag_status.name != TARGET_DIAG_NAME:
             return
