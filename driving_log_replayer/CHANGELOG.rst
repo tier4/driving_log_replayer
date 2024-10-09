@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.6 (2024-10-09)
+------------------
 * feat: use uv (`#571 <https://github.com/tier4/driving_log_replayer/issues/571>`_)
 * fix: check DiagnosticArray status length (`#572 <https://github.com/tier4/driving_log_replayer/issues/572>`_)
 * Contributors: Hayato Mizushima
