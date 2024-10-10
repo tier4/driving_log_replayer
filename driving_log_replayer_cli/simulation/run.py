@@ -14,7 +14,13 @@ from driving_log_replayer_cli.core.scenario import load_scenario
 from driving_log_replayer_cli.core.scenario import Scenario
 from driving_log_replayer_cli.simulation.update import update_annotationless_scenario_condition
 
-USE_T4_DATASET = ("perception", "obstacle_segmentation", "perception_2d", "traffic_light")
+USE_T4_DATASET = (
+    "perception",
+    "obstacle_segmentation",
+    "perception_2d",
+    "traffic_light",
+    "ground_segmentation",
+)
 
 
 def run_with_log(cmd: list, log_path: Path) -> None:
