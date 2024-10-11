@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.7 (2024-10-11)
+------------------
 * chore: vscode settings (`#574 <https://github.com/tier4/driving_log_replayer/issues/574>`_)
 * fix: add record topics in localization scenario (`#575 <https://github.com/tier4/driving_log_replayer/issues/575>`_)
 * Contributors: SakodaShintaro, Hayato Mizushima
