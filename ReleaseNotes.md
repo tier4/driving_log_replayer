@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 2.3.7
+
+Minor Tweak
+
+| Module         | Feature     | Brief summary                              | Pull request                                                   | Jira | Contributor                                         |
+| -------------- | ----------- | ------------------------------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------------- |
+| `all`          | IDE setting | use vscode setting                         | [#574](https://github.com/tier4/driving_log_replayer/pull/574) | -    | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization` | bag record  | add record topics in localization scenario | [#575](https://github.com/tier4/driving_log_replayer/pull/575) | -    | [SakodaShintaro](https://github.com/SakodaShintaro) |
+
 ## Version 2.3.6
 
 Minor Tweak, Bug fix
