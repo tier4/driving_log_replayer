@@ -61,7 +61,6 @@ jobs:
             }
           colcon-mixin-repository: https://raw.githubusercontent.com/colcon/colcon-mixin-repository/b8436aa16c0bdbc01081b12caa253cbf16e0fb82/index.yaml
 
-
       - name: Upload Unit Test Output
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
@@ -69,21 +68,19 @@ jobs:
           name: colcon-logs
           path: ${{ steps.action_ros_ci_step.outputs.ros-workspace-directory-name }}/log
 
-  report-test-result:
-    name: Get and upload Test Result
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    if: ${{ !cancelled() }}
-    needs:
-      - build-and-test
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
+      - name: fix paths for coverage file
+        run: sed -E -i 's/^([[:space:]]*<source>[[:space:]]*)(.*\/)(driving_log_replayer\/driving_log_replayer)/\1.\/driving_log_replayer/' /__w/driving_log_replayer/driving_log_replayer/ros_ws/build/driving_log_replayer/pytest_cov/driving_log_replayer/coverage.xml
+
+      - name: Upload Coverage File
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
-          path: colcon-logs
+          name: colcon-logs
+          path: /__w/driving_log_replayer/driving_log_replayer/ros_ws/build/driving_log_replayer/pytest_cov/driving_log_replayer/
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
