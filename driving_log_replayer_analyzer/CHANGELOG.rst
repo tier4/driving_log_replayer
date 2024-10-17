@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* ci: add sonar cloud (`#577 <https://github.com/tier4/driving_log_replayer/issues/577>`_)
+* Contributors: chris-tier4, Hayato Mizushima
+
 2.3.7 (2024-10-11)
 ------------------
 * chore: vscode settings (`#574 <https://github.com/tier4/driving_log_replayer/issues/574>`_)
