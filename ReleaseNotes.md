@@ -414,9 +414,10 @@ Minor Tweak, Bug fix
 ## Version 1.14.7
 
 Bug fix
-| Module | Feature | Brief summary | Pull request | Jira | Contributor |
+
+| Module                      | Feature | Brief summary   | Pull request                                                   | Jira | Contributor                             |
 | --------------------------- | ------- | --------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
-| `annotationless_perception` | metrics | fix min metrics | [#400](https://github.com/tier4/driving_log_replayer/pull/400) | - | [kosuke55](https://github.com/kosuke55) |
+| `annotationless_perception` | metrics | fix min metrics | [#400](https://github.com/tier4/driving_log_replayer/pull/400) | -    | [kosuke55](https://github.com/kosuke55) |
 
 ## Version 1.14.6
 
