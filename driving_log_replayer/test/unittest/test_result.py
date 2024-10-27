@@ -41,7 +41,7 @@ class SampleConditions(BaseModel):
     PassRate: float
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_writer() -> ResultWriter:
     json_path = "$HOME/dlr_result.json"
     ros_clock = ROSClock()

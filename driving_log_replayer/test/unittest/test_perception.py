@@ -79,7 +79,7 @@ def test_filter_distance_min_max_reversed() -> None:
         Filter(Distance="2.0-1.0")
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_frame_result() -> PerceptionFrameResult:
     scenario: PerceptionScenario = load_sample_scenario("perception", PerceptionScenario)
     evaluation_config_dict = scenario.Evaluation.PerceptionEvaluationConfig[
@@ -123,7 +123,7 @@ def create_frame_result() -> PerceptionFrameResult:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_tp_normal() -> Perception:
     return Perception(
         name="criteria0",
@@ -138,7 +138,7 @@ def create_tp_normal() -> Perception:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_tp_hard() -> Perception:
     return Perception(
         name="criteria0",
@@ -153,7 +153,7 @@ def create_tp_hard() -> Perception:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
     dynamic_obj = DynamicObject(
         123,
