@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Callable
 import logging
 from pathlib import Path
 
@@ -47,8 +48,13 @@ import driving_log_replayer.perception_eval_conversions as eval_conversions
 
 
 class PerceptionEvaluator(DLREvaluator):
-    def __init__(self, name: str) -> None:
-        super().__init__(name, PerceptionScenario, PerceptionResult)
+    def __init__(
+        self,
+        name: str,
+        scenario_class: Callable = PerceptionScenario,
+        result_class: Callable = PerceptionResult,
+    ) -> None:
+        super().__init__(name, scenario_class, result_class)
         self._scenario: PerceptionScenario
         self._result: PerceptionResult
 
@@ -215,6 +221,8 @@ class PerceptionEvaluator(DLREvaluator):
                 velocity=eval_conversions.velocity_from_ros_msg(
                     perception_object.kinematics.twist_with_covariance.twist.linear,
                 ),
+                pose_covariance=perception_object.kinematics.pose_with_covariance.covariance,
+                twist_covariance=perception_object.kinematics.twist_with_covariance.covariance,
                 semantic_score=most_probable_classification.probability,
                 semantic_label=label,
                 uuid=uuid,

@@ -2,6 +2,51 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.9 (2024-10-28)
+------------------
+* feat: update pre commit and ruff (`#579 <https://github.com/tier4/driving_log_replayer/issues/579>`_)
+* Contributors: Hayato Mizushima
+
+2.3.8 (2024-10-17)
+------------------
+* ci: add sonar cloud (`#577 <https://github.com/tier4/driving_log_replayer/issues/577>`_)
+* Contributors: chris-tier4, Hayato Mizushima
+
+2.3.7 (2024-10-11)
+------------------
+* chore: vscode settings (`#574 <https://github.com/tier4/driving_log_replayer/issues/574>`_)
+* fix: add record topics in localization scenario (`#575 <https://github.com/tier4/driving_log_replayer/issues/575>`_)
+* Contributors: SakodaShintaro, Hayato Mizushima
+
+2.3.6 (2024-10-09)
+------------------
+* feat: use uv (`#571 <https://github.com/tier4/driving_log_replayer/issues/571>`_)
+* fix: check DiagnosticArray status length (`#572 <https://github.com/tier4/driving_log_replayer/issues/572>`_)
+* Contributors: Hayato Mizushima
+
+2.3.5 (2024-10-03)
+------------------
+* refactor: evaluator di (`#566 <https://github.com/tier4/driving_log_replayer/issues/566>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* fix: Handle missing scenario file and invalid Datasets (`#567 <https://github.com/tier4/driving_log_replayer/issues/567>`_)
+* Contributors: ralwing
+
+2.3.4 (2024-10-03)
+------------------
+* feat: add covariance information in jsonl (`#568 <https://github.com/tier4/driving_log_replayer/issues/568>`_)
+* Contributors: Yoshi Ri
+
+2.3.3 (2024-09-17)
+------------------
+* fix: ci
+* docs: add v2 link
+* Contributors: Hayato Mizushima
+
+2.3.2 (2024-09-10)
+------------------
+* chore: update requirements.txt
+* Contributors: Hayato Mizushima
+
 2.3.1 (2024-08-26)
 ------------------
 * docs: add use case pages (`#552 <https://github.com/tier4/driving_log_replayer/issues/552>`_)

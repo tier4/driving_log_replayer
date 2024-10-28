@@ -39,7 +39,7 @@ def test_scenario() -> None:
     assert scenario.Evaluation.Conditions.TargetCameras["cam_front"] == 0
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_frame_result() -> PerceptionFrameResult:
     target_labels = ["car", "truck", "bicycle", "pedestrian", "motorbike"]
     evaluation_config_dict = {
@@ -84,7 +84,7 @@ def create_frame_result() -> PerceptionFrameResult:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_tp_normal() -> Perception:
     return Perception(
         name="cam_front",
@@ -99,7 +99,7 @@ def create_tp_normal() -> Perception:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_tp_hard() -> Perception:
     return Perception(
         name="cam_front",
@@ -114,7 +114,7 @@ def create_tp_hard() -> Perception:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
     dynamic_obj_2d = DynamicObject2D(
         123,

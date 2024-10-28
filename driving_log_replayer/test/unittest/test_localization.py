@@ -95,7 +95,7 @@ def test_availability_fail_key_not_found() -> None:
     }
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_convergence() -> Convergence:
     condition = ConvergenceCondition(
         AllowableDistance=0.2,
@@ -162,7 +162,7 @@ def test_convergence_fail(create_convergence: Callable) -> None:
     assert pub_msg == Float64(data=0.3)
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_reliability() -> Reliability:
     condition: ReliabilityCondition = ReliabilityCondition(
         Method="NVTL",

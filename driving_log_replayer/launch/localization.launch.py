@@ -19,10 +19,16 @@ import driving_log_replayer.launch_common as cmn
 RECORD_TOPIC_REGEX = """^/clock$\
 |^/tf$\
 |^/diagnostics$\
+|^/localization/pose_estimator/exe_time_ms$\
+|^/localization/pose_estimator/iteration_num$\
 |^/localization/pose_estimator/transform_probability$\
 |^/localization/pose_estimator/nearest_voxel_transformation_likelihood$\
+|^/localization/pose_estimator/initial_to_result_relative_pose$\
+|^/localization/pose_estimator/ndt_marker$\
 |^/localization/pose_estimator/pose$\
+|^/localization/pose_estimator/pose_with_covariance$\
 |^/localization/kinematic_state$\
+|^/localization/reference_kinematic_state$\
 |^/localization/util/downsample/pointcloud$\
 |^/localization/pose_estimator/points_aligned$\
 |^/driving_log_replayer/.*\

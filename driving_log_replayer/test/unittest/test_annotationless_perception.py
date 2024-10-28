@@ -131,7 +131,7 @@ def test_set_pass_range_from_launch_arg() -> None:
     assert cond.ClassConditions["BUS"].PassRange == {"max": (0.2, 1.3)}
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_obj_metrics() -> ObjectMetrics:
     condition = ClassConditionValue(
         Threshold={"lateral_deviation": DiagValue(min=1.0, max=10.0, mean=5.0)},

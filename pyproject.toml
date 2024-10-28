@@ -1,6 +1,6 @@
 [project]
 name = "driving-log-replayer"
-version = "2.3.1"
+version = "2.3.9"
 description = "command line tool for driving_log_replayer"
 authors = [
   { name = "Hayato Mizushima", email = "hayato.mizushima@tier4.jp" },
@@ -17,12 +17,12 @@ dependencies = [
     "click>=8.1.7",
     "pandas>=2.2.0",
     "plotly>=5.19.0",
-    "kaleido>=0.2.1",
     "simplejson>=3.19.2",
     "pydantic>=2.6.1",
+    "kaleido>=0.2.1",
 ]
 readme = "README.md"
-requires-python = ">= 3.10"
+requires-python = ">=3.10,<3.11"
 license = "Apache-2.0"
 
 [project.scripts]
@@ -42,11 +42,11 @@ docs = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.rye]
-# https://rye-up.com/guide/pyproject
-managed = false
+[tool.uv]
+# https://github.com/astral-sh/uv/issues/7703
+constraint-dependencies = ["kaleido!=0.2.1.post1"]
 dev-dependencies = [
-    "ruff>=0.5.7",
+    "ruff==0.7.0",
     "pytest>=8.1.1",
 ]
 

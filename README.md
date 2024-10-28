@@ -2,6 +2,12 @@
 
 Driving Log Replayer is a ROS package that evaluates the functionality of Autoware.Universe
 
+This repository is currently in maintenance mode.
+Bug fixes only, no new features will be added.
+Please use v2 below.
+
+<https://github.com/tier4/driving_log_replayer_v2>
+
 ## Requirements
 
 - ROS 2 humble

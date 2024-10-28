@@ -1,5 +1,78 @@
 # Release Notes
 
+## Version 2.3.9
+
+Minor Tweak
+
+| Module | Feature          | Brief summary              | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ---------------- | -------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | formatter linter | update pre-commit add ruff | [#579](https://github.com/tier4/driving_log_replayer/pull/579) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.3.8
+
+Minor Tweak
+
+| Module | Feature | Brief summary   | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ------- | --------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | CI      | add sonar cloud | [#577](https://github.com/tier4/driving_log_replayer/pull/577) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.3.7
+
+Minor Tweak
+
+| Module         | Feature     | Brief summary                              | Pull request                                                   | Jira | Contributor                                         |
+| -------------- | ----------- | ------------------------------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------------- |
+| `all`          | IDE setting | use vscode setting                         | [#574](https://github.com/tier4/driving_log_replayer/pull/574) | -    | [hayato-m126](https://github.com/hayato-m126)       |
+| `localization` | bag record  | add record topics in localization scenario | [#575](https://github.com/tier4/driving_log_replayer/pull/575) | -    | [SakodaShintaro](https://github.com/SakodaShintaro) |
+
+## Version 2.3.6
+
+Minor Tweak, Bug fix
+
+| Module   | Feature         | Brief summary                       | Pull request                                                   | Jira | Contributor                                   |
+| -------- | --------------- | ----------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `cli`    | package manager | use uv                              | [#571](https://github.com/tier4/driving_log_replayer/pull/571) | -    | [hayato-m126](https://github.com/hayato-m126) |
+| `yabloc` | error handling  | check DiagnosticArray status length | [#572](https://github.com/tier4/driving_log_replayer/pull/572) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.3.5
+
+Minor Tweak
+
+| Module       | Feature        | Brief summary                                     | Pull request                                                   | Jira | Contributor                           |
+| ------------ | -------------- | ------------------------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | refactor       | evaluator di                                      | [#566](https://github.com/tier4/driving_log_replayer/pull/566) | -    | [ralwing](https://github.com/ralwing) |
+| `cli`        | error handling | Handle missing scenario file and invalid Datasets | [#567](https://github.com/tier4/driving_log_replayer/pull/567) | -    | [ralwing](https://github.com/ralwing) |
+
+## Version 2.3.4
+
+Minor Tweak
+
+| Module       | Feature | Brief summary                       | Pull request                                                   | Jira | Contributor                           |
+| ------------ | ------- | ----------------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | result  | add covariance information in jsonl | [#568](https://github.com/tier4/driving_log_replayer/pull/568) | -    | [YoshiRi](https://github.com/YoshiRi) |
+
+## Version 2.3.3
+
+Minor Tweak
+
+| Module | Feature       | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | ci            | fix colcon test              | [#561](https://github.com/tier4/driving_log_replayer/pull/561) | RT1-7842 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | ci            | use shallow clone            | [#562](https://github.com/tier4/driving_log_replayer/pull/562) | RT1-7842 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | documentation | add transforms3d version fix | [#563](https://github.com/tier4/driving_log_replayer/pull/563) | RT1-7887 | [hayato-m126](https://github.com/hayato-m126) |
+
+## Version 2.3.2
+
+Minor Tweak
+
+| Module | Feature       | Brief summary                | Pull request                                                   | Jira     | Contributor                                   |
+| ------ | ------------- | ---------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------- |
+| `all`  | documentation | update usage flow            | [#554](https://github.com/tier4/driving_log_replayer/pull/554) | RT1-7788 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency    | delete pytest version fix    | [#555](https://github.com/tier4/driving_log_replayer/pull/555) | RT1-7813 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency    | add transforms3d version fix | [#557](https://github.com/tier4/driving_log_replayer/pull/557) | RT1-7813 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency    | delete numpy version fix     | [#558](https://github.com/tier4/driving_log_replayer/pull/558) | RT1-7826 | [hayato-m126](https://github.com/hayato-m126) |
+| `all`  | dependency    | add numpy version fix < 2    | [#560](https://github.com/tier4/driving_log_replayer/pull/560) | RT1-7826 | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.3.1
 
 Documentation
@@ -349,9 +422,10 @@ Minor Tweak, Bug fix
 ## Version 1.14.7
 
 Bug fix
-| Module | Feature | Brief summary | Pull request | Jira | Contributor |
+
+| Module                      | Feature | Brief summary   | Pull request                                                   | Jira | Contributor                             |
 | --------------------------- | ------- | --------------- | -------------------------------------------------------------- | ---- | --------------------------------------- |
-| `annotationless_perception` | metrics | fix min metrics | [#400](https://github.com/tier4/driving_log_replayer/pull/400) | - | [kosuke55](https://github.com/kosuke55) |
+| `annotationless_perception` | metrics | fix min metrics | [#400](https://github.com/tier4/driving_log_replayer/pull/400) | -    | [kosuke55](https://github.com/kosuke55) |
 
 ## Version 1.14.6
 
