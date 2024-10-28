@@ -82,7 +82,7 @@ def test_polygon_clockwise_ng() -> None:
         )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_frame_result() -> SensingFrameResult:
     return SensingFrameResult(
         sensing_frame_config=SensingFrameConfig(
@@ -96,7 +96,7 @@ def create_frame_result() -> SensingFrameResult:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_detection() -> Detection:
     return Detection(
         condition=DetectionCondition(PassRate=95.0, BoundingBoxConfig=None),
@@ -105,7 +105,7 @@ def create_detection() -> Detection:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_non_detection() -> NonDetection:
     return NonDetection(
         condition=NonDetectionCondition(
@@ -121,7 +121,7 @@ def create_non_detection() -> NonDetection:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_dynamic_object() -> DynamicObjectWithSensingResult:
     dynamic_obj = DynamicObject(
         unix_time=123,
@@ -139,7 +139,7 @@ def create_dynamic_object() -> DynamicObjectWithSensingResult:
     return DynamicObjectWithSensingResult(dynamic_obj, pointcloud, 1.0, 1)
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_distance_dict() -> dict:
     return {
         "0-1": 0,
@@ -245,7 +245,7 @@ def create_distance_dict() -> dict:
     }
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_annotation_dict() -> dict:
     return {
         "Scale": {

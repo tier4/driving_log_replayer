@@ -25,7 +25,7 @@ class SampleEvaluator(DLREvaluator):
         pass
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_sample_evaluator() -> DLREvaluator:
     return SampleEvaluator("sample_evaluator")
 

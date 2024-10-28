@@ -44,7 +44,7 @@ def test_scenario() -> None:
     assert scenario.Evaluation.Conditions.Criterion[1].CriteriaLevel == "easy"
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_frame_result() -> PerceptionFrameResult:
     target_labels = ["green", "red", "yellow", "unknown"]
     evaluation_config_dict = {
@@ -88,7 +88,7 @@ def create_frame_result() -> PerceptionFrameResult:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_tp_normal() -> Perception:
     return Perception(
         name="criteria0",
@@ -103,7 +103,7 @@ def create_tp_normal() -> Perception:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_tp_hard() -> Perception:
     return Perception(
         name="criteria0",
@@ -118,7 +118,7 @@ def create_tp_hard() -> Perception:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def create_dynamic_object() -> DynamicObjectWithPerceptionResult:
     dynamic_obj_2d = DynamicObject2D(
         123,

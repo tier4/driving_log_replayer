@@ -46,7 +46,7 @@ build-backend = "hatchling.build"
 # https://github.com/astral-sh/uv/issues/7703
 constraint-dependencies = ["kaleido!=0.2.1.post1"]
 dev-dependencies = [
-    "ruff>=0.5.7",
+    "ruff==0.7.0",
     "pytest>=8.1.1",
 ]
 
