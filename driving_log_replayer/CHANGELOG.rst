@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: update pre commit and ruff (`#579 <https://github.com/tier4/driving_log_replayer/issues/579>`_)
+* Contributors: Hayato Mizushima
+
 2.3.8 (2024-10-17)
 ------------------
 * ci: add sonar cloud (`#577 <https://github.com/tier4/driving_log_replayer/issues/577>`_)
