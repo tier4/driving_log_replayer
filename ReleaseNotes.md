@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.3.9
+
+Minor Tweak
+
+| Module | Feature          | Brief summary              | Pull request                                                   | Jira | Contributor                                   |
+| ------ | ---------------- | -------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | formatter linter | update pre-commit add ruff | [#579](https://github.com/tier4/driving_log_replayer/pull/579) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.3.8
 
 Minor Tweak
