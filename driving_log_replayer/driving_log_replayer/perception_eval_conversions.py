@@ -22,7 +22,7 @@ from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
-import jsonschema
+from jsonschema.validators import validator_for
 import numpy as np
 from perception_eval.common import ObjectType
 from perception_eval.common.object import DynamicObject
@@ -315,15 +315,19 @@ class FrameDescriptionWriter:
             )
             with schema_file_path.open() as file:
                 cls.schema = json.load(file)
+            # Compile the schema into a validator instance
+            validator_cls = validator_for(cls.schema)
+            validator_cls.check_schema(cls.schema)
+            cls.validator = validator_cls(cls.schema)
 
     @classmethod
     def is_object_structure_valid(cls, objdata: dict | None) -> bool:
         cls.load_schema()
         try:
-            jsonschema.validate(objdata, cls.schema)
+            cls.validator.validate(objdata)
+            return True
         except jsonschema.exceptions.ValidationError:
             return False
-        return True
 
     @staticmethod
     def object_to_description(obj: ObjectType | None) -> dict:
