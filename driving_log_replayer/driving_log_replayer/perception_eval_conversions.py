@@ -316,7 +316,6 @@ class FrameDescriptionWriter:
             )
             with schema_file_path.open() as file:
                 cls.schema = json.load(file)
-            # Compile the schema into a validation function
             cls.validate_func = fastjsonschema.compile(cls.schema)
 
     @classmethod
