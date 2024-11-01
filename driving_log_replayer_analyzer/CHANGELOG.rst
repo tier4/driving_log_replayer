@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix: condition to judge diag name (`#582 <https://github.com/tier4/driving_log_replayer/issues/582>`_)
+* Contributors: Hayato Mizushima
+
 2.3.9 (2024-10-28)
 ------------------
 * feat: update pre commit and ruff (`#579 <https://github.com/tier4/driving_log_replayer/issues/579>`_)
