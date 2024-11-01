@@ -17,12 +17,12 @@ from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Time
+import fastjsonschema
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
-import jsonschema
 import numpy as np
 from perception_eval.common import ObjectType
 from perception_eval.common.object import DynamicObject
@@ -305,25 +305,28 @@ def fill_xyzw_quat(q: Quaternion | None) -> dict:
 # utils for writing each perception frame result to a file
 class FrameDescriptionWriter:
     schema: dict = None
+    validate_func = None
 
     @classmethod
     def load_schema(cls) -> None:
-        if cls.schema is None:
+        if cls.schema is None or cls.validate_func is None:
             package_share_directory = get_package_share_directory("driving_log_replayer")
             schema_file_path = (
                 Path(package_share_directory) / "config" / "object_output_schema.json"
             )
             with schema_file_path.open() as file:
                 cls.schema = json.load(file)
+            cls.validate_func = fastjsonschema.compile(cls.schema)
 
     @classmethod
     def is_object_structure_valid(cls, objdata: dict | None) -> bool:
         cls.load_schema()
         try:
-            jsonschema.validate(objdata, cls.schema)
-        except jsonschema.exceptions.ValidationError:
+            cls.validate_func(objdata)
+        except fastjsonschema.exceptions.JsonSchemaException:
             return False
-        return True
+        else:
+            return True
 
     @staticmethod
     def object_to_description(obj: ObjectType | None) -> dict:
