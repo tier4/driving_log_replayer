@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.3.10
+
+Bug fix
+
+| Module                  | Feature   | Brief summary                    | Pull request                                                   | Jira | Contributor                                   |
+| ----------------------- | --------- | -------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `obstacle_segmentation` | condition | fix condition to judge diag name | [#582](https://github.com/tier4/driving_log_replayer/pull/582) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.3.9
 
 Minor Tweak
