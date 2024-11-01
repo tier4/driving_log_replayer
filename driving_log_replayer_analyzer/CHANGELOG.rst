@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.10 (2024-11-01)
+-------------------
 * fix: condition to judge diag name (`#582 <https://github.com/tier4/driving_log_replayer/issues/582>`_)
 * Contributors: Hayato Mizushima
 
