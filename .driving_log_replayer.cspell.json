@@ -38,6 +38,7 @@
     "youtalk",
     "UMiho",
     "nuscenes",
-    "devkit"
+    "devkit",
+    "fastjsonschema"
   ]
 }
