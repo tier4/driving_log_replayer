@@ -17,12 +17,12 @@ from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
 from builtin_interfaces.msg import Time
+import fastjsonschema
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Polygon as RosPolygon
 from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Quaternion as RosQuaternion
 from geometry_msgs.msg import Vector3
-import fastjsonschema
 import numpy as np
 from perception_eval.common import ObjectType
 from perception_eval.common.object import DynamicObject
