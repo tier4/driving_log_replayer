@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.3.11
+
+Minor Tweak
+
+| Module       | Feature     | Brief summary               | Pull request                                                   | Jira | Contributor                           |
+| ------------ | ----------- | --------------------------- | -------------------------------------------------------------- | ---- | ------------------------------------- |
+| `perception` | performance | perf: 2x processing speedup | [#581](https://github.com/tier4/driving_log_replayer/pull/581) | -    | [ralwing](https://github.com/ralwing) |
+
 ## Version 2.3.10
 
 Bug fix
