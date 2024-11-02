@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.3.11 (2024-11-02)
+-------------------
 * perf: 2x processing speedup (`#581 <https://github.com/tier4/driving_log_replayer/issues/581>`_)
   Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
 * Contributors: ralwing
