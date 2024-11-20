@@ -1,0 +1,7011 @@
+[
+  {
+    "Condition": {
+      "Method": "annotated_rosbag",
+      "ground_label": 1,
+      "obstacle_label": 0,
+      "accuracy_min": 0.7,
+      "accuracy_max": 1,
+      "PassRate": 99
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "NoData"
+    },
+    "Stamp": {
+      "System": 1721277815.514656
+    },
+    "Frame": {}
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: Ground Segmentation (Success): 1 / 1 -> 100.00"
+    },
+    "Stamp": {
+      "System": 1721277824.1680663,
+      "ROS": 1701349187.3502464
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 6438,
+          "FP": 2129,
+          "TN": 19956,
+          "FN": 225,
+          "Accuracy": 0.918116042855152,
+          "Precision": 0.751488268938943,
+          "Recall": 0.9662314272849922,
+          "Specificity": 0.9035997283223868,
+          "F1-score": 0.8454366381648216
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: Ground Segmentation (Success): 2 / 2 -> 100.00"
+    },
+    "Stamp": {
+      "System": 1721277824.2289486,
+      "ROS": 1701349187.4502761
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 6438,
+          "FP": 2096,
+          "TN": 19972,
+          "FN": 243,
+          "Accuracy": 0.918640648370375,
+          "Precision": 0.7543941879540572,
+          "Recall": 0.9636281993713371,
+          "Specificity": 0.90502084466195,
+          "F1-score": 0.8462701281137275
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": true,
+      "Summary": "Passed: Ground Segmentation (Success): 3 / 3 -> 100.00"
+    },
+    "Stamp": {
+      "System": 1721277825.2431471,
+      "ROS": 1701349188.465361
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Success",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 18011,
+          "FP": 2299,
+          "TN": 36979,
+          "FN": 247,
+          "Accuracy": 0.9557494438264722,
+          "Precision": 0.8868045297882774,
+          "Recall": 0.98647168364552,
+          "Specificity": 0.9414685065431005,
+          "F1-score": 0.93398672469604
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 3 / 4 -> 75.00"
+    },
+    "Stamp": {
+      "System": 1721277825.6657972,
+      "ROS": 1701349188.8902705
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 41375,
+          "FP": 112935,
+          "TN": 99721,
+          "FN": 361,
+          "Accuracy": 0.5546400830214785,
+          "Precision": 0.2681290907912642,
+          "Recall": 0.9913503929461353,
+          "Specificity": 0.46893104356331333,
+          "F1-score": 0.4220948144488015
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 4 / 5 -> 80.00"
+    },
+    "Stamp": {
+      "System": 1721277825.7089875,
+      "ROS": 1701349188.9302492
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 18032,
+          "FP": 2164,
+          "TN": 37097,
+          "FN": 240,
+          "Accuracy": 0.9582152851407002,
+          "Precision": 0.8928500693206533,
+          "Recall": 0.9868651488616409,
+          "Specificity": 0.9448816892081175,
+          "F1-score": 0.9375064988583038
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 5 / 6 -> 83.33"
+    },
+    "Stamp": {
+      "System": 1721277825.9896543,
+      "ROS": 1701349189.2102613
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 18061,
+          "FP": 2171,
+          "TN": 37051,
+          "FN": 246,
+          "Accuracy": 0.957986406855671,
+          "Precision": 0.8926947410043452,
+          "Recall": 0.9865625170699679,
+          "Specificity": 0.944648411605729,
+          "F1-score": 0.9372843093509866
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 6 / 7 -> 85.71"
+    },
+    "Stamp": {
+      "System": 1721277826.7317996,
+      "ROS": 1701349189.9553673
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 18087,
+          "FP": 2167,
+          "TN": 37073,
+          "FN": 197,
+          "Accuracy": 0.9589041095890394,
+          "Precision": 0.8930087883874747,
+          "Recall": 0.9892255523955318,
+          "Specificity": 0.9447757390417917,
+          "F1-score": 0.9386579479495031
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 6 / 8 -> 75.00"
+    },
+    "Stamp": {
+      "System": 1721277827.194216,
+      "ROS": 1701349190.415366
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 40635,
+          "FP": 113679,
+          "TN": 99550,
+          "FN": 430,
+          "Accuracy": 0.5512713630679448,
+          "Precision": 0.26332672343403696,
+          "Recall": 0.9895287958115159,
+          "Specificity": 0.466868953097374,
+          "F1-score": 0.4159607736425775
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 6 / 9 -> 66.67"
+    },
+    "Stamp": {
+      "System": 1721277827.7384567,
+      "ROS": 1701349190.9603007
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 51915,
+          "FP": 112962,
+          "TN": 117826,
+          "FN": 390,
+          "Accuracy": 0.5995944795526555,
+          "Precision": 0.31487108571844447,
+          "Recall": 0.992543733868653,
+          "Specificity": 0.5105378095914863,
+          "F1-score": 0.47807829374468547
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 10 -> 70.00"
+    },
+    "Stamp": {
+      "System": 1721277827.7596228,
+      "ROS": 1701349190.980296
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 17979,
+          "FP": 2366,
+          "TN": 36898,
+          "FN": 282,
+          "Accuracy": 0.9539678400695333,
+          "Precision": 0.8837060702875357,
+          "Recall": 0.9845572531624721,
+          "Specificity": 0.9397412387938036,
+          "F1-score": 0.9314096253969627
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 11 -> 63.64"
+    },
+    "Stamp": {
+      "System": 1721277828.7014842,
+      "ROS": 1701349191.9252956
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 51790,
+          "FP": 113764,
+          "TN": 117146,
+          "FN": 444,
+          "Accuracy": 0.59664340406295,
+          "Precision": 0.3128284426833539,
+          "Recall": 0.9914997894091951,
+          "Specificity": 0.5073231995149623,
+          "F1-score": 0.47560012485563324
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 12 -> 58.33"
+    },
+    "Stamp": {
+      "System": 1721277829.2548902,
+      "ROS": 1701349192.4753149
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 51941,
+          "FP": 112550,
+          "TN": 118213,
+          "FN": 386,
+          "Accuracy": 0.6010597336536081,
+          "Precision": 0.315768035941176,
+          "Recall": 0.9926233111013415,
+          "Specificity": 0.5122701646277781,
+          "F1-score": 0.4791207371715459
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 13 -> 53.85"
+    },
+    "Stamp": {
+      "System": 1721277829.9587288,
+      "ROS": 1701349193.1803658
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 51535,
+          "FP": 112097,
+          "TN": 118919,
+          "FN": 385,
+          "Accuracy": 0.6024471965391465,
+          "Precision": 0.3149445096313678,
+          "Recall": 0.9925847457627099,
+          "Specificity": 0.5147652110676315,
+          "F1-score": 0.47816768107981883
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 14 -> 50.00"
+    },
+    "Stamp": {
+      "System": 1721277830.4947758,
+      "ROS": 1701349193.7153854
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 50036,
+          "FP": 111873,
+          "TN": 120401,
+          "FN": 445,
+          "Accuracy": 0.6027727184311504,
+          "Precision": 0.3090377928342462,
+          "Recall": 0.991184802202807,
+          "Specificity": 0.5183576293515415,
+          "F1-score": 0.47117095904846457
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 15 -> 46.67"
+    },
+    "Stamp": {
+      "System": 1721277831.5177274,
+      "ROS": 1701349194.7302742
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 49384,
+          "FP": 108653,
+          "TN": 123963,
+          "FN": 347,
+          "Accuracy": 0.6139502102023394,
+          "Precision": 0.3124837854426493,
+          "Recall": 0.9930224608393134,
+          "Specificity": 0.5329083124118718,
+          "F1-score": 0.47537638131201354
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 16 -> 43.75"
+    },
+    "Stamp": {
+      "System": 1721277831.7258277,
+      "ROS": 1701349194.9453766
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 50310,
+          "FP": 107838,
+          "TN": 123859,
+          "FN": 335,
+          "Accuracy": 0.6168724454739285,
+          "Precision": 0.31811973594354637,
+          "Recall": 0.9933853292526389,
+          "Specificity": 0.5345731709948768,
+          "F1-score": 0.48191270776476125
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 17 -> 41.18"
+    },
+    "Stamp": {
+      "System": 1721277832.2204595,
+      "ROS": 1701349195.4454029
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 51395,
+          "FP": 103824,
+          "TN": 126655,
+          "FN": 382,
+          "Accuracy": 0.6308103282126861,
+          "Precision": 0.3311128147971574,
+          "Recall": 0.9926222067713444,
+          "Specificity": 0.5495294582152819,
+          "F1-score": 0.4965796440135788
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 18 -> 38.89"
+    },
+    "Stamp": {
+      "System": 1721277832.461849,
+      "ROS": 1701349195.685279
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 51716,
+          "FP": 102719,
+          "TN": 127335,
+          "FN": 490,
+          "Accuracy": 0.6343477644724719,
+          "Precision": 0.3348722763622234,
+          "Recall": 0.9906141056583515,
+          "Specificity": 0.553500482495414,
+          "F1-score": 0.5005395831040141
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 7 / 19 -> 36.84"
+    },
+    "Stamp": {
+      "System": 1721277832.7108111,
+      "ROS": 1701349195.930272
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 51977,
+          "FP": 101500,
+          "TN": 128302,
+          "FN": 434,
+          "Accuracy": 0.6388047325955925,
+          "Precision": 0.33866312216162664,
+          "Recall": 0.9917192955677224,
+          "Specificity": 0.5583154193610149,
+          "F1-score": 0.5049055796947178
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 8 / 20 -> 40.00"
+    },
+    "Stamp": {
+      "System": 1721277832.750365,
+      "ROS": 1701349195.9752798
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 16330,
+          "FP": 1873,
+          "TN": 39025,
+          "FN": 342,
+          "Accuracy": 0.9615250998784072,
+          "Precision": 0.8971048728231562,
+          "Recall": 0.9794865642994184,
+          "Specificity": 0.9542031395178224,
+          "F1-score": 0.9364874551472236
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 9 / 21 -> 42.86"
+    },
+    "Stamp": {
+      "System": 1721277832.9892657,
+      "ROS": 1701349196.2102783
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 16448,
+          "FP": 1946,
+          "TN": 38838,
+          "FN": 338,
+          "Accuracy": 0.960326558971685,
+          "Precision": 0.8942046319451947,
+          "Recall": 0.9798641725247172,
+          "Specificity": 0.9522852098862276,
+          "F1-score": 0.9350767481024587
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 9 / 22 -> 40.91"
+    },
+    "Stamp": {
+      "System": 1721277834.2115266,
+      "ROS": 1701349197.43542
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 50131,
+          "FP": 93208,
+          "TN": 138851,
+          "FN": 405,
+          "Accuracy": 0.6687379465312547,
+          "Precision": 0.3497373359657872,
+          "Recall": 0.9919859110337166,
+          "Specificity": 0.5983435247070786,
+          "F1-score": 0.5171476466410175
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 9 / 23 -> 39.13"
+    },
+    "Stamp": {
+      "System": 1721277834.424604,
+      "ROS": 1701349197.6452894
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 33034,
+          "FP": 90798,
+          "TN": 101540,
+          "FN": 161,
+          "Accuracy": 0.5966931668536309,
+          "Precision": 0.2667646488791263,
+          "Recall": 0.9951498719686669,
+          "Specificity": 0.5279247990516692,
+          "F1-score": 0.42074292952654235
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 10 / 24 -> 41.67"
+    },
+    "Stamp": {
+      "System": 1721277834.4698954,
+      "ROS": 1701349197.6953187
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 16963,
+          "FP": 1508,
+          "TN": 38716,
+          "FN": 351,
+          "Accuracy": 0.9676909173068216,
+          "Precision": 0.918358507931347,
+          "Recall": 0.9797273882407245,
+          "Specificity": 0.9625099443118512,
+          "F1-score": 0.948050859248636
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 10 / 25 -> 40.00"
+    },
+    "Stamp": {
+      "System": 1721277834.9777231,
+      "ROS": 1701349198.200283
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 49931,
+          "FP": 88697,
+          "TN": 144215,
+          "FN": 425,
+          "Accuracy": 0.6853792168547097,
+          "Precision": 0.36017976166431004,
+          "Recall": 0.9915600921439331,
+          "Specificity": 0.6191823521329942,
+          "F1-score": 0.5284151038850498
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 10 / 26 -> 38.46"
+    },
+    "Stamp": {
+      "System": 1721277835.2285373,
+      "ROS": 1701349198.4502811
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 50267,
+          "FP": 88162,
+          "TN": 144652,
+          "FN": 418,
+          "Accuracy": 0.6875473987562564,
+          "Precision": 0.3631247787674546,
+          "Recall": 0.991752984117587,
+          "Specificity": 0.6213200237099141,
+          "F1-score": 0.5316052750858199
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 10 / 27 -> 37.04"
+    },
+    "Stamp": {
+      "System": 1721277835.372467,
+      "ROS": 1701349198.5953846
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 33618,
+          "FP": 85841,
+          "TN": 106425,
+          "FN": 160,
+          "Accuracy": 0.6195386738864997,
+          "Precision": 0.2814187294385519,
+          "Recall": 0.9952631890579637,
+          "Specificity": 0.55353000530515,
+          "F1-score": 0.4387713149874602
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 11 / 28 -> 39.29"
+    },
+    "Stamp": {
+      "System": 1721277835.7193358,
+      "ROS": 1701349198.9403958
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 52406,
+          "FP": 84123,
+          "TN": 146048,
+          "FN": 424,
+          "Accuracy": 0.7012484054826659,
+          "Precision": 0.3838451903991091,
+          "Recall": 0.9919742570509161,
+          "Specificity": 0.634519552854182,
+          "F1-score": 0.5535094713870571
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 12 / 29 -> 41.38"
+    },
+    "Stamp": {
+      "System": 1721277835.9841535,
+      "ROS": 1701349199.1903162
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 53959,
+          "FP": 83359,
+          "TN": 145155,
+          "FN": 413,
+          "Accuracy": 0.7038665752281835,
+          "Precision": 0.3929492127761835,
+          "Recall": 0.9924041786213473,
+          "Specificity": 0.6352127221964516,
+          "F1-score": 0.5629818978152744
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 13 / 30 -> 43.33"
+    },
+    "Stamp": {
+      "System": 1721277836.207795,
+      "ROS": 1701349199.4302974
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 55232,
+          "FP": 82740,
+          "TN": 144117,
+          "FN": 489,
+          "Accuracy": 0.7054653936258305,
+          "Precision": 0.4003131070072186,
+          "Recall": 0.9912241345273757,
+          "Specificity": 0.6352768484111133,
+          "F1-score": 0.5703045540730002
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 14 / 31 -> 45.16"
+    },
+    "Stamp": {
+      "System": 1721277836.4591308,
+      "ROS": 1701349199.6803918
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 56341,
+          "FP": 83347,
+          "TN": 142108,
+          "FN": 418,
+          "Accuracy": 0.7031862345595893,
+          "Precision": 0.4033345741939176,
+          "Recall": 0.9926355291671788,
+          "Specificity": 0.6303164711361466,
+          "F1-score": 0.573600004031255
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 14 / 32 -> 43.75"
+    },
+    "Stamp": {
+      "System": 1721277836.9700198,
+      "ROS": 1701349200.1902905
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 57085,
+          "FP": 85019,
+          "TN": 139163,
+          "FN": 424,
+          "Accuracy": 0.6966782751312606,
+          "Precision": 0.4017128300399705,
+          "Recall": 0.9926272409535881,
+          "Specificity": 0.6207590261483971,
+          "F1-score": 0.5719567362436905
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 14 / 33 -> 42.42"
+    },
+    "Stamp": {
+      "System": 1721277837.2234797,
+      "ROS": 1701349200.4453354
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 57124,
+          "FP": 85650,
+          "TN": 139048,
+          "FN": 431,
+          "Accuracy": 0.6950218421061952,
+          "Precision": 0.40010085869976303,
+          "Recall": 0.9925115107288662,
+          "Specificity": 0.6188217073583208,
+          "F1-score": 0.5703018534101205
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 14 / 34 -> 41.18"
+    },
+    "Stamp": {
+      "System": 1721277837.466054,
+      "ROS": 1701349200.685334
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 57433,
+          "FP": 86376,
+          "TN": 137785,
+          "FN": 414,
+          "Accuracy": 0.6922427732546591,
+          "Precision": 0.3993699977052894,
+          "Recall": 0.9928431897937645,
+          "Specificity": 0.6146698132146089,
+          "F1-score": 0.5696135993560781
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 14 / 35 -> 40.00"
+    },
+    "Stamp": {
+      "System": 1721277837.7133608,
+      "ROS": 1701349200.9352965
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 50349,
+          "FP": 87336,
+          "TN": 115392,
+          "FN": 174,
+          "Accuracy": 0.6544534868569125,
+          "Precision": 0.36568253622398933,
+          "Recall": 0.9965560239890723,
+          "Specificity": 0.5691961643186928,
+          "F1-score": 0.535035705137974
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 14 / 36 -> 38.89"
+    },
+    "Stamp": {
+      "System": 1721277838.221096,
+      "ROS": 1701349201.4453034
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 58701,
+          "FP": 88237,
+          "TN": 134422,
+          "FN": 457,
+          "Accuracy": 0.6852780350369209,
+          "Precision": 0.3994950251126323,
+          "Recall": 0.9922749247777122,
+          "Specificity": 0.6037124032713699,
+          "F1-score": 0.5696471546830819
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 14 / 37 -> 37.84"
+    },
+    "Stamp": {
+      "System": 1721277838.5036745,
+      "ROS": 1701349201.7252932
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 59303,
+          "FP": 89013,
+          "TN": 133059,
+          "FN": 396,
+          "Accuracy": 0.6826891340840608,
+          "Precision": 0.39984222875482056,
+          "Recall": 0.9933667230606861,
+          "Specificity": 0.5991705392845561,
+          "F1-score": 0.5701800350526969
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 15 / 38 -> 39.47"
+    },
+    "Stamp": {
+      "System": 1721277838.51801,
+      "ROS": 1701349201.7403858
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 11476,
+          "FP": 324,
+          "TN": 16972,
+          "FN": 0,
+          "Accuracy": 0.9887390518559677,
+          "Precision": 0.9725423728813477,
+          "Recall": 0.9999999999999912,
+          "Specificity": 0.9812673450508732,
+          "F1-score": 0.9860800824384013
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 15 / 39 -> 38.46"
+    },
+    "Stamp": {
+      "System": 1721277839.228002,
+      "ROS": 1701349202.4502954
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 61006,
+          "FP": 90587,
+          "TN": 129457,
+          "FN": 270,
+          "Accuracy": 0.6770332717190385,
+          "Precision": 0.40243283001193964,
+          "Recall": 0.9955937071610402,
+          "Specificity": 0.5883232444420204,
+          "F1-score": 0.5731788094615582
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 15 / 40 -> 37.50"
+    },
+    "Stamp": {
+      "System": 1721277839.4470491,
+      "ROS": 1701349202.6702976
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 61915,
+          "FP": 91288,
+          "TN": 127855,
+          "FN": 224,
+          "Accuracy": 0.6746610163465843,
+          "Precision": 0.40413699470636977,
+          "Recall": 0.9963951785513108,
+          "Specificity": 0.5834318230561777,
+          "F1-score": 0.5750387754880992
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 15 / 41 -> 36.59"
+    },
+    "Stamp": {
+      "System": 1721277839.9684656,
+      "ROS": 1701349203.1903038
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 62983,
+          "FP": 91993,
+          "TN": 125941,
+          "FN": 105,
+          "Accuracy": 0.6722747685234605,
+          "Precision": 0.406404862688416,
+          "Recall": 0.998335658128327,
+          "Specificity": 0.577885965475786,
+          "F1-score": 0.5776561009200634
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 15 / 42 -> 35.71"
+    },
+    "Stamp": {
+      "System": 1721277840.2138112,
+      "ROS": 1701349203.435314
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 63178,
+          "FP": 92316,
+          "TN": 125340,
+          "FN": 115,
+          "Accuracy": 0.6710043459845022,
+          "Precision": 0.4063050664334313,
+          "Recall": 0.9981830534182279,
+          "Specificity": 0.5758628294188993,
+          "F1-score": 0.5775297434994003
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 16 / 43 -> 37.21"
+    },
+    "Stamp": {
+      "System": 1721277840.2438247,
+      "ROS": 1701349203.4653056
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21724,
+          "FP": 410,
+          "TN": 35323,
+          "FN": 53,
+          "Accuracy": 0.9919492262215249,
+          "Precision": 0.9814764615523586,
+          "Recall": 0.9975662396105939,
+          "Specificity": 0.9885260123695155,
+          "F1-score": 0.9894559449296169
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 17 / 44 -> 38.64"
+    },
+    "Stamp": {
+      "System": 1721277840.47526,
+      "ROS": 1701349203.7003357
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21837,
+          "FP": 392,
+          "TN": 35235,
+          "FN": 39,
+          "Accuracy": 0.9925047388831869,
+          "Precision": 0.982365378559535,
+          "Recall": 0.9982172243554536,
+          "Specificity": 0.9889971089342324,
+          "F1-score": 0.9902278652713908
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 18 / 45 -> 40.00"
+    },
+    "Stamp": {
+      "System": 1721277840.6899748,
+      "ROS": 1701349203.9154127
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 10324,
+          "FP": 73,
+          "TN": 18312,
+          "FN": 47,
+          "Accuracy": 0.9958269578522709,
+          "Precision": 0.992978743868414,
+          "Recall": 0.9954681322919584,
+          "Specificity": 0.9960293717704597,
+          "F1-score": 0.9942218797650906
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 19 / 46 -> 41.30"
+    },
+    "Stamp": {
+      "System": 1721277840.9808025,
+      "ROS": 1701349204.205356
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21882,
+          "FP": 347,
+          "TN": 35232,
+          "FN": 40,
+          "Accuracy": 0.9932696822663936,
+          "Precision": 0.9843897611228531,
+          "Recall": 0.9981753489645061,
+          "Specificity": 0.9902470558475477,
+          "F1-score": 0.9912346265722715
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 19 / 47 -> 40.43"
+    },
+    "Stamp": {
+      "System": 1721277841.4348164,
+      "ROS": 1701349204.6554196
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 54004,
+          "FP": 94593,
+          "TN": 103017,
+          "FN": 108,
+          "Accuracy": 0.6237873527145023,
+          "Precision": 0.36342591034812255,
+          "Recall": 0.9980041395623872,
+          "Specificity": 0.521314710793988,
+          "F1-score": 0.5328229135956788
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 20 / 48 -> 41.67"
+    },
+    "Stamp": {
+      "System": 1721277841.4714017,
+      "ROS": 1701349204.6953135
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21910,
+          "FP": 329,
+          "TN": 35201,
+          "FN": 64,
+          "Accuracy": 0.9931656928213672,
+          "Precision": 0.9852061693421423,
+          "Recall": 0.9970874670064577,
+          "Specificity": 0.9907402195327863,
+          "F1-score": 0.9911112115845846
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 21 / 49 -> 42.86"
+    },
+    "Stamp": {
+      "System": 1721277842.2038507,
+      "ROS": 1701349205.4252992
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 11500,
+          "FP": 227,
+          "TN": 16990,
+          "FN": 0,
+          "Accuracy": 0.9920952745760317,
+          "Precision": 0.9806429606889999,
+          "Recall": 0.9999999999999913,
+          "Specificity": 0.9868153569146717,
+          "F1-score": 0.9902268910680917
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 21 / 50 -> 42.00"
+    },
+    "Stamp": {
+      "System": 1721277842.9780662,
+      "ROS": 1701349206.2003102
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 56513,
+          "FP": 97017,
+          "TN": 98128,
+          "FN": 126,
+          "Accuracy": 0.6141812029358495,
+          "Precision": 0.3680909268546862,
+          "Recall": 0.9977753844524073,
+          "Specificity": 0.5028466012452277,
+          "F1-score": 0.5377862576865516
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 22 / 51 -> 43.14"
+    },
+    "Stamp": {
+      "System": 1721277843.0000412,
+      "ROS": 1701349206.225449
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21923,
+          "FP": 272,
+          "TN": 35203,
+          "FN": 90,
+          "Accuracy": 0.9937030336765916,
+          "Precision": 0.9877449876098177,
+          "Recall": 0.9959115068368647,
+          "Specificity": 0.9923326286116956,
+          "F1-score": 0.9918114367940065
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 23 / 52 -> 44.23"
+    },
+    "Stamp": {
+      "System": 1721277843.2629542,
+      "ROS": 1701349206.485456
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21946,
+          "FP": 277,
+          "TN": 35178,
+          "FN": 72,
+          "Accuracy": 0.99392758338698,
+          "Precision": 0.9875354362597265,
+          "Recall": 0.9967299482241758,
+          "Specificity": 0.992187279650258,
+          "F1-score": 0.9921113898372055
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 23 / 53 -> 43.40"
+    },
+    "Stamp": {
+      "System": 1721277843.6944947,
+      "ROS": 1701349206.9154115
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 70565,
+          "FP": 97957,
+          "TN": 111589,
+          "FN": 142,
+          "Accuracy": 0.6499627122635616,
+          "Precision": 0.41872871197825784,
+          "Recall": 0.9979917122774251,
+          "Specificity": 0.5325274641367526,
+          "F1-score": 0.5899368387195455
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 54 -> 44.44"
+    },
+    "Stamp": {
+      "System": 1721277843.7165372,
+      "ROS": 1701349206.9403627
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 22002,
+          "FP": 276,
+          "TN": 35150,
+          "FN": 45,
+          "Accuracy": 0.9944147686739843,
+          "Precision": 0.9876110961486625,
+          "Recall": 0.9979589059735974,
+          "Specificity": 0.992209111951671,
+          "F1-score": 0.9927580371750393
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 55 -> 43.64"
+    },
+    "Stamp": {
+      "System": 1721277844.1951983,
+      "ROS": 1701349207.4203176
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 72469,
+          "FP": 99426,
+          "TN": 108136,
+          "FN": 99,
+          "Accuracy": 0.6447185235426407,
+          "Precision": 0.42158876058058675,
+          "Recall": 0.9986357623194783,
+          "Specificity": 0.5209816825815898,
+          "F1-score": 0.592883176553485
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 56 -> 42.86"
+    },
+    "Stamp": {
+      "System": 1721277844.4266467,
+      "ROS": 1701349207.6503572
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 73298,
+          "FP": 100034,
+          "TN": 106581,
+          "FN": 151,
+          "Accuracy": 0.6422781935557584,
+          "Precision": 0.42287632981792145,
+          "Recall": 0.9979441517243244,
+          "Specificity": 0.5158434769982816,
+          "F1-score": 0.594032765851837
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 57 -> 42.11"
+    },
+    "Stamp": {
+      "System": 1721277844.7061152,
+      "ROS": 1701349207.930311
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 63406,
+          "FP": 100631,
+          "TN": 87053,
+          "FN": 138,
+          "Accuracy": 0.5988942315347013,
+          "Precision": 0.3865347452099219,
+          "Recall": 0.9978282764698461,
+          "Specificity": 0.46382749728266637,
+          "F1-score": 0.5572169908333278
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 58 -> 41.38"
+    },
+    "Stamp": {
+      "System": 1721277844.970336,
+      "ROS": 1701349208.1954143
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 74854,
+          "FP": 101517,
+          "TN": 103551,
+          "FN": 54,
+          "Accuracy": 0.6372153327428063,
+          "Precision": 0.4244121766049972,
+          "Recall": 0.9992791157152761,
+          "Specificity": 0.5049593305635202,
+          "F1-score": 0.5957839691716554
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 59 -> 40.68"
+    },
+    "Stamp": {
+      "System": 1721277845.6805046,
+      "ROS": 1701349208.9003096
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 76792,
+          "FP": 102443,
+          "TN": 100436,
+          "FN": 60,
+          "Accuracy": 0.6335658185900023,
+          "Precision": 0.4284431054202581,
+          "Recall": 0.9992192786134375,
+          "Specificity": 0.49505370196028153,
+          "F1-score": 0.5997336842137326
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 60 -> 40.00"
+    },
+    "Stamp": {
+      "System": 1721277845.8982174,
+      "ROS": 1701349209.1203547
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 67545,
+          "FP": 105250,
+          "TN": 77969,
+          "FN": 194,
+          "Accuracy": 0.579834075821452,
+          "Precision": 0.39089672733586023,
+          "Recall": 0.9971360663723985,
+          "Specificity": 0.4255508435260533,
+          "F1-score": 0.561625383481202
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 61 -> 39.34"
+    },
+    "Stamp": {
+      "System": 1721277846.4160755,
+      "ROS": 1701349209.6404266
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 71666,
+          "FP": 104177,
+          "TN": 74871,
+          "FN": 141,
+          "Accuracy": 0.5841502062944727,
+          "Precision": 0.40755674095642114,
+          "Recall": 0.998036403136183,
+          "Specificity": 0.418161610294446,
+          "F1-score": 0.5787684231366954
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 24 / 62 -> 38.71"
+    },
+    "Stamp": {
+      "System": 1721277846.6636577,
+      "ROS": 1701349209.8853245
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 83647,
+          "FP": 105654,
+          "TN": 90157,
+          "FN": 118,
+          "Accuracy": 0.6216699573640081,
+          "Precision": 0.441872995916556,
+          "Recall": 0.9985912970811186,
+          "Specificity": 0.46042867867484444,
+          "F1-score": 0.6126504214672863
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 63 -> 39.68"
+    },
+    "Stamp": {
+      "System": 1721277846.6892838,
+      "ROS": 1701349209.9153588
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21887,
+          "FP": 327,
+          "TN": 35207,
+          "FN": 82,
+          "Accuracy": 0.9928873276176877,
+          "Precision": 0.9852795534347665,
+          "Recall": 0.9962674677955257,
+          "Specificity": 0.9907975460122671,
+          "F1-score": 0.9907430459179033
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 64 -> 39.06"
+    },
+    "Stamp": {
+      "System": 1721277847.905688,
+      "ROS": 1701349211.1303682
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 90944,
+          "FP": 112601,
+          "TN": 72074,
+          "FN": 128,
+          "Accuracy": 0.5911868488143114,
+          "Precision": 0.44680046181434063,
+          "Recall": 0.9985945186226272,
+          "Specificity": 0.3902748070935425,
+          "F1-score": 0.6173710274268488
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 65 -> 38.46"
+    },
+    "Stamp": {
+      "System": 1721277848.1005723,
+      "ROS": 1701349211.3253238
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 68906,
+          "FP": 112893,
+          "TN": 36090,
+          "FN": 125,
+          "Accuracy": 0.4816020989477738,
+          "Precision": 0.37902298692512043,
+          "Recall": 0.9981892193362387,
+          "Specificity": 0.2422424034957007,
+          "F1-score": 0.5494239125702399
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 66 -> 37.88"
+    },
+    "Stamp": {
+      "System": 1721277848.9333632,
+      "ROS": 1701349212.155442
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 92153,
+          "FP": 113780,
+          "TN": 69672,
+          "FN": 38,
+          "Accuracy": 0.5870818413672756,
+          "Precision": 0.4474902031243169,
+          "Recall": 0.99958781225933,
+          "Specificity": 0.37978326755772607,
+          "F1-score": 0.6182192644244122
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 67 -> 37.31"
+    },
+    "Stamp": {
+      "System": 1721277849.124222,
+      "ROS": 1701349212.3453653
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81571,
+          "FP": 113221,
+          "TN": 52161,
+          "FN": 88,
+          "Accuracy": 0.5413352439473608,
+          "Precision": 0.41875949730995093,
+          "Recall": 0.9989223478122423,
+          "Specificity": 0.3153970806980202,
+          "F1-score": 0.5901298963957166
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 68 -> 36.76"
+    },
+    "Stamp": {
+      "System": 1721277849.4208152,
+      "ROS": 1701349212.6453345
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 92479,
+          "FP": 113404,
+          "TN": 70074,
+          "FN": 90,
+          "Accuracy": 0.588859868065945,
+          "Precision": 0.44918230256990604,
+          "Recall": 0.9990277522712776,
+          "Specificity": 0.38192044822812526,
+          "F1-score": 0.6197244447590514
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 69 -> 36.23"
+    },
+    "Stamp": {
+      "System": 1721277849.900182,
+      "ROS": 1701349213.1253366
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 82217,
+          "FP": 112380,
+          "TN": 52851,
+          "FN": 134,
+          "Accuracy": 0.5455485455323891,
+          "Precision": 0.4224988052231019,
+          "Recall": 0.9983728187878702,
+          "Specificity": 0.31986128510993683,
+          "F1-score": 0.593736008161919
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 70 -> 35.71"
+    },
+    "Stamp": {
+      "System": 1721277850.3411694,
+      "ROS": 1701349213.5653737
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81726,
+          "FP": 112250,
+          "TN": 53802,
+          "FN": 93,
+          "Accuracy": 0.5467682786610776,
+          "Precision": 0.4213201633191733,
+          "Recall": 0.9988633446998851,
+          "Specificity": 0.32400693758581633,
+          "F1-score": 0.5926575898348073
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 25 / 71 -> 35.21"
+    },
+    "Stamp": {
+      "System": 1721277850.9416928,
+      "ROS": 1701349214.1654675
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 93388,
+          "FP": 112418,
+          "TN": 70474,
+          "FN": 155,
+          "Accuracy": 0.5927686436232746,
+          "Precision": 0.4537671399278931,
+          "Recall": 0.9983430080283923,
+          "Specificity": 0.38533123373356937,
+          "F1-score": 0.6239406177643403
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 26 / 72 -> 36.11"
+    },
+    "Stamp": {
+      "System": 1721277850.9648042,
+      "ROS": 1701349214.19037
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 22231,
+          "FP": 374,
+          "TN": 34877,
+          "FN": 2,
+          "Accuracy": 0.9934590494746347,
+          "Precision": 0.9834549878345457,
+          "Recall": 0.9999100436288356,
+          "Specificity": 0.9893903719043403,
+          "F1-score": 0.9916142557151983
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 26 / 73 -> 35.62"
+    },
+    "Stamp": {
+      "System": 1721277851.666995,
+      "ROS": 1701349214.8903804
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 94126,
+          "FP": 111977,
+          "TN": 70110,
+          "FN": 89,
+          "Accuracy": 0.5944075685300864,
+          "Precision": 0.45669398310553444,
+          "Recall": 0.9990553521201496,
+          "Specificity": 0.38503572468105884,
+          "F1-score": 0.6268422138768515
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 26 / 74 -> 35.14"
+    },
+    "Stamp": {
+      "System": 1721277851.9466207,
+      "ROS": 1701349215.170382
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 94308,
+          "FP": 111791,
+          "TN": 70094,
+          "FN": 115,
+          "Accuracy": 0.5949954398714475,
+          "Precision": 0.4575859174474401,
+          "Recall": 0.9987820764008758,
+          "Specificity": 0.38537537454985277,
+          "F1-score": 0.6276279273632172
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 26 / 75 -> 34.67"
+    },
+    "Stamp": {
+      "System": 1721277852.4221177,
+      "ROS": 1701349215.6454384
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 94776,
+          "FP": 112058,
+          "TN": 69604,
+          "FN": 107,
+          "Accuracy": 0.5944059737113306,
+          "Precision": 0.45822253594670104,
+          "Recall": 0.9988722953532234,
+          "Specificity": 0.38315112681793645,
+          "F1-score": 0.6282443481374632
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 27 / 76 -> 35.53"
+    },
+    "Stamp": {
+      "System": 1721277852.716639,
+      "ROS": 1701349215.9403753
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 22195,
+          "FP": 415,
+          "TN": 34937,
+          "FN": 0,
+          "Accuracy": 0.9927885033103359,
+          "Precision": 0.981645289694821,
+          "Recall": 0.9999999999999956,
+          "Specificity": 0.9882609187598976,
+          "F1-score": 0.9907376408382937
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 27 / 77 -> 35.06"
+    },
+    "Stamp": {
+      "System": 1721277853.6554306,
+      "ROS": 1701349216.8803425
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 95473,
+          "FP": 112646,
+          "TN": 69235,
+          "FN": 89,
+          "Accuracy": 0.5936642841953119,
+          "Precision": 0.4587423541339328,
+          "Recall": 0.9990686674619608,
+          "Specificity": 0.3806609816308464,
+          "F1-score": 0.6287716386171731
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 27 / 78 -> 34.62"
+    },
+    "Stamp": {
+      "System": 1721277853.8628325,
+      "ROS": 1701349217.0854473
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 73244,
+          "FP": 112307,
+          "TN": 34394,
+          "FN": 95,
+          "Accuracy": 0.4891746955099071,
+          "Precision": 0.3947378348809759,
+          "Recall": 0.9987046455501152,
+          "Specificity": 0.23444966291981637,
+          "F1-score": 0.5658310478948094
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 27 / 79 -> 34.18"
+    },
+    "Stamp": {
+      "System": 1721277854.9304364,
+      "ROS": 1701349218.1553814
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 95111,
+          "FP": 113133,
+          "TN": 70198,
+          "FN": 58,
+          "Accuracy": 0.5935691202872528,
+          "Precision": 0.45672864524308004,
+          "Recall": 0.9993905578497189,
+          "Specificity": 0.3829030551297924,
+          "F1-score": 0.626940836374632
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 27 / 80 -> 33.75"
+    },
+    "Stamp": {
+      "System": 1721277855.1447198,
+      "ROS": 1701349218.3654451
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 95052,
+          "FP": 113252,
+          "TN": 70194,
+          "FN": 96,
+          "Accuracy": 0.5931427094625151,
+          "Precision": 0.4563138489899376,
+          "Recall": 0.9989910455290695,
+          "Specificity": 0.38264121321805855,
+          "F1-score": 0.6264714023533773
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 27 / 81 -> 33.33"
+    },
+    "Stamp": {
+      "System": 1721277855.912616,
+      "ROS": 1701349219.1353536
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 94838,
+          "FP": 114394,
+          "TN": 69586,
+          "FN": 70,
+          "Accuracy": 0.5895700065976304,
+          "Precision": 0.45326718666360766,
+          "Recall": 0.9992624436296192,
+          "Specificity": 0.37822589411892577,
+          "F1-score": 0.6236470046259668
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 27 / 82 -> 32.93"
+    },
+    "Stamp": {
+      "System": 1721277856.0946817,
+      "ROS": 1701349219.3203964
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 72619,
+          "FP": 114225,
+          "TN": 34364,
+          "FN": 79,
+          "Accuracy": 0.4834581335550663,
+          "Precision": 0.38866112907024025,
+          "Recall": 0.9989133126083235,
+          "Specificity": 0.23126880186285648,
+          "F1-score": 0.559593437630645
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 28 / 83 -> 33.73"
+    },
+    "Stamp": {
+      "System": 1721277856.733043,
+      "ROS": 1701349219.955351
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 22267,
+          "FP": 423,
+          "TN": 34780,
+          "FN": 0,
+          "Accuracy": 0.9926396380720358,
+          "Precision": 0.9813574261789292,
+          "Recall": 0.9999999999999956,
+          "Specificity": 0.9879839786381814,
+          "F1-score": 0.9905910091365562
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 28 / 84 -> 33.33"
+    },
+    "Stamp": {
+      "System": 1721277857.1573713,
+      "ROS": 1701349220.3803618
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 82402,
+          "FP": 114186,
+          "TN": 52846,
+          "FN": 82,
+          "Accuracy": 0.5420413921351735,
+          "Precision": 0.41916088469286,
+          "Recall": 0.9990058678046639,
+          "Specificity": 0.31638248958283427,
+          "F1-score": 0.5905429422814864
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 29 / 85 -> 34.12"
+    },
+    "Stamp": {
+      "System": 1721277857.1934152,
+      "ROS": 1701349220.4154575
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 22272,
+          "FP": 337,
+          "TN": 34790,
+          "FN": 0,
+          "Accuracy": 0.9941288175752173,
+          "Precision": 0.9850944314211112,
+          "Recall": 0.9999999999999956,
+          "Specificity": 0.9904062402140774,
+          "F1-score": 0.9924912546011871
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 29 / 86 -> 33.72"
+    },
+    "Stamp": {
+      "System": 1721277857.870492,
+      "ROS": 1701349221.0954607
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81113,
+          "FP": 113496,
+          "TN": 54972,
+          "FN": 107,
+          "Accuracy": 0.5450201851911183,
+          "Precision": 0.41679983967853473,
+          "Recall": 0.9986825904949508,
+          "Specificity": 0.32630529239974343,
+          "F1-score": 0.5881397532113704
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 29 / 87 -> 33.33"
+    },
+    "Stamp": {
+      "System": 1721277858.1408427,
+      "ROS": 1701349221.3654675
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 92242,
+          "FP": 113379,
+          "TN": 72567,
+          "FN": 110,
+          "Accuracy": 0.5922033216192711,
+          "Precision": 0.4486020396749357,
+          "Recall": 0.998808905058904,
+          "Specificity": 0.3902584621341678,
+          "F1-score": 0.6191299211245787
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 29 / 88 -> 32.95"
+    },
+    "Stamp": {
+      "System": 1721277858.4064589,
+      "ROS": 1701349221.630361
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 91847,
+          "FP": 113200,
+          "TN": 73212,
+          "FN": 85,
+          "Accuracy": 0.5930036214181011,
+          "Precision": 0.4479314498627142,
+          "Recall": 0.9990754035591514,
+          "Specificity": 0.39274295646203017,
+          "F1-score": 0.6185420517521614
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 29 / 89 -> 32.58"
+    },
+    "Stamp": {
+      "System": 1721277858.6352174,
+      "ROS": 1701349221.8603935
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 91400,
+          "FP": 112539,
+          "TN": 74383,
+          "FN": 120,
+          "Accuracy": 0.5953950912577841,
+          "Precision": 0.44817322826923717,
+          "Recall": 0.99868881118881,
+          "Specificity": 0.39793603749157386,
+          "F1-score": 0.6186983641972851
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 29 / 90 -> 32.22"
+    },
+    "Stamp": {
+      "System": 1721277858.9423885,
+      "ROS": 1701349222.1653638
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 90673,
+          "FP": 112864,
+          "TN": 75016,
+          "FN": 124,
+          "Accuracy": 0.5945557042741235,
+          "Precision": 0.44548657000938385,
+          "Recall": 0.9986343161117647,
+          "Specificity": 0.39927613370236303,
+          "F1-score": 0.6161231797462826
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 30 / 91 -> 32.97"
+    },
+    "Stamp": {
+      "System": 1721277858.990428,
+      "ROS": 1701349222.2154138
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 22260,
+          "FP": 275,
+          "TN": 34854,
+          "FN": 0,
+          "Accuracy": 0.9952081409329296,
+          "Precision": 0.9877967605946263,
+          "Recall": 0.9999999999999956,
+          "Specificity": 0.9921717099832019,
+          "F1-score": 0.9938609219278968
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 30 / 92 -> 32.61"
+    },
+    "Stamp": {
+      "System": 1721277859.4221728,
+      "ROS": 1701349222.6454694
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 89772,
+          "FP": 111919,
+          "TN": 77256,
+          "FN": 114,
+          "Accuracy": 0.5985358039998421,
+          "Precision": 0.4450967073394448,
+          "Recall": 0.9987317268540139,
+          "Specificity": 0.40838377164001566,
+          "F1-score": 0.6157687334308419
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 30 / 93 -> 32.26"
+    },
+    "Stamp": {
+      "System": 1721277859.6860476,
+      "ROS": 1701349222.9053662
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 89233,
+          "FP": 111496,
+          "TN": 78254,
+          "FN": 92,
+          "Accuracy": 0.6001504971781777,
+          "Precision": 0.44454463480613143,
+          "Recall": 0.9989700531766011,
+          "Specificity": 0.4124057971014491,
+          "F1-score": 0.6152854295670344
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 30 / 94 -> 31.91"
+    },
+    "Stamp": {
+      "System": 1721277860.4343438,
+      "ROS": 1701349223.6554189
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 87509,
+          "FP": 110403,
+          "TN": 81229,
+          "FN": 122,
+          "Accuracy": 0.6042261237614719,
+          "Precision": 0.44216116253688487,
+          "Recall": 0.9986077986100798,
+          "Specificity": 0.4238801452784502,
+          "F1-score": 0.6129304517633154
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 30 / 95 -> 31.58"
+    },
+    "Stamp": {
+      "System": 1721277860.7042897,
+      "ROS": 1701349223.9254084
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 86729,
+          "FP": 110580,
+          "TN": 81680,
+          "FN": 131,
+          "Accuracy": 0.6033569790770992,
+          "Precision": 0.43955926997754774,
+          "Recall": 0.9984918259267775,
+          "Specificity": 0.4248413606574429,
+          "F1-score": 0.6104043720037649
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 31 / 96 -> 32.29"
+    },
+    "Stamp": {
+      "System": 1721277860.736298,
+      "ROS": 1701349223.960421
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 22169,
+          "FP": 236,
+          "TN": 35090,
+          "FN": 0,
+          "Accuracy": 0.9958952952430629,
+          "Precision": 0.9894666369113994,
+          "Recall": 0.9999999999999956,
+          "Specificity": 0.9933193681707495,
+          "F1-score": 0.9947054336108755
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 31 / 97 -> 31.96"
+    },
+    "Stamp": {
+      "System": 1721277861.1677113,
+      "ROS": 1701349224.3904033
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 85034,
+          "FP": 110016,
+          "TN": 83601,
+          "FN": 131,
+          "Accuracy": 0.6048991685259447,
+          "Precision": 0.4359600102537809,
+          "Recall": 0.9984618094287547,
+          "Specificity": 0.431785432064333,
+          "F1-score": 0.6069196866268532
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 31 / 98 -> 31.63"
+    },
+    "Stamp": {
+      "System": 1721277861.6670725,
+      "ROS": 1701349224.8903675
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 82924,
+          "FP": 107955,
+          "TN": 87827,
+          "FN": 134,
+          "Accuracy": 0.612361927987376,
+          "Precision": 0.4344322843267199,
+          "Recall": 0.9983866695562125,
+          "Specificity": 0.44859588726236305,
+          "F1-score": 0.60542387479028
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 32 / 99 -> 32.32"
+    },
+    "Stamp": {
+      "System": 1721277861.749797,
+      "ROS": 1701349224.975432
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 22189,
+          "FP": 238,
+          "TN": 35051,
+          "FN": 2,
+          "Accuracy": 0.9958246346555306,
+          "Precision": 0.9893877915013111,
+          "Recall": 0.9999098733720834,
+          "Specificity": 0.9932556887415314,
+          "F1-score": 0.9946210049255674
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 32 / 100 -> 32.00"
+    },
+    "Stamp": {
+      "System": 1721277862.4598956,
+      "ROS": 1701349225.685383
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 79330,
+          "FP": 103899,
+          "TN": 96692,
+          "FN": 157,
+          "Accuracy": 0.6284749248423651,
+          "Precision": 0.4329554819379026,
+          "Recall": 0.9980248342496244,
+          "Specificity": 0.48203558484677755,
+          "F1-score": 0.6039221059581921
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 32 / 101 -> 31.68"
+    },
+    "Stamp": {
+      "System": 1721277862.914902,
+      "ROS": 1701349226.1354768
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 65176,
+          "FP": 99019,
+          "TN": 87145,
+          "FN": 177,
+          "Accuracy": 0.6056091635953035,
+          "Precision": 0.39694265964249803,
+          "Recall": 0.9972916316006901,
+          "Specificity": 0.46810876431533466,
+          "F1-score": 0.5678638018656252
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 33 / 102 -> 32.35"
+    },
+    "Stamp": {
+      "System": 1721277862.9971993,
+      "ROS": 1701349226.2203755
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21200,
+          "FP": 388,
+          "TN": 35922,
+          "FN": 10,
+          "Accuracy": 0.9930806675938786,
+          "Precision": 0.9820270520659581,
+          "Recall": 0.9995285242809949,
+          "Specificity": 0.9893142385017873,
+          "F1-score": 0.990700499973365
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 33 / 103 -> 32.04"
+    },
+    "Stamp": {
+      "System": 1721277863.4364464,
+      "ROS": 1701349226.660487
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 71911,
+          "FP": 92023,
+          "TN": 116317,
+          "FN": 150,
+          "Accuracy": 0.6712814861573244,
+          "Precision": 0.4386582405114251,
+          "Recall": 0.997918430218841,
+          "Specificity": 0.5583037342805028,
+          "F1-score": 0.6094281658085486
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 34 / 104 -> 32.69"
+    },
+    "Stamp": {
+      "System": 1721277863.9490564,
+      "ROS": 1701349227.1703782
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 17534,
+          "FP": 527,
+          "TN": 39474,
+          "FN": 8,
+          "Accuracy": 0.9907026050084268,
+          "Precision": 0.9708211062510329,
+          "Recall": 0.9995439516588702,
+          "Specificity": 0.9868253293667634,
+          "F1-score": 0.9849731763677227
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 35 / 105 -> 33.33"
+    },
+    "Stamp": {
+      "System": 1721277864.2208266,
+      "ROS": 1701349227.445558
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 16349,
+          "FP": 443,
+          "TN": 40753,
+          "FN": 13,
+          "Accuracy": 0.9920775565516505,
+          "Precision": 0.9736183897093798,
+          "Recall": 0.9992054761031598,
+          "Specificity": 0.9892465287892004,
+          "F1-score": 0.9862460034488263
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 36 / 106 -> 33.96"
+    },
+    "Stamp": {
+      "System": 1721277864.4300609,
+      "ROS": 1701349227.6554348
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 3561,
+          "FP": 243,
+          "TN": 24962,
+          "FN": 0,
+          "Accuracy": 0.9915525272891574,
+          "Precision": 0.9361198738170101,
+          "Recall": 0.9999999999999719,
+          "Specificity": 0.9903590557429043,
+          "F1-score": 0.9670061099296615
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 37 / 107 -> 34.58"
+    },
+    "Stamp": {
+      "System": 1721277865.1517768,
+      "ROS": 1701349228.3754196
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 98368,
+          "FP": 74452,
+          "TN": 107997,
+          "FN": 34,
+          "Accuracy": 0.7347846366934777,
+          "Precision": 0.5691933803957873,
+          "Recall": 0.9996544785675078,
+          "Specificity": 0.5919297995604248,
+          "F1-score": 0.7253688859585863
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 38 / 108 -> 35.19"
+    },
+    "Stamp": {
+      "System": 1721277866.0001218,
+      "ROS": 1701349229.2203815
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 89270,
+          "FP": 76747,
+          "TN": 114558,
+          "FN": 513,
+          "Accuracy": 0.7251394581056463,
+          "Precision": 0.5377160170343999,
+          "Recall": 0.9942862234498725,
+          "Specificity": 0.5988238676459054,
+          "F1-score": 0.697967161799632
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 39 / 109 -> 35.78"
+    },
+    "Stamp": {
+      "System": 1721277866.2300928,
+      "ROS": 1701349229.4503884
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 82864,
+          "FP": 76222,
+          "TN": 121413,
+          "FN": 456,
+          "Accuracy": 0.7270808492463203,
+          "Precision": 0.5208755013011828,
+          "Recall": 0.9945271243398932,
+          "Specificity": 0.6143294456953472,
+          "F1-score": 0.6836794468332618
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 40 / 110 -> 36.36"
+    },
+    "Stamp": {
+      "System": 1721277866.4455454,
+      "ROS": 1701349229.6703966
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 74082,
+          "FP": 76398,
+          "TN": 130131,
+          "FN": 423,
+          "Accuracy": 0.7266487328935286,
+          "Precision": 0.49230462519936175,
+          "Recall": 0.9943225286893483,
+          "Specificity": 0.6300858475080978,
+          "F1-score": 0.6585505699937036
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 41 / 111 -> 36.94"
+    },
+    "Stamp": {
+      "System": 1721277866.6817932,
+      "ROS": 1701349229.905493
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 66806,
+          "FP": 80701,
+          "TN": 133769,
+          "FN": 136,
+          "Accuracy": 0.7127450144272451,
+          "Precision": 0.4529005403133408,
+          "Recall": 0.9979683905470392,
+          "Specificity": 0.6237189350491907,
+          "F1-score": 0.6230479041207503
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 42 / 112 -> 37.50"
+    },
+    "Stamp": {
+      "System": 1721277866.9256804,
+      "ROS": 1701349230.1503913
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 63256,
+          "FP": 83210,
+          "TN": 135004,
+          "FN": 106,
+          "Accuracy": 0.7041083046850581,
+          "Precision": 0.4318818019198992,
+          "Recall": 0.9983270730090574,
+          "Specificity": 0.6186770784642596,
+          "F1-score": 0.6029319251537172
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 43 / 113 -> 38.05"
+    },
+    "Stamp": {
+      "System": 1721277867.181562,
+      "ROS": 1701349230.405435
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 62526,
+          "FP": 84271,
+          "TN": 135115,
+          "FN": 143,
+          "Accuracy": 0.7007179450816328,
+          "Precision": 0.425935134914201,
+          "Recall": 0.9977181700681341,
+          "Specificity": 0.6158779502794159,
+          "F1-score": 0.5970038096455558
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 44 / 114 -> 38.60"
+    },
+    "Stamp": {
+      "System": 1721277867.4259331,
+      "ROS": 1701349230.6503959
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 63903,
+          "FP": 83194,
+          "TN": 134835,
+          "FN": 158,
+          "Accuracy": 0.7045198340955011,
+          "Precision": 0.4344276225891756,
+          "Recall": 0.9975336007867486,
+          "Specificity": 0.6184269065124361,
+          "F1-score": 0.6052624100961111
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 45 / 115 -> 39.13"
+    },
+    "Stamp": {
+      "System": 1721277867.6799185,
+      "ROS": 1701349230.90039
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 65528,
+          "FP": 81581,
+          "TN": 135073,
+          "FN": 177,
+          "Accuracy": 0.7104466299993977,
+          "Precision": 0.44543841641231985,
+          "Recall": 0.9973061410851518,
+          "Specificity": 0.6234502940171884,
+          "F1-score": 0.6158241468649436
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 45 / 116 -> 38.79"
+    },
+    "Stamp": {
+      "System": 1721277867.9358819,
+      "ROS": 1701349231.1605432
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 55735,
+          "FP": 81439,
+          "TN": 116426,
+          "FN": 231,
+          "Accuracy": 0.6782504894989183,
+          "Precision": 0.4063087757155143,
+          "Recall": 0.9958724940142211,
+          "Specificity": 0.5884112905263688,
+          "F1-score": 0.5771461115877091
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 46 / 117 -> 39.32"
+    },
+    "Stamp": {
+      "System": 1721277868.1711216,
+      "ROS": 1701349231.395425
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 66209,
+          "FP": 81560,
+          "TN": 134807,
+          "FN": 264,
+          "Accuracy": 0.7107056993353129,
+          "Precision": 0.44805744100589406,
+          "Recall": 0.9960284626840957,
+          "Specificity": 0.6230478769867861,
+          "F1-score": 0.6180767542817478
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 47 / 118 -> 39.83"
+    },
+    "Stamp": {
+      "System": 1721277868.4208379,
+      "ROS": 1701349231.6454957
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 65371,
+          "FP": 82176,
+          "TN": 135166,
+          "FN": 277,
+          "Accuracy": 0.708636347574119,
+          "Precision": 0.44305204443329893,
+          "Recall": 0.9957805264440638,
+          "Specificity": 0.6219046479741603,
+          "F1-score": 0.6132507797599062
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 48 / 119 -> 40.34"
+    },
+    "Stamp": {
+      "System": 1721277868.711439,
+      "ROS": 1701349231.9353998
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 64567,
+          "FP": 83020,
+          "TN": 135272,
+          "FN": 278,
+          "Accuracy": 0.7058031977452608,
+          "Precision": 0.4374843312757896,
+          "Recall": 0.9957128537281194,
+          "Specificity": 0.619683726384842,
+          "F1-score": 0.6078839345813705
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 49 / 120 -> 40.83"
+    },
+    "Stamp": {
+      "System": 1721277868.9504447,
+      "ROS": 1701349232.175398
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 64130,
+          "FP": 83344,
+          "TN": 135537,
+          "FN": 263,
+          "Accuracy": 0.704854663682512,
+          "Precision": 0.43485631365528815,
+          "Recall": 0.9959157051232261,
+          "Specificity": 0.6192268858420783,
+          "F1-score": 0.6053797901090566
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 50 / 121 -> 41.32"
+    },
+    "Stamp": {
+      "System": 1721277869.9915729,
+      "ROS": 1701349233.2154968
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19796,
+          "FP": 564,
+          "TN": 37172,
+          "FN": 56,
+          "Accuracy": 0.9892338681669774,
+          "Precision": 0.9722986247544158,
+          "Recall": 0.9971791255289091,
+          "Specificity": 0.9850540597837582,
+          "F1-score": 0.9845817168504309
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 51 / 122 -> 41.80"
+    },
+    "Stamp": {
+      "System": 1721277870.231722,
+      "ROS": 1701349233.4555037
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19780,
+          "FP": 590,
+          "TN": 37166,
+          "FN": 50,
+          "Accuracy": 0.9888861876150435,
+          "Precision": 0.9710358370152138,
+          "Recall": 0.9974785678265206,
+          "Specificity": 0.9843733446339628,
+          "F1-score": 0.9840796019400541
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 52 / 123 -> 42.28"
+    },
+    "Stamp": {
+      "System": 1721277871.2082567,
+      "ROS": 1701349234.430403
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19458,
+          "FP": 602,
+          "TN": 37451,
+          "FN": 52,
+          "Accuracy": 0.9886385351701596,
+          "Precision": 0.9699900299102644,
+          "Recall": 0.9973347001537622,
+          "Specificity": 0.9841799595301264,
+          "F1-score": 0.9834723274708538
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 53 / 124 -> 42.74"
+    },
+    "Stamp": {
+      "System": 1721277871.4454613,
+      "ROS": 1701349234.6704566
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19473,
+          "FP": 527,
+          "TN": 37518,
+          "FN": 46,
+          "Accuracy": 0.9900458619970798,
+          "Precision": 0.9736499999999952,
+          "Recall": 0.9976433218914853,
+          "Specificity": 0.9861479826521199,
+          "F1-score": 0.985500645209245
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 54 / 125 -> 43.20"
+    },
+    "Stamp": {
+      "System": 1721277871.9586198,
+      "ROS": 1701349235.180409
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 62569,
+          "FP": 83452,
+          "TN": 137701,
+          "FN": 397,
+          "Accuracy": 0.7048807013962457,
+          "Precision": 0.42849316194246007,
+          "Recall": 0.9936950100053982,
+          "Specificity": 0.622650382314506,
+          "F1-score": 0.5987836563575769
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 55 / 126 -> 43.65"
+    },
+    "Stamp": {
+      "System": 1721277871.9692996,
+      "ROS": 1701349235.1955094
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 10596,
+          "FP": 81,
+          "TN": 18050,
+          "FN": 47,
+          "Accuracy": 0.9955515395843436,
+          "Precision": 0.992413599325644,
+          "Recall": 0.9955839518932538,
+          "Specificity": 0.9955325133748774,
+          "F1-score": 0.9939962476047751
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 56 / 127 -> 44.09"
+    },
+    "Stamp": {
+      "System": 1721277872.715421,
+      "ROS": 1701349235.9404507
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 61637,
+          "FP": 82730,
+          "TN": 139438,
+          "FN": 398,
+          "Accuracy": 0.7075048468876117,
+          "Precision": 0.42694660137011897,
+          "Recall": 0.9935842669460772,
+          "Specificity": 0.6276241402902306,
+          "F1-score": 0.5972519645707012
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 57 / 128 -> 44.53"
+    },
+    "Stamp": {
+      "System": 1721277872.9661312,
+      "ROS": 1701349236.1904104
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 61822,
+          "FP": 82869,
+          "TN": 139084,
+          "FN": 434,
+          "Accuracy": 0.7068952777709359,
+          "Precision": 0.42726914597314253,
+          "Recall": 0.9930287843741953,
+          "Specificity": 0.6266371709325845,
+          "F1-score": 0.5974669842582613
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 57 / 129 -> 44.19"
+    },
+    "Stamp": {
+      "System": 1721277873.4306872,
+      "ROS": 1701349236.6554468
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 62247,
+          "FP": 85312,
+          "TN": 136295,
+          "FN": 410,
+          "Accuracy": 0.6984422930796721,
+          "Precision": 0.42184482139347623,
+          "Recall": 0.9934564374291763,
+          "Specificity": 0.6150302111395396,
+          "F1-score": 0.5922194314001008
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 57 / 130 -> 43.85"
+    },
+    "Stamp": {
+      "System": 1721277873.7139976,
+      "ROS": 1701349236.9355245
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 62994,
+          "FP": 85708,
+          "TN": 135237,
+          "FN": 417,
+          "Accuracy": 0.6971226209399483,
+          "Precision": 0.42362577504001264,
+          "Recall": 0.9934238539054722,
+          "Specificity": 0.6120844554074542,
+          "F1-score": 0.5939664235153386
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 58 / 131 -> 44.27"
+    },
+    "Stamp": {
+      "System": 1721277873.97483,
+      "ROS": 1701349237.1954181
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19619,
+          "FP": 400,
+          "TN": 37491,
+          "FN": 53,
+          "Accuracy": 0.9921303615169449,
+          "Precision": 0.9800189819671264,
+          "Recall": 0.9973058153720975,
+          "Specificity": 0.9894434034467261,
+          "F1-score": 0.9885868332371422
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 58 / 132 -> 43.94"
+    },
+    "Stamp": {
+      "System": 1721277874.6485324,
+      "ROS": 1701349237.8704593
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 67543,
+          "FP": 91599,
+          "TN": 124640,
+          "FN": 389,
+          "Accuracy": 0.6762934993366667,
+          "Precision": 0.424419700644707,
+          "Recall": 0.9942736854501546,
+          "Specificity": 0.5763992619277741,
+          "F1-score": 0.5948985792758221
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 58 / 133 -> 43.61"
+    },
+    "Stamp": {
+      "System": 1721277874.9383082,
+      "ROS": 1701349238.1604545
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 68609,
+          "FP": 93179,
+          "TN": 121550,
+          "FN": 408,
+          "Accuracy": 0.6701733240292371,
+          "Precision": 0.4240672979454593,
+          "Recall": 0.9940884129996943,
+          "Specificity": 0.566062339041303,
+          "F1-score": 0.5945191828180676
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 58 / 134 -> 43.28"
+    },
+    "Stamp": {
+      "System": 1721277875.200816,
+      "ROS": 1701349238.420415
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 69454,
+          "FP": 94360,
+          "TN": 119022,
+          "FN": 424,
+          "Accuracy": 0.6653816281861185,
+          "Precision": 0.423980856337065,
+          "Recall": 0.9939322819771588,
+          "Specificity": 0.5577883795259204,
+          "F1-score": 0.5944063125404517
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 58 / 135 -> 42.96"
+    },
+    "Stamp": {
+      "System": 1721277875.4051833,
+      "ROS": 1701349238.6255221
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 60938,
+          "FP": 95514,
+          "TN": 97228,
+          "FN": 407,
+          "Accuracy": 0.6224875731540769,
+          "Precision": 0.38949965484621457,
+          "Recall": 0.993365392452521,
+          "Specificity": 0.504446358344315,
+          "F1-score": 0.5595853018691102
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 58 / 136 -> 42.65"
+    },
+    "Stamp": {
+      "System": 1721277875.661932,
+      "ROS": 1701349238.8854184
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 70756,
+          "FP": 96153,
+          "TN": 115596,
+          "FN": 390,
+          "Accuracy": 0.6587320383888012,
+          "Precision": 0.42391962087125296,
+          "Recall": 0.9945183144519706,
+          "Specificity": 0.5459104883612199,
+          "F1-score": 0.5944508621538018
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 59 / 137 -> 43.07"
+    },
+    "Stamp": {
+      "System": 1721277875.970086,
+      "ROS": 1701349239.1955326
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19983,
+          "FP": 285,
+          "TN": 37266,
+          "FN": 41,
+          "Accuracy": 0.994337820234475,
+          "Precision": 0.9859384251036069,
+          "Recall": 0.9979524570515332,
+          "Specificity": 0.9924103219621289,
+          "F1-score": 0.9919090637840087
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 60 / 138 -> 43.48"
+    },
+    "Stamp": {
+      "System": 1721277876.194823,
+      "ROS": 1701349239.4204617
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 20030,
+          "FP": 266,
+          "TN": 37229,
+          "FN": 49,
+          "Accuracy": 0.9945287803522406,
+          "Precision": 0.9868939692550208,
+          "Recall": 0.9975596394242693,
+          "Specificity": 0.9929057207627656,
+          "F1-score": 0.9921981423648574
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 60 / 139 -> 43.17"
+    },
+    "Stamp": {
+      "System": 1721277876.7386625,
+      "ROS": 1701349239.9605281
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 70126,
+          "FP": 92967,
+          "TN": 120706,
+          "FN": 413,
+          "Accuracy": 0.6714424443725104,
+          "Precision": 0.42997553543070494,
+          "Recall": 0.9941450828619615,
+          "Specificity": 0.5649099324669001,
+          "F1-score": 0.6003116011083737
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 61 / 140 -> 43.57"
+    },
+    "Stamp": {
+      "System": 1721277876.7622702,
+      "ROS": 1701349239.9855258
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 20104,
+          "FP": 205,
+          "TN": 37224,
+          "FN": 48,
+          "Accuracy": 0.9956061895416873,
+          "Precision": 0.9899059530257474,
+          "Recall": 0.997618102421591,
+          "Specificity": 0.9945229634775147,
+          "F1-score": 0.9937470650250064
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 61 / 141 -> 43.26"
+    },
+    "Stamp": {
+      "System": 1721277877.14172,
+      "ROS": 1701349240.365525
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 70136,
+          "FP": 93091,
+          "TN": 120072,
+          "FN": 420,
+          "Accuracy": 0.6704098068863908,
+          "Precision": 0.4296838145649921,
+          "Recall": 0.9940472815919256,
+          "Specificity": 0.5632872496634029,
+          "F1-score": 0.6000094103940299
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 61 / 142 -> 42.96"
+    },
+    "Stamp": {
+      "System": 1721277877.8414452,
+      "ROS": 1701349241.0655525
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 49587,
+          "FP": 95341,
+          "TN": 81077,
+          "FN": 384,
+          "Accuracy": 0.5771658516977413,
+          "Precision": 0.3421492051225434,
+          "Recall": 0.9923155430149466,
+          "Specificity": 0.45957328617261256,
+          "F1-score": 0.5088481726051347
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 61 / 143 -> 42.66"
+    },
+    "Stamp": {
+      "System": 1721277878.4381316,
+      "ROS": 1701349241.6604261
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 69537,
+          "FP": 95402,
+          "TN": 118868,
+          "FN": 453,
+          "Accuracy": 0.6627911067332721,
+          "Precision": 0.42159222500439536,
+          "Recall": 0.9935276468066853,
+          "Specificity": 0.5547580155878096,
+          "F1-score": 0.5919831097487844
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 62 / 144 -> 43.06"
+    },
+    "Stamp": {
+      "System": 1721277878.4500365,
+      "ROS": 1701349241.6755424
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 9536,
+          "FP": 187,
+          "TN": 19076,
+          "FN": 0,
+          "Accuracy": 0.9935067189832947,
+          "Precision": 0.9807672529054717,
+          "Recall": 0.9999999999999896,
+          "Specificity": 0.9902922701552148,
+          "F1-score": 0.9902902538572587
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 62 / 145 -> 42.76"
+    },
+    "Stamp": {
+      "System": 1721277879.1916587,
+      "ROS": 1701349242.4154742
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 68601,
+          "FP": 94867,
+          "TN": 120724,
+          "FN": 487,
+          "Accuracy": 0.6650472988875187,
+          "Precision": 0.419660116964788,
+          "Recall": 0.9929510189902718,
+          "Specificity": 0.559967716648654,
+          "F1-score": 0.5899740277192902
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 63 / 146 -> 43.15"
+    },
+    "Stamp": {
+      "System": 1721277879.2142398,
+      "ROS": 1701349242.4354277
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 20057,
+          "FP": 253,
+          "TN": 37215,
+          "FN": 50,
+          "Accuracy": 0.9947372991749874,
+          "Precision": 0.9875430822254999,
+          "Recall": 0.9975133038245338,
+          "Specificity": 0.9932475712608065,
+          "F1-score": 0.9925031545631542
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 64 / 147 -> 43.54"
+    },
+    "Stamp": {
+      "System": 1721277879.7447042,
+      "ROS": 1701349242.9704666
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19905,
+          "FP": 240,
+          "TN": 37358,
+          "FN": 56,
+          "Accuracy": 0.994857450615888,
+          "Precision": 0.9880863737900175,
+          "Recall": 0.9971945293321929,
+          "Specificity": 0.9936166817383877,
+          "F1-score": 0.9926195581208436
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 65 / 148 -> 43.92"
+    },
+    "Stamp": {
+      "System": 1721277879.9099765,
+      "ROS": 1701349243.1355562
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 9233,
+          "FP": 198,
+          "TN": 19364,
+          "FN": 0,
+          "Accuracy": 0.9931238062163537,
+          "Precision": 0.9790054076980068,
+          "Recall": 0.9999999999999891,
+          "Specificity": 0.9898783355485075,
+          "F1-score": 0.9893913415702265
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 66 / 149 -> 44.30"
+    },
+    "Stamp": {
+      "System": 1721277880.1915057,
+      "ROS": 1701349243.4155436
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19810,
+          "FP": 238,
+          "TN": 37458,
+          "FN": 56,
+          "Accuracy": 0.9948924637781852,
+          "Precision": 0.9881284916201069,
+          "Recall": 0.9971811134601783,
+          "Specificity": 0.9936863327673997,
+          "F1-score": 0.9926341634014167
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 66 / 150 -> 44.00"
+    },
+    "Stamp": {
+      "System": 1721277880.7001848,
+      "ROS": 1701349243.925467
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 65421,
+          "FP": 91333,
+          "TN": 127692,
+          "FN": 497,
+          "Accuracy": 0.6777250186879479,
+          "Precision": 0.41734820164078723,
+          "Recall": 0.9924603295002867,
+          "Specificity": 0.5830019404177603,
+          "F1-score": 0.5875996981691414
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 67 / 151 -> 44.37"
+    },
+    "Stamp": {
+      "System": 1721277880.7222056,
+      "ROS": 1701349243.945473
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19706,
+          "FP": 280,
+          "TN": 37537,
+          "FN": 44,
+          "Accuracy": 0.9943717754963763,
+          "Precision": 0.9859901931351898,
+          "Recall": 0.9977721518987293,
+          "Specificity": 0.9925959224687283,
+          "F1-score": 0.9918461847698076
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 67 / 152 -> 44.08"
+    },
+    "Stamp": {
+      "System": 1721277881.702625,
+      "ROS": 1701349244.925472
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 63573,
+          "FP": 88700,
+          "TN": 132234,
+          "FN": 500,
+          "Accuracy": 0.6870252309592393,
+          "Precision": 0.4174935806085121,
+          "Recall": 0.9921964009801305,
+          "Specificity": 0.5985226357192643,
+          "F1-score": 0.5876974845431876
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 68 / 153 -> 44.44"
+    },
+    "Stamp": {
+      "System": 1721277881.725885,
+      "ROS": 1701349244.9504347
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19564,
+          "FP": 293,
+          "TN": 37661,
+          "FN": 49,
+          "Accuracy": 0.9940590963572863,
+          "Precision": 0.9852444981618524,
+          "Recall": 0.9975016570641871,
+          "Specificity": 0.9922801285766955,
+          "F1-score": 0.9913351912345169
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 68 / 154 -> 44.16"
+    },
+    "Stamp": {
+      "System": 1721277882.196059,
+      "ROS": 1701349245.4204395
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 62986,
+          "FP": 87585,
+          "TN": 133890,
+          "FN": 504,
+          "Accuracy": 0.6908778271015736,
+          "Precision": 0.418314283626993,
+          "Recall": 0.9920617420066137,
+          "Specificity": 0.6045377582119875,
+          "F1-score": 0.5884864594254353
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 68 / 155 -> 43.87"
+    },
+    "Stamp": {
+      "System": 1721277882.38912,
+      "ROS": 1701349245.6104727
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 52131,
+          "FP": 87144,
+          "TN": 116413,
+          "FN": 505,
+          "Accuracy": 0.6578790208944036,
+          "Precision": 0.3743026386645124,
+          "Recall": 0.9904058059123014,
+          "Specificity": 0.57189386756535,
+          "F1-score": 0.5432830843065797
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 68 / 156 -> 43.59"
+    },
+    "Stamp": {
+      "System": 1721277882.6656435,
+      "ROS": 1701349245.8904967
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 62691,
+          "FP": 86329,
+          "TN": 135373,
+          "FN": 494,
+          "Accuracy": 0.6952370589040564,
+          "Precision": 0.4206884981881624,
+          "Recall": 0.9921816886919348,
+          "Specificity": 0.6106079331715544,
+          "F1-score": 0.5908531843789053
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 69 / 157 -> 43.95"
+    },
+    "Stamp": {
+      "System": 1721277882.7321658,
+      "ROS": 1701349245.9555805
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19354,
+          "FP": 319,
+          "TN": 37835,
+          "FN": 53,
+          "Accuracy": 0.9935372908740275,
+          "Precision": 0.9837848828343365,
+          "Recall": 0.9972690266398672,
+          "Specificity": 0.9916391466163417,
+          "F1-score": 0.9904810644331089
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 69 / 158 -> 43.67"
+    },
+    "Stamp": {
+      "System": 1721277883.1789498,
+      "ROS": 1701349246.400492
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 62392,
+          "FP": 85410,
+          "TN": 136597,
+          "FN": 475,
+          "Accuracy": 0.6985158350709434,
+          "Precision": 0.422132312147332,
+          "Recall": 0.9924443666788602,
+          "Specificity": 0.6152824010053735,
+          "F1-score": 0.592322553347567
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 69 / 159 -> 43.40"
+    },
+    "Stamp": {
+      "System": 1721277883.4249918,
+      "ROS": 1701349246.645475
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 62160,
+          "FP": 85003,
+          "TN": 137193,
+          "FN": 459,
+          "Accuracy": 0.69993855660692,
+          "Precision": 0.4223887797883977,
+          "Recall": 0.992669956403007,
+          "Specificity": 0.6174413580802532,
+          "F1-score": 0.5926151909659284
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 70 / 160 -> 43.75"
+    },
+    "Stamp": {
+      "System": 1721277883.6963313,
+      "ROS": 1701349246.9154441
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 61829,
+          "FP": 84510,
+          "TN": 138132,
+          "FN": 479,
+          "Accuracy": 0.7017406562554831,
+          "Precision": 0.4225052788388602,
+          "Recall": 0.9923123836425483,
+          "Specificity": 0.6204220227989325,
+          "F1-score": 0.5926660819051301
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 70 / 161 -> 43.48"
+    },
+    "Stamp": {
+      "System": 1721277883.8761756,
+      "ROS": 1701349247.1004922
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 53138,
+          "FP": 83862,
+          "TN": 118530,
+          "FN": 484,
+          "Accuracy": 0.6705414547641924,
+          "Precision": 0.38786861313868587,
+          "Recall": 0.9909738540151412,
+          "Specificity": 0.5856456776947703,
+          "F1-score": 0.5575222167026486
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 71 / 162 -> 43.83"
+    },
+    "Stamp": {
+      "System": 1721277884.1648712,
+      "ROS": 1701349247.385492
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 61225,
+          "FP": 83297,
+          "TN": 139673,
+          "FN": 474,
+          "Accuracy": 0.7057248945266253,
+          "Precision": 0.4236379236379234,
+          "Recall": 0.9923175416133146,
+          "Specificity": 0.6264205946988382,
+          "F1-score": 0.5937804587862149
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 72 / 163 -> 44.17"
+    },
+    "Stamp": {
+      "System": 1721277884.2200904,
+      "ROS": 1701349247.445543
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 18773,
+          "FP": 321,
+          "TN": 38400,
+          "FN": 49,
+          "Accuracy": 0.9935700258936777,
+          "Precision": 0.9831884361579504,
+          "Recall": 0.9973966634789024,
+          "Specificity": 0.9917099248469796,
+          "F1-score": 0.9902415866152575
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 73 / 164 -> 44.51"
+    },
+    "Stamp": {
+      "System": 1721277885.170703,
+      "ROS": 1701349248.395493
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 60243,
+          "FP": 81255,
+          "TN": 142273,
+          "FN": 404,
+          "Accuracy": 0.712645376968417,
+          "Precision": 0.42575160072933865,
+          "Recall": 0.9933384998433541,
+          "Specificity": 0.6364884936115384,
+          "F1-score": 0.5960374977937101
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 74 / 165 -> 44.85"
+    },
+    "Stamp": {
+      "System": 1721277885.4463975,
+      "ROS": 1701349248.670449
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 7251,
+          "FP": 311,
+          "TN": 21196,
+          "FN": 0,
+          "Accuracy": 0.9891856179150116,
+          "Precision": 0.9588733139380989,
+          "Recall": 0.9999999999999862,
+          "Specificity": 0.9855395917608175,
+          "F1-score": 0.9790049280537015
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 75 / 166 -> 45.18"
+    },
+    "Stamp": {
+      "System": 1721277885.96706,
+      "ROS": 1701349249.1904905
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 17412,
+          "FP": 438,
+          "TN": 39645,
+          "FN": 48,
+          "Accuracy": 0.9915541421198043,
+          "Precision": 0.9754621848739442,
+          "Recall": 0.9972508591065236,
+          "Specificity": 0.9890726742010303,
+          "F1-score": 0.9862361936628298
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 76 / 167 -> 45.51"
+    },
+    "Stamp": {
+      "System": 1721277886.182462,
+      "ROS": 1701349249.4054954
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 6587,
+          "FP": 417,
+          "TN": 21759,
+          "FN": 0,
+          "Accuracy": 0.9855022076973856,
+          "Precision": 0.9404625928040985,
+          "Recall": 0.9999999999999848,
+          "Specificity": 0.9811958874458832,
+          "F1-score": 0.969317930933772
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 77 / 168 -> 45.83"
+    },
+    "Stamp": {
+      "System": 1721277887.201289,
+      "ROS": 1701349250.4254687
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 57521,
+          "FP": 76916,
+          "TN": 148376,
+          "FN": 371,
+          "Accuracy": 0.7270785072602969,
+          "Precision": 0.42786584050521775,
+          "Recall": 0.9935915152352639,
+          "Specificity": 0.6585941799975141,
+          "F1-score": 0.5981521247024975
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 78 / 169 -> 46.15"
+    },
+    "Stamp": {
+      "System": 1721277887.421368,
+      "ROS": 1701349250.6455169
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 57217,
+          "FP": 76545,
+          "TN": 149002,
+          "FN": 354,
+          "Accuracy": 0.7283853375624295,
+          "Precision": 0.42775227643127317,
+          "Recall": 0.9938510708516423,
+          "Specificity": 0.6606250581918622,
+          "F1-score": 0.5980881499372834
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 79 / 170 -> 46.47"
+    },
+    "Stamp": {
+      "System": 1721277888.1276662,
+      "ROS": 1701349251.3504586
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 51241,
+          "FP": 75106,
+          "TN": 127749,
+          "FN": 367,
+          "Accuracy": 0.7034028522810779,
+          "Precision": 0.4055577101157919,
+          "Recall": 0.9928886994264435,
+          "Specificity": 0.6297552438934212,
+          "F1-score": 0.5758871624437166
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 80 / 171 -> 46.78"
+    },
+    "Stamp": {
+      "System": 1721277888.4344103,
+      "ROS": 1701349251.6555114
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 56440,
+          "FP": 75341,
+          "TN": 151226,
+          "FN": 360,
+          "Accuracy": 0.7328517434987134,
+          "Precision": 0.42828632352159995,
+          "Recall": 0.9936619718309841,
+          "Specificity": 0.6674670185861133,
+          "F1-score": 0.5985756783136237
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 81 / 172 -> 47.09"
+    },
+    "Stamp": {
+      "System": 1721277888.7050362,
+      "ROS": 1701349251.9304624
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 56266,
+          "FP": 74865,
+          "TN": 151882,
+          "FN": 377,
+          "Accuracy": 0.7344931013797238,
+          "Precision": 0.42908236801366545,
+          "Recall": 0.9933442790812615,
+          "Specificity": 0.6698302513373934,
+          "F1-score": 0.5992948970149682
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 82 / 173 -> 47.40"
+    },
+    "Stamp": {
+      "System": 1721277889.1811733,
+      "ROS": 1701349252.4055085
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 56366,
+          "FP": 73844,
+          "TN": 152517,
+          "FN": 369,
+          "Accuracy": 0.737852177353265,
+          "Precision": 0.4328853390676596,
+          "Recall": 0.9934960782585688,
+          "Specificity": 0.673777726728544,
+          "F1-score": 0.6030222792377251
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 83 / 174 -> 47.70"
+    },
+    "Stamp": {
+      "System": 1721277889.438363,
+      "ROS": 1701349252.6605763
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 56235,
+          "FP": 73261,
+          "TN": 152999,
+          "FN": 370,
+          "Accuracy": 0.739695614515758,
+          "Precision": 0.43426051769938806,
+          "Recall": 0.9934634749580408,
+          "Specificity": 0.6762087863519842,
+          "F1-score": 0.6043492511707208
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 84 / 175 -> 48.00"
+    },
+    "Stamp": {
+      "System": 1721277889.9062061,
+      "ROS": 1701349253.1254697
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 49963,
+          "FP": 72822,
+          "TN": 130624,
+          "FN": 376,
+          "Accuracy": 0.7115747581614356,
+          "Precision": 0.40691452538990885,
+          "Recall": 0.992530642245573,
+          "Specificity": 0.6420573518280033,
+          "F1-score": 0.5771932256235963
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 85 / 176 -> 48.30"
+    },
+    "Stamp": {
+      "System": 1721277889.9418697,
+      "ROS": 1701349253.1655164
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 16857,
+          "FP": 260,
+          "TN": 40394,
+          "FN": 63,
+          "Accuracy": 0.9943898287421388,
+          "Precision": 0.9848104223870949,
+          "Recall": 0.9962765957446751,
+          "Specificity": 0.99360456535642,
+          "F1-score": 0.9905103269470875
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 86 / 177 -> 48.59"
+    },
+    "Stamp": {
+      "System": 1721277890.4095197,
+      "ROS": 1701349253.6305158
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 56350,
+          "FP": 72597,
+          "TN": 153099,
+          "FN": 374,
+          "Accuracy": 0.7416224063451594,
+          "Precision": 0.43700124857499556,
+          "Recall": 0.9934066708976782,
+          "Specificity": 0.6783416631220754,
+          "F1-score": 0.6069876286125513
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 87 / 178 -> 48.88"
+    },
+    "Stamp": {
+      "System": 1721277890.6508286,
+      "ROS": 1701349253.8704646
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 56530,
+          "FP": 72394,
+          "TN": 153109,
+          "FN": 340,
+          "Accuracy": 0.7424187156704073,
+          "Precision": 0.4384753808445282,
+          "Recall": 0.9940214524353772,
+          "Specificity": 0.6789665769413264,
+          "F1-score": 0.6085234183671558
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 88 / 179 -> 49.16"
+    },
+    "Stamp": {
+      "System": 1721277890.7171934,
+      "ROS": 1701349253.940469
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 17480,
+          "FP": 192,
+          "TN": 39850,
+          "FN": 60,
+          "Accuracy": 0.9956236323851186,
+          "Precision": 0.9891353553644128,
+          "Recall": 0.99657924743443,
+          "Specificity": 0.9952050347135483,
+          "F1-score": 0.9928433488083389
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 89 / 180 -> 49.44"
+    },
+    "Stamp": {
+      "System": 1721277891.4208057,
+      "ROS": 1701349254.645508
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 56394,
+          "FP": 71794,
+          "TN": 153587,
+          "FN": 344,
+          "Accuracy": 0.7442993913915756,
+          "Precision": 0.4399319749118479,
+          "Recall": 0.9939370439564296,
+          "Specificity": 0.6814549584925079,
+          "F1-score": 0.6099088283536868
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 90 / 181 -> 49.72"
+    },
+    "Stamp": {
+      "System": 1721277892.6675134,
+      "ROS": 1701349255.8905177
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 15924,
+          "FP": 385,
+          "TN": 41180,
+          "FN": 65,
+          "Accuracy": 0.9921812558640564,
+          "Precision": 0.976393402415838,
+          "Recall": 0.9959347051097567,
+          "Specificity": 0.9907373992541778,
+          "F1-score": 0.9860672486960511
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 91 / 182 -> 50.00"
+    },
+    "Stamp": {
+      "System": 1721277893.1520247,
+      "ROS": 1701349256.3755157
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 54872,
+          "FP": 72104,
+          "TN": 153630,
+          "FN": 369,
+          "Accuracy": 0.7420660201085503,
+          "Precision": 0.43214465725806417,
+          "Recall": 0.993320178852662,
+          "Specificity": 0.6805797974607278,
+          "F1-score": 0.6022709186974928
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 92 / 183 -> 50.27"
+    },
+    "Stamp": {
+      "System": 1721277893.6935651,
+      "ROS": 1701349256.9156363
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 15589,
+          "FP": 345,
+          "TN": 41482,
+          "FN": 64,
+          "Accuracy": 0.9928844815588013,
+          "Precision": 0.9783481862683509,
+          "Recall": 0.9959113269021849,
+          "Specificity": 0.9917517393071437,
+          "F1-score": 0.9870516351163636
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 93 / 184 -> 50.54"
+    },
+    "Stamp": {
+      "System": 1721277894.1813676,
+      "ROS": 1701349257.4056797
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 54881,
+          "FP": 72946,
+          "TN": 151874,
+          "FN": 347,
+          "Accuracy": 0.7382841512883502,
+          "Precision": 0.42933808976194354,
+          "Recall": 0.9937169551676668,
+          "Specificity": 0.6755359843430297,
+          "F1-score": 0.599612138386205
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 94 / 185 -> 50.81"
+    },
+    "Stamp": {
+      "System": 1721277894.399539,
+      "ROS": 1701349257.620505
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 44420,
+          "FP": 73441,
+          "TN": 132972,
+          "FN": 324,
+          "Accuracy": 0.7062992470844928,
+          "Precision": 0.37688463529072347,
+          "Recall": 0.9927588056499173,
+          "Specificity": 0.6442036112066583,
+          "F1-score": 0.5463546631008488
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 95 / 186 -> 51.08"
+    },
+    "Stamp": {
+      "System": 1721277894.4763427,
+      "ROS": 1701349257.7005086
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 15746,
+          "FP": 356,
+          "TN": 41297,
+          "FN": 58,
+          "Accuracy": 0.992794611622603,
+          "Precision": 0.9778909452241896,
+          "Recall": 0.9963300430270754,
+          "Specificity": 0.9914531966484983,
+          "F1-score": 0.9870243840783752
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 96 / 187 -> 51.34"
+    },
+    "Stamp": {
+      "System": 1721277894.6818871,
+      "ROS": 1701349257.905559
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 5246,
+          "FP": 252,
+          "TN": 23193,
+          "FN": 0,
+          "Accuracy": 0.9912167578683176,
+          "Precision": 0.9541651509639696,
+          "Recall": 0.9999999999999809,
+          "Specificity": 0.9892514395393432,
+          "F1-score": 0.9765450483491159
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 96 / 188 -> 51.06"
+    },
+    "Stamp": {
+      "System": 1721277895.143694,
+      "ROS": 1701349258.365581
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 45162,
+          "FP": 76905,
+          "TN": 128607,
+          "FN": 339,
+          "Accuracy": 0.6922709182392941,
+          "Precision": 0.36997714369977114,
+          "Recall": 0.9925496142941891,
+          "Specificity": 0.625788275137218,
+          "F1-score": 0.5390289314986796
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 96 / 189 -> 50.79"
+    },
+    "Stamp": {
+      "System": 1721277895.6457691,
+      "ROS": 1701349258.8705199
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 39900,
+          "FP": 77160,
+          "TN": 104629,
+          "FN": 348,
+          "Accuracy": 0.6509230443574717,
+          "Precision": 0.34085084572014324,
+          "Recall": 0.9913536076326749,
+          "Specificity": 0.5755518760761099,
+          "F1-score": 0.5072850712869645
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 97 / 190 -> 51.05"
+    },
+    "Stamp": {
+      "System": 1721277896.409276,
+      "ROS": 1701349259.6304867
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 60604,
+          "FP": 77974,
+          "TN": 138127,
+          "FN": 409,
+          "Accuracy": 0.7171452903859059,
+          "Precision": 0.4373277143558138,
+          "Recall": 0.9932965105797109,
+          "Specificity": 0.6391779769644746,
+          "F1-score": 0.6072818914256028
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 97 / 191 -> 50.79"
+    },
+    "Stamp": {
+      "System": 1721277897.4390943,
+      "ROS": 1701349260.660595
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 64794,
+          "FP": 84500,
+          "TN": 124560,
+          "FN": 373,
+          "Accuracy": 0.6905009353564745,
+          "Precision": 0.4340027060699021,
+          "Recall": 0.9942762441112818,
+          "Specificity": 0.5958098153640101,
+          "F1-score": 0.6042497236836856
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 97 / 192 -> 50.52"
+    },
+    "Stamp": {
+      "System": 1721277897.8981054,
+      "ROS": 1701349261.120489
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 66121,
+          "FP": 87230,
+          "TN": 120337,
+          "FN": 393,
+          "Accuracy": 0.6803025383007211,
+          "Precision": 0.43117423427300744,
+          "Recall": 0.9940914694650735,
+          "Specificity": 0.5797501529626576,
+          "F1-score": 0.6014690832589156
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 97 / 193 -> 50.26"
+    },
+    "Stamp": {
+      "System": 1721277898.377613,
+      "ROS": 1701349261.6005363
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 67128,
+          "FP": 89101,
+          "TN": 117191,
+          "FN": 371,
+          "Accuracy": 0.6732105876380156,
+          "Precision": 0.42967694858188915,
+          "Recall": 0.9945036222758841,
+          "Specificity": 0.5680831055009402,
+          "F1-score": 0.6000858184517494
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 98 / 194 -> 50.52"
+    },
+    "Stamp": {
+      "System": 1721277898.4487245,
+      "ROS": 1701349261.6704981
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 19166,
+          "FP": 141,
+          "TN": 38107,
+          "FN": 65,
+          "Accuracy": 0.9964160823953079,
+          "Precision": 0.9926969492929975,
+          "Recall": 0.9966200405595081,
+          "Specificity": 0.996313532733735,
+          "F1-score": 0.9946546265523096
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 98 / 195 -> 50.26"
+    },
+    "Stamp": {
+      "System": 1721277899.429468,
+      "ROS": 1701349262.6505463
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 83344,
+          "FP": 105846,
+          "TN": 83154,
+          "FN": 388,
+          "Accuracy": 0.6104820849771935,
+          "Precision": 0.4405306834399279,
+          "Recall": 0.9953661682510856,
+          "Specificity": 0.4399682539682538,
+          "F1-score": 0.6107532554663648
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 98 / 196 -> 50.00"
+    },
+    "Stamp": {
+      "System": 1721277899.7115695,
+      "ROS": 1701349262.9305334
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 83346,
+          "FP": 106190,
+          "TN": 82732,
+          "FN": 384,
+          "Accuracy": 0.6091207840030513,
+          "Precision": 0.4397370420395068,
+          "Recall": 0.9954138301683972,
+          "Specificity": 0.4379161770466116,
+          "F1-score": 0.6099990485036006
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 98 / 197 -> 49.75"
+    },
+    "Stamp": {
+      "System": 1721277899.8999133,
+      "ROS": 1701349263.1255398
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 72516,
+          "FP": 106339,
+          "TN": 64630,
+          "FN": 395,
+          "Accuracy": 0.562350336230933,
+          "Precision": 0.4054457521455926,
+          "Recall": 0.9945824361207486,
+          "Specificity": 0.37802174663243027,
+          "F1-score": 0.5760587211523425
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 98 / 198 -> 49.49"
+    },
+    "Stamp": {
+      "System": 1721277900.393675,
+      "ROS": 1701349263.6155953
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 83467,
+          "FP": 105569,
+          "TN": 82917,
+          "FN": 378,
+          "Accuracy": 0.6109623950266401,
+          "Precision": 0.44154023572229606,
+          "Recall": 0.9954916810781788,
+          "Specificity": 0.4399106564943813,
+          "F1-score": 0.611746512173377
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 99 / 199 -> 49.75"
+    },
+    "Stamp": {
+      "System": 1721277900.4666364,
+      "ROS": 1701349263.6905084
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21335,
+          "FP": 239,
+          "TN": 35828,
+          "FN": 70,
+          "Accuracy": 0.9946234688195974,
+          "Precision": 0.9889218503754474,
+          "Recall": 0.996729736042976,
+          "Specificity": 0.9933734438683534,
+          "F1-score": 0.9928104422590308
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 99 / 200 -> 49.50"
+    },
+    "Stamp": {
+      "System": 1721277900.94368,
+      "ROS": 1701349264.1655495
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 83874,
+          "FP": 104813,
+          "TN": 82940,
+          "FN": 351,
+          "Accuracy": 0.6133363727948582,
+          "Precision": 0.4445139304774572,
+          "Recall": 0.9958325912733736,
+          "Specificity": 0.4417505978599541,
+          "F1-score": 0.6146596704738286
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 99 / 201 -> 49.25"
+    },
+    "Stamp": {
+      "System": 1721277901.3888047,
+      "ROS": 1701349264.6105475
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 83967,
+          "FP": 104957,
+          "TN": 82535,
+          "FN": 342,
+          "Accuracy": 0.6125878859901175,
+          "Precision": 0.4444485613262474,
+          "Recall": 0.9959434935771969,
+          "Specificity": 0.4402054487658138,
+          "F1-score": 0.6146182927696909
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 99 / 202 -> 49.01"
+    },
+    "Stamp": {
+      "System": 1721277901.6202838,
+      "ROS": 1701349264.8406038
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 83934,
+          "FP": 104908,
+          "TN": 82472,
+          "FN": 361,
+          "Accuracy": 0.6125186343977176,
+          "Precision": 0.4444668029357874,
+          "Recall": 0.9957174209620961,
+          "Specificity": 0.4401323513715443,
+          "F1-score": 0.614592676892343
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 99 / 203 -> 48.77"
+    },
+    "Stamp": {
+      "System": 1721277901.8904247,
+      "ROS": 1701349265.1156344
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 84077,
+          "FP": 104425,
+          "TN": 82712,
+          "FN": 343,
+          "Accuracy": 0.6141951781762206,
+          "Precision": 0.4460270978557255,
+          "Recall": 0.995936981757876,
+          "Specificity": 0.441986352244612,
+          "F1-score": 0.616124753549873
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 99 / 204 -> 48.53"
+    },
+    "Stamp": {
+      "System": 1721277902.4133718,
+      "ROS": 1701349265.6355054
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 84251,
+          "FP": 104156,
+          "TN": 82761,
+          "FN": 374,
+          "Accuracy": 0.6150503421201874,
+          "Precision": 0.44717552957161866,
+          "Recall": 0.9955805022156561,
+          "Specificity": 0.4427687155261424,
+          "F1-score": 0.617151103124618
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 100 / 205 -> 48.78"
+    },
+    "Stamp": {
+      "System": 1721277902.456512,
+      "ROS": 1701349265.680544
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 21111,
+          "FP": 255,
+          "TN": 36027,
+          "FN": 69,
+          "Accuracy": 0.994361491072359,
+          "Precision": 0.9880651502386925,
+          "Recall": 0.9967422096317234,
+          "Specificity": 0.992971721514798,
+          "F1-score": 0.9923847129664961
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 100 / 206 -> 48.54"
+    },
+    "Stamp": {
+      "System": 1721277903.1214478,
+      "ROS": 1701349266.3456047
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 73817,
+          "FP": 104349,
+          "TN": 64404,
+          "FN": 322,
+          "Accuracy": 0.5690636167514778,
+          "Precision": 0.4143158627347528,
+          "Recall": 0.9956568068088307,
+          "Specificity": 0.38164654850580415,
+          "F1-score": 0.5851409999386821
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 100 / 207 -> 48.31"
+    },
+    "Stamp": {
+      "System": 1721277903.4084814,
+      "ROS": 1701349266.6305182
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 84488,
+          "FP": 104141,
+          "TN": 82571,
+          "FN": 378,
+          "Accuracy": 0.6151418745259186,
+          "Precision": 0.4479056772818599,
+          "Recall": 0.9955459194494839,
+          "Specificity": 0.44223724238399226,
+          "F1-score": 0.6178394485760013
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 100 / 208 -> 48.08"
+    },
+    "Stamp": {
+      "System": 1721277903.820788,
+      "ROS": 1701349267.0456665
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 63358,
+          "FP": 105586,
+          "TN": 44705,
+          "FN": 309,
+          "Accuracy": 0.5050664149038594,
+          "Precision": 0.3750236764845154,
+          "Recall": 0.9951466222689918,
+          "Specificity": 0.2974562681730774,
+          "F1-score": 0.5447549771539253
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 100 / 209 -> 47.85"
+    },
+    "Stamp": {
+      "System": 1721277904.149543,
+      "ROS": 1701349267.3705149
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 84316,
+          "FP": 103707,
+          "TN": 83060,
+          "FN": 376,
+          "Accuracy": 0.6165792992680291,
+          "Precision": 0.44843450003457,
+          "Recall": 0.9955603835072958,
+          "Specificity": 0.44472524589461715,
+          "F1-score": 0.61834515882266
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 101 / 210 -> 48.10"
+    },
+    "Stamp": {
+      "System": 1721277904.1790028,
+      "ROS": 1701349267.400511
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 20943,
+          "FP": 299,
+          "TN": 36161,
+          "FN": 63,
+          "Accuracy": 0.993700622977063,
+          "Precision": 0.9859241126070946,
+          "Recall": 0.9970008568980244,
+          "Specificity": 0.9917992320351042,
+          "F1-score": 0.9914315470054788
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 101 / 211 -> 47.87"
+    },
+    "Stamp": {
+      "System": 1721277905.1388538,
+      "ROS": 1701349268.3606093
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 73084,
+          "FP": 103616,
+          "TN": 65895,
+          "FN": 306,
+          "Accuracy": 0.5721631446556414,
+          "Precision": 0.4136049801924163,
+          "Recall": 0.9958304946177939,
+          "Specificity": 0.3887358342526442,
+          "F1-score": 0.5844615937847543
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 101 / 212 -> 47.64"
+    },
+    "Stamp": {
+      "System": 1721277905.3895068,
+      "ROS": 1701349268.6105487
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 83546,
+          "FP": 103415,
+          "TN": 84388,
+          "FN": 364,
+          "Accuracy": 0.6180565523180707,
+          "Precision": 0.44686324955471973,
+          "Recall": 0.9956620188296973,
+          "Specificity": 0.4493431947306484,
+          "F1-score": 0.6168692845982647
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 102 / 213 -> 47.89"
+    },
+    "Stamp": {
+      "System": 1721277905.4003243,
+      "ROS": 1701349268.6255662
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 10596,
+          "FP": 59,
+          "TN": 18067,
+          "FN": 64,
+          "Accuracy": 0.9957270895574204,
+          "Precision": 0.9944626935710841,
+          "Recall": 0.9939962476547749,
+          "Specificity": 0.9967450071720126,
+          "F1-score": 0.9942294158542834
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 102 / 214 -> 47.66"
+    },
+    "Stamp": {
+      "System": 1721277905.864943,
+      "ROS": 1701349269.0855272
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 73077,
+          "FP": 104820,
+          "TN": 64777,
+          "FN": 413,
+          "Accuracy": 0.5670973766593851,
+          "Precision": 0.41078264388944147,
+          "Recall": 0.9943801877806491,
+          "Specificity": 0.3819466146217207,
+          "F1-score": 0.5813904457652889
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 103 / 215 -> 47.91"
+    },
+    "Stamp": {
+      "System": 1721277905.910294,
+      "ROS": 1701349269.1355178
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 20761,
+          "FP": 322,
+          "TN": 36329,
+          "FN": 57,
+          "Accuracy": 0.9934051401625207,
+          "Precision": 0.9847270312574066,
+          "Recall": 0.9972619848208234,
+          "Specificity": 0.9912144279828626,
+          "F1-score": 0.9909548697621737
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 216 -> 48.15"
+    },
+    "Stamp": {
+      "System": 1721277906.1898942,
+      "ROS": 1701349269.4156342
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 20723,
+          "FP": 351,
+          "TN": 36324,
+          "FN": 69,
+          "Accuracy": 0.9926914577061601,
+          "Precision": 0.9833444054284854,
+          "Recall": 0.9966814159291988,
+          "Specificity": 0.990429447852758,
+          "F1-score": 0.9899679930709071
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 217 -> 47.93"
+    },
+    "Stamp": {
+      "System": 1721277906.848569,
+      "ROS": 1701349270.070511
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 82594,
+          "FP": 103747,
+          "TN": 85109,
+          "FN": 399,
+          "Accuracy": 0.6168976159559164,
+          "Precision": 0.44324115465732156,
+          "Recall": 0.9951923656211957,
+          "Specificity": 0.4506555259033336,
+          "F1-score": 0.6133202640161138
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 218 -> 47.71"
+    },
+    "Stamp": {
+      "System": 1721277907.129509,
+      "ROS": 1701349270.3505614
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 82485,
+          "FP": 103308,
+          "TN": 85709,
+          "FN": 390,
+          "Accuracy": 0.6186059170553011,
+          "Precision": 0.44396182848654125,
+          "Recall": 0.9952941176470576,
+          "Specificity": 0.45344598633985284,
+          "F1-score": 0.6140292107304841
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 219 -> 47.49"
+    },
+    "Stamp": {
+      "System": 1721277907.4032254,
+      "ROS": 1701349270.6255636
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 72212,
+          "FP": 104975,
+          "TN": 65631,
+          "FN": 402,
+          "Accuracy": 0.5667420442397827,
+          "Precision": 0.40754682905630757,
+          "Recall": 0.994463877489188,
+          "Specificity": 0.3846933871024464,
+          "F1-score": 0.5781562123037886
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 220 -> 47.27"
+    },
+    "Stamp": {
+      "System": 1721277907.652527,
+      "ROS": 1701349270.8756454
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 82025,
+          "FP": 103714,
+          "TN": 85818,
+          "FN": 418,
+          "Accuracy": 0.6171265741336517,
+          "Precision": 0.4416143082497481,
+          "Recall": 0.9949298303069988,
+          "Specificity": 0.4527889749488211,
+          "F1-score": 0.6117114496445701
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 221 -> 47.06"
+    },
+    "Stamp": {
+      "System": 1721277908.136657,
+      "ROS": 1701349271.3606296
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81660,
+          "FP": 103460,
+          "TN": 86398,
+          "FN": 424,
+          "Accuracy": 0.6179920718388477,
+          "Precision": 0.44111927398444234,
+          "Recall": 0.9948345597193107,
+          "Specificity": 0.4550664180598129,
+          "F1-score": 0.6112183948916419
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 222 -> 46.85"
+    },
+    "Stamp": {
+      "System": 1721277908.3946137,
+      "ROS": 1701349271.6155317
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81699,
+          "FP": 103395,
+          "TN": 86495,
+          "FN": 378,
+          "Accuracy": 0.6184353248739735,
+          "Precision": 0.44139194139194116,
+          "Recall": 0.9953945685149299,
+          "Specificity": 0.45550055295170866,
+          "F1-score": 0.6115858382407799
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 223 -> 46.64"
+    },
+    "Stamp": {
+      "System": 1721277908.661557,
+      "ROS": 1701349271.8855257
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81481,
+          "FP": 103379,
+          "TN": 86686,
+          "FN": 413,
+          "Accuracy": 0.6183542372195806,
+          "Precision": 0.4407713945688627,
+          "Recall": 0.9949568954990585,
+          "Specificity": 0.45608607581616795,
+          "F1-score": 0.610907427774839
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 104 / 224 -> 46.43"
+    },
+    "Stamp": {
+      "System": 1721277908.913832,
+      "ROS": 1701349272.1356335
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81378,
+          "FP": 103219,
+          "TN": 86915,
+          "FN": 423,
+          "Accuracy": 0.6188721569492707,
+          "Precision": 0.4408414004561286,
+          "Recall": 0.9948289140719538,
+          "Specificity": 0.45712497501761895,
+          "F1-score": 0.6109505326191011
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 105 / 225 -> 46.67"
+    },
+    "Stamp": {
+      "System": 1721277908.940024,
+      "ROS": 1701349272.1655767
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 20537,
+          "FP": 368,
+          "TN": 36508,
+          "FN": 60,
+          "Accuracy": 0.9925530248986463,
+          "Precision": 0.9823965558478787,
+          "Recall": 0.9970869544108317,
+          "Specificity": 0.9900206096105841,
+          "F1-score": 0.9896872439382395
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 105 / 226 -> 46.46"
+    },
+    "Stamp": {
+      "System": 1721277909.6713238,
+      "ROS": 1701349272.895655
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81297,
+          "FP": 103455,
+          "TN": 86705,
+          "FN": 420,
+          "Accuracy": 0.6179338450843578,
+          "Precision": 0.4400331254871393,
+          "Recall": 0.9948603105840877,
+          "Specificity": 0.4559581405132518,
+          "F1-score": 0.6101797957310924
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 105 / 227 -> 46.26"
+    },
+    "Stamp": {
+      "System": 1721277909.8884177,
+      "ROS": 1701349273.1105795
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 71253,
+          "FP": 104719,
+          "TN": 66847,
+          "FN": 395,
+          "Accuracy": 0.567812708150024,
+          "Precision": 0.40491100856954493,
+          "Recall": 0.9944869361322005,
+          "Specificity": 0.38962848116759713,
+          "F1-score": 0.5755027864866186
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 105 / 228 -> 46.05"
+    },
+    "Stamp": {
+      "System": 1721277910.135288,
+      "ROS": 1701349273.3605628
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 81000,
+          "FP": 103210,
+          "TN": 87263,
+          "FN": 403,
+          "Accuracy": 0.6188961144050962,
+          "Precision": 0.4397155420444056,
+          "Recall": 0.9950493225065403,
+          "Specificity": 0.45813842381859876,
+          "F1-score": 0.6099099064756199
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 105 / 229 -> 45.85"
+    },
+    "Stamp": {
+      "System": 1721277910.656772,
+      "ROS": 1701349273.880628
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 80745,
+          "FP": 103004,
+          "TN": 87760,
+          "FN": 402,
+          "Accuracy": 0.6197064480657272,
+          "Precision": 0.43943096288959377,
+          "Recall": 0.9950460275795766,
+          "Specificity": 0.46004487219810847,
+          "F1-score": 0.6096354795419415
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 105 / 230 -> 45.65"
+    },
+    "Stamp": {
+      "System": 1721277910.916811,
+      "ROS": 1701349274.1405394
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 80658,
+          "FP": 103014,
+          "TN": 87837,
+          "FN": 408,
+          "Accuracy": 0.6196559979699685,
+          "Precision": 0.43914151313210487,
+          "Recall": 0.9949670638738793,
+          "Specificity": 0.4602386154644197,
+          "F1-score": 0.6093420664534421
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 231 -> 45.89"
+    },
+    "Stamp": {
+      "System": 1721277910.9454267,
+      "ROS": 1701349274.1705418
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Success"
+        },
+        "Info": {
+          "TP": 20411,
+          "FP": 385,
+          "TN": 36612,
+          "FN": 65,
+          "Accuracy": 0.9921702364588572,
+          "Precision": 0.981486824389301,
+          "Recall": 0.996825551865594,
+          "Specificity": 0.9895937508446604,
+          "F1-score": 0.9890967241213493
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 232 -> 45.69"
+    },
+    "Stamp": {
+      "System": 1721277911.6871395,
+      "ROS": 1701349274.910572
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 80392,
+          "FP": 102700,
+          "TN": 88359,
+          "FN": 397,
+          "Accuracy": 0.6207549807245223,
+          "Precision": 0.4390798068730472,
+          "Recall": 0.9950859646734073,
+          "Specificity": 0.4624697083099983,
+          "F1-score": 0.6093049518108121
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 233 -> 45.49"
+    },
+    "Stamp": {
+      "System": 1721277912.3296347,
+      "ROS": 1701349275.55561
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 59925,
+          "FP": 104915,
+          "TN": 49252,
+          "FN": 370,
+          "Accuracy": 0.5090738685641277,
+          "Precision": 0.36353433632613424,
+          "Recall": 0.9938635044365187,
+          "Specificity": 0.3194717416827205,
+          "F1-score": 0.5323472582724609
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 234 -> 45.30"
+    },
+    "Stamp": {
+      "System": 1721277912.6416793,
+      "ROS": 1701349275.865642
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 80302,
+          "FP": 103752,
+          "TN": 87495,
+          "FN": 378,
+          "Accuracy": 0.6170663450117124,
+          "Precision": 0.4362958696904167,
+          "Recall": 0.9953148239960324,
+          "Specificity": 0.4574973725078038,
+          "F1-score": 0.606661781217303
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 235 -> 45.11"
+    },
+    "Stamp": {
+      "System": 1721277912.8798425,
+      "ROS": 1701349276.100593
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 80219,
+          "FP": 103743,
+          "TN": 87570,
+          "FN": 408,
+          "Accuracy": 0.6170074281091414,
+          "Precision": 0.4360628825518312,
+          "Recall": 0.9949396604115234,
+          "Specificity": 0.45773157077668514,
+          "F1-score": 0.6063668557226048
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 236 -> 44.92"
+    },
+    "Stamp": {
+      "System": 1721277913.145505,
+      "ROS": 1701349276.3705413
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 69550,
+          "FP": 103997,
+          "TN": 69253,
+          "FN": 375,
+          "Accuracy": 0.5707946951783692,
+          "Precision": 0.40075599117241995,
+          "Recall": 0.9946371111905599,
+          "Specificity": 0.39972871572871554,
+          "F1-score": 0.5713182624286628
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 237 -> 44.73"
+    },
+    "Stamp": {
+      "System": 1721277913.3750322,
+      "ROS": 1701349276.5955923
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 80183,
+          "FP": 103717,
+          "TN": 87641,
+          "FN": 400,
+          "Accuracy": 0.617133863595412,
+          "Precision": 0.4360141381185425,
+          "Recall": 0.9950361738828276,
+          "Specificity": 0.45799496232193043,
+          "F1-score": 0.6063376473678601
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 238 -> 44.54"
+    },
+    "Stamp": {
+      "System": 1721277913.619915,
+      "ROS": 1701349276.8406472
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 70591,
+          "FP": 105370,
+          "TN": 66981,
+          "FN": 406,
+          "Accuracy": 0.565330308858096,
+          "Precision": 0.40117412381152623,
+          "Recall": 0.9942814485119075,
+          "Specificity": 0.38863133953385803,
+          "F1-score": 0.5716842539617369
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 239 -> 44.35"
+    },
+    "Stamp": {
+      "System": 1721277913.899023,
+      "ROS": 1701349277.1205797
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 80168,
+          "FP": 103727,
+          "TN": 87669,
+          "FN": 408,
+          "Accuracy": 0.61711132028297,
+          "Precision": 0.43594442480763457,
+          "Recall": 0.9949364575059558,
+          "Specificity": 0.45805032498066817,
+          "F1-score": 0.6062517250995174
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 240 -> 44.17"
+    },
+    "Stamp": {
+      "System": 1721277914.099318,
+      "ROS": 1701349277.320536
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 69609,
+          "FP": 103552,
+          "TN": 69696,
+          "FN": 363,
+          "Accuracy": 0.572753063070471,
+          "Precision": 0.4019900554974848,
+          "Recall": 0.9948122105985236,
+          "Specificity": 0.40229035833025467,
+          "F1-score": 0.5726001817525099
+        }
+      }
+    }
+  },
+  {
+    "Result": {
+      "Success": false,
+      "Summary": "Failed: Ground Segmentation (Fail): 106 / 241 -> 43.98"
+    },
+    "Stamp": {
+      "System": 1721277914.4195998,
+      "ROS": 1701349277.5105822
+    },
+    "Frame": {
+      "GroundSegmentation": {
+        "Result": {
+          "Total": "Fail",
+          "Frame": "Fail"
+        },
+        "Info": {
+          "TP": 80169,
+          "FP": 103895,
+          "TN": 87672,
+          "FN": 376,
+          "Accuracy": 0.6168085200211675,
+          "Precision": 0.4355495914464532,
+          "Recall": 0.9953318020982047,
+          "Specificity": 0.4576571121330916,
+          "F1-score": 0.6059431084687004
+        }
+      }
+    }
+  }
+]

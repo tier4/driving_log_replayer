@@ -1,0 +1,36 @@
+ScenarioFormatVersion: 3.0.0
+ScenarioName: ground_segmentation-sample
+ScenarioDescription: ground_segmentation-sample
+SensorModel: sample_sensor_kit
+VehicleModel: sample_vehicle
+LocalMapPath: $HOME/autoware_map/sample-map-planning
+Evaluation:
+  UseCaseName: ground_segmentation
+  UseCaseFormatVersion: 0.3.0
+  Datasets:
+    - sample_dataset:
+        VehicleId: default
+        LocalMapPath: $HOME/autoware_map/sample-map-planning
+  Conditions:
+    Method: annotated_pcd # Data types used as GroundTruth data.(annotated_rosbag : input_bag contains annotated pointcloud data, annotated_pcd : annotated pcd.bin file located at t4_dataset/dataset/data/LIDAR_CONCAT/*.pcd.bin)
+    ground_label: 6 # Annotation label for ground pointcloud.
+    obstacle_label: 7 # Annotation label for obstacle pointcloud.
+    accuracy_min: 0.7 # If the accuracy is lower than the threshold value, the evaluation is considered to have failed.
+    accuracy_max: 1.0
+    PassRate: 99.0 # How much (%) of the evaluation attempts are considered successful.
+
+# Note : When running ground_segmentation in 'annotated_rosbag' mode,
+# it is necessary to modify the sensing module of autoware.universe as follows:
+#
+# https://github.com/autowarefoundation/autoware.universe/blob/main/sensing/autoware_pointcloud_preprocessor/src/filter.cpp#L383-L390
+#  ...
+#     if (utils::is_data_layout_compatible_with_point_xyzi(*cloud)) {
+#      RCLCPP_ERROR(
+#        get_logger(),
+#        "The pointcloud layout is compatible with PointXYZI. You may be using legacy "
+#        "code/data");
+#    }
+#
+#    // return; <- comment out!
+#  }
+#  ...
