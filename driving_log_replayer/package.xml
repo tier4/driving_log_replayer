@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>driving_log_replayer</name>
-  <version>2.3.9</version>
+  <version>2.3.11</version>
   <description>The driving_log_replayer package</description>
   <maintainer email="hayato.mizushima@tier4.jp">Hayato Mizushima</maintainer>
   <maintainer email="kotaro.uetake@tier4.jp">Kotaro Uetake</maintainer>
@@ -38,7 +38,7 @@
   <exec_depend>driving_log_replayer_analyzer</exec_depend>
   <exec_depend>lanelet2_extension_python</exec_depend>
   <exec_depend>perception_eval</exec_depend>
-  <exec_depend>python3-jsonschema</exec_depend>
+  <exec_depend>python3-fastjsonschema</exec_depend>
   <exec_depend>python3-pandas</exec_depend>
   <exec_depend>python3-simplejson</exec_depend>
   <exec_depend>python3-termcolor</exec_depend>

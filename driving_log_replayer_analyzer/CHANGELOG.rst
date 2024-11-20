@@ -2,6 +2,17 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.3.11 (2024-11-02)
+-------------------
+* perf: 2x processing speedup (`#581 <https://github.com/tier4/driving_log_replayer/issues/581>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: ralwing
+
+2.3.10 (2024-11-01)
+-------------------
+* fix: condition to judge diag name (`#582 <https://github.com/tier4/driving_log_replayer/issues/582>`_)
+* Contributors: Hayato Mizushima
+
 2.3.9 (2024-10-28)
 ------------------
 * feat: update pre commit and ruff (`#579 <https://github.com/tier4/driving_log_replayer/issues/579>`_)
