@@ -29,7 +29,7 @@ def generate_launch_description() -> launch.LaunchDescription:
     launch_arguments.append(
         DeclareLaunchArgument(
             "evaluation_target_topic",
-            default_value="/perception/obstacle_segmentation/pointcloud",
+            default_value="/perception/obstacle_segmentation/single_frame/pointcloud",
         ),
     )
     autoware_launch = cmn.get_autoware_launch(
