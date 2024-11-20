@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.4.0
+
+Major changes
+
+| Module                | Feature  | Brief summary                     | Pull request                                                   | Jira | Contributor                                         |
+| --------------------- | -------- | --------------------------------- | -------------------------------------------------------------- | ---- | --------------------------------------------------- |
+| `ground_segmentation` | use case | add ground_segmentation_evaluator | [#528](https://github.com/tier4/driving_log_replayer/pull/528) | -    | [nanoshimarobot](https://github.com/nanoshimarobot) |
+
 ## Version 2.3.11
 
 Minor Tweak
