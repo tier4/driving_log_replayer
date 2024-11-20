@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add ground_segmentation_evaluator  (`#528 <https://github.com/tier4/driving_log_replayer/issues/528>`_)
+  Co-authored-by: toyozoshimada <toyozo.shimada@tier4.jp>
+* Contributors: Toyozo Shimada
+
 2.3.11 (2024-11-02)
 -------------------
 * perf: 2x processing speedup (`#581 <https://github.com/tier4/driving_log_replayer/issues/581>`_)
