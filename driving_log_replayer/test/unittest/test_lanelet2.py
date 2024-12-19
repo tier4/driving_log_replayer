@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import lanelet2  # noqa #isort:skip
+from autoware_lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from geometry_msgs.msg import Point
-import lanelet2  # noqa
 from lanelet2.core import BasicPoint2d
 from lanelet2.core import getId
 from lanelet2.core import Lanelet
 from lanelet2.core import LineString3d
 from lanelet2.core import Point3d
 from lanelet2.geometry import distance
-from lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from shapely.geometry import Polygon
 
 from driving_log_replayer.lanelet2_util import to_shapely_polygon
@@ -85,7 +85,7 @@ map_file = "/home/hyt/map/678-20230824042714824504/lanelet2_map.osm"
 lanelet_map = load_map(map_file)
 re1504 = lanelet_map.regulatoryElementLayer.get(
     1504,
-)  # lanelet2_extension_python._lanelet2_extension_python_boost_python_regulatory_elements.AutowareTrafficLight
+)  # autoware_lanelet2_extension_python._autoware_lanelet2_extension_python_boost_python_regulatory_elements.AutowareTrafficLight
 distance_to_gt = []
 for traffic_light in re1504.trafficLights:
     l2d = to2D(traffic_light)

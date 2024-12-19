@@ -8,8 +8,7 @@ on:
       - synchronize
 
 jobs:
-  main:
-    name: Validate PR title
+  lint-pull-request:
     runs-on: ubuntu-latest
     steps:
       - uses: amannn/action-semantic-pull-request@v5
