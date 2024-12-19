@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+import lanelet2  # noqa #isort:skip
+from autoware_lanelet2_extension_python.utility.query import getLaneletsWithinRange
 from geometry_msgs.msg import Point
-import lanelet2  # noqa
 from lanelet2.core import BasicPoint2d
 from lanelet2.core import getId
 from lanelet2.core import Lanelet
@@ -58,16 +58,12 @@ def test_intersection_no_overlapping() -> None:
 
 
 def test_get_lanelets_within_range() -> None:
-    from autoware_lanelet2_extension_python.utility.query import getLaneletsWithinRange
-
     lanes = [get_a_lanelet(), get_a_lanelet(index=4)]
     near_lanelets = getLaneletsWithinRange(lanes, Point(x=1.0, y=3.0, z=0.0), 1.0)
     assert len(near_lanelets) == 2  # noqa
 
 
 def test_get_lanelets_within_range_no_lane() -> None:
-    from autoware_lanelet2_extension_python.utility.query import getLaneletsWithinRange
-
     lanes = [get_a_lanelet(), get_a_lanelet(index=4)]
     near_lanelets = getLaneletsWithinRange(lanes, Point(x=1.0, y=3.0, z=0.0), 0.5)
     assert len(near_lanelets) == 0

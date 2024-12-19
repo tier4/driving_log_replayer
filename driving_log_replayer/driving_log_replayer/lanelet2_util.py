@@ -14,9 +14,9 @@
 
 from typing import Any
 
+import lanelet2  # isort:skip
 from autoware_lanelet2_extension_python.projection import MGRSProjector
 from autoware_lanelet2_extension_python.utility import query
-import lanelet2
 from lanelet2.core import Lanelet
 from shapely.geometry import Polygon
 
