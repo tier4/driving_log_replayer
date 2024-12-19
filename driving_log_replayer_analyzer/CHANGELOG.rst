@@ -2,6 +2,9 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 2.4.0 (2024-11-20)
 ------------------
 * feat: add ground_segmentation_evaluator  (`#528 <https://github.com/tier4/driving_log_replayer/issues/528>`_)
