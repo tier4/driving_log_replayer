@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.5.0 (2024-12-19)
+------------------
 * fix: update lanelet2 extension (`#586 <https://github.com/tier4/driving_log_replayer/issues/586>`_)
 * Contributors: Hayato Mizushima
 
