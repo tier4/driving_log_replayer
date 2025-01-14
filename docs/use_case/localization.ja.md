@@ -83,17 +83,17 @@ Component State Monitorが出力する `/diagnostics` の中から、監視ト�
 
 Subscribed topics:
 
-| topic 名                                                             | データ型                              |
-| -------------------------------------------------------------------- | ------------------------------------- |
-| /diagnostics                                                         | diagnostic_msgs::msg::DiagnosticArray |
+| topic 名                                                             | データ型                                          |
+| -------------------------------------------------------------------- | ------------------------------------------------- |
+| /diagnostics                                                         | diagnostic_msgs::msg::DiagnosticArray             |
 | /localization/pose_estimator/transform_probability                   | autoware_internal_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/nearest_voxel_transformation_likelihood | autoware_internal_debug_msgs::msg::Float32Stamped |
-| /localization/pose_estimator/initial_to_result_relative_pose         | geometry_msgs::msg::PoseStamped       |
+| /localization/pose_estimator/initial_to_result_relative_pose         | geometry_msgs::msg::PoseStamped                   |
 | /localization/pose_estimator/exe_time_ms                             | autoware_internal_debug_msgs::msg::Float32Stamped |
 | /localization/pose_estimator/iteration_num                           | autoware_internal_debug_msgs::msg::Int32Stamped   |
-| /tf                                                                  | tf2_msgs/msg/TFMessage                |
-| /localization/util/downsample/pointcloud                             | sensor_msgs::msg::PointCloud2         |
-| /localization/pose_estimator/points_aligned                          | sensor_msgs::msg::PointCloud2         |
+| /tf                                                                  | tf2_msgs/msg/TFMessage                            |
+| /localization/util/downsample/pointcloud                             | sensor_msgs::msg::PointCloud2                     |
+| /localization/pose_estimator/points_aligned                          | sensor_msgs::msg::PointCloud2                     |
 
 Published topics:
 
