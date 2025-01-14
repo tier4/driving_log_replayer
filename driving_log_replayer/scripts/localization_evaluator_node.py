@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from autoware_internal_debug_msgs.msg import Float32Stamped
+from autoware_internal_debug_msgs.msg import Int32Stamped
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from example_interfaces.msg import Float64
 from geometry_msgs.msg import PoseStamped
-from tier4_debug_msgs.msg import Float32Stamped
-from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.evaluator import DLREvaluator
 from driving_log_replayer.evaluator import evaluator_main
