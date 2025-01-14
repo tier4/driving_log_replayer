@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.6.0
+
+Major changes
+
+| Module | Feature | Brief summary                                                  | Pull request                                                   | Jira     | Contributor                                         |
+| ------ | ------- | -------------------------------------------------------------- | -------------------------------------------------------------- | -------- | --------------------------------------------------- |
+| `all`  | message | replace `tier4_debug_msgs` with `autoware_internal_debug_msgs` | [#589](https://github.com/tier4/driving_log_replayer/pull/589) | RT1-9020 | [SakodaShintaro](https://github.com/SakodaShintaro) |
+
 ## Version 2.5.0
 
 Major changes
