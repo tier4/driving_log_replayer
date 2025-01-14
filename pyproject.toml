@@ -1,10 +1,11 @@
 [project]
 name = "driving-log-replayer"
-version = "2.5.0"
+version = "2.6.0"
 description = "command line tool for driving_log_replayer"
 authors = [
   { name = "Hayato Mizushima", email = "hayato.mizushima@tier4.jp" },
   { name = "Kotaro Uetake", email = "kotaro.uetake@tier4.jp" },
+  { name = "Shintaro Sakoda", email = "shintaro.sakoda@tier4.jp" },
   { name = "Koji Minoda", email = "koji.minoda@tier4.jp" },
   { name = "Kosuke Takeuchi", email = "kosuke.takeuchi@tier4.jp" },
   { name = "Keisuke Shima", email = "keisuke.shima@tier4.jp" },
