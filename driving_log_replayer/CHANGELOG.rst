@@ -2,8 +2,8 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.6.0 (2025-01-14)
+------------------
 * feat: update message type (`#589 <https://github.com/tier4/driving_log_replayer/issues/589>`_)
   Co-authored-by: Shintaro Sakoda <shintaro.sakoda@tier4.jp>
 * Contributors: Hayato Mizushima
