@@ -46,7 +46,7 @@ build-backend = "hatchling.build"
 # https://github.com/astral-sh/uv/issues/7703
 constraint-dependencies = ["kaleido!=0.2.1.post1"]
 dev-dependencies = [
-    "ruff==0.7.0",
+    "ruff==0.8.0",
     "pytest>=8.1.1",
 ]
 
@@ -63,7 +63,7 @@ output-format = "full"
 [tool.ruff.lint]
 # https://beta.ruff.rs/docs/rules/
 select = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
-ignore = ["Q000", "ANN101", "ANN102", "ANN401", "PGH004", "E501", "PLR0913", "S101", "S301", "S603", "SIM115", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417", "PD011", "PD002", "PD901", "COM812", "ISC001"]
+ignore = ["Q000", "ANN401", "PGH004", "E501", "PLR0913", "S101", "S301", "S603", "SIM115", "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D212", "D404", "D417", "PD011", "PD002", "PD901", "COM812", "ISC001"]
 fixable = ["D", "I", "ANN", "COM", "EXE", "PIE"]
 
 [tool.ruff.lint.isort]
