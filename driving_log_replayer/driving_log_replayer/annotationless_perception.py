@@ -307,7 +307,7 @@ class ObjectMetricsClassContainer:
                 diag_array_class[class_name] = {}
             diag_array_class[class_name].update(diag_dict)
         # evaluate for each class
-        for class_name in diag_array_class:
+        for class_name in diag_array_class:  # noqa: PLC0206
             if self.__container.get(class_name) is None:
                 # Add default ObjectMetricsClass for metrics aggregation
                 self.__container[class_name] = ObjectMetrics(
