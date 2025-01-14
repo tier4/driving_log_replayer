@@ -14,13 +14,13 @@
 
 from collections.abc import Callable
 
+from autoware_internal_debug_msgs.msg import Float32Stamped
+from autoware_internal_debug_msgs.msg import Int32Stamped
 from builtin_interfaces.msg import Time
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 from example_interfaces.msg import Float64
 import pytest
-from tier4_debug_msgs.msg import Float32Stamped
-from tier4_debug_msgs.msg import Int32Stamped
 
 from driving_log_replayer.localization import Availability
 from driving_log_replayer.localization import Convergence
