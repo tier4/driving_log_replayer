@@ -2,6 +2,12 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* feat: add autoware\_ prefix to component_state_monitor (`#591 <https://github.com/tier4/driving_log_replayer/issues/591>`_)
+  Co-authored-by: Hayato Mizushima <hayato-m126@users.noreply.github.com>
+* Contributors: Ryohsuke Mitsudome
+
 2.6.0 (2025-01-14)
 ------------------
 * feat: update message type (`#589 <https://github.com/tier4/driving_log_replayer/issues/589>`_)
