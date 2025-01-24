@@ -286,7 +286,7 @@ def get_topic_state_monitor_launch(
 ) -> launch.actions.IncludeLaunchDescription:
     # component_state_monitor launch
     component_state_monitor_launch_file = Path(
-        get_package_share_directory("component_state_monitor"),
+        get_package_share_directory("autoware_component_state_monitor"),
         "launch",
         "component_state_monitor.launch.py",
     )
