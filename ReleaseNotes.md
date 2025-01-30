@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 2.7.1
+
+Minor Tweak
+
+| Module | Feature   | Brief summary      | Pull request                                                   | Jira | Contributor                                   |
+| ------ | --------- | ------------------ | -------------------------------------------------------------- | ---- | --------------------------------------------- |
+| `all`  | unit test | scenario unit test | [#593](https://github.com/tier4/driving_log_replayer/pull/593) | -    | [hayato-m126](https://github.com/hayato-m126) |
+
 ## Version 2.7.0
 
 Major changes

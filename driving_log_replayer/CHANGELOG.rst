@@ -2,6 +2,11 @@
 Changelog for package driving_log_replayer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* chore: Confirmation that the pydantic model will properly convert to float (`#593 <https://github.com/tier4/driving_log_replayer/issues/593>`_)
+* Contributors: Hayato Mizushima
+
 2.7.0 (2025-01-24)
 ------------------
 * feat: add autoware\_ prefix to component_state_monitor (`#591 <https://github.com/tier4/driving_log_replayer/issues/591>`_)
