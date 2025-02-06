@@ -30,7 +30,7 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/object_recognition/tracking/multi_object_tracker/debug/.*\
 |^/perception/object_recognition/detection/.*/debug/pipeline_latency_ms$\
 |^/perception/obstacle_segmentation/pointcloud$\
-|^/perception/object_recognition/detection/.*/rois$\
+|^/perception/object_recognition/detection/.*/rois.*\
 |^/driving_log_replayer/.*\
 |^/sensing/camera/.*\
 """
