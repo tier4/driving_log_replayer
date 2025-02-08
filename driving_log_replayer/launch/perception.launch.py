@@ -31,6 +31,9 @@ RECORD_TOPIC_REGEX = """^/clock$\
 |^/perception/object_recognition/detection/.*/debug/pipeline_latency_ms$\
 |^/perception/obstacle_segmentation/pointcloud$\
 |^/perception/object_recognition/detection/rois.*\
+|^/perception/.*/pointcloud_map_filtered/.*pointcloud$\
+|^/perception/obstacle_segmentation/sigle_frame/pointcloud$\
+|^/perception/occupancy_grid_map/map$\
 |^/driving_log_replayer/.*\
 |^/sensing/camera/.*\
 """
